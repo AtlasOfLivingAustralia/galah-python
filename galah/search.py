@@ -15,11 +15,24 @@ APIs = {
     'Australia': 'https://namematching-ws.ala.org.au/'
 }
 
+'''
+taxa()
+
+This querys the ALA api and returns a dataframe containing the scientific name of the species, 
+the authorship, taxonConceptID and rank.
+
+TODO: return all fields associated with the query
+
+ARGS:
+species: either a string or a list containing species names
+
+RETURNS:
+dataFrame with the scientific name of the species, the authorship, taxonConceptID and rank.
+'''
 def taxa(species):
     # first, check if someone actually entered a species name
     if species is None:
         raise Exception("You need to specify a species")
-        sys.exit()
 
     # first, check which API I am searching (LATER)
     baseURL = APIs['Australia']
@@ -27,7 +40,7 @@ def taxa(species):
     # second, add api/search
     baseURL += 'api/search?'
 
-    # third, add ?q=<search term> (replace spaces with %20)
+    # third, add fq=<search term> and converting it to URL
     # check if there is one or multiple species listed.  If there is only one, then use the first loop.
     if type(species) == str:
         # only have one species, getting one response
@@ -66,13 +79,25 @@ def identifiers():
 def fields():
     # pseudocode here
 '''
+'''
+showAllFields()
+
+This function returns all possible fields to filter yoru query by
+
+Takes no arguments
+
+RETURNS:
+dataFrame: a data frame with the name, description, dataType and infoUrl for each query possibility
+'''
 def showAllFields():
-    # pseudocode here
-    # this URL returns all fields - Amanda to program this
     # fq=(filter) ???
+    # go through
     response = requests.get("https://biocache-ws.ala.org.au/ws/index/fields")
-    test=pd.DataFrame.from_dict(response.json())
-    print(list(test['name']))
+    fields=pd.DataFrame.from_dict(response.json())
+    dataFrame = fields[['name','description','dataType','infoUrl']]
+    # change the column names
+    #newDataFrame.rename(columns = {'name':'id','dataType':'type','infoUrl':'link'})
+    return dataFrame
 
 '''
 def fieldValues():

@@ -11,11 +11,11 @@ setup(
     license='MIT',
     author='Amanda Buyan','Martin Westgate',
     author_email='amanda.buyan@csiro.au','martin.westgate@csiro.au',
-    packages=find_packages('src'),
+    packages=find_packages('src'), # change?
     package_dir={'':'src'},
     url='',
     keywords='galah',
     install_requires=[
-        'scipy','numpy','pandas','requests'
+        'scipy','numpy','pandas','requests','urllib','time','zipfile','io','sys'
     ]
 )
