@@ -1,33 +1,34 @@
 '''
-This is a collection of the filtering functions available on galah
+This is a collection of the search functions from the R galah package
+
+Each function has a description of what it does and what its arguments are
 '''
 
 import requests,sys
 import pandas as pd
-
-'''
-Function comments here
-
-arguments: one or more scientific names (search=True) or taxonomic identifiers
-               (search=False)
-'''
+\
 APIs = {
     'Australia': 'https://namematching-ws.ala.org.au/'
 }
 
 '''
-taxa()
+taxa
+------
+This querys the ALA api and returns a dataframe containing the scientific name of the species, the authorship, 
+taxonConceptID and rank.
 
-This querys the ALA api and returns a dataframe containing the scientific name of the species, 
-the authorship, taxonConceptID and rank.
+arguments
+---------
+species: a string or a list of species to get the number of counts for 
+         (example: "Vulpes vulpes" or ["Osphranter rufus","Vulpes vulpes","Macropus giganteus","Phascolarctos cinereus"])
 
-TODO: return all fields associated with the query
+returns
+------- 
+dataFrame: a pandas dataframe with the scientific name of the species, the authorship, taxonConceptID and rank.
 
-ARGS:
-species: either a string or a list containing species names
-
-RETURNS:
-dataFrame with the scientific name of the species, the authorship, taxonConceptID and rank.
+TODO
+----
+1. Check with Martin
 '''
 def taxa(species):
     # first, check if someone actually entered a species name
@@ -79,15 +80,23 @@ def identifiers():
 def fields():
     # pseudocode here
 '''
+
 '''
-showAllFields()
+showAllFields
+-------------
+This function returns all possible fields to use as filters in your query.
 
-This function returns all possible fields to filter yoru query by
+arguments
+---------
+None
 
-Takes no arguments
-
-RETURNS:
+returns
+------- 
 dataFrame: a data frame with the name, description, dataType and infoUrl for each query possibility
+
+TODO
+----
+1. Check with Martin on datatypes
 '''
 def showAllFields():
     # fq=(filter) ???
