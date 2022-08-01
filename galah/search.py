@@ -31,6 +31,7 @@ TODO
 1. Check with Martin
 '''
 def taxa(species):
+
     # first, check if someone actually entered a species name
     if species is None:
         raise Exception("You need to specify a species")
@@ -42,21 +43,14 @@ def taxa(species):
     baseURL += 'api/search?'
 
     # third, add fq=<search term> and converting it to URL
-    # check if there is one or multiple species listed.  If there is only one, then use the first loop.
-    if type(species) == str:
-        # only have one species, getting one response
-        baseURL += "q={}".format("%20".join(species.split(" ")))
-        response = requests.get(baseURL)
-        json = response.json()
-        # categories to get: scientificName, scientificNameAuthorship, taxonConceptID, rank
-        data = dict((k,json[k]) for k in ('scientificName','scientificNameAuthorship','taxonConceptID','rank') if k in json)
-        dataFrame = pd.DataFrame(data,index=[1])
-        return(dataFrame)
-    elif type(species) == list:
-        # have multiple species - use this loop
+    if type(species) is list or type(species) is str:
+        # convert to list for easy looping
+        if type(species) is str:
+            species=[species]
+        # create an empty dataframe
         dataFrame = pd.DataFrame()
         # currently only return information above kingdom
-        # TODO: return all information (very much later)
+        # TODO: return all information (later)
         for name in species:
             URL = baseURL+"q={}".format("%20".join(name.split(" ")))
             response = requests.get(URL)
@@ -66,9 +60,8 @@ def taxa(species):
                 k in json)
             tempdf = pd.DataFrame(data,index=[1])
             dataFrame = pd.concat([dataFrame,tempdf],ignore_index=True)
-        return (dataFrame)
+        return dataFrame
     else:
-        # the user has not used it correctly - let them know how to use it
         raise TypeError("The species argument can only be a string or a list."
                         "\nExample: species.taxa(\"Vulpes vulpes\")"
                         "\n         species.taxa([\"Osphranter rufus\",\"Vulpes vulpes\",\"Macropus giganteus\",\"Phascolarctos cinereus\"])")
@@ -92,12 +85,14 @@ TODO
 1. Check with Martin on datatypes
 '''
 def showAllFields():
-    # fq=(filter) ???
-    # go through
+    # get all fields from the API
     response = requests.get("https://biocache-ws.ala.org.au/ws/index/fields")
     fields=pd.DataFrame.from_dict(response.json())
+    # only return the columns below
+    # TODO: make sure that this matches the R version of galah
     dataFrame = fields[['name','description','dataType','infoUrl']]
-    # change the column names
+    # how to change the column names
+    # TODO: determine if this is needed
     #newDataFrame.rename(columns = {'name':'id','dataType':'type','infoUrl':'link'})
     return dataFrame
 
@@ -121,17 +116,44 @@ def fieldValues():
     # pseudocode here
 '''
 
-# do this: https://biocache-ws.ala.org.au/ws/occurrence/facets?facets=basisOfRecord
+'''
+showAllFields
+-------------
+This function returns all possible values for the field query.
+
+arguments
+---------
+field: the field you want to know valid values for (i.e. basisOfRecord)
+
+returns
+------- 
+dataFrame: a data frame with the possible values for the field
+
+TODO
+----
+1. More robust testing
+'''
 def showAllValues(field):
-    # pseudocode here
+
+    # the baseURL before adding the field we want to query
     baseURL="https://biocache-ws.ala.org.au/ws/occurrence/facets?facets="
+
+    # add the field
     URL = baseURL + field
+
+    # query the API
     response = requests.get(URL)
     json = response.json()
+
+    # create empty dataFrame to concatenate results to
     dataFrame = pd.DataFrame()
+
+    # loop over results and create dataFrame
     for i,entry in enumerate(json[0]['fieldResult']):
         tempdf = pd.DataFrame([entry['i18nCode'].split('.')],columns=['field','category'])
         dataFrame = pd.concat([dataFrame,tempdf],ignore_index=True)
+
+    # return dataFrame
     return dataFrame
 
 '''
