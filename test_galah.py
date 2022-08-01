@@ -7,6 +7,7 @@ import galah
 import pandas as pd
 from galah import atlas as a
 from galah import search as s
+from galah import galah as g
 
 # class for the options for the script
 class Option:
@@ -35,7 +36,7 @@ def option_parser(args,options):
 
     # create the options list
     options = dict([i for i in options if not type(i) == str])
-    print(options)
+    #print(options)
 
     # Check whether there is a request for help
     if '-h' in args or '--help' in args:
@@ -67,6 +68,8 @@ options = [
     ("-testALA",       Option(bool, 0, False, "Runs all tests for checking if ALA is working.")),
     ("-occurrences",   Option(bool, 0, False, "Runs all tests for the occurrences function.")),
     ("-showAllFields", Option(bool, 0, False, "Runs all tests for the showAllFields function.")),
+    ("-groupBy",       Option(bool, 0, False, "Runs all tests for the groupBy function.")),
+    ("-showAllValues", Option(bool, 0, False, "Runs all tests for the showAllValues function.")),
 ]
 '''
         # how to get taxonConceptIDs
@@ -115,27 +118,27 @@ def main(options):
         print("Total counts for multiple species: \n{}".format(totalCountsMultiple))
 
         print("\nTest if 2020 filter in counts is working for the Vulpes vulpes species")
-        totalCountsVV2020 = a.counts(species="Vulpes vulpes", filter=["year:2020"])
+        totalCountsVV2020 = a.counts(species="Vulpes vulpes", filter=["year=2020"])
         print(totalCountsVV2020)
 
         print("\nTest if 2019 and 2020 filters in counts are working for the Vulpes vulpes species")
-        totalCountsVV20202019 = a.counts(species="Vulpes vulpes", filter=["year:2020", "year:2019"])
+        totalCountsVV20202019 = a.counts(species="Vulpes vulpes", filter=["year=2020", "year=2019"])
         print(totalCountsVV20202019)
 
         print("\nTest if 2020 filter in counts is working for the species array")
         occurrences = a.counts(
             species=["Osphranter rufus", "Vulpes vulpes", "Macropus giganteus", "Phascolarctos cinereus"],
-            filter=["year:2020"])
+            filter=["year=2020"])
         print(occurrences)
         print("\nTest if 2019 and 2020 filters in counts are working for the species array")
         occurrences = a.counts(
             species=["Osphranter rufus", "Vulpes vulpes", "Macropus giganteus", "Phascolarctos cinereus"],
-            filter=["year:2020", "year:2019"])
+            filter=["year=2020", "year=2019"])
         print(occurrences)
         print("\nTest if 2019 and 2020 filters are working for the species array and separate")
         occurrences = a.counts(
             species=["Osphranter rufus", "Vulpes vulpes", "Macropus giganteus", "Phascolarctos cinereus"],
-            filter=["year:2020", "year:2019"], separate=True)
+            filter=["year=2020", "year=2019"], separate=True)
         print(occurrences)
 
     # check if showAllFields is working
@@ -161,6 +164,25 @@ def main(options):
         print(occurrences.columns)
         print(occurrences)
         print()
+
+    if options['-groupBy'].value or options['-all'].value:
+        #print("Test this is working for all counts (no species yet)")
+        #counts=a.counts(filter=["year>2010",'basisOfRecord=HUMAN_OBSERVATION'],groups="year",expand=False)
+        #print(counts)
+        #print()
+        #print("Test this is working for multiple groups, expand=False")
+        #counts=a.counts(filter=["year>2018","basisOfRecord=HUMAN_OBSERVATION"],groups=["year","basisOfRecord"],expand=False)
+        #counts = a.counts(filter=["year>2010"], groups=["year", "basisOfRecord"],expand=False)
+        #print(counts)
+        print("Test this is working for multiple groups, expand=True")
+        counts=a.counts(filter=["year>2018"],groups=["year","basisOfRecord"],expand=True)
+        #counts = a.counts(filter=["year>2018", "basisOfRecord=HUMAN_OBSERVATION"], groups=["year", "basisOfRecord"], expand=True)
+        print(counts)
+
+    if options['-showAllValues'].value or options['-all'].value:
+        print("Test this is working for basisOfRecord")
+        values=s.showAllValues("basisOfRecord")
+        print(values)
 
 if __name__=="__main__":
     args = sys.argv[1:]

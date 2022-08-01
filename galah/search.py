@@ -6,7 +6,7 @@ Each function has a description of what it does and what its arguments are
 
 import requests,sys
 import pandas as pd
-\
+
 APIs = {
     'Australia': 'https://namematching-ws.ala.org.au/'
 }
@@ -73,13 +73,6 @@ def taxa(species):
                         "\nExample: species.taxa(\"Vulpes vulpes\")"
                         "\n         species.taxa([\"Osphranter rufus\",\"Vulpes vulpes\",\"Macropus giganteus\",\"Phascolarctos cinereus\"])")
 
-'''
-def identifiers():
-    # pseudocode here
-
-def fields():
-    # pseudocode here
-'''
 
 '''
 showAllFields
@@ -109,9 +102,39 @@ def showAllFields():
     return dataFrame
 
 '''
-def fieldValues():
+# search for taxa with taxonomic identifiers
+def identifiers():
     # pseudocode here
 
+# returns a data.frame of all fields matching the type specified (columns is id, description, type, link)
+# example: search.fields(query,type=["all","fields","layers","assertions","media","other"])
+#  query: a search string (not case sensitive) example:
+#  type: what type of parameters should be searched?
+# returns
+def fields(query=None,type=None):
+    # pseudocode here
+    
+# search for valid options of a categorical field
+# example: search.fieldValues(field, limit = 20)
+#    field: string, field to return the categories for.  Use search_fields
+def fieldValues():
+    # pseudocode here
+'''
+
+# do this: https://biocache-ws.ala.org.au/ws/occurrence/facets?facets=basisOfRecord
+def showAllValues(field):
+    # pseudocode here
+    baseURL="https://biocache-ws.ala.org.au/ws/occurrence/facets?facets="
+    URL = baseURL + field
+    response = requests.get(URL)
+    json = response.json()
+    dataFrame = pd.DataFrame()
+    for i,entry in enumerate(json[0]['fieldResult']):
+        tempdf = pd.DataFrame([entry['i18nCode'].split('.')],columns=['field','category'])
+        dataFrame = pd.concat([dataFrame,tempdf],ignore_index=True)
+    return dataFrame
+
+'''
 def profileAttributes():
     # pseudocode here
     

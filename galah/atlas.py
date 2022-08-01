@@ -31,12 +31,10 @@ dataFrame: a pandas dataframe containing the species name and records for that s
 
 TODO
 ----
-1. Write filters part of this function
 2. Test more filters available on the ALA
 3. Write geolocate part of this function
 4. Understand what mint_doi is and implement it
 5. Understand what doi is and implement it
-6. Understand what doi is and implement it
 '''
 # def atlas_occurrences(request=None,
 #                      identify=None,
@@ -145,7 +143,7 @@ TODO
 ----
 1. Test more filters available on the ALA
 '''
-def counts(species=None,separate=False,verbose=False,filter=None):
+def counts(species=None,separate=False,verbose=False,filter=None,groups=None,expand=False):
     # example for filters: https://biocache-ws.ala.org.au/ws/occurrence/search?fq=%28year%3A2021%29&pageSize=0
     # do this
 
@@ -154,14 +152,21 @@ def counts(species=None,separate=False,verbose=False,filter=None):
 
     # if there is no species, assume you will get the total number of records in the ALA
     if species is None:
-        URL = baseURL + "pageSize=0"
-        if verbose:
-            print("URL for querying:\n\n{}\n".format(URL))
-        response = requests.get(URL)
-        # get the json
-        json = response.json()
-        # return total number of records for the species
-        return pd.DataFrame({'totalRecords': [json['totalRecords']]})
+        # TODO: filters
+        if groups is None:
+            print("implement filters")
+            print(filter)
+            sys.exit()
+            URL = baseURL + "pageSize=0"
+            if verbose:
+                print("URL for querying:\n\n{}\n".format(URL))
+            response = requests.get(URL)
+            # get the json
+            json = response.json()
+            # return total number of records for the species
+            return pd.DataFrame({'totalRecords': [json['totalRecords']]})
+        else:
+            return ggalah.groupBy(baseURL,groups,filter,expand)
     # if there is a single species, get
     elif type(species) == str:
         # use search.taxa() first, and then get taxonConceptID and pass to URL
@@ -169,16 +174,11 @@ def counts(species=None,separate=False,verbose=False,filter=None):
         # fq=(lsid:taxonConceptID)
         URL = baseURL + "fq=%28lsid%3A" + urllib.parse.quote(taxonConceptID) + "%29&"
         if filter is not None:
-            if type(filter) == list:
-                for f in filter:
-                    parts=f.split(":")
-                    parts[1] = '\"{}\"'.format(parts[1])
-                    f2=":".join(parts)
-                    # format of filter: fq=(year:"2020")OR
-                    URL += "fq=%28{}%29{}".format(urllib.parse.quote(f2),urllib.parse.quote("OR"))
-                URL = URL[:-2] + "&pageSize=0"
-                if verbose:
-                    print("URL for querying:\n\n{}\n".format(URL))
+            URL += ggalah.filter(filter)
+            sys.exit()
+            URL = URL[:-2] + "&pageSize=0"
+            if verbose:
+                print("URL for querying:\n\n{}\n".format(URL))
             else:
                 raise TypeError("Filters should only be a list, and are in the following format:\n\nfilter=[\'year:2020\']")
         # no filters, end the URL
@@ -191,6 +191,8 @@ def counts(species=None,separate=False,verbose=False,filter=None):
         # get the json
         json = response.json()
         # return total number of records for the species
+        #if groups is not None:
+        #    return galah.groupBy(pd.DataFrame({'totalRecords': [json['totalRecords']]}),groups)
         return pd.DataFrame({'totalRecords': [json['totalRecords']]})
     # get counts for multiple species
     elif type(species) == list:
