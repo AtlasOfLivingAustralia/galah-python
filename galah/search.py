@@ -44,14 +44,19 @@ def taxa(species):
 
     # third, add fq=<search term> and converting it to URL
     if type(species) is list or type(species) is str:
+
         # convert to list for easy looping
         if type(species) is str:
             species=[species]
+
         # create an empty dataframe
         dataFrame = pd.DataFrame()
+
         # currently only return information above kingdom
         # TODO: return all information (later)
         for name in species:
+
+            # create URL, get result and concatenate result onto dataFrame
             URL = baseURL+"q={}".format("%20".join(name.split(" ")))
             response = requests.get(URL)
             json = response.json()
@@ -60,12 +65,15 @@ def taxa(species):
                 k in json)
             tempdf = pd.DataFrame(data,index=[1])
             dataFrame = pd.concat([dataFrame,tempdf],ignore_index=True)
+
+        # return dataFrame with all data
         return dataFrame
+
+    # else, let the user know that the species argument can only be a string or a lsit
     else:
         raise TypeError("The species argument can only be a string or a list."
                         "\nExample: species.taxa(\"Vulpes vulpes\")"
                         "\n         species.taxa([\"Osphranter rufus\",\"Vulpes vulpes\",\"Macropus giganteus\",\"Phascolarctos cinereus\"])")
-
 
 '''
 showAllFields
@@ -85,12 +93,15 @@ TODO
 1. Check with Martin on datatypes
 '''
 def showAllFields():
+
     # get all fields from the API
     response = requests.get("https://biocache-ws.ala.org.au/ws/index/fields")
     fields=pd.DataFrame.from_dict(response.json())
+
     # only return the columns below
     # TODO: make sure that this matches the R version of galah
     dataFrame = fields[['name','description','dataType','infoUrl']]
+
     # how to change the column names
     # TODO: determine if this is needed
     #newDataFrame.rename(columns = {'name':'id','dataType':'type','infoUrl':'link'})

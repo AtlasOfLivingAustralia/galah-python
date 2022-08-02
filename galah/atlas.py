@@ -44,10 +44,7 @@ TODO
 #                      mint_doi=False,
 #                      doi=None,
 #                      refresh_cache=False):
-def occurrences(species=None,filter=None,geolocate=None,test=False,verbose=False):
-    # request a link from the ALA website
-    # also implement a try/catch loop to make sure that there is a filter applied to
-    # HOW TO DO FACETS: LATER
+def occurrences(species=None,filters=None,geolocate=None,test=False,verbose=False):
 
     # check if the ALA is working - if not, let the user know
     response = requests.get("https://biocache-ws.ala.org.au/ws/occurrences/search?pageSize=0")
@@ -64,42 +61,46 @@ def occurrences(species=None,filter=None,geolocate=None,test=False,verbose=False
     # q <== queries, i.e. q=rk_genus:Macropus; q = Macropus is a free text search
     # fq <== filters to be applied to the original query in form fq=INDEXEDFIELD:VALUE, i.e. fq=rank:kingdom
 
-    # base response -
+    # base URL for queries
     baseURL = "https://biocache-ws.ala.org.au/ws/occurrences/offline/download?"
+
+    # email for querying
+    # TODO: make this an environmental/global variable the user can set
     email = "amanda.buyan@csiro.au"
-    # adding things to baseURL
+
+    # adding a few things to baseURL
+    # TODO: refine this and make sure the user can specify all of these things
     baseURL += "disableAllQualityFilters=true&fields=decimalLatitude%2CdecimalLongitude%2CeventDate%2CscientificName%2CtaxonConceptID%2CrecordID%2CdataResourceName&qa=none&emailNotify=false&sourceTypeId=2004&reasonTypeId=4"
     baseURL += "&email={}&dwcHeaders=True&".format(email)
 
     # check if species is specified
     if species is not None:
-        # first test for one species
-        if type(species) == str:
-            taxonConceptID=search.taxa(species)['taxonConceptID'][1]
-            URL = baseURL + "fq=%28lsid%3A" + urllib.parse.quote(taxonConceptID) + "%29&"
-            if verbose:
-                print("URL for querying:\n\n{}\n".format(URL))
-            response = requests.get(URL)
-            statusURL = requests.get(response.json()['statusUrl'])
-            while statusURL.json()['status'] == 'inQueue':
-                time.sleep(1)
-                statusURL = requests.get(response.json()['statusUrl'])
-            while statusURL.json()['status'] == 'running':
-                time.sleep(5)
-                statusURL = requests.get(response.json()['statusUrl'])
-            zipURL = requests.get(statusURL.json()['downloadUrl'])
-            if verbose:
-                print("Data for download:\n\n{}\n".format(statusURL.json()['downloadUrl']))
-            return pd.read_csv(zipfile.ZipFile(io.BytesIO(zipURL.content)).open('data.csv'))
-        # if not string, then it's multiple species
-        elif type(species) == list:
+
+        # check variable type
+        if type(species) == list or type(species) is str:
+
+            # make species a list for easier looping
+            if type(species) is str:
+                species=[species]
+
+            # create empty dataFrame
             dataFrame = pd.DataFrame()
+
+            # loop over all species and add data to it
             for name in species:
+
+                # get taxon concept ID
                 taxonConceptID = search.taxa(name)['taxonConceptID'][1]
+
+                # generate the desired URL and get a response from the API
                 URL = baseURL + "fq=%28lsid%3A" + urllib.parse.quote(taxonConceptID) + "%29&"
                 response = requests.get(URL)
+
+                # check to see if user wants the query URL
                 if verbose:
                     print("URL for querying:\n\n{}\n".format(URL))
+
+                # this may take a while - occasionally check if status has changed
                 statusURL = requests.get(response.json()['statusUrl'])
                 while statusURL.json()['status'] == 'inQueue':
                     time.sleep(1)
@@ -108,18 +109,28 @@ def occurrences(species=None,filter=None,geolocate=None,test=False,verbose=False
                     time.sleep(5)
                     statusURL = requests.get(response.json()['statusUrl'])
                 zipURL = requests.get(statusURL.json()['downloadUrl'])
+
+                # check to see if the user wants the zip URL
                 if verbose:
                     print("Data for download:\n\n{}\n".format(statusURL.json()['downloadUrl']))
+
+                # create a temporary dataFrame
                 tempdf = pd.read_csv(zipfile.ZipFile(io.BytesIO(zipURL.content)).open('data.csv'))
+
+                # append the data onto one big dataFrame for returning
                 dataFrame = pd.concat([dataFrame,tempdf],ignore_index=True)
+
+            # return the dataFrame
             return dataFrame
+
+        # else, the user needs to specify the species in the correct format
         else:
-            # potentially Assertion error?
+            raise TypeError("The species argument can only be a string or a list."
+                        "\nExample: species.taxa(\"Vulpes vulpes\")"
+                        "\n         species.taxa([\"Osphranter rufus\",\"Vulpes vulpes\",\"Macropus giganteus\",\"Phascolarctos cinereus\"])")
+    else:
             raise Exception('You cannot get all 10 million records for the ALA.  Please specify at least one species and/or '
                             'filters to get occurrence records associated with the species.')
-
-    # return dataframe
-    return dataFrame
 
 '''
 counts
@@ -143,68 +154,93 @@ TODO
 ----
 1. Test more filters available on the ALA
 '''
-def counts(species=None,separate=False,verbose=False,filter=None,groups=None,expand=False):
-    # example for filters: https://biocache-ws.ala.org.au/ws/occurrence/search?fq=%28year%3A2021%29&pageSize=0
-    # do this
+def counts(species=None,separate=False,verbose=False,filters=None,groups=None,expand=False):
 
     # get the baseURL for getting total number of records
     baseURL = "https://biocache-ws.ala.org.au/ws/occurrence/search?"
 
     # if there is no species, assume you will get the total number of records in the ALA
     if species is None:
-        # TODO: filters
+
+        # check if groups exist
         if groups is None:
-            print("implement filters")
-            print(filter)
-            sys.exit()
-            URL = baseURL + "pageSize=0"
-            if verbose:
-                print("URL for querying:\n\n{}\n".format(URL))
-            response = requests.get(URL)
-            # get the json
-            json = response.json()
-            # return total number of records for the species
-            return pd.DataFrame({'totalRecords': [json['totalRecords']]})
-        else:
-            return ggalah.groupBy(baseURL,groups,filter,expand)
-    # if there is a single species, get
-    elif type(species) == str:
-        # use search.taxa() first, and then get taxonConceptID and pass to URL
-        taxonConceptID=search.taxa(species)['taxonConceptID'][1]
-        # fq=(lsid:taxonConceptID)
-        URL = baseURL + "fq=%28lsid%3A" + urllib.parse.quote(taxonConceptID) + "%29&"
-        if filter is not None:
-            URL += ggalah.filter(filter)
-            sys.exit()
-            URL = URL[:-2] + "&pageSize=0"
-            if verbose:
-                print("URL for querying:\n\n{}\n".format(URL))
+
+            # check if filters are specified
+            if filters is not None:
+
+                # check the type of variable filters is
+                if type(filters) is list or type(filters) is str:
+
+                    # change to list for easier looping
+                    if type(filters) is str:
+                        filters=[filters]
+
+                    # loop over filters
+                    for f in filters:
+                        parts = f.split(":")
+                        parts[1] = '\"{}\"'.format(parts[1])
+                        f2 = ":".join(parts)
+                        URL += "fq=%28{}%29{}".format(urllib.parse.quote(f2), urllib.parse.quote("OR"))
+
+                    # add the final part of the URL
+                    URL = URL[:-2] + "&pageSize=0"
+                else:
+                    raise TypeError(
+                        "Filters should only be a list, and are in the following format:\n\nfilter=[\'year:2020\']")
+
+            # else, add the final bit of the URL
             else:
-                raise TypeError("Filters should only be a list, and are in the following format:\n\nfilter=[\'year:2020\']")
-        # no filters, end the URL
+                URL = baseURL + "pageSize=0"
+
+            # check to see if the user wantw the querying URL
+            if verbose:
+                print("URL for querying:\n\n{}\n".format(URL))
+
+            # get the response and data
+            response = requests.get(URL)
+            json = response.json()
+
+            # return dataFrame with total number of records
+            return pd.DataFrame({'totalRecords': [json['totalRecords']]})
+
+        # else, the user wants a grouped dataFrame
         else:
-            URL += "pageSize=0"
-        if verbose:
-            print("URL for querying:\n\n{}\n".format(URL))
-        # query the API
-        response = requests.get(URL)
-        # get the json
-        json = response.json()
-        # return total number of records for the species
-        #if groups is not None:
-        #    return galah.groupBy(pd.DataFrame({'totalRecords': [json['totalRecords']]}),groups)
-        return pd.DataFrame({'totalRecords': [json['totalRecords']]})
-    # get counts for multiple species
-    elif type(species) == list:
+
+            #return a grouped dataFrame
+            return ggalah.groupBy(baseURL,groups,filters,expand)
+
+    # if there is a single species, get
+    elif type(species) is str or type(species) is list:
+
+        # change species into list for easier looping
+        if type(species) is str:
+            species=[species]
+
+        # set these variables to 0 and empty initially
         totalRecords=0
         tempTotalRecords=[]
+
         # get the number of records associated with each species
         for name in species:
+
+            # get the taxonConceptID for species
             taxonConceptID = search.taxa(name)['taxonConceptID'][1]
+
+            # add this ID to the URL
             URL = baseURL + "fq=%28lsid%3A" + urllib.parse.quote(taxonConceptID) + "%29&"
-            if filter is not None:
-                if type(filter) == list:
-                    for f in filter:
+
+            # check to see if filters exist
+            if filters is not None:
+
+                # check the type of variable filters is
+                if type(filters) is list or type(filters) is str:
+
+                    # change to list for easier looping
+                    if type(filters) is str:
+                        filters = [filters]
+
+                    # loop over filters
+                    for f in filters:
                         parts = f.split(":")
                         parts[1] = '\"{}\"'.format(parts[1])
                         f2 = ":".join(parts)
@@ -214,27 +250,39 @@ def counts(species=None,separate=False,verbose=False,filter=None,groups=None,exp
                 else:
                     raise TypeError(
                         "Filters should only be a list, and are in the following format:\n\nfilter=[\'year:2020\']")
-            # tell the API to get only counts
+
+            # add the last bit of the URL
             else:
                 URL += "pageSize=0"
+
+            # check to see if the user wants the URL for querying
             if verbose:
                 print("URL for querying:\n\n{}\n".format(URL))
+
+            # get results form the URL
             response = requests.get(URL)
             json = response.json()
+
             # if the user wants them separated, add counts to a temporary array to make a dataframe with
             if separate:
                 tempTotalRecords.append(int(json['totalRecords']))
+
             # if the user doesn't want them separate, then add them to the existing counts
             else:
                 totalRecords += int(json['totalRecords'])
+
         # make a dataframe with the total records for each species separate
         if separate:
             dataFrame = pd.DataFrame({'Species': species, 'totalRecords': tempTotalRecords})
+
         # make a dataframe with the total number of records
         else:
             dataFrame = pd.DataFrame({'totalRecords': [totalRecords]})
+
+        # return the dataFrame with the specified counts
         return dataFrame
-    # if the variable isn't a string or a list, raise an exception
+
+    # if the species variable isn't a string or a list, raise an exception
     else:
         raise TypeError("The species argument can only be a string or a list."
                         "\nExample: atlas.counts(\"Vulpes vulpes\")"
