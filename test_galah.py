@@ -98,7 +98,7 @@ def main(options):
         print(dataMultiple)
         print()
 
-    # check if counts is working, including filters
+    # check if counts is working, including filterss
     if options['-counts'].value or options['-all'].value:
         print("First, test that we can get the counts from the entire ALA")
         totalCounts=a.counts()
@@ -117,28 +117,28 @@ def main(options):
                                        separate=True)
         print("Total counts for multiple species: \n{}".format(totalCountsMultiple))
 
-        print("\nTest if 2020 filter in counts is working for the Vulpes vulpes species")
-        totalCountsVV2020 = a.counts(species="Vulpes vulpes", filter=["year=2020"])
+        print("\nTest if 2020 filters in counts is working for the Vulpes vulpes species")
+        totalCountsVV2020 = a.counts(species="Vulpes vulpes", filters=["year=2020"])
         print(totalCountsVV2020)
 
-        print("\nTest if 2019 and 2020 filters in counts are working for the Vulpes vulpes species")
-        totalCountsVV20202019 = a.counts(species="Vulpes vulpes", filter=["year=2020", "year=2019"])
+        print("\nTest if 2019 and 2020 filterss in counts are working for the Vulpes vulpes species")
+        totalCountsVV20202019 = a.counts(species="Vulpes vulpes", filters=["year=2020", "year=2019"])
         print(totalCountsVV20202019)
 
-        print("\nTest if 2020 filter in counts is working for the species array")
+        print("\nTest if 2020 filters in counts is working for the species array")
         occurrences = a.counts(
             species=["Osphranter rufus", "Vulpes vulpes", "Macropus giganteus", "Phascolarctos cinereus"],
-            filter=["year=2020"])
+            filters=["year=2020"])
         print(occurrences)
-        print("\nTest if 2019 and 2020 filters in counts are working for the species array")
+        print("\nTest if 2019 and 2020 filterss in counts are working for the species array")
         occurrences = a.counts(
             species=["Osphranter rufus", "Vulpes vulpes", "Macropus giganteus", "Phascolarctos cinereus"],
-            filter=["year=2020", "year=2019"])
+            filters=["year=2020", "year=2019"])
         print(occurrences)
-        print("\nTest if 2019 and 2020 filters are working for the species array and separate")
+        print("\nTest if 2019 and 2020 filterss are working for the species array and separate")
         occurrences = a.counts(
             species=["Osphranter rufus", "Vulpes vulpes", "Macropus giganteus", "Phascolarctos cinereus"],
-            filter=["year=2020", "year=2019"], separate=True)
+            filters=["year=2020", "year=2019"], separate=True)
         print(occurrences)
 
     # check if showAllFields is working
@@ -158,7 +158,7 @@ def main(options):
         occurrences = a.occurrences(species="Vulpes vulpes")
         print(occurrences.columns)
         print(occurrences)
-        print("\n\n\nTest if occurrences is working for multiple")
+        print("\n\n\nTest if occurrences is working for multiple species")
         occurrences = a.occurrences(
             species=["Osphranter rufus", "Vulpes vulpes", "Macropus giganteus", "Phascolarctos cinereus"])
         print(occurrences.columns)
@@ -166,17 +166,17 @@ def main(options):
         print()
 
     if options['-groupBy'].value or options['-all'].value:
-        #print("Test this is working for all counts (no species yet)")
-        #counts=a.counts(filter=["year>2010",'basisOfRecord=HUMAN_OBSERVATION'],groups="year",expand=False)
-        #print(counts)
-        #print()
-        #print("Test this is working for multiple groups, expand=False")
-        #counts=a.counts(filter=["year>2018","basisOfRecord=HUMAN_OBSERVATION"],groups=["year","basisOfRecord"],expand=False)
-        #counts = a.counts(filter=["year>2010"], groups=["year", "basisOfRecord"],expand=False)
-        #print(counts)
+        print("Test this is working for all counts (no species yet)")
+        counts=a.counts(filters=["year>2010",'basisOfRecord=HUMAN_OBSERVATION'],groups="year",expand=False)
+        print(counts)
+        print()
+        print("Test this is working for multiple groups, expand=False")
+        counts=a.counts(filters=["year>2018","basisOfRecord=HUMAN_OBSERVATION"],groups=["year","basisOfRecord"],expand=False)
+        counts = a.counts(filters=["year>2010"], groups=["year", "basisOfRecord"],expand=False)
+        print(counts)
         print("Test this is working for multiple groups, expand=True")
-        counts=a.counts(filter=["year>2018"],groups=["year","basisOfRecord"],expand=True)
-        #counts = a.counts(filter=["year>2018", "basisOfRecord=HUMAN_OBSERVATION"], groups=["year", "basisOfRecord"], expand=True)
+        counts=a.counts(filters=["year>2018"],groups=["year","basisOfRecord"],expand=True)
+        #counts = a.counts(filters=["year>2018", "basisOfRecord=HUMAN_OBSERVATION"], groups=["year", "basisOfRecord"], expand=True)
         print(counts)
 
     if options['-showAllValues'].value or options['-all'].value:

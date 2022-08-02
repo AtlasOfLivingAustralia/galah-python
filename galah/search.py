@@ -44,7 +44,6 @@ def taxa(species):
 
     # third, add fq=<search term> and converting it to URL
     if type(species) is list or type(species) is str:
-
         # convert to list for easy looping
         if type(species) is str:
             species=[species]
@@ -59,10 +58,12 @@ def taxa(species):
             # create URL, get result and concatenate result onto dataFrame
             URL = baseURL+"q={}".format("%20".join(name.split(" ")))
             response = requests.get(URL)
+
             json = response.json()
             data = dict(
                 (k, json[k]) for k in ('scientificName', 'scientificNameAuthorship', 'taxonConceptID', 'rank') if
                 k in json)
+
             tempdf = pd.DataFrame(data,index=[1])
             dataFrame = pd.concat([dataFrame,tempdf],ignore_index=True)
 

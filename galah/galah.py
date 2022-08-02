@@ -39,7 +39,7 @@ TODO
 ----
 1. Test more filters
 '''
-def filter(filters, profile=None):
+def filter(filters, profile=None,ifgroupBy=False):
 
     # first, check for special characters
     specialChars = re.compile('[@_!#$%^&*()<>?/\|}{~:=]')
@@ -69,7 +69,10 @@ def filter(filters, profile=None):
 
                 # check if the filter is a number or a string
                 if parts[1].isdigit():
-                    returnString+="fq={}:[{}]".format(parts[0],parts[1])
+                    if ifgroupBy:
+                        returnString+="fq={}:[{}]".format(parts[0],parts[1])
+                    else:
+                        returnString += "fq={}:({})".format(parts[0], parts[1])
                 else:
                     returnString += "fq={}:({})".format(parts[0], parts[1])
 
@@ -139,7 +142,7 @@ def groupBy(URL,groups=None,filters=None,expand=False):
 
             # loop over filters
             for f in filters:
-                URL += "&" + filter(f)
+                URL += "&" + filter(f,ifgroupBy=True)
 
         # else, raise a TypeError because this variable needs to be either a string or a list
         else:

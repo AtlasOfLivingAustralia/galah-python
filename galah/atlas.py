@@ -9,6 +9,7 @@ import sys,requests,urllib.parse,time,zipfile,io
 import pandas as pd
 import galah.search as search
 import galah.galah as ggalah
+from galah.galah import filter
 
 '''
 occurrences
@@ -90,7 +91,7 @@ def occurrences(species=None,filters=None,geolocate=None,test=False,verbose=Fals
             for name in species:
 
                 # get taxon concept ID
-                taxonConceptID = search.taxa(name)['taxonConceptID'][1]
+                taxonConceptID = search.taxa(name)['taxonConceptID'][0]
 
                 # generate the desired URL and get a response from the API
                 URL = baseURL + "fq=%28lsid%3A" + urllib.parse.quote(taxonConceptID) + "%29&"
@@ -103,9 +104,11 @@ def occurrences(species=None,filters=None,geolocate=None,test=False,verbose=Fals
                 # this may take a while - occasionally check if status has changed
                 statusURL = requests.get(response.json()['statusUrl'])
                 while statusURL.json()['status'] == 'inQueue':
-                    time.sleep(1)
+                    print(statusURL.json()['status'])
+                    time.sleep(5)
                     statusURL = requests.get(response.json()['statusUrl'])
                 while statusURL.json()['status'] == 'running':
+                    print(statusURL.json()['status'])
                     time.sleep(5)
                     statusURL = requests.get(response.json()['statusUrl'])
                 zipURL = requests.get(statusURL.json()['downloadUrl'])
@@ -129,8 +132,8 @@ def occurrences(species=None,filters=None,geolocate=None,test=False,verbose=Fals
                         "\nExample: species.taxa(\"Vulpes vulpes\")"
                         "\n         species.taxa([\"Osphranter rufus\",\"Vulpes vulpes\",\"Macropus giganteus\",\"Phascolarctos cinereus\"])")
     else:
-            raise Exception('You cannot get all 10 million records for the ALA.  Please specify at least one species and/or '
-                            'filters to get occurrence records associated with the species.')
+        raise Exception('You cannot get all 10 million records for the ALA.  Please specify at least one species and/or '
+                        'filters to get occurrence records associated with the species.')
 
 '''
 counts
@@ -177,13 +180,12 @@ def counts(species=None,separate=False,verbose=False,filters=None,groups=None,ex
 
                     # loop over filters
                     for f in filters:
-                        parts = f.split(":")
-                        parts[1] = '\"{}\"'.format(parts[1])
-                        f2 = ":".join(parts)
-                        URL += "fq=%28{}%29{}".format(urllib.parse.quote(f2), urllib.parse.quote("OR"))
+                        URL += "&" + filter(f)
 
                     # add the final part of the URL
-                    URL = URL[:-2] + "&pageSize=0"
+                    URL += "&pageSize=0"
+
+                # else, make sure that the filters is in the following format
                 else:
                     raise TypeError(
                         "Filters should only be a list, and are in the following format:\n\nfilter=[\'year:2020\']")
@@ -224,7 +226,7 @@ def counts(species=None,separate=False,verbose=False,filters=None,groups=None,ex
         for name in species:
 
             # get the taxonConceptID for species
-            taxonConceptID = search.taxa(name)['taxonConceptID'][1]
+            taxonConceptID = search.taxa(name)['taxonConceptID'][0]
 
             # add this ID to the URL
             URL = baseURL + "fq=%28lsid%3A" + urllib.parse.quote(taxonConceptID) + "%29&"
@@ -241,12 +243,13 @@ def counts(species=None,separate=False,verbose=False,filters=None,groups=None,ex
 
                     # loop over filters
                     for f in filters:
-                        parts = f.split(":")
-                        parts[1] = '\"{}\"'.format(parts[1])
-                        f2 = ":".join(parts)
-                        # could be fq=(year:"2020")
-                        URL += "fq=%28{}%29{}".format(urllib.parse.quote(f2), urllib.parse.quote("OR"))
-                    URL = URL[:-2] + "&pageSize=0"
+                        # TODO: implement "or"?
+                        URL += "AND" + filter(f)
+
+                    # add the final part of the URL
+                    URL += "&pageSize=0"
+
+                # else, make sure that the filters is in the following format
                 else:
                     raise TypeError(
                         "Filters should only be a list, and are in the following format:\n\nfilter=[\'year:2020\']")
