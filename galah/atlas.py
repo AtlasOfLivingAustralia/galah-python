@@ -104,11 +104,9 @@ def occurrences(species=None,filters=None,geolocate=None,test=False,verbose=Fals
                 # this may take a while - occasionally check if status has changed
                 statusURL = requests.get(response.json()['statusUrl'])
                 while statusURL.json()['status'] == 'inQueue':
-                    print(statusURL.json()['status'])
                     time.sleep(5)
                     statusURL = requests.get(response.json()['statusUrl'])
                 while statusURL.json()['status'] == 'running':
-                    print(statusURL.json()['status'])
                     time.sleep(5)
                     statusURL = requests.get(response.json()['statusUrl'])
                 zipURL = requests.get(statusURL.json()['downloadUrl'])
