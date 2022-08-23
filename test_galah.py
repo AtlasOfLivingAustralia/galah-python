@@ -70,6 +70,7 @@ options = [
     ("-showAllFields", Option(bool, 0, False, "Runs all tests for the showAllFields function.")),
     ("-groupBy",       Option(bool, 0, False, "Runs all tests for the groupBy function.")),
     ("-showAllValues", Option(bool, 0, False, "Runs all tests for the showAllValues function.")),
+    ("-select",        Option(bool, 0, False, "Runs all tests for the select function.")),
 ]
 '''
         # how to get taxonConceptIDs
@@ -86,6 +87,8 @@ options = [
 # main function that includes all the tests Amanda has done to get the package running so far
 def main(options):
 
+    email = "amanda.buyan@csiro.au"
+
     # check if taxa is working for Vulpes vulpes and multiple enquiries
     if options['-taxa'].value or options['-all'].value:
 
@@ -98,7 +101,7 @@ def main(options):
         print(dataMultiple)
         print()
 
-    # check if counts is working, including filterss
+    # check if counts is working, including filters
     if options['-counts'].value or options['-all'].value:
         print("First, test that we can get the counts from the entire ALA")
         totalCounts=a.counts()
@@ -121,7 +124,7 @@ def main(options):
         totalCountsVV2020 = a.counts(species="Vulpes vulpes", filters=["year=2020"])
         print(totalCountsVV2020)
 
-        print("\nTest if 2019 and 2020 filterss in counts are working for the Vulpes vulpes species")
+        print("\nTest if 2019 and 2020 filters in counts are working for the Vulpes vulpes species")
         totalCountsVV20202019 = a.counts(species="Vulpes vulpes", filters=["year=2020", "year=2019"])
         print(totalCountsVV20202019)
 
@@ -130,12 +133,12 @@ def main(options):
             species=["Osphranter rufus", "Vulpes vulpes", "Macropus giganteus", "Phascolarctos cinereus"],
             filters=["year=2020"])
         print(occurrences)
-        print("\nTest if 2019 and 2020 filterss in counts are working for the species array")
+        print("\nTest if 2019 and 2020 filters in counts are working for the species array")
         occurrences = a.counts(
             species=["Osphranter rufus", "Vulpes vulpes", "Macropus giganteus", "Phascolarctos cinereus"],
             filters=["year=2020", "year=2019"])
         print(occurrences)
-        print("\nTest if 2019 and 2020 filterss are working for the species array and separate")
+        print("\nTest if 2019 and 2020 filters  are working for the species array and separate")
         occurrences = a.counts(
             species=["Osphranter rufus", "Vulpes vulpes", "Macropus giganteus", "Phascolarctos cinereus"],
             filters=["year=2020", "year=2019"], separate=True)
@@ -155,12 +158,12 @@ def main(options):
 
     if options['-occurrences'].value or options['-all'].value:
         print("\nTest if occurrences is working for Vulpes vulpes")
-        occurrences = a.occurrences(species="Vulpes vulpes")
+        occurrences = a.occurrences(species="Vulpes vulpes",email=email)
         print(occurrences.columns)
         print(occurrences)
         print("\n\n\nTest if occurrences is working for multiple species")
         occurrences = a.occurrences(
-            species=["Osphranter rufus", "Vulpes vulpes", "Macropus giganteus", "Phascolarctos cinereus"])
+            species=["Osphranter rufus", "Vulpes vulpes", "Macropus giganteus", "Phascolarctos cinereus"],email=email)
         print(occurrences.columns)
         print(occurrences)
         print()
@@ -176,12 +179,16 @@ def main(options):
         print(counts)
         print("Test this is working for multiple groups, expand=True")
         counts=a.counts(filters=["year>2018"],groups=["year","basisOfRecord"],expand=True)
-        #counts = a.counts(filters=["year>2018", "basisOfRecord=HUMAN_OBSERVATION"], groups=["year", "basisOfRecord"], expand=True)
         print(counts)
 
     if options['-showAllValues'].value or options['-all'].value:
         print("Test this is working for basisOfRecord")
         values=s.showAllValues("basisOfRecord")
+        print(values)
+
+    if options['-select'].value or options['-all'].value:
+        print("Test this is working for select")
+        values=a.occurrences(species="Vulpes vulpes",fields=['decimalLatitude','decimalLongitude'],email="amanda.buyan@csiro.au") #,verbose=True)
         print(values)
 
 if __name__=="__main__":

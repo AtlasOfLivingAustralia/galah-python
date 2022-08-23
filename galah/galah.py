@@ -16,10 +16,18 @@ def identify([arguments here], search=True):
     #if search=False, look for taxonomic names
 
 arguments: filter in the form "field logical value"
-
-def select():
-    # pseudocode here
 '''
+def select(selectionList=None):
+    # pseudocode here
+    tempstring="fields="
+    if selectionList is None:
+        return ValueError("You need to provide one argument: category(ies) to get from the ALA API as a string or list.")
+    elif type(selectionList) is str or type(selectionList) is list:
+        if type(selectionList) is str:
+            selectionList=[selectionList]
+        for selection in selectionList:
+            tempstring+="{}%2C".format(selection)
+        return tempstring
 
 '''
 filter

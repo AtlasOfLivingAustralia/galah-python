@@ -15,7 +15,7 @@ APIs = {
 taxa
 ------
 This querys the ALA api and returns a dataframe containing the scientific name of the species, the authorship, 
-taxonConceptID and rank.
+taxonConceptID and rank
 
 arguments
 ---------
@@ -129,7 +129,7 @@ def fieldValues():
 '''
 
 '''
-showAllFields
+showAllValues
 -------------
 This function returns all possible values for the field query.
 
@@ -179,5 +179,8 @@ def showAllAtlases():
     # pseudocode here
     
 def showAllRanks():
+    # pseudocode here
+
+def showAllReasons():
     # pseudocode here
 '''

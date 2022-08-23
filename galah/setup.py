@@ -12,10 +12,10 @@ setup(
     author='Amanda Buyan','Martin Westgate',
     author_email='amanda.buyan@csiro.au','martin.westgate@csiro.au',
     packages=find_packages('src'), # change?
-    package_dir={'':'src'},
+    package_dir={'':'src'}, # change?
     url='',
     keywords='galah',
     install_requires=[
-        'scipy','numpy','pandas','requests','urllib','time','zipfile','io','sys'
+        'scipy','numpy','pandas','requests','urllib','time','zipfile','io','sys','configparser','glob'
     ]
 )

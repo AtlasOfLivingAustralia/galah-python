@@ -5,11 +5,17 @@ Each function has a description of what it does and what its arguments are
 '''
 
 # import necessary packages
-import sys,requests,urllib.parse,time,zipfile,io
+import sys,requests,urllib.parse,time,zipfile,io,configparser
 import pandas as pd
 import galah.search as search
 import galah.galah as ggalah
 from galah.galah import filter
+from galah.galah import select
+
+def readConfig():
+    configFile=configparser.ConfigParser()
+    configFile.read('galah/config.ini')
+    return configFile
 
 '''
 occurrences
@@ -45,7 +51,10 @@ TODO
 #                      mint_doi=False,
 #                      doi=None,
 #                      refresh_cache=False):
-def occurrences(species=None,filters=None,geolocate=None,test=False,verbose=False):
+def occurrences(species=None,filters=None,geolocate=None,test=False,verbose=False,fields=None):
+
+    # get some arguments for the configuration file
+    configs=readConfig()
 
     # check if the ALA is working - if not, let the user know
     response = requests.get("https://biocache-ws.ala.org.au/ws/occurrences/search?pageSize=0")
@@ -67,12 +76,20 @@ def occurrences(species=None,filters=None,geolocate=None,test=False,verbose=Fals
 
     # email for querying
     # TODO: make this an environmental/global variable the user can set
-    email = "amanda.buyan@csiro.au"
+    if email is None:
+        raise ValueError("You need to provide a valid email address for occurrences to be able to download data")
 
     # adding a few things to baseURL
     # TODO: refine this and make sure the user can specify all of these things
-    baseURL += "disableAllQualityFilters=true&fields=decimalLatitude%2CdecimalLongitude%2CeventDate%2CscientificName%2CtaxonConceptID%2CrecordID%2CdataResourceName&qa=none&emailNotify=false&sourceTypeId=2004&reasonTypeId=4"
-    baseURL += "&email={}&dwcHeaders=True&".format(email)
+    baseURL += "disableAllQualityFilters=true" #&fields=decimalLatitude%2CdecimalLongitude%2CeventDate%2CscientificName%2CtaxonConceptID%2CrecordID%2CdataResourceName&qa=nonesourceTypeId=2004&reasonTypeId=4"
+    baseURL += "&email={}&dwcHeaders=True&emailNotify=false".format(configs['galahSettings']['email'])
+    # removing all assertions (these would appear in caps)
+    baseURL += "&qa=none&"
+
+    # implement galah.select - choose which columns you download
+    # goes to the 'fields' argument in occurrence download (csv list, commas between)
+    if fields is not None:
+        baseURL += select(fields) + "&"
 
     # check if species is specified
     if species is not None:
