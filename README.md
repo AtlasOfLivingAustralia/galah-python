@@ -4,7 +4,7 @@ This package is a proof of concept for the translation of the galah package from
 
 It is currently under development by Amanda Buyan, supervised by Martin Westgate.
 
-#### Current functions finished (listed with their R equivalents):
+### Current functions finished (listed with their R equivalents):
 
 ```
 R                           |  Python
@@ -20,7 +20,7 @@ show_all_values()           | galah.search.showAllValues()
 galah_config()              | galah.config(email)
 ```
 
-#### Functions to be added:
+### Functions to be added:
 
 Query: create a ```galah.show``` since there are lots of ```showAll``` functions?
 
