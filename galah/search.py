@@ -4,7 +4,7 @@ This is a collection of the search functions from the R galah package
 Each function has a description of what it does and what its arguments are
 '''
 
-import requests,sys
+import requests
 import pandas as pd
 
 APIs = {

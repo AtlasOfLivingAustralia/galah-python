@@ -2,7 +2,7 @@
 This is a collection of the filtering functions available on galah
 '''
 
-import requests,re,sys
+import requests,re
 import pandas as pd
 import galah.search as search
 
@@ -16,6 +16,24 @@ def identify([arguments here], search=True):
     #if search=False, look for taxonomic names
 
 arguments: filter in the form "field logical value"
+'''
+
+'''
+select
+------
+takes a list of selections, and converts it into URL-compatible language to query the API
+
+arguments
+---------
+selectionList: a string or a list of strings with filters (i.e. "year>2018" or ["year>2018", "basisOfRecord=HUMAN_OBSERVATION"])
+
+returns
+------- 
+returnString: a string to add to the URL to query the API
+
+TODO
+----
+1. Test more filters
 '''
 def select(selectionList=None):
     # pseudocode here

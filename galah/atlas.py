@@ -5,7 +5,7 @@ Each function has a description of what it does and what its arguments are
 '''
 
 # import necessary packages
-import sys,requests,urllib.parse,time,zipfile,io,configparser
+import sys,requests,urllib.parse,time,zipfile,io,configparser,glob
 import pandas as pd
 import galah.search as search
 import galah.galah as ggalah
@@ -14,7 +14,8 @@ from galah.galah import select
 
 def readConfig():
     configFile=configparser.ConfigParser()
-    configFile.read('galah/config.ini')
+    inifile=glob.glob('**/galah/config.ini',recursive=True)[0]
+    configParser.read(inifile)
     return configFile
 
 '''

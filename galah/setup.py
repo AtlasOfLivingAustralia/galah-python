@@ -16,6 +16,6 @@ setup(
     url='',
     keywords='galah',
     install_requires=[
-        'scipy','numpy','pandas','requests','urllib','time','zipfile','io','sys','configparser','glob'
-    ]
+        'scipy','numpy','pandas','requests','urllib3','TIME-python','zip-files','configparser','glob2','bytesbufio'
+    ],
 )
