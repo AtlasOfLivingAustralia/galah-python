@@ -1,4 +1,4 @@
-## galah_python
+# galah_python
 
 This package is a proof of concept for the translation of the galah package from R into Python.
 
