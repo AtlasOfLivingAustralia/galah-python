@@ -3,6 +3,7 @@
 import unittest2
 import galah
 import pandas as pd
+import os,configparser
 #import nose2
 
 class test_galah(unittest2.TestCase):
@@ -52,6 +53,13 @@ class test_galah(unittest2.TestCase):
         # first test is to test if galah.atlas_counts() returns greater than 0
         output = galah.atlas_counts()
         self.assertGreater(output['totalRecords'][0],0)
+
+    def test_galah_config(self):
+        galah.galah_config("email=test@example.com")
+        configFile = configparser.ConfigParser()
+        inifile = os.path.join(galah.__path__[0], 'config.ini')
+        configFile.read(inifile)
+        self.assertEqual(configFile['galahSettings']['email'],"test@example.com")
 
     # should include a unit test for this but I believe they are all integration tests
     def test_atlas_occurrences(self):

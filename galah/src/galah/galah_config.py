@@ -2,7 +2,7 @@
 Function for configuring
 '''
 
-import configparser,glob,os,sys
+import configparser,os
 
 # how I did this:
 # https://www.codeproject.com/Articles/5319621/Configuration-Files-in-Python
@@ -19,6 +19,7 @@ def galah_config(fieldToChange=None):
     # read the config file
     inifile = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'config.ini')
     configParser.read(inifile)
+    fieldToChange=fieldToChange.split("=")
 
     # update the field to change
     configParser["galahSettings"][fieldToChange[0]]=fieldToChange[1]
