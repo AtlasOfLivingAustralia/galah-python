@@ -9,39 +9,37 @@ It is currently under development by Amanda Buyan, supervised by Martin Westgate
 ```
 R                           |  Python
 ----------------------------|--------------------------
-atlas_counts()              | galah.atlas.counts(X,Y)
-atlas_occurrences()         | galah.atlas.occurrences(X,Y)
-galah_filter()              | galah.galah.filter(X,Y)
-galah_select()              | galah.galah.select(X,Y)
-galah_group_by()            | galah.galah.groupBy(X,Y)
-search_taxa()               | galah.search.taxa()
-show_all_fields()           | galah.search.showAllFields()
-show_all_values()           | galah.search.showAllValues()
-galah_config()              | galah.config(email)
+atlas_counts()              | galah.atlas_counts()
+atlas_occurrences()         | galah.atlas_occurrences()
+galah_filter()              | galah.galah_filter()
+galah_select()              | galah.galah_select()
+galah_group_by()            | galah.galah_group_by()
+search_taxa()               | galah.search_taxa()
+show_all_fields()           | galah.show_all_fields()
+show_all_values()           | galah.show_all_values()
+galah_config()              | galah.config()
 ```
 
 ### Functions to be added:
 
-Query: create a ```galah.show``` since there are lots of ```showAll``` functions?
-
 ```
 R                           |  Python
 ----------------------------|--------------------------
-atlas_media()               | galah.atlas.media()
-atlas_species()             | galah.atlas.species()
-atlas_taxonomy()            | galah.atlas.taxonomy()
-atlas_citation()            | galah.atlas.citation()
-galah_identify()            | galah.galah.identify()
-galah_geolocate()           | galah.galah.geolocate()
-galah_down_to()             | galah.galah.downTo()
-search_identifiers()        | galah.search.identifiers()
-search_fields()             | galah.search.fields()
-search_field_values()       | galah.search.fieldValues()
-search_profile_attributes() | galah.search.profileAttributes()
-show_all_profiles()         | galah.search.showAllProfiles()
-show_all_reasons()          | galah.search.showAllReasons()
-show_all_atlases()          | galah.search.showAllAtlases()
-show_all_ranks()            | galah.search.showAllRanks()
-show_all_cached_files()     | galah.search.showAllCachedFiles()
-clear_cached_files()        | galah.search.clearCachedFiles()
+atlas_media()               | galah.atlas_media()
+atlas_species()             | galah.atlas_species()
+atlas_taxonomy()            | galah.atlas_taxonomy()
+atlas_citation()            | galah.atlas_citation()
+galah_identify()            | galah.galah_identify()
+galah_geolocate()           | galah.galah_geolocate()
+galah_down_to()             | galah.galah_down_to()
+search_identifiers()        | galah.search_identifiers()
+search_fields()             | galah.search_fields()
+search_field_values()       | galah.search_field_values()
+search_profile_attributes() | galah.search_profile_attributes()
+show_all_profiles()         | galah.show_all_profiles()
+show_all_reasons()          | galah.show_all_reasons()
+show_all_atlases()          | galah.show_all_atlases()
+show_all_ranks()            | galah.show_all_ranks()
+show_all_cached_files()     | galah.show_all_cached_files()
+clear_cached_files()        | galah.clear_cached_files()
 ```
