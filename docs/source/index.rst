@@ -17,65 +17,37 @@ galah is a Python interface to biodiversity data hosted by the Atlas of Living A
    Configuring Galah <configuring_galah/index>
    User Guide <user_guide/index>
 
-.. panels::
-    :card: + intro-card text-center
-    :column: col-lg-6 col-md-6 col-sm-6 col-xs-12 d-flex
 
-    ---
+.. grid:: 4 4 4 2
 
-    Getting started
-    ^^^^^^^^^^^^^^^
+    .. grid-item-card:: 
+        :link: getting_started/index.html
+        :img-top: _static/icons/Getting_Started.svg
+        :class-card: sd-text-black
+        :text-align: center
 
-    New to ``galah``? Check out the getting started tab. They contain an
-    introduction to ``galah``'s main concepts and links to additional tutorials.
+        New to ``galah``? Click here.
 
-    +++
+    .. grid-item-card::
+        :link: configuring_galah/index.html
+        :img-top: _static/icons/Configuring_Galah.svg
+        :class-card: sd-text-black
+        :text-align: center
 
-    .. link-button:: getting_started/index
-            :type: ref
-            :text: I want to get started
-            :classes: btn-block btn-secondary stretched-link
+        Want to configure ``galah``? Click here.
 
-    ---
+    .. grid-item-card:: 
+        :link: user_guide/index.html
+        :img-top: _static/icons/Galah_User_Guide.svg
+        :class-card: sd-text-black
+        :text-align: center
 
-    Configuring Galah
-    ^^^^^^^^^^^^^^^^^
+        A user guide to ``galah``, including explanations for each function
 
-    Want to configure ``galah`` to save time? Check out the Configuring Galah page. 
-    It contains a step-by-step guide for ``galah`` configuration.
+    .. grid-item-card:: 
+        :img-top: _static/icons/FAQs.svg
+        :class-card: sd-text-black
+        :text-align: center
 
-    +++
-
-    .. link-button:: configuring_galah/index
-            :type: ref
-            :text: I want to configure galah
-            :classes: btn-block btn-secondary stretched-link
-
-    ---
-
-    User Guide
-    ^^^^^^^^^^
-
-    A user guide to ``galah``, including explanations for each function
-
-    +++
-
-    .. link-button:: user_guide/index
-            :type: ref
-            :text: Browse the user guide
-            :classes: btn-block btn-secondary stretched-link
-
-    ---
-
-    FAQs? Something else
-    ^^^^^^^^^^^^^^^^^^^^
-
-    Needs something here but am not sure if we should ask developer contributions
-    or other things...
-
-    +++
-
-    .. link-button:: getting_started/index
-            :type: ref
-            :text: I don't know right now
-            :classes: btn-block btn-secondary stretched-link
+        Questions about the ``galah`` package? Suggestions for new features? Wish to
+        contact us? Find the answer to your question here
