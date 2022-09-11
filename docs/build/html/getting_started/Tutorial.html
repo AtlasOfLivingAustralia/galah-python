@@ -289,17 +289,21 @@
               
   <section id="tutorial">
 <h1>Tutorial<a class="headerlink" href="#tutorial" title="Permalink to this heading">#</a></h1>
-<p>Now that you have successfully installed <code class="docutils literal notranslate"><span class="pre">galah</span></code>, we’ll provide a quick introduction on the functions you will mainly be using to get data.</p>
-<p>First, we will get counts of records, so you know how many you are downloading.  To do this, type</p>
+<p>Now that you have successfully installed <code class="docutils literal notranslate"><span class="pre">galah</span></code>, we’ll provide a quick introduction on the functions you will mainly be using to get data. If you’re looking for a quick reference guide for commands, the User Guide (Amanda to add hyperlnk) collates all the available commands wih example.  This tutorial serves as an initial method to get you used to using different commands.</p>
+<p>First, you will need to configure galah.  To do this, run the following:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><style type="text/css">
 span.prompt1:before {
   content: " ";
 }
 </style><span class="prompt1">import galah</span>
+<span class="prompt1">galah.galah_config(email=&quot;youremail@example.com&quot;)</span>
+</pre></div></div><p>This will not return anything.  No error messages means it is configured correctly.</p>
+<p>Now that <code class="docutils literal notranslate"><span class="pre">galah</span></code> is configured, we will get counts of records, so you know how many you are downloading.  To do this, type</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">import galah</span>
 <span class="prompt1">galah.atlas_counts()</span>
 </pre></div></div><p>which returns</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>   totalRecords
-0     113660291
+0     113669012
 </pre></div>
 </div>
 </section>

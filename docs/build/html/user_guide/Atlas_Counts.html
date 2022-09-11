@@ -320,7 +320,7 @@ span.prompt1:before {
 <span class="prompt1">galah.atlas_counts()</span>
 </pre></div></div><p>which returns</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>   totalRecords
-0     113660291
+0     113669012
 </pre></div>
 </div>
 <p>Say you want to get the total count of one particular species’ records within the atlas.  Let’s choose
@@ -329,7 +329,7 @@ span.prompt1:before {
 <span class="prompt1">galah.atlas_counts(&quot;Vulpes vulpes&quot;)</span>
 </pre></div></div><p>which returns</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>   totalRecords
-0         91157
+0         91164
 </pre></div>
 </div>
 <p>If you didn’t want to get occurrence records just for the Red Fox, but for multiple species, this is also possible.  To do this, run</p>
@@ -338,7 +338,7 @@ span.prompt1:before {
 <span class="prompt1">galah.atlas_counts(species_array)</span>
 </pre></div></div><p>which returns</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>   totalRecords
-0        493206
+0        493308
 </pre></div>
 </div>
 <p>However, maybe you want to know how many entries correspond with each species, not just the total for all.  To separate the counts out, run</p>
@@ -347,10 +347,10 @@ span.prompt1:before {
 <span class="prompt1">galah.atlas_counts(species_array,separate=True)</span>
 </pre></div></div><p>which returns</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>                  Species  totalRecords
-0        Osphranter rufus         61587
-1           Vulpes vulpes         91157
-2      Macropus giganteus        140804
-3  Phascolarctos cinereus        199658
+0        Osphranter rufus         61593
+1           Vulpes vulpes         91164
+2      Macropus giganteus        140808
+3  Phascolarctos cinereus        199743
 </pre></div>
 </div>
 <p>Now, what if you want to filter the results, i.e. only find entries for the year 2020?  Let’s start with one species.  Write</p>
@@ -367,7 +367,7 @@ span.prompt1:before {
 <span class="prompt1">galah.atlas_counts(species_array,filters=&quot;year=2020&quot;)</span>
 </pre></div></div><p>which returns</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>   totalRecords
-0         18297
+0         18304
 </pre></div>
 </div>
 <p>These species counts can be separated:</p>
@@ -376,10 +376,10 @@ span.prompt1:before {
 <span class="prompt1">galah.atlas_counts(species_array,filters=&quot;year=2020&quot;,separate=True)</span>
 </pre></div></div><p>which returns</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>                  Species  totalRecords
-0        Osphranter rufus           120
+0        Osphranter rufus           122
 1           Vulpes vulpes          2573
 2      Macropus giganteus          7966
-3  Phascolarctos cinereus          7638
+3  Phascolarctos cinereus          7643
 </pre></div>
 </div>
 </section>
