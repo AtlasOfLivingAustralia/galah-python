@@ -76,6 +76,7 @@ def galah_filter(filters, profile=None,ifgroupBy=False):
                         returnString += "&fq={}:({})".format(parts[0], parts[1])
                 else:
                     returnString += "&fq={}:({})".format(parts[0], parts[1])
+
             # greater than
             elif specialChar[0] == '>':
                 returnString+="&fq={}:[{}%20TO%20*]%20AND%20-({}:\"{}\")".format(parts[0], parts[1], parts[0], parts[1])

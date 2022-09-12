@@ -309,6 +309,17 @@
               
   <section id="galah-select">
 <h1>galah_select()<a class="headerlink" href="#galah-select" title="Permalink to this heading">#</a></h1>
+<p>This function is mainly used in <code class="docutils literal notranslate"><span class="pre">atlas_occurrences()</span></code>.  It is meant to take selections (these can be found from the <code class="docutils literal notranslate"><span class="pre">show_all_values()</span></code> page) from occurrence records to get, such as latitude and longitude.  How it works is:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><style type="text/css">
+span.prompt1:before {
+  content: " ";
+}
+</style><span class="prompt1">import galah</span>
+<span class="prompt1">galah.galah_select(selectionList=[&#39;decimalLatitude&#39;, &#39;decimalLongitude&#39;])</span>
+</pre></div></div><p>which returns</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>fields=decimalLatitude%2CdecimalLongitude%2C
+</pre></div>
+</div>
 </section>
 
 

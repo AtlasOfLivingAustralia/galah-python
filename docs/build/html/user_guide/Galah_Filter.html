@@ -309,6 +309,17 @@
               
   <section id="galah-filter">
 <h1>galah_filter()<a class="headerlink" href="#galah-filter" title="Permalink to this heading">#</a></h1>
+<p>This function is mainly used in <code class="docutils literal notranslate"><span class="pre">atlas_counts()</span></code> and <code class="docutils literal notranslate"><span class="pre">atlas_occurrences()</span></code>.  It converts a specified filter to a URL-friendly syntax.  An example of its output is below.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><style type="text/css">
+span.prompt1:before {
+  content: " ";
+}
+</style><span class="prompt1">import galah</span>
+<span class="prompt1">galah.galah_filter(&quot;year=2020&quot;)</span>
+</pre></div></div><p>which returns</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>&amp;fq=year:(2020)
+</pre></div>
+</div>
 </section>
 
 

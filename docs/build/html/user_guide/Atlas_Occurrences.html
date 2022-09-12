@@ -309,6 +309,32 @@
               
   <section id="atlas-occurrences">
 <h1>atlas_occurrences()<a class="headerlink" href="#atlas-occurrences" title="Permalink to this heading">#</a></h1>
+<p>Amanda has to write something good here.  Add code first.</p>
+<p>WARNING: You cannot use <code class="docutils literal notranslate"><span class="pre">atlas_occurrences()</span></code> without a species name.</p>
+<p>Let’s start again with the red fox, or “Vulpes vulpes”.  To get all occurrence records, type</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><style type="text/css">
+span.prompt1:before {
+  content: " ";
+}
+</style><span class="prompt1">import galah</span>
+<span class="prompt1">galah.atlas_occurrences(species=&quot;Vulpes vulpes&quot;)</span>
+</pre></div></div><p>which returns</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>                                   recordID  ... spatiallyValid
+0      00006204-4a7a-4e36-8c8b-8ce5ade0ff5b  ...           True
+1      00012495-6223-4edb-bea5-61278e8f82d0  ...           True
+2      0001ab0e-010e-4165-bae0-385b31e5e4da  ...           True
+3      00020f57-3e55-4e4a-b48f-d8a7083d771f  ...           True
+4      00022581-7451-492f-87ab-ac3e4fd6484f  ...           True
+...                                     ...  ...            ...
+91159  fffa94a9-66c5-4bff-85b9-6131f1620ea3  ...           True
+91160  fffc1e94-520f-416a-b18e-b1b6643288fb  ...           True
+91161  fffc97f7-b64c-40ec-9642-46fe3a9cfd39  ...           True
+91162  fffdab5a-3d79-45d6-be54-c1b5f9a6d9f1  ...           True
+91163  fffe6386-0de0-49f6-ba38-1b4a9cda57ba  ...           True
+
+[91164 rows x 55 columns]
+</pre></div>
+</div>
 </section>
 
 

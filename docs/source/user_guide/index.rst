@@ -1,6 +1,8 @@
 User Guide
 ==========
 
+This is the home page for ``galah``'s User Guide.  The left-hand side has all the available functions for galah, including examples.
+
 .. toctree::
    :maxdepth: 23
    :titlesonly:

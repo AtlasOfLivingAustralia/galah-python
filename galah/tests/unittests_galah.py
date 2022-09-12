@@ -35,6 +35,11 @@ class test_galah(unittest2.TestCase):
         output = galah.galah_filter(["year=2019","basisOfRecord=HUMAN_OBSERVATION"])
         self.assertEqual(output,"&fq=year:(2019)&fq=basisOfRecord:(HUMAN_OBSERVATION)")
 
+    # third unit test for galah_filter - ifgroupBy is true
+    def test_galah_filter3(self):
+        output = galah.galah_filter("year=2019",ifgroupBy=True)
+        self.assertEqual(output,"&fq=year:[2019]")
+
     # unit test to make sure galah_select works as intended
     def test_galah_select(self):
         output = galah.galah_select(selectionList=['decimalLatitude','decimalLongitude'])
@@ -63,9 +68,8 @@ class test_galah(unittest2.TestCase):
 
     # should include a unit test for this but I believe they are all integration tests
     def test_atlas_occurrences(self):
-        #a=galah.atlas_occurrences("Vulpes vulpes")
-        #print(a)
-        pass
+        a=galah.atlas_occurrences(test=True)
+        self.assertIsNone(a)
 
 if __name__ == "__main__":
     unittest2.main()

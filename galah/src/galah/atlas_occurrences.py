@@ -2,7 +2,7 @@ import sys,requests,urllib.parse,time,zipfile,io,configparser,glob
 import pandas as pd
 from .galah_filter import galah_filter
 from .galah_select import galah_select
-from .galah_config import galah_config
+from .search_taxa import search_taxa
 
 import os
 
@@ -73,8 +73,7 @@ def atlas_occurrences(species=None,filters=None,geolocate=None,test=False,verbos
     baseURL = "https://biocache-ws.ala.org.au/ws/occurrences/offline/download?"
 
     # email for querying
-    # TODO: make this an environmental/global variable the user can set
-    if email is None:
+    if configs['galahSettings']['email'] is None:
         raise ValueError("You need to provide a valid email address for occurrences to be able to download data")
 
     # adding a few things to baseURL
@@ -88,6 +87,9 @@ def atlas_occurrences(species=None,filters=None,geolocate=None,test=False,verbos
     # goes to the 'fields' argument in occurrence download (csv list, commas between)
     if fields is not None:
         baseURL += galah_select(fields) + "&"
+
+    if filters is not None:
+        baseURL += galah_filter(filters) + "&"
 
     # check if species is specified
     if species is not None:
@@ -106,7 +108,7 @@ def atlas_occurrences(species=None,filters=None,geolocate=None,test=False,verbos
             for name in species:
 
                 # get taxon concept ID
-                taxonConceptID = search.taxa(name)['taxonConceptID'][0]
+                taxonConceptID = search_taxa(name)['taxonConceptID'][0]
 
                 # generate the desired URL and get a response from the API
                 URL = baseURL + "fq=%28lsid%3A" + urllib.parse.quote(taxonConceptID) + "%29&"
@@ -131,7 +133,7 @@ def atlas_occurrences(species=None,filters=None,geolocate=None,test=False,verbos
                     print("Data for download:\n\n{}\n".format(statusURL.json()['downloadUrl']))
 
                 # create a temporary dataFrame
-                tempdf = pd.read_csv(zipfile.ZipFile(io.BytesIO(zipURL.content)).open('data.csv'))
+                tempdf = pd.read_csv(zipfile.ZipFile(io.BytesIO(zipURL.content)).open('data.csv'),low_memory=False)
 
                 # append the data onto one big dataFrame for returning
                 dataFrame = pd.concat([dataFrame,tempdf],ignore_index=True)

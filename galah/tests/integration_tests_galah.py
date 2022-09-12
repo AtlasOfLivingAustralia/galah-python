@@ -89,3 +89,27 @@ def test_galah_group_by_6():
     filters2 = ["year>2018","basisOfRecord=HUMAN_OBSERVATION"]
     output = galah.galah_group_by(URL, groups=groups2, filters=filters2,expand=True)
     assert output.shape[1] > 1
+
+# first test for atlas_occurrences() - check if search_taxa() is working
+def test_atlas_occurrences_1():
+    occurrences = galah.atlas_occurrences(species="Vulpes vulpes")
+    #rows
+    assert occurrences.shape[0] > 1
+
+# second test for atlas_occurrences() - check if galah_select() is working
+def test_atlas_occurrences_2():
+    occurrences = galah.atlas_occurrences(species="Vulpes vulpes",fields=['decimalLatitude', 'decimalLongitude'])
+    # columns
+    assert occurrences.shape[1] == 2
+
+# third test for atlas_occurrences() - check if galah_filter() is working with this
+def test_atlas_occurrences_3():
+    occurrences1 = galah.atlas_occurrences(species="Vulpes vulpes")
+    occurrences2 = galah.atlas_occurrences(species="Vulpes vulpes",filters="year=2020")
+    assert occurrences2.shape[0] < occurrences1.shape[0]
+
+# fourth test for atlas_occurrences() - check if galah_select() and galah_filter() are working concurrently
+def test_atlas_occurrences_4():
+    occurrences1 = galah.atlas_occurrences(species="Vulpes vulpes")
+    occurrences2 = galah.atlas_occurrences(species="Vulpes vulpes",filters="year=2020",fields=['decimalLatitude', 'decimalLongitude'])
+    assert occurrences2.shape[0] < occurrences1.shape[0]

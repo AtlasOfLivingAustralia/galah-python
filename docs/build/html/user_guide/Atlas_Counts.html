@@ -311,6 +311,8 @@
 <h1>atlas_counts()<a class="headerlink" href="#atlas-counts" title="Permalink to this heading">#</a></h1>
 <p>This function is for getting the number of occurrence records before you’re ready
 to download.</p>
+<section id="total-occurrences-in-the-ala">
+<h2>Total Occurrences in the ALA<a class="headerlink" href="#total-occurrences-in-the-ala" title="Permalink to this heading">#</a></h2>
 <p>To know how many total occurrences records are in the Atlas (and to test the function), type</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><style type="text/css">
 span.prompt1:before {
@@ -323,6 +325,11 @@ span.prompt1:before {
 0     113669012
 </pre></div>
 </div>
+</section>
+<section id="single-species">
+<h2>Single Species<a class="headerlink" href="#single-species" title="Permalink to this heading">#</a></h2>
+<section id="specifying-a-species">
+<h3>Specifying a Species<a class="headerlink" href="#specifying-a-species" title="Permalink to this heading">#</a></h3>
 <p>Say you want to get the total count of one particular species’ records within the atlas.  Let’s choose
 “Vulpes vulpes”, or the red fox.  To do this, run</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">import galah</span>
@@ -332,6 +339,23 @@ span.prompt1:before {
 0         91164
 </pre></div>
 </div>
+</section>
+<section id="filtering-results">
+<h3>Filtering Results<a class="headerlink" href="#filtering-results" title="Permalink to this heading">#</a></h3>
+<p>Now, what if you want to filter the results, i.e. only find entries for the year 2020?  Let’s start with one species.  Write</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">import galah</span>
+<span class="prompt1">galah.atlas_counts(&quot;Vulpes vulpes&quot;,filters=&quot;year=2020&quot;)</span>
+</pre></div></div><p>which returns</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>   totalRecords
+0          2573
+</pre></div>
+</div>
+</section>
+</section>
+<section id="multiple-species">
+<h2>Multiple Species<a class="headerlink" href="#multiple-species" title="Permalink to this heading">#</a></h2>
+<section id="specifying-multiple-species">
+<h3>Specifying Multiple Species<a class="headerlink" href="#specifying-multiple-species" title="Permalink to this heading">#</a></h3>
 <p>If you didn’t want to get occurrence records just for the Red Fox, but for multiple species, this is also possible.  To do this, run</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">import galah</span>
 <span class="prompt1">species_array=[&quot;Osphranter rufus&quot;,&quot;Vulpes vulpes&quot;,&quot;Macropus giganteus&quot;,&quot;Phascolarctos cinereus&quot;]</span>
@@ -341,6 +365,9 @@ span.prompt1:before {
 0        493308
 </pre></div>
 </div>
+</section>
+<section id="separating-counts-of-multiple-species">
+<h3>Separating Counts of Multiple Species<a class="headerlink" href="#separating-counts-of-multiple-species" title="Permalink to this heading">#</a></h3>
 <p>However, maybe you want to know how many entries correspond with each species, not just the total for all.  To separate the counts out, run</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">import galah</span>
 <span class="prompt1">species_array=[&quot;Osphranter rufus&quot;,&quot;Vulpes vulpes&quot;,&quot;Macropus giganteus&quot;,&quot;Phascolarctos cinereus&quot;]</span>
@@ -353,14 +380,9 @@ span.prompt1:before {
 3  Phascolarctos cinereus        199743
 </pre></div>
 </div>
-<p>Now, what if you want to filter the results, i.e. only find entries for the year 2020?  Let’s start with one species.  Write</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">import galah</span>
-<span class="prompt1">galah.atlas_counts(&quot;Vulpes vulpes&quot;,filters=&quot;year=2020&quot;)</span>
-</pre></div></div><p>which returns</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>   totalRecords
-0          2573
-</pre></div>
-</div>
+</section>
+<section id="filtering-results-for-multiple-species">
+<h3>Filtering Results for Multiple Species<a class="headerlink" href="#filtering-results-for-multiple-species" title="Permalink to this heading">#</a></h3>
 <p>A similar syntax is used with multiple species:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">import galah</span>
 <span class="prompt1">species_array=[&quot;Osphranter rufus&quot;,&quot;Vulpes vulpes&quot;,&quot;Macropus giganteus&quot;,&quot;Phascolarctos cinereus&quot;]</span>
@@ -370,6 +392,9 @@ span.prompt1:before {
 0         18304
 </pre></div>
 </div>
+</section>
+<section id="separating-filtered-results-for-multiple-species">
+<h3>Separating Filtered Results for Multiple Species<a class="headerlink" href="#separating-filtered-results-for-multiple-species" title="Permalink to this heading">#</a></h3>
 <p>These species counts can be separated:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">import galah</span>
 <span class="prompt1">species_array=[&quot;Osphranter rufus&quot;,&quot;Vulpes vulpes&quot;,&quot;Macropus giganteus&quot;,&quot;Phascolarctos cinereus&quot;]</span>
@@ -382,6 +407,8 @@ span.prompt1:before {
 3  Phascolarctos cinereus          7643
 </pre></div>
 </div>
+</section>
+</section>
 </section>
 
 
@@ -415,6 +442,67 @@ span.prompt1:before {
           
             <div class="bd-sidebar-secondary bd-toc">
               
+<div class="toc-item">
+  
+<div class="tocsection onthispage">
+    <i class="fas fa-list"></i> On this page
+</div>
+<nav id="bd-toc-nav" class="page-toc">
+    <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#total-occurrences-in-the-ala">
+   Total Occurrences in the ALA
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#single-species">
+   Single Species
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#specifying-a-species">
+     Specifying a Species
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#filtering-results">
+     Filtering Results
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#multiple-species">
+   Multiple Species
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#specifying-multiple-species">
+     Specifying Multiple Species
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#separating-counts-of-multiple-species">
+     Separating Counts of Multiple Species
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#filtering-results-for-multiple-species">
+     Filtering Results for Multiple Species
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#separating-filtered-results-for-multiple-species">
+     Separating Filtered Results for Multiple Species
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+</nav>
+</div>
+
 <div class="toc-item">
   
 </div>
