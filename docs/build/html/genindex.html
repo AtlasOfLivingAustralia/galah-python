@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Index &#8212; Galah 1.0.0 documentation</title>
   <script>
-    document.documentElement.dataset.mode = localStorage.getItem("mode") || "light";
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
   </script>
   
@@ -46,7 +46,7 @@
   </head>
   
   
-  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="180" data-default-mode="light">
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="180" data-default-mode="">
 
   
   <input type="checkbox" class="sidebar-toggle" name="__primary" id="__primary">
@@ -146,6 +146,16 @@
       
       <div class="navbar-end-item">
         <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/AtlasOfLivingAustralia/galah_python" title="GitHub" class="nav-link" rel="noopener" target="_blank"><span><i class="fab fa-github-square"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
       </ul>
       </div>
       
@@ -161,10 +171,6 @@
   </div>
 
   
-  <label class="sidebar-toggle secondary-toggle" for="__secondary">
-      <span class="fas fa-outdent"></span>
-  </label>
-  
 
 </div>
   </nav>
@@ -173,7 +179,7 @@
   <div class="bd-container">
     <div class="bd-container__inner bd-page-width">
       
-      <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
+      <div class="bd-sidebar-primary bd-sidebar">
         
   
   <div class="sidebar-header-items sidebar-primary__section">
@@ -221,6 +227,16 @@
       
       <div class="navbar-end-item">
         <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/AtlasOfLivingAustralia/galah_python" title="GitHub" class="nav-link" rel="noopener" target="_blank"><span><i class="fab fa-github-square"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
       </ul>
       </div>
       
@@ -228,6 +244,16 @@
     
   </div>
 
+  
+  <div class="sidebar-start-items sidebar-primary__section">
+    <div class="sidebar-start-items__item">
+<form class="bd-search d-flex align-items-center" action="search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+    </div>
+  </div>
   
 
   
@@ -271,18 +297,6 @@
           </div>
           
           
-          
-            <div class="bd-sidebar-secondary bd-toc">
-              
-<div class="toc-item">
-  
-</div>
-
-<div class="toc-item">
-  
-</div>
-
-            </div>
           
           
         </div>

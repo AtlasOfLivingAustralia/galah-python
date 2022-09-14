@@ -7,7 +7,7 @@ from setuptools import setup,find_packages
 
 setup(
     name='galah',
-    version='0.1',
+    version='1.0.0',
     license='MIT',
     author='Amanda Buyan',
     author_email='amanda.buyan@csiro.au',

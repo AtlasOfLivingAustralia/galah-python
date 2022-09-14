@@ -8,7 +8,7 @@
 
     <title>Tutorial &#8212; Galah 1.0.0 documentation</title>
   <script>
-    document.documentElement.dataset.mode = localStorage.getItem("mode") || "light";
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
   </script>
   
@@ -49,7 +49,7 @@
   </head>
   
   
-  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="180" data-default-mode="light">
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="180" data-default-mode="">
 
   
   <input type="checkbox" class="sidebar-toggle" name="__primary" id="__primary">
@@ -149,6 +149,16 @@
       
       <div class="navbar-end-item">
         <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/AtlasOfLivingAustralia/galah_python" title="GitHub" class="nav-link" rel="noopener" target="_blank"><span><i class="fab fa-github-square"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
       </ul>
       </div>
       
@@ -163,10 +173,6 @@
 </button>
   </div>
 
-  
-  <label class="sidebar-toggle secondary-toggle" for="__secondary">
-      <span class="fas fa-outdent"></span>
-  </label>
   
 
 </div>
@@ -224,6 +230,16 @@
       
       <div class="navbar-end-item">
         <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/AtlasOfLivingAustralia/galah_python" title="GitHub" class="nav-link" rel="noopener" target="_blank"><span><i class="fab fa-github-square"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
       </ul>
       </div>
       
@@ -233,6 +249,13 @@
 
   
   <div class="sidebar-start-items sidebar-primary__section">
+    <div class="sidebar-start-items__item">
+<form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+    </div>
     <div class="sidebar-start-items__item"><nav class="bd-links" id="bd-docs-nav" aria-label="Section navigation">
   <p class="bd-links__title" role="heading" aria-level="1">
     Section Navigation
@@ -298,12 +321,41 @@ span.prompt1:before {
 </style><span class="prompt1">import galah</span>
 <span class="prompt1">galah.galah_config(email=&quot;youremail@example.com&quot;)</span>
 </pre></div></div><p>This will not return anything.  No error messages means it is configured correctly.</p>
-<p>Now that <code class="docutils literal notranslate"><span class="pre">galah</span></code> is configured, we will get counts of records, so you know how many you are downloading.  To do this, type</p>
+<p>Now that <code class="docutils literal notranslate"><span class="pre">galah</span></code> is configured, we will get counts of records, so you know how many you are downloading.  Let’s choose the species “Vulpes vulpes”, or the red fox.  To get the total number of records in the ALA, type</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">import galah</span>
-<span class="prompt1">galah.atlas_counts()</span>
+<span class="prompt1">galah.atlas_counts(species=&quot;Vulpes vulpes&quot;)</span>
 </pre></div></div><p>which returns</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>   totalRecords
-0     113669012
+0         91174
+</pre></div>
+</div>
+<p>From here, you can narrow down your query by doing a few things.  Let’s first investigate how to apply filters.</p>
+<p>For example, if you are only interested in red foxes spotted in Australia in 2020, you can investigate how many records there are by typing</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">import galah</span>
+<span class="prompt1">galah.atlas_counts(species=&quot;Vulpes vulpes&quot;,filters=&quot;year=2020&quot;)</span>
+</pre></div></div><p>which returns</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>   totalRecords
+0          2573
+</pre></div>
+</div>
+<p>Now that you have successfully determined the number of records for the red fox, you can download the occurrence records.  To do this, write the following:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">import galah</span>
+<span class="prompt1">galah.atlas_occurrences(species=&quot;Vulpes vulpes&quot;,filters=&quot;year=2020&quot;)</span>
+</pre></div></div><p>which returns</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>                                  recordID  ... spatiallyValid
+0     00022581-7451-492f-87ab-ac3e4fd6484f  ...           True
+1     000d658b-8d29-46f3-8cff-3c4994453dbf  ...           True
+2     004e0d17-1f21-4af2-a546-3ec926af48a2  ...           True
+3     0056790b-831b-4ce0-bfae-2129acbfaa02  ...           True
+4     008f095e-7f41-4146-9312-cb5e798eb16f  ...           True
+...                                    ...  ...            ...
+2568  ff965059-1c78-47f1-9f89-5ce276d26811  ...           True
+2569  ffa36c8a-76c5-4340-91b9-8dfe31c0c041  ...           True
+2570  ffbb5b1f-c517-4877-9c84-8c63737a720d  ...           True
+2571  ffc255a2-10c5-4ee1-8e76-13c3abb68f99  ...           True
+2572  ffec6766-561d-448b-a984-c1b014e63874  ...           True
+
+[2573 rows x 55 columns]
 </pre></div>
 </div>
 </section>
@@ -336,24 +388,6 @@ span.prompt1:before {
           </div>
           
           
-          
-            <div class="bd-sidebar-secondary bd-toc">
-              
-<div class="toc-item">
-  
-</div>
-
-<div class="toc-item">
-  
-<div class="tocsection sourcelink">
-    <a href="../_sources/getting_started/Tutorial.rst.txt">
-        <i class="fas fa-file-alt"></i> Show Source
-    </a>
-</div>
-
-</div>
-
-            </div>
           
           
         </div>

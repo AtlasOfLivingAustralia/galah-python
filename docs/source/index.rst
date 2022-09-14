@@ -4,7 +4,7 @@
 galah 
 *****
 
-**Date**: |today| **Version**: |release|
+**Date**: |today| **Version**: |version|
 
 
 galah is a Python interface to biodiversity data hosted by the Atlas of Living Australia (ALA). It is based off of the R package of the same name. Data gathered from the ALA can be used for species distribution models, among other things.

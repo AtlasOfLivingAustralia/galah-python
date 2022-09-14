@@ -14,8 +14,6 @@ import os
 import sys
 import jinja2
 import galah
-# sys.path.insert(0, os.path.abspath('.'))
-
 
 # -- Project information -----------------------------------------------------
 
@@ -32,20 +30,18 @@ release = '1.0.0'
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
-#extensions = ['myst_parser','sphinx_rtd_theme','sphinx-prompt','sphinxcontrib.programoutput']
 extensions = [
 	'myst_parser',
 	'sphinx-prompt',
 	'sphinxcontrib.programoutput',
 	'sphinx_design',
 ]
+
 myst_enable_extensions = ["colon_fence"]
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
-#source_suffix = ['.rst']
-#master_doc = 'index'
-#version = str(galah.__version__)
+version = str(galah.__version__)
 
 source_path = os.path.dirname(os.path.abspath(__file__))
 
@@ -64,22 +60,20 @@ html_theme = 'pydata_sphinx_theme'
 html_theme_options = {
         "navbar_start": ["navbar-logo"],
         "navbar_center": ["navbar-nav"],
-	"navbar_end": ["navbar-icon-links"],
-	"navbar_align": "content"
+ 	"navbar_end": ["icon-links"],
+	"navbar_align": "content",
+	"github_url": "https://github.com/AtlasOfLivingAustralia/galah_python",
+	"page_sidebar_items": ["page-toc"],
 }
 
-html_context = {
-	"default_mode": "light"
-}
-
-#, "sidebar-ethical-ads"
 html_sidebars = {
-    "**": ["sidebar-nav-bs"]
+    "**": ["search-field.html","sidebar-nav-bs"]
 }
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
+
 html_static_path = ['_static']
 
 html_logo = '_static/logo/logo.png'

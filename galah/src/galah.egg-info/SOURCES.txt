@@ -7,6 +7,7 @@ src/galah/atlas_media.py
 src/galah/atlas_occurrences.py
 src/galah/atlas_species.py
 src/galah/atlas_taxonomy.py
+src/galah/config.ini
 src/galah/galah_config.py
 src/galah/galah_down_to.py
 src/galah/galah_filter.py
