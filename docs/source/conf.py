@@ -42,7 +42,7 @@ myst_enable_extensions = ["colon_fence"]
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
 version = str(galah.__version__)
-
+release = version
 source_path = os.path.dirname(os.path.abspath(__file__))
 
 # List of patterns, relative to source directory, that match files and
@@ -57,10 +57,9 @@ exclude_patterns = []
 #
 html_theme = 'pydata_sphinx_theme'
 
+#        "navbar_start": ["navbar-logo"],
+#        "navbar_center": ["navbar-nav"],
 html_theme_options = {
-        "navbar_start": ["navbar-logo"],
-        "navbar_center": ["navbar-nav"],
- 	"navbar_end": ["icon-links"],
 	"navbar_align": "content",
 	"github_url": "https://github.com/AtlasOfLivingAustralia/galah_python",
 	"page_sidebar_items": ["page-toc"],

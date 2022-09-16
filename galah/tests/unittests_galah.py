@@ -60,7 +60,7 @@ class test_galah(unittest2.TestCase):
         self.assertGreater(output['totalRecords'][0],0)
 
     def test_galah_config(self):
-        galah.galah_config("email=test@example.com")
+        galah.galah_config(email="test@example.com")
         configFile = configparser.ConfigParser()
         inifile = os.path.join(galah.__path__[0], 'config.ini')
         configFile.read(inifile)

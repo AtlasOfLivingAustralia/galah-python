@@ -57,16 +57,21 @@ def galah_filter(filters, profile=None,ifgroupBy=False):
         for i,f in enumerate(filters):
 
             # need to check for special characters
-            specialChar = specialChars.search(f)
-            if specialChar[0] is None:
+            specialChar = specialChars.findall(f)
+            if specialChar is None:
                 raise ValueError("Either your filter does not have the correct special characters [@_!#$%^&*()<>?}{~:=], "
                                  "or we need to include another special character we have forgotten about.")
+            else:
+                specialChar = "".join(specialChar)
 
-            # get the parts of the filter
-            parts=f.split(specialChar[0])
+            # check for spaces
+            f = f.replace(" ","")
+
+            # split filter into parts
+            parts = f.split(specialChar)
 
             # start checking for different logical operators, starting with equals
-            if specialChar[0] == '=':
+            if specialChar == '=' or specialChar == '==':
 
                 # check if the filter is a number or a string
                 if parts[1].isdigit():
@@ -78,23 +83,23 @@ def galah_filter(filters, profile=None,ifgroupBy=False):
                     returnString += "&fq={}:({})".format(parts[0], parts[1])
 
             # greater than
-            elif specialChar[0] == '>':
+            elif specialChar == '>':
                 returnString+="&fq={}:[{}%20TO%20*]%20AND%20-({}:\"{}\")".format(parts[0], parts[1], parts[0], parts[1])
 
             # less than
-            elif specialChar[0] == '<':
+            elif specialChar == '<':
                 returnString+="&fq={}:[*%20TO%20{}]%20AND%20-({}:\"{}\")".format(parts[0], parts[1], parts[0], parts[1])
 
             # greater than or equal to
-            elif specialChar[0] == '=>' or specialChar[0] == '>=':
+            elif specialChar == '=>' or specialChar == '>=':
                 returnString+="&fq={}:[{}%20TO%20*]".format(parts[0], parts[1])
             # less than or equal to
-            elif specialChar[0] == '<=' or specialChar[0] == '=<':
+            elif specialChar == '<=' or specialChar == '=<':
                 returnString+="&fq={}:[*%20TO%20{}]".format(parts[0], parts[1])
 
             # not equal to
-            elif specialChar[0] == '!=':
-                returnString+="&-({}:\"{}\")".format(parts[0], parts[1])
+            elif specialChar == '!=' or specialChar == '=!':
+                returnString+="&fq=(-{}:\"{}\")".format(parts[0], parts[1])
 
             # else, there is either an error in the filter or a missing case
             else:

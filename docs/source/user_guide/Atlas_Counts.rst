@@ -1,10 +1,19 @@
 atlas_counts()
 ================================
 
-
 This function is for getting the number of occurrence records before you're ready
 to download.
 
+.. prompt::
+
+    galah.atlas_counts(
+         taxa=None,
+         separate=False,
+         verbose=False,
+         filters=None
+         groups=None,
+         expand=False
+    )
 
 Total Occurrences in the ALA
 ____________________________
@@ -27,7 +36,7 @@ ______________
 Specifying a Species
 --------------------
 
-Say you want to get the total count of one particular species' records within the atlas.  Let's choose
+Say you want to get the total count of one particular taxa' records within the atlas.  Let's choose
 "Vulpes vulpes", or the red fox.  To do this, run
 
 .. prompt::
@@ -42,7 +51,7 @@ which returns
 Filtering Results
 -----------------
 
-Now, what if you want to filter the results, i.e. only find entries for the year 2020?  Let's start with one species.  Write
+Now, what if you want to filter the results, i.e. only find entries for the year 2020?  Let's start with one taxa.  Write
 
 .. prompt::
 
@@ -59,59 +68,59 @@ ________________
 Specifying Multiple Species
 ---------------------------
 
-If you didn't want to get occurrence records just for the Red Fox, but for multiple species, this is also possible.  To do this, run
+If you didn't want to get occurrence records just for the Red Fox, but for multiple taxa, this is also possible.  To do this, run
 
 .. prompt::
 
     import galah
-    species_array=["Osphranter rufus","Vulpes vulpes","Macropus giganteus","Phascolarctos cinereus"]
-    galah.atlas_counts(species_array)
+    taxa_array=["Osphranter rufus","Vulpes vulpes","Macropus giganteus","Phascolarctos cinereus"]
+    galah.atlas_counts(taxa_array)
 
 which returns
 
-.. program-output:: python3 -c "import galah; species_array=[\"Osphranter rufus\",\"Vulpes vulpes\",\"Macropus giganteus\",\"Phascolarctos cinereus\"]; print(galah.atlas_counts(species_array))"
+.. program-output:: python3 -c "import galah; taxa_array=[\"Osphranter rufus\",\"Vulpes vulpes\",\"Macropus giganteus\",\"Phascolarctos cinereus\"]; print(galah.atlas_counts(taxa_array))"
 
 Separating Counts of Multiple Species
 -------------------------------------
 
-However, maybe you want to know how many entries correspond with each species, not just the total for all.  To separate the counts out, run
+However, maybe you want to know how many entries correspond with each taxa, not just the total for all.  To separate the counts out, run
 
 .. prompt::
 
     import galah
-    species_array=["Osphranter rufus","Vulpes vulpes","Macropus giganteus","Phascolarctos cinereus"]
-    galah.atlas_counts(species_array,separate=True)
+    taxa_array=["Osphranter rufus","Vulpes vulpes","Macropus giganteus","Phascolarctos cinereus"]
+    galah.atlas_counts(taxa_array,separate=True)
 
 which returns
 
-.. program-output:: python3 -c "import galah; species_array=[\"Osphranter rufus\",\"Vulpes vulpes\",\"Macropus giganteus\",\"Phascolarctos cinereus\"]; print(galah.atlas_counts(species_array,separate=True))"
+.. program-output:: python3 -c "import galah; taxa_array=[\"Osphranter rufus\",\"Vulpes vulpes\",\"Macropus giganteus\",\"Phascolarctos cinereus\"]; print(galah.atlas_counts(taxa_array,separate=True))"
 
 Filtering Results for Multiple Species
 --------------------------------------
 
-A similar syntax is used with multiple species:
+A similar syntax is used with multiple taxa:
 
 .. prompt::
 
     import galah
-    species_array=["Osphranter rufus","Vulpes vulpes","Macropus giganteus","Phascolarctos cinereus"]
-    galah.atlas_counts(species_array,filters="year=2020")
+    taxa_array=["Osphranter rufus","Vulpes vulpes","Macropus giganteus","Phascolarctos cinereus"]
+    galah.atlas_counts(taxa_array,filters="year=2020")
 
 which returns
 
-.. program-output:: python3 -c "import galah; species_array=[\"Osphranter rufus\",\"Vulpes vulpes\",\"Macropus giganteus\",\"Phascolarctos cinereus\"]; print(galah.atlas_counts(species_array,filters=\"year=2020\"))"
+.. program-output:: python3 -c "import galah; taxa_array=[\"Osphranter rufus\",\"Vulpes vulpes\",\"Macropus giganteus\",\"Phascolarctos cinereus\"]; print(galah.atlas_counts(taxa_array,filters=\"year=2020\"))"
 
 Separating Filtered Results for Multiple Species
 ------------------------------------------------
 
-These species counts can be separated:
+These taxa counts can be separated:
 
 .. prompt::
 
     import galah
-    species_array=["Osphranter rufus","Vulpes vulpes","Macropus giganteus","Phascolarctos cinereus"]
-    galah.atlas_counts(species_array,filters="year=2020",separate=True)
+    taxa_array=["Osphranter rufus","Vulpes vulpes","Macropus giganteus","Phascolarctos cinereus"]
+    galah.atlas_counts(taxa_array,filters="year=2020",separate=True)
 
 which returns
 
-.. program-output:: python3 -c "import galah; species_array=[\"Osphranter rufus\",\"Vulpes vulpes\",\"Macropus giganteus\",\"Phascolarctos cinereus\"]; print(galah.atlas_counts(species_array,filters=\"year=2020\",separate=True))"
+.. program-output:: python3 -c "import galah; taxa_array=[\"Osphranter rufus\",\"Vulpes vulpes\",\"Macropus giganteus\",\"Phascolarctos cinereus\"]; print(galah.atlas_counts(taxa_array,filters=\"year=2020\",separate=True))"

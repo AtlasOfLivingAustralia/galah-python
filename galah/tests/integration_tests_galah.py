@@ -4,40 +4,40 @@ run pytest integration_tests_galah.py
 import pytest
 import galah
 
-# test atlas_counts() can call search_taxa() function with single species
+# test atlas_counts() can call search_taxa() function with single taxa
 def test_atlas_counts():
-    species="Vulpes vulpes"
-    assert galah.atlas_counts(species)['totalRecords'][0] > 0
+    taxa="Vulpes vulpes"
+    assert galah.atlas_counts(taxa)['totalRecords'][0] > 0
 
-# test altas_counts() can call search_taxa() and using one filter, filter results with single species
+# test altas_counts() can call search_taxa() and using one filter, filter results with single taxa
 def test_atlas_counts_2():
-    species = "Vulpes vulpes"
+    taxa = "Vulpes vulpes"
     filter1 = "year=2020"
-    assert galah.atlas_counts(species,filters=filter1)['totalRecords'][0] > 0
+    assert galah.atlas_counts(taxa,filters=filter1)['totalRecords'][0] > 0
 
-# test altas_counts() can call search_taxa() and using two filter, filter results with single species
+# test altas_counts() can call search_taxa() and using two filter, filter results with single taxa
 def test_atlas_counts_3():
-    species = "Vulpes vulpes"
+    taxa = "Vulpes vulpes"
     filters=["year=2020","basisOfRecord=HUMAN_OBSERVATION"]
-    # test single species is working (search_taxa(), galah_filter() x 2)
-    assert galah.atlas_counts(species,filters=filters)['totalRecords'][0] > 0
+    # test single taxa is working (search_taxa(), galah_filter() x 2)
+    assert galah.atlas_counts(taxa,filters=filters)['totalRecords'][0] > 0
 
-# test atlas_counts() can call search_taxa() function with multiple species
+# test atlas_counts() can call search_taxa() function with multiple taxa
 def test_atlas_counts_4():
-    species_array = ["Osphranter rufus", "Vulpes vulpes", "Macropus giganteus", "Phascolarctos cinereus"]
-    assert galah.atlas_counts(species_array)['totalRecords'][0] > 0
+    taxa_array = ["Osphranter rufus", "Vulpes vulpes", "Macropus giganteus", "Phascolarctos cinereus"]
+    assert galah.atlas_counts(taxa_array)['totalRecords'][0] > 0
 
-# test altas_counts() can call search_taxa() and using one filter, filter results with multiple species
+# test altas_counts() can call search_taxa() and using one filter, filter results with multiple taxa
 def test_atlas_counts_5():
-    species_array = ["Osphranter rufus", "Vulpes vulpes", "Macropus giganteus", "Phascolarctos cinereus"]
+    taxa_array = ["Osphranter rufus", "Vulpes vulpes", "Macropus giganteus", "Phascolarctos cinereus"]
     filter1 = "year=2020"
-    assert galah.atlas_counts(species_array,filters=filter1)['totalRecords'][0] > 0
+    assert galah.atlas_counts(taxa_array,filters=filter1)['totalRecords'][0] > 0
 
-# test altas_counts() can call search_taxa() and using one filter, filter results with multiple species
+# test altas_counts() can call search_taxa() and using one filter, filter results with multiple taxa
 def test_atlas_counts_6():
-    species_array = ["Osphranter rufus", "Vulpes vulpes", "Macropus giganteus", "Phascolarctos cinereus"]
+    taxa_array = ["Osphranter rufus", "Vulpes vulpes", "Macropus giganteus", "Phascolarctos cinereus"]
     filters = ["year=2020", "basisOfRecord=HUMAN_OBSERVATION"]
-    assert galah.atlas_counts(species_array,filters=filters)['totalRecords'][0] > 0
+    assert galah.atlas_counts(taxa_array,filters=filters)['totalRecords'][0] > 0
 
 # test galah_group_by with one filter (galah_filter()) and one group
 def test_galah_group_by_1():
@@ -92,24 +92,24 @@ def test_galah_group_by_6():
 
 # first test for atlas_occurrences() - check if search_taxa() is working
 def test_atlas_occurrences_1():
-    occurrences = galah.atlas_occurrences(species="Vulpes vulpes")
+    occurrences = galah.atlas_occurrences(taxa="Vulpes vulpes")
     #rows
     assert occurrences.shape[0] > 1
 
 # second test for atlas_occurrences() - check if galah_select() is working
 def test_atlas_occurrences_2():
-    occurrences = galah.atlas_occurrences(species="Vulpes vulpes",fields=['decimalLatitude', 'decimalLongitude'])
+    occurrences = galah.atlas_occurrences(taxa="Vulpes vulpes",fields=['decimalLatitude', 'decimalLongitude'])
     # columns
     assert occurrences.shape[1] == 2
 
 # third test for atlas_occurrences() - check if galah_filter() is working with this
 def test_atlas_occurrences_3():
-    occurrences1 = galah.atlas_occurrences(species="Vulpes vulpes")
-    occurrences2 = galah.atlas_occurrences(species="Vulpes vulpes",filters="year=2020")
+    occurrences1 = galah.atlas_occurrences(taxa="Vulpes vulpes")
+    occurrences2 = galah.atlas_occurrences(taxa="Vulpes vulpes",filters="year=2020")
     assert occurrences2.shape[0] < occurrences1.shape[0]
 
 # fourth test for atlas_occurrences() - check if galah_select() and galah_filter() are working concurrently
 def test_atlas_occurrences_4():
-    occurrences1 = galah.atlas_occurrences(species="Vulpes vulpes")
-    occurrences2 = galah.atlas_occurrences(species="Vulpes vulpes",filters="year=2020",fields=['decimalLatitude', 'decimalLongitude'])
+    occurrences1 = galah.atlas_occurrences(taxa="Vulpes vulpes")
+    occurrences2 = galah.atlas_occurrences(taxa="Vulpes vulpes",filters="year=2020",fields=['decimalLatitude', 'decimalLongitude'])
     assert occurrences2.shape[0] < occurrences1.shape[0]

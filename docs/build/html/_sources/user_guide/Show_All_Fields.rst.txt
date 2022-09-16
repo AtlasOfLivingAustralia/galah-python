@@ -1,7 +1,7 @@
 show_all_fields()
 =================================
 
-This command is to get all of the fields you can group or filter by.  To use this:
+This command is to get all of the fields you can group or filter by, and takes no arguments.  To use this:
 
 .. prompt::
 

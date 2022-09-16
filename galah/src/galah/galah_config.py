@@ -7,11 +7,11 @@ import configparser,os
 # how I did this:
 # https://www.codeproject.com/Articles/5319621/Configuration-Files-in-Python
 # run this first at installation
-def galah_config(fieldToChange=None):
+def galah_config(email=None):
 
     # check to
-    if fieldToChange is None:
-        raise ValueError("Please specify a value for the configuration file, i.e. config(['email','name@email.com'])")
+    if email is None:
+        raise ValueError("Please specify a value you would like to change, i.e. galah_config(email=\"youremail@example.come\")")
 
     # open the config parser
     configParser = configparser.ConfigParser()
@@ -19,10 +19,9 @@ def galah_config(fieldToChange=None):
     # read the config file
     inifile = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'config.ini')
     configParser.read(inifile)
-    fieldToChange=fieldToChange.split("=")
 
     # update the field to change
-    configParser["galahSettings"][fieldToChange[0]]=fieldToChange[1]
+    configParser["galahSettings"]["email"]=email
 
     # write to file
     with open(inifile,"w") as fileObject:

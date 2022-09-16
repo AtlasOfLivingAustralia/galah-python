@@ -24,7 +24,7 @@ TODO
 ----
 1. Generalise this to N groups, where N>2
 '''
-def galah_group_by(URL,groups=None,filters=None,expand=False):
+def galah_group_by(URL,groups=None,filters=None,expand=False,verbose=False):
 
     # first, check for filters
     if filters is not None:
@@ -83,6 +83,10 @@ def galah_group_by(URL,groups=None,filters=None,expand=False):
                         response=requests.get(tempURL)
                         json=response.json()
 
+                        # check to see if the user wants the URL for querying
+                        if verbose:
+                            print("URL for querying:\n\n{}\n".format(tempURL))
+
                         # loop over results and add a dictionary to the dictValues list
                         for entry in json['facetResults']:
                             for e in entry['fieldResult']:
@@ -110,6 +114,10 @@ def galah_group_by(URL,groups=None,filters=None,expand=False):
                 URL += "&facets={}".format(g) + "&pageSize=0"
                 response = requests.get(URL)
                 json = response.json()
+
+                # check to see if the user wants the URL for querying
+                if verbose:
+                    print("URL for querying:\n\n{}\n".format(URL))
 
                 # create dummy values variable to be fed into Pandas later
                 dictValues = []

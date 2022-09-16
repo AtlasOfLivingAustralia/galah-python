@@ -23,7 +23,7 @@ of occurrence.
 
 arguments
 ---------
-species: a string or a list of species to get the number of counts for 
+taxa: a string or a list of taxa to get the number of counts for 
          (example: "Vulpes vulpes" or ["Osphranter rufus","Vulpes vulpes","Macropus giganteus","Phascolarctos cinereus"])
 filter: list of filters as a string or list
 geolocate: [fill in when I write it]
@@ -32,7 +32,7 @@ verbose: boolean argument used to get URLs used for the query
 
 returns
 ------- 
-dataFrame: a pandas dataframe containing the species name and records for that species.  
+dataFrame: a pandas dataframe containing the taxa name and records for that taxa.  
 
 TODO
 ----
@@ -49,7 +49,7 @@ TODO
 #                      mint_doi=False,
 #                      doi=None,
 #                      refresh_cache=False):
-def atlas_occurrences(species=None,filters=None,geolocate=None,test=False,verbose=False,fields=None):
+def atlas_occurrences(taxa=None,filters=None,geolocate=None,test=False,verbose=False,fields=None):
 
     # get some arguments for the configuration file
     configs=readConfig()
@@ -91,21 +91,21 @@ def atlas_occurrences(species=None,filters=None,geolocate=None,test=False,verbos
     if filters is not None:
         baseURL += galah_filter(filters) + "&"
 
-    # check if species is specified
-    if species is not None:
+    # check if taxa is specified
+    if taxa is not None:
 
         # check variable type
-        if type(species) == list or type(species) is str:
+        if type(taxa) == list or type(taxa) is str:
 
-            # make species a list for easier looping
-            if type(species) is str:
-                species=[species]
+            # make taxa a list for easier looping
+            if type(taxa) is str:
+                taxa=[taxa]
 
             # create empty dataFrame
             dataFrame = pd.DataFrame()
 
-            # loop over all species and add data to it
-            for name in species:
+            # loop over all taxa and add data to it
+            for name in taxa:
 
                 # get taxon concept ID
                 taxonConceptID = search_taxa(name)['taxonConceptID'][0]
@@ -141,12 +141,12 @@ def atlas_occurrences(species=None,filters=None,geolocate=None,test=False,verbos
             # return the dataFrame
             return dataFrame
 
-        # else, the user needs to specify the species in the correct format
+        # else, the user needs to specify the taxa in the correct format
         else:
-            raise TypeError("The species argument can only be a string or a list."
-                        "\nExample: species.taxa(\"Vulpes vulpes\")"
-                        "\n         species.taxa([\"Osphranter rufus\",\"Vulpes vulpes\",\"Macropus giganteus\",\"Phascolarctos cinereus\"])")
+            raise TypeError("The taxa argument can only be a string or a list."
+                        "\nExample: taxa.taxa(\"Vulpes vulpes\")"
+                        "\n         taxa.taxa([\"Osphranter rufus\",\"Vulpes vulpes\",\"Macropus giganteus\",\"Phascolarctos cinereus\"])")
     else:
-        raise Exception('You cannot get all 10 million records for the ALA.  Please specify at least one species and/or '
-                        'filters to get occurrence records associated with the species.')
+        raise Exception('You cannot get all 10 million records for the ALA.  Please specify at least one taxa and/or '
+                        'filters to get occurrence records associated with the taxa.')
 

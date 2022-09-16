@@ -1,6 +1,12 @@
 show_all_values()
 =================================
 
+.. prompt::
+
+    galah.show_all_values(
+         field
+    )
+
 This is to find all the possible values of the field you want to query/filter by.  To use, type
 
 .. prompt::

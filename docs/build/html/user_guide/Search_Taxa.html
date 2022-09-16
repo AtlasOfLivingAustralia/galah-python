@@ -148,6 +148,14 @@
       </div>
       
       <div class="navbar-end-item">
+        <span class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle">
+    <a class="theme-switch" data-mode="light"><i class="fas fa-sun"></i></a>
+    <a class="theme-switch" data-mode="dark"><i class="far fa-moon"></i></a>
+    <a class="theme-switch" data-mode="auto"><i class="fas fa-adjust"></i></a>
+</span>
+      </div>
+      
+      <div class="navbar-end-item">
         <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
         <li class="nav-item">
           
@@ -227,6 +235,14 @@
     
     
     <div class="sidebar-header-items__end">
+      
+      <div class="navbar-end-item">
+        <span class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle">
+    <a class="theme-switch" data-mode="light"><i class="fas fa-sun"></i></a>
+    <a class="theme-switch" data-mode="dark"><i class="far fa-moon"></i></a>
+    <a class="theme-switch" data-mode="auto"><i class="fas fa-adjust"></i></a>
+</span>
+      </div>
       
       <div class="navbar-end-item">
         <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
@@ -332,13 +348,16 @@
               
   <section id="search-taxa">
 <h1>search_taxa()<a class="headerlink" href="#search-taxa" title="Permalink to this heading">#</a></h1>
-<p>This function is used to search for a taxonConceptID, and it is used in <code class="docutils literal notranslate"><span class="pre">atlas_counts()</span></code> and <code class="docutils literal notranslate"><span class="pre">atlas_occurrences()</span></code>.</p>
-<p>To get the taxonConceptID for Vulpes vulpes, type</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><style type="text/css">
 span.prompt1:before {
   content: " ";
 }
-</style><span class="prompt1">import galah</span>
+</style><span class="prompt1">galah.search_taxa(</span>
+<span class="prompt1">     taxa</span>
+<span class="prompt1">)</span>
+</pre></div></div><p>This function is used to search for a taxonConceptID, and it is used in <code class="docutils literal notranslate"><span class="pre">atlas_counts()</span></code> and <code class="docutils literal notranslate"><span class="pre">atlas_occurrences()</span></code>.</p>
+<p>To get the taxonConceptID for Vulpes vulpes, type</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">import galah</span>
 <span class="prompt1">data=galah.search_taxa(&quot;Vulpes vulpes&quot;)</span>
 <span class="prompt1">data[&#39;taxonConceptID&#39;][0]</span>
 </pre></div></div><p>which returns</p>

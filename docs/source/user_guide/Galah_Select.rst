@@ -1,6 +1,12 @@
 galah_select()
 =================================
 
+.. prompt::
+
+    galah.galah_select(
+         selectionList=None
+    )
+
 This function is mainly used in ``atlas_occurrences()``.  It is meant to take selections (these can be found from the ``show_all_values()`` page) from occurrence records to get, such as latitude and longitude.  How it works is:
 
 .. prompt::

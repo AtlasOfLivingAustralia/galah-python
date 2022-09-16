@@ -7,4 +7,4 @@ To configure your Galah environment, import galah and call the config option, us
 .. prompt::
 
     import galah
-    galah.config("email@example.com")
+    galah.galah_config(email="email@example.com")

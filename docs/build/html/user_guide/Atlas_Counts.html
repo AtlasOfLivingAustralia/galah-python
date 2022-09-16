@@ -148,6 +148,14 @@
       </div>
       
       <div class="navbar-end-item">
+        <span class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle">
+    <a class="theme-switch" data-mode="light"><i class="fas fa-sun"></i></a>
+    <a class="theme-switch" data-mode="dark"><i class="far fa-moon"></i></a>
+    <a class="theme-switch" data-mode="auto"><i class="fas fa-adjust"></i></a>
+</span>
+      </div>
+      
+      <div class="navbar-end-item">
         <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
         <li class="nav-item">
           
@@ -231,6 +239,14 @@
     
     
     <div class="sidebar-header-items__end">
+      
+      <div class="navbar-end-item">
+        <span class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle">
+    <a class="theme-switch" data-mode="light"><i class="fas fa-sun"></i></a>
+    <a class="theme-switch" data-mode="dark"><i class="far fa-moon"></i></a>
+    <a class="theme-switch" data-mode="auto"><i class="fas fa-adjust"></i></a>
+</span>
+      </div>
       
       <div class="navbar-end-item">
         <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
@@ -338,18 +354,26 @@
 <h1>atlas_counts()<a class="headerlink" href="#atlas-counts" title="Permalink to this heading">#</a></h1>
 <p>This function is for getting the number of occurrence records before you’re ready
 to download.</p>
-<section id="total-occurrences-in-the-ala">
-<h2>Total Occurrences in the ALA<a class="headerlink" href="#total-occurrences-in-the-ala" title="Permalink to this heading">#</a></h2>
-<p>To know how many total occurrences records are in the Atlas (and to test the function), type</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><style type="text/css">
 span.prompt1:before {
   content: " ";
 }
-</style><span class="prompt1">import galah</span>
+</style><span class="prompt1">galah.atlas_counts(</span>
+<span class="prompt1">     taxa=None,</span>
+<span class="prompt1">     separate=False,</span>
+<span class="prompt1">     verbose=False,</span>
+<span class="prompt1">     filters=None</span>
+<span class="prompt1">     groups=None,</span>
+<span class="prompt1">     expand=False</span>
+<span class="prompt1">)</span>
+</pre></div></div><section id="total-occurrences-in-the-ala">
+<h2>Total Occurrences in the ALA<a class="headerlink" href="#total-occurrences-in-the-ala" title="Permalink to this heading">#</a></h2>
+<p>To know how many total occurrences records are in the Atlas (and to test the function), type</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">import galah</span>
 <span class="prompt1">galah.atlas_counts()</span>
 </pre></div></div><p>which returns</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>   totalRecords
-0     113702654
+0     113842786
 </pre></div>
 </div>
 </section>
@@ -357,24 +381,24 @@ span.prompt1:before {
 <h2>Single Species<a class="headerlink" href="#single-species" title="Permalink to this heading">#</a></h2>
 <section id="specifying-a-species">
 <h3>Specifying a Species<a class="headerlink" href="#specifying-a-species" title="Permalink to this heading">#</a></h3>
-<p>Say you want to get the total count of one particular species’ records within the atlas.  Let’s choose
+<p>Say you want to get the total count of one particular taxa’ records within the atlas.  Let’s choose
 “Vulpes vulpes”, or the red fox.  To do this, run</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">import galah</span>
 <span class="prompt1">galah.atlas_counts(&quot;Vulpes vulpes&quot;)</span>
 </pre></div></div><p>which returns</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>   totalRecords
-0         91174
+0        115436
 </pre></div>
 </div>
 </section>
 <section id="filtering-results">
 <h3>Filtering Results<a class="headerlink" href="#filtering-results" title="Permalink to this heading">#</a></h3>
-<p>Now, what if you want to filter the results, i.e. only find entries for the year 2020?  Let’s start with one species.  Write</p>
+<p>Now, what if you want to filter the results, i.e. only find entries for the year 2020?  Let’s start with one taxa.  Write</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">import galah</span>
 <span class="prompt1">galah.atlas_counts(&quot;Vulpes vulpes&quot;,filters=&quot;year=2020&quot;)</span>
 </pre></div></div><p>which returns</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>   totalRecords
-0          2573
+0          5579
 </pre></div>
 </div>
 </section>
@@ -383,55 +407,55 @@ span.prompt1:before {
 <h2>Multiple Species<a class="headerlink" href="#multiple-species" title="Permalink to this heading">#</a></h2>
 <section id="specifying-multiple-species">
 <h3>Specifying Multiple Species<a class="headerlink" href="#specifying-multiple-species" title="Permalink to this heading">#</a></h3>
-<p>If you didn’t want to get occurrence records just for the Red Fox, but for multiple species, this is also possible.  To do this, run</p>
+<p>If you didn’t want to get occurrence records just for the Red Fox, but for multiple taxa, this is also possible.  To do this, run</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">import galah</span>
-<span class="prompt1">species_array=[&quot;Osphranter rufus&quot;,&quot;Vulpes vulpes&quot;,&quot;Macropus giganteus&quot;,&quot;Phascolarctos cinereus&quot;]</span>
-<span class="prompt1">galah.atlas_counts(species_array)</span>
+<span class="prompt1">taxa_array=[&quot;Osphranter rufus&quot;,&quot;Vulpes vulpes&quot;,&quot;Macropus giganteus&quot;,&quot;Phascolarctos cinereus&quot;]</span>
+<span class="prompt1">galah.atlas_counts(taxa_array)</span>
 </pre></div></div><p>which returns</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>   totalRecords
-0        493401
+0        517783
 </pre></div>
 </div>
 </section>
 <section id="separating-counts-of-multiple-species">
 <h3>Separating Counts of Multiple Species<a class="headerlink" href="#separating-counts-of-multiple-species" title="Permalink to this heading">#</a></h3>
-<p>However, maybe you want to know how many entries correspond with each species, not just the total for all.  To separate the counts out, run</p>
+<p>However, maybe you want to know how many entries correspond with each taxa, not just the total for all.  To separate the counts out, run</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">import galah</span>
-<span class="prompt1">species_array=[&quot;Osphranter rufus&quot;,&quot;Vulpes vulpes&quot;,&quot;Macropus giganteus&quot;,&quot;Phascolarctos cinereus&quot;]</span>
-<span class="prompt1">galah.atlas_counts(species_array,separate=True)</span>
+<span class="prompt1">taxa_array=[&quot;Osphranter rufus&quot;,&quot;Vulpes vulpes&quot;,&quot;Macropus giganteus&quot;,&quot;Phascolarctos cinereus&quot;]</span>
+<span class="prompt1">galah.atlas_counts(taxa_array,separate=True)</span>
 </pre></div></div><p>which returns</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>                  Species  totalRecords
-0        Osphranter rufus         61599
-1           Vulpes vulpes         91174
-2      Macropus giganteus        140847
-3  Phascolarctos cinereus        199781
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>                     taxa  totalRecords
+0        Osphranter rufus         61603
+1           Vulpes vulpes        115436
+2      Macropus giganteus        140925
+3  Phascolarctos cinereus        199819
 </pre></div>
 </div>
 </section>
 <section id="filtering-results-for-multiple-species">
 <h3>Filtering Results for Multiple Species<a class="headerlink" href="#filtering-results-for-multiple-species" title="Permalink to this heading">#</a></h3>
-<p>A similar syntax is used with multiple species:</p>
+<p>A similar syntax is used with multiple taxa:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">import galah</span>
-<span class="prompt1">species_array=[&quot;Osphranter rufus&quot;,&quot;Vulpes vulpes&quot;,&quot;Macropus giganteus&quot;,&quot;Phascolarctos cinereus&quot;]</span>
-<span class="prompt1">galah.atlas_counts(species_array,filters=&quot;year=2020&quot;)</span>
+<span class="prompt1">taxa_array=[&quot;Osphranter rufus&quot;,&quot;Vulpes vulpes&quot;,&quot;Macropus giganteus&quot;,&quot;Phascolarctos cinereus&quot;]</span>
+<span class="prompt1">galah.atlas_counts(taxa_array,filters=&quot;year=2020&quot;)</span>
 </pre></div></div><p>which returns</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>   totalRecords
-0         18309
+0         21317
 </pre></div>
 </div>
 </section>
 <section id="separating-filtered-results-for-multiple-species">
 <h3>Separating Filtered Results for Multiple Species<a class="headerlink" href="#separating-filtered-results-for-multiple-species" title="Permalink to this heading">#</a></h3>
-<p>These species counts can be separated:</p>
+<p>These taxa counts can be separated:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">import galah</span>
-<span class="prompt1">species_array=[&quot;Osphranter rufus&quot;,&quot;Vulpes vulpes&quot;,&quot;Macropus giganteus&quot;,&quot;Phascolarctos cinereus&quot;]</span>
-<span class="prompt1">galah.atlas_counts(species_array,filters=&quot;year=2020&quot;,separate=True)</span>
+<span class="prompt1">taxa_array=[&quot;Osphranter rufus&quot;,&quot;Vulpes vulpes&quot;,&quot;Macropus giganteus&quot;,&quot;Phascolarctos cinereus&quot;]</span>
+<span class="prompt1">galah.atlas_counts(taxa_array,filters=&quot;year=2020&quot;,separate=True)</span>
 </pre></div></div><p>which returns</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>                  Species  totalRecords
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>                     taxa  totalRecords
 0        Osphranter rufus           121
-1           Vulpes vulpes          2573
-2      Macropus giganteus          7967
-3  Phascolarctos cinereus          7648
+1           Vulpes vulpes          5579
+2      Macropus giganteus          7968
+3  Phascolarctos cinereus          7649
 </pre></div>
 </div>
 </section>

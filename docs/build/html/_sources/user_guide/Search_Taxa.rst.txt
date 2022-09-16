@@ -1,6 +1,12 @@
 search_taxa()
 =================================
 
+.. prompt::
+
+    galah.search_taxa(
+         taxa
+    )
+
 This function is used to search for a taxonConceptID, and it is used in ``atlas_counts()`` and ``atlas_occurrences()``.
 
 To get the taxonConceptID for Vulpes vulpes, type

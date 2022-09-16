@@ -3,14 +3,24 @@ atlas_occurrences()
 
 Amanda has to write something good here.  Add code first.
 
-WARNING: You cannot use ``atlas_occurrences()`` without a species name.
+.. prompt::
+
+    galah.atlas_occurrences(
+         taxa=None,
+         filters=None,
+         test=False,
+         verbose=False,
+         fields=None
+    )
+
+WARNING: You cannot use ``atlas_occurrences()`` without a taxa name.
 
 Let's start again with the red fox, or "Vulpes vulpes".  To get all occurrence records, type
 
 .. prompt::
 
     import galah
-    galah.atlas_occurrences(species="Vulpes vulpes")
+    galah.atlas_occurrences(taxa="Vulpes vulpes")
 
 which returns
 
