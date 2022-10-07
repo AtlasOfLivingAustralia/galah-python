@@ -4,9 +4,9 @@ import pandas as pd
 import sys
 
 '''
-filter
+filters
 ------
-takes a filter that the user wants to filter their data with, and converts it into URL-compatible language to query the API
+takes a filters that the user wants to filters their data with, and converts it into URL-compatible language to query the API
 
 arguments
 ---------
@@ -24,10 +24,10 @@ TODO
 def galah_filter(filters, profile=None,ifgroupBy=False):
 
     # first, check for special characters
-    specialChars = re.compile('[@_!#$%^&*()<>?}{~:=]') #/\|
+    specialChars = re.compile('[@!#$%^&*()<>?}{~:=]') #/\|
     returnString=""
 
-    # check to make sure the filter types are correct
+    # check to make sure the filters types are correct
     if type(filters) == str or type(filters) == list:
 
         # change to a list for ease of processing
@@ -40,7 +40,7 @@ def galah_filter(filters, profile=None,ifgroupBy=False):
         for f in filters:
             specialChar = specialChars.search(f)
             if specialChar[0] is None:
-                raise ValueError("Either your filter does not have the correct special characters [@_!#$%^&*()<>?}{~:=], "
+                raise ValueError("Either your filters does not have the correct special characters [@_!#$%^&*()<>?}{~:=], "
                                  "or we need to include another special character we have forgotten about.")
             if f.split(specialChar[0])[0] not in categories:
                 categories.append(f.split(specialChar[0])[0])
@@ -59,7 +59,7 @@ def galah_filter(filters, profile=None,ifgroupBy=False):
             # need to check for special characters
             specialChar = specialChars.findall(f)
             if specialChar is None:
-                raise ValueError("Either your filter does not have the correct special characters [@_!#$%^&*()<>?}{~:=], "
+                raise ValueError("Either your filters does not have the correct special characters [@_!#$%^&*()<>?}{~:=], "
                                  "or we need to include another special character we have forgotten about.")
             else:
                 specialChar = "".join(specialChar)
@@ -67,13 +67,13 @@ def galah_filter(filters, profile=None,ifgroupBy=False):
             # check for spaces
             f = f.replace(" ","")
 
-            # split filter into parts
+            # split filters into parts
             parts = f.split(specialChar)
 
             # start checking for different logical operators, starting with equals
             if specialChar == '=' or specialChar == '==':
 
-                # check if the filter is a number or a string
+                # check if the filters is a number or a string
                 if parts[1].isdigit():
                     if ifgroupBy:
                         returnString+="&fq={}:[{}]".format(parts[0],parts[1])
@@ -101,13 +101,13 @@ def galah_filter(filters, profile=None,ifgroupBy=False):
             elif specialChar == '!=' or specialChar == '=!':
                 returnString+="&fq=(-{}:\"{}\")".format(parts[0], parts[1])
 
-            # else, there is either an error in the filter or a missing case
+            # else, there is either an error in the filters or a missing case
             else:
                 raise ValueError("The special character {} is not included in the filters function.  Either it is not a logical operator, or it has not been included yet.".format(specialChar[0]))
 
     # let the user know that their variable is not of the correct type
     else:
-        raise TypeError("Your filters need to either be a string (for one filter), or a list of strings.")
+        raise TypeError("Your filters need to either be a string (for one filters), or a list of strings.")
 
     # return a string to be added to the URL
     return returnString

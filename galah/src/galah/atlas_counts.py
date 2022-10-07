@@ -7,7 +7,7 @@ from .search_taxa import search_taxa
 '''
 counts
 ------
-get the count of the number of records of specified specie(s).  Filters can be applied, such as year of occurrence.
+get the count of the number of records of specified specie(s).  filters can be applied, such as year of occurrence.
 
 arguments
 ---------
@@ -15,7 +15,7 @@ taxa: a string or a list of taxa to get the number of counts for
          (example: "Vulpes vulpes" or ["Osphranter rufus","Vulpes vulpes","Macropus giganteus","Phascolarctos cinereus"])
 separate: boolean argument used if the user wants separate counts when they are querying multiple taxa
 verbose: boolean argument used to get URLs used for the query
-filter: list of filters as text
+filters: list of filters as text
 
 returns
 -------
@@ -27,15 +27,15 @@ TODO
 1. Test more filters available on the ALA
 '''
 
-def atlas_counts(taxa=None, separate=False, verbose=False, filters=None, groups=None, expand=False):
+def atlas_counts(taxa=None, separate=False, verbose=False, filters=None, group_by=None, expand=False):
     # get the baseURL for getting total number of records
     baseURL = "https://biocache-ws.ala.org.au/ws/occurrence/search?"
 
     # if there is no taxa, assume you will get the total number of records in the ALA
     if taxa is None:
 
-        # check if groups exist
-        if groups is None:
+        # check if group_by exist
+        if group_by is None:
 
             # check if filters are specified
             if filters is not None:
@@ -47,13 +47,20 @@ def atlas_counts(taxa=None, separate=False, verbose=False, filters=None, groups=
                     if type(filters) is str:
                         filters = [filters]
 
-                    # add filters and final part of URL
-                    URL = baseURL + "&" + galah_filter(filters) + "&pageSize=0"
+                    # start URL
+                    URL = baseURL + "&"
+
+                    # add filters
+                    for f in filters:
+                        URL += galah_filter(f) + "&"
+
+                    # add final part of URL
+                    URL += "&pageSize=0"
 
                 # else, make sure that the filters is in the following format
                 else:
                     raise TypeError(
-                        "Filters should only be a list, and are in the following format:\n\nfilter=[\'year:2020\']")
+                        "filters should only be a list, and are in the following format:\n\nfilters=[\'year:2020\']")
 
             # else, add the final bit of the URL
             else:
@@ -74,7 +81,7 @@ def atlas_counts(taxa=None, separate=False, verbose=False, filters=None, groups=
         else:
 
             # return a grouped dataFrame
-            return galah_group_by(baseURL, groups, filters, expand)
+            return galah_group_by(baseURL, group_by, filters, expand)
 
     # if there is a single taxa, get
     elif type(taxa) is str or type(taxa) is list:
@@ -97,10 +104,10 @@ def atlas_counts(taxa=None, separate=False, verbose=False, filters=None, groups=
             URL = baseURL + "fq=%28lsid%3A" + urllib.parse.quote(taxonConceptID) + "%29&"
 
             # return a grouped dataFrame
-            if groups is not None:
+            if group_by is not None:
 
                 # does verbose work here?
-                return galah_group_by(URL, groups, filters, expand)
+                return galah_group_by(URL, group_by, filters, expand)
 
             else:
 
@@ -114,13 +121,20 @@ def atlas_counts(taxa=None, separate=False, verbose=False, filters=None, groups=
                         if type(filters) is str:
                             filters = [filters]
 
-                        # add filters and final part of URL
-                        URL += "&" + galah_filter(filters) + "&pageSize=0"
+                        # start URL
+                        URL = baseURL + "&"
+
+                        # add filters
+                        for f in filters:
+                            URL += galah_filter(f) + "&"
+
+                        # add final part of URL
+                        URL += "&pageSize=0"
 
                     # else, make sure that the filters is in the following format
                     else:
                         raise TypeError(
-                            "Filters should only be a list, and are in the following format:\n\nfilter=[\'year:2020\']")
+                            "filters should only be a list, and are in the following format:\n\nfilters=[\'year:2020\']")
 
                 # add the last bit of the URL
                 else:

@@ -18,14 +18,14 @@ def readConfig():
 '''
 occurrences
 ------
-get the records of specified specie(s), including latitude, longitude, year etc..  Filters can be applied, such as year 
+get the records of specified specie(s), including latitude, longitude, year etc..  filters can be applied, such as year 
 of occurrence.
 
 arguments
 ---------
 taxa: a string or a list of taxa to get the number of counts for 
          (example: "Vulpes vulpes" or ["Osphranter rufus","Vulpes vulpes","Macropus giganteus","Phascolarctos cinereus"])
-filter: list of filters as a string or list
+filters: list of filters as a string or list
 geolocate: [fill in when I write it]
 test: boolean argument to test if the ALA is working
 verbose: boolean argument used to get URLs used for the query
@@ -43,7 +43,7 @@ TODO
 '''
 # def atlas_occurrences(request=None,
 #                      identify=None,
-#                      filter=None,
+#                      filters=None,
 #                      geolocate=None,
 #                      select=galah_select(group="basic"),
 #                      mint_doi=False,
@@ -78,7 +78,7 @@ def atlas_occurrences(taxa=None,filters=None,geolocate=None,test=False,verbose=F
 
     # adding a few things to baseURL
     # TODO: refine this and make sure the user can specify all of these things
-    baseURL += "disableAllQualityFilters=true" #&fields=decimalLatitude%2CdecimalLongitude%2CeventDate%2CscientificName%2CtaxonConceptID%2CrecordID%2CdataResourceName&qa=nonesourceTypeId=2004&reasonTypeId=4"
+    baseURL += "disableAllQualityfilters=true" #&fields=decimalLatitude%2CdecimalLongitude%2CeventDate%2CscientificName%2CtaxonConceptID%2CrecordID%2CdataResourceName&qa=nonesourceTypeId=2004&reasonTypeId=4"
     baseURL += "&email={}&dwcHeaders=True&emailNotify=false".format(configs['galahSettings']['email'])
     # removing all assertions (these would appear in caps)
     baseURL += "&qa=none&"
@@ -89,7 +89,7 @@ def atlas_occurrences(taxa=None,filters=None,geolocate=None,test=False,verbose=F
         baseURL += galah_select(fields) + "&"
 
     if filters is not None:
-        baseURL += galah_filter(filters) + "&"
+        baseURL += galah_filters(filters) + "&"
 
     # check if taxa is specified
     if taxa is not None:
