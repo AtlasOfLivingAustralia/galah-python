@@ -8,3 +8,4 @@ zip-files
 configparser
 glob2
 bytesbufio
+shutils

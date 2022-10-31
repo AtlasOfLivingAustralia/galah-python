@@ -1,8 +1,15 @@
-import sys,requests,urllib.parse,time,zipfile,io,configparser,glob
+import os,sys,requests,urllib.parse,time,zipfile,io,configparser,glob
 import pandas as pd
 from .galah_filter import galah_filter
 from .galah_group_by import galah_group_by
 from .search_taxa import search_taxa
+
+# read configuration file
+def readConfig():
+    configFile=configparser.ConfigParser()
+    inifile = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'config.ini')
+    configFile.read(inifile)
+    return configFile
 
 '''
 counts
@@ -26,10 +33,22 @@ TODO
 ----
 1. Test more filters available on the ALA
 '''
+def atlas_counts(taxa=None, separate=False, verbose=False, filters=None, group_by=None, expand=True):
 
-def atlas_counts(taxa=None, separate=False, verbose=False, filters=None, group_by=None, expand=False):
+    # set up configs
+    atlasfile = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'node_config.csv')
+    atlaslist = pd.read_csv(atlasfile)
+    configs = readConfig()
+    specific_atlas = atlaslist[atlaslist['atlas'] == configs['galahSettings']['atlas']]
+
+    # test to check if ALA is working
+    ALA_check = specific_atlas[specific_atlas['called_by'] == 'atlas_counts']
+    index = ALA_check[ALA_check['called_by'] == "atlas_counts"].index[0]
+    baseURL = "{}?".format(specific_atlas[specific_atlas['called_by'] == 'atlas_counts']['api_url'][index])
+
     # get the baseURL for getting total number of records
-    baseURL = "https://biocache-ws.ala.org.au/ws/occurrence/search?"
+    ### TODO: change this
+    #baseURL = "https://biocache-ws.ala.org.au/ws/occurrence/search?"
 
     # if there is no taxa, assume you will get the total number of records in the ALA
     if taxa is None:
@@ -80,8 +99,8 @@ def atlas_counts(taxa=None, separate=False, verbose=False, filters=None, group_b
         # else, the user wants a grouped dataFrame
         else:
 
-            # return a grouped dataFrame
-            return galah_group_by(baseURL, group_by, filters, expand)
+           # return a grouped dataFrame
+            return galah_group_by(baseURL, group_by=group_by, filters=filters, expand=expand)
 
     # if there is a single taxa, get
     elif type(taxa) is str or type(taxa) is list:

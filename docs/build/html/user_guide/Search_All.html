@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>User Guide &#8212; Galah 1.0.0 documentation</title>
+    <title>search_all() &#8212; Galah 1.0.0 documentation</title>
   <script>
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
@@ -38,12 +38,11 @@
     <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../_static/doctools.js"></script>
     <script src="../_static/design-tabs.js"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'user_guide/index';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'user_guide/Search_All';</script>
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="atlas_counts()" href="Atlas_Counts.html" />
-    <link rel="prev" title="Configuring Galah" href="../configuring_galah/index.html" />
+    <link rel="prev" title="show_all()" href="Show_All.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="docsearch:language" content="en">
   </head>
@@ -128,7 +127,7 @@
                 
 
                 <li class="nav-item current active">
-                    <a class="nav-link" href="#">
+                    <a class="nav-link" href="index.html">
                         User Guide
                     </a>
                 </li>
@@ -220,7 +219,7 @@
                 
 
                 <li class="nav-item current active">
-                    <a class="nav-link" href="#">
+                    <a class="nav-link" href="index.html">
                         User Guide
                     </a>
                 </li>
@@ -277,7 +276,7 @@
     Section Navigation
   </p>
   <div class="bd-toc-item navbar-nav">
-    <ul class="nav bd-sidenav">
+    <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
   <a class="reference internal" href="Atlas_Counts.html">
    atlas_counts()
@@ -313,8 +312,8 @@
    show_all()
   </a>
  </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="Search_All.html">
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
    search_all()
   </a>
  </li>
@@ -346,10 +345,46 @@
             
             <article class="bd-article" role="main">
               
-  <section id="user-guide">
-<h1>User Guide<a class="headerlink" href="#user-guide" title="Permalink to this heading">#</a></h1>
-<p>This is the home page for <code class="docutils literal notranslate"><span class="pre">galah</span></code>’s User Guide.  The left-hand side has all the available functions for galah, including examples.</p>
-<div class="toctree-wrapper compound">
+  <section id="search-all">
+<h1>search_all()<a class="headerlink" href="#search-all" title="Permalink to this heading">#</a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><style type="text/css">
+span.prompt1:before {
+  content: " ";
+}
+</style><span class="prompt1">galah.search_all(</span>
+<span class="prompt1">     assertions=None,</span>
+<span class="prompt1">     atlases=None,</span>
+<span class="prompt1">     apis=None,</span>
+<span class="prompt1">     collections=None,</span>
+<span class="prompt1">     datasets=None,</span>
+<span class="prompt1">     fields=None,</span>
+<span class="prompt1">     licences=None,</span>
+<span class="prompt1">     lists=None,</span>
+<span class="prompt1">     profiles=None,</span>
+<span class="prompt1">     providers=None,</span>
+<span class="prompt1">     reasons=None,</span>
+<span class="prompt1">     ranks=None,</span>
+<span class="prompt1">     column_name=None</span>
+<span class="prompt1">)</span>
+</pre></div></div><p>This is to find all the possible values of the field you want to query/filter by.  To use, type</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">import galah</span>
+<span class="prompt1">galah.search_all(assertions=&quot;AMBIGUOUS_COLLECTION&quot;)</span>
+</pre></div></div><p>which returns</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>                   name           description category        type
+0  AMBIGUOUS_COLLECTION  Ambiguous collection  Warning  assertions
+</pre></div>
+</div>
+<p>If you want to search a different column other than the first one (the default), you can specify <code class="docutils literal notranslate"><span class="pre">column_name</span></code> by the following:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">import galah</span>
+<span class="prompt1">galah.search_all(assertions=&quot;collection&quot;,column_name=&quot;description&quot;)</span>
+</pre></div></div><p>which returns</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>                             name  ...        type
+0            AMBIGUOUS_COLLECTION  ...  assertions
+59        MISSING_COLLECTION_DATE  ...  assertions
+111  UNRECOGNISED_COLLECTION_CODE  ...  assertions
+
+[3 rows x 4 columns]
+</pre></div>
 </div>
 </section>
 
@@ -361,19 +396,12 @@
             <footer class="bd-footer-article">
                 <!-- Previous / next buttons -->
 <div class='prev-next-area'>
-  <a class='left-prev' id="prev-link" href="../configuring_galah/index.html" title="previous page">
+  <a class='left-prev' id="prev-link" href="Show_All.html" title="previous page">
       <i class="fas fa-angle-left"></i>
       <div class="prev-next-info">
           <p class="prev-next-subtitle">previous</p>
-          <p class="prev-next-title">Configuring Galah</p>
+          <p class="prev-next-title">show_all()</p>
       </div>
-  </a>
-  <a class='right-next' id="next-link" href="Atlas_Counts.html" title="next page">
-  <div class="prev-next-info">
-      <p class="prev-next-subtitle">next</p>
-      <p class="prev-next-title">atlas_counts()</p>
-  </div>
-  <i class="fas fa-angle-right"></i>
   </a>
 </div>
             </footer>

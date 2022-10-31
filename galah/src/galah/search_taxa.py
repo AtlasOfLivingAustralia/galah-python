@@ -1,9 +1,17 @@
-import requests
+import requests,os,configparser
 import pandas as pd
+
+import sys
 
 APIs = {
     'Australia': 'https://namematching-ws.ala.org.au/'
 }
+
+def readConfig():
+    configFile=configparser.ConfigParser()
+    inifile = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'config.ini')
+    configFile.read(inifile)
+    return configFile
 
 '''
 taxa
@@ -30,11 +38,17 @@ def search_taxa(taxa):
     if taxa is None:
         raise Exception("You need to specify a taxa")
 
-    # first, check which API I am searching (LATER)
-    baseURL = APIs['Australia']
+    # set up configs
+    atlasfile = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'node_config.csv')
+    atlaslist = pd.read_csv(atlasfile)
+    configs = readConfig()
+    specific_atlas = atlaslist[atlaslist['atlas'] == configs['galahSettings']['atlas']]
 
-    # second, add api/search
-    baseURL += 'api/search?'
+    # test to check if ALA is working
+    ALA_check = specific_atlas[specific_atlas['called_by'] == 'search_taxa']
+    #names_search_single
+    index = ALA_check[ALA_check['api_name'] == "names_search_single"].index[0]
+    baseURL = ALA_check[ALA_check['api_name'] == "names_search_single"]['api_url'][index]
 
     # third, add fq=<search term> and converting it to URL
     if type(taxa) is list or type(taxa) is str:
@@ -50,9 +64,11 @@ def search_taxa(taxa):
         for name in taxa:
 
             # create URL, get result and concatenate result onto dataFrame
-            URL = baseURL+"q={}".format("%20".join(name.split(" ")))
+            #URL = baseURL+"q={}".format("%20".join(name.split(" ")))
+            URL = baseURL.replace("{name}","%20".join(name.split(" ")))
             response = requests.get(URL)
 
+            # get the response
             json = response.json()
             data = dict(
                 (k, json[k]) for k in ('scientificName', 'scientificNameAuthorship', 'taxonConceptID', 'rank') if

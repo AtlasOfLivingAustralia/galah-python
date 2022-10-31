@@ -14,5 +14,5 @@ This is the home page for ``galah``'s User Guide.  The left-hand side has all th
    Galah_Group_By
    Galah_Select
    Search_Taxa
-   Show_All_Fields
-   Show_All_Values
+   Show_All
+   Search_All

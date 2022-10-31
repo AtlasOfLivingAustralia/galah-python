@@ -51,11 +51,19 @@ TODO
 #                      refresh_cache=False):
 def atlas_occurrences(taxa=None,filters=None,geolocate=None,test=False,verbose=False,fields=None):
 
-    # get some arguments for the configuration file
-    configs=readConfig()
+    # set up configs
+    atlasfile = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'node_config.csv')
+    atlaslist = pd.read_csv(atlasfile)
+    configs = readConfig()
+    specific_atlas = atlaslist[atlaslist['atlas'] == configs['galahSettings']['atlas']]
+
+    # test to check if ALA is working
+    ALA_check = specific_atlas[specific_atlas['called_by'] == 'atlas_counts']
+    index = ALA_check[ALA_check['called_by'] == "atlas_counts"].index[0]
+    requestURL = "{}?pageSize=0".format(specific_atlas[specific_atlas['called_by'] == 'atlas_counts']['api_url'][index])
 
     # check if the ALA is working - if not, let the user know
-    response = requests.get("https://biocache-ws.ala.org.au/ws/occurrences/search?pageSize=0")
+    response = requests.get(requestURL)
     try:
         response.raise_for_status()
         if test:
@@ -69,8 +77,12 @@ def atlas_occurrences(taxa=None,filters=None,geolocate=None,test=False,verbose=F
     # q <== queries, i.e. q=rk_genus:Macropus; q = Macropus is a free text search
     # fq <== filters to be applied to the original query in form fq=INDEXEDFIELD:VALUE, i.e. fq=rank:kingdom
 
-    # base URL for queries
-    baseURL = "https://biocache-ws.ala.org.au/ws/occurrences/offline/download?"
+    # get occurrence URL
+    occurrences_entries = specific_atlas[specific_atlas['called_by'] == 'atlas_occurrences']
+    index = occurrences_entries[occurrences_entries['api_name'] == "records_occurrences"].index[0]
+
+    # set base URL for queries
+    baseURL = "{}?".format(specific_atlas[specific_atlas['called_by'] == 'atlas_occurrences']['api_url'][index])
 
     # email for querying
     if configs['galahSettings']['email'] is None:
@@ -89,7 +101,7 @@ def atlas_occurrences(taxa=None,filters=None,geolocate=None,test=False,verbose=F
         baseURL += galah_select(fields) + "&"
 
     if filters is not None:
-        baseURL += galah_filters(filters) + "&"
+        baseURL += galah_filter(filters) + "&"
 
     # check if taxa is specified
     if taxa is not None:

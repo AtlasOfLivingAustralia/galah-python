@@ -9,7 +9,7 @@ import configparser,os
 # run this first at installation
 def galah_config(email=None,atlas=None):
 
-    # check to
+    # check to see if there are any arguments to update
     if email is None and atlas is None:
         raise ValueError("Please specify a value you would like to change, i.e. galah_config(email=\"youremail@example.come\")")
 
@@ -22,9 +22,10 @@ def galah_config(email=None,atlas=None):
 
     # update the field to change
     if email is not None:
-        configParser["galahSettings"]["email"]=email
+        configParser["galahSettings"]["email"] = email
     if atlas is not None:
         configParser["galahSettings"]["atlas"] = atlas
+    # add things for data profiles here
 
     # write to file
     with open(inifile,"w") as fileObject:

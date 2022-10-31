@@ -1,7 +1,7 @@
 import requests,re
 import pandas as pd
 from .galah_filter import galah_filter
-from .show_all_values import show_all_values
+from .show_values import show_values
 
 '''
 group_by
@@ -73,7 +73,7 @@ def galah_group_by(URL,group_by=None,filters=None,expand=True,verbose=False):
                 if i != 0:
 
                     # get all possible values for this group
-                    values=show_all_values(g)
+                    values=show_values(field=g)
 
                     # iterate over these values, and get a count for every single one and add it to dictValues list
                     for k,v in values.iterrows():

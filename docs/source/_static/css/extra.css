@@ -26,6 +26,10 @@ body { font-family: Roboto; }
   min-height: 40px;
 }
 
+.bd-header {
+  background: linear-gradient(to bottom, #fef7fa, #fce7f0)!important
+}
+
 .navbar.bg-primary {
   background-image: linear-gradient(to bottom, #fef7fa, #fce7f0);
   /*background-image: linear-gradient(#93d6d6, #78CCCC 60%, #6cb7b7);*/
