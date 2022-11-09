@@ -13,18 +13,6 @@ class test_galah(unittest2.TestCase):
         output = galah.search_taxa("Vulpes vulpes")
         self.assertNotEqual(output['taxonConceptID'][0],None)
 
-    # unit test for show_all_fields()
-    def test_show_all_fields(self):
-        output = galah.show_all_fields()
-        self.assertTrue(type(output) is pd.core.frame.DataFrame)
-        self.assertGreater(output.shape[0],1)
-
-    # check that the number of rows and columns are
-    def test_show_all_values(self):
-        output = galah.show_all_values("basisOfRecord")
-        self.assertGreater(output.shape[0], 1)
-        self.assertGreater(output.shape[1], 1)
-
     # one unit test for galah_filter
     def test_galah_filter1(self):
         output = galah.galah_filter("year=2019")
@@ -49,7 +37,7 @@ class test_galah(unittest2.TestCase):
     def test_galah_group_by_1(self):
         URL = "https://biocache-ws.ala.org.au/ws/occurrence/search?fq=%28lsid%3Ahttps%3A//biodiversity.org.au/afd/taxa/2869ce8a-8212-46c2-8327-dfb7fabb8296%29"
         groups = ["year"]
-        output = galah.galah_group_by(URL,groups=groups)
+        output = galah.galah_group_by(URL,group_by=groups,expand=False)
         self.assertGreater(output.shape[0], 1)
         self.assertGreater(output.shape[1], 1)
 
@@ -66,8 +54,58 @@ class test_galah(unittest2.TestCase):
         configFile.read(inifile)
         self.assertEqual(configFile['galahSettings']['email'],"test@example.com")
 
+    def test_show_all_assertions(self):
+        output = galah.show_all(assertions=True)
+        self.assertGreater(output.shape[1],1)
+
+    def test_show_all_atlases(self):
+        output = galah.show_all(atlases=True)
+        self.assertGreater(output.shape[1],1)
+
+    def test_show_all_apis(self):
+        output = galah.show_all(apis=True)
+        self.assertGreater(output.shape[1],1)
+
+    def test_show_all_collections(self):
+        output = galah.show_all(collections=True)
+        self.assertGreater(output.shape[1],1)
+
+    def test_show_all_datasets(self):
+        output = galah.show_all(datasets=True)
+        self.assertGreater(output.shape[1],1)
+
+    # check if this gives errors
+    def test_show_all_fields(self):
+        output = galah.show_all(fields=True)
+        self.assertGreater(output.shape[1],1)
+
+    def test_show_all_licences(self):
+        output = galah.show_all(licences=True)
+        self.assertGreater(output.shape[1],1)
+
+    def test_show_all_lists(self):
+        output = galah.show_all(lists=True)
+        self.assertGreater(output.shape[1],1)
+
+    def test_show_all_profiles(self):
+        output = galah.show_all(profiles=True)
+        self.assertGreater(output.shape[1],1)
+
+    def test_show_all_providers(self):
+        output = galah.show_all(providers=True)
+        self.assertGreater(output.shape[1],1)
+
+    def test_show_all_reasons(self):
+        output = galah.show_all(reasons=True)
+        self.assertGreater(output.shape[1],1)
+
+    def test_show_all_ranks(self):
+        output = galah.show_all(ranks=True)
+        self.assertGreater(output.shape[1],1)
+
     # should include a unit test for this but I believe they are all integration tests
     def test_atlas_occurrences(self):
+        galah.galah_config(email="amanda.buyan@csiro.au")
         a=galah.atlas_occurrences(test=True)
         self.assertIsNone(a)
 

@@ -2,14 +2,9 @@ import galah,requests,urllib.parse,configparser,os,html
 import pandas as pd
 
 from .search_taxa import search_taxa
+from .get_api_url import get_api_url
 
 import sys
-
-def readConfig():
-    configFile=configparser.ConfigParser()
-    inifile = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'config.ini')
-    configFile.read(inifile)
-    return configFile
 
 # this function looks for all species with the associated name
 ### TODO: comment
@@ -21,17 +16,8 @@ def atlas_species(taxa=None,verbose=False):
     elif type(taxa) is not str:
         return ValueError("You can only specify one species name for this function so far, i.e. \"Heleioporus\"")
 
-    # get configuration for atlas to query
-    atlasfile = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'node_config.csv')
-    atlaslist = pd.read_csv(atlasfile)
-    configs = readConfig()
-    specific_atlas = atlaslist[atlaslist['atlas'] == configs['galahSettings']['atlas']]
-
     # call galah_identify (or search_taxa for now?) to do something
-    # species_lookup
-    media_rows = specific_atlas[specific_atlas['api_name'] == 'species_children']
-    index = media_rows[media_rows['api_name'] == "species_children"].index[0]
-    baseURL = media_rows[media_rows['api_name'] == 'species_children']['api_url'][index]
+    baseURL = get_api_url(column1='api_name',column1value='species_children')
 
     # search taxonomic trees
     taxonConceptID = search_taxa(taxa)['taxonConceptID'][0]
@@ -58,9 +44,7 @@ def atlas_species(taxa=None,verbose=False):
 
     # get all of the taxonomic information
     # species_lookup
-    media_rows = specific_atlas[specific_atlas['api_name'] == 'species_lookup']
-    index = media_rows[media_rows['api_name'] == "species_lookup"].index[0]
-    baseURL = media_rows[media_rows['api_name'] == 'species_lookup']['api_url'][index]
+    baseURL = get_api_url(column1='api_name', column1value='species_lookup')
 
     # search taxonomic trees
     taxonConceptID = search_taxa(taxa)['taxonConceptID'][0]

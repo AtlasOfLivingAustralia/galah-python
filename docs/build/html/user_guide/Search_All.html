@@ -283,8 +283,18 @@
   </a>
  </li>
  <li class="toctree-l1">
+  <a class="reference internal" href="Atlas_Media.html">
+   atlas_media()
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="Atlas_Occurrences.html">
    atlas_occurrences()
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="Atlas_Species.html">
+   atlas_species()
   </a>
  </li>
  <li class="toctree-l1">
@@ -370,20 +380,18 @@ span.prompt1:before {
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">import galah</span>
 <span class="prompt1">galah.search_all(assertions=&quot;AMBIGUOUS_COLLECTION&quot;)</span>
 </pre></div></div><p>which returns</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>                   name           description category        type
-0  AMBIGUOUS_COLLECTION  Ambiguous collection  Warning  assertions
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>                   name           description category  type
+0  AMBIGUOUS_COLLECTION  Ambiguous collection  Warning  True
 </pre></div>
 </div>
 <p>If you want to search a different column other than the first one (the default), you can specify <code class="docutils literal notranslate"><span class="pre">column_name</span></code> by the following:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">import galah</span>
 <span class="prompt1">galah.search_all(assertions=&quot;collection&quot;,column_name=&quot;description&quot;)</span>
 </pre></div></div><p>which returns</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>                             name  ...        type
-0            AMBIGUOUS_COLLECTION  ...  assertions
-59        MISSING_COLLECTION_DATE  ...  assertions
-111  UNRECOGNISED_COLLECTION_CODE  ...  assertions
-
-[3 rows x 4 columns]
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>                             name                   description category  type
+0            AMBIGUOUS_COLLECTION          Ambiguous collection  Warning  True
+59        MISSING_COLLECTION_DATE       Missing collection date  Warning  True
+111  UNRECOGNISED_COLLECTION_CODE  Unrecognized collection code    Error  True
 </pre></div>
 </div>
 </section>

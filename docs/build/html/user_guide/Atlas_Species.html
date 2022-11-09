@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>show_all_values() &#8212; Galah 1.0.0 documentation</title>
+    <title>atlas_species() &#8212; Galah 1.0.0 documentation</title>
   <script>
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
@@ -38,11 +38,12 @@
     <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../_static/doctools.js"></script>
     <script src="../_static/design-tabs.js"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'user_guide/Show_All_Values';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'user_guide/Atlas_Species';</script>
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="prev" title="show_all_fields()" href="Show_All_Fields.html" />
+    <link rel="next" title="galah_filter()" href="Galah_Filter.html" />
+    <link rel="prev" title="atlas_occurrences()" href="Atlas_Occurrences.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="docsearch:language" content="en">
   </head>
@@ -283,8 +284,18 @@
   </a>
  </li>
  <li class="toctree-l1">
+  <a class="reference internal" href="Atlas_Media.html">
+   atlas_media()
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="Atlas_Occurrences.html">
    atlas_occurrences()
+  </a>
+ </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   atlas_species()
   </a>
  </li>
  <li class="toctree-l1">
@@ -308,13 +319,13 @@
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="Show_All_Fields.html">
-   show_all_fields()
+  <a class="reference internal" href="Show_All.html">
+   show_all()
   </a>
  </li>
- <li class="toctree-l1 current active">
-  <a class="current reference internal" href="#">
-   show_all_values()
+ <li class="toctree-l1">
+  <a class="reference internal" href="Search_All.html">
+   search_all()
   </a>
  </li>
 </ul>
@@ -345,29 +356,30 @@
             
             <article class="bd-article" role="main">
               
-  <section id="show-all-values">
-<h1>show_all_values()<a class="headerlink" href="#show-all-values" title="Permalink to this heading">#</a></h1>
+  <section id="atlas-species">
+<h1>atlas_species()<a class="headerlink" href="#atlas-species" title="Permalink to this heading">#</a></h1>
+<p>Arguments for <code class="docutils literal notranslate"><span class="pre">atlas_species()</span></code> are:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><style type="text/css">
 span.prompt1:before {
   content: " ";
 }
-</style><span class="prompt1">galah.show_all_values(</span>
-<span class="prompt1">     field</span>
+</style><span class="prompt1">galah.atlas_species(</span>
+<span class="prompt1">     taxa=None,</span>
+<span class="prompt1">     verbose=False,</span>
 <span class="prompt1">)</span>
-</pre></div></div><p>This is to find all the possible values of the field you want to query/filter by.  To use, type</p>
+</pre></div></div><p>This function is mainly used to determine the taxonomy of a particular genus.  An example of its output is below.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">import galah</span>
-<span class="prompt1">galah.show_all_values(&quot;basisOfRecord&quot;)</span>
+<span class="prompt1">galah.atlas_species(taxa=&quot;Heleioporus&quot;)</span>
 </pre></div></div><p>which returns</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>           field             category
-0  basisOfRecord    HUMAN_OBSERVATION
-1  basisOfRecord   PRESERVED_SPECIMEN
-2  basisOfRecord          OBSERVATION
-3  basisOfRecord           OCCURRENCE
-4  basisOfRecord  MACHINE_OBSERVATION
-5  basisOfRecord      MATERIAL_SAMPLE
-6  basisOfRecord      LIVING_SPECIMEN
-7  basisOfRecord    MATERIAL_CITATION
-8  basisOfRecord      FOSSIL_SPECIMEN
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>    kingdom  ...                  vernacular_names
+0  Animalia  ...              Western Spotted Frog
+1  Animalia  ...              Giant Burrowing Frog
+2  Animalia  ...  Hooting Frog, Western Marsh Frog
+3  Animalia  ...                      Moaning Frog
+4  Animalia  ...        Plains Frog, Whooping Frog
+5  Animalia  ...                         Sand Frog
+
+[6 rows x 9 columns]
 </pre></div>
 </div>
 </section>
@@ -380,12 +392,19 @@ span.prompt1:before {
             <footer class="bd-footer-article">
                 <!-- Previous / next buttons -->
 <div class='prev-next-area'>
-  <a class='left-prev' id="prev-link" href="Show_All_Fields.html" title="previous page">
+  <a class='left-prev' id="prev-link" href="Atlas_Occurrences.html" title="previous page">
       <i class="fas fa-angle-left"></i>
       <div class="prev-next-info">
           <p class="prev-next-subtitle">previous</p>
-          <p class="prev-next-title">show_all_fields()</p>
+          <p class="prev-next-title">atlas_occurrences()</p>
       </div>
+  </a>
+  <a class='right-next' id="next-link" href="Galah_Filter.html" title="next page">
+  <div class="prev-next-info">
+      <p class="prev-next-subtitle">next</p>
+      <p class="prev-next-title">galah_filter()</p>
+  </div>
+  <i class="fas fa-angle-right"></i>
   </a>
 </div>
             </footer>

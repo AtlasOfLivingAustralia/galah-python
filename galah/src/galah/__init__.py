@@ -4,21 +4,20 @@
 #from .atlas_citation import atlas_citation
 from .atlas_counts import atlas_counts
 from .atlas_media import atlas_media
-#from .collect_media import collect_media ???
-#from .collect_occurrences import collect_occurrences ???
 from .atlas_occurrences import atlas_occurrences
 from .atlas_species import atlas_species
-#from .atlas_taxonomy import atlas_taxonomy
+### drop this from the release, as it might not be used all that often?? <== R version possibly broken
+from .atlas_taxonomy import atlas_taxonomy
 
 #-------------------------------------------------------
 # galah titled functions
 #-------------------------------------------------------
 from .galah_config import galah_config
-#from .galah_down_to import galah_down_to
+#from .galah_down_to import galah_down_to <== likely don't need it
 from .galah_filter import galah_filter
 #from .galah_geolocate import galah_geolocate
 from .galah_group_by import galah_group_by
-#from .galah_apply_profile import galah_apply_profile
+#from .galah_apply_profile import galah_apply_profile <== possibly don't need it
 from .galah_select import galah_select
 
 #-------------------------------------------------------

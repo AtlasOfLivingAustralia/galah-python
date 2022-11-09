@@ -1,15 +1,11 @@
-import os,sys,requests,urllib.parse,time,zipfile,io,configparser,glob
+import os,sys,requests,urllib.parse,time,zipfile,io,glob
 import pandas as pd
 from .galah_filter import galah_filter
 from .galah_group_by import galah_group_by
 from .search_taxa import search_taxa
-
-# read configuration file
-def readConfig():
-    configFile=configparser.ConfigParser()
-    inifile = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'config.ini')
-    configFile.read(inifile)
-    return configFile
+from .get_api_url import get_api_url
+from .get_api_url import readConfig
+from .show_all import show_all
 
 '''
 counts
@@ -35,20 +31,39 @@ TODO
 '''
 def atlas_counts(taxa=None, separate=False, verbose=False, filters=None, group_by=None, expand=True):
 
-    # set up configs
-    atlasfile = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'node_config.csv')
-    atlaslist = pd.read_csv(atlasfile)
+    # get the URL needed for the query
+    baseURL = "{}?".format(get_api_url(column1='called_by',column1value='atlas_counts'))
+
+    # first, get configurations and check for configurations
     configs = readConfig()
-    specific_atlas = atlaslist[atlaslist['atlas'] == configs['galahSettings']['atlas']]
 
-    # test to check if ALA is working
-    ALA_check = specific_atlas[specific_atlas['called_by'] == 'atlas_counts']
-    index = ALA_check[ALA_check['called_by'] == "atlas_counts"].index[0]
-    baseURL = "{}?".format(specific_atlas[specific_atlas['called_by'] == 'atlas_counts']['api_url'][index])
+    # email for querying
+    if configs['galahSettings']['email'] is None:
+        raise ValueError("You need to provide a valid email address for occurrences to be able to download data")
 
-    # get the baseURL for getting total number of records
-    ### TODO: change this
-    #baseURL = "https://biocache-ws.ala.org.au/ws/occurrence/search?"
+    # adding a few things to baseURL
+    if configs['galahSettings']['data_profile'].lower() == "none":
+        baseURL += "disableAllQualityfilters=true"
+    else:
+        data_profile_list = list(show_all(profiles=True)['shortName'])
+        if configs['galahSettings']['data_profile'] in data_profile_list:
+            baseURL += "&qualityProfile={}".format(configs['galahSettings']['data_profile'])
+        else:
+            raise ValueError("The data quality profile you've chosen is not one of the ones used - run \n\n"
+                             "profiles = galah.show_all(profiles=True)\n\n"
+                             "and then type\n\n"
+                             "profiles['shortName']\n\n"
+                             "to get the names of the data quality profiles you can use.  If you don't want to use a data"
+                             " quality profile, set it to None by typing the following:\n\n"
+                             "galah.galah_config(data_profile=\"None\")")
+    baseURL += "&email={}&dwcHeaders=True".format(configs['galahSettings']['email'])
+    if configs['galahSettings']['email_notify'].lower() == "false":
+        baseURL += "&emailNotify=false"
+    elif configs['galahSettings']['email_notify'].lower() == "true":
+        baseURL += "&emailNotify=True" # check if this is correct
+    else:
+        raise ValueError("email_notify option should be set to either True or False - please set that with "
+                         "galah_config(email_notify=\"False\") or galah_config(email_notify=\"True\")")
 
     # if there is no taxa, assume you will get the total number of records in the ALA
     if taxa is None:

@@ -4,14 +4,9 @@ from .atlas_occurrences import atlas_occurrences
 from .search_taxa import search_taxa
 from .galah_select import galah_select
 from .galah_filter import galah_filter
+from .get_api_url import get_api_url
 
 import sys
-
-def readConfig():
-    configFile=configparser.ConfigParser()
-    inifile = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'config.ini')
-    configFile.read(inifile)
-    return configFile
 
 # this function parses everything to atlas_occurrences first, and it adds something to the galah_filter argument to say
 # that the multimedia field is not empty
@@ -24,19 +19,10 @@ def atlas_media(taxa=None,
                 verbose=False,
                 multimedia=None,
                 collect=False,
-                path=None
+                path=None,
                 ):
 
-    # make a call to atlas_occurrences???
-    atlasfile = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'node_config.csv')
-    atlaslist = pd.read_csv(atlasfile)
-    configs = readConfig()
-    specific_atlas = atlaslist[atlaslist['atlas'] == configs['galahSettings']['atlas']]
-
-    # download sound, images etc.
-    media_rows = specific_atlas[specific_atlas['called_by'] == 'atlas_occurrences']
-    index = media_rows[media_rows['called_by'] == "atlas_occurrences"].index[0]
-    baseURL = "{}?".format(media_rows[media_rows['called_by'] == 'atlas_occurrences']['api_url'][index])
+    baseURL = "{}?".format(get_api_url(column1='called_by',column1value='atlas_occurrences'))
 
     # email for querying
     if configs['galahSettings']['email'] is None:
@@ -59,7 +45,7 @@ def atlas_media(taxa=None,
         fields = ["decimalLatitude", "decimalLongitude", "eventDate", "scientificName","taxonConceptID","recordID",
                   "dataResourceName","occurrenceStatus","multimedia", "multimedialicense", "images", "videos", "sounds"]
         baseURL += galah_select(fields) + "&"
-    
+
     if filters is not None:
         baseURL += galah_filter(filters) + "&"
 

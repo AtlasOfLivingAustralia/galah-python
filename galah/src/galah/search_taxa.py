@@ -3,15 +3,7 @@ import pandas as pd
 
 import sys
 
-APIs = {
-    'Australia': 'https://namematching-ws.ala.org.au/'
-}
-
-def readConfig():
-    configFile=configparser.ConfigParser()
-    inifile = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'config.ini')
-    configFile.read(inifile)
-    return configFile
+from .get_api_url import get_api_url
 
 '''
 taxa
@@ -38,17 +30,8 @@ def search_taxa(taxa):
     if taxa is None:
         raise Exception("You need to specify a taxa")
 
-    # set up configs
-    atlasfile = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'node_config.csv')
-    atlaslist = pd.read_csv(atlasfile)
-    configs = readConfig()
-    specific_atlas = atlaslist[atlaslist['atlas'] == configs['galahSettings']['atlas']]
-
-    # test to check if ALA is working
-    ALA_check = specific_atlas[specific_atlas['called_by'] == 'search_taxa']
-    #names_search_single
-    index = ALA_check[ALA_check['api_name'] == "names_search_single"].index[0]
-    baseURL = ALA_check[ALA_check['api_name'] == "names_search_single"]['api_url'][index]
+    # get base URL for querying
+    baseURL = get_api_url(column1='called_by',column1value='search_taxa',column2='api_name',column2value='names_search_single')
 
     # third, add fq=<search term> and converting it to URL
     if type(taxa) is list or type(taxa) is str:

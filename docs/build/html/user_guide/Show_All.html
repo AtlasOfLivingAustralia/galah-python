@@ -284,8 +284,18 @@
   </a>
  </li>
  <li class="toctree-l1">
+  <a class="reference internal" href="Atlas_Media.html">
+   atlas_media()
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="Atlas_Occurrences.html">
    atlas_occurrences()
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="Atlas_Species.html">
+   atlas_species()
   </a>
  </li>
  <li class="toctree-l1">
@@ -372,18 +382,18 @@ span.prompt1:before {
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">import galah</span>
 <span class="prompt1">galah.show_all(assertions=True)</span>
 </pre></div></div><p>which returns</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>                              name  ...        type
-0             AMBIGUOUS_COLLECTION  ...  assertions
-1            AMBIGUOUS_INSTITUTION  ...  assertions
-2          BASIS_OF_RECORD_INVALID  ...  assertions
-3                 biosecurityIssue  ...  assertions
-4           COLLECTION_MATCH_FUZZY  ...  assertions
-..                             ...  ...         ...
-111   UNRECOGNISED_COLLECTION_CODE  ...  assertions
-112  UNRECOGNISED_INSTITUTION_CODE  ...  assertions
-113             userAssertionOther  ...  assertions
-114            userDuplicateRecord  ...  assertions
-115                ZERO_COORDINATE  ...  assertions
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>                              name  ...  type
+0             AMBIGUOUS_COLLECTION  ...  True
+1            AMBIGUOUS_INSTITUTION  ...  True
+2          BASIS_OF_RECORD_INVALID  ...  True
+3                 biosecurityIssue  ...  True
+4           COLLECTION_MATCH_FUZZY  ...  True
+..                             ...  ...   ...
+111   UNRECOGNISED_COLLECTION_CODE  ...  True
+112  UNRECOGNISED_INSTITUTION_CODE  ...  True
+113             userAssertionOther  ...  True
+114            userDuplicateRecord  ...  True
+115                ZERO_COORDINATE  ...  True
 
 [116 rows x 4 columns]
 </pre></div>

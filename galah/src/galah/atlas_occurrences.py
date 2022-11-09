@@ -3,17 +3,11 @@ import pandas as pd
 from .galah_filter import galah_filter
 from .galah_select import galah_select
 from .search_taxa import search_taxa
+from .get_api_url import get_api_url
+from .show_all import show_all
+from .get_api_url import readConfig
 
 import os
-
-'''
-for reading the configuration file to feed in email
-'''
-def readConfig():
-    configFile=configparser.ConfigParser()
-    inifile = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'config.ini')
-    configFile.read(inifile)
-    return configFile
 
 '''
 occurrences
@@ -38,7 +32,7 @@ TODO
 ----
 2. Test more filters available on the ALA
 3. Write geolocate part of this function
-4. Understand what mint_doi is and implement it
+4. Understand what doi is and implement it
 5. Understand what doi is and implement it
 '''
 # def atlas_occurrences(request=None,
@@ -49,18 +43,19 @@ TODO
 #                      mint_doi=False,
 #                      doi=None,
 #                      refresh_cache=False):
-def atlas_occurrences(taxa=None,filters=None,geolocate=None,test=False,verbose=False,fields=None):
 
-    # set up configs
-    atlasfile = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'node_config.csv')
-    atlaslist = pd.read_csv(atlasfile)
-    configs = readConfig()
-    specific_atlas = atlaslist[atlaslist['atlas'] == configs['galahSettings']['atlas']]
+# geolocate=None,
+def atlas_occurrences(taxa=None,
+                      filters=None,
+                      test=False,
+                      verbose=False,
+                      fields=None,
+                      doi=False,
+                      assertions=None,
+                      ):
 
     # test to check if ALA is working
-    ALA_check = specific_atlas[specific_atlas['called_by'] == 'atlas_counts']
-    index = ALA_check[ALA_check['called_by'] == "atlas_counts"].index[0]
-    requestURL = "{}?pageSize=0".format(specific_atlas[specific_atlas['called_by'] == 'atlas_counts']['api_url'][index])
+    requestURL = "{}?pageSize=0".format(get_api_url(column1='called_by',column1value='atlas_counts'))
 
     # check if the ALA is working - if not, let the user know
     response = requests.get(requestURL)
@@ -77,12 +72,11 @@ def atlas_occurrences(taxa=None,filters=None,geolocate=None,test=False,verbose=F
     # q <== queries, i.e. q=rk_genus:Macropus; q = Macropus is a free text search
     # fq <== filters to be applied to the original query in form fq=INDEXEDFIELD:VALUE, i.e. fq=rank:kingdom
 
-    # get occurrence URL
-    occurrences_entries = specific_atlas[specific_atlas['called_by'] == 'atlas_occurrences']
-    index = occurrences_entries[occurrences_entries['api_name'] == "records_occurrences"].index[0]
+    # get base URL
+    baseURL = "{}?".format(get_api_url(column1='called_by', column1value='atlas_occurrences',column2='api_name',column2value='records_occurrences'))
 
-    # set base URL for queries
-    baseURL = "{}?".format(specific_atlas[specific_atlas['called_by'] == 'atlas_occurrences']['api_url'][index])
+    # first, get configurations and check for configurations
+    configs = readConfig()
 
     # email for querying
     if configs['galahSettings']['email'] is None:
@@ -90,9 +84,32 @@ def atlas_occurrences(taxa=None,filters=None,geolocate=None,test=False,verbose=F
 
     # adding a few things to baseURL
     # TODO: refine this and make sure the user can specify all of these things
-    baseURL += "disableAllQualityfilters=true" #&fields=decimalLatitude%2CdecimalLongitude%2CeventDate%2CscientificName%2CtaxonConceptID%2CrecordID%2CdataResourceName&qa=nonesourceTypeId=2004&reasonTypeId=4"
-    baseURL += "&email={}&dwcHeaders=True&emailNotify=false".format(configs['galahSettings']['email'])
+    if configs['galahSettings']['data_profile'].lower() == "none":
+        baseURL += "disableAllQualityfilters=true"
+    else:
+        data_profile_list = list(show_all(profiles=True)['shortName'])
+        if configs['galahSettings']['data_profile'] in data_profile_list:
+            baseURL += "&qualityProfile={}".format(configs['galahSettings']['data_profile'])
+        else:
+            raise ValueError("The data quality profile you've chosen is not one of the ones used - run \n\n"
+                             "profiles = galah.show_all(profiles=True)\n\n"
+                             "and then type\n\n"
+                             "profiles['shortName']\n\n"
+                             "to get the names of the data quality profiles you can use.  If you don't want to use a data"
+                             " quality profile, set it to None by typing the following:\n\n"
+                             "galah.galah_config(data_profile=\"None\")")
+    baseURL += "&email={}&dwcHeaders=True".format(configs['galahSettings']['email'])
+    if configs['galahSettings']['email_notify'].lower() == "false":
+        baseURL += "&emailNotify=false"
+    elif configs['galahSettings']['email_notify'].lower() == "true":
+        baseURL += "&emailNotify=True" # check if this is correct
+    else:
+        raise ValueError("email_notify option should be set to either True or False - please set that with "
+                         "galah_config(email_notify=\"False\") or galah_config(email_notify=\"True\")")
+
     # removing all assertions (these would appear in caps)
+    if assertions is not None:
+        raise ValueError("Assertions is not coded at this point - Amanda needs to code it")
     baseURL += "&qa=none&"
 
     # implement galah.select - choose which columns you download
@@ -145,6 +162,12 @@ def atlas_occurrences(taxa=None,filters=None,geolocate=None,test=False,verbose=F
                     print("Data for download:\n\n{}\n".format(statusURL.json()['downloadUrl']))
 
                 # create a temporary dataFrame
+                #if doi:
+                #    print(zipfile.ZipFile(io.BytesIO(zipURL.content)))
+                #    print(io.BytesIO(zipURL.content))
+                #    #print(zipURL.content)
+                #    for z in zipfile.ZipFile(io.BytesIO(zipURL.content)):
+                #        print(z)
                 tempdf = pd.read_csv(zipfile.ZipFile(io.BytesIO(zipURL.content)).open('data.csv'),low_memory=False)
 
                 # append the data onto one big dataFrame for returning

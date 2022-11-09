@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>show_all_fields() &#8212; Galah 1.0.0 documentation</title>
+    <title>atlas_media() &#8212; Galah 1.0.0 documentation</title>
   <script>
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
@@ -38,12 +38,12 @@
     <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../_static/doctools.js"></script>
     <script src="../_static/design-tabs.js"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'user_guide/Show_All_Fields';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'user_guide/Atlas_Media';</script>
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="show_all_values()" href="Show_All_Values.html" />
-    <link rel="prev" title="search_taxa()" href="Search_Taxa.html" />
+    <link rel="next" title="atlas_occurrences()" href="Atlas_Occurrences.html" />
+    <link rel="prev" title="atlas_counts()" href="Atlas_Counts.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="docsearch:language" content="en">
   </head>
@@ -182,6 +182,10 @@
   </div>
 
   
+  <label class="sidebar-toggle secondary-toggle" for="__secondary">
+      <span class="fas fa-outdent"></span>
+  </label>
+  
 
 </div>
   </nav>
@@ -283,9 +287,19 @@
    atlas_counts()
   </a>
  </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   atlas_media()
+  </a>
+ </li>
  <li class="toctree-l1">
   <a class="reference internal" href="Atlas_Occurrences.html">
    atlas_occurrences()
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="Atlas_Species.html">
+   atlas_species()
   </a>
  </li>
  <li class="toctree-l1">
@@ -308,14 +322,14 @@
    search_taxa()
   </a>
  </li>
- <li class="toctree-l1 current active">
-  <a class="current reference internal" href="#">
-   show_all_fields()
+ <li class="toctree-l1">
+  <a class="reference internal" href="Show_All.html">
+   show_all()
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="Show_All_Values.html">
-   show_all_values()
+  <a class="reference internal" href="Search_All.html">
+   search_all()
   </a>
  </li>
 </ul>
@@ -346,32 +360,92 @@
             
             <article class="bd-article" role="main">
               
-  <section id="show-all-fields">
-<h1>show_all_fields()<a class="headerlink" href="#show-all-fields" title="Permalink to this heading">#</a></h1>
-<p>This command is to get all of the fields you can group or filter by, and takes no arguments.  To use this:</p>
+  <section id="atlas-media">
+<h1>atlas_media()<a class="headerlink" href="#atlas-media" title="Permalink to this heading">#</a></h1>
+<p>This function is for getting the number of occurrence records before you’re ready
+to download.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><style type="text/css">
 span.prompt1:before {
   content: " ";
 }
-</style><span class="prompt1">import galah</span>
-<span class="prompt1">galah.show_all_fields()</span>
+</style><span class="prompt1">galah.atlas_media(</span>
+<span class="prompt1">     taxa=None,</span>
+<span class="prompt1">     filters=None</span>
+<span class="prompt1">     fields=None,</span>
+<span class="prompt1">     verbose=False,</span>
+<span class="prompt1">     multimedia=None,</span>
+<span class="prompt1">     collect=False,</span>
+<span class="prompt1">     path=None</span>
+<span class="prompt1">)</span>
+</pre></div></div><section id="search-for-media-files-on-a-species">
+<h2>Search for media files on a species<a class="headerlink" href="#search-for-media-files-on-a-species" title="Permalink to this heading">#</a></h2>
+<p>To know how many total occurrences records are in the Atlas (and to test the function), type</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">import galah</span>
+<span class="prompt1">galah.atlas_media(taxa=&quot;Ornithorhynchus anatinus&quot;)</span>
 </pre></div></div><p>which returns</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>                    name  ...                                            infoUrl
-0         abcdTypeStatus  ...                                                NaN
-1      acceptedNameUsage  ...                                                NaN
-2    acceptedNameUsageID  ...                                                NaN
-3           accessRights  ...                                                NaN
-4        assertionUserId  ...                                                NaN
-..                   ...  ...                                                ...
-808       vernacularName  ...                                                NaN
-809             videoIDs  ...                                                NaN
-810            waterBody  ...                                                NaN
-811                 year  ...  https://github.com/AtlasOfLivingAustralia/ala-...
-812                 zone  ...                                                NaN
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>      decimalLatitude  decimalLongitude  ... dataResourceUid occurrenceID
+0          -43.329509        146.901387  ...          dr1411          NaN
+1          -43.199608        146.888490  ...          dr1411          NaN
+2          -43.189248        147.232631  ...          dr1411          NaN
+3          -43.178806        146.831148  ...          dr1411          NaN
+4          -43.178806        146.831148  ...          dr1411          NaN
+...               ...               ...  ...             ...          ...
+2242       -17.272424        145.580311  ...          dr7973          NaN
+2243       -17.272424        145.580311  ...          dr7973          NaN
+2244       -17.272424        145.580311  ...          dr7973          NaN
+2245       -17.269616        145.578918  ...          dr7973          NaN
+2246       -17.269616        145.578918  ...          dr7973          NaN
 
-[813 rows x 4 columns]
+[2247 rows x 19 columns]
 </pre></div>
 </div>
+<p>Since this is a lot of records, you may want to filter down the results, for example by year or by the longitude (though there are other filters you may wish to use; the <code class="docutils literal notranslate"><span class="pre">show_all()</span></code> and <code class="docutils literal notranslate"><span class="pre">search_all()</span></code> pages can help you find other filters).</p>
+<p>Once you have the filters chosen, you would write them as so</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">import galah</span>
+<span class="prompt1">filters=[&quot;year=2020&quot;,&quot;decimalLongitude&gt;153.0&quot;]</span>
+<span class="prompt1">galah.atlas_media(taxa=&quot;Ornithorhynchus anatinus&quot;,filters=filters)</span>
+</pre></div></div><p>which returns</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>    decimalLatitude  ...                          occurrenceID
+0        -30.395442  ...  42912016-2409-4125-a61f-13ffd4c32fcb
+1        -30.348831  ...  6882dfe3-5295-493d-a005-66f8392e9d5b
+2        -30.279557  ...  72ad295f-112d-442f-83e1-fd385ef9163a
+3        -30.247747  ...  dd885218-bdb9-404a-8441-e5cd329f6605
+4        -30.218699  ...  072bc4f0-7581-44c6-b0ec-e3fe58d251fc
+5        -28.794918  ...  2a701513-b21d-4baa-bac4-5e6a3a65252b
+6        -28.794918  ...  2a701513-b21d-4baa-bac4-5e6a3a65252b
+7        -28.656448  ...  12d8c7f9-9d66-4312-9245-87a0a1021557
+8        -28.213785  ...  808b0c19-9616-45f1-994e-e3b33fc32836
+9        -28.213785  ...  808b0c19-9616-45f1-994e-e3b33fc32836
+10       -28.765905  ...                                   NaN
+
+[11 rows x 19 columns]
+</pre></div>
+</div>
+<p>If you only want images, rather than other forms of multimedia, you can specify this by setting the <code class="docutils literal notranslate"><span class="pre">multimedia=&quot;images&quot;</span></code> variable, like so:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">import galah</span>
+<span class="prompt1">filters=[&quot;year=2020&quot;,&quot;decimalLongitude&gt;153.0&quot;]</span>
+<span class="prompt1">galah.atlas_media(taxa=&quot;Ornithorhynchus anatinus&quot;,filters=filters,multimedia=&quot;images&quot;)</span>
+</pre></div></div><p>which returns</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>   decimalLatitude  ...                          occurrenceID
+0       -30.395442  ...  42912016-2409-4125-a61f-13ffd4c32fcb
+1       -30.348831  ...  6882dfe3-5295-493d-a005-66f8392e9d5b
+2       -30.279557  ...  72ad295f-112d-442f-83e1-fd385ef9163a
+3       -30.247747  ...  dd885218-bdb9-404a-8441-e5cd329f6605
+4       -30.218699  ...  072bc4f0-7581-44c6-b0ec-e3fe58d251fc
+5       -28.794918  ...  2a701513-b21d-4baa-bac4-5e6a3a65252b
+6       -28.794918  ...  2a701513-b21d-4baa-bac4-5e6a3a65252b
+7       -28.656448  ...  12d8c7f9-9d66-4312-9245-87a0a1021557
+8       -28.213785  ...  808b0c19-9616-45f1-994e-e3b33fc32836
+9       -28.213785  ...  808b0c19-9616-45f1-994e-e3b33fc32836
+
+[10 rows x 19 columns]
+</pre></div>
+</div>
+<p>To download the data, you have to set the variable <code class="docutils literal notranslate"><span class="pre">collect=True</span></code>.  If you don’t specify a directory to download the images into, they will be downloaded into a cache directory.  However, if you want to specify the directory, you set <code class="docutils literal notranslate"><span class="pre">path=PATH/TO/FILE</span></code>.  If the path doesn’t exist, it will make the directory so it has a place to download the directory.  What the command to download images will look like is</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">import galah</span>
+<span class="prompt1">filters=[&quot;year=2020&quot;,&quot;decimalLongitude&gt;153.0&quot;]</span>
+<span class="prompt1">galah.atlas_media(taxa=&quot;Ornithorhynchus anatinus&quot;,filters=filters,multimedia=&quot;images&quot;,collect=True,path=\&quot;images-orn\&quot;)</span>
+</pre></div></div></section>
 </section>
 
 
@@ -382,17 +456,17 @@ span.prompt1:before {
             <footer class="bd-footer-article">
                 <!-- Previous / next buttons -->
 <div class='prev-next-area'>
-  <a class='left-prev' id="prev-link" href="Search_Taxa.html" title="previous page">
+  <a class='left-prev' id="prev-link" href="Atlas_Counts.html" title="previous page">
       <i class="fas fa-angle-left"></i>
       <div class="prev-next-info">
           <p class="prev-next-subtitle">previous</p>
-          <p class="prev-next-title">search_taxa()</p>
+          <p class="prev-next-title">atlas_counts()</p>
       </div>
   </a>
-  <a class='right-next' id="next-link" href="Show_All_Values.html" title="next page">
+  <a class='right-next' id="next-link" href="Atlas_Occurrences.html" title="next page">
   <div class="prev-next-info">
       <p class="prev-next-subtitle">next</p>
-      <p class="prev-next-title">show_all_values()</p>
+      <p class="prev-next-title">atlas_occurrences()</p>
   </div>
   <i class="fas fa-angle-right"></i>
   </a>
@@ -402,6 +476,27 @@ span.prompt1:before {
           </div>
           
           
+          
+            <div class="bd-sidebar-secondary bd-toc">
+              
+<div class="toc-item">
+  
+<div class="tocsection onthispage">
+    <i class="fas fa-list"></i> On this page
+</div>
+<nav id="bd-toc-nav" class="page-toc">
+    <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#search-for-media-files-on-a-species">
+   Search for media files on a species
+  </a>
+ </li>
+</ul>
+
+</nav>
+</div>
+
+            </div>
           
           
         </div>

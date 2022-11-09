@@ -5,13 +5,6 @@ from .show_all import show_all
 
 import sys
 
-# read configuration file to get atlas and other specific parameters
-def readConfig():
-    configFile=configparser.ConfigParser()
-    inifile = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'config.ini')
-    configFile.read(inifile)
-    return configFile
-
 '''
 function is meant to search all values for possible query fields - they are defined as None so you can narrow down the
 large list of all the potential variables to add to your atlas query.  Choosing which column you query is also an option

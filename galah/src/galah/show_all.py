@@ -2,14 +2,9 @@ import requests,os,configparser
 import pandas as pd
 from pandas import DataFrame
 
-import sys
+from .get_api_url import get_api_url
 
-# read configuration file to get atlas and other specific parameters
-def readConfig():
-    configFile=configparser.ConfigParser()
-    inifile = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'config.ini')
-    configFile.read(inifile)
-    return configFile
+import sys
 
 '''         
     list_values=None,
@@ -102,25 +97,12 @@ def show_all(assertions=False,
              reasons=False,
              ):
 
-    # configure which atlas you are looking at
-    atlasfile = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'node_config.csv')
-    atlaslist = pd.read_csv(atlasfile)
-    configs = readConfig()
-    specific_atlas = atlaslist[atlaslist['atlas'] == configs['galahSettings']['atlas']]
-
     # set up the option for getting back multiple values
     return_array=[]
 
     # check for assertions boolean
     if assertions:
-        # check to see if there are multiple assertion URLs
-        if len(specific_atlas[specific_atlas['called_by'] == 'show_all_assertions'].index) == 1:
-            index = specific_atlas[specific_atlas['called_by'] == 'show_all_assertions'].index[0]
-        else:
-            raise ValueError("another case of usage - need to add more code\n\n{}".format(
-                specific_atlas[specific_atlas['called_by'] == 'show_all_assertions']))
-        # query the API for assertions
-        response = requests.get(specific_atlas[specific_atlas['called_by'] == 'show_all_assertions']['api_url'][index])
+        response = requests.get(get_api_url(column1='called_by',column1value='show_all_assertions'))
         # create a dataFrame from the response
         json = pd.DataFrame.from_dict(response.json())
         # set default value for the 'type' column
@@ -147,40 +129,26 @@ def show_all(assertions=False,
     # return all the possible apis you could query
     if apis:
         # append the full atlaslist to return_array
+        atlasfile = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'node_config.csv')
+        atlaslist = pd.read_csv(atlasfile)
         return_array.append(atlaslist)
 
     # check for collections
     if collections:
-        # check to see if there are multiple collection URLs
-        if len(specific_atlas[specific_atlas['called_by'] == 'show_all_collections'].index) == 1:
-            index = specific_atlas[specific_atlas['called_by'] == 'show_all_collections'].index[0]
-        else:
-            raise ValueError("another case of usage - need to add more code\n\n{}".format(specific_atlas[specific_atlas['called_by'] == 'show_all_collections']))
-        # get response from collections API query
-        response = requests.get(specific_atlas[specific_atlas['called_by'] == 'show_all_collections']['api_url'][index])
+        response = requests.get(get_api_url(column1='called_by', column1value='show_all_collections'))
         # append data frame to return_array
         return_array.append(pd.DataFrame.from_dict(response.json()))
 
     # check for datasets
     if datasets:
-        # check to see if there are multiple dataset URLs
-        if len(specific_atlas[specific_atlas['called_by'] == 'show_all_datasets'].index) == 1:
-            index = specific_atlas[specific_atlas['called_by'] == 'show_all_datasets'].index[0]
-        else:
-            raise ValueError("another case of usage - need to add more code\n\n{}".format(specific_atlas[specific_atlas['called_by'] == 'show_all_datasets']))
-        # get response from collections API query
-        response = requests.get(specific_atlas[specific_atlas['called_by'] == 'show_all_datasets']['api_url'][index])
+        response = requests.get(get_api_url(column1='called_by', column1value='show_all_datasets'))
         # append data frame to return_array
         return_array.append(pd.DataFrame.from_dict(response.json()))
 
     # get all fields from the API
     if fields:
-        # check for URLs containing fields (there are two)
-        fields_URLS = specific_atlas[specific_atlas['called_by'] == 'show_all_fields']
-        # get the index of the api that contains fields, and doesn't deal with the spatial portal
-        index = fields_URLS[fields_URLS['api_name'] == "records_fields"].index[0]
-        # get response from fields API query
-        response = requests.get(fields_URLS[fields_URLS['api_name'] == "records_fields"]['api_url'][index])
+        # query the API for fields
+        response = requests.get(get_api_url(column1='called_by',column1value='show_all_fields',column2='api_name',column2value='records_fields'))
         # get data frame from response
         fields_values = pd.DataFrame.from_dict(response.json())
         # select only the columns titled 'name', 'info', 'infoUrl'
@@ -201,14 +169,7 @@ def show_all(assertions=False,
 
     # get all licences from the API
     if licences:
-        # check to see if there are multiple licences URLs
-        if len(specific_atlas[specific_atlas['called_by'] == 'show_all_licences'].index) == 1:
-            index = specific_atlas[specific_atlas['called_by'] == 'show_all_licences'].index[0]
-        else:
-            raise ValueError("another case of usage - need to add more code\n\n{}".format(
-                specific_atlas[specific_atlas['called_by'] == 'show_all_licences']))
-        # get response from licences API query
-        response = requests.get(specific_atlas[specific_atlas['called_by'] == 'show_all_licences']['api_url'][index])
+        response = requests.get(get_api_url(column1='called_by', column1value='show_all_licences'))
         # create a data frame from the API response
         json = pd.DataFrame.from_dict(response.json())
         # append data frame with only the column names 'id', 'name', 'acronym' and 'url'
@@ -216,19 +177,9 @@ def show_all(assertions=False,
 
     # get all lists from the API
     if lists:
-        # check to see if there are multiple lists URLs
-        if len(specific_atlas[specific_atlas['called_by'] == 'show_all_lists'].index) == 1:
-            index = specific_atlas[specific_atlas['called_by'] == 'show_all_lists'].index[0]
-        else:
-            raise ValueError("another case of usage - need to add more code\n\n{}".format(
-                specific_atlas[specific_atlas['called_by'] == 'show_all_lists']))
-        # add offsets to get all the lists from the api - loop over the 3 listed offsets
-        # 1. query the API for the data
-        # 2. if this is the first offset, then create a new data frame from the data
-        #    if this is not the first offset, concatenate the new data frame onto the old one
         for i,maxoffsets in enumerate(["?max=1000&offset=0","?max=1000&offset=1000","?max=1000&offset=2000"]):
             response = requests.get(
-                "{}{}".format(specific_atlas[specific_atlas['called_by'] == 'show_all_lists']['api_url'][index],maxoffsets))
+                "{}{}".format(get_api_url(column1='called_by', column1value='show_all_lists'),maxoffsets))
             if i == 0:
                 json = pd.DataFrame.from_dict(response.json())
             else:
@@ -246,14 +197,7 @@ def show_all(assertions=False,
 
     # get all profiles from the API
     if profiles:
-        # check to see if there are multiple lists URLs
-        if len(specific_atlas[specific_atlas['called_by'] == 'show_all_profiles'].index) == 1:
-            index = specific_atlas[specific_atlas['called_by'] == 'show_all_profiles'].index[0]
-        else:
-            raise ValueError("another case of usage - need to add more code\n\n{}".format(
-                specific_atlas[specific_atlas['called_by'] == 'show_all_profiles']))
-        # get response from profiles API query
-        response = requests.get(specific_atlas[specific_atlas['called_by'] == 'show_all_profiles']['api_url'][index])
+        response = requests.get(get_api_url(column1='called_by', column1value='show_all_profiles'))
         # create a data frame from the API response
         json = pd.DataFrame.from_dict(response.json())
         # append data frame with only the column names 'id', 'name', 'shortName' and 'description'
@@ -261,13 +205,7 @@ def show_all(assertions=False,
 
     # get all providers from the API
     if providers:
-        # check to see if there are multiple lists URLs
-        if len(specific_atlas[specific_atlas['called_by'] == 'show_all_providers'].index) == 1:
-            index = specific_atlas[specific_atlas['called_by'] == 'show_all_providers'].index[0]
-        else:
-            raise ValueError("another case of usage - need to add more code\n\n{}".format(specific_atlas[specific_atlas['called_by'] == 'show_all_providers']))
-        # get response from providers API query
-        response = requests.get(specific_atlas[specific_atlas['called_by'] == 'show_all_providers']['api_url'][index])
+        response = requests.get(get_api_url(column1='called_by', column1value='show_all_providers'))
         # append data frame to return_array
         return_array.append(pd.DataFrame.from_dict(response.json()))
 
@@ -303,14 +241,7 @@ def show_all(assertions=False,
 
     # check for reasons
     if reasons:
-        # check to see if there are multiple lists URLs
-        if len(specific_atlas[specific_atlas['called_by'] == 'show_all_reasons'].index) == 1:
-            index = specific_atlas[specific_atlas['called_by'] == 'show_all_reasons'].index[0]
-        else:
-            raise ValueError("another case of usage - need to add more code\n\n{}".format(
-                specific_atlas[specific_atlas['called_by'] == 'show_all_reasons']))
-        # get response from response API query
-        response = requests.get(specific_atlas[specific_atlas['called_by'] == 'show_all_reasons']['api_url'][index])
+        response = requests.get(get_api_url(column1='called_by', column1value='show_all_reasons'))
         # create a data frame from the API response
         json = pd.DataFrame.from_dict(response.json())
         # append data frame with only the column names 'id', 'name', sort values by 'id', and renumber indices
