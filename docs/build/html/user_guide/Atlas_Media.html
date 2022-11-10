@@ -374,10 +374,11 @@ span.prompt1:before {
 <span class="prompt1">     fields=None,</span>
 <span class="prompt1">     verbose=False,</span>
 <span class="prompt1">     multimedia=None,</span>
-<span class="prompt1">     collect=False,</span>
-<span class="prompt1">     path=None</span>
+<span class="prompt1">     **collect=False,</span>
+<span class="prompt1">     **path=None</span>
 <span class="prompt1">)</span>
-</pre></div></div><section id="search-for-media-files-on-a-species">
+</pre></div></div><p>** have not been implemented yet - will be soon (?)</p>
+<section id="search-for-media-files-on-a-species">
 <h2>Search for media files on a species<a class="headerlink" href="#search-for-media-files-on-a-species" title="Permalink to this heading">#</a></h2>
 <p>To know how many total occurrences records are in the Atlas (and to test the function), type</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">import galah</span>
@@ -441,11 +442,14 @@ span.prompt1:before {
 [10 rows x 19 columns]
 </pre></div>
 </div>
+<section id="need-to-implement-the-section-below">
+<h3>Need to implement the section below<a class="headerlink" href="#need-to-implement-the-section-below" title="Permalink to this heading">#</a></h3>
 <p>To download the data, you have to set the variable <code class="docutils literal notranslate"><span class="pre">collect=True</span></code>.  If you don’t specify a directory to download the images into, they will be downloaded into a cache directory.  However, if you want to specify the directory, you set <code class="docutils literal notranslate"><span class="pre">path=PATH/TO/FILE</span></code>.  If the path doesn’t exist, it will make the directory so it has a place to download the directory.  What the command to download images will look like is</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">import galah</span>
 <span class="prompt1">filters=[&quot;year=2020&quot;,&quot;decimalLongitude&gt;153.0&quot;]</span>
 <span class="prompt1">galah.atlas_media(taxa=&quot;Ornithorhynchus anatinus&quot;,filters=filters,multimedia=&quot;images&quot;,collect=True,path=\&quot;images-orn\&quot;)</span>
 </pre></div></div></section>
+</section>
 </section>
 
 
@@ -490,6 +494,13 @@ span.prompt1:before {
   <a class="reference internal nav-link" href="#search-for-media-files-on-a-species">
    Search for media files on a species
   </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#need-to-implement-the-section-below">
+     Need to implement the section below
+    </a>
+   </li>
+  </ul>
  </li>
 </ul>
 

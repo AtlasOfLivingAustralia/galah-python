@@ -12,9 +12,11 @@ to download.
          fields=None,
          verbose=False,
          multimedia=None,
-         collect=False,
-         path=None
+         **collect=False,
+         **path=None
     )
+
+** have not been implemented yet - will be soon (?)
 
 Search for media files on a species
 ___________________________________
@@ -55,6 +57,10 @@ If you only want images, rather than other forms of multimedia, you can specify 
 which returns
 
 .. program-output:: python3 -c "import galah; filters=[\"year=2020\",\"decimalLongitude>153.0\"];print(galah.atlas_media(taxa=\"Ornithorhynchus anatinus\",filters=filters,multimedia=\"images\"))"
+
+-----------------------------------
+Need to implement the section below
+-----------------------------------
 
 To download the data, you have to set the variable ``collect=True``.  If you don't specify a directory to download the images into, they will be downloaded into a cache directory.  However, if you want to specify the directory, you set ``path=PATH/TO/FILE``.  If the path doesn't exist, it will make the directory so it has a place to download the directory.  What the command to download images will look like is
 

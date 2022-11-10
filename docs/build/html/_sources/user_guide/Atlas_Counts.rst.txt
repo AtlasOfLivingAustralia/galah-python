@@ -11,7 +11,7 @@ to download.
          separate=False,
          verbose=False,
          filters=None
-         groups=None,
+         group_by=None,
          expand=False
     )
 
