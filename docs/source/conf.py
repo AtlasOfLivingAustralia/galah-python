@@ -24,18 +24,41 @@ author = 'Amanda Buyan, Atlas of Living Australia'
 # The full version, including alpha/beta/rc tags
 release = '1.0.0'
 
+# try this
+sys.path.insert(0,"../../galah/src/galah/")
 
 # -- General configuration ---------------------------------------------------
 
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
+# 'sphinx.ext.autosectionlabel',
+'''
+	"sphinx.ext.coverage",
+	"sphinx.ext.doctest",
+	"sphinx.ext.extlinks",
+	"sphinx.ext.ifconfig",
+	"sphinx.ext.intersphinx",
+	"sphinx.ext.mathjax",
+	"sphinx.ext.todo",
+'''
 extensions = [
 	'myst_parser',
 	'sphinx-prompt',
 	'sphinxcontrib.programoutput',
 	'sphinx_design',
+	'sphinx.ext.autodoc',
+	'sphinx.ext.autosummary',
+	'autoapi.extension'
 ]
+'''
+'''
+
+#"sphinx.ext.linkcode",
+
+autosummary_generate = True
+autoapi_member_order = "alphabetical"
+# 'autoapi.extension' is an addition - disable if doesn't work
 
 myst_enable_extensions = ["colon_fence"]
 
@@ -45,10 +68,22 @@ version = str(galah.__version__)
 release = version
 source_path = os.path.dirname(os.path.abspath(__file__))
 
+# added
+#autoapi_options = ['members', 'undoc-members', 'private-members', 'show-inheritance', 'show-module-summary','special-members', 'imported-members' ]
+
+#, 'undoc-members'] #, 'private-members', 'show-inheritance', 'show-module-summary', 'special-members', 'imported-members' ]
+
+autoapi_dirs = ['../../galah/src/galah/',]
+
+autoapi_generate_api_docs=False
+
+# try this
+#autoapi_add_toctree_entry = False
+
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
 # This pattern also affects html_static_path and html_extra_path.
-exclude_patterns = []
+exclude_patterns = ['apply_data_profile.py','get_api_url.py']
 
 # -- Options for HTML output -------------------------------------------------
 

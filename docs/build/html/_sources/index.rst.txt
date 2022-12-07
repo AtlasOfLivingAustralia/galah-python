@@ -6,7 +6,6 @@ galah
 
 **Date**: |today| **Version**: |version|
 
-
 galah is a Python interface to biodiversity data hosted by the Atlas of Living Australia (ALA). It is based off of the R package of the same name. Data gathered from the ALA can be used for species distribution models, among other things.
 
 .. toctree::
@@ -15,8 +14,7 @@ galah is a Python interface to biodiversity data hosted by the Atlas of Living A
 
    Getting Started <getting_started/index>
    Configuring Galah <configuring_galah/index>
-   User Guide <user_guide/index>
-
+   User Guide API <apidocs/galah>
 
 .. grid:: 4 4 4 2
 
@@ -36,18 +34,18 @@ galah is a Python interface to biodiversity data hosted by the Atlas of Living A
 
         Want to configure ``galah``? Click here.
 
-    .. grid-item-card:: 
-        :link: user_guide/index.html
+    .. grid-item-card::
+        :link: apidocs/galah.html
         :img-top: _static/icons/Galah_User_Guide.svg
         :class-card: sd-text-black
         :text-align: center
 
-        A user guide to ``galah``, including explanations for each function
-
+        Want to browse ``galah``'s user guide? Click here.
+    
     .. grid-item-card:: 
         :img-top: _static/icons/FAQs.svg
         :class-card: sd-text-black
         :text-align: center
 
         Questions about the ``galah`` package? Suggestions for new features? Wish to
-        contact us? Find the answer to your question here
+        contact us? Find the answer to your question here.

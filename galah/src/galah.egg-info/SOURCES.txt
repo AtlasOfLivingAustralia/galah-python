@@ -1,6 +1,7 @@
 setup.cfg
 setup.py
 src/galah/__init__.py
+src/galah/apply_data_profile.py
 src/galah/atlas_citation.py
 src/galah/atlas_counts.py
 src/galah/atlas_media.py
@@ -9,7 +10,6 @@ src/galah/atlas_species.py
 src/galah/atlas_taxonomy.py
 src/galah/config.ini
 src/galah/galah_config.py
-src/galah/galah_down_to.py
 src/galah/galah_filter.py
 src/galah/galah_geolocate.py
 src/galah/galah_group_by.py

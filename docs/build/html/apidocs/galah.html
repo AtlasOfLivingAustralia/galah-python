@@ -1,0 +1,670 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>User Guide &#8212; Galah 1.0.0 documentation</title>
+  <script>
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=9b1a4fa89bdd0e95b23b" rel="stylesheet">
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=9b1a4fa89bdd0e95b23b" rel="stylesheet">
+
+  
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/6.1.2/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/extra.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/extra.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=9b1a4fa89bdd0e95b23b">
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/design-tabs.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'apidocs/galah';</script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="Configuring Galah" href="../configuring_galah/index.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="docsearch:language" content="en">
+  </head>
+  
+  
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="180" data-default-mode="">
+
+  
+  <input type="checkbox" class="sidebar-toggle" name="__primary" id="__primary">
+  <label class="overlay overlay-primary" for="__primary"></label>
+
+  
+  <input type="checkbox" class="sidebar-toggle" name="__secondary" id="__secondary">
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+      
+<form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+    </div>
+  </div>
+
+  
+  <nav class="bd-header navbar navbar-expand-lg bd-navbar" id="navbar-main"><div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+      <span class="fas fa-bars"></span>
+  </label>
+  <div id="navbar-start">
+    
+    
+  
+
+
+<a class="navbar-brand logo" href="../index.html">
+
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Logo image">
+    <img src="../_static/logo.png" class="logo__image only-dark" alt="Logo image">
+  
+  
+</a>
+    
+  </div>
+
+  
+  <div class="col-lg-9 navbar-header-items">
+    <div id="navbar-center" class="mr-auto">
+      
+      <div class="navbar-center-item">
+        <nav class="navbar-nav">
+    <p class="sidebar-header-items__title" role="heading" aria-level="1" aria-label="Site Navigation">
+        Site Navigation
+    </p>
+    <ul id="navbar-main-elements" class="navbar-nav">
+        
+                <li class="nav-item">
+                    <a class="nav-link" href="../getting_started/index.html">
+                        Getting Started
+                    </a>
+                </li>
+                
+
+                <li class="nav-item">
+                    <a class="nav-link" href="../configuring_galah/index.html">
+                        Configuring Galah
+                    </a>
+                </li>
+                
+
+                <li class="nav-item current active">
+                    <a class="nav-link" href="#">
+                        User Guide
+                    </a>
+                </li>
+                
+    </ul>
+</nav>
+      </div>
+      
+    </div>
+
+    <div id="navbar-end">
+      <div class="navbar-end-item navbar-end__search-button-container">
+        
+<button class="btn btn-sm navbar-btn search-button search-button__button" title="Search">
+  <i class="fas fa-search"></i>
+</button>
+      </div>
+      
+      <div class="navbar-end-item">
+        <span class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle">
+    <a class="theme-switch" data-mode="light"><i class="fas fa-sun"></i></a>
+    <a class="theme-switch" data-mode="dark"><i class="far fa-moon"></i></a>
+    <a class="theme-switch" data-mode="auto"><i class="fas fa-adjust"></i></a>
+</span>
+      </div>
+      
+      <div class="navbar-end-item">
+        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/AtlasOfLivingAustralia/galah_python" title="GitHub" class="nav-link" rel="noopener" target="_blank"><span><i class="fab fa-github-square"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+      </ul>
+      </div>
+      
+    </div>
+  </div>
+
+
+  
+  <div class="search-button-container--mobile">
+<button class="btn btn-sm navbar-btn search-button search-button__button" title="Search">
+  <i class="fas fa-search"></i>
+</button>
+  </div>
+
+  
+  <label class="sidebar-toggle secondary-toggle" for="__secondary">
+      <span class="fas fa-outdent"></span>
+  </label>
+  
+
+</div>
+  </nav>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+      
+      <div class="navbar-center-item">
+        <nav class="navbar-nav">
+    <p class="sidebar-header-items__title" role="heading" aria-level="1" aria-label="Site Navigation">
+        Site Navigation
+    </p>
+    <ul id="navbar-main-elements" class="navbar-nav">
+        
+                <li class="nav-item">
+                    <a class="nav-link" href="../getting_started/index.html">
+                        Getting Started
+                    </a>
+                </li>
+                
+
+                <li class="nav-item">
+                    <a class="nav-link" href="../configuring_galah/index.html">
+                        Configuring Galah
+                    </a>
+                </li>
+                
+
+                <li class="nav-item current active">
+                    <a class="nav-link" href="#">
+                        User Guide
+                    </a>
+                </li>
+                
+    </ul>
+</nav>
+      </div>
+      
+      </div>
+    
+
+    
+    
+    <div class="sidebar-header-items__end">
+      
+      <div class="navbar-end-item">
+        <span class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle">
+    <a class="theme-switch" data-mode="light"><i class="fas fa-sun"></i></a>
+    <a class="theme-switch" data-mode="dark"><i class="far fa-moon"></i></a>
+    <a class="theme-switch" data-mode="auto"><i class="fas fa-adjust"></i></a>
+</span>
+      </div>
+      
+      <div class="navbar-end-item">
+        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/AtlasOfLivingAustralia/galah_python" title="GitHub" class="nav-link" rel="noopener" target="_blank"><span><i class="fab fa-github-square"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+      </ul>
+      </div>
+      
+    </div>
+    
+  </div>
+
+  
+  <div class="sidebar-start-items sidebar-primary__section">
+    <div class="sidebar-start-items__item">
+<form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+    </div>
+  </div>
+  
+
+  
+  <div class="sidebar-end-items sidebar-primary__section">
+    <div class="sidebar-end-items__item">
+    </div>
+  </div>
+
+      </div>
+      <main class="bd-main">
+        
+        
+        <div class="bd-content">
+          <div class="bd-article-container">
+            
+            <div class="bd-header-article">
+                
+            </div>
+            
+            
+            <article class="bd-article" role="main">
+              
+  <section id="module-galah">
+<span id="user-guide"></span><h1>User Guide<a class="headerlink" href="#module-galah" title="Permalink to this heading">#</a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="galah.atlas_counts">
+<span class="sig-prename descclassname"><span class="pre">galah.</span></span><span class="sig-name descname"><span class="pre">atlas_counts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">taxa</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filters</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">group_by</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expand</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">separate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_data_profile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#galah.atlas_counts" title="Permalink to this definition">#</a></dt>
+<dd><p>Used for getting the number of occurrence records before you’re ready
+to download the actual occurrences.</p>
+<p>To know how many total records are in your chosen atlas, type</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><style type="text/css">
+span.prompt1:before {
+  content: " ";
+}
+</style><span class="prompt1"><span class="kn">import</span> <span class="nn">galah</span></span>
+<span class="prompt1"><span class="n">galah</span><span class="o">.</span><span class="n">atlas_counts</span><span class="p">()</span></span>
+</pre></div></div><p>which returns</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>   totalRecords
+0     112555050
+</pre></div>
+</div>
+<p>example of filters that can be used: “year=2020”,”basisOfRecord=HUMAN_OBSERVATION”
+example of group_by groups that can be used: “year”,”basisOfRecord”</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="galah.atlas_media">
+<span class="sig-prename descclassname"><span class="pre">galah.</span></span><span class="sig-name descname"><span class="pre">atlas_media</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">taxa</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filters</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fields</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">multimedia</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">assertions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_data_profile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">collect</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#galah.atlas_media" title="Permalink to this definition">#</a></dt>
+<dd><p>Used for getting media, such as images, videos and sounds.  An example query (filtering to ensure a small
+nunber of results) is</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="kn">import</span> <span class="nn">galah</span></span>
+<span class="prompt1"><span class="n">filters</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;year=2020&quot;</span><span class="p">,</span><span class="s2">&quot;decimalLongitude&gt;153.0&quot;</span><span class="p">]</span></span>
+<span class="prompt1"><span class="n">galah</span><span class="o">.</span><span class="n">atlas_media</span><span class="p">(</span><span class="n">taxa</span><span class="o">=</span><span class="s2">&quot;Ornithorhynchus anatinus&quot;</span><span class="p">,</span><span class="n">filters</span><span class="o">=</span><span class="n">filters</span><span class="p">)</span></span>
+</pre></div></div><p>which returns</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>    decimalLatitude  ...                          occurrenceID
+0        -30.395442  ...  42912016-2409-4125-a61f-13ffd4c32fcb
+1        -30.348831  ...  6882dfe3-5295-493d-a005-66f8392e9d5b
+2        -30.279557  ...  72ad295f-112d-442f-83e1-fd385ef9163a
+3        -30.247747  ...  dd885218-bdb9-404a-8441-e5cd329f6605
+4        -30.218699  ...  072bc4f0-7581-44c6-b0ec-e3fe58d251fc
+5        -28.794918  ...  2a701513-b21d-4baa-bac4-5e6a3a65252b
+6        -28.794918  ...  2a701513-b21d-4baa-bac4-5e6a3a65252b
+7        -28.656448  ...  12d8c7f9-9d66-4312-9245-87a0a1021557
+8        -28.213785  ...  808b0c19-9616-45f1-994e-e3b33fc32836
+9        -28.213785  ...  808b0c19-9616-45f1-994e-e3b33fc32836
+10       -28.765905  ...                                   NaN
+
+[11 rows x 19 columns]
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="galah.atlas_occurrences">
+<span class="sig-prename descclassname"><span class="pre">galah.</span></span><span class="sig-name descname"><span class="pre">atlas_occurrences</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">taxa</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filters</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fields</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">assertions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_data_profile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#galah.atlas_occurrences" title="Permalink to this definition">#</a></dt>
+<dd><p>Used for getting occurrence data for your species.  To get occurrences for</p>
+<p>To know how many total records are in your chosen atlas, type</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="kn">import</span> <span class="nn">galah</span></span>
+<span class="prompt1"><span class="n">galah</span><span class="o">.</span><span class="n">galah</span><span class="o">.</span><span class="n">atlas_occurrences</span><span class="p">(</span><span class="n">taxa</span><span class="o">=</span><span class="s2">&quot;Vulpes vulpes&quot;</span><span class="p">)</span></span>
+</pre></div></div><p>which returns</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>                                    recordID  ... spatiallyValid
+0       00006204-4a7a-4e36-8c8b-8ce5ade0ff5b  ...           True
+1       00012495-6223-4edb-bea5-61278e8f82d0  ...           True
+2       0001ab0e-010e-4165-bae0-385b31e5e4da  ...           True
+3       00020f57-3e55-4e4a-b48f-d8a7083d771f  ...           True
+4       00022581-7451-492f-87ab-ac3e4fd6484f  ...           True
+...                                      ...  ...            ...
+115978  fffc1e94-520f-416a-b18e-b1b6643288fb  ...           True
+115979  fffc97f7-b64c-40ec-9642-46fe3a9cfd39  ...           True
+115980  fffda344-fe30-4cc0-b126-6a7f551e7f1a  ...           True
+115981  fffdab5a-3d79-45d6-be54-c1b5f9a6d9f1  ...           True
+115982  fffe6386-0de0-49f6-ba38-1b4a9cda57ba  ...           True
+
+[115983 rows x 55 columns]
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="galah.atlas_species">
+<span class="sig-prename descclassname"><span class="pre">galah.</span></span><span class="sig-name descname"><span class="pre">atlas_species</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">taxa</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#galah.atlas_species" title="Permalink to this definition">#</a></dt>
+<dd><p>Used for getting occurrence data for your species.  To get occurrences for</p>
+<p>To know how many total records are in your chosen atlas, type</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="kn">import</span> <span class="nn">galah</span></span>
+<span class="prompt1"><span class="n">galah</span><span class="o">.</span><span class="n">galah</span><span class="o">.</span><span class="n">atlas_species</span><span class="p">(</span><span class="n">taxa</span><span class="o">=</span><span class="s2">&quot;Heleioporus&quot;</span><span class="p">)</span></span>
+</pre></div></div><p>which returns</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>    kingdom  ...                  vernacular_names
+0  Animalia  ...              Western Spotted Frog
+1  Animalia  ...              Giant Burrowing Frog
+2  Animalia  ...  Hooting Frog, Western Marsh Frog
+3  Animalia  ...                      Moaning Frog
+4  Animalia  ...        Plains Frog, Whooping Frog
+5  Animalia  ...                         Sand Frog
+
+[6 rows x 9 columns]
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="galah.galah_config">
+<span class="sig-prename descclassname"><span class="pre">galah.</span></span><span class="sig-name descname"><span class="pre">galah_config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">email</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">email_notify</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atlas</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_profile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#galah.galah_config" title="Permalink to this definition">#</a></dt>
+<dd><p>Use to set defaults for <code class="docutils literal notranslate"><span class="pre">galah</span></code> to use.  To run this to configure your email, type</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="kn">import</span> <span class="nn">galah</span></span>
+<span class="prompt1"><span class="n">galah</span><span class="o">.</span><span class="n">galah</span><span class="o">.</span><span class="n">galah_config</span><span class="p">(</span><span class="n">email</span><span class="o">=</span><span class="s2">&quot;yourname@example.com&quot;</span><span class="p">)</span></span>
+</pre></div></div></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="galah.galah_filter">
+<span class="sig-prename descclassname"><span class="pre">galah.</span></span><span class="sig-name descname"><span class="pre">galah_filter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filters</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ifgroupBy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#galah.galah_filter" title="Permalink to this definition">#</a></dt>
+<dd><p>This takes</p>
+<p>To know how many total records are in your chosen atlas, type</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="kn">import</span> <span class="nn">galah</span></span>
+<span class="prompt1"><span class="n">galah</span><span class="o">.</span><span class="n">galah</span><span class="o">.</span><span class="n">galah_filter</span><span class="p">(</span><span class="n">filters</span><span class="o">=</span><span class="s2">&quot;year=2020&quot;</span><span class="p">)</span></span>
+</pre></div></div><p>which returns</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>&amp;fq=year:(2020)
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="galah.galah_group_by">
+<span class="sig-prename descclassname"><span class="pre">galah.</span></span><span class="sig-name descname"><span class="pre">galah_group_by</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">URL</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">group_by</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filters</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expand</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#galah.galah_group_by" title="Permalink to this definition">#</a></dt>
+<dd><p>Used for grouping counts by a specific query, i.e. “year” or “basisOfRecord”.  It’s mainly utilized in atlas_counts.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="galah.galah_select">
+<span class="sig-prename descclassname"><span class="pre">galah.</span></span><span class="sig-name descname"><span class="pre">galah_select</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">selectionList</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#galah.galah_select" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="galah.search_all">
+<span class="sig-prename descclassname"><span class="pre">galah.</span></span><span class="sig-name descname"><span class="pre">search_all</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">assertions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atlases</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">apis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">collections</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">datasets</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fields</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">licences</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lists</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">profiles</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">providers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reasons</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ranks</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#galah.search_all" title="Permalink to this definition">#</a></dt>
+<dd><p>Used for getting and searching various amounts of information about the chosen atlas you want to
+get counts and occurrences from.</p>
+<p>To find a list of collections in the apis you want to search, type</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="kn">import</span> <span class="nn">galah</span></span>
+<span class="prompt1"><span class="n">galah</span><span class="o">.</span><span class="n">search_all</span><span class="p">(</span><span class="n">apis</span><span class="o">=</span><span class="s2">&quot;collections&quot;</span><span class="p">)</span></span>
+</pre></div></div><p>which returns</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Empty DataFrame
+Columns: [atlas, system, api_name, api_url, called_by]
+Index: []
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="galah.search_taxa">
+<span class="sig-prename descclassname"><span class="pre">galah.</span></span><span class="sig-name descname"><span class="pre">search_taxa</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">taxa</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#galah.search_taxa" title="Permalink to this definition">#</a></dt>
+<dd><p>Used for getting the taxonConceptID for querying the Atlas.  To get a table with the taxon concept ID, type</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="kn">import</span> <span class="nn">galah</span></span>
+<span class="prompt1"><span class="n">galah</span><span class="o">.</span><span class="n">search_taxa</span><span class="p">(</span><span class="n">taxa</span><span class="o">=</span><span class="s2">&quot;Vulpes vulpes&quot;</span><span class="p">)</span></span>
+</pre></div></div><p>which returns</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>  scientificName  ...     rank
+0  Vulpes vulpes  ...  species
+
+[1 rows x 4 columns]
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="galah.search_values">
+<span class="sig-prename descclassname"><span class="pre">galah.</span></span><span class="sig-name descname"><span class="pre">search_values</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">field</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#galah.search_values" title="Permalink to this definition">#</a></dt>
+<dd><p>Used for getting the values from a field you want to query.  To see how this is used, type</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="kn">import</span> <span class="nn">galah</span></span>
+<span class="prompt1"><span class="n">galah</span><span class="o">.</span><span class="n">search_values</span><span class="p">(</span><span class="n">field</span><span class="o">=</span><span class="s2">&quot;basisOfRecord&quot;</span><span class="p">,</span><span class="n">value</span><span class="o">=</span><span class="s2">&quot;OBS&quot;</span><span class="p">)</span></span>
+</pre></div></div><p>which returns</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>           field             category
+2  basisOfRecord          OBSERVATION
+0  basisOfRecord    HUMAN_OBSERVATION
+4  basisOfRecord  MACHINE_OBSERVATION
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="galah.show_all">
+<span class="sig-prename descclassname"><span class="pre">galah.</span></span><span class="sig-name descname"><span class="pre">show_all</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">assertions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atlases</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">apis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">collections</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">datasets</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fields</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">licences</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lists</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">profiles</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">providers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ranks</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reasons</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#galah.show_all" title="Permalink to this definition">#</a></dt>
+<dd><p>Used for getting various amounts of information about the chosen atlas you want to
+get occurrences from.</p>
+<p>To find out what datasets are in your atlas, type</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="kn">import</span> <span class="nn">galah</span></span>
+<span class="prompt1"><span class="n">galah</span><span class="o">.</span><span class="n">show_all</span><span class="p">(</span><span class="n">datasets</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></span>
+</pre></div></div><p>which returns</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>                                                    name  ...      uid
+0                 River Torrens Linear Park Species List  ...  dr14140
+1                                 Warringah Species List  ...   dr4047
+2                               &#39;A Genome&#39; Oryza species  ...   dr8221
+3                                              *Brigalow  ...  dr14507
+4                                                0662409  ...  dr19938
+...                                                  ...  ...      ...
+12073  [C4OC] Torres Strait Regional Landcare Facilit...  ...   dr3529
+12074  [C4OC] Traditional Ecological Knowledge Record...  ...   dr3199
+12075  [C4OC] Trialling and demonstrating farmer inno...  ...   dr3519
+12076                [C4OC] Urban and Coastal Protection  ...   dr6802
+12077        _River_Torrens_Linear_Park_Species_List.csv  ...  dr19265
+
+[12078 rows x 3 columns]
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="galah.show_values">
+<span class="sig-prename descclassname"><span class="pre">galah.</span></span><span class="sig-name descname"><span class="pre">show_values</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">field</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#galah.show_values" title="Permalink to this definition">#</a></dt>
+<dd><p>Used for getting the values from a field you want to query.  To see how this is used, type</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="kn">import</span> <span class="nn">galah</span></span>
+<span class="prompt1"><span class="n">galah</span><span class="o">.</span><span class="n">show_values</span><span class="p">(</span><span class="n">field</span><span class="o">=</span><span class="s2">&quot;basisOfRecord&quot;</span><span class="p">)</span></span>
+</pre></div></div><p>which returns</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>           field             category
+0  basisOfRecord    HUMAN_OBSERVATION
+1  basisOfRecord   PRESERVED_SPECIMEN
+2  basisOfRecord          OBSERVATION
+3  basisOfRecord           OCCURRENCE
+4  basisOfRecord  MACHINE_OBSERVATION
+5  basisOfRecord      MATERIAL_SAMPLE
+6  basisOfRecord      LIVING_SPECIMEN
+7  basisOfRecord    MATERIAL_CITATION
+8  basisOfRecord      FOSSIL_SPECIMEN
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+
+
+            </article>
+            
+            
+            
+            <footer class="bd-footer-article">
+                <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+  <a class='left-prev' id="prev-link" href="../configuring_galah/index.html" title="previous page">
+      <i class="fas fa-angle-left"></i>
+      <div class="prev-next-info">
+          <p class="prev-next-subtitle">previous</p>
+          <p class="prev-next-title">Configuring Galah</p>
+      </div>
+  </a>
+</div>
+            </footer>
+            
+          </div>
+          
+          
+          
+            <div class="bd-sidebar-secondary bd-toc">
+              
+<div class="toc-item">
+  
+<div class="tocsection onthispage">
+    <i class="fas fa-list"></i> On this page
+</div>
+<nav id="bd-toc-nav" class="page-toc">
+    <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#galah.atlas_counts">
+   atlas_counts
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#galah.atlas_media">
+   atlas_media
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#galah.atlas_occurrences">
+   atlas_occurrences
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#galah.atlas_species">
+   atlas_species
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#galah.galah_config">
+   galah_config
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#galah.galah_filter">
+   galah_filter
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#galah.galah_group_by">
+   galah_group_by
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#galah.galah_select">
+   galah_select
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#galah.search_all">
+   search_all
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#galah.search_taxa">
+   search_taxa
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#galah.search_values">
+   search_values
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#galah.show_all">
+   show_all
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#galah.show_values">
+   show_values
+  </a>
+ </li>
+</ul>
+
+</nav>
+</div>
+
+            </div>
+          
+          
+        </div>
+        <footer class="bd-footer-content">
+          <div class="bd-footer-content__inner">
+            
+          </div>
+        </footer>
+        
+      </main>
+    </div>
+  </div>
+
+  
+    
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/pydata-sphinx-theme.js?digest=9b1a4fa89bdd0e95b23b"></script>
+
+  <footer class="bd-footer"><div class="bd-footer__inner container">
+  
+  <div class="footer-item">
+    
+<p class="copyright">
+
+    &copy; Copyright 2022, Amanda Buyan, Atlas of Living Australia.<br>
+
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+<p class="sphinx-version">
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.1.1.<br>
+</p>
+
+  </div>
+  
+</div>
+  </footer>
+  </body>
+</html>

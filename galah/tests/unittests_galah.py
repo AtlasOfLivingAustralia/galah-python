@@ -109,5 +109,9 @@ class test_galah(unittest2.TestCase):
         a=galah.atlas_occurrences(test=True)
         self.assertIsNone(a)
 
+    def test_show_values(self):
+        output = galah.show_values(field="basisOfRecord")
+        self.assertGreater(output.shape[1], 1)
+
 if __name__ == "__main__":
     unittest2.main()
