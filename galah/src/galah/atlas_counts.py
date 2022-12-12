@@ -72,14 +72,14 @@ def atlas_counts(taxa=None,
                         filters = [filters]
 
                     # start URL
-                    URL = baseURL + "&"
+                    URL = baseURL #+ "&"
 
                     # add filters
                     for f in filters:
                         URL += galah_filter(f) + "&"
 
                     # add final part of URL
-                    URL += "&pageSize=0"
+                    URL += "pageSize=0"
 
                 # else, make sure that the filters is in the following format
                 else:
@@ -150,15 +150,12 @@ def atlas_counts(taxa=None,
                         if type(filters) is str:
                             filters = [filters]
 
-                        # start URL
-                        URL = baseURL + "&"
-
                         # add filters
                         for f in filters:
                             URL += galah_filter(f) + "&"
 
                         # add final part of URL
-                        URL += "&pageSize=0"
+                        URL += "pageSize=0"
 
                     # else, make sure that the filters is in the following format
                     else:
