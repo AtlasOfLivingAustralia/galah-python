@@ -26,15 +26,19 @@ def atlas_occurrences(taxa=None,
     .. prompt:: python
 
         import galah
-        galah.galah.atlas_occurrences(taxa="Vulpes vulpes")
+        galah.atlas_occurrences(taxa="Vulpes vulpes")
 
     which returns
 
     .. program-output:: python3 -c "import galah; print(galah.atlas_occurrences(taxa=\\\"Vulpes vulpes\\\"))"
     """
 
+    # get configs
+    configs = readConfig()
+
     # test to check if ALA is working
-    requestURL = "{}?pageSize=0".format(get_api_url(column1='called_by',column1value='atlas_counts'))
+    requestURL = "{}?pageSize=0".format(get_api_url(column1='called_by',column1value='atlas_counts',column2="api_name",
+                                                    column2value="records_counts"))
 
     # check if the ALA is working - if not, let the user know
     response = requests.get(requestURL)
@@ -52,16 +56,25 @@ def atlas_occurrences(taxa=None,
     # fq <== filters to be applied to the original query in form fq=INDEXEDFIELD:VALUE, i.e. fq=rank:kingdom
 
     # get base URL
-    if use_data_profile:
+    if use_data_profile and configs['galahSettings']['atlas'] == "Australia":
         baseURL = apply_data_profile("{}".format(get_api_url(column1='called_by', column1value='atlas_occurrences',
                                                               column2='api_name',column2value='records_occurrences',
                                                               add_email=True)))
     elif not use_data_profile:
-        baseURL = "{}disableAllQualityfilters=true&".format(get_api_url(column1='api_name',
-                                                                            column1value='records_occurrences',
-                                                                            add_email=True))
+        # check for these atlases
+        if configs['galahSettings']['atlas'] in ["Australia","Austria"]:
+            baseURL = "{}disableAllQualityfilters=true&".format(get_api_url(column1='called_by', column1value='atlas_occurrences',
+                                                                 column2='api_name', column2value='records_occurrences',
+                                                                 add_email=True))
+        elif configs['galahSettings']['atlas'] in ["Estonia"]:
+            baseURL = "{}disableAllQualityfilters=true&".format(get_api_url(column1='called_by',
+                                                                                column1value='atlas_occurrences',
+                                                                                column2='api_name',
+                                                                                column2value='records',
+                                                                                add_email=True))
     else:
-        raise ValueError("True and False are the only values accepted for data_profile.  Your data profile is \n"
+        raise ValueError("True and False are the only values accepted for data_profile, and the only atlas using a data \n"
+                         "quality profile is Australia.  Your atlas and data profile is \n"
                          "set in your config file.  To set your default filter, find out what profiles are on offer:\n"
                          "profiles = galah.show_all(profiles=True)\n\n"
                          "and then type\n\n"
@@ -80,7 +93,10 @@ def atlas_occurrences(taxa=None,
     # implement galah.select - choose which columns you download
     # goes to the 'fields' argument in occurrence download (csv list, commas between)
     if fields is not None:
-        baseURL += galah_select(fields) + "&"
+        baseURL += galah_select(selectionList=fields) + "&"
+    else:
+        baseURL += galah_select(selectionList=["decimalLatitude","decimalLongitude","eventDate","scientificName","taxonConceptID",
+                                               "recordID","dataResourceName","occurrenceStatus"]) + "&"
 
     if filters is not None:
         baseURL += galah_filter(filters) + "&"
@@ -102,11 +118,22 @@ def atlas_occurrences(taxa=None,
             for name in taxa:
 
                 # get taxon concept ID
-                taxonConceptID = search_taxa(name)['taxonConceptID'][0]
+                # get the taxonConceptID for taxa
+                if configs['galahSettings']['atlas'] in ["Australia"]:
+                    taxonConceptID = search_taxa(name)['taxonConceptID'][0]
+                elif configs['galahSettings']['atlas'] in ["Austria", "Brazil", "Estonia", "Guatemala", "Sweden",
+                                                           "United Kingdom"]:
+                    taxonConceptID = search_taxa(name)['guid'][0]
+                elif configs['galahSettings']['atlas'] in ["Portugal"]:
+                    taxonConceptID = search_taxa(name)['usageKey'][0]
+                else:
+                    raise ValueError("Atlas {} is not taken into account".format(configs['galahSettings']['atlas']))
 
                 # generate the desired URL and get a response from the API
                 URL = baseURL + "fq=%28lsid%3A" + urllib.parse.quote(taxonConceptID) + "%29&"
+                print(URL)
                 response = requests.get(URL)
+                print(response)
                 if response.json()['status'] == "skipped":
                     raise ValueError(response.json()["error"])
 

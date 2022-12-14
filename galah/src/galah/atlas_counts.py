@@ -39,12 +39,15 @@ def atlas_counts(taxa=None,
     configs = readConfig()
 
     # get the URL needed for the query
-    if use_data_profile:
-        baseURL = apply_data_profile("{}?".format(get_api_url(column1='called_by',column1value='atlas_counts')))
+    if use_data_profile and configs['galahSettings']['atlas'] == "Australia":
+        baseURL = apply_data_profile("{}?".format(get_api_url(column1='called_by',column1value='atlas_counts',column2="api_name",
+                                                              column2value="records_counts"))) + "&"
     elif not use_data_profile:
-        baseURL = "{}?".format(get_api_url(column1='called_by', column1value='atlas_counts'))
+        baseURL = "{}?".format(get_api_url(column1='called_by', column1value='atlas_counts',column2="api_name",
+                                           column2value="records_counts"))
     else:
-        raise ValueError("True and False are the only values accepted for data_profile.  Your data profile is \n"
+        raise ValueError("True and False are the only values accepted for data_profile, and the only atlas using a data \n"
+                         "quality profile is Australia.  Your atlas and data profile is \n"
                          "set in your config file.  To set your default filter, find out what profiles are on offer:\n"
                          "profiles = galah.show_all(profiles=True)\n\n"
                          "and then type\n\n"
@@ -121,16 +124,25 @@ def atlas_counts(taxa=None,
         # get the number of records associated with each taxa
         for name in taxa:
 
+            #print(search_taxa(name))
+
             # get the taxonConceptID for taxa
-            if configs['galahSettings']['atlas'] == "Australia":
+            if configs['galahSettings']['atlas'] in ["Australia"]:
                 taxonConceptID = search_taxa(name)['taxonConceptID'][0]
-            elif configs['galahSettings']['atlas'] == "Austria":
-                taxonConceptID = search_taxa(name)['id'][0]
+            elif configs['galahSettings']['atlas'] in ["Austria","Brazil","Estonia","Guatemala","Sweden","United Kingdom"]:
+                taxonConceptID = search_taxa(name)['guid'][0]
+            elif configs['galahSettings']['atlas'] in ["France","Portugal"]:
+                taxonConceptID = search_taxa(name)['usageKey'][0]
             else:
                 raise ValueError("Atlas {} is not taken into account".format(configs['galahSettings']['atlas']))
 
+            #print(taxonConceptID)
+            #print(baseURL)
+            #print(taxonConceptID)
+            #print(type(taxonConceptID))
+
             # add this ID to the URL
-            URL = baseURL + "fq=%28lsid%3A" + urllib.parse.quote(taxonConceptID) + "%29&"
+            URL = baseURL + "fq=%28lsid%3A" + urllib.parse.quote(str(taxonConceptID)) + "%29&" # try making it a string
 
             # return a grouped dataFrame
             if group_by is not None:

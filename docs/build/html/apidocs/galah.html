@@ -315,7 +315,7 @@ span.prompt1:before {
 <span class="prompt1"><span class="n">galah</span><span class="o">.</span><span class="n">atlas_counts</span><span class="p">()</span></span>
 </pre></div></div><p>which returns</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>   totalRecords
-0     112555050
+0     112637772
 </pre></div>
 </div>
 <p>example of filters that can be used: “year=2020”,”basisOfRecord=HUMAN_OBSERVATION”
@@ -331,20 +331,13 @@ nunber of results) is</p>
 <span class="prompt1"><span class="n">filters</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;year=2020&quot;</span><span class="p">,</span><span class="s2">&quot;decimalLongitude&gt;153.0&quot;</span><span class="p">]</span></span>
 <span class="prompt1"><span class="n">galah</span><span class="o">.</span><span class="n">atlas_media</span><span class="p">(</span><span class="n">taxa</span><span class="o">=</span><span class="s2">&quot;Ornithorhynchus anatinus&quot;</span><span class="p">,</span><span class="n">filters</span><span class="o">=</span><span class="n">filters</span><span class="p">)</span></span>
 </pre></div></div><p>which returns</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>    decimalLatitude  ...                          occurrenceID
-0        -30.395442  ...  42912016-2409-4125-a61f-13ffd4c32fcb
-1        -30.348831  ...  6882dfe3-5295-493d-a005-66f8392e9d5b
-2        -30.279557  ...  72ad295f-112d-442f-83e1-fd385ef9163a
-3        -30.247747  ...  dd885218-bdb9-404a-8441-e5cd329f6605
-4        -30.218699  ...  072bc4f0-7581-44c6-b0ec-e3fe58d251fc
-5        -28.794918  ...  2a701513-b21d-4baa-bac4-5e6a3a65252b
-6        -28.794918  ...  2a701513-b21d-4baa-bac4-5e6a3a65252b
-7        -28.656448  ...  12d8c7f9-9d66-4312-9245-87a0a1021557
-8        -28.213785  ...  808b0c19-9616-45f1-994e-e3b33fc32836
-9        -28.213785  ...  808b0c19-9616-45f1-994e-e3b33fc32836
-10       -28.765905  ...                                   NaN
-
-[11 rows x 19 columns]
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Traceback (most recent call last):
+  File &quot;&lt;string&gt;&quot;, line 1, in &lt;module&gt;
+  File &quot;/Users/buy003/opt/anaconda3/envs/py39/lib/python3.9/site-packages/galah-1.0.0-py3.9.egg/galah/atlas_media.py&quot;, line 163, in atlas_media
+    if &quot;|&quot; in m:
+TypeError: argument of type &#39;float&#39; is not iterable
+https://biocache-ws.ala.org.au/ws/occurrences/offline/download?email=amanda.buyan@csiro.au&amp;dwcHeaders=True&amp;emailNotify=false&amp;disableAllQualityfilters=true&amp;&amp;qa=none&amp;fields=decimalLatitude%2CdecimalLongitude%2CeventDate%2CscientificName%2CtaxonConceptID%2CrecordID%2CdataResourceName%2CoccurrenceStatus%2Cmultimedia%2Cmultimedialicense%2Cimages%2Cvideos%2Csounds%2C&amp;&amp;fq=year:(2020)&amp;fq=decimalLongitude:[153.0%20TO%20*]%20AND%20-(decimalLongitude:&quot;153.0&quot;)&amp;fq=%28lsid%3Ahttps%3A//biodiversity.org.au/afd/taxa/ac61fd14-4950-4566-b384-304bd99ca75f%29&amp;
+&lt;Response [200]&gt;
 </pre></div>
 </div>
 </dd></dl>
@@ -355,22 +348,24 @@ nunber of results) is</p>
 <dd><p>Used for getting occurrence data for your species.  To get occurrences for</p>
 <p>To know how many total records are in your chosen atlas, type</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="kn">import</span> <span class="nn">galah</span></span>
-<span class="prompt1"><span class="n">galah</span><span class="o">.</span><span class="n">galah</span><span class="o">.</span><span class="n">atlas_occurrences</span><span class="p">(</span><span class="n">taxa</span><span class="o">=</span><span class="s2">&quot;Vulpes vulpes&quot;</span><span class="p">)</span></span>
+<span class="prompt1"><span class="n">galah</span><span class="o">.</span><span class="n">atlas_occurrences</span><span class="p">(</span><span class="n">taxa</span><span class="o">=</span><span class="s2">&quot;Vulpes vulpes&quot;</span><span class="p">)</span></span>
 </pre></div></div><p>which returns</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>                                    recordID  ... spatiallyValid
-0       00006204-4a7a-4e36-8c8b-8ce5ade0ff5b  ...           True
-1       00012495-6223-4edb-bea5-61278e8f82d0  ...           True
-2       0001ab0e-010e-4165-bae0-385b31e5e4da  ...           True
-3       00020f57-3e55-4e4a-b48f-d8a7083d771f  ...           True
-4       00022581-7451-492f-87ab-ac3e4fd6484f  ...           True
-...                                      ...  ...            ...
-115978  fffc1e94-520f-416a-b18e-b1b6643288fb  ...           True
-115979  fffc97f7-b64c-40ec-9642-46fe3a9cfd39  ...           True
-115980  fffda344-fe30-4cc0-b126-6a7f551e7f1a  ...           True
-115981  fffdab5a-3d79-45d6-be54-c1b5f9a6d9f1  ...           True
-115982  fffe6386-0de0-49f6-ba38-1b4a9cda57ba  ...           True
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>https://biocache-ws.ala.org.au/ws/occurrences/offline/download?email=amanda.buyan@csiro.au&amp;dwcHeaders=True&amp;emailNotify=false&amp;disableAllQualityfilters=true&amp;&amp;qa=none&amp;fields=decimalLatitude%2CdecimalLongitude%2CeventDate%2CscientificName%2CtaxonConceptID%2CrecordID%2CdataResourceName%2CoccurrenceStatus%2C&amp;fq=%28lsid%3Ahttps%3A//biodiversity.org.au/afd/taxa/2869ce8a-8212-46c2-8327-dfb7fabb8296%29&amp;
+&lt;Response [200]&gt;
+        decimalLatitude  ...  occurrenceStatus
+0            -41.800000  ...           PRESENT
+1            -41.666660  ...           PRESENT
+2            -41.648610  ...           PRESENT
+3            -41.598611  ...           PRESENT
+4            -41.596686  ...           PRESENT
+...                 ...  ...               ...
+115989        51.574697  ...           PRESENT
+115990        54.000000  ...           PRESENT
+115991        58.737888  ...           PRESENT
+115992        58.747833  ...           PRESENT
+115993        58.785622  ...           PRESENT
 
-[115983 rows x 55 columns]
+[115994 rows x 8 columns]
 </pre></div>
 </div>
 </dd></dl>
@@ -381,9 +376,39 @@ nunber of results) is</p>
 <dd><p>Used for getting occurrence data for your species.  To get occurrences for</p>
 <p>To know how many total records are in your chosen atlas, type</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="kn">import</span> <span class="nn">galah</span></span>
-<span class="prompt1"><span class="n">galah</span><span class="o">.</span><span class="n">galah</span><span class="o">.</span><span class="n">atlas_species</span><span class="p">(</span><span class="n">taxa</span><span class="o">=</span><span class="s2">&quot;Heleioporus&quot;</span><span class="p">)</span></span>
+<span class="prompt1"><span class="n">galah</span><span class="o">.</span><span class="n">atlas_species</span><span class="p">(</span><span class="n">taxa</span><span class="o">=</span><span class="s2">&quot;Heleioporus&quot;</span><span class="p">)</span></span>
 </pre></div></div><p>which returns</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>    kingdom  ...                  vernacular_names
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>{&#39;guid&#39;: &#39;https://biodiversity.org.au/afd/taxa/c1d18a1e-5aec-4441-aa3c-e0ac799f51e8&#39;, &#39;parentGuid&#39;: &#39;https://biodiversity.org.au/afd/taxa/990ee116-dd7d-40c6-93dc-40d5773e3e6e&#39;, &#39;name&#39;: &#39;Heleioporus albopunctatus&#39;, &#39;nameComplete&#39;: &#39;Heleioporus albopunctatus Gray, 1841&#39;, &#39;nameFormatted&#39;: &#39;&lt;span class=&quot;scientific-name rank-species&quot;&gt;&lt;span class=&quot;name&quot;&gt;Heleioporus albopunctatus&lt;/span&gt; &lt;span class=&quot;author&quot;&gt;Gray, 1841&lt;/span&gt;&lt;/span&gt;&#39;, &#39;author&#39;: &#39;Gray, 1841&#39;, &#39;rank&#39;: &#39;species&#39;, &#39;rankID&#39;: 7000}
+                                                guid  ... rankID
+0  https://biodiversity.org.au/afd/taxa/c1d18a1e-...  ...   7000
+
+[1 rows x 8 columns]
+{&#39;guid&#39;: &#39;https://biodiversity.org.au/afd/taxa/20119b25-a27c-4174-b3e0-8639e8a21131&#39;, &#39;parentGuid&#39;: &#39;https://biodiversity.org.au/afd/taxa/990ee116-dd7d-40c6-93dc-40d5773e3e6e&#39;, &#39;name&#39;: &#39;Heleioporus australiacus&#39;, &#39;nameComplete&#39;: &#39;Heleioporus australiacus (Shaw &amp; Nodder, 1795)&#39;, &#39;nameFormatted&#39;: &#39;&lt;span class=&quot;scientific-name rank-species&quot;&gt;&lt;span class=&quot;name&quot;&gt;Heleioporus australiacus&lt;/span&gt; &lt;span class=&quot;author&quot;&gt;(Shaw &amp;amp; Nodder, 1795)&lt;/span&gt;&lt;/span&gt;&#39;, &#39;author&#39;: &#39;(Shaw &amp; Nodder, 1795)&#39;, &#39;rank&#39;: &#39;species&#39;, &#39;rankID&#39;: 7000}
+                                                guid  ... rankID
+0  https://biodiversity.org.au/afd/taxa/20119b25-...  ...   7000
+
+[1 rows x 8 columns]
+{&#39;guid&#39;: &#39;https://biodiversity.org.au/afd/taxa/c527388c-1cc7-4a10-800a-243b5a2dcd3c&#39;, &#39;parentGuid&#39;: &#39;https://biodiversity.org.au/afd/taxa/990ee116-dd7d-40c6-93dc-40d5773e3e6e&#39;, &#39;name&#39;: &#39;Heleioporus barycragus&#39;, &#39;nameComplete&#39;: &#39;Heleioporus barycragus Lee, 1967&#39;, &#39;nameFormatted&#39;: &#39;&lt;span class=&quot;scientific-name rank-species&quot;&gt;&lt;span class=&quot;name&quot;&gt;Heleioporus barycragus&lt;/span&gt; &lt;span class=&quot;author&quot;&gt;Lee, 1967&lt;/span&gt;&lt;/span&gt;&#39;, &#39;author&#39;: &#39;Lee, 1967&#39;, &#39;rank&#39;: &#39;species&#39;, &#39;rankID&#39;: 7000}
+                                                guid  ... rankID
+0  https://biodiversity.org.au/afd/taxa/c527388c-...  ...   7000
+
+[1 rows x 8 columns]
+{&#39;guid&#39;: &#39;https://biodiversity.org.au/afd/taxa/cf991494-ccee-433d-b049-f2a0996a0a3b&#39;, &#39;parentGuid&#39;: &#39;https://biodiversity.org.au/afd/taxa/990ee116-dd7d-40c6-93dc-40d5773e3e6e&#39;, &#39;name&#39;: &#39;Heleioporus eyrei&#39;, &#39;nameComplete&#39;: &#39;Heleioporus eyrei (Gray, 1845)&#39;, &#39;nameFormatted&#39;: &#39;&lt;span class=&quot;scientific-name rank-species&quot;&gt;&lt;span class=&quot;name&quot;&gt;Heleioporus eyrei&lt;/span&gt; &lt;span class=&quot;author&quot;&gt;(Gray, 1845)&lt;/span&gt;&lt;/span&gt;&#39;, &#39;author&#39;: &#39;(Gray, 1845)&#39;, &#39;rank&#39;: &#39;species&#39;, &#39;rankID&#39;: 7000}
+                                                guid  ... rankID
+0  https://biodiversity.org.au/afd/taxa/cf991494-...  ...   7000
+
+[1 rows x 8 columns]
+{&#39;guid&#39;: &#39;https://biodiversity.org.au/afd/taxa/16fcc761-685a-4527-b5e4-e6c7042ae2c6&#39;, &#39;parentGuid&#39;: &#39;https://biodiversity.org.au/afd/taxa/990ee116-dd7d-40c6-93dc-40d5773e3e6e&#39;, &#39;name&#39;: &#39;Heleioporus inornatus&#39;, &#39;nameComplete&#39;: &#39;Heleioporus inornatus (Lee &amp; Main, 1954)&#39;, &#39;nameFormatted&#39;: &#39;&lt;span class=&quot;scientific-name rank-species&quot;&gt;&lt;span class=&quot;name&quot;&gt;Heleioporus inornatus&lt;/span&gt; &lt;span class=&quot;author&quot;&gt;(Lee &amp;amp; Main, 1954)&lt;/span&gt;&lt;/span&gt;&#39;, &#39;author&#39;: &#39;(Lee &amp; Main, 1954)&#39;, &#39;rank&#39;: &#39;species&#39;, &#39;rankID&#39;: 7000}
+                                                guid  ... rankID
+0  https://biodiversity.org.au/afd/taxa/16fcc761-...  ...   7000
+
+[1 rows x 8 columns]
+{&#39;guid&#39;: &#39;https://biodiversity.org.au/afd/taxa/0efbf288-1526-4551-af83-52e4fb9dae59&#39;, &#39;parentGuid&#39;: &#39;https://biodiversity.org.au/afd/taxa/990ee116-dd7d-40c6-93dc-40d5773e3e6e&#39;, &#39;name&#39;: &#39;Heleioporus psammophilus&#39;, &#39;nameComplete&#39;: &#39;Heleioporus psammophilus (Lee &amp; Main, 1954)&#39;, &#39;nameFormatted&#39;: &#39;&lt;span class=&quot;scientific-name rank-species&quot;&gt;&lt;span class=&quot;name&quot;&gt;Heleioporus psammophilus&lt;/span&gt; &lt;span class=&quot;author&quot;&gt;(Lee &amp;amp; Main, 1954)&lt;/span&gt;&lt;/span&gt;&#39;, &#39;author&#39;: &#39;(Lee &amp; Main, 1954)&#39;, &#39;rank&#39;: &#39;species&#39;, &#39;rankID&#39;: 7000}
+                                                guid  ... rankID
+0  https://biodiversity.org.au/afd/taxa/0efbf288-...  ...   7000
+
+[1 rows x 8 columns]
+    kingdom  ...                  vernacular_names
 0  Animalia  ...              Western Spotted Frog
 1  Animalia  ...              Giant Burrowing Frog
 2  Animalia  ...  Hooting Frog, Western Marsh Frog
@@ -410,7 +435,7 @@ nunber of results) is</p>
 <dd><p>This takes</p>
 <p>To know how many total records are in your chosen atlas, type</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="kn">import</span> <span class="nn">galah</span></span>
-<span class="prompt1"><span class="n">galah</span><span class="o">.</span><span class="n">galah</span><span class="o">.</span><span class="n">galah_filter</span><span class="p">(</span><span class="n">filters</span><span class="o">=</span><span class="s2">&quot;year=2020&quot;</span><span class="p">)</span></span>
+<span class="prompt1"><span class="n">galah</span><span class="o">.</span><span class="n">galah_filter</span><span class="p">(</span><span class="n">filters</span><span class="o">=</span><span class="s2">&quot;year=2020&quot;</span><span class="p">)</span></span>
 </pre></div></div><p>which returns</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>&amp;fq=year:(2020)
 </pre></div>
@@ -490,13 +515,13 @@ get occurrences from.</p>
 3                                              *Brigalow  ...  dr14507
 4                                                0662409  ...  dr19938
 ...                                                  ...  ...      ...
-12073  [C4OC] Torres Strait Regional Landcare Facilit...  ...   dr3529
-12074  [C4OC] Traditional Ecological Knowledge Record...  ...   dr3199
-12075  [C4OC] Trialling and demonstrating farmer inno...  ...   dr3519
-12076                [C4OC] Urban and Coastal Protection  ...   dr6802
-12077        _River_Torrens_Linear_Park_Species_List.csv  ...  dr19265
+12109  [C4OC] Torres Strait Regional Landcare Facilit...  ...   dr3529
+12110  [C4OC] Traditional Ecological Knowledge Record...  ...   dr3199
+12111  [C4OC] Trialling and demonstrating farmer inno...  ...   dr3519
+12112                [C4OC] Urban and Coastal Protection  ...   dr6802
+12113        _River_Torrens_Linear_Park_Species_List.csv  ...  dr19265
 
-[12078 rows x 3 columns]
+[12114 rows x 3 columns]
 </pre></div>
 </div>
 </dd></dl>

@@ -4,8 +4,33 @@ run pytest integration_tests_galah.py
 import pytest,os
 import galah
 
+'''
+Austria tests to implement
 
-#'''
+>>> galah.galah_config(atlas="Austria")
+>>> galah.atlas_media(taxa="Sehirus luctuosus")
+galah.atlas_counts(taxa="Sehirus luctuosus",filters="year=2020")
+galah.atlas_counts(taxa="Sehirus luctuosus",filters="year>2010)
+galah.atlas_counts(taxa="Sehirus luctuosus",filters="year>2010",group_by="year",expand=False)
+galah.atlas_species(taxa="Sehirus")
+
+# Brazil
+
+# Estonia - species Canis lupus
+
+# France
+
+# Guatemala
+
+# Portugal
+
+# Spain
+
+# Sweden
+
+# UK
+'''
+
 # test atlas_counts() can call search_taxa() function with single taxa
 def test_atlas_counts_taxa():
     taxa="Vulpes vulpes"
@@ -23,7 +48,7 @@ def test_atlas_counts_taxa_filter_data_quality():
     filter1 = "year=2020"
     no_quality = galah.atlas_counts(taxa,filters=filter1)
     quality = galah.atlas_counts(taxa,filters=filter1,use_data_profile=True)
-    assert no_quality['totalRecords'][0] > quality['totalRecords'][0]
+    assert no_quality['totalRecords'][0] >= quality['totalRecords'][0]
 
 # comment this
 def test_atlas_counts_taxa_group():
@@ -49,7 +74,7 @@ def test_atlas_counts_taxa_filters():
     filters=["year=2020","basisOfRecord=HUMAN_OBSERVATION"]
     # test single taxa is working (search_taxa(), galah_filter() x 2)
     assert galah.atlas_counts(taxa,filters=filters)['totalRecords'][0] > 0
-
+#'''
 # test altas_counts() can call search_taxa() and using two filter, filter results with single taxa and group by one group
 def test_atlas_counts_taxa_filters_group_by_no_expand():
     taxa = "Vulpes vulpes"
@@ -108,7 +133,7 @@ def test_atlas_counts_multiple_taxa_filters_group_by_multiple():
     group_by = ["county","year"]
     # county** , associatedOrganisms , day , decade
     assert galah.atlas_counts(taxa_array,filters=filters,group_by=group_by)['count'][0] > 0
-
+'''
 #test if it can get a taxa and return output
 def test_atlas_media_taxa():
     output = galah.atlas_media(taxa="Ornithorhynchus anatinus")
@@ -143,7 +168,7 @@ def test_atlas_media_filters_multimedia_collect_path():
     multimedia_output = galah.atlas_media(taxa="Ornithorhynchus anatinus",multimedia=multimedia,filters=filters,collect=True,path=path)
     files = os.listdir(path)
     assert len(files) > 0
-
+'''
 # first test for atlas_occurrences() - check if search_taxa() is working
 def test_atlas_occurrences_taxa():
     occurrences = galah.atlas_occurrences(taxa="Vulpes vulpes")
@@ -391,4 +416,4 @@ def test_search_values():
     first_output = galah.show_values(field="basisOfRecord")
     second_output = galah.search_values(field="basisOfRecord",value="OBS")
     assert first_output.shape[0] > second_output.shape[0]
-
+#'''

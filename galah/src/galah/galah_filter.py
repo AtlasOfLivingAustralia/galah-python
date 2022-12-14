@@ -12,7 +12,7 @@ def galah_filter(filters, ifgroupBy=False):
     .. prompt:: python
 
         import galah
-        galah.galah.galah_filter(filters="year=2020")
+        galah.galah_filter(filters="year=2020")
 
     which returns
 

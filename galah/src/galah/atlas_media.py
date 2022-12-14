@@ -41,6 +41,9 @@ def atlas_media(taxa=None,
     .. program-output:: python3 -c "import galah; filters = [\\\"year=2020\\\",\\\"decimalLongitude>153.0\\\"];print(galah.atlas_media(taxa=\\\"Ornithorhynchus anatinus\\\",filters=filters))"
     """
 
+    # get configs
+    configs = readConfig()
+
     # check for fields
     if fields is None:
         fields = ["decimalLatitude", "decimalLongitude", "eventDate", "scientificName", "taxonConceptID", "recordID",
@@ -52,27 +55,51 @@ def atlas_media(taxa=None,
                                   use_data_profile=use_data_profile)
 
     # create the output data frame
-    data_columns={
-        'decimalLatitude': [],
-        'decimalLongitude': [],
-        'eventDate': [],
-        'scientificName': [],
-        'recordID': [],
-        'dataResourceName': [],
-        'occurrenceStatus': [],
-        'multimedia': [],
-        'imageIdentifier': [],
-        'mimeType': [],
-        'sizeInBytes': [],
-        'dateUploaded': [],
-        'dateTaken': [],
-        'height': [],
-        'width': [],
-        'creator': [],
-        'license': [],
-        'dataResourceUid': [],
-        'occurrenceID': []
+    if configs['galahSettings']['atlas'] == "Australia":
+        data_columns = {
+            'decimalLatitude': [],
+            'decimalLongitude': [],
+            'eventDate': [],
+            'scientificName': [],
+            'recordID': [],
+            'dataResourceName': [],
+            'occurrenceStatus': [],
+            'multimedia': [],
+            'imageIdentifier': [],
+            'mimeType': [],
+            'sizeInBytes': [],
+            'dateUploaded': [],
+            'dateTaken': [],
+            'height': [],
+            'width': [],
+            'creator': [],
+            'license': [],
+            'dataResourceUid': [],
+            'occurrenceID': []
         }
+    elif configs['galahSettings']['atlas'] == "Austria":
+        data_columns = {
+            'decimalLatitude': [],
+            'decimalLongitude': [],
+            'eventDate': [],
+            'scientificName': [],
+            'recordID': [],
+            'occurrenceStatus': [],
+            'multimedia': [],
+            'imageIdentifier': [],
+            'mimeType': [],
+            'sizeInBytes': [],
+            'dateUploaded': [],
+            'dateTaken': [],
+            'height': [],
+            'width': [],
+            'creator': [],
+            'license': [],
+            'dataResourceUid': [],
+            'occurrenceID': []
+        }
+    else:
+        raise ValueError("Atlas {} is not taken into account".format(configs['galahSettings']['atlas']))
 
     # for if the user wants to collect the urls
     image_urls=[]
@@ -85,13 +112,22 @@ def atlas_media(taxa=None,
         else:
             raise ValueError("multimedia argument should either be a string or a list, i.e. multimedia=\"images\"")
     else:
-        multimedia=['images','videos','sounds']
+        if configs['galahSettings']['atlas'] == "Australia":
+            multimedia=['images','videos','sounds']
+        elif configs['galahSettings']['atlas'] == "Austria":
+            multimedia = ['multimedia']
+        else:
+            raise ValueError("Atlas {} is not taken into account".format(configs['galahSettings']['atlas']))
 
     # loop through all possible media
     for media in multimedia:
 
         # get all occurrences with multimedia files
-        media_array = dataFrame[~dataFrame[media].isnull()]
+        if type(dataFrame[media][0]) is str:
+            # remove all "None" entries; may have to update this with different atlases
+            media_array = dataFrame.loc[~dataFrame[media].str.contains("None", case=True, na=False)]
+        else:
+            media_array = dataFrame[~dataFrame[media].isnull()]
 
         # get media metadata url
         # https://images.ala.org.au/ws#/Image%20metadata/getImageInfoForIdList
@@ -111,6 +147,15 @@ def atlas_media(taxa=None,
                              "galah.galah_config(data_profile=\"None\")"
                              )
 
+        if configs['galahSettings']['atlas'] == "Australia":
+            columns_media=['decimalLatitude', 'decimalLongitude', 'eventDate', 'scientificName', 'recordID',
+                           'dataResourceName', 'occurrenceStatus', 'multimedia']
+        elif configs['galahSettings']['atlas'] == "Austria":
+            columns_media=['decimalLatitude', 'decimalLongitude', 'eventDate', 'scientificName', 'recordID',
+                           'occurrenceStatus', 'multimedia']
+        else:
+            raise ValueError("Atlas {} is not taken into account".format(configs['galahSettings']['atlas']))
+
         # loop over arrays
         ### TODO: figure out how to make this faster?
         if not media_array.empty:
@@ -120,8 +165,7 @@ def atlas_media(taxa=None,
                 else:
                     m=[m]
                 for j,entry in enumerate(m):
-                    for e in ['decimalLatitude', 'decimalLongitude', 'eventDate', 'scientificName', 'recordID',
-                             'dataResourceName', 'occurrenceStatus', 'multimedia']:
+                    for e in columns_media:
                         data_columns[e].append(media_array[e].iloc[i])
                     URL = basemediaURL.replace("{id}",entry)
                     if verbose:

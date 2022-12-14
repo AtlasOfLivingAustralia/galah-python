@@ -342,8 +342,9 @@ span.prompt1:before {
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">import galah</span>
 <span class="prompt1">galah.atlas_counts(taxa=&quot;Vulpes vulpes&quot;)</span>
 </pre></div></div><p>which returns</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>   totalRecords
-0        115983
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>{&#39;pageSize&#39;: 0, &#39;startIndex&#39;: 0, &#39;totalRecords&#39;: 115994, &#39;sort&#39;: &#39;score&#39;, &#39;dir&#39;: &#39;asc&#39;, &#39;status&#39;: &#39;OK&#39;, &#39;occurrences&#39;: [], &#39;facetResults&#39;: [], &#39;query&#39;: &#39;?q=*%3A*&amp;fq=(lsid%3Ahttps%3A%2F%2Fbiodiversity.org.au%2Fafd%2Ftaxa%2F2869ce8a-8212-46c2-8327-dfb7fabb8296)&#39;, &#39;urlParameters&#39;: &#39;?q=*%3A*&amp;fq=(lsid%3Ahttps%3A%2F%2Fbiodiversity.org.au%2Fafd%2Ftaxa%2F2869ce8a-8212-46c2-8327-dfb7fabb8296)&#39;, &#39;queryTitle&#39;: &#39;[all records]&#39;, &#39;activeFacetMap&#39;: {&#39;(lsid&#39;: {&#39;name&#39;: &#39;(lsid&#39;, &#39;displayName&#39;: &quot;(&lt;span class=&#39;lsid&#39; id=&#39;https://biodiversity.org.au/afd/taxa/2869ce8a-8212-46c2-8327-dfb7fabb8296&#39;&gt;species: Vulpes vulpes&lt;/span&gt;)&quot;, &#39;value&#39;: &#39;https://biodiversity.org.au/afd/taxa/2869ce8a-8212-46c2-8327-dfb7fabb8296)&#39;}}, &#39;activeFacetObj&#39;: {&#39;lsid&#39;: [{&#39;name&#39;: &#39;lsid&#39;, &#39;displayName&#39;: &quot;(&lt;span class=&#39;lsid&#39; id=&#39;https://biodiversity.org.au/afd/taxa/2869ce8a-8212-46c2-8327-dfb7fabb8296&#39;&gt;species: Vulpes vulpes&lt;/span&gt;)&quot;, &#39;value&#39;: &#39;(lsid:https://biodiversity.org.au/afd/taxa/2869ce8a-8212-46c2-8327-dfb7fabb8296)&#39;}]}}
+   totalRecords
+0        115994
 </pre></div>
 </div>
 <p>From here, you can narrow down your query by doing a few things.  Let’s first investigate how to apply filters.</p>
@@ -351,28 +352,31 @@ span.prompt1:before {
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">import galah</span>
 <span class="prompt1">galah.atlas_counts(taxa=&quot;Vulpes vulpes&quot;,filters=&quot;year=2020&quot;)</span>
 </pre></div></div><p>which returns</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>   totalRecords
-0       6403158
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>{&#39;pageSize&#39;: 0, &#39;startIndex&#39;: 0, &#39;totalRecords&#39;: 5574, &#39;sort&#39;: &#39;score&#39;, &#39;dir&#39;: &#39;asc&#39;, &#39;status&#39;: &#39;OK&#39;, &#39;occurrences&#39;: [], &#39;facetResults&#39;: [], &#39;query&#39;: &#39;?q=*%3A*&amp;fq=(lsid%3Ahttps%3A%2F%2Fbiodiversity.org.au%2Fafd%2Ftaxa%2F2869ce8a-8212-46c2-8327-dfb7fabb8296)&amp;fq=year%3A(2020)&#39;, &#39;urlParameters&#39;: &#39;?q=*%3A*&amp;fq=(lsid%3Ahttps%3A%2F%2Fbiodiversity.org.au%2Fafd%2Ftaxa%2F2869ce8a-8212-46c2-8327-dfb7fabb8296)&amp;fq=year%3A(2020)&#39;, &#39;queryTitle&#39;: &#39;[all records]&#39;, &#39;activeFacetMap&#39;: {&#39;year&#39;: {&#39;name&#39;: &#39;year&#39;, &#39;displayName&#39;: &#39;Year:(2020)&#39;, &#39;value&#39;: &#39;(2020)&#39;}, &#39;(lsid&#39;: {&#39;name&#39;: &#39;(lsid&#39;, &#39;displayName&#39;: &quot;(&lt;span class=&#39;lsid&#39; id=&#39;https://biodiversity.org.au/afd/taxa/2869ce8a-8212-46c2-8327-dfb7fabb8296&#39;&gt;species: Vulpes vulpes&lt;/span&gt;)&quot;, &#39;value&#39;: &#39;https://biodiversity.org.au/afd/taxa/2869ce8a-8212-46c2-8327-dfb7fabb8296)&#39;}}, &#39;activeFacetObj&#39;: {&#39;lsid&#39;: [{&#39;name&#39;: &#39;lsid&#39;, &#39;displayName&#39;: &quot;(&lt;span class=&#39;lsid&#39; id=&#39;https://biodiversity.org.au/afd/taxa/2869ce8a-8212-46c2-8327-dfb7fabb8296&#39;&gt;species: Vulpes vulpes&lt;/span&gt;)&quot;, &#39;value&#39;: &#39;(lsid:https://biodiversity.org.au/afd/taxa/2869ce8a-8212-46c2-8327-dfb7fabb8296)&#39;}], &#39;year&#39;: [{&#39;name&#39;: &#39;year&#39;, &#39;displayName&#39;: &#39;Year:(2020)&#39;, &#39;value&#39;: &#39;year:(2020)&#39;}]}}
+   totalRecords
+0          5574
 </pre></div>
 </div>
 <p>Now that you have successfully determined the number of records for the red fox, you can download the occurrence records.  To do this, write the following:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">import galah</span>
 <span class="prompt1">galah.atlas_occurrences(taxa=&quot;Vulpes vulpes&quot;,filters=&quot;year=2020&quot;)</span>
 </pre></div></div><p>which returns</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>                                  recordID  ... spatiallyValid
-0     00022581-7451-492f-87ab-ac3e4fd6484f  ...           True
-1     000cbd8b-76a0-4b87-94d4-06012c96800c  ...           True
-2     000d658b-8d29-46f3-8cff-3c4994453dbf  ...           True
-3     001e67ca-97cd-4851-b4a4-1b05d1a9baca  ...           True
-4     0038750f-5c78-41a1-8566-fd16f7ce50bc  ...           True
-...                                    ...  ...            ...
-5570  ffbb5b1f-c517-4877-9c84-8c63737a720d  ...           True
-5571  ffc02c46-73b2-4774-ae54-68b6dc618352  ...           True
-5572  ffc255a2-10c5-4ee1-8e76-13c3abb68f99  ...           True
-5573  ffd3a377-8b0c-4e49-9879-49d74821c57c  ...           True
-5574  ffec6766-561d-448b-a984-c1b014e63874  ...           True
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>https://biocache-ws.ala.org.au/ws/occurrences/offline/download?email=amanda.buyan@csiro.au&amp;dwcHeaders=True&amp;emailNotify=false&amp;disableAllQualityfilters=true&amp;&amp;qa=none&amp;fields=decimalLatitude%2CdecimalLongitude%2CeventDate%2CscientificName%2CtaxonConceptID%2CrecordID%2CdataResourceName%2CoccurrenceStatus%2C&amp;&amp;fq=year:(2020)&amp;fq=%28lsid%3Ahttps%3A//biodiversity.org.au/afd/taxa/2869ce8a-8212-46c2-8327-dfb7fabb8296%29&amp;
+&lt;Response [200]&gt;
+      decimalLatitude  ...  occurrenceStatus
+0          -38.927100  ...           PRESENT
+1          -38.911592  ...           PRESENT
+2          -38.904100  ...           PRESENT
+3          -38.700056  ...           PRESENT
+4          -38.694837  ...           PRESENT
+...               ...  ...               ...
+5569        42.065789  ...           PRESENT
+5570        45.902841  ...           PRESENT
+5571        46.700000  ...           PRESENT
+5572        46.700000  ...           PRESENT
+5573        51.574697  ...           PRESENT
 
-[5575 rows x 55 columns]
+[5574 rows x 8 columns]
 </pre></div>
 </div>
 </section>
