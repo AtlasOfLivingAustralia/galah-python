@@ -1,5 +1,7 @@
 import galah,requests,urllib.parse,configparser,os,time,zipfile,io,shutils,tempfile
 import pandas as pd
+import numpy as np
+
 from .atlas_occurrences import atlas_occurrences
 from .search_taxa import search_taxa
 from .galah_select import galah_select
@@ -160,26 +162,27 @@ def atlas_media(taxa=None,
         ### TODO: figure out how to make this faster?
         if not media_array.empty:
             for i,m in enumerate(media_array[media]):
-                if "|" in m:
-                    m=m.split(" | ")
-                else:
-                    m=[m]
-                for j,entry in enumerate(m):
-                    for e in columns_media:
-                        data_columns[e].append(media_array[e].iloc[i])
-                    URL = basemediaURL.replace("{id}",entry)
-                    if verbose:
-                        print("URL for querying:\n\n{}\n".format(URL))
-                    response = requests.get(URL)
-                    temp_dict = {k: [float("nan")] if not v else [v] for k, v in response.json().items()}
-                    if collect:
-                        image_urls.append(temp_dict['originalFileName'][0])
-                    for entry in ['imageIdentifier','mimeType', 'sizeInBytes', 'dateUploaded', 'dateTaken','height',
-                                          'width','creator','license','dataResourceUid','occurrenceID']:
-                        if entry not in temp_dict:
-                            data_columns[entry].append(float("nan"))
-                        else:
-                            data_columns[entry].append(temp_dict[entry][0])
+                if type(m) is str:
+                    if "|" in m:
+                        m=m.split(" | ")
+                    else:
+                        m=[m]
+                    for j,entry in enumerate(m):
+                        for e in columns_media:
+                            data_columns[e].append(media_array[e].iloc[i])
+                        URL = basemediaURL.replace("{id}",entry)
+                        if verbose:
+                            print("URL for querying:\n\n{}\n".format(URL))
+                        response = requests.get(URL)
+                        temp_dict = {k: [float("nan")] if not v else [v] for k, v in response.json().items()}
+                        if collect:
+                            image_urls.append(temp_dict['originalFileName'][0])
+                        for entry in ['imageIdentifier','mimeType', 'sizeInBytes', 'dateUploaded', 'dateTaken','height',
+                                      'width','creator','license','dataResourceUid','occurrenceID']:
+                            if entry not in temp_dict:
+                                data_columns[entry].append(float("nan"))
+                            else:
+                                data_columns[entry].append(temp_dict[entry][0])
 
     # third, if option is true, collect data
     if collect:

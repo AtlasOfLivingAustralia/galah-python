@@ -131,7 +131,7 @@ def atlas_counts(taxa=None,
                 taxonConceptID = search_taxa(name)['taxonConceptID'][0]
             elif configs['galahSettings']['atlas'] in ["Austria","Brazil","Estonia","Guatemala","Sweden","United Kingdom"]:
                 taxonConceptID = search_taxa(name)['guid'][0]
-            elif configs['galahSettings']['atlas'] in ["France","Portugal"]:
+            elif configs['galahSettings']['atlas'] in ["Canada","France","Portugal"]:
                 taxonConceptID = search_taxa(name)['usageKey'][0]
             else:
                 raise ValueError("Atlas {} is not taken into account".format(configs['galahSettings']['atlas']))
@@ -185,7 +185,6 @@ def atlas_counts(taxa=None,
             # get results form the URL
             response = requests.get(URL)
             json = response.json()
-            print(json)
 
             # if the user wants them separated, add counts to a temporary array to make a dataframe with
             if separate:

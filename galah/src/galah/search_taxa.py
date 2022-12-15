@@ -45,7 +45,7 @@ def search_taxa(taxa):
             # create URL, get result and concatenate result onto dataFrame
             #URL = baseURL+"q={}".format("%20".join(name.split(" ")))
             # ***Brazil
-            if configs['galahSettings']['atlas'] in ["Australia","Austria","Brazil","Estonia","France","Guatemala",
+            if configs['galahSettings']['atlas'] in ["Australia","Austria","Brazil","Canada","Estonia","France","Guatemala",
                                                      "Portugal","Sweden","Spain","United Kingdom"]:
                 URL = baseURL.replace("{name}","%20".join(name.split(" ")))
             else:
@@ -76,7 +76,7 @@ def search_taxa(taxa):
                 data = dict(
                     (k, json['searchResults']['results'][0][k]) for k in ('scientificName', 'scientificNameAuthorship', 'speciesGuid', 'rank') if
                     k in json['searchResults']['results'][0])
-            elif configs['galahSettings']['atlas'] in ["France","Portugal"]:
+            elif configs['galahSettings']['atlas'] in ["Canada","France","Portugal"]:
                 data = dict(
                     (k, json[k]) for k in ('scientificName', 'scientificNameAuthorship', 'usageKey', 'rank') if
                     k in json)
