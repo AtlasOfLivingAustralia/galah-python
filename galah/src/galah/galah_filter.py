@@ -52,11 +52,12 @@ def galah_filter(f, ifgroupBy=False):
         else:
             specialChar = "".join(specialChar)
 
-        # check for spaces
-        f = f.replace(" ","")
-
         # split filter into parts
         parts = f.split(specialChar)
+
+        # remove leading and trailing white spaces from each filter part
+        for i, p in enumerate(parts):
+            parts[i] = p.strip()
 
         # start checking for different logical operators, starting with equals
         if specialChar == '=' or specialChar == '==':
