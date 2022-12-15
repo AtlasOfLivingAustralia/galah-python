@@ -3,7 +3,7 @@ import pandas as pd
 
 import sys
 
-def galah_filter(filters, ifgroupBy=False):
+def galah_filter(f, ifgroupBy=False):
     """
     This takes
 
@@ -23,12 +23,8 @@ def galah_filter(filters, ifgroupBy=False):
     specialChars = re.compile('[@!#$%^&*()<>?}{~:=]') #/\|
     returnString=""
 
-    # check to make sure the filters types are correct
-    if type(filters) == str or type(filters) == list:
-
-        # change to a list for ease of processing
-        if type(filters) == str:
-            filters=[filters]
+    # check to make sure the filter type is correct
+    if type(f) == str:
 
         # TODO: check if there are multiple of the same type of filters what to do?
         #categories=[]
@@ -48,58 +44,51 @@ def galah_filter(filters, ifgroupBy=False):
         #print(categories)
         #sys.exit()
         '''
+        # need to check for special characters
+        specialChar = specialChars.findall(f)
+        if specialChar is None:
+            raise ValueError("Either your filters does not have the correct special characters [@_!#$%^&*()<>?}{~:=], "
+                            "or we need to include another special character we have forgotten about.")
+        else:
+            specialChar = "".join(specialChar)
 
-        # loop over all filters
-        for i,f in enumerate(filters):
+        # check for spaces
+        f = f.replace(" ","")
 
-            # need to check for special characters
-            specialChar = specialChars.findall(f)
-            if specialChar is None:
-                raise ValueError("Either your filters does not have the correct special characters [@_!#$%^&*()<>?}{~:=], "
-                                 "or we need to include another special character we have forgotten about.")
+        # split filter into parts
+        parts = f.split(specialChar)
+
+        # start checking for different logical operators, starting with equals
+        if specialChar == '=' or specialChar == '==':
+
+            # check if the filter is a number or a string and if there is a group by
+            if parts[1].isdigit() and ifgroupBy:
+                returnString+="&fq={}:[{}]".format(parts[0],parts[1])
             else:
-                specialChar = "".join(specialChar)
+                returnString += "&fq={}:({})".format(parts[0], parts[1])
 
-            # check for spaces
-            f = f.replace(" ","")
+        # greater than
+        elif specialChar == '>':
+            returnString+="&fq={}:[{}%20TO%20*]%20AND%20-({}:\"{}\")".format(parts[0], parts[1], parts[0], parts[1])
 
-            # split filters into parts
-            parts = f.split(specialChar)
+        # less than
+        elif specialChar == '<':
+            returnString+="&fq={}:[*%20TO%20{}]%20AND%20-({}:\"{}\")".format(parts[0], parts[1], parts[0], parts[1])
 
-            # start checking for different logical operators, starting with equals
-            if specialChar == '=' or specialChar == '==':
+        # greater than or equal to
+        elif specialChar == '=>' or specialChar == '>=':
+            returnString+="&fq={}:[{}%20TO%20*]".format(parts[0], parts[1])
+        # less than or equal to
+        elif specialChar == '<=' or specialChar == '=<':
+            returnString+="&fq={}:[*%20TO%20{}]".format(parts[0], parts[1])
 
-                # check if the filters is a number or a string
-                if parts[1].isdigit():
-                    if ifgroupBy:
-                        returnString+="&fq={}:[{}]".format(parts[0],parts[1])
-                    else:
-                        returnString += "&fq={}:({})".format(parts[0], parts[1])
-                else:
-                    returnString += "&fq={}:({})".format(parts[0], parts[1])
+        # not equal to
+        elif specialChar == '!=' or specialChar == '=!':
+            returnString+="&fq=(-{}:\"{}\")".format(parts[0], parts[1])
 
-            # greater than
-            elif specialChar == '>':
-                returnString+="&fq={}:[{}%20TO%20*]%20AND%20-({}:\"{}\")".format(parts[0], parts[1], parts[0], parts[1])
-
-            # less than
-            elif specialChar == '<':
-                returnString+="&fq={}:[*%20TO%20{}]%20AND%20-({}:\"{}\")".format(parts[0], parts[1], parts[0], parts[1])
-
-            # greater than or equal to
-            elif specialChar == '=>' or specialChar == '>=':
-                returnString+="&fq={}:[{}%20TO%20*]".format(parts[0], parts[1])
-            # less than or equal to
-            elif specialChar == '<=' or specialChar == '=<':
-                returnString+="&fq={}:[*%20TO%20{}]".format(parts[0], parts[1])
-
-            # not equal to
-            elif specialChar == '!=' or specialChar == '=!':
-                returnString+="&fq=(-{}:\"{}\")".format(parts[0], parts[1])
-
-            # else, there is either an error in the filters or a missing case
-            else:
-                raise ValueError("The special character {} is not included in the filters function.  Either it is not a logical operator, or it has not been included yet.".format(specialChar[0]))
+        # else, there is either an error in the filters or a missing case
+        else:
+            raise ValueError("The special character {} is not included in the filters function.  Either it is not a logical operator, or it has not been included yet.".format(specialChar[0]))
 
     # let the user know that their variable is not of the correct type
     else:
