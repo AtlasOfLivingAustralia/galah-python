@@ -435,30 +435,6 @@ nunber of results) is</p>
 </pre></div></div></dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="galah.galah_filter">
-<span class="sig-prename descclassname"><span class="pre">galah.</span></span><span class="sig-name descname"><span class="pre">galah_filter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filters</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ifgroupBy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#galah.galah_filter" title="Permalink to this definition">#</a></dt>
-<dd><p>This takes</p>
-<p>To know how many total records are in your chosen atlas, type</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="kn">import</span> <span class="nn">galah</span></span>
-<span class="prompt1"><span class="n">galah</span><span class="o">.</span><span class="n">galah_filter</span><span class="p">(</span><span class="n">filters</span><span class="o">=</span><span class="s2">&quot;year=2020&quot;</span><span class="p">)</span></span>
-</pre></div></div><p>which returns</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>&amp;fq=year:(2020)
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="galah.galah_group_by">
-<span class="sig-prename descclassname"><span class="pre">galah.</span></span><span class="sig-name descname"><span class="pre">galah_group_by</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">URL</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">group_by</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filters</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expand</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#galah.galah_group_by" title="Permalink to this definition">#</a></dt>
-<dd><p>Used for grouping counts by a specific query, i.e. “year” or “basisOfRecord”.  It’s mainly utilized in atlas_counts.</p>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="galah.galah_select">
-<span class="sig-prename descclassname"><span class="pre">galah.</span></span><span class="sig-name descname"><span class="pre">galah_select</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">selectionList</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#galah.galah_select" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py function">
 <dt class="sig sig-object py" id="galah.search_all">
 <span class="sig-prename descclassname"><span class="pre">galah.</span></span><span class="sig-name descname"><span class="pre">search_all</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">assertions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atlases</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">apis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">collections</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">datasets</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fields</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">licences</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lists</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">profiles</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">providers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reasons</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ranks</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#galah.search_all" title="Permalink to this definition">#</a></dt>
 <dd><p>Used for getting and searching various amounts of information about the chosen atlas you want to
@@ -520,13 +496,13 @@ get occurrences from.</p>
 3                                              *Brigalow  ...  dr14507
 4                                                0662409  ...  dr19938
 ...                                                  ...  ...      ...
-12111  [C4OC] Torres Strait Regional Landcare Facilit...  ...   dr3529
-12112  [C4OC] Traditional Ecological Knowledge Record...  ...   dr3199
-12113  [C4OC] Trialling and demonstrating farmer inno...  ...   dr3519
-12114                [C4OC] Urban and Coastal Protection  ...   dr6802
-12115        _River_Torrens_Linear_Park_Species_List.csv  ...  dr19265
+12115  [C4OC] Torres Strait Regional Landcare Facilit...  ...   dr3529
+12116  [C4OC] Traditional Ecological Knowledge Record...  ...   dr3199
+12117  [C4OC] Trialling and demonstrating farmer inno...  ...   dr3519
+12118                [C4OC] Urban and Coastal Protection  ...   dr6802
+12119        _River_Torrens_Linear_Park_Species_List.csv  ...  dr19265
 
-[12116 rows x 3 columns]
+[12120 rows x 3 columns]
 </pre></div>
 </div>
 </dd></dl>
@@ -608,21 +584,6 @@ get occurrences from.</p>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#galah.galah_config">
    galah_config
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#galah.galah_filter">
-   galah_filter
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#galah.galah_group_by">
-   galah_group_by
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#galah.galah_select">
-   galah_select
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">

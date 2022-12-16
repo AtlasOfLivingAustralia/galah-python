@@ -106,8 +106,15 @@ def atlas_occurrences(taxa=None,
         baseURL += galah_select(selectionList=["decimalLatitude","decimalLongitude","eventDate","scientificName","taxonConceptID",
                                                "recordID","dataResourceName","occurrenceStatus"]) + "&"
 
+    # check what type of variable filters is; handle accordingly
     if filters is not None:
-        baseURL += galah_filter(filters) + "&"
+        if type(filters) is str:
+            baseURL += galah_filter(filters) + "&"
+        elif type(filters) is list:
+            for f in filters:
+                baseURL += galah_filter(f) + "&"
+        else:
+            raise ValueError("The filters argument needs to be either a string or a list")
 
     # check if taxa is specified
     if taxa is not None:
