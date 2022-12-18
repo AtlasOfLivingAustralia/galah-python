@@ -6,6 +6,40 @@ import pandas as pd
 import os,configparser
 #import nose2
 
+'''
+# Austria 
+
+taxa="Sehirus luctuosus"
+
+# Brazil
+taxa = "Ramphastos toco"
+taxa = "Hydrochoens hydrochaeris"
+
+# Canada
+taxa = "Alces alces"
+
+# Estonia 
+taxa = "Canis lupus"
+
+# France
+taxa = "Triturus marmoratus"
+
+# Guatemala
+taxa = "Herpailurus yagouaroundi"
+
+# Portugal
+taxa = "Gallus gallus"
+
+# Spain
+taxa = "Vipera latastei"
+
+# Sweden
+taxa = "Alces alces"
+
+# UK
+taxa - "Luscinia megarhynchos"
+'''
+
 class test_galah(unittest2.TestCase):
 
     # unit test for search_taxa()
@@ -20,7 +54,9 @@ class test_galah(unittest2.TestCase):
 
     # second unit test for galah_filter
     def test_galah_filter2(self):
-        output = galah.galah_filter(["year=2019","basisOfRecord=HUMAN_OBSERVATION"])
+        output=""
+        for f in ["year=2019","basisOfRecord=HUMAN_OBSERVATION"]:
+            output += galah.galah_filter(f)
         self.assertEqual(output,"&fq=year:(2019)&fq=basisOfRecord:(HUMAN_OBSERVATION)")
 
     # third unit test for galah_filter - ifgroupBy is true
@@ -54,52 +90,64 @@ class test_galah(unittest2.TestCase):
         configFile.read(inifile)
         self.assertEqual(configFile['galahSettings']['email'],"test@example.com")
 
-    def test_show_all_assertions(self):
+    def test_show_all_assertions_australia(self):
+        galah.galah_config(atlas="Australia")
         output = galah.show_all(assertions=True)
         self.assertGreater(output.shape[1],1)
 
-    def test_show_all_atlases(self):
+    def test_show_all_atlases_australia(self):
+        galah.galah_config(atlas="Australia")
         output = galah.show_all(atlases=True)
         self.assertGreater(output.shape[1],1)
 
-    def test_show_all_apis(self):
+    def test_show_all_apis_australia(self):
+        galah.galah_config(atlas="Australia")
         output = galah.show_all(apis=True)
         self.assertGreater(output.shape[1],1)
 
-    def test_show_all_collections(self):
+    def test_show_all_collections_australia(self):
+        galah.galah_config(atlas="Australia")
         output = galah.show_all(collections=True)
         self.assertGreater(output.shape[1],1)
 
-    def test_show_all_datasets(self):
+    def test_show_all_datasets_australia(self):
+        galah.galah_config(atlas="Australia")
         output = galah.show_all(datasets=True)
         self.assertGreater(output.shape[1],1)
 
     # check if this gives errors
-    def test_show_all_fields(self):
+    def test_show_all_fields_australia(self):
+        galah.galah_config(atlas="Australia")
         output = galah.show_all(fields=True)
         self.assertGreater(output.shape[1],1)
 
-    def test_show_all_licences(self):
+    def test_show_all_licences_australia(self):
+        galah.galah_config(atlas="Australia")
         output = galah.show_all(licences=True)
         self.assertGreater(output.shape[1],1)
 
-    def test_show_all_lists(self):
+    def test_show_all_lists_australia(self):
+        galah.galah_config(atlas="Australia")
         output = galah.show_all(lists=True)
         self.assertGreater(output.shape[1],1)
 
-    def test_show_all_profiles(self):
+    def test_show_all_profiles_australia(self):
+        galah.galah_config(atlas="Australia")
         output = galah.show_all(profiles=True)
         self.assertGreater(output.shape[1],1)
 
-    def test_show_all_providers(self):
+    def test_show_all_providers_australia(self):
+        galah.galah_config(atlas="Australia")
         output = galah.show_all(providers=True)
         self.assertGreater(output.shape[1],1)
 
-    def test_show_all_reasons(self):
+    def test_show_all_reasons_australia(self):
+        galah.galah_config(atlas="Australia")
         output = galah.show_all(reasons=True)
         self.assertGreater(output.shape[1],1)
 
-    def test_show_all_ranks(self):
+    def test_show_all_ranks_australia(self):
+        galah.galah_config(atlas="Australia")
         output = galah.show_all(ranks=True)
         self.assertGreater(output.shape[1],1)
 

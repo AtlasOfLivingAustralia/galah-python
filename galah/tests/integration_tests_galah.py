@@ -5,7 +5,7 @@ import pytest,os
 import galah
 
 '''
-Austria tests to implement
+# Austria 
 
 >>> galah.galah_config(atlas="Austria")
 >>> galah.atlas_media(taxa="Sehirus luctuosus")
@@ -15,20 +15,32 @@ galah.atlas_counts(taxa="Sehirus luctuosus",filters="year>2010",group_by="year",
 galah.atlas_species(taxa="Sehirus")
 
 # Brazil
+taxa = "Ramphastos toco"
+taxa = "Hydrochoens hydrochaeris"
 
-# Estonia - species Canis lupus
+# Canada
+taxa = "Alces alces"
+
+# Estonia 
+taxa = "Canis lupus"
 
 # France
+taxa = "Triturus marmoratus"
 
 # Guatemala
+taxa = "Herpailurus yagouaroundi"
 
 # Portugal
+taxa = "Gallus gallus"
 
 # Spain
+taxa = "Vipera latastei"
 
 # Sweden
+taxa = "Alces alces"
 
 # UK
+taxa - "Luscinia megarhynchos"
 '''
 
 # test atlas_counts() can call search_taxa() function with single taxa
