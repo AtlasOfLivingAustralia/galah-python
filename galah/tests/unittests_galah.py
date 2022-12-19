@@ -42,10 +42,17 @@ taxa - "Luscinia megarhynchos"
 
 class test_galah(unittest2.TestCase):
 
-    # unit test for search_taxa()
-    def test_search_taxa(self):
+    # integration test for search_taxa() - have to test get_api_url
+    def test_search_taxa_australia(self):
+        galah.galah_config(atlas="Australia")
         output = galah.search_taxa("Vulpes vulpes")
-        self.assertNotEqual(output['taxonConceptID'][0],None)
+        self.assertNotEqual(output['taxonConceptID'][0], None)
+
+    # integration test for search_taxa() - have to test get_api_url
+    def test_search_taxa_austria(self):
+        galah.galah_config(atlas="Austria")
+        output = galah.search_taxa(taxa="Sehirus luctuosus")
+        self.assertNotEqual(output['guid'][0], None)
 
     # one unit test for galah_filter
     def test_galah_filter1(self):
@@ -151,13 +158,64 @@ class test_galah(unittest2.TestCase):
         output = galah.show_all(ranks=True)
         self.assertGreater(output.shape[1],1)
 
+    # Austria - comment out if we don't release the other APIs with it
+    #'''
+    def test_show_all_assertions_austria(self):
+        galah.galah_config(atlas="Austria")
+        output = galah.show_all(assertions=True)
+        self.assertGreater(output.shape[1],1)
+
+    def test_show_all_atlases_austria(self):
+        galah.galah_config(atlas="Austria")
+        output = galah.show_all(atlases=True)
+        self.assertGreater(output.shape[1],1)
+
+    def test_show_all_apis_austria(self):
+        galah.galah_config(atlas="Austria")
+        output = galah.show_all(apis=True)
+        self.assertGreater(output.shape[1],1)
+
+    def test_show_all_collections_austria(self):
+        galah.galah_config(atlas="Austria")
+        output = galah.show_all(collections=True)
+        self.assertGreater(output.shape[1],1)
+
+    def test_show_all_datasets_austria(self):
+        galah.galah_config(atlas="Austria")
+        output = galah.show_all(datasets=True)
+        self.assertGreater(output.shape[1],1)
+
+    # check if this gives errors
+    def test_show_all_fields_austria(self):
+        galah.galah_config(atlas="Austria")
+        output = galah.show_all(fields=True)
+        self.assertGreater(output.shape[1],1)
+
+    def test_show_all_lists_austria(self):
+        galah.galah_config(atlas="Austria")
+        output = galah.show_all(lists=True)
+        self.assertGreater(output.shape[1],1)
+
+    def test_show_all_providers_austria(self):
+        galah.galah_config(atlas="Austria")
+        output = galah.show_all(providers=True)
+        self.assertGreater(output.shape[1],1)
+
+    def test_show_all_reasons_austria(self):
+        galah.galah_config(atlas="Austria")
+        output = galah.show_all(reasons=True)
+        self.assertGreater(output.shape[1],1)
+    #'''
+
     # should include a unit test for this but I believe they are all integration tests
-    def test_atlas_occurrences(self):
+    def test_atlas_occurrences_australia(self):
+        galah.galah_config(atlas="Australia")
         galah.galah_config(email="amanda.buyan@csiro.au")
         a=galah.atlas_occurrences(test=True)
         self.assertIsNone(a)
 
-    def test_show_values(self):
+    def test_show_values_australia(self):
+        galah.galah_config(atlas="Australia")
         output = galah.show_values(field="basisOfRecord")
         self.assertGreater(output.shape[1], 1)
 
