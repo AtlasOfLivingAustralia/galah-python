@@ -185,7 +185,6 @@ class test_galah(unittest2.TestCase):
         output = galah.show_all(datasets=True)
         self.assertGreater(output.shape[1],1)
 
-    # check if this gives errors
     def test_show_all_fields_austria(self):
         galah.galah_config(atlas="Austria")
         output = galah.show_all(fields=True)
@@ -207,10 +206,47 @@ class test_galah(unittest2.TestCase):
         self.assertGreater(output.shape[1],1)
     #'''
 
+    # Austria - comment out if we don't release the other APIs with it
+    #'''
+    def test_show_all_assertions_brazil(self):
+        galah.galah_config(atlas="Brazil")
+        output = galah.show_all(assertions=True)
+        self.assertGreater(output.shape[1],1)
+
+    def test_show_all_atlases_brazil(self):
+        galah.galah_config(atlas="Brazil")
+        output = galah.show_all(atlases=True)
+        self.assertGreater(output.shape[1],1)
+
+    def test_show_all_apis_brazil(self):
+        galah.galah_config(atlas="Brazil")
+        output = galah.show_all(apis=True)
+        self.assertGreater(output.shape[1],1)
+
+    def test_show_all_collections_brazil(self):
+        galah.galah_config(atlas="Brazil")
+        output = galah.show_all(collections=True)
+        self.assertGreater(output.shape[1],1)
+
+    def test_show_all_datasets_brazil(self):
+        galah.galah_config(atlas="Brazil")
+        output = galah.show_all(datasets=True)
+        self.assertGreater(output.shape[1],1)
+
+    def test_show_all_fields_brazil(self):
+        galah.galah_config(atlas="Brazil")
+        output = galah.show_all(fields=True)
+        self.assertGreater(output.shape[1],1)
+
+    def test_show_all_providers_brazil(self):
+        galah.galah_config(atlas="Brazil")
+        output = galah.show_all(providers=True)
+        self.assertGreater(output.shape[1],1)
+    #'''
+
     # should include a unit test for this but I believe they are all integration tests
     def test_atlas_occurrences_australia(self):
-        galah.galah_config(atlas="Australia")
-        galah.galah_config(email="amanda.buyan@csiro.au")
+        galah.galah_config(atlas="Australia",email="amanda.buyan@csiro.au")
         a=galah.atlas_occurrences(test=True)
         self.assertIsNone(a)
 
