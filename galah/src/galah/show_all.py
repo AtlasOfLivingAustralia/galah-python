@@ -193,7 +193,7 @@ def show_all(assertions=False,
         # select only the columns titled 'name', 'info', 'infoUrl'
         if configs['galahSettings']['atlas'] in ["Australia"]:
             dataFrame = fields_values[['name', 'info', 'infoUrl']]
-        elif configs['galahSettings']['atlas'] in ["Austria","Brazil","Canada","Estonia","France","Guatemala","United Kingdom"]:
+        elif configs['galahSettings']['atlas'] in ["Austria","Brazil","Canada","Estonia","France","Guatemala","Sweden","United Kingdom"]:
             dataFrame = fields_values[['name', 'info']]
         else:
             raise ValueError("Atlas {} not taken into account".format(configs['galahSettings']['atlas']))
@@ -209,7 +209,7 @@ def show_all(assertions=False,
         if configs['galahSettings']['atlas'] in ["Australia"]:
             # add the types array as another column to the data frame
             dataFrame.insert(loc=3, column='type', value=layer_types)
-        elif configs['galahSettings']['atlas'] in ["Austria","Brazil","Canada","Estonia","France","Guatemala","United Kingdom"]:
+        elif configs['galahSettings']['atlas'] in ["Austria","Brazil","Canada","Estonia","France","Guatemala","Sweden","United Kingdom"]:
             dataFrame.insert(loc=2, column='type', value=layer_types)
         else:
             raise ValueError("Atlas {} not taken into account".format(configs['galahSettings']['atlas']))
