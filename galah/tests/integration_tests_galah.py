@@ -101,10 +101,10 @@ def test_atlas_counts_multiple_taxa():
     assert galah.atlas_counts(taxa_array)['totalRecords'][0] > 0
 
 # test atlas_counts() can call search_taxa() function with multiple taxa
-def test_atlas_counts_multiple_taxa():
-    taxa_array = ["Osphranter rufus", "Vulpes vulpes", "Macropus giganteus", "Phascolarctos cinereus"]
-    group_by="year"
-    assert galah.atlas_counts(taxa_array,group_by=group_by,expand=False)['count'][0] > 0
+#def test_atlas_counts_multiple_taxa():
+#    taxa_array = ["Osphranter rufus", "Vulpes vulpes", "Macropus giganteus", "Phascolarctos cinereus"]
+#    group_by="year"
+#    assert galah.atlas_counts(taxa_array,group_by=group_by,expand=False)['count'][0] > 0
 
 # test atlas_counts() can call search_taxa() function with multiple taxa
 def test_atlas_counts_multiple_taxa_group_by():

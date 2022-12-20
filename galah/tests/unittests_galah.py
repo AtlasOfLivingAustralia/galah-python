@@ -159,7 +159,7 @@ class test_galah(unittest2.TestCase):
         self.assertGreater(output.shape[1],1)
 
     # Austria - comment out if we don't release the other APIs with it
-    #'''
+    '''
     def test_show_all_assertions_austria(self):
         galah.galah_config(atlas="Austria")
         output = galah.show_all(assertions=True)
@@ -206,8 +206,8 @@ class test_galah(unittest2.TestCase):
         self.assertGreater(output.shape[1],1)
     #'''
 
-    # Austria - comment out if we don't release the other APIs with it
-    #'''
+    # Brazil - comment out if we don't release the other APIs with it
+    '''
     def test_show_all_assertions_brazil(self):
         galah.galah_config(atlas="Brazil")
         output = galah.show_all(assertions=True)
@@ -242,6 +242,239 @@ class test_galah(unittest2.TestCase):
         galah.galah_config(atlas="Brazil")
         output = galah.show_all(providers=True)
         self.assertGreater(output.shape[1],1)
+    #'''
+
+    # Canada - comment out if we don't release the other APIs with it
+    '''
+    def test_show_all_assertions_canada(self):
+        galah.galah_config(atlas="Canada")
+        output = galah.show_all(assertions=True)
+        self.assertGreater(output.shape[1],1)
+
+    def test_show_all_atlases_canada(self):
+        galah.galah_config(atlas="Canada")
+        output = galah.show_all(atlases=True)
+        self.assertGreater(output.shape[1],1)
+
+    def test_show_all_apis_canada(self):
+        galah.galah_config(atlas="Canada")
+        output = galah.show_all(apis=True)
+        self.assertGreater(output.shape[1],1)
+
+    def test_show_all_datasets_canada(self):
+        galah.galah_config(atlas="Canada")
+        output = galah.show_all(datasets=True)
+        self.assertGreater(output.shape[1],1)
+
+    def test_show_all_fields_canada(self):
+        galah.galah_config(atlas="Canada")
+        output = galah.show_all(fields=True)
+        self.assertGreater(output.shape[1],1)
+
+    def test_show_all_providers_canada(self):
+        galah.galah_config(atlas="Canada")
+        output = galah.show_all(providers=True)
+        self.assertGreater(output.shape[1],1)
+
+    def test_show_all_reasons_canada(self):
+        galah.galah_config(atlas="Canada")
+        output = galah.show_all(providers=True)
+        self.assertGreater(output.shape[1],1)
+    #'''
+
+    # Estonia - comment out if we don't release the other APIs with it
+    '''
+    def test_show_all_assertions_estonia(self):
+        galah.galah_config(atlas="Estonia")
+        output = galah.show_all(assertions=True)
+        self.assertGreater(output.shape[1],1)
+
+    def test_show_all_atlases_estonia(self):
+        galah.galah_config(atlas="Estonia")
+        output = galah.show_all(atlases=True)
+        self.assertGreater(output.shape[1],1)
+
+    def test_show_all_apis_estonia(self):
+        galah.galah_config(atlas="Estonia")
+        output = galah.show_all(apis=True)
+        self.assertGreater(output.shape[1],1)
+
+    def test_show_all_collections_estonia(self):
+        galah.galah_config(atlas="Estonia")
+        output = galah.show_all(collections=True)
+        self.assertGreater(output.shape[1],1)
+
+    def test_show_all_datasets_estonia(self):
+        galah.galah_config(atlas="Estonia")
+        output = galah.show_all(datasets=True)
+        self.assertGreater(output.shape[1],1)
+
+    def test_show_all_fields_estonia(self):
+        galah.galah_config(atlas="Estonia")
+        output = galah.show_all(fields=True)
+        self.assertGreater(output.shape[1],1)
+
+    def test_show_all_providers_estonia(self):
+        galah.galah_config(atlas="Estonia")
+        output = galah.show_all(providers=True)
+        self.assertGreater(output.shape[1],1)
+    #'''
+
+    # France - comment out if we don't release the other APIs with it
+    '''
+    def test_show_all_assertions_france(self):
+        galah.galah_config(atlas="France")
+        output = galah.show_all(assertions=True)
+        self.assertGreater(output.shape[1],1)
+
+    def test_show_all_atlases_france(self):
+        galah.galah_config(atlas="France")
+        output = galah.show_all(atlases=True)
+        self.assertGreater(output.shape[1],1)
+
+    def test_show_all_apis_france(self):
+        galah.galah_config(atlas="France")
+        output = galah.show_all(apis=True)
+        self.assertGreater(output.shape[1],1)
+
+    def test_show_all_collections_france(self):
+        galah.galah_config(atlas="France")
+        output = galah.show_all(collections=True)
+        self.assertGreater(output.shape[1],1)
+
+    def test_show_all_datasets_france(self):
+        galah.galah_config(atlas="France")
+        output = galah.show_all(datasets=True)
+        self.assertGreater(output.shape[1],1)
+
+    def test_show_all_fields_france(self):
+        galah.galah_config(atlas="France")
+        output = galah.show_all(fields=True)
+        self.assertGreater(output.shape[1],1)
+
+    def test_show_all_providers_france(self):
+        galah.galah_config(atlas="France")
+        output = galah.show_all(providers=True)
+        self.assertGreater(output.shape[1],1)
+    #'''
+
+    # Guatemala - comment out if we don't release the other APIs with it
+    #'''
+    def test_show_all_assertions_guatemala(self):
+        galah.galah_config(atlas="Guatemala")
+        output = galah.show_all(assertions=True)
+        self.assertGreater(output.shape[1],1)
+
+    def test_show_all_atlases_guatemala(self):
+        galah.galah_config(atlas="Guatemala")
+        output = galah.show_all(atlases=True)
+        self.assertGreater(output.shape[1],1)
+
+    def test_show_all_apis_guatemala(self):
+        galah.galah_config(atlas="Guatemala")
+        output = galah.show_all(apis=True)
+        self.assertGreater(output.shape[1],1)
+
+    def test_show_all_collections_guatemala(self):
+        galah.galah_config(atlas="Guatemala")
+        output = galah.show_all(collections=True)
+        self.assertGreater(output.shape[1],1)
+
+    def test_show_all_datasets_guatemala(self):
+        galah.galah_config(atlas="Guatemala")
+        output = galah.show_all(datasets=True)
+        self.assertGreater(output.shape[1],1)
+
+    def test_show_all_fields_guatemala(self):
+        galah.galah_config(atlas="Guatemala")
+        output = galah.show_all(fields=True)
+        self.assertGreater(output.shape[1],1)
+
+    def test_show_all_providers_guatemala(self):
+        galah.galah_config(atlas="Guatemala")
+        output = galah.show_all(providers=True)
+        self.assertGreater(output.shape[1],1)
+
+    def test_show_all_reasons_guatemala(self):
+        galah.galah_config(atlas="Guatemala")
+        output = galah.show_all(reasons=True)
+        self.assertGreater(output.shape[1], 1)
+    #'''
+
+    # Sweden - comment out if we don't release the other APIs with it
+    #'''
+    def test_show_all_assertions_sweden(self):
+        galah.galah_config(atlas="Sweden")
+        output = galah.show_all(assertions=True)
+        self.assertGreater(output.shape[1],1)
+
+    def test_show_all_atlases_sweden(self):
+        galah.galah_config(atlas="Sweden")
+        output = galah.show_all(atlases=True)
+        self.assertGreater(output.shape[1],1)
+
+    def test_show_all_apis_sweden(self):
+        galah.galah_config(atlas="Sweden")
+        output = galah.show_all(apis=True)
+        self.assertGreater(output.shape[1],1)
+
+    def test_show_all_datasets_sweden(self):
+        galah.galah_config(atlas="Sweden")
+        output = galah.show_all(datasets=True)
+        self.assertGreater(output.shape[1],1)
+
+    def test_show_all_fields_sweden(self):
+        galah.galah_config(atlas="Sweden")
+        output = galah.show_all(fields=True)
+        self.assertGreater(output.shape[1],1)
+
+    def test_show_all_providers_sweden(self):
+        galah.galah_config(atlas="Sweden")
+        output = galah.show_all(providers=True)
+        self.assertGreater(output.shape[1],1)
+
+    def test_show_all_reasons_sweden(self):
+        galah.galah_config(atlas="Sweden")
+        output = galah.show_all(reasons=True)
+        self.assertGreater(output.shape[1], 1)
+    #'''
+
+    # UK - comment out if we don't release the other APIs with it
+    #'''
+    def test_show_all_assertions_uk(self):
+        galah.galah_config(atlas="United Kingdom")
+        output = galah.show_all(assertions=True)
+        self.assertGreater(output.shape[1],1)
+
+    def test_show_all_atlases_uk(self):
+        galah.galah_config(atlas="United Kingdom")
+        output = galah.show_all(atlases=True)
+        self.assertGreater(output.shape[1],1)
+
+    def test_show_all_apis_uk(self):
+        galah.galah_config(atlas="United Kingdom")
+        output = galah.show_all(apis=True)
+        self.assertGreater(output.shape[1],1)
+
+    def test_show_all_datasets_uk(self):
+        galah.galah_config(atlas="United Kingdom")
+        output = galah.show_all(datasets=True)
+        self.assertGreater(output.shape[1],1)
+
+    def test_show_all_fields_uk(self):
+        galah.galah_config(atlas="United Kingdom")
+        output = galah.show_all(fields=True)
+        self.assertGreater(output.shape[1],1)
+
+    def test_show_all_providers_uk(self):
+        galah.galah_config(atlas="United Kingdom")
+        output = galah.show_all(providers=True)
+        self.assertGreater(output.shape[1],1)
+
+    def test_show_all_reasons_uk(self):
+        galah.galah_config(atlas="United Kingdom")
+        output = galah.show_all(reasons=True)
+        self.assertGreater(output.shape[1], 1)
     #'''
 
     # should include a unit test for this but I believe they are all integration tests
