@@ -66,19 +66,25 @@ def test_atlas_counts_taxa_filter_data_quality():
 def test_atlas_counts_taxa_group():
     taxa = "Vulpes vulpes"
     group_by = "year"
-    assert galah.atlas_counts(taxa,group_by=group_by,expand=False).shape[0] > 0
+    output = galah.atlas_counts(taxa,group_by=group_by,expand=False)
+    assert output.shape[0] > 0
+    assert output.shape[1] == 2
 
 # comment this
 def test_atlas_counts_taxa_groups():
     taxa = "Vulpes vulpes"
     group_by = ["year","basisOfRecord"]
-    assert galah.atlas_counts(taxa,group_by=group_by,expand=False).shape[0] > 0
+    output = galah.atlas_counts(taxa,group_by=group_by,expand=False)
+    assert output.shape[0] > 0
+    assert output.shape[1] == len(group_by) + 1
 
 # comment this
 def test_atlas_counts_taxa_groups_expand():
     taxa = "Vulpes vulpes"
     group_by = ["year","basisOfRecord"]
-    assert galah.atlas_counts(taxa,group_by=group_by).shape[0] > 0
+    output = galah.atlas_counts(taxa,group_by=group_by)
+    assert output.shape[0] > 0
+    assert output.shape[1] == len(group_by) + 1
 
 # test altas_counts() can call search_taxa() and using two filter, filter results with single taxa
 def test_atlas_counts_taxa_filters():
@@ -92,8 +98,10 @@ def test_atlas_counts_taxa_filters_group_by_no_expand():
     taxa = "Vulpes vulpes"
     filters=["year=2020","basisOfRecord=HUMAN_OBSERVATION"]
     group_by="basisOfRecord"
+    output = galah.atlas_counts(taxa,filters=filters,group_by=group_by,expand=False)
     # test single taxa is working (search_taxa(), galah_filter() x 2)
-    assert galah.atlas_counts(taxa,filters=filters,group_by=group_by,expand=False)['count'][0] > 0
+    assert output['count'][0] > 0
+    assert output.shape[1] == 2
 
 # test atlas_counts() can call search_taxa() function with multiple taxa
 def test_atlas_counts_multiple_taxa():
@@ -104,13 +112,17 @@ def test_atlas_counts_multiple_taxa():
 def test_atlas_counts_multiple_taxa():
     taxa_array = ["Osphranter rufus", "Vulpes vulpes", "Macropus giganteus", "Phascolarctos cinereus"]
     group_by="year"
-    assert galah.atlas_counts(taxa_array,group_by=group_by,expand=False)['count'][0] > 0
+    output = galah.atlas_counts(taxa_array,group_by=group_by,expand=False)
+    assert output['count'][0] > 0
+    assert output.shape[1] == 2
 
 # test atlas_counts() can call search_taxa() function with multiple taxa
 def test_atlas_counts_multiple_taxa_group_by():
     taxa_array = ["Osphranter rufus", "Vulpes vulpes", "Macropus giganteus", "Phascolarctos cinereus"]
     group_by=["year",'basisOfRecord']
-    assert galah.atlas_counts(taxa_array,group_by=group_by)['count'][0] > 0
+    output = galah.atlas_counts(taxa_array,group_by=group_by)
+    assert output['count'][0] > 0
+    assert output.shape[1] == len(group_by) + 1
 
 # test altas_counts() can call search_taxa() and using one filter, filter results with multiple taxa
 def test_atlas_counts_multiple_taxa_filter():
@@ -123,7 +135,9 @@ def test_atlas_counts_multiple_taxa_filter_group_by():
     taxa_array = ["Osphranter rufus", "Vulpes vulpes", "Macropus giganteus", "Phascolarctos cinereus"]
     filter1 = "year=2020"
     group_by="basisOfRecord"
-    assert galah.atlas_counts(taxa_array,filters=filter1,group_by=group_by,expand=False)['count'][0] > 0
+    output = galah.atlas_counts(taxa_array,filters=filter1,group_by=group_by,expand=False)
+    assert output['count'][0] > 0
+    assert output.shape[1] == 2
 
 # test altas_counts() can call search_taxa() and using one filter, filter results with multiple taxa
 def test_atlas_counts_multiple_taxa_filters():
@@ -136,7 +150,9 @@ def test_atlas_counts_multiple_taxa_filters_group_by():
     taxa_array = ["Osphranter rufus", "Vulpes vulpes", "Macropus giganteus", "Phascolarctos cinereus"]
     filters = ["year=2020", "basisOfRecord=HUMAN_OBSERVATION"]
     group_by = "year"
-    assert galah.atlas_counts(taxa_array,filters=filters,group_by=group_by,expand=False)['count'][0] > 0
+    output = galah.atlas_counts(taxa_array,filters=filters,group_by=group_by,expand=False)
+    assert output['count'][0] > 0
+    assert output.shape[1] == 2
 
 # test altas_counts() can call search_taxa() and using one filter, filter results with multiple taxa
 def test_atlas_counts_multiple_taxa_filters_group_by_multiple():
@@ -144,7 +160,9 @@ def test_atlas_counts_multiple_taxa_filters_group_by_multiple():
     filters = ["year>2010", "basisOfRecord=HUMAN_OBSERVATION"]
     group_by = ["county","year"]
     # county** , associatedOrganisms , day , decade
-    assert galah.atlas_counts(taxa_array,filters=filters,group_by=group_by)['count'][0] > 0
+    output = galah.atlas_counts(taxa_array,filters=filters,group_by=group_by)
+    assert output['count'][0] > 0
+    assert output.shape[1] == len(group_by) + 1
 '''
 #test if it can get a taxa and return output
 def test_atlas_media_taxa():
