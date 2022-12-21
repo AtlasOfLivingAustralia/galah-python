@@ -1,4 +1,4 @@
-import os,sys,requests,urllib.parse,time,zipfile,io,glob
+import os,sys,requests,urllib.parse,time,zipfile,io,glob,warnings
 import pandas as pd
 from .galah_filter import galah_filter
 from .galah_group_by import galah_group_by
@@ -58,6 +58,10 @@ def atlas_counts(taxa=None,
                          "galah.galah_config(data_profile=\"None\")"
                          )
 
+    num_taxa = 0
+    len_taxa = 0
+    taxa_separate = []
+
     # if there is no taxa, assume you will get the total number of records in the ALA
     if taxa is None:
 
@@ -116,6 +120,9 @@ def atlas_counts(taxa=None,
         # change taxa into list for easier looping
         if type(taxa) is str:
             taxa = [taxa]
+            len_taxa = 1
+        else:
+            len_taxa = len(taxa)
 
         # set these variables to 0 and empty initially
         totalRecords = 0
@@ -124,22 +131,27 @@ def atlas_counts(taxa=None,
         # get the number of records associated with each taxa
         for name in taxa:
 
-            #print(search_taxa(name))
-
-            # get the taxonConceptID for taxa
-            if configs['galahSettings']['atlas'] in ["Australia"]:
-                taxonConceptID = search_taxa(name)['taxonConceptID'][0]
-            elif configs['galahSettings']['atlas'] in ["Austria","Brazil","Estonia","Guatemala","Sweden","United Kingdom"]:
-                taxonConceptID = search_taxa(name)['guid'][0]
-            elif configs['galahSettings']['atlas'] in ["Canada","France","Portugal"]:
-                taxonConceptID = search_taxa(name)['usageKey'][0]
+            tempdf = search_taxa(name)
+            if tempdf.empty and len(taxa) == 1:
+                print("No taxon matches were found for {} in the selected atlas ({})".format(name, configs[
+                    'galahSettings']['atlas']))
+                return None
+            elif tempdf.empty:
+                print("No taxon matches were found for {} in the selected atlas ({})".format(name,configs['galahSettings']['atlas']))
+                continue
             else:
-                raise ValueError("Atlas {} is not taken into account".format(configs['galahSettings']['atlas']))
-
-            #print(taxonConceptID)
-            #print(baseURL)
-            #print(taxonConceptID)
-            #print(type(taxonConceptID))
+                if separate:
+                    taxa_separate.append(name)
+                # get the taxonConceptID for taxa - first check for taxa not in atlas
+                if configs['galahSettings']['atlas'] in ["Australia"]:
+                    taxonConceptID = search_taxa(name)['taxonConceptID'][0]
+                elif configs['galahSettings']['atlas'] in ["Austria", "Brazil", "Estonia", "Guatemala", "Sweden",
+                                                           "United Kingdom"]:
+                    taxonConceptID = search_taxa(name)['guid'][0]
+                elif configs['galahSettings']['atlas'] in ["Canada", "France", "Portugal"]:
+                    taxonConceptID = search_taxa(name)['usageKey'][0]
+                else:
+                    raise ValueError("Atlas {} is not taken into account".format(configs['galahSettings']['atlas']))
 
             # add this ID to the URL
             URL = baseURL + "fq=%28lsid%3A" + urllib.parse.quote(str(taxonConceptID)) + "%29&" # try making it a string
@@ -192,15 +204,20 @@ def atlas_counts(taxa=None,
 
             # if the user doesn't want them separate, then add them to the existing counts
             else:
+                num_taxa += 1
                 totalRecords += int(json['totalRecords'])
 
         # make a dataframe with the total records for each taxa separate
         if separate:
-            dataFrame = pd.DataFrame({'taxa': taxa, 'totalRecords': tempTotalRecords})
+            dataFrame = pd.DataFrame({'taxa': taxa_separate, 'totalRecords': tempTotalRecords})
 
         # make a dataframe with the total number of records
         else:
             dataFrame = pd.DataFrame({'totalRecords': [totalRecords]})
+
+        # raise warning if one of the taxa isn't in the atlas
+        if num_taxa < len_taxa:
+            warnings.warn("One of the taxa is not found in your designated atlas")
 
         # return the dataFrame with the specified counts
         return dataFrame
