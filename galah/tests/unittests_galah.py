@@ -71,6 +71,47 @@ class test_galah(unittest2.TestCase):
         output = galah.galah_filter("year=2019",ifgroupBy=True)
         self.assertEqual(output,"&fq=year:[2019]")
 
+    # fourth unit test for galah_filter - filter parameter has spaces in it
+    def test_galah_filter4(self):
+        output = galah.galah_filter("state = New South Wales")
+        self.assertEqual(output, "&fq=state:(New South Wales)")
+
+    # fifth unit test for galah_filter - filter parameter has spaces and testing == operator
+    def test_galah_filter5(self):
+        output = galah.galah_filter("dataResourceName == iNaturalist Australia")
+        self.assertEqual(output, "&fq=dataResourceName:(iNaturalist Australia)")
+    
+    # sixth unit test for galah_filter - testing > operator
+    def test_galah_filter6(self):
+        output = galah.galah_filter("decade>2000")
+        self.assertEqual(output, "&fq=decade:[2000%20TO%20*]%20AND%20-(decade:\"2000\")")
+
+    # seventh unit test for galah_filter - testing > operator
+    def test_galah_filter7(self):
+        output = galah.galah_filter("year<1900")
+        self.assertEqual(output, "&fq=year:[*%20TO%201900]%20AND%20-(year:\"1900\")")
+
+    # eigth unit test for galah_filter - testing >= and => operator
+    def test_galah_filter8(self):
+        output1 = galah.galah_filter("month >= 8")
+        output2 = galah.galah_filter("month => 8")
+        self.assertEqual(output1, "&fq=month:[8%20TO%20*]")
+        self.assertEqual(output2, "&fq=month:[8%20TO%20*]")
+
+    # ninth unit test for galah_filter - testing <= and =< operator
+    def test_galah_filter9(self):
+        output1 = galah.galah_filter("decade <= 1980")
+        output2 = galah.galah_filter("decade =< 1980")
+        self.assertEqual(output1, "&fq=decade:[*%20TO%201980]")
+        self.assertEqual(output2, "&fq=decade:[*%20TO%201980]")
+
+    # tenth unit test for galah_filter - testing != and =! operator
+    def test_galah_filter10(self):
+        output1 = galah.galah_filter("habitat != Marine")
+        output2 = galah.galah_filter("habitat =! Marine")
+        self.assertEqual(output1, "&fq=(-habitat:\"Marine\")")
+        self.assertEqual(output2, "&fq=(-habitat:\"Marine\")")
+
     # unit test to make sure galah_select works as intended
     def test_galah_select(self):
         output = galah.galah_select(selectionList=['decimalLatitude','decimalLongitude'])
