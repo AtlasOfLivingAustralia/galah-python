@@ -65,6 +65,9 @@ def galah_filter(f, ifgroupBy=False):
             # check if the filter is a number or a string and if there is a group by
             if parts[1].isdigit() and ifgroupBy:
                 returnString+="&fq={}:[{}]".format(parts[0],parts[1])
+            # if filter is querying a field that has no value
+            elif parts[1] == '':
+                returnString+="&fq=-{}:(*)".format(parts[0])
             else:
                 returnString += "&fq={}:({})".format(parts[0], parts[1])
 

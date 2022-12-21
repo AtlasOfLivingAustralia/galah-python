@@ -54,6 +54,23 @@ def test_atlas_counts_taxa_filter():
     filter1 = "year=2020"
     assert galah.atlas_counts(taxa,filters=filter1)['totalRecords'][0] > 0
 
+def test_atlas_counts_taxa_filter_empty():
+    taxa = "Vulpes vulpes"
+    filter1 = "year="
+    assert galah.atlas_counts(taxa,filters=filter1)['totalRecords'][0] > 0
+
+# test atlas_counts() can call search_taxa() and using two filters with the same field, return results for a single taxa
+def test_astlas_counts_taxa_same_filter():
+    taxa = "Anigozanthos manglesii"
+    f = ["year >=2018", "year <= 2022"]
+    assert galah.atlas_counts(taxa, filters=f)['totalRecords'][0] > 0
+
+# test atlas_counts() can call search_taxa() and using two filters with the same field, return results for a single taxa
+def test_astlas_counts_taxa_same_filter1():
+    taxa = "Anigozanthos manglesii"
+    f = ["year >=2018", "year <= 2022", "year!=2020"]
+    assert galah.atlas_counts(taxa, filters=f)['totalRecords'][0] > 0
+
 # test data quality filter
 def test_atlas_counts_taxa_filter_data_quality():
     taxa = "Vulpes vulpes"
