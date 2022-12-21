@@ -51,12 +51,9 @@ def search_taxa(taxa):
             else:
                 raise ValueError("Atlas {} is not taken into account".format(configs['galahSettings']['atlas']))
             response = requests.get(URL)
-            #print(URL)
 
             # get the response
             json = response.json()
-            #print(json)
-            #print(json['searchResults'])
             # check to see if the taxa was successfully returned
             # don't think this is the best solution for Austria but this is a first shot
             if configs['galahSettings']['atlas'] not in ["Austria"] and not json['success']:
