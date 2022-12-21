@@ -55,8 +55,11 @@ def search_taxa(taxa):
 
             # get the response
             json = response.json()
+            #print(json)
+            #print(json['searchResults'])
             # check to see if the taxa was successfully returned
-            if not json['success']:
+            # don't think this is the best solution for Austria but this is a first shot
+            if configs['galahSettings']['atlas'] not in ["Austria"] and not json['success']:
                 break
             else:
                 # this is for atlas for Australia
