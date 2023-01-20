@@ -60,7 +60,7 @@ def show_values(field=None,verbose=False):
                          "collections, datasets, fields, lists, profiles, providers\n")
     '''
     # add the field
-    URL = baseURL + "?facets=" + field
+    URL = baseURL + "?facets=" + field + "&flimit=10000"
 
     # check to see if the user wants the URL for querying
     if verbose:
