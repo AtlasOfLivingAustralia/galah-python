@@ -80,7 +80,6 @@ def atlas_counts(taxa=None,
     # set initial variables
     num_taxa = 0
     len_taxa = 0
-    taxa_separate = []
     group_by_dataframe = pd.DataFrame()
 
     # if there is no taxa, assume you will get the total number of records in the ALA
@@ -116,9 +115,9 @@ def atlas_counts(taxa=None,
 
             # else, add the final bit of the URL
             else:
-                URL = baseURL + "pageSize=0"
+                URL = baseURL + "flimit=200&pageSize=0"
 
-            # check to see if the user wantw the querying URL
+            # check to see if the user wants the querying URL
             if verbose:
                 print("URL for querying:\n\n{}\n".format(URL))
 
@@ -199,10 +198,10 @@ def atlas_counts(taxa=None,
                     URL = URL[:-len("%20AND%20")]
 
                     if separate:
-                        URL += "&facets=species&"
+                        URL += "&facets=species"
 
                     # add final part of URL
-                    URL += "pageSize=0"
+                    URL += "&flimit=200&pageSize=0"
 
                 # else, make sure that the filters is in the following format
                 else:
@@ -217,7 +216,7 @@ def atlas_counts(taxa=None,
                     URL += "&facets=species"
 
                 # last bit of URL
-                URL += "&pageSize=0"
+                URL += "&flimit=200&pageSize=0"
 
         # check to see if the user wants the URL for querying
         if verbose:

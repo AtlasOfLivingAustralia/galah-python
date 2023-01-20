@@ -82,7 +82,7 @@ def galah_group_by(URL,
                 startingURL += "&facets={}".format(g)
 
             # round out the URL
-            startingURL += "&pageSize=0"
+            startingURL += "&flimit=200&pageSize=0"
 
             # check to see if the user wants the URL for querying
             if verbose:
@@ -109,7 +109,7 @@ def galah_group_by(URL,
                     for group in group_by:
                         if group != name and "facets={}".format(group) not in URL:
                             tempURL += "&facets={}".format(group)
-                    tempURL += "&pageSize=0"
+                    tempURL += "&flimit=200&&pageSize=0"
 
                     # check to see if the user wants the URL for querying
                     if verbose:
@@ -145,7 +145,7 @@ def galah_group_by(URL,
                 URL += "&facets={}".format(g)
 
             # round out the URL
-            URL += "&pageSize=0"
+            URL += "&flimit=200&&pageSize=0"
 
             # check to see if the user wants the URL for querying
             if verbose:
