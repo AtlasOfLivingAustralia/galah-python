@@ -161,9 +161,9 @@ def atlas_counts(taxa=None,
                     return None
                 continue
 
-                # get the taxonConceptID for taxa - first check for extant atlas
+        # get the taxonConceptID for taxa - first check for extant atlas
         if configs['galahSettings']['atlas'] in atlases:
-            taxonConceptID = list(search_taxa(taxa)[ATLAS_KEYWORDS[configs['galahSettings']['atlas']]]) #[0]
+            taxonConceptID = list(search_taxa(taxa)[ATLAS_KEYWORDS[configs['galahSettings']['atlas']]])
         else:
             raise ValueError("Atlas {} is not taken into account".format(configs['galahSettings']['atlas']))
 
