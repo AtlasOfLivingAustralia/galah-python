@@ -96,6 +96,20 @@ body { font-family: Roboto; }
   margin-top: 100px;
 }
 
+.svg-button {
+  fill: #F490BD;
+  width: 70px;
+  height: 80px;
+}
+
+.sd-card:hover .svg-button{
+  fill: #F064A4;
+}
+
+.sd-card-hover:hover {
+  border-color: #F064A4;
+}
+
 pre {
     background-color: #f8fcfc;
 }

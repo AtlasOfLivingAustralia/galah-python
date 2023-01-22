@@ -1,4 +1,4 @@
-import os,sys,requests,urllib.parse,time,zipfile,io,glob
+import os,sys,requests,urllib.parse,time,zipfile,io,glob,warnings
 import pandas as pd
 from .galah_filter import galah_filter
 from .galah_group_by import galah_group_by
@@ -39,12 +39,15 @@ def atlas_counts(taxa=None,
     configs = readConfig()
 
     # get the URL needed for the query
-    if use_data_profile:
-        baseURL = apply_data_profile("{}?".format(get_api_url(column1='called_by',column1value='atlas_counts')))
+    if use_data_profile and configs['galahSettings']['atlas'] == "Australia":
+        baseURL = apply_data_profile("{}?".format(get_api_url(column1='called_by',column1value='atlas_counts',column2="api_name",
+                                                              column2value="records_counts"))) + "&"
     elif not use_data_profile:
-        baseURL = "{}?".format(get_api_url(column1='called_by', column1value='atlas_counts'))
+        baseURL = "{}?".format(get_api_url(column1='called_by', column1value='atlas_counts',column2="api_name",
+                                           column2value="records_counts"))
     else:
-        raise ValueError("True and False are the only values accepted for data_profile.  Your data profile is \n"
+        raise ValueError("True and False are the only values accepted for data_profile, and the only atlas using a data \n"
+                         "quality profile is Australia.  Your atlas and data profile is \n"
                          "set in your config file.  To set your default filter, find out what profiles are on offer:\n"
                          "profiles = galah.show_all(profiles=True)\n\n"
                          "and then type\n\n"
@@ -54,6 +57,10 @@ def atlas_counts(taxa=None,
                          "If you don't want to use a data quality profile, set it to None by typing the following:\n\n"
                          "galah.galah_config(data_profile=\"None\")"
                          )
+
+    num_taxa = 0
+    len_taxa = 0
+    taxa_separate = []
 
     # if there is no taxa, assume you will get the total number of records in the ALA
     if taxa is None:
@@ -72,14 +79,14 @@ def atlas_counts(taxa=None,
                         filters = [filters]
 
                     # start URL
-                    URL = baseURL + "&"
+                    URL = baseURL #+ "&"
 
                     # add filters
                     for f in filters:
                         URL += galah_filter(f) + "&"
 
                     # add final part of URL
-                    URL += "&pageSize=0"
+                    URL += "pageSize=0"
 
                 # else, make sure that the filters is in the following format
                 else:
@@ -113,6 +120,9 @@ def atlas_counts(taxa=None,
         # change taxa into list for easier looping
         if type(taxa) is str:
             taxa = [taxa]
+            len_taxa = 1
+        else:
+            len_taxa = len(taxa)
 
         # set these variables to 0 and empty initially
         totalRecords = 0
@@ -121,16 +131,30 @@ def atlas_counts(taxa=None,
         # get the number of records associated with each taxa
         for name in taxa:
 
-            # get the taxonConceptID for taxa
-            if configs['galahSettings']['atlas'] == "Australia":
-                taxonConceptID = search_taxa(name)['taxonConceptID'][0]
-            elif configs['galahSettings']['atlas'] == "Austria":
-                taxonConceptID = search_taxa(name)['id'][0]
+            tempdf = search_taxa(name)
+            if tempdf.empty and len(taxa) == 1:
+                print("No taxon matches were found for {} in the selected atlas ({})".format(name, configs[
+                    'galahSettings']['atlas']))
+                return None
+            elif tempdf.empty:
+                print("No taxon matches were found for {} in the selected atlas ({})".format(name,configs['galahSettings']['atlas']))
+                continue
             else:
-                raise ValueError("Atlas {} is not taken into account".format(configs['galahSettings']['atlas']))
+                if separate:
+                    taxa_separate.append(name)
+                # get the taxonConceptID for taxa - first check for taxa not in atlas
+                if configs['galahSettings']['atlas'] in ["Australia"]:
+                    taxonConceptID = search_taxa(name)['taxonConceptID'][0]
+                elif configs['galahSettings']['atlas'] in ["Austria", "Brazil", "Estonia", "Guatemala", "Sweden",
+                                                           "United Kingdom"]:
+                    taxonConceptID = search_taxa(name)['guid'][0]
+                elif configs['galahSettings']['atlas'] in ["Canada", "France", "Portugal"]:
+                    taxonConceptID = search_taxa(name)['usageKey'][0]
+                else:
+                    raise ValueError("Atlas {} is not taken into account".format(configs['galahSettings']['atlas']))
 
             # add this ID to the URL
-            URL = baseURL + "fq=%28lsid%3A" + urllib.parse.quote(taxonConceptID) + "%29&"
+            URL = baseURL + "fq=%28lsid%3A" + urllib.parse.quote(str(taxonConceptID)) + "%29&" # try making it a string
 
             # return a grouped dataFrame
             if group_by is not None:
@@ -150,15 +174,12 @@ def atlas_counts(taxa=None,
                         if type(filters) is str:
                             filters = [filters]
 
-                        # start URL
-                        URL = baseURL + "&"
-
                         # add filters
                         for f in filters:
                             URL += galah_filter(f) + "&"
 
                         # add final part of URL
-                        URL += "&pageSize=0"
+                        URL += "pageSize=0"
 
                     # else, make sure that the filters is in the following format
                     else:
@@ -176,7 +197,6 @@ def atlas_counts(taxa=None,
             # get results form the URL
             response = requests.get(URL)
             json = response.json()
-            print(json)
 
             # if the user wants them separated, add counts to a temporary array to make a dataframe with
             if separate:
@@ -184,15 +204,20 @@ def atlas_counts(taxa=None,
 
             # if the user doesn't want them separate, then add them to the existing counts
             else:
+                num_taxa += 1
                 totalRecords += int(json['totalRecords'])
 
         # make a dataframe with the total records for each taxa separate
         if separate:
-            dataFrame = pd.DataFrame({'taxa': taxa, 'totalRecords': tempTotalRecords})
+            dataFrame = pd.DataFrame({'taxa': taxa_separate, 'totalRecords': tempTotalRecords})
 
         # make a dataframe with the total number of records
         else:
             dataFrame = pd.DataFrame({'totalRecords': [totalRecords]})
+
+        # raise warning if one of the taxa isn't in the atlas
+        if num_taxa < len_taxa:
+            warnings.warn("One of the taxa is not found in your designated atlas")
 
         # return the dataFrame with the specified counts
         return dataFrame

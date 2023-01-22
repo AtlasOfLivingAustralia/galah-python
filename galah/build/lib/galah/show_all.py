@@ -3,6 +3,7 @@ import pandas as pd
 from pandas import DataFrame
 
 from .get_api_url import get_api_url
+from .get_api_url import readConfig
 
 import sys
 
@@ -112,6 +113,9 @@ def show_all(assertions=False,
     .. program-output:: python3 -c "import galah; print(galah.show_all(datasets=True))"
     """
 
+    # get configurations for different atlases
+    configs = readConfig()
+
     # set up the option for getting back multiple values
     return_array=[]
 
@@ -133,14 +137,14 @@ def show_all(assertions=False,
     if type(atlases) is bool and atlases:
         # dictionary of all atlases galah currently supports
         data = {
-            "atlas": ["Australia","Austria","Brazil","Estonia","France","Guatemala","Portugal","Spain","Sweden","United Kingdom"],
+            "atlas": ["Australia","Austria","Brazil","Canada","Estonia","France","Guatemala","Portugal","Spain","Sweden","United Kingdom"],
             "institution": ["Atlas of Living Australia","Biodiversitäts-Atlas Österreich","Sistemas de Informações sobre a Biodiversidade Brasileira",
-                            "eElurikkus","Inventaire National du Patrimoine Naturel","Sistema Nacional de Información sobre Diversidad Biológica de Guatemala",
+                            "Canadensys", "eElurikkus","Inventaire National du Patrimoine Naturel","Sistema Nacional de Información sobre Diversidad Biológica de Guatemala",
                             "GBIF Portugal","GBIF Spain","Swedish Biodiversity Data Infrastructure","National Biodiversity Network"],
-            "acronym": ["ALA","BAO","SiBBr","<NA>","INPN","SNIBgt","GBIF.pt","GBIF.es","SBDI","NBN",],
-            "url": ["https://www.ala.org.au","https://biodiversityatlas.at","https://sibbr.gov.br","https://elurikkus.ee",
-                    "https://inpn.mnhn.fr","https://snib.conap.gob.gt","https://www.gbif.pt","https://www.gbif.es",
-                    "https://biodiversitydata.se","https://nbn.org.uk"],
+            "acronym": ["ALA","BAO","SiBBr","<NA>","<NA>","INPN","SNIBgt","GBIF.pt","GBIF.es","SBDI","NBN",],
+            "url": ["https://www.ala.org.au","https://biodiversityatlas.at","https://sibbr.gov.br","http://www.canadensys.net/",
+                    "https://elurikkus.ee","https://inpn.mnhn.fr","https://snib.conap.gob.gt","https://www.gbif.pt",
+                    "https://www.gbif.es","https://biodiversitydata.se","https://nbn.org.uk"],
         }
         # append this data frame to the return_array
         return_array.append(pd.DataFrame.from_dict(data))
@@ -187,7 +191,12 @@ def show_all(assertions=False,
         # get data frame from response
         fields_values = pd.DataFrame.from_dict(response.json())
         # select only the columns titled 'name', 'info', 'infoUrl'
-        dataFrame = fields_values[['name', 'info', 'infoUrl']]
+        if configs['galahSettings']['atlas'] in ["Australia"]:
+            dataFrame = fields_values[['name', 'info', 'infoUrl']]
+        elif configs['galahSettings']['atlas'] in ["Austria","Brazil","Canada","Estonia","France","Guatemala","Sweden","United Kingdom"]:
+            dataFrame = fields_values[['name', 'info']]
+        else:
+            raise ValueError("Atlas {} not taken into account".format(configs['galahSettings']['atlas']))
         # create empty array for types to add to data frame
         layer_types = []
         # loop over data frame
@@ -197,8 +206,13 @@ def show_all(assertions=False,
                 layer_types.append("layer")
             else:
                 layer_types.append("fields")
-        # add the types array as another column to the data frame
-        dataFrame.insert(loc=3,column='type',value=layer_types)
+        if configs['galahSettings']['atlas'] in ["Australia"]:
+            # add the types array as another column to the data frame
+            dataFrame.insert(loc=3, column='type', value=layer_types)
+        elif configs['galahSettings']['atlas'] in ["Austria","Brazil","Canada","Estonia","France","Guatemala","Sweden","United Kingdom"]:
+            dataFrame.insert(loc=2, column='type', value=layer_types)
+        else:
+            raise ValueError("Atlas {} not taken into account".format(configs['galahSettings']['atlas']))
         # append the data frame sorted by type first, then name
         return_array.append(dataFrame.sort_values(['type','name']).reset_index(drop=True))
     elif not fields:
@@ -208,7 +222,11 @@ def show_all(assertions=False,
 
     # get all licences from the API
     if type(licences) is bool and licences:
+        if configs['galahSettings']['atlas'] in ["Austria","Brazil","Canada","Estonia","France"]:
+            raise ValueError("The {} atlas does not have a list of licences".format(configs['galahSettings']['atlas']))
         response = requests.get(get_api_url(column1='called_by', column1value='show_all_licences'))
+        if response.status_code == 404:
+            raise ValueError("The licences URL for the {} is not working.".format(configs['galahSettings']['atlas']))
         # create a data frame from the API response
         json = pd.DataFrame.from_dict(response.json())
         # append data frame with only the column names 'id', 'name', 'acronym' and 'url'
@@ -220,6 +238,8 @@ def show_all(assertions=False,
 
     # get all lists from the API
     if type(lists) is bool and lists:
+        if  configs['galahSettings']['atlas'] in ["Canada","Estonia","France","Guatemala","Portugal","Spain","Sweden"]:
+            raise ValueError("The {} atlas does not have a lists API.".format(configs['galahSettings']['atlas']))
         for i,maxoffsets in enumerate(["?max=1000&offset=0","?max=1000&offset=1000","?max=1000&offset=2000"]):
             response = requests.get(
                 "{}{}".format(get_api_url(column1='called_by', column1value='show_all_lists'),maxoffsets))
@@ -244,11 +264,14 @@ def show_all(assertions=False,
 
     # get all profiles from the API
     if type(profiles) is bool and profiles:
-        response = requests.get(get_api_url(column1='called_by', column1value='show_all_profiles'))
-        # create a data frame from the API response
-        json = pd.DataFrame.from_dict(response.json())
-        # append data frame with only the column names 'id', 'name', 'shortName' and 'description'
-        return_array.append(json[['id','name','shortName','description']])
+        if configs['galahSettings']['atlas'] == "Australia":
+            response = requests.get(get_api_url(column1='called_by', column1value='show_all_profiles'))
+            # create a data frame from the API response
+            json = pd.DataFrame.from_dict(response.json())
+            # append data frame with only the column names 'id', 'name', 'shortName' and 'description'
+            return_array.append(json[['id','name','shortName','description']])
+        else:
+            raise ValueError("Only the Australian atlas has data quality profiles.")
     elif not profiles:
         pass
     else:
@@ -300,6 +323,8 @@ def show_all(assertions=False,
 
     # check for reasons
     if type(reasons) is bool and reasons:
+        if  configs['galahSettings']['atlas'] in ["Brazil","Estonia","France"]:
+            raise ValueError("The {} atlas does not have a lists API.".format(configs['galahSettings']['atlas']))
         response = requests.get(get_api_url(column1='called_by', column1value='show_all_reasons'))
         # create a data frame from the API response
         json = pd.DataFrame.from_dict(response.json())

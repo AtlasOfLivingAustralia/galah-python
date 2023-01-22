@@ -39,6 +39,5 @@ __version__ = "1.0.0"
 #from galah import *
 
 # test this
-__all__=["atlas_counts","atlas_media","atlas_occurrences","atlas_species","galah_config","galah_filter",
-         "galah_group_by","galah_select","search_all","search_taxa","show_all","search_all","show_values",
-         "search_values"]
+__all__=["atlas_counts","atlas_media","atlas_occurrences","atlas_species","galah_config","search_all","search_taxa",
+         "show_all","search_all","show_values","search_values"]
