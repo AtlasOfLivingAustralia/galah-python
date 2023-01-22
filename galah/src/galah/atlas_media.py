@@ -1,4 +1,4 @@
-import galah,requests,urllib.parse,configparser,os,time,zipfile,io,shutils,tempfile
+import requests,urllib.parse,os,time,zipfile,io,shutils,tempfile
 import pandas as pd
 import numpy as np
 

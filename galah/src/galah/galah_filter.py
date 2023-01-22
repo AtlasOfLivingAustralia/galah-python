@@ -1,8 +1,7 @@
-import requests,re,urllib
-import pandas as pd
+import requests,re
 
 import sys
-#
+
 def galah_filter(f, ifgroupBy=False):
     """
     This takes

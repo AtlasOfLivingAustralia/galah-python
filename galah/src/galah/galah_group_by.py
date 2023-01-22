@@ -1,10 +1,6 @@
-import requests,re
+import requests
 import pandas as pd
-import numpy as np
 from .galah_filter import galah_filter
-from .show_values import show_values
-
-import sys,time
 
 '''
 TODO

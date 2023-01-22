@@ -1,14 +1,11 @@
-import sys,requests,urllib.parse,time,zipfile,io,configparser,glob
+import sys,requests,urllib.parse,time,zipfile,io
 import pandas as pd
 from .galah_filter import galah_filter
 from .galah_select import galah_select
 from .search_taxa import search_taxa
 from .get_api_url import get_api_url
-from .show_all import show_all
 from .get_api_url import readConfig
 from .apply_data_profile import apply_data_profile
-
-import os
 
 ATLAS_KEYWORDS = {
     "Australia": "taxonConceptID",

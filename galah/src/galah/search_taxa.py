@@ -1,7 +1,5 @@
-import requests,os,configparser
+import requests
 import pandas as pd
-
-import sys
 
 from .get_api_url import get_api_url
 from .get_api_url import readConfig

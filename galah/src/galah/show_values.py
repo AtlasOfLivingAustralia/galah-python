@@ -1,10 +1,7 @@
-import requests,os,configparser
+import requests
 import pandas as pd
 
 from .get_api_url import get_api_url
-from .show_all import show_all
-
-import sys
 
 # comment on what this function does later
 def show_values(field=None,verbose=False):
