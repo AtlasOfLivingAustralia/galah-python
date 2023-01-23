@@ -12,6 +12,7 @@ def apply_data_profile(baseURL):
         baseURL += "disableAllQualityfilters=true"
     else:
         data_profile_list = list(show_all(profiles=True)['shortName'])
+        print(data_profile_list)
         if configs['galahSettings']['data_profile'] in data_profile_list:
             baseURL += "&qualityProfile={}".format(configs['galahSettings']['data_profile'])
         else:

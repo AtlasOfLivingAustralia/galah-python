@@ -77,7 +77,6 @@ def galah_filter(f, ifgroupBy=False):
                 # added quotes
                 returnString += "%28{}%3A%22{}%22%29".format(parts[0], parts[1].replace(" ", "%20"))
 
-        # greater than
         elif specialChar == '>':
             returnString+="{}:%5b{}%20TO%20*%5d%20AND%20-({}:%22{}%22%29".format(parts[0], parts[1], parts[0], parts[1])
 
@@ -96,6 +95,10 @@ def galah_filter(f, ifgroupBy=False):
         # not equal to
         elif specialChar == '!=' or specialChar == '=!':
             returnString += "%28-{}%3a\"{}\"%29".format(parts[0], parts[1])
+
+        # filters with numerical operators are being used with a non-numeric type
+        elif not isinstance(parts[1], int):
+            raise ValueError("Numeric types can only be used with filters that include the <, >, <=, or => operators.")
 
         # else, there is either an error in the filters or a missing case
         else:
