@@ -43,6 +43,21 @@ taxa = "Alces alces"
 taxa - "Luscinia megarhynchos"
 '''
 
+'''
+tests to integrate
+
+>>> taxa_array = ["Swainsona formosa", "Crocodylus johnstoni", "Platalea (Platalea) regia", "Notamacropus agilis"]
+>>> f = ["dataResourceName = iNaturalist Australia","year=2022"]
+>>> galah.atlas_counts(taxa=taxa_array,separate=True,filters=f)
+
+galah.atlas_counts(filters="year=2022",expand=False)
+
+group_by = ["month","basisOfRecord"]
+
+galah.atlas_counts(filters="year=2022",group_by=group_by,expand=False)
+galah.atlas_counts(filters="year=2022",group_by=group_by,expand=True)
+'''
+
 # test atlas_counts() can call search_taxa() function with single taxa
 def test_atlas_counts_taxa():
     taxa="Vulpes vulpes"
@@ -197,15 +212,6 @@ def test_atlas_counts_multiple_taxa_separate():
 
 # test altas_counts() can call search_taxa() and using one filter, filter results with multiple taxa separated
 def test_atlas_counts_multiple_taxa_filters_separate():
-    taxa_array = ["Anigozanthos manglesii", "Rhincodon typus", "Setonix brachyurus", "Aquila (Uroaetus) audax"]
-    filter1 = ["state = Western Australia"]
-    output = galah.atlas_counts(taxa_array, filters=filter1, separate=True)
-    assert output.shape[0] == len(taxa_array)
-    assert output.shape[1] == 2
-    assert (output['totalRecords'] >= 0).all() # checks that all species counts are greater than or equal zero
-
-# test altas_counts() can call search_taxa() and using one filter, filter results with multiple taxa separated
-def test_atlas_counts_multiple_taxa_filters_separate():
     taxa_array = ["Swainsona formosa", "Crocodylus johnstoni", "Platalea (Platalea) regia", "Xeromys myoides"]
     f = ["state = Northern Territory", "month=11"]
     output = galah.atlas_counts(taxa_array, filters=f, separate=True)
@@ -227,12 +233,12 @@ def test_atlas_counts_multiple_taxa_filter_group_by_multiple_separate():
     taxa_array = ["Swainsona formosa", "Crocodylus johnstoni", "Platalea (Platalea) regia", "Xeromys myoides"]
     f = ["dataResourceName = iNaturalist Australia"]
     group_by = ["year", "month"]
-    output = galah.atlas_counts(taxa_array, filters=f, group_by=group_by, separate=True, expand=True)
+    output = galah.atlas_counts(taxa_array, filters=f, group_by=group_by, separate=True, expand=False)
     assert output.shape[1] == len(group_by) + 1
     assert (output['count'] > 0).all() # checks that all species counts are greater than zero
 
 # test altas_counts() can call search_taxa() and using one filter, filter and group results with multiple taxa separated
-def test_atlas_counts_multiple_taxa_filters_group_by_multiple_separate():
+def test_atlas_counts_multiple_taxa_filters_group_by_multiple_separate_expand():
     taxa_array = ["Swainsona formosa", "Crocodylus johnstoni", "Platalea (Platalea) regia", "Xeromys myoides"]
     f = ["dataResourceName = iNaturalist Australia", "year=2022"]
     group_by = ["year", "month"]

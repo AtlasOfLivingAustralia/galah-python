@@ -1,12 +1,13 @@
-import requests,re
+import requests
 import pandas as pd
 from .galah_filter import galah_filter
-from .show_values import show_values
 
 '''
 TODO
 ----
 1. Generalise this to N group_by, where N>2
+
+
 '''
 def galah_group_by(URL,
                    group_by=None,
@@ -34,9 +35,15 @@ def galah_group_by(URL,
             if type(filters) == str:
                 filters = [filters]
 
+            URL += "AND"
+
             # loop over filters
             for f in filters:
-                URL += "&" + galah_filter(f,ifgroupBy=ifGroupBy)
+                # check to see if fq is needed here
+                URL += galah_filter(f,ifgroupBy=ifGroupBy) + "%29%20AND%20%28"
+                #URL += "%28" + galah_filter(f, ifgroupBy=ifGroupBy) + "%29%20AND%20%28"
+
+            URL = URL[:-len("%29%20AND%20%28")] #+ "&pageSize=0"
 
         # else, raise a TypeError because this variable needs to be either a string or a list
         else:
@@ -58,87 +65,113 @@ def galah_group_by(URL,
         # check to see if the expand option is true
         if expand:
 
+            # check to see if you can expand upon this
             if len(group_by) == 1:
                 raise ValueError("You cannot use the expand=True option when you only have one group")
 
-            # create empty list for pandas later
-            dictValues=[]
+            # create a base URL
+            startingURL = URL
 
             # loop over group_by
-            for i,g in enumerate(group_by):
+            for g in group_by:
 
-                # check to see if this is not the first variable in group_by
-                if i != 0:
+                startingURL += "&facets={}".format(g)
 
-                    # get all possible values for this group
-                    values=show_values(field=g)
+            # round out the URL
+            startingURL += "&flimit=200&pageSize=0"
 
-                    # iterate over these values, and get a count for every single one and add it to dictValues list
-                    for k,v in values.iterrows():
+            # check to see if the user wants the URL for querying
+            if verbose:
+                print("URL for querying:\n\n{}\n".format(startingURL))
 
-                        # get a URL and query each possibility
-                        tempURL = URL + "&fq=({}:\"{}\")".format(v['field'],v['category']) + "&pageSize=0"
-                        response=requests.get(tempURL)
-                        json=response.json()
+            # tab this if this doesn't work
+            response = requests.get(startingURL)
+            json = response.json()
+            facets_array=[]
+            # try to make it generalised
+            for i in range(1,len(group_by)):
+                temp_array=[]
+                for entry in json['facetResults'][i]['fieldResult']:
+                    temp_array.append(entry['fq'])
+                facets_array.append(temp_array)
 
-                        # check to see if the user wants the URL for querying
-                        if verbose:
-                            print("URL for querying:\n\n{}\n".format(tempURL))
+            # get all counts for each value
+            dict_values = {entry: [] for entry in [*group_by,'count']}
+            for f in facets_array:
+                for facet in f:
+                    name,value = facet.split(':')
+                    value = value.replace('"', '')
+                    tempURL = URL + "%20AND%20%28{}%3A%22{}%22%29".format(name,value)
+                    for group in group_by:
+                        if group != name and "facets={}".format(group) not in URL:
+                            tempURL += "&facets={}".format(group)
+                    tempURL += "&flimit=200&&pageSize=0"
 
-                        # loop over results and add a dictionary to the dictValues list
-                        for entry in json['facetResults']:
-                            for e in entry['fieldResult']:
-                                tempDict={}
-                                for gg in group_by:
-                                    tempDict[gg]=e['label']
-                                    tempDict[g]=v['category']
-                                    tempDict['count']=e['count']
-                                dictValues.append(tempDict)
+                    # check to see if the user wants the URL for querying
+                    if verbose:
+                        print("URL for querying:\n\n{}\n".format(tempURL))
 
-                # else, this is the first variable and needs to be treated differently
-                else:
-                    URL += "&facets={}".format(g)
+                    # get data
+                    response=requests.get(tempURL)
+                    json = response.json()
 
-            # return a sorted dataFrame with all counts values
-            return pd.DataFrame.from_dict(dictValues).sort_values(by=group_by).reset_index(drop=True)
+                    # put data in table
+                    for entry in json['facetResults'][0]['fieldResult']:
+                        # generalise this for more than one thing
+                        if entry['fq'].split(":")[0] == group_by[0]:
+                            name2,value2 = entry['fq'].split(":")
+                            value2 = value2.replace('"', '')
+                            if value2.isdigit():
+                                value2 = int(value2)
+                            dict_values[name2].append(value2)
+                            dict_values['count'].append(int(entry['count']))
+                            dict_values[name].append(value)
+                            for key in dict_values:
+                                if (key != name2) and (key != name) and (key != 'count'):
+                                    dict_values[key].append("-")
+            # format table
+            return pd.DataFrame(dict_values) #, columns=[*group_by,'count'])
 
         # else, expand is False
         else:
 
-            # loop over all of the group_by
-            for i, g in enumerate(group_by):
+            # add facets to make sure you get results
+            for g in group_by:
 
-                # create the URL and get results
                 URL += "&facets={}".format(g)
 
-            URL += "&pageSize=0"
-
-            # tab this if this doesn't work
-            response = requests.get(URL)
-            json = response.json()
+            # round out the URL
+            URL += "&flimit=200&&pageSize=0"
 
             # check to see if the user wants the URL for querying
             if verbose:
                 print("URL for querying:\n\n{}\n".format(URL))
 
-            # create dummy values variable to be fed into Pandas later
-            dictValues = []
+            # tab this if this doesn't work
+            response = requests.get(URL)
+            json = response.json()
 
             # get all counts for each value
+            dict_values = {entry: [] for entry in [*group_by,'count']}
             for i in range(len(json['facetResults'])):
                 for item in json['facetResults'][i]['fieldResult']:
-                    tempDict = {}
                     for g in group_by:
-                        if g in item['fq']:
-                            tempDict[g] = item['label']
-                        else:
-                            tempDict[g] = "-"
-                    tempDict['count'] = item['count']
-                    dictValues.append(tempDict)
+                        if g in item['fq'] and item['fq'].split(':')[0] == g:
+                            name,value=item['fq'].split(':')
+                            value=value.replace('"','')
+                            if value.isdigit():
+                                value = int(value)
+                            dict_values[name].append(value)
+                            dict_values['count'].append(int(item['count']))
+                            for entry in dict_values:
+                                if (entry != name) and (entry != 'count'):
+                                    dict_values[entry].append("-")
+
+            counts = pd.DataFrame(dict_values) #, columns=[*group_by,'count'])
 
             # return dataFrame with all counts values
-            return pd.DataFrame.from_dict(dictValues)
+            return counts
 
-    # need to make sure that the filter is a string or a lsit
+    # need to make sure that the filter is a string or a lsid
     else:
         raise TypeError("Your filters need to either be a string (for one filter), or a list of strings.")

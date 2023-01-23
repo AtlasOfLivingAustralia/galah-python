@@ -1,10 +1,23 @@
-import requests,os,configparser
+import requests
 import pandas as pd
-
-import sys
 
 from .get_api_url import get_api_url
 from .get_api_url import readConfig
+
+ATLAS_KEYWORDS = {
+    "Australia": "taxonConceptID",
+    "Austria": "guid",
+    "Brazil": "speciesGuid",
+    "Canada": "usageKey",
+    "Estonia": "guid",
+    "France": "usageKey",
+    "Guatemala": "guid",
+    "Portugal": "usageKey",
+    "Sweden": "guid",
+    "United Kingdom": "guid",
+}
+
+atlases = ["Australia","Austria","Brazil","Canada","Estonia","France","Guatemala","Portugal","Sweden","Spain","United Kingdom"]
 
 def search_taxa(taxa):
     """
@@ -45,40 +58,23 @@ def search_taxa(taxa):
             # create URL, get result and concatenate result onto dataFrame
             #URL = baseURL+"q={}".format("%20".join(name.split(" ")))
             # make sure all the atlases are checked
-            if configs['galahSettings']['atlas'] in ["Australia","Austria","Brazil","Canada","Estonia","France","Guatemala",
-                                                     "Portugal","Sweden","Spain","United Kingdom"]:
+            if configs['galahSettings']['atlas'] in atlases:
                 URL = baseURL.replace("{name}","%20".join(name.split(" ")))
             else:
                 raise ValueError("Atlas {} is not taken into account".format(configs['galahSettings']['atlas']))
             response = requests.get(URL)
-            #print(URL)
 
             # get the response
             json = response.json()
-            #print(json)
-            #print(json['searchResults'])
             # check to see if the taxa was successfully returned
             # don't think this is the best solution for Austria but this is a first shot
             if configs['galahSettings']['atlas'] not in ["Austria"] and not json['success']:
                 break
             else:
                 # this is for atlas for Australia
-                if configs['galahSettings']['atlas'] in ["Australia"]:
+                if configs['galahSettings']['atlas'] in atlases:
                     data = dict(
-                        (k, json[k]) for k in ('scientificName', 'scientificNameAuthorship', 'taxonConceptID', 'rank') if
-                        k in json)
-                # or configs['galahSettings']['atlas'] == "Brazil":
-                elif configs['galahSettings']['atlas'] in ["Austria","Estonia","Guatemala","Sweden","United Kingdom"]:
-                    data = dict(
-                        (k, json['searchResults']['results'][0][k]) for k in ('scientificName', 'scientificNameAuthorship', 'guid', 'rank') if
-                        k in json['searchResults']['results'][0])
-                elif configs['galahSettings']['atlas'] in ["Brazil"]:
-                    data = dict(
-                        (k, json['searchResults']['results'][0][k]) for k in ('scientificName', 'scientificNameAuthorship', 'speciesGuid', 'rank') if
-                        k in json['searchResults']['results'][0])
-                elif configs['galahSettings']['atlas'] in ["Canada","France","Portugal"]:
-                    data = dict(
-                        (k, json[k]) for k in ('scientificName', 'scientificNameAuthorship', 'usageKey', 'rank') if
+                        (k, json[k]) for k in ('scientificName', 'scientificNameAuthorship', ATLAS_KEYWORDS[configs['galahSettings']['atlas']], 'rank') if
                         k in json)
                 else:
                     raise ValueError("The atlas {} is not taken into account".format(configs['galahSettings']['atlas']))

@@ -1,5 +1,4 @@
 import requests
-import pandas as pd
 
 from .get_api_url import get_api_url
 from .search_taxa import search_taxa

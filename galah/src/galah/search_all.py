@@ -1,9 +1,4 @@
-import requests,os,configparser
-import pandas as pd
-
 from .show_all import show_all
-
-import sys
 
 '''
 function is meant to search all values for possible query fields - they are defined as None so you can narrow down the

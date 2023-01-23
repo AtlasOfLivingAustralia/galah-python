@@ -1,14 +1,26 @@
-import sys,requests,urllib.parse,time,zipfile,io,configparser,glob
+import sys,requests,urllib.parse,time,zipfile,io
 import pandas as pd
 from .galah_filter import galah_filter
 from .galah_select import galah_select
 from .search_taxa import search_taxa
 from .get_api_url import get_api_url
-from .show_all import show_all
 from .get_api_url import readConfig
 from .apply_data_profile import apply_data_profile
 
-import os
+ATLAS_KEYWORDS = {
+    "Australia": "taxonConceptID",
+    "Austria": "guid",
+    "Brazil": "guid", #speciesGuid
+    "Canada": "usageKey",
+    "Estonia": "guid",
+    "France": "usageKey",
+    "Guatemala": "guid",
+    "Portugal": "usageKey",
+    "Sweden": "guid",
+    "United Kingdom": "guid",
+}
+
+atlases = ["Australia","Austria","Brazil","Canada","Estonia","France","Guatemala","Portugal","Sweden","Spain","United Kingdom"]
 
 def atlas_occurrences(taxa=None,
                       filters=None,
@@ -104,17 +116,7 @@ def atlas_occurrences(taxa=None,
         baseURL += galah_select(selectionList=fields) + "&"
     else:
         baseURL += galah_select(selectionList=["decimalLatitude","decimalLongitude","eventDate","scientificName","taxonConceptID",
-                                               "recordID","dataResourceName","occurrenceStatus"]) + "&"
-
-    # check what type of variable filters is; handle accordingly
-    if filters is not None:
-        if type(filters) is str:
-            baseURL += galah_filter(filters) + "&"
-        elif type(filters) is list:
-            for f in filters:
-                baseURL += galah_filter(f) + "&"
-        else:
-            raise ValueError("The filters argument needs to be either a string or a list")
+                                               "recordID","dataResourceName","occurrenceStatus"])
 
     # check if taxa is specified
     if taxa is not None:
@@ -129,62 +131,58 @@ def atlas_occurrences(taxa=None,
             # create empty dataFrame
             dataFrame = pd.DataFrame()
 
-            # loop over all taxa and add data to it
-            for name in taxa:
+            # get the taxonConceptID for taxa - first check for extant atlas
+            if configs['galahSettings']['atlas'] in atlases:
+                taxonConceptID = list(search_taxa(taxa)[ATLAS_KEYWORDS[configs['galahSettings']['atlas']]])
+            else:
+                raise ValueError("Atlas {} is not taken into account".format(configs['galahSettings']['atlas']))
 
-                # get taxon concept ID
-                # get the taxonConceptID for taxa
-                if configs['galahSettings']['atlas'] in ["Australia"]:
-                    taxonConceptID = search_taxa(name)['taxonConceptID'][0]
-                elif configs['galahSettings']['atlas'] in ["Austria", "Brazil", "Estonia", "Guatemala", "Sweden",
-                                                           "United Kingdom"]:
-                    taxonConceptID = search_taxa(name)['guid'][0]
-                elif configs['galahSettings']['atlas'] in ["Canada","France", "Portugal"]:
-                    taxonConceptID = search_taxa(name)['usageKey'][0]
+            # generate the desired URL and get a response from the API - add taxonConceptIDs to the URL
+            URL = baseURL + "&fq=%28lsid%3A" + "%20OR%20lsid%3A".join(
+                urllib.parse.quote(str(tid)) for tid in taxonConceptID) + "%29"
+
+            # check what type of variable filters is; handle accordingly
+            if filters is not None:
+                URL += "AND"
+                if type(filters) is str:
+                    URL += galah_filter(filters) + "%20AND%20"
+                elif type(filters) is list:
+                    for f in filters:
+                        URL += galah_filter(f) + "%20AND%20"
                 else:
-                    raise ValueError("Atlas {} is not taken into account".format(configs['galahSettings']['atlas']))
+                    raise ValueError("The filters argument needs to be either a string or a list")
 
-                # generate the desired URL and get a response from the API
-                URL = baseURL + "fq=%28lsid%3A" + urllib.parse.quote(taxonConceptID) + "%29&"
-                #print(URL)
-                response = requests.get(URL)
-                #print(response)
-                #print(response.json())
-                if response.json()['status'] == "skipped":
-                    raise ValueError(response.json()["error"])
+                # add final part of URL
+                URL = URL[:-len("%20AND%20")] + "&"
 
-                # check to see if user wants the query URL
-                if verbose:
-                    print("URL for querying:\n\n{}\n".format(URL))
+            # check to see if user wants the query URL
+            if verbose:
+                print("URL for querying:\n\n{}\n".format(URL))
 
-                # this may take a while - occasionally check if status has changed
+            # query the api
+            response = requests.get(URL)
+            if response.json()['status'] == "skipped":
+                raise ValueError(response.json()["error"])
+
+            # this may take a while - occasionally check if status has changed
+            statusURL = requests.get(response.json()['statusUrl'])
+            while statusURL.json()['status'] == 'inQueue':
+                time.sleep(5)
                 statusURL = requests.get(response.json()['statusUrl'])
-                while statusURL.json()['status'] == 'inQueue':
-                    time.sleep(5)
-                    statusURL = requests.get(response.json()['statusUrl'])
-                while statusURL.json()['status'] == 'running':
-                    time.sleep(5)
-                    statusURL = requests.get(response.json()['statusUrl'])
-                zipURL = requests.get(statusURL.json()['downloadUrl'])
+            while statusURL.json()['status'] == 'running':
+                time.sleep(5)
+                statusURL = requests.get(response.json()['statusUrl'])
+            zipURL = requests.get(statusURL.json()['downloadUrl'])
 
-                # check to see if the user wants the zip URL
-                if verbose:
-                    print("Data for download:\n\n{}\n".format(statusURL.json()['downloadUrl']))
+            # check to see if the user wants the zip URL
+            if verbose:
+                print("Data for download:\n\n{}\n".format(statusURL.json()['downloadUrl']))
 
-                # create a temporary dataFrame
-                #if doi:
-                #    print(zipfile.ZipFile(io.BytesIO(zipURL.content)))
-                #    print(io.BytesIO(zipURL.content))
-                #    #print(zipURL.content)
-                #    for z in zipfile.ZipFile(io.BytesIO(zipURL.content)):
-                #        print(z)
-                tempdf = pd.read_csv(zipfile.ZipFile(io.BytesIO(zipURL.content)).open('data.csv'),low_memory=False)
+            # create a temporary dataFrame
+            tempdf = pd.read_csv(zipfile.ZipFile(io.BytesIO(zipURL.content)).open('data.csv'),low_memory=False)
 
-                # append the data onto one big dataFrame for returning
-                dataFrame = pd.concat([dataFrame,tempdf],ignore_index=True)
-
-            # return the dataFrame
-            return dataFrame
+            # append the data onto one big dataFrame for returning
+            return pd.concat([dataFrame,tempdf],ignore_index=True)
 
         # else, the user needs to specify the taxa in the correct format
         else:

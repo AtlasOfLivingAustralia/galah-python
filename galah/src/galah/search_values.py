@@ -1,5 +1,3 @@
-import requests,os,configparser
-import pandas as pd
 from .show_values import show_values
 
 def search_values(field=None,value=None,column_name=None):
