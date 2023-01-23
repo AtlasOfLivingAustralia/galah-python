@@ -98,10 +98,10 @@ def atlas_counts(taxa=None,
 
                     # loop over filters
                     for f in filters:
-                        URL += galah_filter(f, ifgroupBy=expand) + "%29%20AND%20%28"
+                        URL += galah_filter(f, ifgroupBy=expand) + "%20AND%20"
 
                     # add final part of URL
-                    URL = URL[:-len("%29%20AND%20%28")] #+ "&pageSize=0"
+                    URL = URL[:-len("%20AND%20")] #+ "&pageSize=0"
 
                 # else, make sure that the filters is in the following format
                 else:
@@ -183,7 +183,7 @@ def atlas_counts(taxa=None,
                     if type(filters) is str:
                         filters = [filters]
 
-                    URL += "%20AND%20%28"
+                    URL += "%20AND%20"
 
                     # loop over filters
                     for f in filters:

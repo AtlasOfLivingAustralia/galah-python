@@ -143,7 +143,7 @@ def atlas_occurrences(taxa=None,
 
             # check what type of variable filters is; handle accordingly
             if filters is not None:
-                URL += "AND"
+                URL += "%20AND%20"
                 if type(filters) is str:
                     URL += galah_filter(filters) + "%20AND%20"
                 elif type(filters) is list:
