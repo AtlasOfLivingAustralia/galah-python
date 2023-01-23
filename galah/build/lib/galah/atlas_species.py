@@ -3,6 +3,7 @@ import pandas as pd
 
 from .search_taxa import search_taxa
 from .get_api_url import get_api_url
+from .get_api_url import readConfig
 
 import sys
 
@@ -17,12 +18,15 @@ def atlas_species(taxa=None,verbose=False):
     .. prompt:: python
 
         import galah
-        galah.galah.atlas_species(taxa="Heleioporus")
+        galah.atlas_species(taxa="Heleioporus")
 
     which returns
 
     .. program-output:: python3 -c "import galah; print(galah.atlas_species(taxa=\\\"Heleioporus\\\"))"
     """
+
+    # get configs
+    configs = readConfig()
 
     # first, check if the user has specified a taxa
     if taxa is None:
@@ -33,9 +37,15 @@ def atlas_species(taxa=None,verbose=False):
     # call galah_identify (or search_taxa for now?) to do something
     baseURL = get_api_url(column1='api_name',column1value='species_children')
 
-    # search taxonomic trees
-    taxonConceptID = search_taxa(taxa)['taxonConceptID'][0]
-    URL = baseURL.replace("{id}",taxonConceptID) # + "fq=%28lsid%3A" + urllib.parse.quote(taxonConceptID) + "%29&"
+    # get the taxonConceptID for taxa
+    if configs['galahSettings']['atlas'] in ["Australia"]:
+        taxonConceptID = search_taxa(taxa)['taxonConceptID'][0]
+        URL = baseURL.replace("{id}", taxonConceptID)  # + "fq=%28lsid%3A" + urllib.parse.quote(taxonConceptID) + "%29&"
+    elif configs['galahSettings']['atlas'] in ["Austria","Estonia"]:
+        taxonConceptID = search_taxa(taxa)['guid'][0]
+        URL = baseURL + urllib.parse.quote(taxonConceptID) #+ "fq=%28lsid%3A" + urllib.parse.quote(taxonConceptID) + "%29&"
+    else:
+        raise ValueError("Atlas {} is not taken into account".format(configs['galahSettings']['atlas']))
 
     # check to see if user wants the query URL
     if verbose:
@@ -45,9 +55,12 @@ def atlas_species(taxa=None,verbose=False):
     response = requests.get(URL)
     # need to get species, author and
     json = response.json()
+    #print(json)
     temp_dict = {"species": [], "author": [], "species_guid": []}
     for j in json:
+        print(j)
         dataFrame = pd.DataFrame(j,index=[0])
+        print(dataFrame.head())
         if dataFrame['rank'][0] == "species":
             temp_dict['species'].append(dataFrame['name'][0])
             temp_dict['author'].append(dataFrame['author'][0])
@@ -61,8 +74,15 @@ def atlas_species(taxa=None,verbose=False):
     baseURL = get_api_url(column1='api_name', column1value='species_lookup')
 
     # search taxonomic trees
-    taxonConceptID = search_taxa(taxa)['taxonConceptID'][0]
-    URL = baseURL.replace("{id}",taxonConceptID)
+    # get the taxonConceptID for taxa
+    if configs['galahSettings']['atlas'] == "Australia":
+        taxonConceptID = search_taxa(taxa)['taxonConceptID'][0]
+        URL = baseURL.replace("{id}", taxonConceptID)  # + "fq=%28lsid%3A" + urllib.parse.quote(taxonConceptID) + "%29&"
+    elif configs['galahSettings']['atlas'] == "Austria":
+        taxonConceptID = search_taxa(taxa)['guid'][0]
+        URL = baseURL + "/" + urllib.parse.quote(taxonConceptID)  # + "fq=%28lsid%3A" + urllib.parse.quote(taxonConceptID) + "%29&"
+    else:
+        raise ValueError("Atlas {} is not taken into account".format(configs['galahSettings']['atlas']))
 
     # check to see if user wants the query URL
     if verbose:
@@ -75,37 +95,41 @@ def atlas_species(taxa=None,verbose=False):
         dataFrame.insert(loc=i, column=depth, value=json['classification'][depth].lower().capitalize())
 
     # lastly, get vernacular names
+    # vernacular names not working for: Austria,
+    #vernacular_AU = 'species_guid'
     vernacular_names = []
-    for url in dataFrame['species_guid']:
-        response = requests.get(url)
-        if response.status_code == 404:
-            new_url = response.url.split(";")[0]
-            new_response = requests.get(new_url)
-            if new_response.status_code == 200:
-                found_common_name=False
-                for line in new_response.iter_lines():
+    # doesn't appear to exist for Austria but will double check
+    if configs['galahSettings']['atlas'] == "Australia":
+        for url in dataFrame['species_guid']:
+            response = requests.get(url)
+            if response.status_code == 404:
+                new_url = response.url.split(";")[0]
+                new_response = requests.get(new_url)
+                if new_response.status_code == 200:
+                    found_common_name=False
+                    for line in new_response.iter_lines():
+                        if found_common_name:
+                            common_name = str(line).replace("b'                 <h3>","")
+                            common_name = common_name.replace("</h3>'","")
+                            vernacular_names.append(common_name)
+                            found_common_name=False
+                        if "afdCommonNames" in str(line):
+                            found_common_name=True
+            elif response.status_code == 200:
+                found_common_name = False
+                for line in response.iter_lines():
                     if found_common_name:
-                        common_name = str(line).replace("b'                 <h3>","")
-                        common_name = common_name.replace("</h3>'","")
+                        common_name = str(line).replace("b'                 <h3>", "")
+                        common_name = common_name.replace("</h3>'", "")
                         vernacular_names.append(common_name)
-                        found_common_name=False
+                        found_common_name = False
                     if "afdCommonNames" in str(line):
-                        found_common_name=True
-        elif response.status_code == 200:
-            found_common_name = False
-            for line in response.iter_lines():
-                if found_common_name:
-                    common_name = str(line).replace("b'                 <h3>", "")
-                    common_name = common_name.replace("</h3>'", "")
-                    vernacular_names.append(common_name)
-                    found_common_name = False
-                if "afdCommonNames" in str(line):
-                    found_common_name = True
-        else:
-            raise Error("This URL is not working: {}".format(url))
+                        found_common_name = True
+            else:
+                raise Error("This URL is not working: {}".format(url))
 
-    # add value to data frame
-    dataFrame.insert(loc=dataFrame.shape[1], column='vernacular_names', value=vernacular_names)
+        # add value to data frame
+        dataFrame.insert(loc=dataFrame.shape[1], column='vernacular_names', value=vernacular_names)
 
     # return the dataFrame
     return dataFrame

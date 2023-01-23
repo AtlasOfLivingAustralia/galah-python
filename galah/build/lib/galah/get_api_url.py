@@ -30,18 +30,24 @@ def get_api_url(column1=None,
     specific_atlas = atlaslist[atlaslist['atlas'] == configs['galahSettings']['atlas']]
 
     # get rows with specific value
-    rows = specific_atlas[specific_atlas[column1] == column1value]
+    rows = specific_atlas[specific_atlas[column1].astype(str).str.contains(column1value, case=True, na=False)]
+    #print(rows)
 
     # check to see if there are two columns to filter by
     if column2 is None and column2value is None:
-        if len(rows[rows[column1] == column1value].index) > 1:
+        if len(rows.loc[rows[column1].astype(str).str.contains(column1value, case=True, na=False)].index) > 1:
             raise ValueError("There are more than one possible APIs - need to specify column2 and column2value")
         else:
+            # dataFrame.loc[dataFrame[column_name].astype(str).str.contains(assertions, case=True, na=False)].sort_values('name', key=lambda x: x.str.len()))
             index = rows[rows[column1] == column1value].index[0]
             baseURL = rows[rows[column1] == column1value]['api_url'][index]
+    # add a test here
     elif column2 is not None and column2value is not None:
-        index = rows[rows[column2] == column2value].index[0]
-        baseURL = rows[rows[column1] == column1value]['api_url'][index]
+        if len(rows[rows[column2].astype(str).str.contains(column2value,case=True,na=False)].index) > 1:
+            raise ValueError("There are more than one possible APIs with column2 and column2value - choose this API another way")
+        else:
+            index = rows[rows[column2].astype(str).str.contains(column2value,case=True,na=False)].index[0]
+            baseURL = rows[rows[column1] == column1value]['api_url'][index]
     else:
         raise ValueError("A value needs to be provided for both column2 and column2 value")
 

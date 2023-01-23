@@ -7,7 +7,7 @@ from .show_all import show_all
 import sys
 
 # comment on what this function does later
-def show_values(field=None):
+def show_values(field=None,verbose=False):
     """
     Used for getting the values from a field you want to query.  To see how this is used, type
 
@@ -65,6 +65,10 @@ def show_values(field=None):
     # add the field
     URL = baseURL + "?facets=" + field
 
+    # check to see if the user wants the URL for querying
+    if verbose:
+        print("URL for querying:\n\n{}\n".format(URL))
+
     # query the API
     response = requests.get(URL)
     json = response.json()
@@ -74,8 +78,13 @@ def show_values(field=None):
 
     # loop over results and create dataFrame
     for i,entry in enumerate(json[0]['fieldResult']):
-        tempdf = pd.DataFrame([entry['i18nCode'].split('.')],columns=['field','category'])
-        dataFrame = pd.concat([dataFrame,tempdf],ignore_index=True)
+        # check if last character is a full stop
+        if entry['i18nCode'][-1] == ".":
+            tempdf = pd.DataFrame([entry['i18nCode'][0:-1].split('.')], columns=['field', 'category'])
+            dataFrame = pd.concat([dataFrame, tempdf], ignore_index=True)
+        else:
+            tempdf = pd.DataFrame([entry['i18nCode'].split('.')],columns=['field','category'])
+            dataFrame = pd.concat([dataFrame,tempdf],ignore_index=True)
 
     # return dataFrame
     return dataFrame

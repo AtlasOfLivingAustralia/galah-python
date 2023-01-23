@@ -82,16 +82,15 @@ def galah_filter(f, ifgroupBy=False):
                 #returnString += "fq=%28{}%3A%22{}%22%29".format(parts[0], parts[1].replace(" ","%20"))
                 returnString += "%28{}%3A%22{}%22%29".format(parts[0], parts[1].replace(" ", "%20"))
 
-        # greater than
         elif specialChar == '>':
             returnString+="&fq={}:[{}%20TO%20*]%20AND%20-({}:%22{}%22)".format(parts[0], parts[1], parts[0], parts[1])
 
         # less than
-        elif specialChar == '<':
+        elif specialChar == '<' and isinstance(parts[1], int):
             returnString+="&fq={}:[*%20TO%20{}]%20AND%20-({}:\"{}\")".format(parts[0], parts[1], parts[0], parts[1])
 
         # greater than or equal to
-        elif specialChar == '=>' or specialChar == '>=':
+        elif (specialChar == '=>' or specialChar == '>=') and isinstance(parts[1], int):
             returnString+="&fq={}:[{}%20TO%20*]".format(parts[0], parts[1])
         # less than or equal to
         elif specialChar == '<=' or specialChar == '=<':
@@ -100,6 +99,10 @@ def galah_filter(f, ifgroupBy=False):
         # not equal to
         elif specialChar == '!=' or specialChar == '=!':
             returnString+="&fq=(-{}:\"{}\")".format(parts[0], parts[1])
+
+        # filters with numerical operators are being used with a non-numeric type
+        elif not isinstance(parts[1], int):
+            raise ValueError("Numeric types can only be used with filters that include the <, >, <=, or => operators.")
 
         # else, there is either an error in the filters or a missing case
         else:
