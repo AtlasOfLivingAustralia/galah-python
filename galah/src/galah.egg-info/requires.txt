@@ -9,3 +9,5 @@ configparser
 glob2
 bytesbufio
 shutils
+unittest2
+pytest

@@ -35,7 +35,7 @@ def galah_group_by(URL,
             if type(filters) == str:
                 filters = [filters]
 
-            URL += "AND"
+            URL += "%20AND%20%28"
 
             # loop over filters
             for f in filters:
@@ -43,7 +43,7 @@ def galah_group_by(URL,
                 URL += galah_filter(f,ifgroupBy=ifGroupBy) + "%29%20AND%20%28"
                 #URL += "%28" + galah_filter(f, ifgroupBy=ifGroupBy) + "%29%20AND%20%28"
 
-            URL = URL[:-len("%29%20AND%20%28")] #+ "&pageSize=0"
+            URL = URL[:-len("%20AND%20%28")] #+ "&pageSize=0" #%29%20AND%20%28
 
         # else, raise a TypeError because this variable needs to be either a string or a list
         else:

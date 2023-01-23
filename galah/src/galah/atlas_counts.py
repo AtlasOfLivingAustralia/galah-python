@@ -183,7 +183,7 @@ def atlas_counts(taxa=None,
                     if type(filters) is str:
                         filters = [filters]
 
-                    URL += "AND"
+                    URL += "%20AND%20%28"
 
                     # loop over filters
                     for f in filters:

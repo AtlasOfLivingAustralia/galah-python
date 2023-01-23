@@ -68,38 +68,34 @@ def galah_filter(f, ifgroupBy=False):
             # check if the filter is a number or a string and if there is a group by
             if parts[1].isdigit() and ifgroupBy:
                 # this one is square brackets
-                #returnString+="&fq=%5b{}:%22{}%22%5d".format(parts[0],parts[1])
                 #returnString += "%5b{}:%22{}%22%5d".format(parts[0], parts[1])
-                # this one is commented out in case fq is needed ot test if it works
-                #returnString += "fq=%28{}%3A%22{}%22%29".format(parts[0],parts[1].replace(" ","%20"))
                 returnString += "%28{}%3A%22{}%22%29".format(parts[0], parts[1].replace(" ", "%20"))
             # if filter is querying a field that has no value
             elif parts[1] == '':
-                #returnString+="&fq=-{}%3A%28*29".format(parts[0])
                 returnString += "-{}%3A%28*29".format(parts[0])
             else:
                 # added quotes
-                #returnString += "fq=%28{}%3A%22{}%22%29".format(parts[0], parts[1].replace(" ","%20"))
                 returnString += "%28{}%3A%22{}%22%29".format(parts[0], parts[1].replace(" ", "%20"))
 
         # greater than
         elif specialChar == '>':
-            returnString+="&fq={}:[{}%20TO%20*]%20AND%20-({}:%22{}%22)".format(parts[0], parts[1], parts[0], parts[1])
+            returnString+="{}:%5b{}%20TO%20*%5d%20AND%20-({}:%22{}%22%29".format(parts[0], parts[1], parts[0], parts[1])
 
         # less than
         elif specialChar == '<':
-            returnString+="&fq={}:[*%20TO%20{}]%20AND%20-({}:\"{}\")".format(parts[0], parts[1], parts[0], parts[1])
+            returnString += "{}%3a%5b*%20TO%20{}%5d%20AND%20-({}:\"{}\"%29".format(parts[0], parts[1], parts[0], parts[1])
 
         # greater than or equal to
         elif specialChar == '=>' or specialChar == '>=':
-            returnString+="&fq={}:[{}%20TO%20*]".format(parts[0], parts[1])
+            returnString += "{}%3a%5b{}%20TO%20*%5d".format(parts[0], parts[1])
+
         # less than or equal to
         elif specialChar == '<=' or specialChar == '=<':
-            returnString+="&fq={}:[*%20TO%20{}]".format(parts[0], parts[1])
+            returnString += "{}%3a%5b*%20TO%20{}%5d".format(parts[0], parts[1])
 
         # not equal to
         elif specialChar == '!=' or specialChar == '=!':
-            returnString+="&fq=(-{}:\"{}\")".format(parts[0], parts[1])
+            returnString += "%28-{}%3a\"{}\"%29".format(parts[0], parts[1])
 
         # else, there is either an error in the filters or a missing case
         else:
