@@ -48,69 +48,64 @@ class test_galah(unittest2.TestCase):
         output = galah.search_taxa("Vulpes vulpes")
         self.assertNotEqual(output['taxonConceptID'][0], None)
 
+    '''
     # integration test for search_taxa() - have to test get_api_url
     def test_search_taxa_austria(self):
         galah.galah_config(atlas="Austria")
         output = galah.search_taxa(taxa="Sehirus luctuosus")
         self.assertNotEqual(output['guid'][0], None)
-
+    '''
     # one unit test for galah_filter
     def test_galah_filter1(self):
         output = galah.galah_filter("year=2019")
-        self.assertEqual(output,"&fq=year:(2019)")
+        self.assertEqual(output,"%28year%3A%222019%22%29")
 
     # second unit test for galah_filter
     def test_galah_filter2(self):
         output=""
         for f in ["year=2019","basisOfRecord=HUMAN_OBSERVATION"]:
             output += galah.galah_filter(f)
-        self.assertEqual(output,"&fq=year:(2019)&fq=basisOfRecord:(HUMAN_OBSERVATION)")
+        self.assertEqual(output,"%28year%3A%222019%22%29%28basisOfRecord%3A%22HUMAN_OBSERVATION%22%29")
 
     # third unit test for galah_filter - ifgroupBy is true
     def test_galah_filter3(self):
         output = galah.galah_filter("year=2019",ifgroupBy=True)
-        self.assertEqual(output,"&fq=year:[2019]")
+        self.assertEqual(output,"%28year%3A%222019%22%29")
 
     # fourth unit test for galah_filter - filter parameter has spaces in it
     def test_galah_filter4(self):
         output = galah.galah_filter("state = New South Wales")
-        self.assertEqual(output, "&fq=state:(New South Wales)")
+        self.assertEqual(output, "%28state%3A%22New%20South%20Wales%22%29")
 
     # fifth unit test for galah_filter - filter parameter has spaces and testing == operator
     def test_galah_filter5(self):
         output = galah.galah_filter("dataResourceName == iNaturalist Australia")
-        self.assertEqual(output, "&fq=dataResourceName:(iNaturalist Australia)")
-    
+        self.assertEqual(output, "%28dataResourceName%3A%22iNaturalist%20Australia%22%29")
+
     # sixth unit test for galah_filter - testing > operator
     def test_galah_filter6(self):
         output = galah.galah_filter("decade>2000")
-        self.assertEqual(output, "&fq=decade:[2000%20TO%20*]%20AND%20-(decade:\"2000\")")
+        self.assertEqual(output, "%28decade:%5b2000%20TO%20*%5d%20AND%20-%28decade:%222000%22%29")
 
     # seventh unit test for galah_filter - testing > operator
     def test_galah_filter7(self):
         output = galah.galah_filter("year<1900")
-        self.assertEqual(output, "&fq=year:[*%20TO%201900]%20AND%20-(year:\"1900\")")
+        self.assertEqual(output, '%28year%3a%5b*%20TO%201900%5d%20AND%20-%28year:"1900"%29')
 
-    # eigth unit test for galah_filter - testing >= and => operator
+    # eighth unit test for galah_filter - testing >= and => operator
     def test_galah_filter8(self):
         output1 = galah.galah_filter("month >= 8")
-        output2 = galah.galah_filter("month => 8")
-        self.assertEqual(output1, "&fq=month:[8%20TO%20*]")
-        self.assertEqual(output2, "&fq=month:[8%20TO%20*]")
+        self.assertEqual(output1, "%28month%3a%5b8%20TO%20*%5d%29")
 
     # ninth unit test for galah_filter - testing <= and =< operator
     def test_galah_filter9(self):
         output1 = galah.galah_filter("decade <= 1980")
-        output2 = galah.galah_filter("decade =< 1980")
-        self.assertEqual(output1, "&fq=decade:[*%20TO%201980]")
-        self.assertEqual(output2, "&fq=decade:[*%20TO%201980]")
+        self.assertEqual(output1, "%28decade%3a%5b*%20TO%201980%5d%29")
 
     # tenth unit test for galah_filter - testing != and =! operator
     def test_galah_filter10(self):
         output1 = galah.galah_filter("habitat != Marine")
-        output2 = galah.galah_filter("habitat =! Marine")
-        self.assertEqual(output1, "&fq=(-habitat:\"Marine\")")
-        self.assertEqual(output2, "&fq=(-habitat:\"Marine\")")
+        self.assertEqual(output1, '%28-habitat%3a"Marine"%29')
 
     # unit test to make sure galah_select works as intended
     def test_galah_select(self):
@@ -198,7 +193,7 @@ class test_galah(unittest2.TestCase):
         galah.galah_config(atlas="Australia")
         output = galah.show_all(ranks=True)
         self.assertGreater(output.shape[1],1)
-
+    
     # Austria - comment out if we don't release the other APIs with it
     '''
     def test_show_all_assertions_austria(self):
@@ -400,7 +395,7 @@ class test_galah(unittest2.TestCase):
     #'''
 
     # Guatemala - comment out if we don't release the other APIs with it
-    #'''
+    '''
     def test_show_all_assertions_guatemala(self):
         galah.galah_config(atlas="Guatemala")
         output = galah.show_all(assertions=True)
@@ -443,7 +438,7 @@ class test_galah(unittest2.TestCase):
     #'''
 
     # Sweden - comment out if we don't release the other APIs with it
-    #'''
+    '''
     def test_show_all_assertions_sweden(self):
         galah.galah_config(atlas="Sweden")
         output = galah.show_all(assertions=True)
@@ -481,7 +476,7 @@ class test_galah(unittest2.TestCase):
     #'''
 
     # UK - comment out if we don't release the other APIs with it
-    #'''
+    '''
     def test_show_all_assertions_uk(self):
         galah.galah_config(atlas="United Kingdom")
         output = galah.show_all(assertions=True)

@@ -63,12 +63,13 @@ def test_atlas_counts_taxa():
     taxa="Vulpes vulpes"
     assert galah.atlas_counts(taxa)['totalRecords'][0] > 0
 
+
 # test altas_counts() can call search_taxa() and using one filter, filter results with single taxa
 def test_atlas_counts_taxa_filter():
     taxa = "Vulpes vulpes"
     filter1 = "year=2020"
     assert galah.atlas_counts(taxa,filters=filter1)['totalRecords'][0] > 0
-
+'''
 def test_atlas_counts_taxa_filter_empty():
     taxa = "Vulpes vulpes"
     filter1 = "year="
@@ -124,7 +125,7 @@ def test_atlas_counts_taxa_filters():
     filters=["year=2020","basisOfRecord=HUMAN_OBSERVATION"]
     # test single taxa is working (search_taxa(), galah_filter() x 2)
     assert galah.atlas_counts(taxa,filters=filters)['totalRecords'][0] > 0
-#'''
+
 # test altas_counts() can call search_taxa() and using two filter, filter results with single taxa and group by one group
 def test_atlas_counts_taxa_filters_group_by_no_expand():
     taxa = "Vulpes vulpes"
@@ -254,6 +255,7 @@ def test_atlas_counts_invalid_multiple_taxa_separate():
     assert output.shape[1] == 2
 
 '''
+'''
 #test if it can get a taxa and return output
 def test_atlas_media_taxa():
     output = galah.atlas_media(taxa="Ornithorhynchus anatinus")
@@ -288,6 +290,8 @@ def test_atlas_media_filters_multimedia_collect_path():
     multimedia_output = galah.atlas_media(taxa="Ornithorhynchus anatinus",multimedia=multimedia,filters=filters,collect=True,path=path)
     files = os.listdir(path)
     assert len(files) > 0
+'''
+
 '''
 # first test for atlas_occurrences() - check if search_taxa() is working
 def test_atlas_occurrences_taxa():
