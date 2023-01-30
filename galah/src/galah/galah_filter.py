@@ -78,11 +78,11 @@ def galah_filter(f, ifgroupBy=False):
                 returnString += "%28{}%3A%22{}%22%29".format(parts[0], parts[1].replace(" ", "%20"))
 
         elif specialChar == '>':
-            returnString+="%28{}:%5b{}%20TO%20*%5d%20AND%20-({}:%22{}%22%29".format(parts[0], parts[1], parts[0], parts[1])
+            returnString+="%28{}:%5b{}%20TO%20*%5d%20AND%20-%28{}:%22{}%22%29".format(parts[0], parts[1], parts[0], parts[1])
 
         # less than
         elif specialChar == '<':
-            returnString += "%28{}%3a%5b*%20TO%20{}%5d%20AND%20-({}:\"{}\"%29".format(parts[0], parts[1], parts[0], parts[1])
+            returnString += "%28{}%3a%5b*%20TO%20{}%5d%20AND%20-%28{}:\"{}\"%29".format(parts[0], parts[1], parts[0], parts[1])
 
         # greater than or equal to
         elif specialChar == '=>' or specialChar == '>=':
