@@ -101,7 +101,9 @@ html_theme_options = {
 }
 
 html_sidebars = {
-    "**": ["search-field.html","sidebar-nav-bs"]
+	"index": [],
+	"search": [],
+    "**": ["sidebar-nav-bs"]
 }
 
 # Add any paths that contain custom static files (such as style sheets) here,

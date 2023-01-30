@@ -29,7 +29,8 @@ galah is a Python interface to biodiversity data hosted by the Atlas of Living A
                 
         **Getting started**
 
-        New to ``galah``? Click here.
+        New to ``galah``? Check out the guides on how to getting started. They contain 
+        an introduction to ``galah``'s main concepts, installation and a tutorial.
 
     .. grid-item-card::
         :link: configuring_galah/index.html
@@ -41,7 +42,7 @@ galah is a Python interface to biodiversity data hosted by the Atlas of Living A
 
         **Configuring Galah**
 
-        Want to configure ``galah``? Click here.
+        Want to configure ``galah``?
 
     .. grid-item-card::
         :link: apidocs/galah.html
@@ -53,7 +54,7 @@ galah is a Python interface to biodiversity data hosted by the Atlas of Living A
 
         **Galah User Guide**
 
-        Want to browse ``galah``'s user guide? Click here.
+        Want to browse ``galah``'s user guide?
     
     .. grid-item-card:: 
         :class-card: sd-text-black
