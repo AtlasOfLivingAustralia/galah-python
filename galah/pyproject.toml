@@ -8,6 +8,16 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.9"
+shutils = "^0.1.0"
+bytesbufio = "^1.0.3"
+glob2 = "^0.7"
+configparser = "^5.3.0"
+requests = "^2.28.2"
+urllib3 = "^1.26.14"
+time-python = "^0.0.16"
+zip-files = "^0.4.1"
+pandas = "^1.5.3"
+numpy = "^1.24.1"
 
 [tool.poetry.dev-dependencies]
 
