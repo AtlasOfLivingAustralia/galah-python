@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "galah"
-version = "1.0.0"
+version = "0.2.0"
 description = "Get counts and information on species"
 authors = ["Amanda Buyan"]
 license = "MIT"
