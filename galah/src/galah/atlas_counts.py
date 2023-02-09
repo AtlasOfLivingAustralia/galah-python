@@ -10,12 +10,13 @@ from .apply_data_profile import apply_data_profile
 ATLAS_KEYWORDS = {
     "Australia": "taxonConceptID",
     "Austria": "guid",
-    "Brazil": "guid", #speciesGuid
+    "Brazil": "guid", 
     "Canada": "usageKey",
     "Estonia": "guid",
     "France": "usageKey",
     "Guatemala": "guid",
     "Portugal": "usageKey",
+    "Spain": "taxonConceptID",
     "Sweden": "guid",
     "United Kingdom": "guid",
 }
@@ -110,7 +111,7 @@ def atlas_counts(taxa=None,
 
             # else, add the final bit of the URL
             else:
-                URL = baseURL + "flimit=200&pageSize=0"
+                URL = baseURL + "flimit=10000&pageSize=0"
 
             # check to see if the user wants the querying URL
             if verbose:
@@ -135,11 +136,6 @@ def atlas_counts(taxa=None,
         # change taxa into list for easier looping
         if type(taxa) is str:
             taxa = [taxa]
-        '''
-            len_taxa = 1
-        else:
-            len_taxa = len(taxa)
-        '''
 
         # get the number of records associated with each taxa
         # check for separate here first?
@@ -196,7 +192,7 @@ def atlas_counts(taxa=None,
                         URL += "&facets=species"
 
                     # add final part of URL
-                    URL += "&flimit=200&pageSize=0"
+                    URL += "&flimit=10000&pageSize=0"
 
                 # else, make sure that the filters is in the following format
                 else:
@@ -211,7 +207,7 @@ def atlas_counts(taxa=None,
                     URL += "&facets=species"
 
                 # last bit of URL
-                URL += "&flimit=200&pageSize=0"
+                URL += "&flimit=10000&pageSize=0"
 
         # check to see if the user wants the URL for querying
         if verbose:

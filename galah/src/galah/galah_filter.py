@@ -68,33 +68,34 @@ def galah_filter(f, ifgroupBy=False):
             # check if the filter is a number or a string and if there is a group by
             if parts[1].isdigit() and ifgroupBy:
                 # this one is square brackets
-                #returnString += "%5b{}:%22{}%22%5d".format(parts[0], parts[1])
+                #returnString += "%5B{}:%22{}%22%5d".format(parts[0], parts[1])
                 returnString += "%28{}%3A%22{}%22%29".format(parts[0], parts[1].replace(" ", "%20"))
             # if filter is querying a field that has no value
             elif parts[1] == '':
-                returnString += "%28-{}%3A%28*29".format(parts[0])
+                returnString += "%28{}%3A%28*%29%29".format(parts[0])
             else:
                 # added quotes
                 returnString += "%28{}%3A%22{}%22%29".format(parts[0], parts[1].replace(" ", "%20"))
 
         elif specialChar == '>':
-            returnString+="%28{}:%5b{}%20TO%20*%5d%20AND%20-%28{}:%22{}%22%29".format(parts[0], parts[1], parts[0], parts[1])
+            returnString+="%28{}:%5B{}%20TO%20*%5d%20AND%20-%28{}%3A%22{}%22%29%29".format(parts[0], parts[1], parts[0], parts[1])
 
         # less than
         elif specialChar == '<':
-            returnString += "%28{}%3a%5b*%20TO%20{}%5d%20AND%20-%28{}:\"{}\"%29".format(parts[0], parts[1], parts[0], parts[1])
+            returnString += "%28{}%3A%5B*%20TO%20{}%5d%20AND%20-%28{}%3A\"{}\"%29%29".format(parts[0], parts[1], parts[0], parts[1])
 
         # greater than or equal to
         elif specialChar == '=>' or specialChar == '>=':
-            returnString += "%28{}%3a%5b{}%20TO%20*%5d%29".format(parts[0], parts[1])
+            returnString += "%28{}%3A%5B{}%20TO%20%2A%5d%29".format(parts[0], parts[1])
 
         # less than or equal to
         elif specialChar == '<=' or specialChar == '=<':
-            returnString += "%28{}%3a%5b*%20TO%20{}%5d%29".format(parts[0], parts[1])
+            returnString += "%28{}%3A%5B*%20TO%20{}%5d%29".format(parts[0], parts[1])
 
         # not equal to
         elif specialChar == '!=' or specialChar == '=!':
-            returnString += "%28-{}%3a\"{}\"%29".format(parts[0], parts[1])
+            print("in galah_filter here...?")
+            returnString += "-%28{}%3A\"{}\"%29".format(parts[0], parts[1])
 
         # filters with numerical operators are being used with a non-numeric type
         elif not isinstance(parts[1], int):

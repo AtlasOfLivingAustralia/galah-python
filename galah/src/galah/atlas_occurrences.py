@@ -3,8 +3,7 @@ import pandas as pd
 from .galah_filter import galah_filter
 from .galah_select import galah_select
 from .search_taxa import search_taxa
-from .get_api_url import get_api_url
-from .get_api_url import readConfig
+from .get_api_url import get_api_url, readConfig
 from .apply_data_profile import apply_data_profile
 
 ATLAS_KEYWORDS = {
@@ -16,8 +15,26 @@ ATLAS_KEYWORDS = {
     "France": "usageKey",
     "Guatemala": "guid",
     "Portugal": "usageKey",
+    "Spain": "taxonConceptID",
     "Sweden": "guid",
     "United Kingdom": "guid",
+}
+
+ATLAS_SELECTIONS = {
+    "Australia": ["decimalLatitude","decimalLongitude","eventDate","scientificName",
+                 "taxonConceptID","recordID","dataResourceName","occurrenceStatus"],
+    "Austria": [],
+    "Brazil": ["latitude","longitude","occurrence_date","taxon_name","common_name",
+                "taxon_concept_lsid","occurrence_id","data_resource_uid","occurrence_status"],
+    "Canada": [],
+    "Estonia": [],
+    "France": [],
+    "Guatemala": [],
+    "Portugal": [],
+    "Spain": ["latitude","longitude","occurrence_date","taxon_name","common_name",
+                "taxon_concept_lsid","occurrence_id","data_resource_uid","occurrence_status"],
+    "Sweden": [],
+    "United Kingdom": [],
 }
 
 atlases = ["Australia","Austria","Brazil","Canada","Estonia","France","Guatemala","Portugal","Sweden","Spain","United Kingdom"]
@@ -59,7 +76,7 @@ def atlas_occurrences(taxa=None,
         if test:
             return
     except requests.exceptions.HTTPError as e:
-        print("The ALA might be down...")
+        print("The Atlas might be down...")
         print("Error: " + str(e))
         sys.exit()
 
@@ -114,9 +131,10 @@ def atlas_occurrences(taxa=None,
     # goes to the 'fields' argument in occurrence download (csv list, commas between)
     if fields is not None:
         baseURL += galah_select(selectionList=fields) + "&"
+    elif configs['galahSettings']['atlas'] in ["Australia","Brazil"]:
+        baseURL += galah_select(selectionList=ATLAS_SELECTIONS[configs['galahSettings']['atlas']])
     else:
-        baseURL += galah_select(selectionList=["decimalLatitude","decimalLongitude","eventDate","scientificName","taxonConceptID",
-                                               "recordID","dataResourceName","occurrenceStatus"])
+        raise ValueError("We currently cannot get occurrences from the {} atlas.".format(configs['galahSettings']['atlas']))
 
     # check if taxa is specified
     if taxa is not None:
@@ -166,6 +184,7 @@ def atlas_occurrences(taxa=None,
 
             # this may take a while - occasionally check if status has changed
             statusURL = requests.get(response.json()['statusUrl'])
+            print(statusURL.json())
             while statusURL.json()['status'] == 'inQueue':
                 time.sleep(5)
                 statusURL = requests.get(response.json()['statusUrl'])

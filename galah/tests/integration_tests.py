@@ -46,9 +46,6 @@ taxa - "Luscinia megarhynchos"
 '''
 tests to integrate
 
->>> taxa_array = ["Swainsona formosa", "Crocodylus johnstoni", "Platalea (Platalea) regia", "Notamacropus agilis"]
->>> f = ["dataResourceName = iNaturalist Australia","year=2022"]
->>> galah.atlas_counts(taxa=taxa_array,separate=True,filters=f)
 
 galah.atlas_counts(filters="year=2022",expand=False)
 
@@ -57,19 +54,38 @@ group_by = ["month","basisOfRecord"]
 galah.atlas_counts(filters="year=2022",group_by=group_by,expand=False)
 galah.atlas_counts(filters="year=2022",group_by=group_by,expand=True)
 '''
+'''
+
+
+    # integration test for search_taxa() - have to test get_api_url
+    def test_search_taxa_austria(self):
+        galah.galah_config(atlas="Austria")
+        output = galah.search_taxa(taxa="Sehirus luctuosus")
+        self.assertNotEqual(output['guid'][0], None)
+'''
+
+# -------------------------------------------------------------------------------------------------
+# Australia
+# -------------------------------------------------------------------------------------------------
+
+# integration test for search_taxa() - have to test get_api_url
+def test_search_taxa_australia(self):
+    galah.galah_config(atlas="Australia")
+    output = galah.search_taxa("Vulpes vulpes")
+    self.assertNotEqual(output['taxonConceptID'][0], None)
 
 # test atlas_counts() can call search_taxa() function with single taxa
 def test_atlas_counts_taxa():
     taxa="Vulpes vulpes"
     assert galah.atlas_counts(taxa)['totalRecords'][0] > 0
 
-
 # test altas_counts() can call search_taxa() and using one filter, filter results with single taxa
 def test_atlas_counts_taxa_filter():
     taxa = "Vulpes vulpes"
     filter1 = "year=2020"
     assert galah.atlas_counts(taxa,filters=filter1)['totalRecords'][0] > 0
-'''
+
+# test atlas counts for a taxa and empty filter
 def test_atlas_counts_taxa_filter_empty():
     taxa = "Vulpes vulpes"
     filter1 = "year="
@@ -95,7 +111,14 @@ def test_atlas_counts_taxa_filter_data_quality():
     quality = galah.atlas_counts(taxa,filters=filter1,use_data_profile=True)
     assert no_quality['totalRecords'][0] >= quality['totalRecords'][0]
 
-# comment this
+# test atlas counts with multiple taxa and filters, along with separate=True
+def test_atlas_counts_multiple_taxa_filters_separate():
+    taxa_array = ["Swainsona formosa", "Crocodylus johnstoni", "Platalea (Platalea) regia", "Notamacropus agilis"]
+    f = ["dataResourceName = iNaturalist Australia","year=2022"]
+    output = galah.atlas_counts(taxa=taxa_array,separate=True,filters=f)
+    assert output.shape[0] > 0
+
+# test if you can group counts by a single group_by
 def test_atlas_counts_taxa_group():
     taxa = "Vulpes vulpes"
     group_by = "year"
@@ -103,7 +126,7 @@ def test_atlas_counts_taxa_group():
     assert output.shape[0] > 0
     assert output.shape[1] == 2
 
-# comment this
+# group counts by multiple groups (expand=False in this one)
 def test_atlas_counts_taxa_groups():
     taxa = "Vulpes vulpes"
     group_by = ["year","basisOfRecord"]
@@ -111,7 +134,7 @@ def test_atlas_counts_taxa_groups():
     assert output.shape[0] > 0
     assert output.shape[1] == len(group_by) + 1
 
-# comment this
+# group counts by multiple groups
 def test_atlas_counts_taxa_groups_expand():
     taxa = "Vulpes vulpes"
     group_by = ["year","basisOfRecord"]
@@ -209,7 +232,7 @@ def test_atlas_counts_multiple_taxa_separate():
     output = galah.atlas_counts(taxa_array, separate=True)
     assert output.shape[0] == len(taxa_array)
     assert output.shape[1] == 2
-    assert (output['totalRecords'] >= 0).all() # checks that all species counts are greater than or equal to zero
+    assert (output['count'] >= 0).all() # checks that all species counts are greater than or equal to zero
 
 # test altas_counts() can call search_taxa() and using one filter, filter results with multiple taxa separated
 def test_atlas_counts_multiple_taxa_filters_separate():
@@ -218,7 +241,7 @@ def test_atlas_counts_multiple_taxa_filters_separate():
     output = galah.atlas_counts(taxa_array, filters=f, separate=True)
     assert output.shape[0] == len(taxa_array)
     assert output.shape[1] == 2
-    assert (output['totalRecords'] >= 0).all() # checks that all species counts are greater than or equal zero
+    assert (output['count'] >= 0).all() # checks that all species counts are greater than or equal zero
 
 # test altas_counts() can call search_taxa() and using one filter, filter and group results with multiple taxa separated
 def test_atlas_counts_multiple_taxa_filters_group_by_separate():
@@ -246,14 +269,14 @@ def test_atlas_counts_multiple_taxa_filters_group_by_multiple_separate_expand():
     output = galah.atlas_counts(taxa_array, filters=f, group_by=group_by, separate=True, expand=True)
     assert output.shape[1] == len(group_by) + 1
     assert output['count'][0] >= 0 # checks that all species counts are greater than or equal zero
-
+'''
+# READ UP ON HOW TO CAPTURE WARNINGS IN INTEGRATION TESTS
 # test atlas_counts() can call search_taxa() and separate the counts for multiple taxa where one taxon is not present in ALA
 def test_atlas_counts_invalid_multiple_taxa_separate():
     taxa_array = ["Dasyurus hallucatus", "Ailuropoda melanoleuca", "Centrostephanus rodgersii"]
     output = galah.atlas_counts(taxa_array, separate=True)
     assert output.shape[0] == len(taxa_array) - 1
     assert output.shape[1] == 2
-
 '''
 '''
 #test if it can get a taxa and return output
@@ -292,11 +315,9 @@ def test_atlas_media_filters_multimedia_collect_path():
     assert len(files) > 0
 '''
 
-'''
 # first test for atlas_occurrences() - check if search_taxa() is working
 def test_atlas_occurrences_taxa():
     occurrences = galah.atlas_occurrences(taxa="Vulpes vulpes")
-    #rows
     assert occurrences.shape[0] > 1
 
 # second test for atlas_occurrences() - check if galah_select() is working
@@ -540,4 +561,11 @@ def test_search_values():
     first_output = galah.show_values(field="basisOfRecord")
     second_output = galah.search_values(field="basisOfRecord",value="OBS")
     assert first_output.shape[0] > second_output.shape[0]
-#'''
+
+# -------------------------------------------------------------------------------------------------
+# Spain
+# -------------------------------------------------------------------------------------------------
+
+# -------------------------------------------------------------------------------------------------
+# Brazil
+# -------------------------------------------------------------------------------------------------

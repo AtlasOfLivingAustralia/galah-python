@@ -7,12 +7,13 @@ from .get_api_url import readConfig
 ATLAS_KEYWORDS = {
     "Australia": "taxonConceptID",
     "Austria": "guid",
-    "Brazil": "speciesGuid",
+    "Brazil": "guid",
     "Canada": "usageKey",
     "Estonia": "guid",
     "France": "usageKey",
     "Guatemala": "guid",
     "Portugal": "usageKey",
+    "Spain": "taxonConceptID",
     "Sweden": "guid",
     "United Kingdom": "guid",
 }
@@ -68,19 +69,30 @@ def search_taxa(taxa):
             json = response.json()
             # check to see if the taxa was successfully returned
             # don't think this is the best solution for Austria but this is a first shot
-            if configs['galahSettings']['atlas'] not in ["Austria"] and not json['success']:
-                break
+            if configs['galahSettings']['atlas'] in ["Australia","Spain"] and not json['success']:
+                raise ValueError("Your query could not be completed for this atlas.  Check that you have the correct taxon.")
+            elif configs['galahSettings']['atlas'] in ["Brazil"]:
+                data={}
+                for item in json['searchResults']['results']:
+                    #  make this default, but create option for it later
+                    if item['rank'] == "species":
+                        #print(item.keys())
+                        #print(item['id'])
+                        if item['scientificName'] == name:
+                            for entry in ['scientificName', 'scientificNameAuthorship', ATLAS_KEYWORDS[configs['galahSettings']['atlas']], 'rank']:
+                                data[entry] = item[entry]
+                            
             else:
                 # this is for atlas for Australia
-                if configs['galahSettings']['atlas'] in atlases:
+                if configs['galahSettings']['atlas'] in ["Australia","Spain"]:
                     data = dict(
                         (k, json[k]) for k in ('scientificName', 'scientificNameAuthorship', ATLAS_KEYWORDS[configs['galahSettings']['atlas']], 'rank') if
                         k in json)
                 else:
                     raise ValueError("The atlas {} is not taken into account".format(configs['galahSettings']['atlas']))
 
-                tempdf = pd.DataFrame(data,index=[1])
-                dataFrame = pd.concat([dataFrame,tempdf],ignore_index=True)
+            tempdf = pd.DataFrame(data,index=[1])
+            dataFrame = pd.concat([dataFrame,tempdf],ignore_index=True)
 
         # return dataFrame with all data
         return dataFrame

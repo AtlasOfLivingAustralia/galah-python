@@ -42,19 +42,6 @@ taxa - "Luscinia megarhynchos"
 
 class test_galah(unittest2.TestCase):
 
-    # integration test for search_taxa() - have to test get_api_url
-    def test_search_taxa_australia(self):
-        galah.galah_config(atlas="Australia")
-        output = galah.search_taxa("Vulpes vulpes")
-        self.assertNotEqual(output['taxonConceptID'][0], None)
-
-    '''
-    # integration test for search_taxa() - have to test get_api_url
-    def test_search_taxa_austria(self):
-        galah.galah_config(atlas="Austria")
-        output = galah.search_taxa(taxa="Sehirus luctuosus")
-        self.assertNotEqual(output['guid'][0], None)
-    '''
     # one unit test for galah_filter
     def test_galah_filter1(self):
         output = galah.galah_filter("year=2019")
@@ -105,7 +92,7 @@ class test_galah(unittest2.TestCase):
     # tenth unit test for galah_filter - testing != and =! operator
     def test_galah_filter10(self):
         output1 = galah.galah_filter("habitat != Marine")
-        self.assertEqual(output1, '%28-habitat%3a"Marine"%29')
+        self.assertEqual(output1, '-%28habitat%3a"Marine"%29')
 
     # unit test to make sure galah_select works as intended
     def test_galah_select(self):
@@ -436,6 +423,42 @@ class test_galah(unittest2.TestCase):
         output = galah.show_all(reasons=True)
         self.assertGreater(output.shape[1], 1)
     #'''
+
+    # Spain - comment out if we don't release the other APIs with it
+    def test_show_all_assertions_spain(self):
+        galah.galah_config(atlas="Spain")
+        output = galah.show_all(assertions=True)
+        self.assertGreater(output.shape[1],1)
+
+    def test_show_all_atlases_spain(self):
+        galah.galah_config(atlas="Spain")
+        output = galah.show_all(atlases=True)
+        self.assertGreater(output.shape[1],1)
+
+    def test_show_all_apis_spain(self):
+        galah.galah_config(atlas="Spain")
+        output = galah.show_all(apis=True)
+        self.assertGreater(output.shape[1],1)
+
+    def test_show_all_datasets_spain(self):
+        galah.galah_config(atlas="Spain")
+        output = galah.show_all(datasets=True)
+        self.assertGreater(output.shape[1],1)
+
+    def test_show_all_fields_spain(self):
+        galah.galah_config(atlas="Spain")
+        output = galah.show_all(fields=True)
+        self.assertGreater(output.shape[1],1)
+
+    def test_show_all_providers_spain(self):
+        galah.galah_config(atlas="Spain")
+        output = galah.show_all(providers=True)
+        self.assertGreater(output.shape[1],1)
+
+    def test_show_all_reasons_spain(self):
+        galah.galah_config(atlas="Spain")
+        output = galah.show_all(reasons=True)
+        self.assertGreater(output.shape[1], 1)
 
     # Sweden - comment out if we don't release the other APIs with it
     '''
