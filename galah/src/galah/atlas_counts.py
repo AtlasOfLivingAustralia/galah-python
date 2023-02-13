@@ -53,6 +53,8 @@ def atlas_counts(taxa=None,
     # get configs
     configs = readConfig()
 
+    print("here")
+
     # get the URL needed for the query
     if use_data_profile and configs['galahSettings']['atlas'] == "Australia":
         baseURL = apply_data_profile("{}?".format(get_api_url(column1='called_by',column1value='atlas_counts',column2="api_name",
@@ -95,14 +97,14 @@ def atlas_counts(taxa=None,
                         filters = [filters]
 
                     # start URL - might need to add + "&" later
-                    URL = baseURL + "&"
+                    URL = baseURL + "fq=%28"
 
                     # loop over filters
                     for f in filters:
                         URL += galah_filter(f, ifgroupBy=expand) + "%20AND%20"
 
                     # add final part of URL
-                    URL = URL[:-len("%20AND%20")] #+ "&pageSize=0"
+                    URL = URL[:-len("%20AND%20")] + "%29"
 
                 # else, make sure that the filters is in the following format
                 else:
@@ -111,7 +113,10 @@ def atlas_counts(taxa=None,
 
             # else, add the final bit of the URL
             else:
-                URL = baseURL + "flimit=10000&pageSize=0"
+                if configs["galahSettings"]["atlas"] == "Australia":
+                    URL = baseURL + "flimit=10000&pageSize=0"
+                else:
+                    URL = baseURL
 
             # check to see if the user wants the querying URL
             if verbose:
@@ -127,8 +132,9 @@ def atlas_counts(taxa=None,
         # else, the user wants a grouped dataFrame
         else:
 
-           # return a grouped dataFrame
-            return galah_group_by(baseURL, group_by=group_by, filters=filters, expand=expand, verbose=verbose)
+            # return a grouped dataFrame
+            URL = baseURL + "fq="
+            return galah_group_by(URL, group_by=group_by, filters=filters, expand=expand, verbose=verbose)
 
     # if taxa exist, do this
     elif type(taxa) is str or type(taxa) is list:
@@ -165,7 +171,11 @@ def atlas_counts(taxa=None,
         # return a grouped dataFrame
         if group_by is not None:
 
-            return galah_group_by(URL, group_by=group_by, filters=filters, expand=expand, verbose=verbose)
+            if filters is not None:
+                URL += "%20AND%20"
+                return galah_group_by(URL, group_by=group_by, filters=filters, expand=expand, verbose=verbose)
+            else:
+                return galah_group_by(baseURL, group_by=group_by, filters=filters, expand=expand, verbose=verbose)
 
         else:
 
@@ -179,20 +189,21 @@ def atlas_counts(taxa=None,
                     if type(filters) is str:
                         filters = [filters]
 
-                    URL += "%20AND%20"
+                    URL += "%20AND%20%28"
 
                     # loop over filters
                     for f in filters:
                         URL += galah_filter(f, ifgroupBy=expand) + "%20AND%20"
 
                     # add final part of URL
-                    URL = URL[:-len("%20AND%20")]
+                    URL = URL[:-len("%20AND%20")] + "%29"
 
                     if separate:
                         URL += "&facets=species"
 
                     # add final part of URL
-                    URL += "&flimit=10000&pageSize=0"
+                    if configs["galahSettings"]["atlas"] == "Australia":
+                        URL += "flimit=10000&pageSize=0"
 
                 # else, make sure that the filters is in the following format
                 else:
@@ -207,7 +218,8 @@ def atlas_counts(taxa=None,
                     URL += "&facets=species"
 
                 # last bit of URL
-                URL += "&flimit=10000&pageSize=0"
+                if configs["galahSettings"]["atlas"] == "Australia":
+                    URL += "&flimit=10000&pageSize=0"
 
         # check to see if the user wants the URL for querying
         if verbose:
@@ -225,7 +237,8 @@ def atlas_counts(taxa=None,
                     separate_dict[name].append(entry[name])
             dataFrame = pd.DataFrame(separate_dict)
             if dataFrame.shape[0] < len(taxa):
-                warnings.warn("One of the taxa is not found in your designated atlas")
+                #warnings.warn("One of the taxa is not found in your designated atlas")
+                print("One of the taxa is not found in your designated atlas")
             return dataFrame
 
         if not group_by_dataframe.empty:

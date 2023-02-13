@@ -7,7 +7,7 @@ from setuptools import setup,find_packages
 
 setup(
     name='galah',
-    version='1.0.0',
+    version='0.2.3',
     license='MIT',
     author='Amanda Buyan',
     author_email='amanda.buyan@csiro.au',
@@ -17,7 +17,7 @@ setup(
     keywords='galah',
     #'tempfile'
     install_requires=[
-        'scipy','numpy','pandas','requests','urllib3','TIME-python','zip-files','configparser','glob2','bytesbufio','shutils',
+        'numpy','pandas','requests','urllib3','TIME-python','zip-files','configparser','glob2','bytesbufio','shutils',
     ],
     include_package_data = True,
     package_data = {

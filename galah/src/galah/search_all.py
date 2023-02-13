@@ -7,7 +7,7 @@ large list of all the potential variables to add to your atlas query.  Choosing 
 def search_all(assertions=None,
                atlases=None,
                apis=None,
-               collections=None,
+               collection=None,
                datasets=None,
                fields=None,
                licences=None,
@@ -22,16 +22,16 @@ def search_all(assertions=None,
     Used for getting and searching various amounts of information about the chosen atlas you want to
     get counts and occurrences from.
 
-    To find a list of collections in the apis you want to search, type
+    To find a list of collection in the apis you want to search, type
 
     .. prompt:: python
 
         import galah
-        galah.search_all(apis="collections")
+        galah.search_all(apis="collection")
 
     which returns
 
-    .. program-output:: python3 -c "import galah; print(galah.search_all(apis=\\\"collections\\\"))"
+    .. program-output:: python3 -c "import galah; print(galah.search_all(apis=\\\"collection\\\"))"
     """
 
     # set up the option for getting back multiple values
@@ -90,10 +90,10 @@ def search_all(assertions=None,
             raise ValueError(
                 "You can only pass one string to your search parameter = run show_all(apis=True) to get strings to pass")
 
-    # search options for collections
-    if collections is not None:
+    # search options for collection
+    if collection is not None:
         # call show_all to get all the possible values
-        dataFrame = show_all(collections=True)
+        dataFrame = show_all(collection=True)
         # check to see if user wants default column name
         if column_name is None:
             column_name = 'name'
@@ -101,9 +101,9 @@ def search_all(assertions=None,
         elif type(column_name) is not str:
             raise ValueError("Only strings are a valid query for the column_name variable")
         # check to see if the user input the correct variable type; else, throw value error
-        if type(collections) is str:
+        if type(collection) is str:
             return_array.append(
-                dataFrame.loc[dataFrame[column_name].astype(str).str.contains(collections, case=True, na=False)].sort_values('name',
+                dataFrame.loc[dataFrame[column_name].astype(str).str.contains(collection, case=True, na=False)].sort_values('name',
                                                                                                       key=lambda x: x.str.len()))
         else:
             raise ValueError(

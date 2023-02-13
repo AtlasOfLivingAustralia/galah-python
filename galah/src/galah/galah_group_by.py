@@ -35,14 +35,14 @@ def galah_group_by(URL,
             if type(filters) == str:
                 filters = [filters]
 
-            URL += "%20AND%20"
+            URL += "%28"
 
             # loop over filters
             for f in filters:
                 
                 URL += galah_filter(f,ifgroupBy=ifGroupBy) + "%20AND%20"
                    
-            URL = URL[:-len("%20AND%20")] #+ "&pageSize=0" #%29%20AND%20%28
+            URL = URL[:-len("%20AND%20")] + "%29" 
 
         # else, raise a TypeError because this variable needs to be either a string or a list
         else:
@@ -88,8 +88,10 @@ def galah_group_by(URL,
             json = response.json()
             facets_array=[]
             # try to make it generalised
+            # add a check to see if a single value is there for filters; otherwise, can do this?
             for i in range(1,len(group_by)):
                 temp_array=[]
+                # how to ensure we catch the 
                 for entry in json['facetResults'][i]['fieldResult']:
                     temp_array.append(entry['fq'])
                 facets_array.append(temp_array)
@@ -105,9 +107,9 @@ def galah_group_by(URL,
                     else:
                         continue
                     for group in group_by:
-                        if group != name and "facets={}".format(group) not in URL:
+                        if (group != name) and ("facets={}".format(group) not in URL):
                             tempURL += "&facets={}".format(group)
-                    tempURL += "&flimit=20&&pageSize=0"
+                    tempURL += "&flimit=10000&pageSize=0"
 
                     # check to see if the user wants the URL for querying
                     if verbose:

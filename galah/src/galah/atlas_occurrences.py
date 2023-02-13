@@ -37,7 +37,9 @@ ATLAS_SELECTIONS = {
     "United Kingdom": [],
 }
 
-atlases = ["Australia","Austria","Brazil","Canada","Estonia","France","Guatemala","Portugal","Sweden","Spain","United Kingdom"]
+#atlases = ["Australia","Austria","Brazil","Canada","Estonia","France","Guatemala","Portugal","Sweden","Spain","United Kingdom"]
+
+atlases = ["Australia","Brazil","Spain"]
 
 def atlas_occurrences(taxa=None,
                       filters=None,
@@ -161,7 +163,7 @@ def atlas_occurrences(taxa=None,
 
             # check what type of variable filters is; handle accordingly
             if filters is not None:
-                URL += "%20AND%20"
+                URL += "%20AND%20%28"
                 if type(filters) is str:
                     URL += galah_filter(filters) + "%20AND%20"
                 elif type(filters) is list:
@@ -171,7 +173,7 @@ def atlas_occurrences(taxa=None,
                     raise ValueError("The filters argument needs to be either a string or a list")
 
                 # add final part of URL
-                URL = URL[:-len("%20AND%20")] + "&"
+                URL = URL[:-len("%20AND%20")] + "%29&"
 
             # check to see if user wants the query URL
             if verbose:
@@ -179,12 +181,15 @@ def atlas_occurrences(taxa=None,
 
             # query the api
             response = requests.get(URL)
+            if response.status_code == 403:
+                # TODO: write more exceptions to make sure contact details are ok
+                if configs['galahSettings']['atlas'] == "Brazil":
+                    raise ValueError("It appears that you are not registered as a user on the Brazilian atlas.  Please email X to register.")
             if response.json()['status'] == "skipped":
                 raise ValueError(response.json()["error"])
 
             # this may take a while - occasionally check if status has changed
             statusURL = requests.get(response.json()['statusUrl'])
-            print(statusURL.json())
             while statusURL.json()['status'] == 'inQueue':
                 time.sleep(5)
                 statusURL = requests.get(response.json()['statusUrl'])

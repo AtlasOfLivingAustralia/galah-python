@@ -41,7 +41,7 @@ def atlas_species(taxa=None,verbose=False):
     if configs['galahSettings']['atlas'] in ["Australia"]:
         taxonConceptID = search_taxa(taxa)['taxonConceptID'][0]
         URL = baseURL.replace("{id}", taxonConceptID)  # + "fq=%28lsid%3A" + urllib.parse.quote(taxonConceptID) + "%29&"
-    elif configs['galahSettings']['atlas'] in ["Austria","Estonia"]:
+    elif configs['galahSettings']['atlas'] in ["Brazil"]:
         taxonConceptID = search_taxa(taxa)['guid'][0]
         URL = baseURL + urllib.parse.quote(taxonConceptID) #+ "fq=%28lsid%3A" + urllib.parse.quote(taxonConceptID) + "%29&"
     else:

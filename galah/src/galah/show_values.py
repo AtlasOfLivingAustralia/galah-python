@@ -30,8 +30,8 @@ def show_values(field=None,verbose=False):
     # add a buttload of checks to make sure that the field they entered actually is something they can query
     ### TODO: talk to Martin about this
     # "field", "profile", "list", "collection", "dataset", "provider")
-    #collections,datasets,fields,lists,profiles,providers
-    raw_valid_values = show_all(collections=True,datasets=True,fields=True,lists=True,profiles=True,providers=True)
+    #collection,datasets,fields,lists,profiles,providers
+    raw_valid_values = show_all(collection=True,datasets=True,fields=True,lists=True,profiles=True,providers=True)
     for i,df in enumerate(raw_valid_values):
         if i == 0:
             if 'listName' in list(df.columns):
@@ -54,7 +54,7 @@ def show_values(field=None,verbose=False):
     if field not in valid_values:
         raise ValueError("{} is not a valid field query.  Use the show_all() function with any of the following set as"
                          "True to show valid values:\n\n"
-                         "collections, datasets, fields, lists, profiles, providers\n")
+                         "collection, datasets, fields, lists, profiles, providers\n")
     '''
     # add the field
     URL = baseURL + "?facets=" + field + "&flimit=10000"

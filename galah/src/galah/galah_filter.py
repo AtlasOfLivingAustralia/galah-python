@@ -1,6 +1,4 @@
-import requests,re
-
-import sys
+import re
 
 def galah_filter(f, ifgroupBy=False):
     """
@@ -27,24 +25,6 @@ def galah_filter(f, ifgroupBy=False):
     # check to make sure the filter type is correct
     if type(f) == str:
 
-        # TODO: check if there are multiple of the same type of filters what to do?
-        #categories=[]
-        '''
-        for f in filters:
-            specialChar = specialChars.search(f)
-            if specialChar[0] is None:
-                raise ValueError("Either your filters does not have the correct special characters [@_!#$%^&*()<>?}{~:=], "
-                                 "or we need to include another special character we have forgotten about.")
-            if f.split(specialChar[0])[0] not in categories:
-                categories.append(f.split(specialChar[0])[0])
-            else:
-                # remove duplicates
-                print("duplicates")
-                print(filters)
-                sys.exit()
-        #print(categories)
-        #sys.exit()
-        '''
         # need to check for special characters
         specialChar = specialChars.findall(f)
         if specialChar is None:
@@ -59,8 +39,6 @@ def galah_filter(f, ifgroupBy=False):
         # remove leading and trailing white spaces from each filter part
         for i, p in enumerate(parts):
             parts[i] = p.strip()
-
-        # TODO: take all fq out - not sure where it is needed
 
         # start checking for different logical operators, starting with equals
         if specialChar == '=' or specialChar == '==':
@@ -94,8 +72,7 @@ def galah_filter(f, ifgroupBy=False):
 
         # not equal to
         elif specialChar == '!=' or specialChar == '=!':
-            print("in galah_filter here...?")
-            returnString += "-%28{}%3A\"{}\"%29".format(parts[0], parts[1])
+            returnString += "-%28{}%3A%22{}%22%29".format(parts[0], parts[1])
 
         # filters with numerical operators are being used with a non-numeric type
         elif not isinstance(parts[1], int):

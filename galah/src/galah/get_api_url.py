@@ -31,7 +31,6 @@ def get_api_url(column1=None,
 
     # get rows with specific value
     rows = specific_atlas[specific_atlas[column1].astype(str).str.contains(column1value, case=True, na=False)]
-    #print(rows)
 
     # check to see if there are two columns to filter by
     if column2 is None and column2value is None:
@@ -47,7 +46,8 @@ def get_api_url(column1=None,
             raise ValueError("There are more than one possible APIs with column2 and column2value - choose this API another way")
         else:
             index = rows[rows[column2].astype(str).str.contains(column2value,case=True,na=False)].index[0]
-            baseURL = rows[rows[column1] == column1value]['api_url'][index]
+            #baseURL = rows[rows[column1] == column1value]['api_url'][index]
+            baseURL = rows.loc[rows[column1].astype(str).str.contains(column1value, case=True, na=False)]['api_url'][index]
     else:
         raise ValueError("A value needs to be provided for both column2 and column2 value")
 

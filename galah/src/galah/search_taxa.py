@@ -70,18 +70,15 @@ def search_taxa(taxa):
             # check to see if the taxa was successfully returned
             # don't think this is the best solution for Austria but this is a first shot
             if configs['galahSettings']['atlas'] in ["Australia","Spain"] and not json['success']:
-                raise ValueError("Your query could not be completed for this atlas.  Check that you have the correct taxon.")
+                continue
             elif configs['galahSettings']['atlas'] in ["Brazil"]:
                 data={}
                 for item in json['searchResults']['results']:
                     #  make this default, but create option for it later
                     if item['rank'] == "species":
-                        #print(item.keys())
-                        #print(item['id'])
-                        if item['scientificName'] == name:
+                        if item['scientificName'].lower() == name.lower():
                             for entry in ['scientificName', 'scientificNameAuthorship', ATLAS_KEYWORDS[configs['galahSettings']['atlas']], 'rank']:
                                 data[entry] = item[entry]
-                            
             else:
                 # this is for atlas for Australia
                 if configs['galahSettings']['atlas'] in ["Australia","Spain"]:
