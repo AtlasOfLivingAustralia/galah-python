@@ -12,17 +12,16 @@
 #
 import os
 import sys
-import jinja2
 import galah
 
 # -- Project information -----------------------------------------------------
 
 project = 'Galah'
-copyright = '2022, Amanda Buyan, Atlas of Living Australia'
+copyright = 'Atlas of Living Australia'
 author = 'Amanda Buyan, Atlas of Living Australia'
 
 # The full version, including alpha/beta/rc tags
-release = '1.0.0'
+release = '0.1.0'
 
 # try this
 sys.path.insert(0,"../../galah/src/galah/")

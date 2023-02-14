@@ -55,12 +55,9 @@ def atlas_species(taxa=None,verbose=False):
     response = requests.get(URL)
     # need to get species, author and
     json = response.json()
-    #print(json)
     temp_dict = {"species": [], "author": [], "species_guid": []}
     for j in json:
-        print(j)
         dataFrame = pd.DataFrame(j,index=[0])
-        print(dataFrame.head())
         if dataFrame['rank'][0] == "species":
             temp_dict['species'].append(dataFrame['name'][0])
             temp_dict['author'].append(dataFrame['author'][0])
@@ -126,7 +123,7 @@ def atlas_species(taxa=None,verbose=False):
                     if "afdCommonNames" in str(line):
                         found_common_name = True
             else:
-                raise Error("This URL is not working: {}".format(url))
+                raise ValueError("This URL is not working: {}".format(url))
 
         # add value to data frame
         dataFrame.insert(loc=dataFrame.shape[1], column='vernacular_names', value=vernacular_names)

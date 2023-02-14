@@ -52,9 +52,6 @@ def atlas_counts(taxa=None,
 
     # get configs
     configs = readConfig()
-
-    print("here")
-
     # get the URL needed for the query
     if use_data_profile and configs['galahSettings']['atlas'] == "Australia":
         baseURL = apply_data_profile("{}?".format(get_api_url(column1='called_by',column1value='atlas_counts',column2="api_name",

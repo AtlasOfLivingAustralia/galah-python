@@ -13,8 +13,8 @@ galah is a Python interface to biodiversity data hosted by the Atlas of Living A
    :hidden:
 
    Getting Started <getting_started/index>
-   Configuring Galah <configuring_galah/index>
-   User Guide API <apidocs/galah>
+   API Docs <apidocs/galah>
+   FAQs <faqs/index>
 
 .. grid:: 1 2 2 2
     :gutter: 4
@@ -29,20 +29,18 @@ galah is a Python interface to biodiversity data hosted by the Atlas of Living A
                 
         **Getting started**
 
-        New to ``galah``? Check out the guides on how to getting started. They contain 
-        an introduction to ``galah``'s main concepts, installation and a tutorial.
+        New to ``galah``?
 
     .. grid-item-card::
-        :link: configuring_galah/index.html
         :class-card: sd-text-black
         :text-align: center
 
         .. raw:: html
             :file: _static/icons/configuration.svg
 
-        **Configuring Galah**
+        **Galah User Guide**
 
-        Want to configure ``galah``?
+        Want to know more about how to use ``galah``?
 
     .. grid-item-card::
         :link: apidocs/galah.html
@@ -52,12 +50,13 @@ galah is a Python interface to biodiversity data hosted by the Atlas of Living A
         .. raw:: html
             :file: _static/icons/user_guide.svg
 
-        **Galah User Guide**
+        **API Docs**
 
-        Want to browse ``galah``'s user guide?
+        Want to browse ``galah``'s API docs?
     
     .. grid-item-card:: 
         :class-card: sd-text-black
+        :link: faqs/index.html
         :text-align: center
 
         .. raw:: html
@@ -65,5 +64,4 @@ galah is a Python interface to biodiversity data hosted by the Atlas of Living A
 
         **FAQs**
 
-        Questions about the ``galah`` package? Suggestions for new features? Wish to
-        contact us? Find the answer to your question here.
+        Questions about the ``galah`` package? Find the answer to your question here.

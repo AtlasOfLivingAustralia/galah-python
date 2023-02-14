@@ -22,16 +22,16 @@ def search_all(assertions=None,
     Used for getting and searching various amounts of information about the chosen atlas you want to
     get counts and occurrences from.
 
-    To find a list of collection in the apis you want to search, type
+    To find a list of endpoints in your chosen api, type
 
     .. prompt:: python
 
         import galah
-        galah.search_all(apis="collection")
+        galah.search_all(apis="Australia")
 
     which returns
 
-    .. program-output:: python3 -c "import galah; print(galah.search_all(apis=\\\"collection\\\"))"
+    .. program-output:: python3 -c "import galah; print(galah.search_all(apis=\\\"Australia\\\"))"
     """
 
     # set up the option for getting back multiple values
