@@ -31,9 +31,10 @@ def search_taxa(taxa):
 
     which returns
 
-    .. program-output:: python3 -c "import galah; print(galah.search_taxa(taxa=\\\"Vulpes vulpes\\\"))"
+    .. program-output:: python -c "import galah; print(galah.search_taxa(taxa=\\\"Vulpes vulpes\\\"))"
     """
 
+    # get configuration
     configs = readConfig()
 
     # first, check if someone actually entered a taxa name
@@ -45,6 +46,7 @@ def search_taxa(taxa):
 
     # third, add fq=<search term> and converting it to URL
     if type(taxa) is list or type(taxa) is str:
+
         # convert to list for easy looping
         if type(taxa) is str:
             taxa=[taxa]
@@ -57,7 +59,6 @@ def search_taxa(taxa):
         for name in taxa:
 
             # create URL, get result and concatenate result onto dataFrame
-            #URL = baseURL+"q={}".format("%20".join(name.split(" ")))
             # make sure all the atlases are checked
             if configs['galahSettings']['atlas'] in atlases:
                 URL = baseURL.replace("{name}","%20".join(name.split(" ")))
@@ -67,6 +68,7 @@ def search_taxa(taxa):
 
             # get the response
             json = response.json()
+
             # check to see if the taxa was successfully returned
             # don't think this is the best solution for Austria but this is a first shot
             if configs['galahSettings']['atlas'] in ["Australia","Spain"] and not json['success']:
@@ -74,13 +76,12 @@ def search_taxa(taxa):
             elif configs['galahSettings']['atlas'] in ["Brazil"]:
                 data={}
                 for item in json['searchResults']['results']:
-                    #  make this default, but create option for it later
-                    if item['rank'] == "species":
-                        if item['scientificName'].lower() == name.lower():
-                            for entry in ['scientificName', 'scientificNameAuthorship', ATLAS_KEYWORDS[configs['galahSettings']['atlas']], 'rank']:
-                                data[entry] = item[entry]
+                    if item['scientificName'].lower() == name.lower():
+                        for entry in ['scientificName', 'scientificNameAuthorship', ATLAS_KEYWORDS[configs['galahSettings']['atlas']], 'rank']:
+                            data[entry] = item[entry]    
             else:
                 # this is for atlas for Australia
+                ### TODO: Test Spain
                 if configs['galahSettings']['atlas'] in ["Australia","Spain"]:
                     data = dict(
                         (k, json[k]) for k in ('scientificName', 'scientificNameAuthorship', ATLAS_KEYWORDS[configs['galahSettings']['atlas']], 'rank') if
@@ -88,6 +89,7 @@ def search_taxa(taxa):
                 else:
                     raise ValueError("The atlas {} is not taken into account".format(configs['galahSettings']['atlas']))
 
+            # add every instance of 
             tempdf = pd.DataFrame(data,index=[1])
             dataFrame = pd.concat([dataFrame,tempdf],ignore_index=True)
 

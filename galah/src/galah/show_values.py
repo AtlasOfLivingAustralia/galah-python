@@ -15,7 +15,7 @@ def show_values(field=None,verbose=False):
 
     which returns
 
-    .. program-output:: python3 -c "import galah; print(galah.show_values(field=\\\"basisOfRecord\\\"))"
+    .. program-output:: python -c "import galah; print(galah.show_values(field=\\\"basisOfRecord\\\"))"
     """
 
     if field is None:

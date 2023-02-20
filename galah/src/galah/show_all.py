@@ -34,7 +34,7 @@ def show_all(assertions=False,
 
     which returns
 
-    .. program-output:: python3 -c "import galah; print(galah.show_all(datasets=True))"
+    .. program-output:: python -c "import galah; print(galah.show_all(datasets=True))"
     """
 
     # get configurations for different atlases

@@ -44,7 +44,7 @@ def atlas_counts(taxa=None,
 
     which returns
 
-    .. program-output:: python3 -c "import galah; print(galah.atlas_counts())"
+    .. program-output:: python -c "import galah; print(galah.atlas_counts())"
 
     example of filters that can be used: "year=2020","basisOfRecord=HUMAN_OBSERVATION"
     example of group_by groups that can be used: "year","basisOfRecord"
@@ -194,13 +194,9 @@ def atlas_counts(taxa=None,
 
                     # add final part of URL
                     URL = URL[:-len("%20AND%20")] + "%29"
-
                     if separate:
                         URL += "&facets=species"
-
-                    # add final part of URL
-                    if configs["galahSettings"]["atlas"] == "Australia":
-                        URL += "flimit=10000&pageSize=0"
+                    URL += "&flimit=10000&pageSize=0"
 
                 # else, make sure that the filters is in the following format
                 else:
@@ -213,10 +209,9 @@ def atlas_counts(taxa=None,
                 # check if it's separate one last time
                 if separate:
                     URL += "&facets=species"
-
-                # last bit of URL
-                if configs["galahSettings"]["atlas"] == "Australia":
-                    URL += "&flimit=10000&pageSize=0"
+                print(URL)
+                URL += "&flimit=10000&pageSize=0"
+                print(URL)
 
         # check to see if the user wants the URL for querying
         if verbose:

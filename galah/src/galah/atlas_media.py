@@ -40,7 +40,7 @@ def atlas_media(taxa=None,
 
     which returns
 
-    .. program-output:: python3 -c "import galah; filters = [\\\"year=2020\\\",\\\"decimalLongitude>153.0\\\"];print(galah.atlas_media(taxa=\\\"Ornithorhynchus anatinus\\\",filters=filters))"
+    .. program-output:: python -c "import galah; filters = [\\\"year=2020\\\",\\\"decimalLongitude>153.0\\\"];print(galah.atlas_media(taxa=\\\"Ornithorhynchus anatinus\\\",filters=filters))"
     """
 
     # get configs

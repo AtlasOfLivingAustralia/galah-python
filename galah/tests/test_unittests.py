@@ -152,7 +152,7 @@ class test_galah(unittest2.TestCase):
         output = galah.show_all(apis=True)
         self.assertGreater(output.shape[1],1)
 
-    def test_show_all_collections_austria(self):
+    def test_show_all_collection_austria(self):
         galah.galah_config(atlas="Austria")
         output = galah.show_all(collection=True)
         self.assertGreater(output.shape[1],1)
@@ -200,7 +200,7 @@ class test_galah(unittest2.TestCase):
         output = galah.show_all(apis=True)
         self.assertGreater(output.shape[1],1)
 
-    def test_show_all_collections_brazil(self):
+    def test_show_all_collection_brazil(self):
         galah.galah_config(atlas="Brazil")
         output = galah.show_all(collection=True)
         self.assertGreater(output.shape[1],1)
@@ -286,7 +286,7 @@ class test_galah(unittest2.TestCase):
         output = galah.show_all(apis=True)
         self.assertGreater(output.shape[1],1)
 
-    def test_show_all_collections_estonia(self):
+    def test_show_all_collection_estonia(self):
         galah.galah_config(atlas="Estonia")
         output = galah.show_all(collection=True)
         self.assertGreater(output.shape[1],1)
@@ -324,7 +324,7 @@ class test_galah(unittest2.TestCase):
         output = galah.show_all(apis=True)
         self.assertGreater(output.shape[1],1)
 
-    def test_show_all_collections_france(self):
+    def test_show_all_collection_france(self):
         galah.galah_config(atlas="France")
         output = galah.show_all(collection=True)
         self.assertGreater(output.shape[1],1)
@@ -362,7 +362,7 @@ class test_galah(unittest2.TestCase):
         output = galah.show_all(apis=True)
         self.assertGreater(output.shape[1],1)
 
-    def test_show_all_collections_guatemala(self):
+    def test_show_all_collection_guatemala(self):
         galah.galah_config(atlas="Guatemala")
         output = galah.show_all(collection=True)
         self.assertGreater(output.shape[1],1)

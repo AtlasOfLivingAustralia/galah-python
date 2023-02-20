@@ -31,7 +31,7 @@ def search_all(assertions=None,
 
     which returns
 
-    .. program-output:: python3 -c "import galah; print(galah.search_all(apis=\\\"Australia\\\"))"
+    .. program-output:: python -c "import galah; print(galah.search_all(apis=\\\"Australia\\\"))"
     """
 
     # set up the option for getting back multiple values

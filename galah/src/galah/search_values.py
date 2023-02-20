@@ -11,7 +11,7 @@ def search_values(field=None,value=None,column_name=None):
 
     which returns
 
-    .. program-output:: python3 -c "import galah; print(galah.search_values(field=\\\"basisOfRecord\\\",value=\\\"OBS\\\"))"
+    .. program-output:: python -c "import galah; print(galah.search_values(field=\\\"basisOfRecord\\\",value=\\\"OBS\\\"))"
     """
 
     if value is None:

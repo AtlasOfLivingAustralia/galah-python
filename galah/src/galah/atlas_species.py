@@ -7,9 +7,38 @@ from .get_api_url import readConfig
 
 import sys
 
+ATLAS_KEYWORDS = {
+    "Australia": "taxonConceptID",
+    "Austria": "guid",
+    "Brazil": "guid", 
+    "Canada": "usageKey",
+    "Estonia": "guid",
+    "France": "usageKey",
+    "Guatemala": "guid",
+    "Portugal": "usageKey",
+    "Spain": "taxonConceptID",
+    "Sweden": "guid",
+    "United Kingdom": "guid",
+}
+
+VERNACULAR_NAMES = {
+    "Australia": ["commonNames","nameString"],
+    "Austria": "",
+    "Brazil": ["commonNames","nameString"], 
+    "Canada": "",
+    "Estonia": "",
+    "France": "",
+    "Guatemala": "",
+    "Portugal": "",
+    "Spain": "",
+    "Sweden": "",
+    "United Kingdom": "",
+}
+
+
 # this function looks for all species with the associated name
 ### TODO: comment
-def atlas_species(taxa=None,verbose=False):
+def atlas_species(taxa=None,rank="species",verbose=False):
     """
     Used for getting occurrence data for your species.  To get occurrences for
 
@@ -22,7 +51,7 @@ def atlas_species(taxa=None,verbose=False):
 
     which returns
 
-    .. program-output:: python3 -c "import galah; print(galah.atlas_species(taxa=\\\"Heleioporus\\\"))"
+    .. program-output:: python -c "import galah; print(galah.atlas_species(taxa=\\\"Heleioporus\\\"))"
     """
 
     # get configs
@@ -39,10 +68,13 @@ def atlas_species(taxa=None,verbose=False):
 
     # get the taxonConceptID for taxa
     if configs['galahSettings']['atlas'] in ["Australia"]:
-        taxonConceptID = search_taxa(taxa)['taxonConceptID'][0]
+        taxonConceptID = search_taxa(taxa)[ATLAS_KEYWORDS[configs['galahSettings']['atlas']]][0]
         URL = baseURL.replace("{id}", taxonConceptID)  # + "fq=%28lsid%3A" + urllib.parse.quote(taxonConceptID) + "%29&"
+    elif configs['galahSettings']['atlas'] in ["Spain"]: #### TODO
+        taxonConceptID = search_taxa(taxa)[ATLAS_KEYWORDS[configs['galahSettings']['atlas']]][0]
+        URL = baseURL + "fq=%28lsid%3A" + urllib.parse.quote(taxonConceptID) + "%29&"
     elif configs['galahSettings']['atlas'] in ["Brazil"]:
-        taxonConceptID = search_taxa(taxa)['guid'][0]
+        taxonConceptID = search_taxa(taxa)[ATLAS_KEYWORDS[configs['galahSettings']['atlas']]][0]
         URL = baseURL + urllib.parse.quote(taxonConceptID) #+ "fq=%28lsid%3A" + urllib.parse.quote(taxonConceptID) + "%29&"
     else:
         raise ValueError("Atlas {} is not taken into account".format(configs['galahSettings']['atlas']))
@@ -55,28 +87,57 @@ def atlas_species(taxa=None,verbose=False):
     response = requests.get(URL)
     # need to get species, author and
     json = response.json()
-    temp_dict = {"species": [], "author": [], "species_guid": []}
+    data_dict = {"species": [], "author": [], "species_guid": [], "kingdom": [],"phylum": [],
+                 "class": [],"order": [],"family": [], "vernacular_name": []}
     for j in json:
-        dataFrame = pd.DataFrame(j,index=[0])
-        if dataFrame['rank'][0] == "species":
-            temp_dict['species'].append(dataFrame['name'][0])
-            temp_dict['author'].append(dataFrame['author'][0])
-            temp_dict['species_guid'].append(dataFrame['guid'][0])
+        if j['rank'] == "species":
+            data_dict['species'].append(j['name'])
+            data_dict['author'].append(j['author'])
+            data_dict['species_guid'].append(j['guid'])
 
-    # create the dataFrame
-    dataFrame = pd.DataFrame.from_dict(temp_dict)
-
-    # get all of the taxonomic information
     # species_lookup
     baseURL = get_api_url(column1='api_name', column1value='species_lookup')
+    #print(baseURL)
 
+    # get all the taxonomic information for every species ID
+    for species_guid in data_dict["species_guid"]:
+        
+        # check for atlas
+        if configs['galahSettings']['atlas'] in ["Brazil","Spain"]:
+            URL = baseURL + "/" + urllib.parse.quote(species_guid)
+        elif configs['galahSettings']['atlas'] in ["Australia"]:
+            URL = baseURL.replace("{id}", species_guid)
+        else:
+            raise ValueError("Atlas {} is not taken into account".format(configs['galahSettings']['atlas']))
+
+        # get response from the API
+        response = requests.get(URL)
+        json = response.json()
+
+        # get taxonomic information
+        for depth in ['kingdom','phylum','class','order','family']:
+            data_dict[depth].append(json['classification'][depth].lower().capitalize())
+
+        # get common names (vernacular names)
+        if json[VERNACULAR_NAMES[configs['galahSettings']['atlas']][0]]:
+            data_dict["vernacular_name"].append(
+                json[VERNACULAR_NAMES[configs['galahSettings']['atlas']][0]][0][VERNACULAR_NAMES[configs['galahSettings']['atlas']][1]])
+        else:
+            data_dict["vernacular_name"].append("")
+
+    # return data as a pandas dataframe
+    return pd.DataFrame.from_dict(data_dict)
+    '''
     # search taxonomic trees
     # get the taxonConceptID for taxa
-    if configs['galahSettings']['atlas'] == "Australia":
-        taxonConceptID = search_taxa(taxa)['taxonConceptID'][0]
+    if configs['galahSettings']['atlas'] in ["Australia"]:
+        taxonConceptID = search_taxa(taxa)[ATLAS_KEYWORDS["Australia"]][0]
         URL = baseURL.replace("{id}", taxonConceptID)  # + "fq=%28lsid%3A" + urllib.parse.quote(taxonConceptID) + "%29&"
-    elif configs['galahSettings']['atlas'] == "Austria":
-        taxonConceptID = search_taxa(taxa)['guid'][0]
+    elif configs['galahSettings']['atlas'] in ["Spain"]: ### needs to be redone
+        taxonConceptID = search_taxa(taxa)[ATLAS_KEYWORDS["Spain"]][0]
+        URL = baseURL + "fq=%28lsid%3A" + urllib.parse.quote(taxonConceptID) + "%29&"
+    elif configs['galahSettings']['atlas'] in ["Brazil"]:
+        taxonConceptID = search_taxa(taxa)[ATLAS_KEYWORDS["Brazil"]][0]
         URL = baseURL + "/" + urllib.parse.quote(taxonConceptID)  # + "fq=%28lsid%3A" + urllib.parse.quote(taxonConceptID) + "%29&"
     else:
         raise ValueError("Atlas {} is not taken into account".format(configs['galahSettings']['atlas']))
@@ -96,7 +157,7 @@ def atlas_species(taxa=None,verbose=False):
     #vernacular_AU = 'species_guid'
     vernacular_names = []
     # doesn't appear to exist for Austria but will double check
-    if configs['galahSettings']['atlas'] == "Australia":
+    if configs['galahSettings']['atlas'] in ["Australia"]:
         for url in dataFrame['species_guid']:
             response = requests.get(url)
             if response.status_code == 404:
@@ -128,5 +189,10 @@ def atlas_species(taxa=None,verbose=False):
         # add value to data frame
         dataFrame.insert(loc=dataFrame.shape[1], column='vernacular_names', value=vernacular_names)
 
+elif :
+    # get all of the taxonomic information
+    # species_lookup
+    baseURL = get_api_url(column1='api_name', column1value='species_lookup')
+    '''
     # return the dataFrame
     return dataFrame

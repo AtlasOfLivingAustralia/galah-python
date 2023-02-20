@@ -61,7 +61,7 @@ def atlas_occurrences(taxa=None,
 
     which returns
 
-    .. program-output:: python3 -c "import galah; print(galah.atlas_occurrences(taxa=\\\"Vulpes vulpes\\\"))"
+    .. program-output:: python -c "import galah; print(galah.atlas_occurrences(taxa=\\\"Vulpes vulpes\\\"))"
     """
 
     # get configs
@@ -184,7 +184,9 @@ def atlas_occurrences(taxa=None,
             if response.status_code == 403:
                 # TODO: write more exceptions to make sure contact details are ok
                 if configs['galahSettings']['atlas'] == "Brazil":
-                    raise ValueError("It appears that you are not registered as a user on the Brazilian atlas.  Please email X to register.")
+                    raise ValueError("It appears that you are not registered as a user on the Brazilian atlas.  Please email atendimento_sibbr@rnp.br to find out more information.")
+                if configs['galahSettings']['atlas'] == "Spain":
+                    raise ValueError("It appears that you are not registered as a user on the Spanish atlas.  Please go to https://auth.gbif.es/cas/login?lang=en to register.")
             if response.json()['status'] == "skipped":
                 raise ValueError(response.json()["error"])
 

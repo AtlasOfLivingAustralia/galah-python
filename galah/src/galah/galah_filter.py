@@ -13,7 +13,7 @@ def galah_filter(f, ifgroupBy=False):
 
     which returns
 
-    .. program-output:: python3 -c "import galah; print(galah.galah_filter(filters=\\\"year=2020\\\"))"
+    .. program-output:: python -c "import galah; print(galah.galah_filter(filters=\\\"year=2020\\\"))"
     """
 
     ## TODO: check for year - might not be working with expand group_by
