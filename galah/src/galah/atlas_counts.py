@@ -73,8 +73,6 @@ def atlas_counts(taxa=None,
                          )
 
     # set initial variables
-    num_taxa = 0
-    len_taxa = 0
     group_by_dataframe = pd.DataFrame()
 
     # if there is no taxa, assume you will get the total number of records in the ALA
@@ -209,9 +207,7 @@ def atlas_counts(taxa=None,
                 # check if it's separate one last time
                 if separate:
                     URL += "&facets=species"
-                print(URL)
                 URL += "&flimit=10000&pageSize=0"
-                print(URL)
 
         # check to see if the user wants the URL for querying
         if verbose:
