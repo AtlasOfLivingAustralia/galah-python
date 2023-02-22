@@ -97,8 +97,13 @@ html_theme_options = {
 	"navbar_align": "content",
 	"github_url": "https://github.com/AtlasOfLivingAustralia/galah_python",
 	"page_sidebar_items": ["page-toc"],
+    "logo": {
+		"image_light": "logo.png", #"_static/logo/logo.png"
+        "image_dark": "logo.png", #"_static/logo/logo.png"
+	},
 }
 
+# was image_light
 html_sidebars = {
 	"index": [],
 	"search": [],
@@ -111,7 +116,7 @@ html_sidebars = {
 
 html_static_path = ['_static']
 
-html_logo = '_static/logo/logo.png'
+html_logo = "_static/logo/logo.png"
 
 html_favicon = '_static/logo/favicon.ico'
 

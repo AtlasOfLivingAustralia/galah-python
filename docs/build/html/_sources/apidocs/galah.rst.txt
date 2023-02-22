@@ -1,5 +1,5 @@
-User Guide
-==========
+API Docs
+========
 
 .. automodule:: galah
    :members:
