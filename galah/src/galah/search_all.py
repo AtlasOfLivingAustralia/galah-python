@@ -43,14 +43,14 @@ def search_all(assertions=None,
         dataFrame = show_all(assertions=True)
         # check to see if user wants default column name
         if column_name is None:
-            column_name='name'
+            column_name='description'
         # throw ValueError if column_name variable is not a string
         elif type(column_name) is not str:
             raise ValueError("Only strings are a valid query for the column_name variable")
         # check to see if the user input the correct variable type; else, throw value error
         if type(assertions) is str:
             return_array.append(
-                dataFrame.loc[dataFrame[column_name].astype(str).str.contains(assertions, case=True, na=False)].sort_values('name', key=lambda x: x.str.len()))
+                dataFrame.loc[dataFrame[column_name].astype(str).str.contains(assertions, case=True, na=False)].sort_values('id', key=lambda x: x.str.len()))
         else:
             raise ValueError("You can only pass one string to your search parameter = run show_all(assertions=True) to get strings to pass")
 
@@ -96,14 +96,14 @@ def search_all(assertions=None,
         dataFrame = show_all(collection=True)
         # check to see if user wants default column name
         if column_name is None:
-            column_name = 'name'
+            column_name = 'description'
         # throw ValueError if column_name variable is not a string
         elif type(column_name) is not str:
             raise ValueError("Only strings are a valid query for the column_name variable")
         # check to see if the user input the correct variable type; else, throw value error
         if type(collection) is str:
             return_array.append(
-                dataFrame.loc[dataFrame[column_name].astype(str).str.contains(collection, case=True, na=False)].sort_values('name',
+                dataFrame.loc[dataFrame[column_name].astype(str).str.contains(collection, case=True, na=False)].sort_values('id',
                                                                                                       key=lambda x: x.str.len()))
         else:
             raise ValueError(
@@ -115,14 +115,14 @@ def search_all(assertions=None,
         dataFrame = show_all(datasets=True)
         # check to see if user wants default column name
         if column_name is None:
-            column_name = 'name'
+            column_name = 'description'
         # throw ValueError if column_name variable is not a string
         elif type(column_name) is not str:
             raise ValueError("Only strings are a valid query for the column_name variable")
         # check to see if the user input the correct variable type; else, throw value error
         if type(datasets) is str:
             return_array.append(
-                dataFrame.loc[dataFrame[column_name].astype(str).str.contains(datasets, case=True, na=False)].sort_values('name',
+                dataFrame.loc[dataFrame[column_name].astype(str).str.contains(datasets, case=True, na=False)].sort_values('id',
                                                                                                       key=lambda x: x.str.len()))
         else:
             raise ValueError(
@@ -132,35 +132,35 @@ def search_all(assertions=None,
     if fields is not None:
         # call show_all to get all the possible values
         dataFrame = show_all(fields=True)
+
         # check to see if user wants default column name
         if column_name is None:
-            column_name = 'name'
+            column_name = 'description'
+
         # throw ValueError if column_name variable is not a string
         elif type(column_name) is not str:
             raise ValueError("Only strings are a valid query for the column_name variable")
-        # check to see if the user input the correct variable type; else, throw value error
-        if type(fields) is str:
-            return_array.append(
-                dataFrame.loc[dataFrame[column_name].astype(str).str.contains(fields, case=True, na=False)].sort_values('name',
-                                                                                                      key=lambda x: x.str.len()))
-        else:
-            raise ValueError(
-                "You can only pass one string to your search parameter = run show_all(fields=True) to get strings to pass")
-
+        return_array.append(
+                dataFrame.loc[dataFrame[column_name].astype(str).str.contains(fields, case=True, na=False)].sort_values('id',
+                                                                                                      key=lambda x: x.str.len()).reset_index(drop = True, inplace = True))
+    else:
+        raise ValueError(
+            "You can only pass one string to your search parameter = run show_all(fields=True) to get strings to pass")
+    
     # search options for licences
     if licences is not None:
         # call show_all to get all the possible values
         dataFrame = show_all(licences=True)
         # check to see if user wants default column name
         if column_name is None:
-            column_name = 'name'
+            column_name = 'description'
         # throw ValueError if column_name variable is not a string
         elif type(column_name) is not str:
             raise ValueError("Only strings are a valid query for the column_name variable")
         # check to see if the user input the correct variable type; else, throw value error
         if type(licences) is str:
             return_array.append(
-                dataFrame.loc[dataFrame[column_name].astype(str).str.contains(licences, case=True, na=False)].sort_values('name',
+                dataFrame.loc[dataFrame[column_name].astype(str).str.contains(licences, case=True, na=False)].sort_values('id',
                                                                                                       key=lambda x: x.str.len()))
         else:
             raise ValueError(
@@ -191,14 +191,14 @@ def search_all(assertions=None,
         dataFrame = show_all(profiles=True)
         # check to see if user wants default column name
         if column_name is None:
-            column_name = 'name'
+            column_name = 'description'
         # throw ValueError if column_name variable is not a string
         elif type(column_name) is not str:
             raise ValueError("Only strings are a valid query for the column_name variable")
         # check to see if the user input the correct variable type; else, throw value error
         if type(profiles) is str:
             return_array.append(
-                dataFrame.loc[dataFrame[column_name].astype(str).str.contains(profiles, case=True, na=False)].sort_values('name',
+                dataFrame.loc[dataFrame[column_name].astype(str).str.contains(profiles, case=True, na=False)].sort_values('id',
                                                                                                       key=lambda x: x.str.len()))
         else:
             raise ValueError(
@@ -210,14 +210,14 @@ def search_all(assertions=None,
         dataFrame = show_all(providers=True)
         # check to see if user wants default column name
         if column_name is None:
-            column_name = 'name'
+            column_name = 'description'
         # throw ValueError if column_name variable is not a string
         elif type(column_name) is not str:
             raise ValueError("Only strings are a valid query for the column_name variable")
         # check to see if the user input the correct variable type; else, throw value error
         if type(providers) is str:
             return_array.append(
-                dataFrame.loc[dataFrame[column_name].astype(str).str.contains(providers, case=True, na=False)].sort_values('name',
+                dataFrame.loc[dataFrame[column_name].astype(str).str.contains(providers, case=True, na=False)].sort_values('id',
                                                                                                       key=lambda x: x.str.len()))
         else:
             raise ValueError(
@@ -229,7 +229,7 @@ def search_all(assertions=None,
         dataFrame = show_all(ranks=True)
         # check to see if user wants default column name
         if column_name is None:
-            column_name = 'name'
+            column_name = 'description'
         # throw ValueError if column_name variable is not a string
         elif type(column_name) is not str:
             raise ValueError("Only strings are a valid query for the column_name variable")
@@ -237,7 +237,7 @@ def search_all(assertions=None,
         if type(ranks) is str:
             return_array.append(
                 dataFrame.loc[dataFrame[column_name].astype(str).str.contains(ranks, case=True, na=False)].sort_values(
-                    'name',key=lambda x: x.str.len()))
+                    'description',key=lambda x: x.str.len()))
         else:
             raise ValueError(
                 "You can only pass one string to your search parameter = run show_all(ranks=True) to get strings to pass")
@@ -248,14 +248,14 @@ def search_all(assertions=None,
         dataFrame = show_all(reasons=True)
         # check to see if user wants default column name
         if column_name is None:
-            column_name = 'name'
+            column_name = 'description'
         # throw ValueError if column_name variable is not a string
         elif type(column_name) is not str:
             raise ValueError("Only strings are a valid query for the column_name variable")
         # check to see if the user input the correct variable type; else, throw value error
         if type(reasons) is str:
             return_array.append(
-                dataFrame.loc[dataFrame[column_name].astype(str).str.contains(reasons, case=True, na=False)].sort_values('name',
+                dataFrame.loc[dataFrame[column_name].astype(str).str.contains(reasons, case=True, na=False)].sort_values('id',
                                                                                                       key=lambda x: x.str.len()))
         else:
             raise ValueError(

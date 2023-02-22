@@ -71,12 +71,8 @@ def atlas_species(taxa=None,rank="species",verbose=False):
         taxonConceptID = search_taxa(taxa)[ATLAS_KEYWORDS[configs['galahSettings']['atlas']]][0]
         URL = baseURL.replace("{id}", taxonConceptID)  # + "fq=%28lsid%3A" + urllib.parse.quote(taxonConceptID) + "%29&"
     elif configs['galahSettings']['atlas'] in ["Spain"]: 
-        raise ValueError("This endpoint in the Spain atlas is currently not working, and will be included in future patches and releases.")
-        '''
-        # add this when it is working
         taxonConceptID = search_taxa(taxa)[ATLAS_KEYWORDS[configs['galahSettings']['atlas']]][0]
         URL = baseURL + "fq=%28lsid%3A" + urllib.parse.quote(taxonConceptID) + "%29&"
-        '''
     elif configs['galahSettings']['atlas'] in ["Brazil"]:
         taxonConceptID = search_taxa(taxa)[ATLAS_KEYWORDS[configs['galahSettings']['atlas']]][0]
         URL = baseURL + urllib.parse.quote(taxonConceptID) #+ "fq=%28lsid%3A" + urllib.parse.quote(taxonConceptID) + "%29&"

@@ -119,38 +119,83 @@ def show_all(assertions=False,
 
     # get all fields from the API
     if type(fields) is bool and fields:
-        # query the API for fields
+
+        # get all possible fields
         if configs['galahSettings']['atlas'] in ["Australia","Brazil","Spain"]:
             response = requests.get(get_api_url(column1='called_by',column1value='show_all-fields',column2='api_name',column2value='records_fields'))
+            fields_values = pd.DataFrame.from_dict(response.json())
+
+            # remove anything with "Contextual" or "Environmental" from the options for Australian atlas
+            ### TODO: Check for Spanish and Brazilian atlases
+            if configs['galahSettings']['atlas'] in ["Australia","Brazil","Spain"]:
+                fields_values = fields_values[~fields_values["classs"].astype(str).str.contains("Contextual|Environmental")]
+
+            # select only the columns titled 'name', 'info', (and) 'infoUrl'
+            if configs['galahSettings']['atlas'] in ["Australia","Spain"]:
+                fields_select = fields_values[['name', 'info', 'infoUrl']]
+                dataFrame = fields_select.rename(columns={"name": "id","info": "description", "infoUrl": "link"})
+                dataFrame.insert(loc=2,column="type", value="field")
+            elif configs['galahSettings']['atlas'] in ["Austria","Brazil","Canada","Estonia","France","Guatemala","Sweden","United Kingdom"]:
+                fields_select = fields_values[['name', 'info']]
+                dataFrame = fields_select.rename(columns={"name": "id","info": "description"}) #, inplace=True)
+                dataFrame["type"] = "field"
+                dataFrame["link"] = ""
+        
         else:
-            response = requests.get(get_api_url(column1='called_by',column1value='show_all_fields',column2='api_name',column2value='records_fields'))
-        # get data frame from response
-        fields_values = pd.DataFrame.from_dict(response.json())
-        # select only the columns titled 'name', 'info', 'infoUrl'
+            raise ValueError("Atlas {} not taken into account.".format(configs['galahSettings']['atlas']))
+        
+        
+        # second: get spatial layers
         if configs['galahSettings']['atlas'] in ["Australia","Spain"]:
-            dataFrame = fields_values[['name', 'info', 'infoUrl']]
-        elif configs['galahSettings']['atlas'] in ["Austria","Brazil","Canada","Estonia","France","Guatemala","Sweden","United Kingdom"]:
-            dataFrame = fields_values[['name', 'info']]
-        else:
-            raise ValueError("Atlas {} not taken into account".format(configs['galahSettings']['atlas']))
-        # create empty array for types to add to data frame
-        layer_types = []
-        # loop over data frame
-        for i in dataFrame['name']:
-            # if characters from 2 to the end of the string are digits, then it is a layer.  Otherwise, it's a field
-            if i[2:].isdigit():
-                layer_types.append("layer")
+            # get data from API
+            response = requests.get(get_api_url(column1='called_by',column1value='show_all-fields',column2='api_name',column2value='spatial_layers'))
+            spatial_values = pd.DataFrame.from_dict(response.json())
+            spatial_layers = pd.DataFrame()
+
+            # select only the columns titled 'name', 'info', (and) 'infoUrl'
+            if configs['galahSettings']['atlas'] in ["Australia","Spain"]:
+                # build layer id from this
+                spatial_values["type"].replace("Contextual","cl",inplace=True)
+                spatial_values["type"].replace("Environmental","el",inplace=True)
+                spatial_layers["id"] =  spatial_values["type"].astype(str) + spatial_values["id"].astype(str)
+                # build descriptions from these
+                spatial_layers["description"] = spatial_values['displayname'] + " " + spatial_values['description']
+                spatial_layers["type"] = "layers"
+                spatial_layers["link"] = ""
+            elif configs['galahSettings']['atlas'] in ["Austria","Brazil","Canada","Estonia","France","Guatemala","Sweden","United Kingdom"]:
+                layers_select = fields_values[['name', 'info']]
+                spatial_layers = layers_select.rename(columns={"name": "id","info": "description"})
+                spatial_layers["type"] = "layers"
+                spatial_layers["link"] = ""
             else:
-                layer_types.append("fields")
+                raise ValueError("Atlas {} not taken into account".format(configs['galahSettings']['atlas']))
+        
+        # Australia has more things than other atlases; take that into account
         if configs['galahSettings']['atlas'] in ["Australia","Spain"]:
-            # add the types array as another column to the data frame
-            dataFrame.insert(loc=3, column='type', value=layer_types)
-        elif configs['galahSettings']['atlas'] in ["Austria","Brazil","Canada","Estonia","France","Guatemala","Sweden","United Kingdom"]:
-            dataFrame.insert(loc=2, column='type', value=layer_types)
+
+            # third: get media
+            media_values = pd.DataFrame.from_dict({"id": ["multimedia", "multimediaLicence", "images", "videos", "sounds"], "description": "Media filter field","type": "media","link": ""})
+
+            # fourth: get other fields 
+            other_field_values = pd.DataFrame({"id": "qid", "description": "Reference to pre-generated query", "type": "other", "link": ""},index=[0])
+        
+            # create final dataframe
+            return_dataFrame = pd.concat([dataFrame,spatial_layers,media_values,other_field_values],ignore_index=True)
+
+            # reset index
+            return_dataFrame.reset_index(drop = True, inplace = True)
+
+            # return final dataframe to user
+            return return_dataFrame
+
+        # else: only return fields dataframe
         else:
-            raise ValueError("Atlas {} not taken into account".format(configs['galahSettings']['atlas']))
-        # append the data frame sorted by type first, then name
-        return_array.append(dataFrame.sort_values(['type','name']).reset_index(drop=True))
+
+            # make sure this works
+            dataFrame.reset_index(drop = True, inplace = True)
+
+            return dataFrame
+
     elif not fields:
         pass
     else:

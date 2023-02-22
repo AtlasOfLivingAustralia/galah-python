@@ -57,11 +57,11 @@ def atlas_occurrences(taxa=None,
     .. prompt:: python
 
         import galah
-        galah.atlas_occurrences(taxa="Vulpes vulpes")
+        galah.atlas_occurrences(taxa="Vulpes vulpes",filters="year=2023")
 
     which returns
 
-    .. program-output:: python -c "import galah; print(galah.atlas_occurrences(taxa=\\\"Vulpes vulpes\\\"))"
+    .. program-output:: python -c "import galah; print(galah.atlas_occurrences(taxa=\\\"Vulpes vulpes\\\",filters=\\\"year=2023\\\"))"
     """
 
     # get configs
