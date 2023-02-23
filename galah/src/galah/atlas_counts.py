@@ -37,30 +37,30 @@ def atlas_counts(taxa=None,
     the count of observations may be all that is required, for example for understanding how observations are growing or shrinking 
     in particular locations, or for particular taxa. 
     
-    To this end, `galah.atlas_counts()` takes arguments in the same format as 
-    `galah.atlas_occurrences()`, and provides either a total count of records matching the criteria, or a data.frame of counts matching 
+    To this end, ``galah.atlas_counts()`` takes arguments in the same format as 
+    ``galah.atlas_occurrences()``, and provides either a total count of records matching the criteria, or a data.frame of counts matching 
     the criteria supplied to the `group_by` argument.
 
     Parameters
     ----------
         taxa : string
-            one or more scientific names. Use `galah.search_taxa()` to search for valid scientific names.  
+            one or more scientific names. Use ``galah.search_taxa()`` to search for valid scientific names.  
         filters : pandas.DataFrame
-            filters, in the form `field` `logical` `value` (e.g. "year=2021")
+            filters, in the form ``field`` ``logical`` ``value`` (e.g. ``"year=2021"``)
         group_by : string
-            zero or more individual column names (i.e. fields) to include. See `galah.show_all()` and `galah.search_all()` to see valid fields.
+            zero or more individual column names (i.e. fields) to include. See ``galah.show_all()`` and ``galah.search_all()`` to see valid fields.
         expand : logical
-            When passed with `galah.group_by` argument of `galah.atlas_counts`, controls whether counts for each row value are combined or calculated separately. Defaults to `True`.
+            When using the ``group_by`` argument of ``galah.atlas_counts()``, controls whether counts for each row value are combined or calculated separately. Defaults to ``True``.
         separate : 
             TBD 
         verbose : 
             TBD
         use_data_profile : string
-            A profile name. Should be a string - the name or abbreviation of a data quality profile to apply to the query. Valid values can be seen using `galah.show_all(profiles)`
+            A profile name. Should be a string - the name or abbreviation of a data quality profile to apply to the query. Valid values can be seen using ``galah.show_all(profiles=True)``
 
     Returns
     -------
-        An object of class `pandas.DataFrame`.
+        An object of class ``pandas.DataFrame``.
 
     Examples
     --------

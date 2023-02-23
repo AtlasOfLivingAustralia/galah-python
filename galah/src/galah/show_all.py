@@ -24,7 +24,7 @@ def show_all(assertions=False,
     """
     The living atlases store a huge amount of information, above and beyond the occurrence records that are their main output. 
     In galah, one way that users can investigate this information is by showing all the available options or categories for the 
-    type of information they are interested in. `galah.show_all()` is a helper function that can display multiple types of information, 
+    type of information they are interested in. ``galah.show_all()`` is a helper function that can display multiple types of information, 
     displaying all valid options for the information specified.
 
     Parameters
@@ -56,7 +56,7 @@ def show_all(assertions=False,
 
     Returns
     -------
-        An object of class `pandas.DataFrame` containing all data of interest.
+        An object of class ``pandas.DataFrame`` containing all data of interest.
 
     Examples
     --------

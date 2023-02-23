@@ -1,12 +1,28 @@
 :notoc:
 
-*****
-galah 
-*****
+|galah-logo|   galah 
+=====================================
+
+.. |galah-logo| image:: _static/logo/logo.png
+    :width: 150px
+    :alt: galah hexagon logo
 
 **Date**: |today| **Version**: |version|
 
-galah is a Python interface to biodiversity data hosted by the Atlas of Living Australia (ALA). It is based off of the R package of the same name. Data gathered from the ALA can be used for species distribution models, among other things.
+**galah** is an interface to biodiversity data hosted by the ‘living atlases’; a set of organisations that share a common codebase, 
+and act as nodes of the Global Biodiversity Information Facility (GBIF). These organisations collate and store observations of 
+individual life forms, using the ‘Darwin Core’ data standard. galah was built and is maintained by the `Science & Decision Support 
+Team <https://labs.ala.org.au/>`_ at the `Atlas of Living Australia (ALA) <https://www.ala.org.au/>`_.
+
+galah enables users to locate and download species occurrence records (observations, specimens, eDNA records, etc.), taxonomic information, 
+or associated media such as images or sounds, and to restrict their queries to particular taxa or locations. Users can specify which columns 
+are returned by a query, or restrict their results to occurrences that meet particular data-quality criteria. All functions return a tibble 
+as their standard format, except atlas_taxonomy which returns tree consisting of Node objects using the data.tree package.
+
+The package is named for the bird of the same name (Eolophus roseicapilla), a widely-distributed endemic Australian species. 
+The logo was designed by `Ian Brennan <http://www.iangbrennan.org/>`_.
+
+If you have any comments, questions or suggestions, please `contact us <mailto:support@ala.org.au>`_.
 
 .. toctree::
    :maxdepth: 5

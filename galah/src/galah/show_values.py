@@ -8,7 +8,7 @@ def show_values(field=None,
                 verbose=False):
     """
     Users may wish to see the specific values within a chosen field, profile or list to narrow queries or understand 
-    more about the information of interest. `galah.show_values()` provides users with these values. 
+    more about the information of interest. ``galah.show_values()`` provides users with these values. 
 
     Parameters
     ----------
@@ -19,7 +19,7 @@ def show_values(field=None,
 
     Returns
     -------
-        An object of class `pandas.DataFrame`.
+        An object of class ``pandas.DataFrame``.
 
     Examples
     --------

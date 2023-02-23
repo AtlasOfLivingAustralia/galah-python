@@ -21,7 +21,7 @@ def search_all(assertions=None,
     """
     The living atlases store a huge amount of information, above and beyond the occurrence records that are their main output. 
     In galah, one way that users can investigate this information is by searching for a specific option or category for the 
-    type of information they are interested in.  `galah.search_all()` is a helper function that can do searches within multiple 
+    type of information they are interested in.  ``galah.search_all()`` is a helper function that can do searches within multiple 
     types of information.
 
     Parameters
@@ -55,7 +55,7 @@ def search_all(assertions=None,
 
     Returns
     -------
-        An object of class `pandas.DataFrame` containing all data of interest.
+        An object of class ``pandas.DataFrame`` containing all data of interest.
 
     Examples
     --------

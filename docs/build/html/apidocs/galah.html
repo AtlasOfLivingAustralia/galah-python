@@ -44,7 +44,7 @@
     <link rel="icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Authors" href="../authors/index.html" />
+    <link rel="next" title="Authors and Citation" href="../authors/index.html" />
     <link rel="prev" title="Narrow_Results" href="../galah_user_guide/Narrow_Results.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="docsearch:language" content="en">
@@ -327,23 +327,23 @@
 if the query is feasible, and for estimating how long it will take to download. Alternatively, for some kinds of reporting,
 the count of observations may be all that is required, for example for understanding how observations are growing or shrinking
 in particular locations, or for particular taxa.</p>
-<p>To this end, <cite>galah.atlas_counts()</cite> takes arguments in the same format as
-<cite>galah.atlas_occurrences()</cite>, and provides either a total count of records matching the criteria, or a data.frame of counts matching
+<p>To this end, <code class="docutils literal notranslate"><span class="pre">galah.atlas_counts()</span></code> takes arguments in the same format as
+<code class="docutils literal notranslate"><span class="pre">galah.atlas_occurrences()</span></code>, and provides either a total count of records matching the criteria, or a data.frame of counts matching
 the criteria supplied to the <cite>group_by</cite> argument.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>taxa</strong> (<em>string</em>) – one or more scientific names. Use <cite>galah.search_taxa()</cite> to search for valid scientific names.</p></li>
-<li><p><strong>filters</strong> (<em>pandas.DataFrame</em>) – filters, in the form <cite>field</cite> <cite>logical</cite> <cite>value</cite> (e.g. “year=2021”)</p></li>
-<li><p><strong>group_by</strong> (<em>string</em>) – zero or more individual column names (i.e. fields) to include. See <cite>galah.show_all()</cite> and <cite>galah.search_all()</cite> to see valid fields.</p></li>
-<li><p><strong>expand</strong> (<em>logical</em>) – When passed with <cite>galah.group_by</cite> argument of <cite>galah.atlas_counts</cite>, controls whether counts for each row value are combined or calculated separately. Defaults to <cite>True</cite>.</p></li>
+<li><p><strong>taxa</strong> (<em>string</em>) – one or more scientific names. Use <code class="docutils literal notranslate"><span class="pre">galah.search_taxa()</span></code> to search for valid scientific names.</p></li>
+<li><p><strong>filters</strong> (<em>pandas.DataFrame</em>) – filters, in the form <code class="docutils literal notranslate"><span class="pre">field</span></code> <code class="docutils literal notranslate"><span class="pre">logical</span></code> <code class="docutils literal notranslate"><span class="pre">value</span></code> (e.g. <code class="docutils literal notranslate"><span class="pre">&quot;year=2021&quot;</span></code>)</p></li>
+<li><p><strong>group_by</strong> (<em>string</em>) – zero or more individual column names (i.e. fields) to include. See <code class="docutils literal notranslate"><span class="pre">galah.show_all()</span></code> and <code class="docutils literal notranslate"><span class="pre">galah.search_all()</span></code> to see valid fields.</p></li>
+<li><p><strong>expand</strong> (<em>logical</em>) – When using the <code class="docutils literal notranslate"><span class="pre">group_by</span></code> argument of <code class="docutils literal notranslate"><span class="pre">galah.atlas_counts()</span></code>, controls whether counts for each row value are combined or calculated separately. Defaults to <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p></li>
 <li><p><strong>separate</strong> – TBD</p></li>
 <li><p><strong>verbose</strong> – TBD</p></li>
-<li><p><strong>use_data_profile</strong> (<em>string</em>) – A profile name. Should be a string - the name or abbreviation of a data quality profile to apply to the query. Valid values can be seen using <cite>galah.show_all(profiles)</cite></p></li>
+<li><p><strong>use_data_profile</strong> (<em>string</em>) – A profile name. Should be a string - the name or abbreviation of a data quality profile to apply to the query. Valid values can be seen using <code class="docutils literal notranslate"><span class="pre">galah.show_all(profiles=True)</span></code></p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>An object of class <cite>pandas.DataFrame</cite>.</p>
+<dd class="field-even"><p>An object of class <code class="docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code>.</p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
@@ -444,9 +444,25 @@ nunber of results) is</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="galah.galah_config">
 <span class="sig-prename descclassname"><span class="pre">galah.</span></span><span class="sig-name descname"><span class="pre">galah_config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">email</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">email_notify</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atlas</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_profile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#galah.galah_config" title="Permalink to this definition">#</a></dt>
-<dd><p>Use to set defaults for <code class="docutils literal notranslate"><span class="pre">galah</span></code> to use.  To run this to configure your email, type</p>
+<dd><p>The galah package supports large data downloads, and also interfaces with the ALA which requires that users of some
+services provide a registered email address and reason for downloading data. The <code class="docutils literal notranslate"><span class="pre">galah.galah_config()</span></code> function provides a way
+to manage these issues as simply as possible.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>email</strong> (<em>string</em>) – An email address that has been registered with the chosen atlas. For the ALA, you can register at [this address](<a class="reference external" href="https://auth.ala.org.au/userdetails/registration/createAccount">https://auth.ala.org.au/userdetails/registration/createAccount</a>).</p></li>
+<li><p><strong>email_notify</strong> (<em>string</em>) – Used to receive an email for each query to <code class="docutils literal notranslate"><span class="pre">galah.atlas_occurrences()</span></code>. Defaults to <code class="docutils literal notranslate"><span class="pre">None</span></code>, but can be useful in some instances, for example for tracking DOIs assigned to specific downloads for later citation.</p></li>
+<li><p><strong>atlas</strong> (<em>string</em>) – Living Atlas to point to, <code class="docutils literal notranslate"><span class="pre">Australia</span></code> by default. Can be an organisation name, acronym, or region (see <code class="docutils literal notranslate"><span class="pre">show_all(atlases=True)</span></code> for admissible values)</p></li>
+<li><p><strong>data_profile</strong> (<em>string</em>) – A profile name. Should be a string - the name or abbreviation of a data quality profile to apply to the query. Valid values can be seen using <code class="docutils literal notranslate"><span class="pre">galah.show_all(profiles=True)</span></code></p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A <code class="docutils literal notranslate"><span class="pre">list</span></code> of all current configuration options.</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="kn">import</span> <span class="nn">galah</span></span>
-<span class="prompt1"><span class="n">galah</span><span class="o">.</span><span class="n">galah</span><span class="o">.</span><span class="n">galah_config</span><span class="p">(</span><span class="n">email</span><span class="o">=</span><span class="s2">&quot;yourname@example.com&quot;</span><span class="p">)</span></span>
+<span class="prompt1"><span class="n">galah</span><span class="o">.</span><span class="n">galah_config</span><span class="p">(</span><span class="n">email</span><span class="o">=</span><span class="s2">&quot;yourname@example.com&quot;</span><span class="p">)</span></span>
 </pre></div></div></dd></dl>
 
 <dl class="py function">
@@ -454,7 +470,7 @@ nunber of results) is</p>
 <span class="sig-prename descclassname"><span class="pre">galah.</span></span><span class="sig-name descname"><span class="pre">search_all</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">assertions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atlases</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">apis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">collection</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">datasets</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fields</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">licences</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lists</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">profiles</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">providers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ranks</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reasons</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#galah.search_all" title="Permalink to this definition">#</a></dt>
 <dd><p>The living atlases store a huge amount of information, above and beyond the occurrence records that are their main output.
 In galah, one way that users can investigate this information is by searching for a specific option or category for the
-type of information they are interested in.  <cite>galah.search_all()</cite> is a helper function that can do searches within multiple
+type of information they are interested in.  <code class="docutils literal notranslate"><span class="pre">galah.search_all()</span></code> is a helper function that can do searches within multiple
 types of information.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -475,7 +491,7 @@ types of information.</p>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>An object of class <cite>pandas.DataFrame</cite> containing all data of interest.</p>
+<dd class="field-even"><p>An object of class <code class="docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code> containing all data of interest.</p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
@@ -493,17 +509,17 @@ ValueError: You can only pass one string to your search parameter = run show_all
 <dl class="py function">
 <dt class="sig sig-object py" id="galah.search_taxa">
 <span class="sig-prename descclassname"><span class="pre">galah.</span></span><span class="sig-name descname"><span class="pre">search_taxa</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">taxa</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#galah.search_taxa" title="Permalink to this definition">#</a></dt>
-<dd><p>Look up taxonomic names before downloading data from the ALA, using <cite>galah.atlas_occurrences()</cite>, <cite>galah.atlas_species()</cite> or
-<cite>galah.atlas_counts()</cite>. Taxon information returned by <cite>galah.search_taxa()</cite> may be passed to the <cite>taxa</cite> argument of <cite>atlas</cite>
+<dd><p>Look up taxonomic names before downloading data from the ALA, using <code class="docutils literal notranslate"><span class="pre">galah.atlas_occurrences()</span></code>, <code class="docutils literal notranslate"><span class="pre">galah.atlas_species()</span></code> or
+<code class="docutils literal notranslate"><span class="pre">galah.atlas_counts()</span></code>. Taxon information returned by <code class="docutils literal notranslate"><span class="pre">galah.search_taxa()</span></code> may be passed to the <code class="docutils literal notranslate"><span class="pre">taxa</span></code> argument of <cite>atlas</cite>
 functions.</p>
-<p><cite>galah.search_taxa()</cite> allows users to disambiguate homonyms (i.e. where the same name refers to taxa in different
+<p><code class="docutils literal notranslate"><span class="pre">galah.search_taxa()</span></code> allows users to disambiguate homonyms (i.e. where the same name refers to taxa in different
 clades) prior to downloading data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>taxa</strong> (<em>string</em>) – one or more scientific names to search.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>An object of class <cite>pandas.DataFrame</cite>.</p>
+<dd class="field-even"><p>An object of class <code class="docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code>.</p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
@@ -521,7 +537,7 @@ clades) prior to downloading data.</p>
 <dt class="sig sig-object py" id="galah.search_values">
 <span class="sig-prename descclassname"><span class="pre">galah.</span></span><span class="sig-name descname"><span class="pre">search_values</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">field</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#galah.search_values" title="Permalink to this definition">#</a></dt>
 <dd><p>Users may wish to see the specific values within a chosen field, profile or list to narrow queries or understand
-more about the information of interest. <cite>galah.search_values()</cite> allows users for search for specific values within a specified field.</p>
+more about the information of interest. <code class="docutils literal notranslate"><span class="pre">galah.search_values()</span></code> allows users for search for specific values within a specified field.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -531,7 +547,7 @@ more about the information of interest. <cite>galah.search_values()</cite> allow
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>An object of class <cite>pandas.DataFrame</cite>.</p>
+<dd class="field-even"><p>An object of class <code class="docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code>.</p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
@@ -550,7 +566,7 @@ more about the information of interest. <cite>galah.search_values()</cite> allow
 <span class="sig-prename descclassname"><span class="pre">galah.</span></span><span class="sig-name descname"><span class="pre">show_all</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">assertions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atlases</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">apis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">collection</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">datasets</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fields</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">licences</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lists</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">profiles</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">providers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ranks</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reasons</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#galah.show_all" title="Permalink to this definition">#</a></dt>
 <dd><p>The living atlases store a huge amount of information, above and beyond the occurrence records that are their main output.
 In galah, one way that users can investigate this information is by showing all the available options or categories for the
-type of information they are interested in. <cite>galah.show_all()</cite> is a helper function that can display multiple types of information,
+type of information they are interested in. <code class="docutils literal notranslate"><span class="pre">galah.show_all()</span></code> is a helper function that can display multiple types of information,
 displaying all valid options for the information specified.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -570,7 +586,7 @@ displaying all valid options for the information specified.</p>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>An object of class <cite>pandas.DataFrame</cite> containing all data of interest.</p>
+<dd class="field-even"><p>An object of class <code class="docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code> containing all data of interest.</p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
@@ -583,13 +599,13 @@ displaying all valid options for the information specified.</p>
 3                                              *Brigalow  ...  dr14507
 4                                                0662409  ...  dr19938
 ...                                                  ...  ...      ...
-12478  [C4OC] Torres Strait Regional Landcare Facilit...  ...   dr3529
-12479  [C4OC] Traditional Ecological Knowledge Record...  ...   dr3199
-12480  [C4OC] Trialling and demonstrating farmer inno...  ...   dr3519
-12481                [C4OC] Urban and Coastal Protection  ...   dr6802
-12482        _River_Torrens_Linear_Park_Species_List.csv  ...  dr19265
+12479  [C4OC] Torres Strait Regional Landcare Facilit...  ...   dr3529
+12480  [C4OC] Traditional Ecological Knowledge Record...  ...   dr3199
+12481  [C4OC] Trialling and demonstrating farmer inno...  ...   dr3519
+12482                [C4OC] Urban and Coastal Protection  ...   dr6802
+12483        _River_Torrens_Linear_Park_Species_List.csv  ...  dr19265
 
-[12483 rows x 3 columns]
+[12484 rows x 3 columns]
 </pre></div>
 </div>
 </dd></dl>
@@ -598,7 +614,7 @@ displaying all valid options for the information specified.</p>
 <dt class="sig sig-object py" id="galah.show_values">
 <span class="sig-prename descclassname"><span class="pre">galah.</span></span><span class="sig-name descname"><span class="pre">show_values</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">field</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#galah.show_values" title="Permalink to this definition">#</a></dt>
 <dd><p>Users may wish to see the specific values within a chosen field, profile or list to narrow queries or understand
-more about the information of interest. <cite>galah.show_values()</cite> provides users with these values.</p>
+more about the information of interest. <code class="docutils literal notranslate"><span class="pre">galah.show_values()</span></code> provides users with these values.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -607,7 +623,7 @@ more about the information of interest. <cite>galah.show_values()</cite> provide
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>An object of class <cite>pandas.DataFrame</cite>.</p>
+<dd class="field-even"><p>An object of class <code class="docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code>.</p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
@@ -647,7 +663,7 @@ more about the information of interest. <cite>galah.show_values()</cite> provide
   <a class='right-next' id="next-link" href="../authors/index.html" title="next page">
   <div class="prev-next-info">
       <p class="prev-next-subtitle">next</p>
-      <p class="prev-next-title">Authors</p>
+      <p class="prev-next-title">Authors and Citation</p>
   </div>
   <i class="fa-solid fa-angle-right"></i>
   </a>

@@ -5,7 +5,7 @@ def search_values(field=None,
                   column_name=None):
     """
     Users may wish to see the specific values within a chosen field, profile or list to narrow queries or understand 
-    more about the information of interest. `galah.search_values()` allows users for search for specific values within a specified field.
+    more about the information of interest. ``galah.search_values()`` allows users for search for specific values within a specified field.
 
     Parameters
     ----------
@@ -18,7 +18,7 @@ def search_values(field=None,
 
     Returns
     -------
-        An object of class `pandas.DataFrame`.
+        An object of class ``pandas.DataFrame``.
 
     Examples
     --------

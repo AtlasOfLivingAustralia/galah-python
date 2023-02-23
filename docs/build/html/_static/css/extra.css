@@ -1,8 +1,18 @@
 @import url(https://fonts.googleapis.com/css?family=Lato);
 @import url(https://fonts.googleapis.com/css?family=Roboto);
 
+:root {
+  --pst-color-text-base: #495057;
+  --pst-text-size: 1rem;
+}
+
+p {
+  font-size: var(--pst-text-size);
+  line-height: 1.5;
+}
+
 h1, h2, h3, h4, .h1, .h2, .h3, .main-title, .main-subtitle {
-  font-family: Lato;
+  font-family: 'Lato' sans-serif;!important
   font-weight: normal;
   color: #F064A4;
 }
@@ -16,7 +26,9 @@ a:hover {
   color: #78CCCC;
 }
 
-body { font-family: Roboto; }
+body { 
+  font-family: Roboto, sans-serif;!important
+}
 
 .navbar {
   background: #78CCCC;
@@ -114,6 +126,10 @@ pre {
     background-color: #f8fcfc;
 }
 
+dt:target, span.highlighted {
+  background-color: #f5b2d0;!important
+}
+
 /*
 .text-muted {
   color: #f5b2d0!important;
@@ -138,3 +154,16 @@ pre {
   background: #003A70;
   background-color: #003A70;
 }*/
+
+.main-logo-index {
+  display: flex;
+  flex: left;
+  max-width: 200px;
+  height: auto;
+}
+
+main-index-title {
+  display: flex;
+  flex: left;
+  padding-left: 30px;
+}

@@ -22,11 +22,11 @@ atlases = ["Australia","Austria","Brazil","Canada","Estonia","France","Guatemala
 
 def search_taxa(taxa):
     """
-    Look up taxonomic names before downloading data from the ALA, using `galah.atlas_occurrences()`, `galah.atlas_species()` or 
-    `galah.atlas_counts()`. Taxon information returned by `galah.search_taxa()` may be passed to the `taxa` argument of `atlas` 
+    Look up taxonomic names before downloading data from the ALA, using ``galah.atlas_occurrences()``, ``galah.atlas_species()`` or 
+    ``galah.atlas_counts()``. Taxon information returned by ``galah.search_taxa()`` may be passed to the ``taxa`` argument of `atlas` 
     functions. 
     
-    `galah.search_taxa()` allows users to disambiguate homonyms (i.e. where the same name refers to taxa in different 
+    ``galah.search_taxa()`` allows users to disambiguate homonyms (i.e. where the same name refers to taxa in different 
     clades) prior to downloading data.
 
     Parameters
@@ -36,7 +36,7 @@ def search_taxa(taxa):
 
     Returns
     -------
-        An object of class `pandas.DataFrame`.
+        An object of class ``pandas.DataFrame``.
 
     Examples
     --------
