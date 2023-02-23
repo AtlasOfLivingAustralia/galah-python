@@ -67,6 +67,9 @@ def atlas_occurrences(taxa=None,
     # get configs
     configs = readConfig()
 
+    if configs["galahSettings"]["email"] is None:
+        raise ValueError("Please provide an email for querying")
+
     # test to check if ALA is working
     requestURL = "{}?pageSize=0".format(get_api_url(column1='called_by',column1value='atlas_counts',column2="api_name",
                                                     column2value="records_counts"))
@@ -126,14 +129,25 @@ def atlas_occurrences(taxa=None,
 
     # removing all assertions (these would appear in caps)
     if assertions is not None:
-        raise ValueError("Assertions is not coded at this point - Amanda needs to code it")
+
+        # check type
+        if type(assertions) is list or type(assertions) is str:
+            if type(assertions) is str:
+                assertions=[assertions]
+            for a in assertions:
+                baseURL += galah_filter(a) + "%20AND%20"
+
+            # add final part of URL
+            URL = URL[:-len("%20AND%20")] + "%29&"
+        else:
+            raise ValueError("Assertions needs to be a string or a list of strings, i.e. identificationIncorrect == TRUE")
     baseURL += "&qa=none&"
 
     # implement galah.select - choose which columns you download
     # goes to the 'fields' argument in occurrence download (csv list, commas between)
     if fields is not None:
         baseURL += galah_select(selectionList=fields) + "&"
-    elif configs['galahSettings']['atlas'] in ["Australia","Brazil"]:
+    elif configs['galahSettings']['atlas'] in ["Australia","Brazil","Spain"]:
         baseURL += galah_select(selectionList=ATLAS_SELECTIONS[configs['galahSettings']['atlas']])
     else:
         raise ValueError("We currently cannot get occurrences from the {} atlas.".format(configs['galahSettings']['atlas']))

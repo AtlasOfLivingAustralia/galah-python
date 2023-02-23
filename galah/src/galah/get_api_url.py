@@ -55,7 +55,7 @@ def get_api_url(column1=None,
 
         # email for querying
         if configs['galahSettings']['email'] is None:
-            raise ValueError("You need to provide a valid email address for occurrences to be able to download data")
+            raise ValueError("You need to provide a valid email address for this function to be able to download data")
         else:
             if "download" in baseURL:
                 baseURL += "?email={}&dwcHeaders=True".format(configs['galahSettings']['email'])

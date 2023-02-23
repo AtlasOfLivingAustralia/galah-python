@@ -1,4 +1,4 @@
-import requests,urllib.parse,os
+import requests,urllib.parse
 import pandas as pd
 
 from .search_taxa import search_taxa
@@ -30,14 +30,40 @@ VERNACULAR_NAMES = {
     "France": "",
     "Guatemala": "",
     "Portugal": "",
-    "Spain": "",
+    "Spain": ["commonNames","nameString"],
     "Sweden": "",
     "United Kingdom": "",
 }
 
+TAXONCONCEPT_NAMES = {
+    "Australia": {"species_guid": "guid","species": "nameString","author": "author"},
+    "Austria": "",
+    "Brazil": {"species_guid": "guid","species": "nameString","author": "author"},
+    "Canada": "",
+    "Estonia": "",
+    "France": "",
+    "Guatemala": "",
+    "Portugal": "",
+    "Spain": {"species_guid": "guid","species": "nameString","author": "author"},
+    "Sweden": "",
+    "United Kingdom": "",
+}
+
+FACETS_STRINGS = {
+    "Australia": "speciesID",
+    "Austria": "",
+    "Brazil": "species", 
+    "Canada": "",
+    "Estonia": "",
+    "France": "",
+    "Guatemala": "",
+    "Portugal": "",
+    "Spain": "species", ##??
+    "Sweden": "",
+    "United Kingdom": "",
+}
 
 # this function looks for all species with the associated name
-### TODO: comment
 def atlas_species(taxa=None,rank="species",verbose=False):
     """
     Used for getting occurrence data for your species.  To get occurrences for
@@ -59,23 +85,21 @@ def atlas_species(taxa=None,rank="species",verbose=False):
 
     # first, check if the user has specified a taxa
     if taxa is None:
-        return ValueError("You need to specify a species name for this function to work, i.e. \"Heleioporus\"")
+        return ValueError("You need to specify a name for this function to work, i.e. \"Heleioporus\"")
     elif type(taxa) is not str:
-        return ValueError("You can only specify one species name for this function so far, i.e. \"Heleioporus\"")
+        return ValueError("You can only specify one name for this function so far, i.e. \"Heleioporus\"")
 
     # call galah_identify (or search_taxa for now?) to do something
-    baseURL = get_api_url(column1='api_name',column1value='species_children')
+    baseURL = get_api_url(column1='api_name', column1value='records_species') #,add_email=True)
+
+    # raise warning - not sure how to fix it
+    if configs['galahSettings']['atlas'] in ["Spain"]:
+        print("There have been some issues getting all species when using a genus name.  Instead, either use a species name or anything of family or higher order.")
 
     # get the taxonConceptID for taxa
-    if configs['galahSettings']['atlas'] in ["Australia"]:
+    if configs['galahSettings']['atlas'] in ["Australia","Brazil","Spain"]:
         taxonConceptID = search_taxa(taxa)[ATLAS_KEYWORDS[configs['galahSettings']['atlas']]][0]
-        URL = baseURL.replace("{id}", taxonConceptID)  # + "fq=%28lsid%3A" + urllib.parse.quote(taxonConceptID) + "%29&"
-    elif configs['galahSettings']['atlas'] in ["Spain"]: 
-        taxonConceptID = search_taxa(taxa)[ATLAS_KEYWORDS[configs['galahSettings']['atlas']]][0]
-        URL = baseURL + "fq=%28lsid%3A" + urllib.parse.quote(taxonConceptID) + "%29&"
-    elif configs['galahSettings']['atlas'] in ["Brazil"]:
-        taxonConceptID = search_taxa(taxa)[ATLAS_KEYWORDS[configs['galahSettings']['atlas']]][0]
-        URL = baseURL + urllib.parse.quote(taxonConceptID) #+ "fq=%28lsid%3A" + urllib.parse.quote(taxonConceptID) + "%29&"
+        URL = baseURL + "?&fq=%28lsid%3A" + urllib.parse.quote(taxonConceptID) + "%29&facets={}".format(FACETS_STRINGS[configs['galahSettings']['atlas']])
     else:
         raise ValueError("Atlas {} is not taken into account".format(configs['galahSettings']['atlas']))
 
@@ -83,23 +107,19 @@ def atlas_species(taxa=None,rank="species",verbose=False):
     if verbose:
         print("URL for querying:\n\n{}\n".format(URL))
 
-    # get url and print response
+    # get url and transform from a text string to a list
     response = requests.get(URL)
+    all_ids = response.text[1:-2].split('"\n"')[1:]
+
     # need to get species, author and
-    json = response.json()
     data_dict = {"species": [], "author": [], "species_guid": [], "kingdom": [],"phylum": [],
                  "class": [],"order": [],"family": [], "vernacular_name": []}
-    for j in json:
-        if j['rank'] == "species":
-            data_dict['species'].append(j['name'])
-            data_dict['author'].append(j['author'])
-            data_dict['species_guid'].append(j['guid'])
 
-    # species_lookup
+    # species_lookup for each individual species
     baseURL = get_api_url(column1='api_name', column1value='species_lookup')
 
     # get all the taxonomic information for every species ID
-    for species_guid in data_dict["species_guid"]:
+    for species_guid in all_ids:
         
         # check for atlas
         if configs['galahSettings']['atlas'] in ["Brazil","Spain"]:
@@ -109,13 +129,27 @@ def atlas_species(taxa=None,rank="species",verbose=False):
         else:
             raise ValueError("Atlas {} is not taken into account".format(configs['galahSettings']['atlas']))
 
+        # check to see if user wants the query URL
+        if verbose:
+            print("URL for querying:\n\n{}\n".format(URL))
+
         # get response from the API
         response = requests.get(URL)
         json = response.json()
-
+        
         # get taxonomic information
         for depth in ['kingdom','phylum','class','order','family']:
-            data_dict[depth].append(json['classification'][depth].lower().capitalize())
+            if json['classification'][depth]:
+                data_dict[depth].append(json['classification'][depth].lower().capitalize())
+            else:
+                data_dict[depth].append("")
+            
+        for others in ['species','author','species_guid']:
+            if json['taxonConcept'][TAXONCONCEPT_NAMES[configs["galahSettings"]["atlas"]][others]]:
+                data_dict[others].append(
+                    json['taxonConcept'][TAXONCONCEPT_NAMES[configs["galahSettings"]["atlas"]][others]].lower().capitalize())
+            else:
+                data_dict[others].append("")
 
         # get common names (vernacular names)
         if json[VERNACULAR_NAMES[configs['galahSettings']['atlas']][0]]:

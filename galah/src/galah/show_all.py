@@ -144,7 +144,6 @@ def show_all(assertions=False,
         else:
             raise ValueError("Atlas {} not taken into account.".format(configs['galahSettings']['atlas']))
         
-        
         # second: get spatial layers
         if configs['galahSettings']['atlas'] in ["Australia","Spain"]:
             # get data from API
@@ -163,7 +162,7 @@ def show_all(assertions=False,
                 spatial_layers["type"] = "layers"
                 spatial_layers["link"] = ""
             elif configs['galahSettings']['atlas'] in ["Austria","Brazil","Canada","Estonia","France","Guatemala","Sweden","United Kingdom"]:
-                layers_select = fields_values[['name', 'info']]
+                layers_select = spatial_values[['name', 'info']]
                 spatial_layers = layers_select.rename(columns={"name": "id","info": "description"})
                 spatial_layers["type"] = "layers"
                 spatial_layers["link"] = ""
@@ -186,15 +185,16 @@ def show_all(assertions=False,
             return_dataFrame.reset_index(drop = True, inplace = True)
 
             # return final dataframe to user
-            return return_dataFrame
+            return_array.append(return_dataFrame)
 
         # else: only return fields dataframe
         else:
 
-            # make sure this works
+            # reset index
             dataFrame.reset_index(drop = True, inplace = True)
 
-            return dataFrame
+            # return final thing
+            return_array.append(dataFrame)
 
     elif not fields:
         pass

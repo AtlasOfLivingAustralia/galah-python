@@ -363,9 +363,16 @@ def test_atlas_counts_multiple_taxa_filters_group_by_multiple_separate_expand():
     assert output['count'][0] >= 0 # checks that all species counts are greater than or equal zero
 
 # checking if atlas species can successfully call search_taxa() and get a non-empty dataframe\
-def test_atlas_species_Australia():
+def test_atlas_species_Australia_species():
     galah.galah_config(atlas="Australia")
     taxa = "Heleioporus"
+    species_table = galah.atlas_species(taxa=taxa)
+    assert species_table.shape[0] > 0
+
+# checking if atlas species can successfully call search_taxa() and get a non-empty dataframe\
+def test_atlas_species_Australia_family():
+    galah.galah_config(atlas="Australia")
+    taxa = "Limnodynastidae"
     species_table = galah.atlas_species(taxa=taxa)
     assert species_table.shape[0] > 0
 
@@ -423,13 +430,13 @@ def test_galah_group_by_multiple_groups_multiple_filters_expand_true():
 # search_all() - assertions using "AMBIGUOUS_COLLECTION"
 def test_search_all_assertions():
     total_show_all = galah.show_all(assertions=True)
-    total_search_all = galah.search_all(assertions="AMBIGUOUS_COLLECTION")
+    total_search_all = galah.search_all(assertions="collection")
     assert total_search_all.shape[0] < total_show_all.shape[0]
 
 # search_all() - assertions using "collection" and column name "description"
 def test_search_all_assertions_column_name():
     total_show_all = galah.show_all(assertions=True)
-    total_search_all = galah.search_all(assertions="collection",column_name="description")
+    total_search_all = galah.search_all(assertions="status",column_name="name")
     assert total_search_all.shape[0] < total_show_all.shape[0]
 
 # search_all() - atlases using "Australia"
@@ -489,7 +496,7 @@ def test_search_all_fields():
 # search_all() - fields using "field" and column_nane "info"
 def test_search_all_fields_column_name():
     total_show_all = galah.show_all(fields=True)
-    total_search_all = galah.search_all(fields="field",column_name="info")
+    total_search_all = galah.search_all(fields="layer",column_name="type")
     assert total_search_all.shape[0] < total_show_all.shape[0]
     
 # search_all() - licences using "accepted"
@@ -938,9 +945,16 @@ def test_atlas_counts_multiple_taxa_filters_group_by_multiple_separate_expand_br
     assert output['count'][0] >= 0 # checks that all species counts are greater than or equal zero
 
 # checking if atlas species can successfully call search_taxa() and get a non-empty dataframe\
-def test_atlas_species_Brazil():
+def test_atlas_species_Brazil_species():
     galah.galah_config(atlas="Brazil")
     taxa = "Ramphastos"
+    species_table = galah.atlas_species(taxa=taxa)
+    assert species_table.shape[0] > 0
+
+# checking if atlas species can successfully call search_taxa() and get a non-empty dataframe\
+def test_atlas_species_Brazil_family():
+    galah.galah_config(atlas="Brazil")
+    taxa = "Ramphastidae"
     species_table = galah.atlas_species(taxa=taxa)
     assert species_table.shape[0] > 0
 
@@ -1024,7 +1038,7 @@ def test_search_all_fields_brazil():
 def test_search_all_fields_column_name_brazil():
     galah.galah_config(atlas="Brazil")
     total_show_all = galah.show_all(fields=True)
-    total_search_all = galah.search_all(fields="field",column_name="info")
+    total_search_all = galah.search_all(fields="basis",column_name="description")
     assert total_search_all.shape[0] < total_show_all.shape[0]
         
 # search_all() - lists using "Quadrat"
@@ -1119,7 +1133,7 @@ def test_atlas_occurrences_taxa_filters_fields_brazil():
 # -------------------------------------------------------------------------------------------------
 # Spain
 # -------------------------------------------------------------------------------------------------
-
+#'''
 def test_show_all_assertions_spain():
     galah.galah_config(atlas="Spain")
     output = galah.show_all(assertions=True)
@@ -1395,14 +1409,21 @@ def test_atlas_counts_multiple_taxa_filters_group_by_multiple_separate_expand_sp
     output = galah.atlas_counts(taxa_array, filters=f, group_by=group_by, separate=True, expand=True)
     assert output.shape[1] == len(group_by) + 1
     assert output['count'][0] >= 0 # checks that all species counts are greater than or equal zero
-'''
+
 # checking if atlas species can successfully call search_taxa() and get a non-empty dataframe\
-def test_atlas_species_spain():
+def test_atlas_species_Spain_species():
     galah.galah_config(atlas="Spain")
-    taxa = "Vipera"
+    taxa = "Vipera latastei"
     species_table = galah.atlas_species(taxa=taxa)
     assert species_table.shape[0] > 0
-'''
+
+# checking if atlas species can successfully call search_taxa() and get a non-empty dataframe\
+def test_atlas_species_Spain_family():
+    galah.galah_config(atlas="Spain")
+    taxa = "Viperidae"
+    species_table = galah.atlas_species(taxa=taxa)
+    assert species_table.shape[0] > 0
+
 # search_all() - assertions using "AMBIGUOUS_COLLECTION"
 def test_search_all_assertions_spain():
     galah.galah_config(atlas="Spain")
@@ -1484,7 +1505,7 @@ def test_search_all_fields_spain():
 def test_search_all_fields_column_name_spain():
     galah.galah_config(atlas="Spain")
     total_show_all = galah.show_all(fields=True)
-    total_search_all = galah.search_all(fields="field",column_name="info")
+    total_search_all = galah.search_all(fields="field",column_name="type")
     assert total_search_all.shape[0] < total_show_all.shape[0]
         
 # search_all() - lists using "Quadrat"
@@ -1534,7 +1555,7 @@ def test_search_values_spain():
     first_output = galah.show_values(field="basis_of_record")
     second_output = galah.search_values(field="basis_of_record",value="obs")
     assert first_output.shape[0] > second_output.shape[0]
-'''
+
 # first test for atlas_occurrences() - check if search_taxa() is working
 def test_atlas_occurrences_taxa_spain():
     galah.galah_config(atlas="Spain",email="amanda.buyan@csiro.au")
