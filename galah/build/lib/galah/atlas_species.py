@@ -1,4 +1,4 @@
-import galah,requests,urllib.parse,configparser,os,html
+import requests,urllib.parse,os
 import pandas as pd
 
 from .search_taxa import search_taxa

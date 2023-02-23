@@ -1,5 +1,4 @@
 import requests,re
-import pandas as pd
 
 import sys
 
@@ -18,6 +17,8 @@ def galah_filter(f, ifgroupBy=False):
 
     .. program-output:: python3 -c "import galah; print(galah.galah_filter(filters=\\\"year=2020\\\"))"
     """
+
+    ## TODO: check for year - might not be working with expand group_by
 
     # first, check for special characters
     specialChars = re.compile('[@!#$%^&*()<>?}{~:=]') #/\|
@@ -59,36 +60,47 @@ def galah_filter(f, ifgroupBy=False):
         for i, p in enumerate(parts):
             parts[i] = p.strip()
 
+        # TODO: take all fq out - not sure where it is needed
+
         # start checking for different logical operators, starting with equals
         if specialChar == '=' or specialChar == '==':
 
+            print(parts)
+
             # check if the filter is a number or a string and if there is a group by
             if parts[1].isdigit() and ifgroupBy:
-                returnString+="&fq={}:[{}]".format(parts[0],parts[1])
+                # this one is square brackets
+                #returnString += "%5b{}:%22{}%22%5d".format(parts[0], parts[1])
+                returnString += "%28{}%3A%22{}%22%29".format(parts[0], parts[1].replace(" ", "%20"))
             # if filter is querying a field that has no value
             elif parts[1] == '':
-                returnString+="&fq=-{}:(*)".format(parts[0])
+                returnString += "%28{}%3A%28*%29%29".format(parts[0])
             else:
-                returnString += "&fq={}:({})".format(parts[0], parts[1])
+                # added quotes
+                returnString += "%28{}%3A%22{}%22%29".format(parts[0], parts[1].replace(" ", "%20"))
 
-        # greater than
         elif specialChar == '>':
-            returnString+="&fq={}:[{}%20TO%20*]%20AND%20-({}:\"{}\")".format(parts[0], parts[1], parts[0], parts[1])
+            returnString+="%28{}:%5b{}%20TO%20*%5d%20AND%20-%28{}:%22{}%22%29".format(parts[0], parts[1], parts[0], parts[1])
 
         # less than
         elif specialChar == '<':
-            returnString+="&fq={}:[*%20TO%20{}]%20AND%20-({}:\"{}\")".format(parts[0], parts[1], parts[0], parts[1])
+            returnString += "%28{}%3a%5b*%20TO%20{}%5d%20AND%20-%28{}:\"{}\"%29".format(parts[0], parts[1], parts[0], parts[1])
 
         # greater than or equal to
         elif specialChar == '=>' or specialChar == '>=':
-            returnString+="&fq={}:[{}%20TO%20*]".format(parts[0], parts[1])
+            returnString += "%28{}%3a%5b{}%20TO%20*%5d%29".format(parts[0], parts[1])
+
         # less than or equal to
         elif specialChar == '<=' or specialChar == '=<':
-            returnString+="&fq={}:[*%20TO%20{}]".format(parts[0], parts[1])
+            returnString += "%28{}%3a%5b*%20TO%20{}%5d%29".format(parts[0], parts[1])
 
         # not equal to
         elif specialChar == '!=' or specialChar == '=!':
-            returnString+="&fq=(-{}:\"{}\")".format(parts[0], parts[1])
+            returnString += "%28-{}%3a\"{}\"%29".format(parts[0], parts[1])
+
+        # filters with numerical operators are being used with a non-numeric type
+        elif not isinstance(parts[1], int):
+            raise ValueError("Numeric types can only be used with filters that include the <, >, <=, or => operators.")
 
         # else, there is either an error in the filters or a missing case
         else:

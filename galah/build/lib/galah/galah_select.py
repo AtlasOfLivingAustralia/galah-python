@@ -1,6 +1,3 @@
-import requests,re
-import pandas as pd
-
 '''
 select
 ------
