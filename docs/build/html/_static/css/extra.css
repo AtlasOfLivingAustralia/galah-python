@@ -2,8 +2,8 @@
 @import url(https://fonts.googleapis.com/css?family=Roboto);
 
 :root {
-  --pst-color-text-base: #495057;
-  --pst-text-size: 1rem;
+  --pst-color-text-base: #495057;!important
+  --pst-text-size: 1.1rem;
 }
 
 p {

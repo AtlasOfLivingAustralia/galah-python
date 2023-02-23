@@ -16,8 +16,8 @@ Team <https://labs.ala.org.au/>`_ at the `Atlas of Living Australia (ALA) <https
 
 galah enables users to locate and download species occurrence records (observations, specimens, eDNA records, etc.), taxonomic information, 
 or associated media such as images or sounds, and to restrict their queries to particular taxa or locations. Users can specify which columns 
-are returned by a query, or restrict their results to occurrences that meet particular data-quality criteria. All functions return a tibble 
-as their standard format, except atlas_taxonomy which returns tree consisting of Node objects using the data.tree package.
+are returned by a query, or restrict their results to occurrences that meet particular data-quality criteria. All functions return a pandas 
+dataframe as their standard format.
 
 The package is named for the bird of the same name (Eolophus roseicapilla), a widely-distributed endemic Australian species. 
 The logo was designed by `Ian Brennan <http://www.iangbrennan.org/>`_.
@@ -73,7 +73,7 @@ If you have any comments, questions or suggestions, please `contact us <mailto:s
     
     .. grid-item-card:: 
         :class-card: sd-text-black
-        :link: faqs/index.html
+        :link: authors/index.html
         :text-align: center
 
         .. raw:: html
