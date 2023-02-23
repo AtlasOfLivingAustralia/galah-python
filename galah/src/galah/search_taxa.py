@@ -22,14 +22,29 @@ atlases = ["Australia","Austria","Brazil","Canada","Estonia","France","Guatemala
 
 def search_taxa(taxa):
     """
-    Used for getting the taxonConceptID for querying the Atlas.  To get a table with the taxon concept ID, type
+    Look up taxonomic names before downloading data from the ALA, using `galah.atlas_occurrences()`, `galah.atlas_species()` or 
+    `galah.atlas_counts()`. Taxon information returned by `galah.search_taxa()` may be passed to the `taxa` argument of `atlas` 
+    functions. 
+    
+    `galah.search_taxa()` allows users to disambiguate homonyms (i.e. where the same name refers to taxa in different 
+    clades) prior to downloading data.
+
+    Parameters
+    ----------
+        taxa : string
+            one or more scientific names to search.  
+
+    Returns
+    -------
+        An object of class `pandas.DataFrame`.
+
+    Examples
+    --------
 
     .. prompt:: python
 
         import galah
         galah.search_taxa(taxa="Vulpes vulpes")
-
-    which returns
 
     .. program-output:: python -c "import galah; print(galah.search_taxa(taxa=\\\"Vulpes vulpes\\\"))"
     """

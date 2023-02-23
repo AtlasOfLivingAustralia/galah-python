@@ -4,16 +4,30 @@ import pandas as pd
 from .get_api_url import get_api_url
 
 # comment on what this function does later
-def show_values(field=None,verbose=False):
+def show_values(field=None,
+                verbose=False):
     """
-    Used for getting the values from a field you want to query.  To see how this is used, type
+    Users may wish to see the specific values within a chosen field, profile or list to narrow queries or understand 
+    more about the information of interest. `galah.show_values()` provides users with these values. 
+
+    Parameters
+    ----------
+        field : string
+            A string to specify what type of parameters should be shown.  
+        verbose : logical
+            TBD
+
+    Returns
+    -------
+        An object of class `pandas.DataFrame`.
+
+    Examples
+    --------
 
     .. prompt:: python
 
         import galah
         galah.show_values(field="basisOfRecord")
-
-    which returns
 
     .. program-output:: python -c "import galah; print(galah.show_values(field=\\\"basisOfRecord\\\"))"
     """
