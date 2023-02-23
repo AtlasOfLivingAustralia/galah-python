@@ -1,15 +1,32 @@
 from .show_values import show_values
 
-def search_values(field=None,value=None,column_name=None):
+def search_values(field=None,
+                  value=None,
+                  column_name=None):
     """
-    Used for getting the values from a field you want to query.  To see how this is used, type
+    Users may wish to see the specific values within a chosen field, profile or list to narrow queries or understand 
+    more about the information of interest. ``galah.search_values()`` allows users for search for specific values within a specified field.
+
+    Parameters
+    ----------
+        field : string
+            A string to specify what type of parameters should be searched. 
+        value : string
+            A string specifying a search term. Not case sensitive. 
+        verbose : logical
+            TBD
+
+    Returns
+    -------
+        An object of class ``pandas.DataFrame``.
+
+    Examples
+    --------
 
     .. prompt:: python
 
         import galah
         galah.search_values(field="basisOfRecord",value="OBS")
-
-    which returns
 
     .. program-output:: python -c "import galah; print(galah.search_values(field=\\\"basisOfRecord\\\",value=\\\"OBS\\\"))"
     """

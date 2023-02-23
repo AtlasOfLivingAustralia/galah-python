@@ -14,22 +14,56 @@ def search_all(assertions=None,
                lists=None,
                profiles=None,
                providers=None,
-               reasons=None,
                ranks=None,
+               reasons=None,
                column_name=None
                ):
     """
-    Used for getting and searching various amounts of information about the chosen atlas you want to
-    get counts and occurrences from.
+    The living atlases store a huge amount of information, above and beyond the occurrence records that are their main output. 
+    In galah, one way that users can investigate this information is by searching for a specific option or category for the 
+    type of information they are interested in.  ``galah.search_all()`` is a helper function that can do searches within multiple 
+    types of information.
 
-    To find a list of endpoints in your chosen api, type
+    Parameters
+    ----------
+        assertions : string
+            Search for results of data quality checks run by each atlas
+        atlases : string
+            Search for what atlases are available
+        apis : string
+            Search for what APIs & functions are available for each atlas
+        collection : string
+            Search for the specific collections within those institutions
+        datasets : string
+            Search for the data groupings within those collections
+        fields : string
+            Search for fields that are stored in an atlas
+        licences : string
+            Search for copyright licences applied to media
+        lists : string
+            Search for what species lists are available
+        profiles : string
+            Search for what data profiles are available
+        providers : string
+            Search for which institutions have provided data
+        ranks : string
+            Search for valid taxonomic ranks (e.g. Kingdom, Class, Order, etc.)
+        reasons : string
+            Search for what values are acceptable as 'download reasons' for a specified atlas
+        column_name : string
+            TBD
+
+    Returns
+    -------
+        An object of class ``pandas.DataFrame`` containing all data of interest.
+
+    Examples
+    --------
 
     .. prompt:: python
 
         import galah
         galah.search_all(apis="Australia")
-
-    which returns
 
     .. program-output:: python -c "import galah; print(galah.search_all(apis=\\\"Australia\\\"))"
     """

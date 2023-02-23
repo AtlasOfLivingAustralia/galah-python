@@ -32,22 +32,55 @@ def atlas_counts(taxa=None,
                  use_data_profile=False,
                  ):
     """
-    Used for getting the number of occurrence records before you're ready
-    to download the actual occurrences.
+    Prior to downloading data it is often valuable to have some estimate of how many records are available, both for deciding 
+    if the query is feasible, and for estimating how long it will take to download. Alternatively, for some kinds of reporting, 
+    the count of observations may be all that is required, for example for understanding how observations are growing or shrinking 
+    in particular locations, or for particular taxa. 
+    
+    To this end, ``galah.atlas_counts()`` takes arguments in the same format as 
+    ``galah.atlas_occurrences()``, and provides either a total count of records matching the criteria, or a data.frame of counts matching 
+    the criteria supplied to the `group_by` argument.
 
-    To know how many total records are in your chosen atlas, type
+    Parameters
+    ----------
+        taxa : string
+            one or more scientific names. Use ``galah.search_taxa()`` to search for valid scientific names.  
+        filters : pandas.DataFrame
+            filters, in the form ``field`` ``logical`` ``value`` (e.g. ``"year=2021"``)
+        group_by : string
+            zero or more individual column names (i.e. fields) to include. See ``galah.show_all()`` and ``galah.search_all()`` to see valid fields.
+        expand : logical
+            When using the ``group_by`` argument of ``galah.atlas_counts()``, controls whether counts for each row value are combined or calculated separately. Defaults to ``True``.
+        separate : 
+            TBD 
+        verbose : 
+            TBD
+        use_data_profile : string
+            A profile name. Should be a string - the name or abbreviation of a data quality profile to apply to the query. Valid values can be seen using ``galah.show_all(profiles=True)``
 
-    .. prompt:: python
+    Returns
+    -------
+        An object of class ``pandas.DataFrame``.
 
-        import galah
-        galah.atlas_counts()
+    Examples
+    --------
+        Return total records in your chosen atlas
 
-    which returns
+        .. prompt:: python
 
-    .. program-output:: python -c "import galah; print(galah.atlas_counts())"
+            import galah
+            galah.atlas_counts()
 
-    example of filters that can be used: "year=2020","basisOfRecord=HUMAN_OBSERVATION"
-    example of group_by groups that can be used: "year","basisOfRecord"
+        .. program-output:: python -c "import galah; print(galah.atlas_counts())"
+
+        Return records from 2020 onwards, grouped by year    
+
+        .. prompt:: python
+
+            galah.atlas_counts(filters="year>2019")
+
+        .. program-output:: python -c "import galah; print(galah.atlas_counts(filters="year>2019"))"
+
     """
 
     # get configs

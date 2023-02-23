@@ -22,17 +22,49 @@ def show_all(assertions=False,
              reasons=False,
              ):
     """
-    Used for getting various amounts of information about the chosen atlas you want to
-    get occurrences from.
+    The living atlases store a huge amount of information, above and beyond the occurrence records that are their main output. 
+    In galah, one way that users can investigate this information is by showing all the available options or categories for the 
+    type of information they are interested in. ``galah.show_all()`` is a helper function that can display multiple types of information, 
+    displaying all valid options for the information specified.
 
-    To find out what datasets are in your atlas, type
+    Parameters
+    ----------
+        assertions : logical
+            Show results of data quality checks run by each atlas  
+        atlases : logical
+            Show what atlases are available
+        apis : logical
+            Show what APIs & functions are available for each atlas
+        collection : logical
+            Show the specific collections within those institutions
+        datasets : logical
+            Shows all the data groupings within those collections 
+        fields : logical
+            Show fields that are stored in an atlas
+        licences : logical
+            Show what copyright licenses are applied to media
+        lists : logical
+            Show what species lists are available
+        profiles : logical
+            Show what data profiles are available
+        providers : logical
+            Show which institutions have provided data
+        ranks : logical
+            Show valid taxonomic ranks (e.g. Kingdom, Class, Order, etc.)
+        reasons : logical
+            Show what values are acceptable as 'download reasons' for a specified atlas
+
+    Returns
+    -------
+        An object of class ``pandas.DataFrame`` containing all data of interest.
+
+    Examples
+    --------
 
     .. prompt:: python
 
         import galah
         galah.show_all(datasets=True)
-
-    which returns
 
     .. program-output:: python -c "import galah; print(galah.show_all(datasets=True))"
     """

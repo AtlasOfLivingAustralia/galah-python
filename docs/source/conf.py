@@ -48,10 +48,14 @@ extensions = [
 	'sphinx_design',
 	'sphinx.ext.autodoc',
 	'sphinx.ext.autosummary',
-	'autoapi.extension'
+	'autoapi.extension',
+	'sphinx.ext.napoleon',
+	'sphinx_autodoc_typehints'
 ]
 '''
 '''
+
+napoleon_use_param = True
 
 #"sphinx.ext.linkcode",
 
