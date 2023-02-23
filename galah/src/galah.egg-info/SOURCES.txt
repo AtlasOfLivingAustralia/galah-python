@@ -1,6 +1,7 @@
 LICENSE
 README.md
 pyproject.toml
+setup.cfg
 setup.py
 src/galah/__init__.py
 src/galah/apply_data_profile.py
