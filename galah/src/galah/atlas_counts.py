@@ -53,8 +53,8 @@ def atlas_counts(taxa=None,
             When using the ``group_by`` argument of ``galah.atlas_counts()``, controls whether counts for each row value are combined or calculated separately. Defaults to ``True``.
         separate : 
             TBD 
-        verbose : 
-            TBD
+        verbose : logical
+            If ``True``, galah gives more information like progress bars. Defaults to ``False``
         use_data_profile : string
             A profile name. Should be a string - the name or abbreviation of a data quality profile to apply to the query. Valid values can be seen using ``galah.show_all(profiles=True)``
 
@@ -68,7 +68,6 @@ def atlas_counts(taxa=None,
 
         .. prompt:: python
 
-            import galah
             galah.atlas_counts()
 
         .. program-output:: python -c "import galah; print(galah.atlas_counts())"

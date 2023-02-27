@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>Narrow_Results &#8212; Galah 0.1.0 documentation</title>
+    <title>Narrow Results &#8212; Galah 0.1.0 documentation</title>
   
   
   
@@ -304,7 +304,7 @@
 <li class="toctree-l1"><a class="reference internal" href="Choosing_Atlas.html">Choosing an Atlas</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Download_Data.html">Download Data</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Look_Up_Info.html">Look Up Info</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Narrow_Results</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Narrow Results</a></li>
 </ul>
 
   </div>
@@ -337,8 +337,65 @@
             <article class="bd-article" role="main">
               
   <section id="narrow-results">
-<h1>Narrow_Results<a class="headerlink" href="#narrow-results" title="Permalink to this heading">#</a></h1>
-<p>Dax to add stuff here and Amanda to check code.</p>
+<h1>Narrow Results<a class="headerlink" href="#narrow-results" title="Permalink to this heading">#</a></h1>
+<p>Each occurrence record contains taxonomic information and information about the observation itself, like
+its location and the date of observation. These pieces of information are recorded and categorised into
+respective fields. When you import data using galah, columns of the resulting tibble correspond to these
+fields.</p>
+<p>Data fields are important because they provide a means to manipulate queries to return only the
+information that you need, and no more. Consequently, much of the architecture of galah has been designed
+to make narrowing as simple as possible. These arguments include:</p>
+<ul class="simple">
+<li><p>taxa</p></li>
+<li><p>filters</p></li>
+<li><p>select</p></li>
+<li><p>group_by</p></li>
+<li><p>down_to</p></li>
+</ul>
+<section id="taxa">
+<h2>taxa<a class="headerlink" href="#taxa" title="Permalink to this heading">#</a></h2>
+<p>Perhaps unsurprisingly, <code class="docutils literal notranslate"><span class="pre">galah.search_taxa()</span></code> searches for taxonomic information. It uses fuzzy matching
+to work a lot like the search bar on the Atlas of Living Australia website, and you can use it to search for
+taxa by their scientific name. Finding your desired taxon with <code class="docutils literal notranslate"><span class="pre">galah.search_taxa()</span></code> is an important step
+to using this taxonomic information to download data with galah.</p>
+<p>For example, to search for reptiles, we first need to identify whether we have the correct query:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><style type="text/css">
+span.prompt1:before {
+  content: " ";
+}
+</style><span class="prompt1">import galah</span>
+<span class="prompt1">galah.search_taxa(taxa=&quot;Reptilia&quot;)</span>
+</pre></div></div><p>Once we know that our search matches the correct taxon or taxa, we can use it as an argument to narrow the
+results of our queries:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">galah.atlas_counts(taxa=&quot;Reptilia&quot;)</span>
+</pre></div></div><p>If you’re using an international atlas, <code class="docutils literal notranslate"><span class="pre">galah.search_taxa()</span></code> will automatically switch to using the local name-matching
+service. For example, Portugal uses the GBIF taxonomic backbone, but integrates seamlessly with our standard
+workflow.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">galah.galah_config(atlas=&quot;Portugal&quot;)</span>
+</pre></div></div><div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">galah.atlas_counts(taxa=&quot;Bufo&quot;, group_by=&quot;species&quot;)</span>
+</pre></div></div></section>
+<section id="filters">
+<h2>filters<a class="headerlink" href="#filters" title="Permalink to this heading">#</a></h2>
+<p>Perhaps the most important argument in galah is <code class="docutils literal notranslate"><span class="pre">filters</span></code>, which is used to filter the rows of queries:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"># Get total record count since 2000</span>
+<span class="prompt1">galah.atlas_counts(filters=&quot;year&gt;2000&quot;)</span>
+</pre></div></div><div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"># Get total record count for iNaturalist in 2021</span>
+<span class="prompt1">galah.atlas_counts(filters=&quot;[dataResourceName=&#39;iNaturalist Australia&#39;,year=2021]&quot;)</span>
+</pre></div></div><p>To find available fields and corresponding valid values, use the field lookup functions
+<code class="docutils literal notranslate"><span class="pre">galah.show_all()</span></code>, <code class="docutils literal notranslate"><span class="pre">galah.search_all()</span></code> &amp; <code class="docutils literal notranslate"><span class="pre">show_values()</span></code>.</p>
+<p>Finally, a special case of <code class="docutils literal notranslate"><span class="pre">filters</span></code> is to make more complex taxonomic queries than are possible using <code class="docutils literal notranslate"><span class="pre">galah.search_taxa</span></code>.
+By using the <code class="docutils literal notranslate"><span class="pre">taxonConceptID</span></code> field, it is possible to build queries that exclude certain taxa, for example. This can
+be useful for paraphyletic concepts such as invertebrates:</p>
+<p><strong>Amanda to check how to do this</strong></p>
+</section>
+<section id="apply-profile">
+<h2>apply_profile<a class="headerlink" href="#apply-profile" title="Permalink to this heading">#</a></h2>
+<p>When working with the ALA, a notable feature is the ability to specify a profile to remove records that are suspect in some way.
+Profiles are groups of data quality filters.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">galah.galah_config(use_data_profile=&quot;ALA&quot;)</span>
+<span class="prompt1">galah.atlas_counts(filter=&quot;year&gt;2000&quot;)</span>
+</pre></div></div><p>To see a full list of data quality profiles, use <code class="docutils literal notranslate"><span class="pre">galah.show_all(profiles=True)</span></code>.</p>
+</section>
 </section>
 
 
@@ -372,6 +429,33 @@
           
             <div class="bd-sidebar-secondary bd-toc">
               
+<div class="toc-item">
+  
+<div class="tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+</div>
+<nav id="bd-toc-nav" class="page-toc">
+    <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#taxa">
+   taxa
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#filters">
+   filters
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#apply-profile">
+   apply_profile
+  </a>
+ </li>
+</ul>
+
+</nav>
+</div>
+
 <div class="toc-item">
   
 <div id="searchbox"></div>

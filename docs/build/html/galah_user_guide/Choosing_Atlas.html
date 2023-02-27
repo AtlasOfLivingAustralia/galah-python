@@ -304,7 +304,7 @@
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Choosing an Atlas</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Download_Data.html">Download Data</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Look_Up_Info.html">Look Up Info</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Narrow_Results.html">Narrow_Results</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Narrow_Results.html">Narrow Results</a></li>
 </ul>
 
   </div>
@@ -338,7 +338,60 @@
               
   <section id="choosing-an-atlas">
 <h1>Choosing an Atlas<a class="headerlink" href="#choosing-an-atlas" title="Permalink to this heading">#</a></h1>
-<p>Dax to add stuff here and Amanda to check code.</p>
+<p>The GBIF network consists of a series of ‘node’ organisations who collate biodiversity
+data from their own countries, with GBIF acting as an umbrella organisation to store data from all
+nodes. Several nodes have their own APIs, often built from the ‘living atlas’ codebase developed
+by the ALA.</p>
+<p>At present, galah supports the following functions and atlases:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Australia</p></li>
+<li><p>Spain</p></li>
+<li><p>Brazil</p></li>
+</ul>
+</div></blockquote>
+<p>Set Organisation
+Set which atlas you want to use by changing the atlas argument in <code class="docutils literal notranslate"><span class="pre">galah_config()</span></code>. The atlas argument
+can accept a full name, an acronym, or a region to select a given atlas, all of which are available
+via <code class="docutils literal notranslate"><span class="pre">galah.show_all(atlases=True)</span></code>. Once a value is provided, it will automatically update galah’s server
+configuration to your selected atlas. The default atlas is Australia.</p>
+<p>If you intend to download records, you may need to register a user profile with the relevant atlas first.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><style type="text/css">
+span.prompt1:before {
+  content: " ";
+}
+</style><span class="prompt1">import galah</span>
+<span class="prompt1">galah.galah_config(atlas=&quot;Spain&quot;, email=&quot;your-email-here&quot;)</span>
+</pre></div></div><section id="look-up-information">
+<h2>Look up Information<a class="headerlink" href="#look-up-information" title="Permalink to this heading">#</a></h2>
+<p>You can use the same look-up functions to find useful information about the Atlas you have set.
+Available information may vary for each Living Atlas.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">galah.galah_config(atlas=&quot;Guatemala&quot;)</span>
+</pre></div></div><div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">galah.show_all(datasets=True)</span>
+</pre></div></div><div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">galah.show_all(fields=True)</span>
+</pre></div></div><div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">galah.search_all(datasets=&quot;year&quot;)</span>
+</pre></div></div><div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">galah.search_taxa(taxa=&quot;lagomorpha&quot;)</span>
+</pre></div></div></section>
+<section id="download-data">
+<h2>Download data<a class="headerlink" href="#download-data" title="Permalink to this heading">#</a></h2>
+<p>You can build queries as you normally would in galah. For taxonomic queries, use <code class="docutils literal notranslate"><span class="pre">galah.search_taxa()</span></code> to
+make sure your searches are returning the correct taxonomic data.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">galah.galah_config(atlas=&quot;United Kingdom&quot;)</span>
+</pre></div></div><div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"># Returns no data due to misspelling</span>
+<span class="prompt1">galah.search_taxa(taxa=&quot;vlps&quot;)</span>
+</pre></div></div><div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"># Returns data</span>
+<span class="prompt1">galah.search_taxa(taxa=&quot;vulpes&quot;)</span>
+</pre></div></div><div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">galah.atlas_counts(taxa=&quot;vulpes&quot;, filters=&quot;year&gt;2010&quot;)</span>
+</pre></div></div><p>Download species occurrence records from other atlases with <code class="docutils literal notranslate"><span class="pre">galah.atlas_occurrences()</span></code></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">galah.atlas_occurrences(taxa=&quot;lagomorpha&quot;, filters=&quot;year&lt;=1980&quot;, select=&quot;taxon_name, year&quot;)</span>
+</pre></div></div></section>
+<section id="complex-queries-with-multiple-atlases">
+<h2>Complex queries with multiple Atlases<a class="headerlink" href="#complex-queries-with-multiple-atlases" title="Permalink to this heading">#</a></h2>
+<p>It is also possible to create more complex queries that return data from multiple Living Atlases.
+As an example, setting atlases within a loop with galah_config() and purrr::map() allows us to
+return the total number of species records in each Living Atlas in one table.</p>
+<p>Amanda to do this part and make table with counts from all atlases</p>
+</section>
 </section>
 
 
@@ -372,6 +425,33 @@
           
             <div class="bd-sidebar-secondary bd-toc">
               
+<div class="toc-item">
+  
+<div class="tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+</div>
+<nav id="bd-toc-nav" class="page-toc">
+    <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#look-up-information">
+   Look up Information
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#download-data">
+   Download data
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#complex-queries-with-multiple-atlases">
+   Complex queries with multiple Atlases
+  </a>
+ </li>
+</ul>
+
+</nav>
+</div>
+
 <div class="toc-item">
   
 <div id="searchbox"></div>

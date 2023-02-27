@@ -45,7 +45,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Authors and Citation" href="../authors/index.html" />
-    <link rel="prev" title="Narrow_Results" href="../galah_user_guide/Narrow_Results.html" />
+    <link rel="prev" title="Narrow Results" href="../galah_user_guide/Narrow_Results.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="docsearch:language" content="en">
   </head>
@@ -338,7 +338,7 @@ the criteria supplied to the <cite>group_by</cite> argument.</p>
 <li><p><strong>group_by</strong> (<em>string</em>) – zero or more individual column names (i.e. fields) to include. See <code class="docutils literal notranslate"><span class="pre">galah.show_all()</span></code> and <code class="docutils literal notranslate"><span class="pre">galah.search_all()</span></code> to see valid fields.</p></li>
 <li><p><strong>expand</strong> (<em>logical</em>) – When using the <code class="docutils literal notranslate"><span class="pre">group_by</span></code> argument of <code class="docutils literal notranslate"><span class="pre">galah.atlas_counts()</span></code>, controls whether counts for each row value are combined or calculated separately. Defaults to <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p></li>
 <li><p><strong>separate</strong> – TBD</p></li>
-<li><p><strong>verbose</strong> – TBD</p></li>
+<li><p><strong>verbose</strong> (<em>logical</em>) – If <code class="docutils literal notranslate"><span class="pre">True</span></code>, galah gives more information like progress bars. Defaults to <code class="docutils literal notranslate"><span class="pre">False</span></code></p></li>
 <li><p><strong>use_data_profile</strong> (<em>string</em>) – A profile name. Should be a string - the name or abbreviation of a data quality profile to apply to the query. Valid values can be seen using <code class="docutils literal notranslate"><span class="pre">galah.show_all(profiles=True)</span></code></p></li>
 </ul>
 </dd>
@@ -352,8 +352,7 @@ the criteria supplied to the <cite>group_by</cite> argument.</p>
 span.prompt1:before {
   content: " ";
 }
-</style><span class="prompt1"><span class="kn">import</span> <span class="nn">galah</span></span>
-<span class="prompt1"><span class="n">galah</span><span class="o">.</span><span class="n">atlas_counts</span><span class="p">()</span></span>
+</style><span class="prompt1"><span class="n">galah</span><span class="o">.</span><span class="n">atlas_counts</span><span class="p">()</span></span>
 </pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>   totalRecords
 0     113984304
 </pre></div>
@@ -370,13 +369,30 @@ NameError: name &#39;year&#39; is not defined
 <dl class="py function">
 <dt class="sig sig-object py" id="galah.atlas_media">
 <span class="sig-prename descclassname"><span class="pre">galah.</span></span><span class="sig-name descname"><span class="pre">atlas_media</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">taxa</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filters</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fields</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">multimedia</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">assertions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_data_profile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">collect</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#galah.atlas_media" title="Permalink to this definition">#</a></dt>
-<dd><p>Used for getting media, such as images, videos and sounds.  An example query (filtering to ensure a small
-nunber of results) is</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="kn">import</span> <span class="nn">galah</span></span>
-<span class="prompt1"><span class="n">filters</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;year=2020&quot;</span><span class="p">,</span><span class="s2">&quot;decimalLongitude&gt;153.0&quot;</span><span class="p">]</span></span>
+<dd><p>In addition to text data describing individual occurrences and their attributes, ALA stores images, sounds and videos
+associated with a given record. <code class="docutils literal notranslate"><span class="pre">galah.atlas_media()</span></code> displays metadata for any and all of the media types.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>taxa</strong> (<em>string</em>) – one or more scientific names. Use <code class="docutils literal notranslate"><span class="pre">galah.search_taxa()</span></code> to search for valid scientific names.</p></li>
+<li><p><strong>filters</strong> (<em>pandas.DataFrame</em>) – filters, in the form <code class="docutils literal notranslate"><span class="pre">field</span></code> <code class="docutils literal notranslate"><span class="pre">logical</span></code> <code class="docutils literal notranslate"><span class="pre">value</span></code> (e.g. <code class="docutils literal notranslate"><span class="pre">&quot;year=2021&quot;</span></code>)</p></li>
+<li><p><strong>fields</strong> (<em>string</em>) – zero or more individual column names (i.e. fields) to include. See <code class="docutils literal notranslate"><span class="pre">galah.show_all()</span></code> and <code class="docutils literal notranslate"><span class="pre">galah.search_all()</span></code> to see valid fields.</p></li>
+<li><p><strong>verbose</strong> (<em>logical</em>) – If <code class="docutils literal notranslate"><span class="pre">True</span></code>, galah gives more information like progress bars. Defaults to <code class="docutils literal notranslate"><span class="pre">False</span></code></p></li>
+<li><p><strong>multimedia</strong> (<em>string</em>) – TBD</p></li>
+<li><p><strong>assertions</strong> (<em>string</em>) – Using “assertions” returns all quality assertion-related columns. These columns are data quality checks run by each living atlas. The list of assertions is shown by <code class="docutils literal notranslate"><span class="pre">galah.show_all(assertions=True)</span></code>.</p></li>
+<li><p><strong>use_data_profile</strong> (<em>logical</em>) – if <code class="docutils literal notranslate"><span class="pre">True</span></code>, uses data profile set in <code class="docutils literal notranslate"><span class="pre">galah_config()</span></code>. Valid values can be seen using <code class="docutils literal notranslate"><span class="pre">galah.show_all(profiles=True)</span></code>. Default is <code class="docutils literal notranslate"><span class="pre">False</span></code></p></li>
+<li><p><strong>collect</strong> (<em>logical</em>) – if <code class="docutils literal notranslate"><span class="pre">True</span></code>, downloads full-sized images and media files returned to a local directory.</p></li>
+<li><p><strong>path</strong> (<em>string</em>) – path to directory where downloaded media will be stored.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>An object of class <code class="docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code>. If <code class="docutils literal notranslate"><span class="pre">collect=True</span></code>, available image &amp; media files are downloaded to a user local directory.</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="n">filters</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;year=2020&quot;</span><span class="p">,</span><span class="s2">&quot;decimalLongitude&gt;153.0&quot;</span><span class="p">]</span></span>
 <span class="prompt1"><span class="n">galah</span><span class="o">.</span><span class="n">atlas_media</span><span class="p">(</span><span class="n">taxa</span><span class="o">=</span><span class="s2">&quot;Ornithorhynchus anatinus&quot;</span><span class="p">,</span><span class="n">filters</span><span class="o">=</span><span class="n">filters</span><span class="p">)</span></span>
-</pre></div></div><p>which returns</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>    decimalLatitude  ...                          occurrenceID
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>    decimalLatitude  ...                          occurrenceID
 0        -30.395442  ...  42912016-2409-4125-a61f-13ffd4c32fcb
 1        -30.348831  ...  6882dfe3-5295-493d-a005-66f8392e9d5b
 2        -30.279557  ...  72ad295f-112d-442f-83e1-fd385ef9163a
@@ -397,12 +413,31 @@ nunber of results) is</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="galah.atlas_occurrences">
 <span class="sig-prename descclassname"><span class="pre">galah.</span></span><span class="sig-name descname"><span class="pre">atlas_occurrences</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">taxa</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filters</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fields</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">assertions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_data_profile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#galah.atlas_occurrences" title="Permalink to this definition">#</a></dt>
-<dd><p>Used for getting occurrence data for your species.  To get occurrences for</p>
-<p>To know how many total records are in your chosen atlas, type</p>
+<dd><p>The most common form of data stored by living atlases are observations of individual life forms, known as ‘occurrences’.
+This function allows the user to search for occurrence records that match their specific criteria, and return them as a
+<code class="docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code> for analysis. Optionally, the user can also request a DOI for a given download to facilitate
+citation and re-use of specific data resources.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>taxa</strong> (<em>string</em>) – one or more scientific names. Use <code class="docutils literal notranslate"><span class="pre">galah.search_taxa()</span></code> to search for valid scientific names.</p></li>
+<li><p><strong>filters</strong> (<em>pandas.DataFrame</em>) – filters, in the form <code class="docutils literal notranslate"><span class="pre">field</span></code> <code class="docutils literal notranslate"><span class="pre">logical</span></code> <code class="docutils literal notranslate"><span class="pre">value</span></code> (e.g. <code class="docutils literal notranslate"><span class="pre">&quot;year=2021&quot;</span></code>)</p></li>
+<li><p><strong>test</strong> (<em>logical</em>) – TBD</p></li>
+<li><p><strong>verbose</strong> (<em>logical</em>) – If <code class="docutils literal notranslate"><span class="pre">True</span></code>, galah gives more information like progress bars. Defaults to <code class="docutils literal notranslate"><span class="pre">False</span></code></p></li>
+<li><p><strong>fields</strong> (<em>string</em>) – TBD</p></li>
+<li><p><strong>assertions</strong> (<em>string</em>) – Using “assertions” returns all quality assertion-related columns. These columns are data quality checks run by each living atlas. The list of assertions is shown by <code class="docutils literal notranslate"><span class="pre">galah.show_all(assertions=True)</span></code>.</p></li>
+<li><p><strong>use_data_profile</strong> (<em>string</em>) – A profile name. Should be a string - the name or abbreviation of a data quality profile to apply to the query. Valid values can be seen using <code class="docutils literal notranslate"><span class="pre">galah.show_all(profiles=True)</span></code></p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>An object of class <code class="docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code>.</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<p>Download records of Vulpes vulpes in 2023</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="kn">import</span> <span class="nn">galah</span></span>
 <span class="prompt1"><span class="n">galah</span><span class="o">.</span><span class="n">atlas_occurrences</span><span class="p">(</span><span class="n">taxa</span><span class="o">=</span><span class="s2">&quot;Vulpes vulpes&quot;</span><span class="p">,</span><span class="n">filters</span><span class="o">=</span><span class="s2">&quot;year=2023&quot;</span><span class="p">)</span></span>
-</pre></div></div><p>which returns</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>     decimalLatitude  decimalLongitude  ...       dataResourceName occurrenceStatus
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>     decimalLatitude  decimalLongitude  ...       dataResourceName occurrenceStatus
 0         -38.668361        145.933151  ...  iNaturalist Australia          PRESENT
 1         -38.337203        142.737426  ...  iNaturalist Australia          PRESENT
 2         -38.325227        142.633248  ...  iNaturalist Australia          PRESENT
@@ -423,12 +458,24 @@ nunber of results) is</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="galah.atlas_species">
 <span class="sig-prename descclassname"><span class="pre">galah.</span></span><span class="sig-name descname"><span class="pre">atlas_species</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">taxa</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rank</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'species'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#galah.atlas_species" title="Permalink to this definition">#</a></dt>
-<dd><p>Used for getting occurrence data for your species.  To get occurrences for</p>
-<p>To know how many total records are in your chosen atlas, type</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="kn">import</span> <span class="nn">galah</span></span>
-<span class="prompt1"><span class="n">galah</span><span class="o">.</span><span class="n">atlas_species</span><span class="p">(</span><span class="n">taxa</span><span class="o">=</span><span class="s2">&quot;Heleioporus&quot;</span><span class="p">)</span></span>
-</pre></div></div><p>which returns</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>                     species  ...       vernacular_name
+<dd><p>While there are reasons why users may need to check every record meeting their search criteria (i.e. using <code class="docutils literal notranslate"><span class="pre">galah.atlas_occurrences()</span></code>),
+a common use case is to simply identify which species occur in a specified region, time period, or taxonomic group.
+This function returns a <code class="docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code> with one row per species, and columns giving associated taxonomic information.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>taxa</strong> (<em>string</em>) – one or more scientific names. Use <code class="docutils literal notranslate"><span class="pre">galah.search_taxa()</span></code> to search for valid scientific names.</p></li>
+<li><p><strong>rank</strong> (<em>string</em>) – filters, in the form <code class="docutils literal notranslate"><span class="pre">field</span></code> <code class="docutils literal notranslate"><span class="pre">logical</span></code> <code class="docutils literal notranslate"><span class="pre">value</span></code> (e.g. <code class="docutils literal notranslate"><span class="pre">&quot;year=2021&quot;</span></code>)</p></li>
+<li><p><strong>verbose</strong> – If <code class="docutils literal notranslate"><span class="pre">True</span></code>, galah gives more information like progress bars. Defaults to <code class="docutils literal notranslate"><span class="pre">False</span></code></p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>An object of class <code class="docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code>.</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="n">galah</span><span class="o">.</span><span class="n">atlas_species</span><span class="p">(</span><span class="n">taxa</span><span class="o">=</span><span class="s2">&quot;Heleioporus&quot;</span><span class="p">)</span></span>
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>                     species  ...       vernacular_name
 0  Heleioporus albopunctatus  ...  Western Spotted Frog
 1   Heleioporus australiacus  ...  Giant Burrowing Frog
 2     Heleioporus barycragus  ...          Hooting Frog
@@ -599,13 +646,13 @@ displaying all valid options for the information specified.</p>
 3                                              *Brigalow  ...  dr14507
 4                                                0662409  ...  dr19938
 ...                                                  ...  ...      ...
-12479  [C4OC] Torres Strait Regional Landcare Facilit...  ...   dr3529
-12480  [C4OC] Traditional Ecological Knowledge Record...  ...   dr3199
-12481  [C4OC] Trialling and demonstrating farmer inno...  ...   dr3519
-12482                [C4OC] Urban and Coastal Protection  ...   dr6802
-12483        _River_Torrens_Linear_Park_Species_List.csv  ...  dr19265
+12577  [C4OC] Torres Strait Regional Landcare Facilit...  ...   dr3529
+12578  [C4OC] Traditional Ecological Knowledge Record...  ...   dr3199
+12579  [C4OC] Trialling and demonstrating farmer inno...  ...   dr3519
+12580                [C4OC] Urban and Coastal Protection  ...   dr6802
+12581        _River_Torrens_Linear_Park_Species_List.csv  ...  dr19265
 
-[12484 rows x 3 columns]
+[12582 rows x 3 columns]
 </pre></div>
 </div>
 </dd></dl>
@@ -657,7 +704,7 @@ more about the information of interest. <code class="docutils literal notranslat
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
           <p class="prev-next-subtitle">previous</p>
-          <p class="prev-next-title">Narrow_Results</p>
+          <p class="prev-next-title">Narrow Results</p>
       </div>
   </a>
   <a class='right-next' id="next-link" href="../authors/index.html" title="next page">

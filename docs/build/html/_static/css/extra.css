@@ -2,12 +2,12 @@
 @import url(https://fonts.googleapis.com/css?family=Roboto);
 
 :root {
-  --pst-color-text-base: #495057;
-  --pst-text-size: 1rem;
+  --pst-color-text-base: #495057!important;
+  --pst-text-size: 1.1rem;
 }
 
 p {
-  font-size: var(--pst-text-size);
+  font-size: 1.1rem!important;
   line-height: 1.5;
 }
 

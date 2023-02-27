@@ -31,10 +31,34 @@ def print_tree(tree_or_leaf, level=0):
 ### TODO: Make sure I get the right answer for this
 def atlas_taxonomy(taxa = None,
                    down_to = None):
+    """
+    The ALA has its' own internal taxonomy that is derived from authoritative sources. ``galah.atlas_taxonomy()`` provides a means to query 
+    that taxonomy, returning a tree (class Node) showing which lower clades are contained within the specified taxon.
+
+    Parameters
+    ----------
+        taxa : string
+            one or more scientific names. Use ``galah.search_taxa()`` to search for valid scientific names.  
+        down_to : string
+            The identity of the clade at which the downwards search should stop. (e.g. ``"order"``)
+
+    Returns
+    -------
+        An object of class ``tree``.
+
+    Examples
+    --------
+        Return total records in your chosen atlas
+
+        .. prompt:: python
+
+            galah.atlas_taxonomy(taxa="fungi", down_to="phylum")
+
+    """
 
     # check if taxa is None
     if taxa is None:
-        raise ValueError("Please provide the name of a taxa, i.e. \"chordata\"")
+        raise ValueError("Please provide the name of a taxa")
 
     # list of taxonomic tree
     taxonomic_list = ['domain','kingdom','phylum','subphylum','class','order','family','genus','species']
