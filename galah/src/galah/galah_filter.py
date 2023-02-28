@@ -2,7 +2,15 @@ import re
 
 def galah_filter(f, ifgroupBy=False):
     """
-    This takes
+    "Filters" are arguments of the form field logical value that are used to narrow down the number of records returned by 
+    a specific query. For example, it is common for users to request records from a particular year (``year=2020``), or 
+    to return all records except for fossils (``basisOfRecord!=FossilSpecimen``).
+
+    Filters are passed to ``galah.atlas_occurrences()``, ``galah.atlas_species()``, ``galah.atlas_counts()`` or ``galah.atlas_media()``.
+
+    
+    Examples
+    --------
 
     To know how many total records are in your chosen atlas, type
 

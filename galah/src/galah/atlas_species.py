@@ -64,18 +64,32 @@ FACETS_STRINGS = {
 }
 
 # this function looks for all species with the associated name
+### TODO: comment
 def atlas_species(taxa=None,rank="species",verbose=False):
     """
-    Used for getting occurrence data for your species.  To get occurrences for
+    While there are reasons why users may need to check every record meeting their search criteria (i.e. using ``galah.atlas_occurrences()``), 
+    a common use case is to simply identify which species occur in a specified region, time period, or taxonomic group. 
+    This function returns a ``pandas.DataFrame`` with one row per species, and columns giving associated taxonomic information.
 
-    To know how many total records are in your chosen atlas, type
+    Parameters
+    ----------
+        taxa : string
+            one or more scientific names. Use ``galah.search_taxa()`` to search for valid scientific names.  
+        rank : string
+            filters, in the form ``field`` ``logical`` ``value`` (e.g. ``"year=2021"``)
+        verbose : 
+            If ``True``, galah gives more information like progress bars. Defaults to ``False``
+
+    Returns
+    -------
+        An object of class ``pandas.DataFrame``.
+
+    Examples
+    --------
 
     .. prompt:: python
 
-        import galah
         galah.atlas_species(taxa="Heleioporus")
-
-    which returns
 
     .. program-output:: python -c "import galah; print(galah.atlas_species(taxa=\\\"Heleioporus\\\"))"
     """

@@ -42,7 +42,7 @@ def galah_config(email=None,
 
     # check to see if there are any arguments to update
     if email is None and email_notify is None and atlas is None and data_profile is None:
-        raise ValueError("Please specify a value you would like to change, i.e. galah_config(email=\"youremail@example.come\")")
+        raise ValueError("Please specify a value you would like to change, e.g. galah_config(email=\"youremail@example.com\")")
 
     # open the config parser
     configParser = configparser.ConfigParser()

@@ -50,16 +50,41 @@ def atlas_occurrences(taxa=None,
                       use_data_profile=False,
                       ):
     """
-    Used for getting occurrence data for your species.  To get occurrences for
+    The most common form of data stored by living atlases are observations of individual life forms, known as 'occurrences'. 
+    This function allows the user to search for occurrence records that match their specific criteria, and return them as a 
+    ``pandas.DataFrame`` for analysis. Optionally, the user can also request a DOI for a given download to facilitate 
+    citation and re-use of specific data resources.
 
-    To know how many total records are in your chosen atlas, type
+    Parameters
+    ----------
+        taxa : string
+            one or more scientific names. Use ``galah.search_taxa()`` to search for valid scientific names.  
+        filters : pandas.DataFrame
+            filters, in the form ``field`` ``logical`` ``value`` (e.g. ``"year=2021"``)
+        test : logical
+            TBD
+        verbose : logical
+            If ``True``, galah gives more information like progress bars. Defaults to ``False``
+        fields : string
+            TBD
+        assertions : string
+            Using "assertions" returns all quality assertion-related columns. These columns are data quality checks run by each living atlas. The list of assertions is shown by ``galah.show_all(assertions=True)``.
+        use_data_profile : string
+            A profile name. Should be a string - the name or abbreviation of a data quality profile to apply to the query. Valid values can be seen using ``galah.show_all(profiles=True)``
+
+    Returns
+    -------
+        An object of class ``pandas.DataFrame``.
+
+    Examples
+    --------
+    
+    Download records of Vulpes vulpes in 2023
 
     .. prompt:: python
 
         import galah
         galah.atlas_occurrences(taxa="Vulpes vulpes",filters="year=2023")
-
-    which returns
 
     .. program-output:: python -c "import galah; print(galah.atlas_occurrences(taxa=\\\"Vulpes vulpes\\\",filters=\\\"year=2023\\\"))"
     """
