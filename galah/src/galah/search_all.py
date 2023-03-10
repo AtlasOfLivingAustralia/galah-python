@@ -21,7 +21,7 @@ def search_all(assertions=None,
     """
     The living atlases store a huge amount of information, above and beyond the occurrence records that are their main output. 
     In galah, one way that users can investigate this information is by searching for a specific option or category for the 
-    type of information they are interested in.  ``galah.search_all()`` is a helper function that can do searches within multiple 
+    type of information they are interested in.  ``search_all()`` is a helper function that can do searches within multiple 
     types of information.
 
     Parameters
@@ -51,7 +51,7 @@ def search_all(assertions=None,
         reasons : string
             Search for what values are acceptable as 'download reasons' for a specified atlas
         column_name : string
-            TBD
+            Determines what column in the table this function will search for the string specified as the argument
 
     Returns
     -------

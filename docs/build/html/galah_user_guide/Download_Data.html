@@ -41,7 +41,7 @@
     <link rel="icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Look Up Info" href="Look_Up_Info.html" />
+    <link rel="next" title="Look Up Information" href="Look_Up_Info.html" />
     <link rel="prev" title="Choosing an Atlas" href="Choosing_Atlas.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="docsearch:language" content="en">
@@ -188,6 +188,10 @@
   </div>
 
   
+  <label class="sidebar-toggle secondary-toggle" for="__secondary">
+      <span class="fas fa-outdent"></span>
+  </label>
+  
 
 </div>
   </nav>
@@ -296,7 +300,7 @@
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="Look_Up_Info.html">
-   Look Up Info
+   Look Up Information
   </a>
  </li>
  <li class="toctree-l1">
@@ -334,7 +338,124 @@
               
   <section id="download-data">
 <h1>Download Data<a class="headerlink" href="#download-data" title="Permalink to this heading">#</a></h1>
-<p>Dax to add stuff here and Amanda to check code.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">atlas_</span></code> functions are used to return data from the atlas chosen using <code class="docutils literal notranslate"><span class="pre">galah_config()</span></code>. They are:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">atlas_counts()</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">atlas_occurrences()</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">atlas_species()</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">atlas_media()</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">atlas_taxonomy()</span></code></p></li>
+</ul>
+</div></blockquote>
+<section id="record-counts">
+<h2>Record counts<a class="headerlink" href="#record-counts" title="Permalink to this heading">#</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">galah.atlas_counts()</span></code> provides summary counts on records in the specified atlas, without needing to download all the records.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><style type="text/css">
+span.prompt1:before {
+  content: " ";
+}
+</style><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">galah_config</span><span class="p">(</span><span class="n">atlas</span><span class="o">=</span><span class="s2">&quot;Australia&quot;</span><span class="p">)</span></span>
+<span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">atlas_counts</span><span class="p">()</span></span>
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>   totalRecords
+0     114091351
+</pre></div>
+</div>
+<p>In addition to the filter arguments, it has an optional group_by argument, which provides counts binned
+by the requested field.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">atlas_counts</span><span class="p">(</span><span class="n">group_by</span><span class="o">=</span><span class="s2">&quot;kingdom&quot;</span><span class="p">)</span></span>
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>     kingdom     count
+0   Animalia  86370635
+1    Archaea      1106
+2   Bacteria     71560
+3  Chromista    855346
+4  Eukaryota      1353
+5      Fungi   2095635
+6    Plantae  24048148
+7   Protista    145429
+8   Protozoa      3241
+9      Virus       502
+</pre></div>
+</div>
+</section>
+<section id="species-lists">
+<h2>Species lists<a class="headerlink" href="#species-lists" title="Permalink to this heading">#</a></h2>
+<p>A common use case of atlas data is to identify which species occur in a specified region, time period,
+or taxonomic group. <code class="docutils literal notranslate"><span class="pre">galah.atlas_species()</span></code> is similar to search_taxa, in that it returns taxonomic information and
+unique identifiers in a tibble. It differs in not being able to return information on taxonomic levels other
+than the species; but also in being more flexible by supporting filtering:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">atlas_species</span><span class="p">(</span><span class="n">taxa</span><span class="o">=</span><span class="s2">&quot;Rodentia&quot;</span><span class="p">,</span><span class="n">filters</span><span class="o">=</span><span class="s2">&quot;stateProvince=Northern Territory&quot;</span><span class="p">)</span></span>
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</section>
+<section id="occurrence-data">
+<h2>Occurrence data<a class="headerlink" href="#occurrence-data" title="Permalink to this heading">#</a></h2>
+<p>To download occurrence data you will need to specify your email in <code class="docutils literal notranslate"><span class="pre">galah.galah_config()</span></code>. This email must be
+associated with an active account on your chosen atlas. See more information in the config section.</p>
+<p>galah_config(email = “<a class="reference external" href="mailto:your_email&#37;&#52;&#48;email&#46;com">your_email<span>&#64;</span>email<span>&#46;</span>com</a>”, atlas = “Australia”)</p>
+<p>An example here is to download occurrence records for Eolophus roseicapilla:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">atlas_occurrences</span><span class="p">(</span><span class="n">taxa</span><span class="o">=</span><span class="s2">&quot;Eolophus roseicapilla&quot;</span><span class="p">,</span><span class="n">filters</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;stateProvince=Australian Capital Territory&quot;</span><span class="p">,</span><span class="s2">&quot;year&gt;=2010&quot;</span><span class="p">],</span><span class="n">fields</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;institutionID&quot;</span><span class="p">,</span><span class="s2">&quot;basic&quot;</span><span class="p">])</span></span>
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>      institutionID  ...  occurrenceStatus
+0               NaN  ...           PRESENT
+1               NaN  ...           PRESENT
+2               NaN  ...           PRESENT
+3               NaN  ...           PRESENT
+4               NaN  ...           PRESENT
+...             ...  ...               ...
+65322           NaN  ...           PRESENT
+65323           NaN  ...           PRESENT
+65324        in1033  ...           PRESENT
+65325        in1033  ...           PRESENT
+65326        in1033  ...           PRESENT
+
+[65327 rows x 9 columns]
+</pre></div>
+</div>
+</section>
+<section id="media-metadata">
+<h2>Media metadata<a class="headerlink" href="#media-metadata" title="Permalink to this heading">#</a></h2>
+<p>In addition to text data describing individual occurrences and their attributes, ALA stores images, sounds and videos
+associated with a given record. Metadata on these records can be downloaded using <code class="docutils literal notranslate"><span class="pre">galah.atlas_media()</span></code> and the same set of
+filters as the other data download functions.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">atlas_media</span><span class="p">(</span><span class="n">taxa</span><span class="o">=</span><span class="s2">&quot;Eolophus roseicapilla&quot;</span><span class="p">,</span><span class="n">filters</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;year=2020&quot;</span><span class="p">,</span><span class="s2">&quot;cl22=Australian Capital Territory&quot;</span><span class="p">])</span></span>
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>     decimalLatitude  ...                          occurrenceID
+0         -35.599952  ...  063bb0fd-541b-4182-8bf6-6dc79c81ef41
+1         -35.599952  ...  063bb0fd-541b-4182-8bf6-6dc79c81ef41
+2         -35.599952  ...  063bb0fd-541b-4182-8bf6-6dc79c81ef41
+3         -35.599952  ...  063bb0fd-541b-4182-8bf6-6dc79c81ef41
+4         -35.532558  ...                                   NaN
+..               ...  ...                                   ...
+439       -35.177018  ...                                   NaN
+440       -35.177018  ...                                   NaN
+441       -35.177018  ...                                   NaN
+442       -35.177018  ...                                   NaN
+443       -35.166122  ...  c91faaef-1df3-41e6-a12e-c0dcd13e47b0
+
+[444 rows x 19 columns]
+</pre></div>
+</div>
+<p>To actually download the media files to your computer, add the argument <code class="docutils literal notranslate"><span class="pre">collect</span></code>.  By default, it downloads the data to your
+current working directory, but you can specify the folder to download to with the <code class="docutils literal notranslate"><span class="pre">path</span></code> argument.</p>
+</section>
+<section id="configuring-galah">
+<h2>Configuring galah<a class="headerlink" href="#configuring-galah" title="Permalink to this heading">#</a></h2>
+<p>Various aspects of the galah package can be customized. To preserve configuration for future sessions, set profile_path to a location of a .Rprofile file.</p>
+<p><em>Email</em></p>
+<p>To download occurrence records, you will need to provide an email address registered with the ALA. You can create an account
+here. Once an email is registered with the ALA, it should be stored in the config:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">galah_config</span><span class="p">(</span><span class="n">email</span> <span class="o">=</span> <span class="s2">&quot;myemail@gmail.com&quot;</span><span class="p">)</span></span>
+</pre></div></div><p><em>Setting the download reason</em></p>
+<p>ALA requires that you provide a reason when downloading occurrence data (via the galah atlas_occurrences() function).
+The reason is set as “scientific research” by default, but you can change this using galah_config(). See show_all_reasons()
+for valid download reasons.</p>
+<p>galah_config(download_reason_id = your_reason_id)</p>
+</section>
+<section id="debugging">
+<h2>Debugging<a class="headerlink" href="#debugging" title="Permalink to this heading">#</a></h2>
+<p>If things aren’t working as expected, more detail (particularly about web requests)
+can be obtained by setting the <code class="docutils literal notranslate"><span class="pre">verbose</span></code> option in many functions.</p>
+</section>
 </section>
 
 
@@ -355,7 +476,7 @@
   <a class='right-next' id="next-link" href="Look_Up_Info.html" title="next page">
   <div class="prev-next-info">
       <p class="prev-next-subtitle">next</p>
-      <p class="prev-next-title">Look Up Info</p>
+      <p class="prev-next-title">Look Up Information</p>
   </div>
   <i class="fas fa-angle-right"></i>
   </a>
@@ -365,6 +486,52 @@
           </div>
           
           
+          
+            <div class="bd-sidebar-secondary bd-toc">
+              
+<div class="toc-item">
+  
+<div class="tocsection onthispage">
+    <i class="fas fa-list"></i> On this page
+</div>
+<nav id="bd-toc-nav" class="page-toc">
+    <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#record-counts">
+   Record counts
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#species-lists">
+   Species lists
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#occurrence-data">
+   Occurrence data
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#media-metadata">
+   Media metadata
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#configuring-galah">
+   Configuring galah
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#debugging">
+   Debugging
+  </a>
+ </li>
+</ul>
+
+</nav>
+</div>
+
+            </div>
           
           
         </div>

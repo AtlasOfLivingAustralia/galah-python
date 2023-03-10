@@ -5,7 +5,8 @@ def search_values(field=None,
                   column_name=None):
     """
     Users may wish to see the specific values within a chosen field, profile or list to narrow queries or understand 
-    more about the information of interest. ``galah.search_values()`` allows users for search for specific values within a specified field.
+    more about the information of interest. ``search_values()`` allows users for search for specific values within 
+    a specified field.
 
     Parameters
     ----------
@@ -14,7 +15,7 @@ def search_values(field=None,
         value : string
             A string specifying a search term. Not case sensitive. 
         verbose : logical
-            TBD
+            This option is available for users who want to know what URLs this function is using to get the value. Default to False.
 
     Returns
     -------
@@ -45,7 +46,7 @@ def search_values(field=None,
         raise ValueError("Only strings are a valid query for the column_name variable")
     # check to see if the user input the correct variable type; else, throw value error
     if type(value) is str:
-        return dataFrame.loc[dataFrame[column_name].astype(str).str.contains(value,case=True, na=False)].sort_values(column_name,key=lambda x: x.str.len())
+        return dataFrame.loc[dataFrame[column_name].astype(str).str.contains(value,case=False, na=False)].sort_values(column_name,key=lambda x: x.str.len())
     else:
         raise ValueError(
             "You can only pass one string to your search parameter = run show_all(assertions=True) to get strings to pass")

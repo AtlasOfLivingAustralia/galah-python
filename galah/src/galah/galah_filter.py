@@ -6,7 +6,7 @@ def galah_filter(f, ifgroupBy=False):
     a specific query. For example, it is common for users to request records from a particular year (``year=2020``), or 
     to return all records except for fossils (``basisOfRecord!=FossilSpecimen``).
 
-    Filters are passed to ``galah.atlas_occurrences()``, ``galah.atlas_species()``, ``galah.atlas_counts()`` or ``galah.atlas_media()``.
+    Filters are passed to ``atlas_occurrences()``, ``atlas_species()``, ``atlas_counts()`` or ``atlas_media()``.
 
     
     Examples
@@ -24,20 +24,19 @@ def galah_filter(f, ifgroupBy=False):
     .. program-output:: python -c "import galah; print(galah.galah_filter(filters=\\\"year=2020\\\"))"
     """
 
-    ## TODO: check for year - might not be working with expand group_by
-
     # first, check for special characters
-    specialChars = re.compile('[@!#$%^&*()<>?}{~:=]') #/\|
+    char_string='[!=<>]'
+    specialChars = re.compile(char_string) #["=","!",">","<"] #/\|:
     returnString=""
 
     # check to make sure the filter type is correct
-    if type(f) == str:
+    if type(f) is str:
 
         # need to check for special characters
         specialChar = specialChars.findall(f)
         if specialChar is None:
-            raise ValueError("Either your filters does not have the correct special characters [@_!#$%^&*()<>?}{~:=], "
-                            "or we need to include another special character we have forgotten about.")
+            raise ValueError("Either your filters does not have the correct special characters {}".format(char_string) 
+                             + "or we need to include another special character we have forgotten about.")
         else:
             specialChar = "".join(specialChar)
 
@@ -59,9 +58,20 @@ def galah_filter(f, ifgroupBy=False):
             # if filter is querying a field that has no value
             elif parts[1] == '':
                 returnString += "%28{}%3A%28*%29%29".format(parts[0])
+            elif parts[1] == "True" or parts[1] == "False":
+                print("Amanda, write the thing")
             else:
+                # check if this is array
+                arrayChars = re.compile('[\[\]]')
+                arrayChar = arrayChars.findall(parts[1])
+                if arrayChar:
+                    temp_array = parts[1][1:-1].split(",")
+                    for value in temp_array:
+                        returnString += "{}%3A22{}%22%20OR%20".format(parts[0], value.replace(" ","%20").replace('\'','').replace('"',''))
+                    returnString = returnString[:-8]
                 # added quotes
-                returnString += "%28{}%3A%22{}%22%29".format(parts[0], parts[1].replace(" ", "%20"))
+                else:
+                    returnString += "%28{}%3A%22{}%22%29".format(parts[0], parts[1].replace(" ", "%20"))
 
         elif specialChar == '>':
             returnString+="%28{}:%5B{}%20TO%20*%5d%20AND%20-%28{}%3A%22{}%22%29%29".format(parts[0], parts[1], parts[0], parts[1])
@@ -83,9 +93,9 @@ def galah_filter(f, ifgroupBy=False):
             returnString += "-%28{}%3A%22{}%22%29".format(parts[0], parts[1])
 
         # filters with numerical operators are being used with a non-numeric type
-        elif not isinstance(parts[1], int):
-            raise ValueError("Numeric types can only be used with filters that include the <, >, <=, or => operators.")
-
+        #elif not isinstance(parts[1], int):
+        #    raise ValueError("Numeric types can only be used with filters that include the <, >, <=, or => operators.")
+        
         # else, there is either an error in the filters or a missing case
         else:
             raise ValueError("The special character {} is not included in the filters function.  Either it is not a logical operator, or it has not been included yet.".format(specialChar[0]))

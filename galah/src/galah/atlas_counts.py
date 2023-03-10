@@ -27,7 +27,6 @@ def atlas_counts(taxa=None,
                  filters=None,
                  group_by=None,
                  expand=True,
-                 separate=False,
                  verbose=False,
                  use_data_profile=False,
                  ):
@@ -51,10 +50,8 @@ def atlas_counts(taxa=None,
             zero or more individual column names (i.e. fields) to include. See ``galah.show_all()`` and ``galah.search_all()`` to see valid fields.
         expand : logical
             When using the ``group_by`` argument of ``galah.atlas_counts()``, controls whether counts for each row value are combined or calculated separately. Defaults to ``True``.
-        separate : 
-            TBD 
         verbose : logical
-            If ``True``, galah gives more information like progress bars. Defaults to ``False``
+            If ``True``, galah gives more information like progress bars. Defaults to ``False``.
         use_data_profile : string
             A profile name. Should be a string - the name or abbreviation of a data quality profile to apply to the query. Valid values can be seen using ``galah.show_all(profiles=True)``
 
@@ -76,9 +73,9 @@ def atlas_counts(taxa=None,
 
         .. prompt:: python
 
-            galah.atlas_counts(filters="year>2019")
+            galah.atlas_counts(filters="year>2019",group_by="year")
 
-        .. program-output:: python -c "import galah; print(galah.atlas_counts(filters="year>2019"))"
+        .. program-output:: python -c "import galah; print(galah.atlas_counts(filters=\\\"year>2019\\\",group_by=\\\"year\\\",expand=False))"
 
     """
 
@@ -103,9 +100,6 @@ def atlas_counts(taxa=None,
                          "If you don't want to use a data quality profile, set it to None by typing the following:\n\n"
                          "galah.galah_config(data_profile=\"None\")"
                          )
-
-    # set initial variables
-    group_by_dataframe = pd.DataFrame()
 
     # if there is no taxa, assume you will get the total number of records in the ALA
     if taxa is None:
@@ -171,7 +165,6 @@ def atlas_counts(taxa=None,
             taxa = [taxa]
 
         # get the number of records associated with each taxa
-        # check for separate here first?
         for i,name in enumerate(taxa):
 
             # create temporary dataframe for taxon id
@@ -202,7 +195,7 @@ def atlas_counts(taxa=None,
                 URL += "%20AND%20"
                 return galah_group_by(URL, group_by=group_by, filters=filters, expand=expand, verbose=verbose)
             else:
-                return galah_group_by(baseURL, group_by=group_by, filters=filters, expand=expand, verbose=verbose)
+                return galah_group_by(URL, group_by=group_by, filters=filters, expand=expand, verbose=verbose)
 
         else:
 
@@ -223,10 +216,7 @@ def atlas_counts(taxa=None,
                         URL += galah_filter(f, ifgroupBy=expand) + "%20AND%20"
 
                     # add final part of URL
-                    URL = URL[:-len("%20AND%20")] + "%29"
-                    if separate:
-                        URL += "&facets=species"
-                    URL += "&flimit=10000&pageSize=0"
+                    URL = URL[:-len("%20AND%20")] + "%29&flimit=10000&pageSize=0"
 
                 # else, make sure that the filters is in the following format
                 else:
@@ -237,8 +227,6 @@ def atlas_counts(taxa=None,
             else:
 
                 # check if it's separate one last time
-                if separate:
-                    URL += "&facets=species"
                 URL += "&flimit=10000&pageSize=0"
 
         # check to see if the user wants the URL for querying
@@ -249,29 +237,7 @@ def atlas_counts(taxa=None,
         response = requests.get(URL)
         json = response.json()
 
-        # if the user wants them separated, add counts to a temporary array to make a dataframe with
-        if separate:
-            separate_dict={entry:[] for entry in ['label','count']}
-            for entry in json['facetResults'][0]['fieldResult']:
-                for name in ['label','count']:
-                    separate_dict[name].append(entry[name])
-            dataFrame = pd.DataFrame(separate_dict)
-            if dataFrame.shape[0] < len(taxa):
-                #warnings.warn("One of the taxa is not found in your designated atlas")
-                print("One of the taxa is not found in your designated atlas")
-            return dataFrame
-
-        if not group_by_dataframe.empty:
-            return group_by_dataframe
-
-        ### TODO: Figure this out
-        # raise warning if one of the taxa isn't in the atlas
-        #if num_taxa < len_taxa:
-        #    warnings.warn("One of the taxa is not found in your designated atlas")
-
-        # make a dataframe with the total number of records
-        else:
-            return pd.DataFrame({'totalRecords': [int(json['totalRecords'])]})
+        return pd.DataFrame({'totalRecords': [int(json['totalRecords'])]})
 
     # if the taxa variable isn't a string or a list, raise an exception
     else:

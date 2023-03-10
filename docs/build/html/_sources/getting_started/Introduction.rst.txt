@@ -17,7 +17,7 @@ In addition, users can:
 
 - Restrict their results to occurrences that meet particular data-quality criteria
 
-All functions return a galah dataframe as their standard format.
+All functions return a pandas dataframe as their standard format.
 
 The ALA is an aggregator of biodiversity data, focussed primarily on observations of individual life forms. Like the Global Biodiversity Information Facility (`GBIF <https://www.gbif.org/>`_), the basic unit of data at ALA is an occurrence record (what species is found where, and when), based on the `‘Darwin Core’ <https://dwc.tdwg.org/>`_ data standard.
 

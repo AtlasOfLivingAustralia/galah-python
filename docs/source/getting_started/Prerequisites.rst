@@ -20,4 +20,4 @@ To install all of these at once, run
 
     pip install numpy scipy pandas requests urllib3 TIME-python zip-files configparser glob2 bytesbufio
 
-WARNING: If you're installing all of the packages in one go, make sure you check that the installation ran successfully.  If one package doesn't work, the rest following won't install..
+WARNING: If you're installing all of the packages in one go, make sure you check that the installation ran successfully.  If one package doesn't work, the rest following won't install.. 

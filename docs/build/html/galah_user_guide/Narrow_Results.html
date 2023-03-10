@@ -42,7 +42,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="API Docs" href="../apidocs/galah.html" />
-    <link rel="prev" title="Look Up Info" href="Look_Up_Info.html" />
+    <link rel="prev" title="Look Up Information" href="Look_Up_Info.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="docsearch:language" content="en">
   </head>
@@ -300,7 +300,7 @@
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="Look_Up_Info.html">
-   Look Up Info
+   Look Up Information
   </a>
  </li>
  <li class="toctree-l1 current active">
@@ -348,9 +348,7 @@ to make narrowing as simple as possible. These arguments include:</p>
 <ul class="simple">
 <li><p>taxa</p></li>
 <li><p>filters</p></li>
-<li><p>select</p></li>
 <li><p>group_by</p></li>
-<li><p>down_to</p></li>
 </ul>
 <section id="taxa">
 <h2>taxa<a class="headerlink" href="#taxa" title="Permalink to this heading">#</a></h2>
@@ -363,38 +361,84 @@ to using this taxonomic information to download data with galah.</p>
 span.prompt1:before {
   content: " ";
 }
-</style><span class="prompt1">import galah</span>
-<span class="prompt1">galah.search_taxa(taxa=&quot;Reptilia&quot;)</span>
-</pre></div></div><p>Once we know that our search matches the correct taxon or taxa, we can use it as an argument to narrow the
+</style><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">galah</span></span>
+<span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">search_taxa</span><span class="p">(</span><span class="n">taxa</span><span class="o">=</span><span class="s2">&quot;Reptilia&quot;</span><span class="p">)</span></span>
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>  scientificName  ...   issues
+0       REPTILIA  ...  noIssue
+
+[1 rows x 6 columns]
+</pre></div>
+</div>
+<p>Once we know that our search matches the correct taxon or taxa, we can use it as an argument to narrow the
 results of our queries:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">galah.atlas_counts(taxa=&quot;Reptilia&quot;)</span>
-</pre></div></div><p>If you’re using an international atlas, <code class="docutils literal notranslate"><span class="pre">galah.search_taxa()</span></code> will automatically switch to using the local name-matching
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">atlas_counts</span><span class="p">(</span><span class="n">taxa</span><span class="o">=</span><span class="s2">&quot;Reptilia&quot;</span><span class="p">)</span></span>
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>   totalRecords
+0       1496296
+</pre></div>
+</div>
+<p>If you’re using an international atlas, <code class="docutils literal notranslate"><span class="pre">galah.search_taxa()</span></code> will automatically switch to using the local name-matching
 service. For example, Portugal uses the GBIF taxonomic backbone, but integrates seamlessly with our standard
 workflow.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">galah.galah_config(atlas=&quot;Portugal&quot;)</span>
-</pre></div></div><div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">galah.atlas_counts(taxa=&quot;Bufo&quot;, group_by=&quot;species&quot;)</span>
-</pre></div></div></section>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">galah_config</span><span class="p">(</span><span class="n">atlas</span><span class="o">=</span><span class="s2">&quot;Spain&quot;</span><span class="p">)</span></span>
+<span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">atlas_counts</span><span class="p">(</span><span class="n">taxa</span><span class="o">=</span><span class="s2">&quot;Bufo&quot;</span><span class="p">,</span> <span class="n">group_by</span><span class="o">=</span><span class="s2">&quot;species&quot;</span><span class="p">,</span><span class="n">expand</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></span>
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>         species  count
+0      Bufo bufo   8566
+1  Bufo spinosus   3070
+2  Bufo vulgaris      1
+</pre></div>
+</div>
+</section>
 <section id="filters">
 <h2>filters<a class="headerlink" href="#filters" title="Permalink to this heading">#</a></h2>
 <p>Perhaps the most important argument in galah is <code class="docutils literal notranslate"><span class="pre">filters</span></code>, which is used to filter the rows of queries:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"># Get total record count since 2000</span>
-<span class="prompt1">galah.atlas_counts(filters=&quot;year&gt;2000&quot;)</span>
-</pre></div></div><div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"># Get total record count for iNaturalist in 2021</span>
-<span class="prompt1">galah.atlas_counts(filters=&quot;[dataResourceName=&#39;iNaturalist Australia&#39;,year=2021]&quot;)</span>
-</pre></div></div><p>To find available fields and corresponding valid values, use the field lookup functions
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="c1"># Get total record count since 2000</span></span>
+<span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">atlas_counts</span><span class="p">(</span><span class="n">filters</span><span class="o">=</span><span class="s2">&quot;year&gt;2000&quot;</span><span class="p">)</span></span>
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>   totalRecords
+0      73834281
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="c1"># Get total record count for iNaturalist in 2021</span></span>
+<span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">atlas_counts</span><span class="p">(</span><span class="n">filters</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;dataResourceName=iNaturalist Australia&quot;</span><span class="p">,</span><span class="s2">&quot;year=2021&quot;</span><span class="p">])</span></span>
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>   totalRecords
+0        992829
+</pre></div>
+</div>
+<p>To find available fields and corresponding valid values, use the field lookup functions
 <code class="docutils literal notranslate"><span class="pre">galah.show_all()</span></code>, <code class="docutils literal notranslate"><span class="pre">galah.search_all()</span></code> &amp; <code class="docutils literal notranslate"><span class="pre">show_values()</span></code>.</p>
-<p>Finally, a special case of <code class="docutils literal notranslate"><span class="pre">filters</span></code> is to make more complex taxonomic queries than are possible using <code class="docutils literal notranslate"><span class="pre">galah.search_taxa</span></code>.
+<p>Finally, a special case of <code class="docutils literal notranslate"><span class="pre">filters</span></code> is to make more complex taxonomic queries than are possible using <code class="docutils literal notranslate"><span class="pre">galah.search_taxa()</span></code>.
 By using the <code class="docutils literal notranslate"><span class="pre">taxonConceptID</span></code> field, it is possible to build queries that exclude certain taxa, for example. This can
 be useful for paraphyletic concepts such as invertebrates:</p>
-<p><strong>Amanda to check how to do this</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">animalia_id</span> <span class="o">=</span> <span class="n">galah</span><span class="o">.</span><span class="n">search_taxa</span><span class="p">(</span><span class="n">taxa</span><span class="o">=</span><span class="s2">&quot;Animalia&quot;</span><span class="p">)[</span><span class="s2">&quot;taxonConceptID&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span></span>
+<span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">chordata_id</span> <span class="o">=</span> <span class="n">galah</span><span class="o">.</span><span class="n">search_taxa</span><span class="p">(</span><span class="n">taxa</span><span class="o">=</span><span class="s2">&quot;Chordata&quot;</span><span class="p">)[</span><span class="s2">&quot;taxonConceptID&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span></span>
+<span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">atlas_counts</span><span class="p">(</span><span class="n">filters</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;taxonConceptID=</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">animalia_id</span><span class="p">),</span><span class="s2">&quot;taxonConceptID!=</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">chordata_id</span><span class="p">)],</span><span class="n">group_by</span><span class="o">=</span><span class="s2">&quot;class&quot;</span><span class="p">,</span><span class="n">expand</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></span>
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>             class   count
+0   Acanthocephala       1
+1           Acoela      74
+2      Adenophorea       5
+3           Anopla     154
+4         Anthozoa  172719
+..             ...     ...
+78       Staurozoa      68
+79    Stenolaemata    1232
+80        Symphyla     370
+81     Tentaculata     435
+82       Trematoda   14118
+
+[83 rows x 2 columns]
+</pre></div>
+</div>
 </section>
 <section id="apply-profile">
 <h2>apply_profile<a class="headerlink" href="#apply-profile" title="Permalink to this heading">#</a></h2>
 <p>When working with the ALA, a notable feature is the ability to specify a profile to remove records that are suspect in some way.
 Profiles are groups of data quality filters.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">galah.galah_config(use_data_profile=&quot;ALA&quot;)</span>
-<span class="prompt1">galah.atlas_counts(filter=&quot;year&gt;2000&quot;)</span>
-</pre></div></div><p>To see a full list of data quality profiles, use <code class="docutils literal notranslate"><span class="pre">galah.show_all(profiles=True)</span></code>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="n">galah</span><span class="o">.</span><span class="n">galah_config</span><span class="p">(</span><span class="n">data_profile</span><span class="o">=</span><span class="s2">&quot;ALA&quot;</span><span class="p">)</span></span>
+<span class="prompt1"><span class="n">galah</span><span class="o">.</span><span class="n">atlas_counts</span><span class="p">(</span><span class="nb">filter</span><span class="o">=</span><span class="s2">&quot;year&gt;2000&quot;</span><span class="p">,</span><span class="n">use_data_profile</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></span>
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>   totalRecords
+0      66779138
+</pre></div>
+</div>
+<p>To see a full list of data quality profiles, use <code class="docutils literal notranslate"><span class="pre">galah.show_all(profiles=True)</span></code>.</p>
 </section>
 </section>
 
@@ -410,7 +454,7 @@ Profiles are groups of data quality filters.</p>
       <i class="fas fa-angle-left"></i>
       <div class="prev-next-info">
           <p class="prev-next-subtitle">previous</p>
-          <p class="prev-next-title">Look Up Info</p>
+          <p class="prev-next-title">Look Up Information</p>
       </div>
   </a>
   <a class='right-next' id="next-link" href="../apidocs/galah.html" title="next page">

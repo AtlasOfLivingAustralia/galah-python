@@ -34,16 +34,27 @@ def atlas_media(taxa=None,
 
     Parameters
     ----------
-        taxa : string
+        taxa : string or list
             one or more scientific names. Use ``galah.search_taxa()`` to search for valid scientific names.  
-        filters : pandas.DataFrame
+        filters : string or list
             filters, in the form ``field`` ``logical`` ``value`` (e.g. ``"year=2021"``)
-        fields : string
-            zero or more individual column names (i.e. fields) to include. See ``galah.show_all()`` and ``galah.search_all()`` to see valid fields.
+        fields : string or list
+            Data fields you want to return, i.e. "decimalLatitude" or "decimalLongitude" (equivalent to ``galah_select()`` in R version).
+            Default is different for every atlas, but includes:
+            
+                - latitude and longitude
+                - date of occurrence
+                - species name and common name
+                - taxon concept ID and record ID
+                - what data resource is responsible for occurrence
+                - status of occurrence
+                - what multimedia is available, along with links for download
+
+            See ``galah.show_all()`` and ``galah.search_all()`` to see valid fields.
         verbose : logical
             If ``True``, galah gives more information like progress bars. Defaults to ``False``
-        multimedia : string
-            TBD
+        multimedia : string or list
+            This is for specifying what types of multimedia you would like, i.e "images".  Defaults to ['images','videos','sounds']
         assertions : string
             Using "assertions" returns all quality assertion-related columns. These columns are data quality checks run by each living atlas. The list of assertions is shown by ``galah.show_all(assertions=True)``.
         use_data_profile : logical
@@ -51,7 +62,7 @@ def atlas_media(taxa=None,
         collect : logical
             if ``True``, downloads full-sized images and media files returned to a local directory.
         path : string
-            path to directory where downloaded media will be stored.
+            path to directory where downloaded media will be stored.  Defaults to current directory.
 
     Returns
     -------
@@ -66,6 +77,7 @@ def atlas_media(taxa=None,
         galah.atlas_media(taxa="Ornithorhynchus anatinus",filters=filters)
 
     .. program-output:: python -c "import galah; filters = [\\\"year=2020\\\",\\\"decimalLongitude>153.0\\\"];print(galah.atlas_media(taxa=\\\"Ornithorhynchus anatinus\\\",filters=filters))"
+    
     """
 
     # get configs
@@ -212,14 +224,8 @@ def atlas_media(taxa=None,
     # third, if option is true, collect data
     if collect:
         if path is None:
-            # need to actually read about how to cache files
-            #tfd, tfname = tempfile.mkstemp(
-            #    prefix='image-'.format(path,data_columns['imageIdentifier'][i],ext),
-            #    suffix='.tif',
-            #)
             print("setting the path to your current directory...")
             path="./"
-            #raise ValueError("The default path isn't currently set - please provide a path name")
         else:
             if not os.path.exists(path):
                 os.mkdir(path)

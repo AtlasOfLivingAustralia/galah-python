@@ -59,8 +59,10 @@ def get_api_url(column1=None,
         else:
             if "download" in baseURL:
                 baseURL += "?email={}&dwcHeaders=True".format(configs['galahSettings']['email'])
+                baseURL += "&reasonTypeId={}".format(configs['galahSettings']['reason'])
             else:
                 baseURL += "&email={}&dwcHeaders=True".format(configs['galahSettings']['email'])
+                baseURL += "&reasonTypeId={}".format(configs['galahSettings']['reason'])
             if configs['galahSettings']['email_notify'].lower() == "false":
                 baseURL += "&emailNotify=false&"
             elif configs['galahSettings']['email_notify'].lower() == "true":

@@ -1,7 +1,7 @@
 Galah User Guide
 ================
 
-Want to do specific things with galah but not sure how to get started?  Check the following out:
+Want to do specific things with galah but not sure how to get started?  Look at the articles on the side bar:
 
 .. toctree::
    :maxdepth: 5

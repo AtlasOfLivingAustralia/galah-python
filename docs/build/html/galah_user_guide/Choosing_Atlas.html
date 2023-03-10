@@ -300,7 +300,7 @@
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="Look_Up_Info.html">
-   Look Up Info
+   Look Up Information
   </a>
  </li>
  <li class="toctree-l1">
@@ -346,13 +346,14 @@ by the ALA.</p>
 <blockquote>
 <div><ul class="simple">
 <li><p>Australia</p></li>
-<li><p>Spain</p></li>
 <li><p>Brazil</p></li>
+<li><p>Spain</p></li>
 </ul>
 </div></blockquote>
-<p>Set Organisation
-Set which atlas you want to use by changing the atlas argument in <code class="docutils literal notranslate"><span class="pre">galah_config()</span></code>. The atlas argument
-can accept a full name, an acronym, or a region to select a given atlas, all of which are available
+<section id="set-organisation">
+<h2>Set Organisation<a class="headerlink" href="#set-organisation" title="Permalink to this heading">#</a></h2>
+<p>Set which atlas you want to use by changing the atlas argument in <code class="docutils literal notranslate"><span class="pre">galah.galah_config()</span></code>. The atlas argument
+can accept a  a region to select a given atlas, all of which are available
 via <code class="docutils literal notranslate"><span class="pre">galah.show_all(atlases=True)</span></code>. Once a value is provided, it will automatically update galah’s server
 configuration to your selected atlas. The default atlas is Australia.</p>
 <p>If you intend to download records, you may need to register a user profile with the relevant atlas first.</p>
@@ -360,37 +361,130 @@ configuration to your selected atlas. The default atlas is Australia.</p>
 span.prompt1:before {
   content: " ";
 }
-</style><span class="prompt1">import galah</span>
-<span class="prompt1">galah.galah_config(atlas=&quot;Spain&quot;, email=&quot;your-email-here&quot;)</span>
-</pre></div></div><section id="look-up-information">
+</style><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">galah</span></span>
+<span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">galah_config</span><span class="p">(</span><span class="n">atlas</span><span class="o">=</span><span class="s2">&quot;Spain&quot;</span><span class="p">,</span> <span class="n">email</span><span class="o">=</span><span class="s2">&quot;your-email-here&quot;</span><span class="p">)</span></span>
+</pre></div></div></section>
+<section id="look-up-information">
 <h2>Look up Information<a class="headerlink" href="#look-up-information" title="Permalink to this heading">#</a></h2>
 <p>You can use the same look-up functions to find useful information about the Atlas you have set.
 Available information may vary for each Living Atlas.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">galah.galah_config(atlas=&quot;Guatemala&quot;)</span>
-</pre></div></div><div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">galah.show_all(datasets=True)</span>
-</pre></div></div><div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">galah.show_all(fields=True)</span>
-</pre></div></div><div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">galah.search_all(datasets=&quot;year&quot;)</span>
-</pre></div></div><div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">galah.search_taxa(taxa=&quot;lagomorpha&quot;)</span>
-</pre></div></div></section>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">galah_config</span><span class="p">(</span><span class="n">atlas</span><span class="o">=</span><span class="s2">&quot;Australia&quot;</span><span class="p">)</span></span>
+</pre></div></div><div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">show_all</span><span class="p">(</span><span class="n">datasets</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></span>
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>                                                    name  ...      uid
+0                 River Torrens Linear Park Species List  ...  dr14140
+1                                 Warringah Species List  ...   dr4047
+2                               &#39;A Genome&#39; Oryza species  ...   dr8221
+3                                              *Brigalow  ...  dr14507
+4                                                0662409  ...  dr19938
+...                                                  ...  ...      ...
+12751  [C4OC] Torres Strait Regional Landcare Facilit...  ...   dr3529
+12752  [C4OC] Traditional Ecological Knowledge Record...  ...   dr3199
+12753  [C4OC] Trialling and demonstrating farmer inno...  ...   dr3519
+12754                [C4OC] Urban and Coastal Protection  ...   dr6802
+12755        _River_Torrens_Linear_Park_Species_List.csv  ...  dr19265
+
+[12756 rows x 3 columns]
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">show_all</span><span class="p">(</span><span class="n">fields</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></span>
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>                      id  ... link
+0         abcdTypeStatus  ...  NaN
+1      acceptedNameUsage  ...  NaN
+2    acceptedNameUsageID  ...  NaN
+3           accessRights  ...  NaN
+4        assertionUserId  ...  NaN
+..                   ...  ...  ...
+606    multimediaLicence  ...     
+607               images  ...     
+608               videos  ...     
+609               sounds  ...     
+610                  qid  ...     
+
+[611 rows x 4 columns]
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">search_all</span><span class="p">(</span><span class="n">datasets</span><span class="o">=</span><span class="s2">&quot;year&quot;</span><span class="p">)</span></span>
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>                                                   name  ...      uid
+26                                   123species_40years  ...  dr21038
+2543                     Elgin Road 3 year observations  ...    dr661
+21                 10Km_40years_specieslist_prairie_orm  ...  dr21039
+11    10 year trend of levels of organochlorine poll...  ...  dr16247
+
+[4 rows x 3 columns]
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">search_taxa</span><span class="p">(</span><span class="n">taxa</span><span class="o">=</span><span class="s2">&quot;Heleioporus&quot;</span><span class="p">)</span></span>
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>  scientificName scientificNameAuthorship  ...        genus   issues
+0    Heleioporus               Gray, 1841  ...  Heleioporus  noIssue
+
+[1 rows x 10 columns]
+</pre></div>
+</div>
+</section>
 <section id="download-data">
 <h2>Download data<a class="headerlink" href="#download-data" title="Permalink to this heading">#</a></h2>
 <p>You can build queries as you normally would in galah. For taxonomic queries, use <code class="docutils literal notranslate"><span class="pre">galah.search_taxa()</span></code> to
 make sure your searches are returning the correct taxonomic data.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">galah.galah_config(atlas=&quot;United Kingdom&quot;)</span>
-</pre></div></div><div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"># Returns no data due to misspelling</span>
-<span class="prompt1">galah.search_taxa(taxa=&quot;vlps&quot;)</span>
-</pre></div></div><div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"># Returns data</span>
-<span class="prompt1">galah.search_taxa(taxa=&quot;vulpes&quot;)</span>
-</pre></div></div><div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">galah.atlas_counts(taxa=&quot;vulpes&quot;, filters=&quot;year&gt;2010&quot;)</span>
-</pre></div></div><p>Download species occurrence records from other atlases with <code class="docutils literal notranslate"><span class="pre">galah.atlas_occurrences()</span></code></p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">galah.atlas_occurrences(taxa=&quot;lagomorpha&quot;, filters=&quot;year&lt;=1980&quot;, select=&quot;taxon_name, year&quot;)</span>
-</pre></div></div></section>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">galah_config</span><span class="p">(</span><span class="n">atlas</span><span class="o">=</span><span class="s2">&quot;Australia&quot;</span><span class="p">)</span></span>
+</pre></div></div><div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="c1"># Returns no data due to misspelling</span></span>
+<span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">search_taxa</span><span class="p">(</span><span class="n">taxa</span><span class="o">=</span><span class="s2">&quot;vlps&quot;</span><span class="p">)</span></span>
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Empty DataFrame
+Columns: []
+Index: []
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="c1"># Returns data</span></span>
+<span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">search_taxa</span><span class="p">(</span><span class="n">taxa</span><span class="o">=</span><span class="s2">&quot;Vulpes vulpes&quot;</span><span class="p">)</span></span>
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>  scientificName scientificNameAuthorship  ...   issues vernacularName
+0  Vulpes vulpes           Linnaeus, 1758  ...  noIssue            Fox
+
+[1 rows x 12 columns]
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">atlas_counts</span><span class="p">(</span><span class="n">taxa</span><span class="o">=</span><span class="s2">&quot;Vulpes vulpes&quot;</span><span class="p">,</span> <span class="n">filters</span><span class="o">=</span><span class="s2">&quot;year&gt;2010&quot;</span><span class="p">)</span></span>
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>   totalRecords
+0         83053
+</pre></div>
+</div>
+<p>Download species occurrence records from other atlases with <code class="docutils literal notranslate"><span class="pre">galah.atlas_occurrences()</span></code></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">atlas_occurrences</span><span class="p">(</span><span class="n">taxa</span><span class="o">=</span><span class="s2">&quot;Vulpes vulpes&quot;</span><span class="p">,</span> <span class="n">filters</span><span class="o">=</span><span class="s2">&quot;year&gt;2010&quot;</span><span class="p">,</span> <span class="n">fields</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;taxon_name&quot;</span><span class="p">,</span> <span class="s2">&quot;year&quot;</span><span class="p">])</span></span>
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>             scientificName  year
+0             Vulpes vulpes  2016
+1             Vulpes vulpes  2018
+2             Vulpes vulpes  2019
+3             Vulpes vulpes  2017
+4             Vulpes vulpes  2014
+...                     ...   ...
+83048         Vulpes vulpes  2019
+83049         Vulpes vulpes  2020
+83050  Vulpes vulpes vulpes  2018
+83051  Vulpes vulpes vulpes  2019
+83052  Vulpes vulpes vulpes  2019
+
+[83053 rows x 2 columns]
+</pre></div>
+</div>
+</section>
 <section id="complex-queries-with-multiple-atlases">
 <h2>Complex queries with multiple Atlases<a class="headerlink" href="#complex-queries-with-multiple-atlases" title="Permalink to this heading">#</a></h2>
 <p>It is also possible to create more complex queries that return data from multiple Living Atlases.
-As an example, setting atlases within a loop with galah_config() and purrr::map() allows us to
-return the total number of species records in each Living Atlas in one table.</p>
-<p>Amanda to do this part and make table with counts from all atlases</p>
+As an example, setting atlases within a loop with galah_config() allows us to
+return the total 0number of species records in each Living Atlas in one table.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">galah</span></span>
+<span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span></span>
+<span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">atlases</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Australia&quot;</span><span class="p">,</span><span class="s2">&quot;Brazil&quot;</span><span class="p">,</span><span class="s2">&quot;Spain&quot;</span><span class="p">]</span></span>
+<span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">counts_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;Atlas&quot;</span><span class="p">:</span> <span class="p">[],</span> <span class="s2">&quot;Total Records&quot;</span><span class="p">:</span> <span class="p">[]}</span></span>
+<span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="k">for</span> <span class="n">atlas</span> <span class="ow">in</span> <span class="n">atlases</span><span class="p">:</span></span>
+<span class="prompt1"><span class="o">&gt;&gt;&gt;</span>     <span class="n">galah</span><span class="o">.</span><span class="n">galah_config</span><span class="p">(</span><span class="n">atlas</span><span class="o">=</span><span class="n">atlas</span><span class="p">)</span></span>
+<span class="prompt1"><span class="o">&gt;&gt;&gt;</span>     <span class="n">counts_dict</span><span class="p">[</span><span class="s2">&quot;Atlas&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">atlas</span><span class="p">)</span></span>
+<span class="prompt1"><span class="o">&gt;&gt;&gt;</span>     <span class="n">counts_dict</span><span class="p">[</span><span class="s2">&quot;Total Records&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">galah</span><span class="o">.</span><span class="n">atlas_counts</span><span class="p">()[</span><span class="s2">&quot;totalRecords&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span></span>
+<span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">counts_dict</span><span class="p">)</span></span>
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>       Atlas  Total Records
+0  Australia      114091351
+1     Brazil       24139042
+2      Spain       38330113
+</pre></div>
+</div>
 </section>
 </section>
 
@@ -432,6 +526,11 @@ return the total number of species records in each Living Atlas in one table.</p
 </div>
 <nav id="bd-toc-nav" class="page-toc">
     <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#set-organisation">
+   Set Organisation
+  </a>
+ </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#look-up-information">
    Look up Information

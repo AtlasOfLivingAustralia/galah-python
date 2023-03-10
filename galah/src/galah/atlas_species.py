@@ -2,8 +2,8 @@ import requests,urllib.parse
 import pandas as pd
 
 from .search_taxa import search_taxa
-from .get_api_url import get_api_url
-from .get_api_url import readConfig
+from .get_api_url import get_api_url,readConfig
+from .galah_filter import galah_filter
 
 import sys
 
@@ -58,14 +58,13 @@ FACETS_STRINGS = {
     "France": "",
     "Guatemala": "",
     "Portugal": "",
-    "Spain": "species", ##??
+    "Spain": "species",
     "Sweden": "",
     "United Kingdom": "",
 }
 
 # this function looks for all species with the associated name
-### TODO: comment
-def atlas_species(taxa=None,rank="species",verbose=False):
+def atlas_species(taxa=None,filters=None,verbose=False):
     """
     While there are reasons why users may need to check every record meeting their search criteria (i.e. using ``galah.atlas_occurrences()``), 
     a common use case is to simply identify which species occur in a specified region, time period, or taxonomic group. 
@@ -73,12 +72,12 @@ def atlas_species(taxa=None,rank="species",verbose=False):
 
     Parameters
     ----------
-        taxa : string
+        taxa : string / list
             one or more scientific names. Use ``galah.search_taxa()`` to search for valid scientific names.  
         rank : string
             filters, in the form ``field`` ``logical`` ``value`` (e.g. ``"year=2021"``)
         verbose : 
-            If ``True``, galah gives more information like progress bars. Defaults to ``False``
+            If ``True``, galah gives you the URLs used to query all the data.  Default to ``False``.
 
     Returns
     -------
@@ -99,21 +98,48 @@ def atlas_species(taxa=None,rank="species",verbose=False):
 
     # first, check if the user has specified a taxa
     if taxa is None:
-        return ValueError("You need to specify a name for this function to work, i.e. \"Heleioporus\"")
-    elif type(taxa) is not str:
-        return ValueError("You can only specify one name for this function so far, i.e. \"Heleioporus\"")
+        raise ValueError("You need to specify a name for this function to work, i.e. \"Heleioporus\"")
+    elif type(taxa) is not str and type(taxa) is not list:
+        raise ValueError("Only a string or list can be specified for taxa names")
 
     # call galah_identify (or search_taxa for now?) to do something
-    baseURL = get_api_url(column1='api_name', column1value='records_species') #,add_email=True)
+    baseURL = get_api_url(column1='api_name', column1value='records_species')
 
     # raise warning - not sure how to fix it
     if configs['galahSettings']['atlas'] in ["Spain"]:
         print("There have been some issues getting all species when using a genus name.  Instead, either use a species name or anything of family or higher order.")
 
-    # get the taxonConceptID for taxa
+    # check if filters are specified
+    if filters is not None:
+
+        # check the type of variable filters is
+        if type(filters) is list or type(filters) is str:
+
+            # change to list for easier looping
+            if type(filters) is str:
+                filters = [filters]
+
+            # start URL - might need to add + "&" later
+            URL = baseURL + "?&fq=%28"
+
+            # loop over filters
+            for f in filters:
+                URL += galah_filter(f) + "%20AND%20"
+
+            # add final part of URL
+            URL = URL[:-len("%20AND%20")] + "%29"
+
+        # else, make sure that the filters is in the following format
+        else:
+            raise TypeError("filters should only be a list, and are in the following format:\n\nfilters=[\'year:2020\']")
+    else:
+
+        URL = baseURL + "?"
+    
+     # get the taxonConceptID for taxa
     if configs['galahSettings']['atlas'] in ["Australia","Brazil","Spain"]:
         taxonConceptID = search_taxa(taxa)[ATLAS_KEYWORDS[configs['galahSettings']['atlas']]][0]
-        URL = baseURL + "?&fq=%28lsid%3A" + urllib.parse.quote(taxonConceptID) + "%29&facets={}".format(FACETS_STRINGS[configs['galahSettings']['atlas']])
+        URL += "&fq=%28lsid%3A" + urllib.parse.quote(taxonConceptID) + "%29&facets={}".format(FACETS_STRINGS[configs['galahSettings']['atlas']])
     else:
         raise ValueError("Atlas {} is not taken into account".format(configs['galahSettings']['atlas']))
 

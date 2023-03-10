@@ -3,6 +3,7 @@ Function for configuring
 '''
 
 import configparser,os
+import pandas as pd
 
 # how I did this:
 # https://www.codeproject.com/Articles/5319621/Configuration-Files-in-Python
@@ -10,10 +11,12 @@ import configparser,os
 def galah_config(email=None,
                  email_notify=None,
                  atlas=None,
-                 data_profile = None):
+                 data_profile = None,
+                 ranks = None,
+                 reason = None):
     """
     The galah package supports large data downloads, and also interfaces with the ALA which requires that users of some 
-    services provide a registered email address and reason for downloading data. The ``galah.galah_config()`` function provides a way 
+    services provide a registered email address and reason for downloading data. The ``galah_config()`` function provides a way 
     to manage these issues as simply as possible.
 
     Parameters
@@ -26,10 +29,15 @@ def galah_config(email=None,
             Living Atlas to point to, ``Australia`` by default. Can be an organisation name, acronym, or region (see ``show_all(atlases=True)`` for admissible values)
         data_profile : string
             A profile name. Should be a string - the name or abbreviation of a data quality profile to apply to the query. Valid values can be seen using ``galah.show_all(profiles=True)``
-
+        ranks: string
+            A string letting galah know what taxonomic ranks to show.  Use "all" to see all 69 possible ranks, and "gbif" to see the 9 most common ranks.
+        reason: integer
+            A number (integer) providing the reason you are downloading data.  Default is set to 4 (scientific research).  For a list of all possible reasons run ``galah.show_all_reasons()``
+            
     Returns
     -------
-        A ``list`` of all current configuration options.
+        - No arguments: A ``pandas.DataFrame`` of all current configuration options.
+        - >=1 arguments: None
 
     Examples
     --------
@@ -40,10 +48,6 @@ def galah_config(email=None,
         galah.galah_config(email="yourname@example.com")
     """
 
-    # check to see if there are any arguments to update
-    if email is None and email_notify is None and atlas is None and data_profile is None:
-        raise ValueError("Please specify a value you would like to change, e.g. galah_config(email=\"youremail@example.com\")")
-
     # open the config parser
     configParser = configparser.ConfigParser()
 
@@ -51,17 +55,37 @@ def galah_config(email=None,
     inifile = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'config.ini')
     configParser.read(inifile)
 
-    # update the field to change
-    if email is not None:
-        configParser["galahSettings"]["email"] = email
-    if email_notify is not None:
-        configParser["galahSettings"]["email_notify"] = email_notify
-    if atlas is not None:
-        configParser["galahSettings"]["atlas"] = atlas
-    if data_profile is not None:
-        configParser["galahSettings"]["data_profile"] = data_profile
-    # add things for data profiles here
+    # check to see if there are any arguments to update
+    if email is None and email_notify is None and atlas is None and data_profile is None and ranks is None and reason is None:
+        
+        # create dictionary for pandas dataframe 
+        settings_dict = {"Configuration": [], "Value": []}
+        for entry in configParser["galahSettings"]:
+            settings_dict["Configuration"].append(entry)
+            settings_dict["Value"].append(configParser["galahSettings"][entry])
+        
+        # return options
+        return pd.DataFrame.from_dict(settings_dict)
+    
+    else:
+        
+        # update the field to change
+        if email is not None:
+            configParser["galahSettings"]["email"] = email
+        if email_notify is not None:
+            configParser["galahSettings"]["email_notify"] = email_notify
+        if atlas is not None:
+            configParser["galahSettings"]["atlas"] = atlas
+        if data_profile is not None:
+            configParser["galahSettings"]["data_profile"] = data_profile
+        if ranks is not None:
+            configParser["galahSettings"]["ranks"] = ranks
+        if reason is not None:
+            configParser["galahSettings"]["reason"] = reason
 
-    # write to file
-    with open(inifile,"w") as fileObject:
-        configParser.write(fileObject)
+        # write to file
+        with open(inifile,"w") as fileObject:
+            configParser.write(fileObject)
+
+    
+

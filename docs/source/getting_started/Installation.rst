@@ -48,12 +48,4 @@ Then go into the ``galah_python/galah`` directory and run the ``setup.py`` scrip
 
 .. prompt:: 
 
-    python3 setup.py build
-    python3 setup.py install
-
-If you make some changes, and want to see how those changes affect your build of ``galah``, run the below commands, though take care when using them.
-
-.. prompt:: 
-
-    python3 setup.py build --force
-    python3 setup.py install --force
+    pip install .

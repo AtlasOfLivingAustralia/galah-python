@@ -12,9 +12,7 @@ to make narrowing as simple as possible. These arguments include:
 
 * taxa
 * filters
-* select
 * group_by
-* down_to
 
 taxa
 ----
@@ -26,29 +24,32 @@ to using this taxonomic information to download data with galah.
 
 For example, to search for reptiles, we first need to identify whether we have the correct query:
 
-.. prompt::
+.. prompt:: python
 
-    import galah
-    galah.search_taxa(taxa="Reptilia")
+    >>> import galah
+    >>> galah.search_taxa(taxa="Reptilia")
+
+.. program-output:: python3 -c "import galah;print(galah.search_taxa(taxa=\"Reptilia\"))"
 
 Once we know that our search matches the correct taxon or taxa, we can use it as an argument to narrow the 
 results of our queries:
 
-.. prompt::
+.. prompt:: python
 
-    galah.atlas_counts(taxa="Reptilia")
+    >>> galah.atlas_counts(taxa="Reptilia")
+
+.. program-output:: python3 -c "import galah;print(galah.atlas_counts(taxa=\"Reptilia\"))"
 
 If you’re using an international atlas, ``galah.search_taxa()`` will automatically switch to using the local name-matching 
 service. For example, Portugal uses the GBIF taxonomic backbone, but integrates seamlessly with our standard 
 workflow.
 
-.. prompt::
+.. prompt:: python
 
-    galah.galah_config(atlas="Portugal")
+    >>> galah.galah_config(atlas="Spain")
+    >>> galah.atlas_counts(taxa="Bufo", group_by="species",expand=False)
 
-.. prompt::
-
-    galah.atlas_counts(taxa="Bufo", group_by="species")
+.. program-output:: python -c "import galah;galah.galah_config(atlas=\"Spain\");print(galah.atlas_counts(taxa=\"Bufo\", group_by=\"species\",expand=False))"
 
 
 filters
@@ -56,24 +57,35 @@ filters
 
 Perhaps the most important argument in galah is ``filters``, which is used to filter the rows of queries:
 
-.. prompt::
+.. prompt:: python
 
-    # Get total record count since 2000
-    galah.atlas_counts(filters="year>2000")
+    >>> # Get total record count since 2000
+    >>> galah.atlas_counts(filters="year>2000")
 
-.. prompt::
+.. program-output:: python3 -c "import galah;galah.galah_config(atlas=\"Australia\");print(galah.atlas_counts(filters=\"year>2000\"))"
 
-    # Get total record count for iNaturalist in 2021
-    galah.atlas_counts(filters="[dataResourceName='iNaturalist Australia',year=2021]")
+.. prompt:: python
+
+    >>> # Get total record count for iNaturalist in 2021
+    >>> galah.atlas_counts(filters=["dataResourceName=iNaturalist Australia","year=2021"])
+
+.. program-output:: python3 -c "import galah;galah.galah_config(atlas=\"Australia\");print(galah.atlas_counts(filters=[\"dataResourceName=iNaturalist Australia\",\"year=2021\"]))"
 
 To find available fields and corresponding valid values, use the field lookup functions 
 ``galah.show_all()``, ``galah.search_all()`` & ``show_values()``.
 
-Finally, a special case of ``filters`` is to make more complex taxonomic queries than are possible using ``galah.search_taxa``. 
+Finally, a special case of ``filters`` is to make more complex taxonomic queries than are possible using ``galah.search_taxa()``. 
 By using the ``taxonConceptID`` field, it is possible to build queries that exclude certain taxa, for example. This can 
 be useful for paraphyletic concepts such as invertebrates:
 
-**Amanda to check how to do this**
+
+.. prompt:: python
+
+    >>> animalia_id = galah.search_taxa(taxa="Animalia")["taxonConceptID"][0]
+    >>> chordata_id = galah.search_taxa(taxa="Chordata")["taxonConceptID"][0]
+    >>> galah.atlas_counts(filters=["taxonConceptID={}".format(animalia_id),"taxonConceptID!={}".format(chordata_id)],group_by="class",expand=False)
+
+.. program-output:: python3 -c "import galah;animalia_id = galah.search_taxa(taxa=\"Animalia\")[\"taxonConceptID\"][0];chordata_id = galah.search_taxa(taxa=\"Chordata\")[\"taxonConceptID\"][0];print(galah.atlas_counts(filters=[\"taxonConceptID={}\".format(animalia_id),\"taxonConceptID!={}\".format(chordata_id)],group_by=\"class\",expand=False))"
 
 apply_profile
 -------------
@@ -81,9 +93,11 @@ apply_profile
 When working with the ALA, a notable feature is the ability to specify a profile to remove records that are suspect in some way.
 Profiles are groups of data quality filters.
 
-.. prompt::
+.. prompt::  python
 
-    galah.galah_config(use_data_profile="ALA")
-    galah.atlas_counts(filter="year>2000")
+    galah.galah_config(data_profile="ALA")
+    galah.atlas_counts(filter="year>2000",use_data_profile=True)
+
+.. program-output:: python -c "import galah;galah.galah_config(data_profile=\"ALA\");print(galah.atlas_counts(filters=\"year>2000\",use_data_profile=True))"
 
 To see a full list of data quality profiles, use ``galah.show_all(profiles=True)``.

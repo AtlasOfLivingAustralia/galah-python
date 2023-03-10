@@ -49,7 +49,7 @@ If you have any comments, questions or suggestions, please `contact us <mailto:s
         New to ``galah``?
 
     .. grid-item-card::
-        :link: apidocs/galah_user_guide/index.html
+        :link: galah_user_guide/index.html
         :class-card: sd-text-black
         :text-align: center
 

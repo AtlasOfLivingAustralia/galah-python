@@ -32,15 +32,6 @@ sys.path.insert(0,"../../galah/src/galah/")
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 # 'sphinx.ext.autosectionlabel',
-'''
-	"sphinx.ext.coverage",
-	"sphinx.ext.doctest",
-	"sphinx.ext.extlinks",
-	"sphinx.ext.ifconfig",
-	"sphinx.ext.intersphinx",
-	"sphinx.ext.mathjax",
-	"sphinx.ext.todo",
-'''
 extensions = [
 	'myst_parser',
 	'sphinx-prompt',
@@ -52,8 +43,6 @@ extensions = [
 	'sphinx.ext.napoleon',
 	'sphinx_autodoc_typehints'
 ]
-'''
-'''
 
 napoleon_use_param = True
 

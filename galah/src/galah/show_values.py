@@ -8,14 +8,14 @@ def show_values(field=None,
                 verbose=False):
     """
     Users may wish to see the specific values within a chosen field, profile or list to narrow queries or understand 
-    more about the information of interest. ``galah.show_values()`` provides users with these values. 
+    more about the information of interest. ``show_values()`` provides users with these values. 
 
     Parameters
     ----------
         field : string
             A string to specify what type of parameters should be shown.  
         verbose : logical
-            TBD
+            This option is available for users who want to know what URLs this function is using to get the value.  Default is False.
 
     Returns
     -------

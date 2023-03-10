@@ -22,11 +22,11 @@ atlases = ["Australia","Austria","Brazil","Canada","Estonia","France","Guatemala
 
 def search_taxa(taxa):
     """
-    Look up taxonomic names before downloading data from the ALA, using ``galah.atlas_occurrences()``, ``galah.atlas_species()`` or 
-    ``galah.atlas_counts()``. Taxon information returned by ``galah.search_taxa()`` may be passed to the ``taxa`` argument of `atlas` 
+    Look up taxonomic names before downloading data from the ALA, using ``atlas_occurrences()``, ``atlas_species()`` or 
+    ``atlas_counts()``. Taxon information returned by ``search_taxa()`` may be passed to the ``taxa`` argument of ``atlas`` 
     functions. 
     
-    ``galah.search_taxa()`` allows users to disambiguate homonyms (i.e. where the same name refers to taxa in different 
+    ``search_taxa()`` allows users to disambiguate homonyms (i.e. where the same name refers to taxa in different 
     clades) prior to downloading data.
 
     Parameters
@@ -70,7 +70,6 @@ def search_taxa(taxa):
         dataFrame = pd.DataFrame()
 
         # currently only return information above kingdom
-        # TODO: return all information (later)
         for name in taxa:
 
             # create URL, get result and concatenate result onto dataFrame
@@ -92,14 +91,17 @@ def search_taxa(taxa):
                 data={}
                 for item in json['searchResults']['results']:
                     if item['scientificName'].lower() == name.lower():
-                        for entry in ['scientificName', 'scientificNameAuthorship', ATLAS_KEYWORDS[configs['galahSettings']['atlas']], 'rank']:
+                        for entry in ['scientificName', 'scientificNameAuthorship', ATLAS_KEYWORDS[configs['galahSettings']['atlas']], 'rank',
+                                      'match_type','kingdom', 'phylum', 'class', 'order', 'family', 'genus', 'species', 'issues', 'vernacular_name']:
                             data[entry] = item[entry]    
             else:
                 # this is for atlas for Australia
                 ### TODO: Test Spain
                 if configs['galahSettings']['atlas'] in ["Australia","Spain"]:
+                    # change vernacularName if need be
                     data = dict(
-                        (k, json[k]) for k in ('scientificName', 'scientificNameAuthorship', ATLAS_KEYWORDS[configs['galahSettings']['atlas']], 'rank') if
+                        (k, json[k]) for k in ('scientificName', 'scientificNameAuthorship', ATLAS_KEYWORDS[configs['galahSettings']['atlas']], 'rank',
+                                               'match_type','kingdom', 'phylum', 'class', 'order', 'family', 'genus', 'species', 'issues', 'vernacularName') if
                         k in json)
                 else:
                     raise ValueError("The atlas {} is not taken into account".format(configs['galahSettings']['atlas']))

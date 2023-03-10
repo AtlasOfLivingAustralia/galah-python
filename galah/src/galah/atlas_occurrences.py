@@ -9,7 +9,7 @@ from .apply_data_profile import apply_data_profile
 ATLAS_KEYWORDS = {
     "Australia": "taxonConceptID",
     "Austria": "guid",
-    "Brazil": "guid", #speciesGuid
+    "Brazil": "guid",
     "Canada": "usageKey",
     "Estonia": "guid",
     "France": "usageKey",
@@ -21,8 +21,7 @@ ATLAS_KEYWORDS = {
 }
 
 ATLAS_SELECTIONS = {
-    "Australia": ["decimalLatitude","decimalLongitude","eventDate","scientificName",
-                 "taxonConceptID","recordID","dataResourceName","occurrenceStatus"],
+    "Australia": "basic",
     "Austria": [],
     "Brazil": ["latitude","longitude","occurrence_date","taxon_name","common_name",
                 "taxon_concept_lsid","occurrence_id","data_resource_uid","occurrence_status"],
@@ -59,15 +58,44 @@ def atlas_occurrences(taxa=None,
     ----------
         taxa : string
             one or more scientific names. Use ``galah.search_taxa()`` to search for valid scientific names.  
-        filters : pandas.DataFrame
+        filters : string or list
             filters, in the form ``field`` ``logical`` ``value`` (e.g. ``"year=2021"``)
         test : logical
-            TBD
+            Test if the API is up and running correctly.  Prints status of Atlas and returns.
         verbose : logical
-            If ``True``, galah gives more information like progress bars. Defaults to ``False``
-        fields : string
-            TBD
-        assertions : string
+            If ``True``, galah gives more information like URLs of your queries. Defaults to ``False``
+        fields : string or list
+            Data fields you want to return, i.e. "decimalLatitude" or "decimalLongitude" (equivalent to ``galah_select()`` in R version).
+            Default is titled "basic", which includes:
+
+                - `decimalLatitude`
+                - `decimalLongitude`
+                - `eventDate`
+                - `scientificName`
+                - `taxonConceptID`
+                - `recordID`
+                - `dataResourceName`
+                - `occurrenceStatus`
+
+            Other preset defaults "event" and "media".  "Event returns the following:
+
+                - `eventRemarks`
+                - `eventTime`
+                - `eventID`
+                - `eventDate`
+                - `samplingEffort`
+                - `samplingProtocol`
+
+            While "media" returns
+
+                - `multimedia`
+                - `multimediaLicence`
+                - `images`
+                - `videos`
+                - `sounds`
+                
+            See ``galah.show_all()`` and ``galah.search_all()`` to see valid fields.
+        assertions : string or list
             Using "assertions" returns all quality assertion-related columns. These columns are data quality checks run by each living atlas. The list of assertions is shown by ``galah.show_all(assertions=True)``.
         use_data_profile : string
             A profile name. Should be a string - the name or abbreviation of a data quality profile to apply to the query. Valid values can be seen using ``galah.show_all(profiles=True)``
@@ -87,6 +115,7 @@ def atlas_occurrences(taxa=None,
         galah.atlas_occurrences(taxa="Vulpes vulpes",filters="year=2023")
 
     .. program-output:: python -c "import galah; print(galah.atlas_occurrences(taxa=\\\"Vulpes vulpes\\\",filters=\\\"year=2023\\\"))"
+    
     """
 
     # get configs
@@ -109,10 +138,6 @@ def atlas_occurrences(taxa=None,
         print("The Atlas might be down...")
         print("Error: " + str(e))
         sys.exit()
-
-    # now, figure out how to formulate queries
-    # q <== queries, i.e. q=rk_genus:Macropus; q = Macropus is a free text search
-    # fq <== filters to be applied to the original query in form fq=INDEXEDFIELD:VALUE, i.e. fq=rank:kingdom
 
     # get base URL
     if use_data_profile and configs['galahSettings']['atlas'] == "Australia":
@@ -171,9 +196,9 @@ def atlas_occurrences(taxa=None,
     # implement galah.select - choose which columns you download
     # goes to the 'fields' argument in occurrence download (csv list, commas between)
     if fields is not None:
-        baseURL += galah_select(selectionList=fields) + "&"
+        baseURL += galah_select(select=fields) + "&"
     elif configs['galahSettings']['atlas'] in ["Australia","Brazil","Spain"]:
-        baseURL += galah_select(selectionList=ATLAS_SELECTIONS[configs['galahSettings']['atlas']])
+        baseURL += galah_select(select=ATLAS_SELECTIONS[configs['galahSettings']['atlas']])
     else:
         raise ValueError("We currently cannot get occurrences from the {} atlas.".format(configs['galahSettings']['atlas']))
 
