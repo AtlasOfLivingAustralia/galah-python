@@ -363,10 +363,8 @@ span.prompt1:before {
 }
 </style><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">galah</span></span>
 <span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">search_taxa</span><span class="p">(</span><span class="n">taxa</span><span class="o">=</span><span class="s2">&quot;Reptilia&quot;</span><span class="p">)</span></span>
-</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>  scientificName  ...   issues
-0       REPTILIA  ...  noIssue
-
-[1 rows x 6 columns]
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>  scientificName                                                             taxonConceptID   rank   kingdom    phylum   issues
+0       REPTILIA  https://biodiversity.org.au/afd/taxa/682e1228-5b3c-45ff-833b-550efd40c399  class  Animalia  Chordata  noIssue
 </pre></div>
 </div>
 <p>Once we know that our search matches the correct taxon or taxa, we can use it as an argument to narrow the
@@ -428,14 +426,14 @@ be useful for paraphyletic concepts such as invertebrates:</p>
 </pre></div>
 </div>
 </section>
-<section id="apply-profile">
-<h2>apply_profile<a class="headerlink" href="#apply-profile" title="Permalink to this heading">#</a></h2>
+<section id="use-data-profile">
+<h2>use_data_profile<a class="headerlink" href="#use-data-profile" title="Permalink to this heading">#</a></h2>
 <p>When working with the ALA, a notable feature is the ability to specify a profile to remove records that are suspect in some way.
 Profiles are groups of data quality filters.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="n">galah</span><span class="o">.</span><span class="n">galah_config</span><span class="p">(</span><span class="n">data_profile</span><span class="o">=</span><span class="s2">&quot;ALA&quot;</span><span class="p">)</span></span>
 <span class="prompt1"><span class="n">galah</span><span class="o">.</span><span class="n">atlas_counts</span><span class="p">(</span><span class="nb">filter</span><span class="o">=</span><span class="s2">&quot;year&gt;2000&quot;</span><span class="p">,</span><span class="n">use_data_profile</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></span>
 </pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>   totalRecords
-0      66779138
+0      66779131
 </pre></div>
 </div>
 <p>To see a full list of data quality profiles, use <code class="docutils literal notranslate"><span class="pre">galah.show_all(profiles=True)</span></code>.</p>
@@ -491,8 +489,8 @@ Profiles are groups of data quality filters.</p>
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#apply-profile">
-   apply_profile
+  <a class="reference internal nav-link" href="#use-data-profile">
+   use_data_profile
   </a>
  </li>
 </ul>

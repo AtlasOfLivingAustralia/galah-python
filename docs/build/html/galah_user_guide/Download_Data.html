@@ -396,18 +396,18 @@ associated with an active account on your chosen atlas. See more information in 
 <p>galah_config(email = “<a class="reference external" href="mailto:your_email&#37;&#52;&#48;email&#46;com">your_email<span>&#64;</span>email<span>&#46;</span>com</a>”, atlas = “Australia”)</p>
 <p>An example here is to download occurrence records for Eolophus roseicapilla:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">atlas_occurrences</span><span class="p">(</span><span class="n">taxa</span><span class="o">=</span><span class="s2">&quot;Eolophus roseicapilla&quot;</span><span class="p">,</span><span class="n">filters</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;stateProvince=Australian Capital Territory&quot;</span><span class="p">,</span><span class="s2">&quot;year&gt;=2010&quot;</span><span class="p">],</span><span class="n">fields</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;institutionID&quot;</span><span class="p">,</span><span class="s2">&quot;basic&quot;</span><span class="p">])</span></span>
-</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>      institutionID  ...  occurrenceStatus
-0               NaN  ...           PRESENT
-1               NaN  ...           PRESENT
-2               NaN  ...           PRESENT
-3               NaN  ...           PRESENT
-4               NaN  ...           PRESENT
-...             ...  ...               ...
-65322           NaN  ...           PRESENT
-65323           NaN  ...           PRESENT
-65324        in1033  ...           PRESENT
-65325        in1033  ...           PRESENT
-65326        in1033  ...           PRESENT
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>      institutionID  decimalLatitude  decimalLongitude             eventDate         scientificName                                                             taxonConceptID                              recordID                   dataResourceName occurrenceStatus
+0               NaN       -35.324650        149.051770  2016-09-26T14:00:00Z  Eolophus roseicapilla  https://biodiversity.org.au/afd/taxa/9b4ad548-8bb3-486a-ab0a-905506c463ea  b9b806ef-19ca-439c-8d50-df4b9f93d943                    eBird Australia          PRESENT
+1               NaN       -35.372920        149.127200  2021-09-11T14:00:00Z  Eolophus roseicapilla  https://biodiversity.org.au/afd/taxa/9b4ad548-8bb3-486a-ab0a-905506c463ea  9d245107-473d-4f15-b71c-976a68f8cd27                    eBird Australia          PRESENT
+2               NaN       -35.297615        149.008820  2019-09-14T14:00:00Z  Eolophus roseicapilla  https://biodiversity.org.au/afd/taxa/9b4ad548-8bb3-486a-ab0a-905506c463ea  4c63cf8f-baa0-4839-a09f-efbd0ce952ef                    eBird Australia          PRESENT
+3               NaN       -35.285633        149.088120  2016-03-15T13:00:00Z  Eolophus roseicapilla  https://biodiversity.org.au/afd/taxa/9b4ad548-8bb3-486a-ab0a-905506c463ea  4cde468f-9020-4db1-8f09-7680fbbd644f                    eBird Australia          PRESENT
+4               NaN       -35.264850        149.067720  2017-12-18T13:00:00Z  Eolophus roseicapilla  https://biodiversity.org.au/afd/taxa/9b4ad548-8bb3-486a-ab0a-905506c463ea  b0726893-037f-4e31-9a99-9bb31ed9aa3d                    eBird Australia          PRESENT
+...             ...              ...               ...                   ...                    ...                                                                        ...                                   ...                                ...              ...
+65322           NaN       -35.426067        149.054110  2014-11-25T08:47:00Z  Eolophus roseicapilla  https://biodiversity.org.au/afd/taxa/9b4ad548-8bb3-486a-ab0a-905506c463ea  e555549f-8912-469f-9e13-2390b1f5e53a                Canberra Nature Map          PRESENT
+65323           NaN       -35.282997        149.141950  2020-11-06T13:00:00Z  Eolophus roseicapilla  https://biodiversity.org.au/afd/taxa/9b4ad548-8bb3-486a-ab0a-905506c463ea  c71330c9-77dd-4bf8-b1b1-549f9b502b2a                    eBird Australia          PRESENT
+65324        in1033       -35.226993        149.020481  2017-06-25T14:00:00Z  Eolophus roseicapilla  https://biodiversity.org.au/afd/taxa/9b4ad548-8bb3-486a-ab0a-905506c463ea  32735c4a-bb78-4ffe-b7c1-7a7b7cc599ce  ALA species sightings and OzAtlas          PRESENT
+65325        in1033       -35.160122        149.140961  2018-07-05T06:30:46Z  Eolophus roseicapilla  https://biodiversity.org.au/afd/taxa/9b4ad548-8bb3-486a-ab0a-905506c463ea  59d49f01-33d2-46e2-92cb-f4c5f9ecd4fa  ALA species sightings and OzAtlas          PRESENT
+65326        in1033       -35.276619        149.112914  2017-07-25T21:34:37Z  Eolophus roseicapilla  https://biodiversity.org.au/afd/taxa/9b4ad548-8bb3-486a-ab0a-905506c463ea  150d3252-111e-41ec-ab32-7f0567ac0330  ALA species sightings and OzAtlas          PRESENT
 
 [65327 rows x 9 columns]
 </pre></div>
@@ -419,18 +419,18 @@ associated with an active account on your chosen atlas. See more information in 
 associated with a given record. Metadata on these records can be downloaded using <code class="docutils literal notranslate"><span class="pre">galah.atlas_media()</span></code> and the same set of
 filters as the other data download functions.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">atlas_media</span><span class="p">(</span><span class="n">taxa</span><span class="o">=</span><span class="s2">&quot;Eolophus roseicapilla&quot;</span><span class="p">,</span><span class="n">filters</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;year=2020&quot;</span><span class="p">,</span><span class="s2">&quot;cl22=Australian Capital Territory&quot;</span><span class="p">])</span></span>
-</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>     decimalLatitude  ...                          occurrenceID
-0         -35.599952  ...  063bb0fd-541b-4182-8bf6-6dc79c81ef41
-1         -35.599952  ...  063bb0fd-541b-4182-8bf6-6dc79c81ef41
-2         -35.599952  ...  063bb0fd-541b-4182-8bf6-6dc79c81ef41
-3         -35.599952  ...  063bb0fd-541b-4182-8bf6-6dc79c81ef41
-4         -35.532558  ...                                   NaN
-..               ...  ...                                   ...
-439       -35.177018  ...                                   NaN
-440       -35.177018  ...                                   NaN
-441       -35.177018  ...                                   NaN
-442       -35.177018  ...                                   NaN
-443       -35.166122  ...  c91faaef-1df3-41e6-a12e-c0dcd13e47b0
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>     decimalLatitude  decimalLongitude             eventDate         scientificName                              recordID       dataResourceName occurrenceStatus multimedia                       imageIdentifier    mimeType  sizeInBytes         dateUploaded            dateTaken  height  width           creator                                         license dataResourceUid                          occurrenceID
+0         -35.599952        149.051230  2020-08-04T01:50:00Z  Eolophus roseicapilla  063bb0fd-541b-4182-8bf6-6dc79c81ef41  iNaturalist Australia          PRESENT      Image  2f4d32c0-a084-4bb3-a926-2ffd920610b9  image/jpeg      2654217  2020-08-05 01:07:32  2020-08-05 01:07:32    1200   1800           deborod  http://creativecommons.org/licenses/by-nc/4.0/          dr1411  063bb0fd-541b-4182-8bf6-6dc79c81ef41
+1         -35.599952        149.051230  2020-08-04T01:50:00Z  Eolophus roseicapilla  063bb0fd-541b-4182-8bf6-6dc79c81ef41  iNaturalist Australia          PRESENT      Image  73407414-0707-4292-a21a-97acb587239b  image/jpeg      2422643  2020-08-05 01:07:21  2020-08-05 01:07:21    1200   1800           deborod  http://creativecommons.org/licenses/by-nc/4.0/          dr1411  063bb0fd-541b-4182-8bf6-6dc79c81ef41
+2         -35.599952        149.051230  2020-08-04T01:50:00Z  Eolophus roseicapilla  063bb0fd-541b-4182-8bf6-6dc79c81ef41  iNaturalist Australia          PRESENT      Image  89171c49-5a64-423c-a768-2db20847b558  image/jpeg      2212660  2020-08-05 01:08:07  2020-08-05 01:08:07    1200   1800           deborod  http://creativecommons.org/licenses/by-nc/4.0/          dr1411  063bb0fd-541b-4182-8bf6-6dc79c81ef41
+3         -35.599952        149.051230  2020-08-04T01:50:00Z  Eolophus roseicapilla  063bb0fd-541b-4182-8bf6-6dc79c81ef41  iNaturalist Australia          PRESENT      Image  e681d31d-4088-4738-81cb-e04d056bb305  image/jpeg      3414736  2020-08-05 01:07:59  2020-08-05 01:07:59    1200   1800           deborod  http://creativecommons.org/licenses/by-nc/4.0/          dr1411  063bb0fd-541b-4182-8bf6-6dc79c81ef41
+4         -35.532558        149.062855  2020-08-26T01:53:00Z  Eolophus roseicapilla  28684160-f9eb-42b2-8491-b99d36528d77  iNaturalist Australia          PRESENT      Image  1295c202-f7d2-4030-ad4b-339e6eb110a7  image/jpeg       863158  2021-06-26 03:27:15  2021-06-26 03:27:15    1200   1800           deborod  http://creativecommons.org/licenses/by-nc/4.0/          dr1411                                   NaN
+..               ...               ...                   ...                    ...                                   ...                    ...              ...        ...                                   ...         ...          ...                  ...                  ...     ...    ...               ...                                             ...             ...                                   ...
+439       -35.177018        149.130010  2020-02-04T11:49:00Z  Eolophus roseicapilla  cd86446f-0428-4b27-be31-5f91175b9048             NatureMapr          PRESENT      Image  a3ca47f5-1004-41a6-ba0c-2aa9c68cc513  image/jpeg        83862  2022-05-21 00:05:39  2022-05-21 00:05:39     600    800               NaN                                             NaN         dr19123                                   NaN
+440       -35.177018        149.130010  2020-02-04T11:49:00Z  Eolophus roseicapilla  cd86446f-0428-4b27-be31-5f91175b9048             NatureMapr          PRESENT      Image  a3e75c38-c908-4e39-b763-5174d5224907  image/jpeg       245864  2022-05-22 18:20:11  2022-05-22 18:20:11     600    800               NaN                                             NaN         dr19123                                   NaN
+441       -35.177018        149.130010  2020-02-04T11:49:00Z  Eolophus roseicapilla  cd86446f-0428-4b27-be31-5f91175b9048             NatureMapr          PRESENT      Image  ad240e06-d7eb-43e8-8604-345b55a2367b  image/jpeg       254193  2022-05-20 22:00:41  2022-05-20 22:00:41     600    800               NaN                                             NaN         dr19123                                   NaN
+442       -35.177018        149.130010  2020-02-04T11:49:00Z  Eolophus roseicapilla  cd86446f-0428-4b27-be31-5f91175b9048             NatureMapr          PRESENT      Image  f1ec5d34-0842-4747-83dd-fbb36a24656c  image/jpeg       229889  2022-05-21 21:10:16  2022-05-21 21:10:16     600    800               NaN                                             NaN         dr19123                                   NaN
+443       -35.166122        149.166048  2020-11-07T01:29:00Z  Eolophus roseicapilla  c91faaef-1df3-41e6-a12e-c0dcd13e47b0  iNaturalist Australia          PRESENT      Image  9889254d-2a57-41dc-bc85-def7b8d3f0e0  image/jpeg      2430441  2020-11-09 23:35:58  2020-11-09 23:35:58    1947   1947  David Cunningham  http://creativecommons.org/licenses/by-nd/4.0/          dr1411  c91faaef-1df3-41e6-a12e-c0dcd13e47b0
 
 [444 rows x 19 columns]
 </pre></div>

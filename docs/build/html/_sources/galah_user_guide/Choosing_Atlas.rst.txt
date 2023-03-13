@@ -42,25 +42,25 @@ Available information may vary for each Living Atlas.
 
     >>> galah.show_all(datasets=True)
 
-.. program-output:: python3 -c "import galah;galah.galah_config(atlas=\"Australia\");print(galah.show_all(datasets=True))"
+.. program-output:: python3 -c "import galah;import pandas as pd;pd.set_option('display.max_columns', None);pd.set_option('display.expand_frame_repr', False);pd.set_option('max_colwidth', None);galah.galah_config(atlas=\"Australia\");print(galah.show_all(datasets=True))"
 
 .. prompt:: python
 
     >>> galah.show_all(fields=True)
 
-.. program-output:: python3 -c "import galah;galah.galah_config(atlas=\"Australia\");print(galah.show_all(fields=True))"
+.. program-output:: python3 -c "import galah;galah.galah_config(atlas=\"Australia\");import pandas as pd;pd.set_option('display.max_columns', None);pd.set_option('display.expand_frame_repr', False);pd.set_option('max_colwidth', None);print(galah.show_all(fields=True))"
 
 .. prompt:: python
 
     >>> galah.search_all(datasets="year")
 
-.. program-output:: python3 -c "import galah;galah.galah_config(atlas=\"Australia\");print(galah.search_all(datasets=\"year\"))"
+.. program-output:: python3 -c "import galah;galah.galah_config(atlas=\"Australia\");import pandas as pd;pd.set_option('display.max_columns', None);pd.set_option('display.expand_frame_repr', False);pd.set_option('max_colwidth', None);print(galah.search_all(datasets=\"year\"))"
 
 .. prompt:: python
 
     >>> galah.search_taxa(taxa="Heleioporus")
 
-.. program-output:: python3 -c "import galah;print(galah.search_taxa(taxa=\"Heleioporus\"))"
+.. program-output:: python3 -c "import galah;import pandas as pd;pd.set_option('display.max_columns', None);pd.set_option('display.expand_frame_repr', False);pd.set_option('max_colwidth', None);print(galah.search_taxa(taxa=\"Heleioporus\"))"
 
 
 Download data
@@ -85,13 +85,13 @@ make sure your searches are returning the correct taxonomic data.
     >>> # Returns data
     >>> galah.search_taxa(taxa="Vulpes vulpes")
 
-.. program-output:: python3 -c "import galah;print(galah.search_taxa(taxa=\"Vulpes vulpes\"))"
+.. program-output:: python3 -c "import galah;import pandas as pd;pd.set_option('display.max_columns', None);pd.set_option('display.expand_frame_repr', False);pd.set_option('max_colwidth', None);print(galah.search_taxa(taxa=\"Vulpes vulpes\"))"
 
 .. prompt:: python
 
     >>> galah.atlas_counts(taxa="Vulpes vulpes", filters="year>2010")
 
-.. program-output:: python -c "import galah;print(galah.atlas_counts(taxa=\"Vulpes vulpes\", filters=\"year>2010\"))"
+.. program-output:: python -c "import galah;import pandas as pd;pd.set_option('display.max_columns', None);pd.set_option('display.expand_frame_repr', False);pd.set_option('max_colwidth', None);print(galah.atlas_counts(taxa=\"Vulpes vulpes\", filters=\"year>2010\"))"
 
 Download species occurrence records from other atlases with ``galah.atlas_occurrences()``
 
@@ -99,7 +99,7 @@ Download species occurrence records from other atlases with ``galah.atlas_occurr
 
     >>> galah.atlas_occurrences(taxa="Vulpes vulpes", filters="year>2010", fields=["taxon_name", "year"])
 
-.. program-output:: python -c "import galah; print(galah.atlas_occurrences(taxa=\"Vulpes vulpes\", filters=\"year>2010\", fields=[\"taxon_name\", \"year\"]))"
+#.. program-output:: python -c "import galah;import pandas as pd;pd.set_option('display.max_columns', None);pd.set_option('display.expand_frame_repr', False);pd.set_option('max_colwidth', None);print(galah.atlas_occurrences(taxa=\"Vulpes vulpes\", filters=\"year>2010\", fields=[\"taxon_name\", \"year\"]))"
 
 
 Complex queries with multiple Atlases

@@ -28,7 +28,7 @@ by the requested field.
 
     >>> galah.atlas_counts(group_by="kingdom")
 
-.. program-output:: python -c "import galah;galah.galah_config(atlas=\"Australia\");print(galah.atlas_counts(group_by=\"kingdom\",expand=False))"
+.. program-output:: python -c "import galah;galah.galah_config(atlas=\"Australia\");import pandas as pd;pd.set_option('display.max_columns', None);pd.set_option('display.expand_frame_repr', False);pd.set_option('max_colwidth', None);print(galah.atlas_counts(group_by=\"kingdom\",expand=False))"
 
 Species lists
 -------------
@@ -42,7 +42,7 @@ than the species; but also in being more flexible by supporting filtering:
 
     >>> galah.atlas_species(taxa="Rodentia",filters="stateProvince=Northern Territory")
 
-.. program-output:: python -c "import galah;galah.galah_config(atlas=\"Australia\");galah.atlas_species(taxa=\"Rodentia\",filters=\"stateProvince=Northern Territory\")"
+.. program-output:: python -c "import galah;galah.galah_config(atlas=\"Australia\");import pandas as pd;pd.set_option('display.max_columns', None);pd.set_option('display.expand_frame_repr', False);pd.set_option('max_colwidth', None);galah.atlas_species(taxa=\"Rodentia\",filters=\"stateProvince=Northern Territory\")"
 
 
 Occurrence data
@@ -59,7 +59,7 @@ An example here is to download occurrence records for Eolophus roseicapilla:
 
     >>> galah.atlas_occurrences(taxa="Eolophus roseicapilla",filters=["stateProvince=Australian Capital Territory","year>=2010"],fields=["institutionID","basic"])
 
-.. program-output:: python -c "import galah;galah.galah_config(atlas=\"Australia\");print(galah.atlas_occurrences(taxa=\"Eolophus roseicapilla\",filters=[\"stateProvince=Australian Capital Territory\",\"year>=2010\"],fields=[\"institutionID\",\"basic\"]))"
+.. program-output:: python -c "import galah;galah.galah_config(atlas=\"Australia\");import pandas as pd;pd.set_option('display.max_columns', None);pd.set_option('display.expand_frame_repr', False);pd.set_option('max_colwidth', None);print(galah.atlas_occurrences(taxa=\"Eolophus roseicapilla\",filters=[\"stateProvince=Australian Capital Territory\",\"year>=2010\"],fields=[\"institutionID\",\"basic\"]))"
 
 Media metadata
 --------------
@@ -72,7 +72,7 @@ filters as the other data download functions.
 
     >>> galah.atlas_media(taxa="Eolophus roseicapilla",filters=["year=2020","cl22=Australian Capital Territory"])    
 
-.. program-output:: python -c "import galah;print(galah.atlas_media(taxa=\"Eolophus roseicapilla\",filters=[\"year=2020\",\"cl22=Australian Capital Territory\"]))"
+.. program-output:: python -c "import galah;import pandas as pd;pd.set_option('display.max_columns', None);pd.set_option('display.expand_frame_repr', False);pd.set_option('max_colwidth', None);print(galah.atlas_media(taxa=\"Eolophus roseicapilla\",filters=[\"year=2020\",\"cl22=Australian Capital Territory\"]))"
 
 To actually download the media files to your computer, add the argument ``collect``.  By default, it downloads the data to your
 current working directory, but you can specify the folder to download to with the ``path`` argument.

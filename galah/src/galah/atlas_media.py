@@ -1,17 +1,11 @@
-import requests,urllib.parse,os,time,zipfile,io,shutils,tempfile
+import requests,os
 import pandas as pd
-import numpy as np
 
 from .atlas_occurrences import atlas_occurrences
-from .search_taxa import search_taxa
-from .galah_select import galah_select
-from .galah_filter import galah_filter
 from .get_api_url import get_api_url
 from .get_api_url import readConfig
 from .apply_data_profile import apply_data_profile
 from .atlas_occurrences import atlas_occurrences
-
-import sys
 
 # this function parses everything to atlas_occurrences first, and it adds something to the galah_filter argument to say
 # that the multimedia field is not empty
@@ -41,7 +35,7 @@ def atlas_media(taxa=None,
         fields : string or list
             Data fields you want to return, i.e. "decimalLatitude" or "decimalLongitude" (equivalent to ``galah_select()`` in R version).
             Default is different for every atlas, but includes:
-            
+
                 - latitude and longitude
                 - date of occurrence
                 - species name and common name

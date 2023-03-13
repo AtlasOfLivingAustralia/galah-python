@@ -370,54 +370,50 @@ span.prompt1:before {
 Available information may vary for each Living Atlas.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">galah_config</span><span class="p">(</span><span class="n">atlas</span><span class="o">=</span><span class="s2">&quot;Australia&quot;</span><span class="p">)</span></span>
 </pre></div></div><div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">show_all</span><span class="p">(</span><span class="n">datasets</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></span>
-</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>                                                    name  ...      uid
-0                 River Torrens Linear Park Species List  ...  dr14140
-1                                 Warringah Species List  ...   dr4047
-2                               &#39;A Genome&#39; Oryza species  ...   dr8221
-3                                              *Brigalow  ...  dr14507
-4                                                0662409  ...  dr19938
-...                                                  ...  ...      ...
-12751  [C4OC] Torres Strait Regional Landcare Facilit...  ...   dr3529
-12752  [C4OC] Traditional Ecological Knowledge Record...  ...   dr3199
-12753  [C4OC] Trialling and demonstrating farmer inno...  ...   dr3519
-12754                [C4OC] Urban and Coastal Protection  ...   dr6802
-12755        _River_Torrens_Linear_Park_Species_List.csv  ...  dr19265
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>                                                                                                          name                                                     uri      uid
+0                                                                       River Torrens Linear Park Species List  https://collections.ala.org.au/ws/dataResource/dr14140  dr14140
+1                                                                                       Warringah Species List   https://collections.ala.org.au/ws/dataResource/dr4047   dr4047
+2                                                                                     &#39;A Genome&#39; Oryza species   https://collections.ala.org.au/ws/dataResource/dr8221   dr8221
+3                                                                                                    *Brigalow  https://collections.ala.org.au/ws/dataResource/dr14507  dr14507
+4                                                                                                      0662409  https://collections.ala.org.au/ws/dataResource/dr19938  dr19938
+...                                                                                                        ...                                                     ...      ...
+12773                                                       [C4OC] Torres Strait Regional Landcare Facilitator   https://collections.ala.org.au/ws/dataResource/dr3529   dr3529
+12774                        [C4OC] Traditional Ecological Knowledge Recording and Management in Torres Strait   https://collections.ala.org.au/ws/dataResource/dr3199   dr3199
+12775  [C4OC] Trialling and demonstrating farmer innovation for improved environmental and resource management   https://collections.ala.org.au/ws/dataResource/dr3519   dr3519
+12776                                                                      [C4OC] Urban and Coastal Protection   https://collections.ala.org.au/ws/dataResource/dr6802   dr6802
+12777                                                              _River_Torrens_Linear_Park_Species_List.csv  https://collections.ala.org.au/ws/dataResource/dr19265  dr19265
 
-[12756 rows x 3 columns]
+[12778 rows x 3 columns]
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">show_all</span><span class="p">(</span><span class="n">fields</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></span>
-</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>                      id  ... link
-0         abcdTypeStatus  ...  NaN
-1      acceptedNameUsage  ...  NaN
-2    acceptedNameUsageID  ...  NaN
-3           accessRights  ...  NaN
-4        assertionUserId  ...  NaN
-..                   ...  ...  ...
-606    multimediaLicence  ...     
-607               images  ...     
-608               videos  ...     
-609               sounds  ...     
-610                  qid  ...     
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>                      id                                                        description   type link
+0         abcdTypeStatus                                      ABCD field in use by herbaria  field  NaN
+1      acceptedNameUsage                     http://rs.tdwg.org/dwc/terms/acceptedNameUsage  field  NaN
+2    acceptedNameUsageID                   http://rs.tdwg.org/dwc/terms/acceptedNameUsageID  field  NaN
+3           accessRights                                                                NaN  field  NaN
+4        assertionUserId  User ID of the person who has made an assertion about this record  field  NaN
+..                   ...                                                                ...    ...  ...
+606    multimediaLicence                                                 Media filter field  media     
+607               images                                                 Media filter field  media     
+608               videos                                                 Media filter field  media     
+609               sounds                                                 Media filter field  media     
+610                  qid                                   Reference to pre-generated query  other     
 
 [611 rows x 4 columns]
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">search_all</span><span class="p">(</span><span class="n">datasets</span><span class="o">=</span><span class="s2">&quot;year&quot;</span><span class="p">)</span></span>
-</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>                                                   name  ...      uid
-26                                   123species_40years  ...  dr21038
-2543                     Elgin Road 3 year observations  ...    dr661
-21                 10Km_40years_specieslist_prairie_orm  ...  dr21039
-11    10 year trend of levels of organochlorine poll...  ...  dr16247
-
-[4 rows x 3 columns]
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>                                                                                    name                                                     uri      uid
+26                                                                    123species_40years  https://collections.ala.org.au/ws/dataResource/dr21038  dr21038
+2544                                                      Elgin Road 3 year observations    https://collections.ala.org.au/ws/dataResource/dr661    dr661
+21                                                  10Km_40years_specieslist_prairie_orm  https://collections.ala.org.au/ws/dataResource/dr21039  dr21039
+11    10 year trend of levels of organochlorine pollutants in Antarctic seabirds 2003/04  https://collections.ala.org.au/ws/dataResource/dr16247  dr16247
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">search_taxa</span><span class="p">(</span><span class="n">taxa</span><span class="o">=</span><span class="s2">&quot;Heleioporus&quot;</span><span class="p">)</span></span>
-</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>  scientificName scientificNameAuthorship  ...        genus   issues
-0    Heleioporus               Gray, 1841  ...  Heleioporus  noIssue
-
-[1 rows x 10 columns]
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>  scientificName scientificNameAuthorship                                                             taxonConceptID   rank   kingdom    phylum  order           family        genus   issues
+0    Heleioporus               Gray, 1841  https://biodiversity.org.au/afd/taxa/990ee116-dd7d-40c6-93dc-40d5773e3e6e  genus  Animalia  Chordata  Anura  Limnodynastidae  Heleioporus  noIssue
 </pre></div>
 </div>
 </section>
@@ -435,10 +431,8 @@ Index: []
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="c1"># Returns data</span></span>
 <span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">search_taxa</span><span class="p">(</span><span class="n">taxa</span><span class="o">=</span><span class="s2">&quot;Vulpes vulpes&quot;</span><span class="p">)</span></span>
-</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>  scientificName scientificNameAuthorship  ...   issues vernacularName
-0  Vulpes vulpes           Linnaeus, 1758  ...  noIssue            Fox
-
-[1 rows x 12 columns]
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>  scientificName scientificNameAuthorship                                                             taxonConceptID     rank   kingdom    phylum      order   family   genus        species   issues vernacularName
+0  Vulpes vulpes           Linnaeus, 1758  https://biodiversity.org.au/afd/taxa/2869ce8a-8212-46c2-8327-dfb7fabb8296  species  Animalia  Chordata  Carnivora  Canidae  Vulpes  Vulpes vulpes  noIssue            Fox
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">atlas_counts</span><span class="p">(</span><span class="n">taxa</span><span class="o">=</span><span class="s2">&quot;Vulpes vulpes&quot;</span><span class="p">,</span> <span class="n">filters</span><span class="o">=</span><span class="s2">&quot;year&gt;2010&quot;</span><span class="p">)</span></span>
@@ -448,22 +442,7 @@ Index: []
 </div>
 <p>Download species occurrence records from other atlases with <code class="docutils literal notranslate"><span class="pre">galah.atlas_occurrences()</span></code></p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">atlas_occurrences</span><span class="p">(</span><span class="n">taxa</span><span class="o">=</span><span class="s2">&quot;Vulpes vulpes&quot;</span><span class="p">,</span> <span class="n">filters</span><span class="o">=</span><span class="s2">&quot;year&gt;2010&quot;</span><span class="p">,</span> <span class="n">fields</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;taxon_name&quot;</span><span class="p">,</span> <span class="s2">&quot;year&quot;</span><span class="p">])</span></span>
-</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>             scientificName  year
-0             Vulpes vulpes  2016
-1             Vulpes vulpes  2018
-2             Vulpes vulpes  2019
-3             Vulpes vulpes  2017
-4             Vulpes vulpes  2014
-...                     ...   ...
-83048         Vulpes vulpes  2019
-83049         Vulpes vulpes  2020
-83050  Vulpes vulpes vulpes  2018
-83051  Vulpes vulpes vulpes  2019
-83052  Vulpes vulpes vulpes  2019
-
-[83053 rows x 2 columns]
-</pre></div>
-</div>
+</pre></div></div><p>#.. program-output:: python -c “import galah;import pandas as pd;pd.set_option(‘display.max_columns’, None);pd.set_option(‘display.expand_frame_repr’, False);pd.set_option(‘max_colwidth’, None);print(galah.atlas_occurrences(taxa=&quot;Vulpes vulpes&quot;, filters=&quot;year&gt;2010&quot;, fields=[&quot;taxon_name&quot;, &quot;year&quot;]))”</p>
 </section>
 <section id="complex-queries-with-multiple-atlases">
 <h2>Complex queries with multiple Atlases<a class="headerlink" href="#complex-queries-with-multiple-atlases" title="Permalink to this heading">#</a></h2>
@@ -481,7 +460,7 @@ return the total 0number of species records in each Living Atlas in one table.</
 <span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">counts_dict</span><span class="p">)</span></span>
 </pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>       Atlas  Total Records
 0  Australia      114091351
-1     Brazil       24139042
+1     Brazil       24096491
 2      Spain       38330113
 </pre></div>
 </div>

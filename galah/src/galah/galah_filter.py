@@ -1,5 +1,19 @@
 import re
 
+ATLAS_KEYWORDS = {
+    "Australia": "taxonConceptID",
+    "Austria": "guid",
+    "Brazil": "guid",
+    "Canada": "usageKey",
+    "Estonia": "guid",
+    "France": "usageKey",
+    "Guatemala": "guid",
+    "Portugal": "usageKey",
+    "Spain": "taxonConceptID",
+    "Sweden": "guid",
+    "United Kingdom": "guid",
+}
+
 def galah_filter(f, ifgroupBy=False):
     """
     "Filters" are arguments of the form field logical value that are used to narrow down the number of records returned by 
@@ -58,17 +72,20 @@ def galah_filter(f, ifgroupBy=False):
             # if filter is querying a field that has no value
             elif parts[1] == '':
                 returnString += "%28{}%3A%28*%29%29".format(parts[0])
-            elif parts[1] == "True" or parts[1] == "False":
-                print("Amanda, write the thing")
+            elif parts[1] == "True":
+                returnString += "%28assertions%3A%22{}%22%29".format(parts[0])
+            elif parts[1] == "False":
+                returnString += "-%28assertions%3A%22{}%22%29".format(parts[0])
             else:
                 # check if this is array
                 arrayChars = re.compile('[\[\]]')
                 arrayChar = arrayChars.findall(parts[1])
                 if arrayChar:
+                    returnString += "%28"
                     temp_array = parts[1][1:-1].split(",")
                     for value in temp_array:
                         returnString += "{}%3A22{}%22%20OR%20".format(parts[0], value.replace(" ","%20").replace('\'','').replace('"',''))
-                    returnString = returnString[:-8]
+                    returnString = returnString[:-8] + "%29"
                 # added quotes
                 else:
                     returnString += "%28{}%3A%22{}%22%29".format(parts[0], parts[1].replace(" ", "%20"))
@@ -91,10 +108,6 @@ def galah_filter(f, ifgroupBy=False):
         # not equal to
         elif specialChar == '!=' or specialChar == '=!':
             returnString += "-%28{}%3A%22{}%22%29".format(parts[0], parts[1])
-
-        # filters with numerical operators are being used with a non-numeric type
-        #elif not isinstance(parts[1], int):
-        #    raise ValueError("Numeric types can only be used with filters that include the <, >, <=, or => operators.")
         
         # else, there is either an error in the filters or a missing case
         else:

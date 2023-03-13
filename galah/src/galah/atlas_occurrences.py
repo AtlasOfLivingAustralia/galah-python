@@ -93,7 +93,7 @@ def atlas_occurrences(taxa=None,
                 - `images`
                 - `videos`
                 - `sounds`
-                
+
             See ``galah.show_all()`` and ``galah.search_all()`` to see valid fields.
         assertions : string or list
             Using "assertions" returns all quality assertion-related columns. These columns are data quality checks run by each living atlas. The list of assertions is shown by ``galah.show_all(assertions=True)``.
@@ -177,23 +177,6 @@ def atlas_occurrences(taxa=None,
                          "galah.galah_config(data_profile=\"None\")"
                          )
 
-    # removing all assertions (these would appear in caps)
-    if assertions is not None:
-
-        # check type
-        if type(assertions) is list or type(assertions) is str:
-            if type(assertions) is str:
-                assertions=[assertions]
-            for a in assertions:
-                baseURL += galah_filter(a) + "%20AND%20"
-
-            # add final part of URL
-            URL = URL[:-len("%20AND%20")] + "%29&"
-        else:
-            raise ValueError("Assertions needs to be a string or a list of strings, i.e. identificationIncorrect == TRUE")
-    baseURL += "&qa=none&"
-
-    # implement galah.select - choose which columns you download
     # goes to the 'fields' argument in occurrence download (csv list, commas between)
     if fields is not None:
         baseURL += galah_select(select=fields) + "&"
@@ -211,9 +194,6 @@ def atlas_occurrences(taxa=None,
             # make taxa a list for easier looping
             if type(taxa) is str:
                 taxa=[taxa]
-
-            # create empty dataFrame
-            dataFrame = pd.DataFrame()
 
             # get the taxonConceptID for taxa - first check for extant atlas
             if configs['galahSettings']['atlas'] in atlases:
@@ -235,9 +215,22 @@ def atlas_occurrences(taxa=None,
                         URL += galah_filter(f) + "%20AND%20"
                 else:
                     raise ValueError("The filters argument needs to be either a string or a list")
+                
+            # take care of assertions
+            if assertions is not None:
 
-                # add final part of URL
-                URL = URL[:-len("%20AND%20")] + "%29&"
+                # check type
+                if type(assertions) is list or type(assertions) is str:
+                    if type(assertions) is str:
+                        assertions=[assertions]
+                    for a in assertions:
+                        URL += galah_filter(a) + "%20AND%20"
+
+                else:
+                    raise ValueError("Assertions needs to be a string or a list of strings, i.e. identificationIncorrect == TRUE")
+            
+            # add final part of URL
+            URL = URL[:-len("%20AND%20")] + "%29&qa=none&"
 
             # check to see if user wants the query URL
             if verbose:
@@ -246,7 +239,6 @@ def atlas_occurrences(taxa=None,
             # query the api
             response = requests.get(URL)
             if response.status_code == 403:
-                # TODO: write more exceptions to make sure contact details are ok
                 if configs['galahSettings']['atlas'] == "Brazil":
                     raise ValueError("It appears that you are not registered as a user on the Brazilian atlas.  Please email atendimento_sibbr@rnp.br to find out more information.")
                 if configs['galahSettings']['atlas'] == "Spain":
@@ -268,17 +260,76 @@ def atlas_occurrences(taxa=None,
             if verbose:
                 print("Data for download:\n\n{}\n".format(statusURL.json()['downloadUrl']))
 
-            # create a temporary dataFrame
-            tempdf = pd.read_csv(zipfile.ZipFile(io.BytesIO(zipURL.content)).open('data.csv'),low_memory=False)
-
-            # append the data onto one big dataFrame for returning
-            return pd.concat([dataFrame,tempdf],ignore_index=True)
+            # return dataFrame
+            return pd.read_csv(zipfile.ZipFile(io.BytesIO(zipURL.content)).open('data.csv'),low_memory=False)
 
         # else, the user needs to specify the taxa in the correct format
         else:
             raise TypeError("The taxa argument can only be a string or a list."
                         "\nExample: taxa.taxa(\"Vulpes vulpes\")"
                         "\n         taxa.taxa([\"Osphranter rufus\",\"Vulpes vulpes\",\"Macropus giganteus\",\"Phascolarctos cinereus\"])")
+    
+    elif filters is not None:
+    
+        # start URL
+        URL = baseURL + "&fq=%28"
+
+        if type(filters) is str:
+            URL += galah_filter(filters) + "%20AND%20"
+        elif type(filters) is list:
+            for f in filters:
+                URL += galah_filter(f) + "%20AND%20"
+        else:
+            raise ValueError("The filters argument needs to be either a string or a list")
+
+        # take care of assertions
+        if assertions is not None:
+
+            # check type
+            if type(assertions) is list or type(assertions) is str:
+                if type(assertions) is str:
+                    assertions=[assertions]
+                for a in assertions:
+                    URL += galah_filter(a) + "%20AND%20"
+
+            else:
+                raise ValueError("Assertions needs to be a string or a list of strings, i.e. identificationIncorrect == TRUE")
+
+        # add final part of URL
+        URL = URL[:-len("%20AND%20")] + "%29&qa=none&"
+
+        # check to see if user wants the query URL
+        if verbose:
+            print("URL for querying:\n\n{}\n".format(URL))
+
+        # query the api
+        response = requests.get(URL)
+        if response.status_code == 403:
+            # TODO: write more exceptions to make sure contact details are ok
+            if configs['galahSettings']['atlas'] == "Brazil":
+                raise ValueError("It appears that you are not registered as a user on the Brazilian atlas.  Please email atendimento_sibbr@rnp.br to find out more information.")
+            if configs['galahSettings']['atlas'] == "Spain":
+                raise ValueError("It appears that you are not registered as a user on the Spanish atlas.  Please go to https://auth.gbif.es/cas/login?lang=en to register.")
+        if response.json()['status'] == "skipped":
+            raise ValueError(response.json()["error"])
+
+        # this may take a while - occasionally check if status has changed
+        statusURL = requests.get(response.json()['statusUrl'])
+        while statusURL.json()['status'] == 'inQueue':
+            time.sleep(5)
+            statusURL = requests.get(response.json()['statusUrl'])
+        while statusURL.json()['status'] == 'running':
+            time.sleep(5)
+            statusURL = requests.get(response.json()['statusUrl'])
+        zipURL = requests.get(statusURL.json()['downloadUrl'])
+
+        # check to see if the user wants the zip URL
+        if verbose:
+            print("Data for download:\n\n{}\n".format(statusURL.json()['downloadUrl']))
+
+        # return dataFrame
+        return pd.read_csv(zipfile.ZipFile(io.BytesIO(zipURL.content)).open('data.csv'),low_memory=False)
+
     else:
         raise Exception('You cannot get all 10 million records for the ALA.  Please specify at least one taxa and/or '
                         'filters to get occurrence records associated with the taxa.')

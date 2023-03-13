@@ -15,7 +15,7 @@ For example, to show all available Living Atlases supported:
 
     >>> galah.show_all(atlases=True)
 
-.. program-output:: python3 -c "import galah;print(galah.show_all(atlases=True))"
+.. program-output:: python3 -c "import galah;import pandas as pd;pd.set_option('display.max_columns', None);pd.set_option('display.expand_frame_repr', False);pd.set_option('max_colwidth', None);print(galah.show_all(atlases=True))"
 
 
 To search for a specific available Living Atlas:
@@ -24,7 +24,7 @@ To search for a specific available Living Atlas:
 
     >>> galah.search_all(atlases="Spain")
 
-.. program-output:: python3 -c "import galah;print(galah.search_all(atlases=\"Spain\"))"
+.. program-output:: python3 -c "import galah;import pandas as pd;pd.set_option('display.max_columns', None);pd.set_option('display.expand_frame_repr', False);pd.set_option('max_colwidth', None);print(galah.search_all(atlases=\"Spain\"))"
 
 To show all fields:
 
@@ -32,7 +32,7 @@ To show all fields:
 
     >>> galah.show_all(fields=True)
 
-.. program-output:: python3 -c "import galah;galah.galah_config(atlas=\"Australia\");print(galah.show_all(fields=True))"
+.. program-output:: python3 -c "import galah;import pandas as pd;pd.set_option('display.max_columns', None);pd.set_option('display.expand_frame_repr', False);pd.set_option('max_colwidth', None);galah.galah_config(atlas=\"Australia\");print(galah.show_all(fields=True))"
 
 And to search for a specific field:
 
@@ -40,7 +40,7 @@ And to search for a specific field:
 
     >>> galah.search_all(fields="Australian States",column_name="description")
 
-.. program-output:: python3 -c "import galah;galah.galah_config(atlas=\"Australia\");print(galah.search_all(fields=\"Australian States\",column_name=\"description\"))"
+.. program-output:: python3 -c "import galah;import pandas as pd;pd.set_option('display.max_columns', None);pd.set_option('display.expand_frame_repr', False);pd.set_option('max_colwidth', None);galah.galah_config(atlas=\"Australia\");print(galah.search_all(fields=\"Australian States\",column_name=\"description\"))"
 
 
 
@@ -103,7 +103,7 @@ search for the keyword "basis" using ``galah.search_all()``:
     
     >>> galah.search_all(fields="basis")
 
-.. program-output:: python -c "import galah;galah.galah_config(atlas=\"Australia\");print(galah.search_all(fields=\"basis\"))"
+.. program-output:: python -c "import galah;import pandas as pd;pd.set_option('display.max_columns', None);pd.set_option('display.expand_frame_repr', False);pd.set_option('max_colwidth', None);galah.galah_config(atlas=\"Australia\");print(galah.search_all(fields=\"basis\"))"
 
 Once a desired field is found, you can use show_values to understand the information 
 contained within that field, e.g.
@@ -112,7 +112,7 @@ contained within that field, e.g.
 
     >>> galah.show_values(field="basisOfRecord")
 
-.. program-output:: python -c "import galah;galah.galah_config(atlas=\"Australia\");print(galah.show_values(field=\"basisOfRecord\"))"
+.. program-output:: python -c "import galah;import pandas as pd;pd.set_option('display.max_columns', None);pd.set_option('display.expand_frame_repr', False);pd.set_option('max_colwidth', None);galah.galah_config(atlas=\"Australia\");print(galah.show_values(field=\"basisOfRecord\"))"
 
 You can even narrow down your search by searching for matching values:
 
@@ -120,7 +120,7 @@ You can even narrow down your search by searching for matching values:
 
     >>>  galah.search_values(field="basisOfRecord",value="SPECIMEN")
 
-.. program-output:: python -c "import galah;galah.galah_config(atlas=\"Australia\");print(galah.search_values(field=\"basisOfRecord\",value=\"SPECIMEN\"))"
+.. program-output:: python -c "import galah;import pandas as pd;pd.set_option('display.max_columns', None);pd.set_option('display.expand_frame_repr', False);pd.set_option('max_colwidth', None);galah.galah_config(atlas=\"Australia\");print(galah.search_values(field=\"basisOfRecord\",value=\"SPECIMEN\"))"
 
 This provides the information you need to pass meaningful queries to galah_filter.
 
@@ -128,4 +128,4 @@ This provides the information you need to pass meaningful queries to galah_filte
 
     >>> galah.atlas_counts(filters="basisOfRecord=LIVING_SPECIMEN")
 
-.. program-output:: python -c "import galah;galah.galah_config(atlas=\"Australia\");print(galah.atlas_counts(filters=\"basisOfRecord=LIVING_SPECIMEN\"))"
+.. program-output:: python -c "import galah;import pandas as pd;pd.set_option('display.max_columns', None);pd.set_option('display.expand_frame_repr', False);pd.set_option('max_colwidth', None);galah.galah_config(atlas=\"Australia\");print(galah.atlas_counts(filters=\"basisOfRecord=LIVING_SPECIMEN\"))"
