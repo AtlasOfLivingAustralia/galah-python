@@ -7,6 +7,10 @@
   --pst-color-inline-code: #222322!important;
 }
 
+html[data-theme=light] {
+  --pst-color-inline-code: #222322!important;
+}
+
 p {
   font-size: 1.1rem!important;
   line-height: 1.5;
@@ -128,7 +132,7 @@ pre {
 }
 
 dt:target, span.highlighted {
-  background-color: #60a3a3;!important
+  background-color: #60a3a3 !important;
 }
 
 /*
@@ -170,7 +174,7 @@ main-index-title {
 }
 
 .code {
-  color: #222322!important;
+  color: #222322 !important;
 }
 
 code.literal {
