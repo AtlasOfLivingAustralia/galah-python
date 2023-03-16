@@ -28,26 +28,28 @@ def atlas_media(taxa=None,
 
     Parameters
     ----------
-        taxa : string or list
+        taxa : string / list
             one or more scientific names. Use ``galah.search_taxa()`` to search for valid scientific names.  
-        filters : string or list
+        filters : string / list
             filters, in the form ``field`` ``logical`` ``value`` (e.g. ``"year=2021"``)
-        fields : string or list
-            Data fields you want to return, i.e. "decimalLatitude" or "decimalLongitude" (equivalent to ``galah_select()`` in R version).
-            Default is different for every atlas, but includes:
+        fields : string / list
+            Name of one or more column groups to include. Valid options are "basic", "event" and "assertions"
+            Default is set to ``"fields=basic"``, which returns:
 
-                - latitude and longitude
-                - date of occurrence
-                - species name and common name
-                - taxon concept ID and record ID
-                - what data resource is responsible for occurrence
-                - status of occurrence
-                - what multimedia is available, along with links for download
+                - decimalLatitude, decimalLongitude, eventDate, scientificName, taxonConceptID, recordID, dataResourceName, occurrenceStatus
 
-            See ``galah.show_all()`` and ``galah.search_all()`` to see valid fields.
+            Using ``"fields="event"`` returns:
+
+                - eventRemarks, eventTime, eventID, eventDate, samplingEffort, samplingProtocol
+
+            Using ``fields="media"`` returns:
+
+                - multimedia, multimediaLicence, images, videos, sounds
+
+            See ``galah.show_all()`` and ``galah.search_all()`` to see all valid fields.
         verbose : logical
             If ``True``, galah gives more information like progress bars. Defaults to ``False``
-        multimedia : string or list
+        multimedia : string / list
             This is for specifying what types of multimedia you would like, i.e "images".  Defaults to ['images','videos','sounds']
         assertions : string
             Using "assertions" returns all quality assertion-related columns. These columns are data quality checks run by each living atlas. The list of assertions is shown by ``galah.show_all(assertions=True)``.

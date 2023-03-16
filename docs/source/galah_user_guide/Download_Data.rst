@@ -21,7 +21,7 @@ Record counts
 
 .. program-output:: python -c "import galah;galah.galah_config(atlas=\"Australia\");print(galah.atlas_counts())"
 
-In addition to the filter arguments, it has an optional group_by argument, which provides counts binned 
+In addition to ``filters`` arguments, ``galah.atlas_counts()`` has an optional ``group_by`` argument, which provides counts grouped 
 by the requested field.
 
 .. prompt:: python
@@ -51,9 +51,11 @@ Occurrence data
 To download occurrence data you will need to specify your email in ``galah.galah_config()``. This email must be 
 associated with an active account on your chosen atlas. See more information in the config section.
 
-galah_config(email = "your_email@email.com", atlas = "Australia")
+.. prompt:: python
 
-An example here is to download occurrence records for Eolophus roseicapilla:
+    >>> galah_config(email = "your_email@email.com", atlas = "Australia")
+
+After specifying your email, you can download occurrence records of, for example, Eolophus roseicapilla:
 
 .. prompt:: python
 
@@ -81,7 +83,7 @@ current working directory, but you can specify the folder to download to with th
 Configuring galah
 -----------------
 
-Various aspects of the galah package can be customized. To preserve configuration for future sessions, set profile_path to a location of a .Rprofile file.
+Various aspects of the galah package can be customized.
 
 *Email*
 
@@ -92,13 +94,14 @@ here. Once an email is registered with the ALA, it should be stored in the confi
     
     >>> galah.galah_config(email = "myemail@gmail.com")
 
-*Setting the download reason*
+*Setting a download reason*
 
-ALA requires that you provide a reason when downloading occurrence data (via the galah atlas_occurrences() function). 
-The reason is set as “scientific research” by default, but you can change this using galah_config(). See show_all_reasons() 
+ALA requires that you provide a reason when downloading occurrence data (via the ``galah.atlas_occurrences()`` function). 
+The reason is set to 4 (scientific research) by default, but you can change this using ``galah_config()``. See ``galah.show_all(reasons=True)`` 
 for valid download reasons.
 
-galah_config(download_reason_id = your_reason_id)
+.. prompt:: python
+    >>> galah.galah_config(reason = 5)
 
 
 Debugging

@@ -58,44 +58,28 @@ def atlas_occurrences(taxa=None,
     ----------
         taxa : string
             one or more scientific names. Use ``galah.search_taxa()`` to search for valid scientific names.  
-        filters : string or list
+        filters : string / list
             filters, in the form ``field`` ``logical`` ``value`` (e.g. ``"year=2021"``)
         test : logical
             Test if the API is up and running correctly.  Prints status of Atlas and returns.
         verbose : logical
             If ``True``, galah gives more information like URLs of your queries. Defaults to ``False``
-        fields : string or list
-            Data fields you want to return, i.e. "decimalLatitude" or "decimalLongitude" (equivalent to ``galah_select()`` in R version).
-            Default is titled "basic", which includes:
+        fields : string / list
+            Name of one or more column groups to include. Valid options are "basic", "event" and "assertions"
+            Default is set to ``"fields=basic"``, which returns:
 
-                - `decimalLatitude`
-                - `decimalLongitude`
-                - `eventDate`
-                - `scientificName`
-                - `taxonConceptID`
-                - `recordID`
-                - `dataResourceName`
-                - `occurrenceStatus`
+                - decimalLatitude, decimalLongitude, eventDate, scientificName, taxonConceptID, recordID, dataResourceName, occurrenceStatus
 
-            Other preset defaults "event" and "media".  "Event returns the following:
+            Using ``"fields="event"`` returns:
 
-                - `eventRemarks`
-                - `eventTime`
-                - `eventID`
-                - `eventDate`
-                - `samplingEffort`
-                - `samplingProtocol`
+                - eventRemarks, eventTime, eventID, eventDate, samplingEffort, samplingProtocol
 
-            While "media" returns
+            Using ``fields="media"`` returns:
 
-                - `multimedia`
-                - `multimediaLicence`
-                - `images`
-                - `videos`
-                - `sounds`
+                - multimedia, multimediaLicence, images, videos, sounds
 
-            See ``galah.show_all()`` and ``galah.search_all()`` to see valid fields.
-        assertions : string or list
+            See ``galah.show_all()`` and ``galah.search_all()`` to see all valid fields.
+        assertions : string / list
             Using "assertions" returns all quality assertion-related columns. These columns are data quality checks run by each living atlas. The list of assertions is shown by ``galah.show_all(assertions=True)``.
         use_data_profile : string
             A profile name. Should be a string - the name or abbreviation of a data quality profile to apply to the query. Valid values can be seen using ``galah.show_all(profiles=True)``
@@ -116,6 +100,15 @@ def atlas_occurrences(taxa=None,
 
     .. program-output:: python -c "import galah; print(galah.atlas_occurrences(taxa=\\\"Vulpes vulpes\\\",filters=\\\"year=2023\\\"))"
     
+    Download records of Vulpes vulpes in 2023, returning only ``eventDate`` field
+
+    .. prompt:: python
+
+        import galah
+        galah.atlas_occurrences(taxa="Vulpes vulpes",filters="year=2023",fields="eventDate")
+
+    .. program-output:: python -c "import galah; print(galah.atlas_occurrences(taxa=\\\"Vulpes vulpes\\\",filters=\\\"year=2023\\\",fields=\\\"eventDate\\\"))"
+
     """
 
     # get configs
