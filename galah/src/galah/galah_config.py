@@ -22,7 +22,7 @@ def galah_config(email=None,
     Parameters
     ----------
         email : string
-            An email address that has been registered with the chosen atlas. For the ALA, you can register at [this address](https://auth.ala.org.au/userdetails/registration/createAccount).  
+            An email address that has been registered with the chosen atlas. For the ALA, you can register `here <https://auth.ala.org.au/userdetails/registration/createAccount>`_.  
         email_notify : string
             Used to receive an email for each query to ``galah.atlas_occurrences()``. Defaults to ``None``, but can be useful in some instances, for example for tracking DOIs assigned to specific downloads for later citation.
         atlas : string

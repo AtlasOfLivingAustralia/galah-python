@@ -7,22 +7,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
     <title>Download Data &#8212; Galah 0.1.0 documentation</title>
-  <script>
+  
+  
+  
+  <script data-cfasync="false">
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
   </script>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../_static/styles/theme.css?digest=9b1a4fa89bdd0e95b23b" rel="stylesheet">
-<link href="../_static/styles/pydata-sphinx-theme.css?digest=9b1a4fa89bdd0e95b23b" rel="stylesheet">
+  <link href="../_static/styles/theme.css?digest=796348d33e8b1d947c94" rel="stylesheet">
+<link href="../_static/styles/bootstrap.css?digest=796348d33e8b1d947c94" rel="stylesheet">
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=796348d33e8b1d947c94" rel="stylesheet">
 
   
-  <link rel="stylesheet"
-    href="../_static/vendor/fontawesome/6.1.2/css/all.min.css">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2">
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=796348d33e8b1d947c94" rel="stylesheet">
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2">
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2">
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2">
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/css/extra.css" />
@@ -31,7 +33,8 @@
     <link rel="stylesheet" type="text/css" href="../_static/css/extra.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=9b1a4fa89bdd0e95b23b">
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=796348d33e8b1d947c94">
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=796348d33e8b1d947c94">
 
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/doctools.js"></script>
@@ -51,6 +54,10 @@
   <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="180" data-default-mode="">
 
   
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  
   <input type="checkbox" class="sidebar-toggle" name="__primary" id="__primary">
   <label class="overlay overlay-primary" for="__primary"></label>
 
@@ -64,7 +71,7 @@
     <div class="search-button__search-container">
       
 <form class="bd-search d-flex align-items-center" action="../search.html" method="get">
-  <i class="icon fas fa-search"></i>
+  <i class="fa-solid fa-magnifying-glass"></i>
   <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
 </form>
@@ -74,7 +81,7 @@
   
   <nav class="bd-header navbar navbar-expand-lg bd-navbar" id="navbar-main"><div class="bd-header__inner bd-page-width">
   <label class="sidebar-toggle primary-toggle" for="__primary">
-      <span class="fas fa-bars"></span>
+      <span class="fa-solid fa-bars"></span>
   </label>
   <div id="navbar-start">
     
@@ -112,32 +119,32 @@
     </p>
     <ul id="navbar-main-elements" class="navbar-nav">
         
-                <li class="nav-item">
-                    <a class="nav-link" href="../getting_started/index.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../getting_started/index.html">
                         Getting Started
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item current active">
-                    <a class="nav-link" href="index.html">
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="index.html">
                         Galah User Guide
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item">
-                    <a class="nav-link" href="../apidocs/galah.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../apidocs/galah.html">
                         API Docs
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item">
-                    <a class="nav-link" href="../authors/index.html">
-                        Authors and Citation
-                    </a>
-                </li>
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../authors/index.html">
+                        Authors
+                      </a>
+                    </li>
                 
     </ul>
 </nav>
@@ -146,19 +153,21 @@
     </div>
 
     <div id="navbar-end">
-      <div class="navbar-end-item navbar-end__search-button-container">
-        
-<button class="btn btn-sm navbar-btn search-button search-button__button" title="Search">
-  <i class="fas fa-search"></i>
+      
+        <div class="navbar-end-item navbar-persistent--container">
+          
+<button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-toggle="tooltip">
+  <i class="fa-solid fa-magnifying-glass"></i>
 </button>
-      </div>
+        </div>
+      
       
       <div class="navbar-end-item">
-        <span class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle">
-    <a class="theme-switch" data-mode="light"><i class="fas fa-sun"></i></a>
-    <a class="theme-switch" data-mode="dark"><i class="far fa-moon"></i></a>
-    <a class="theme-switch" data-mode="auto"><i class="fas fa-adjust"></i></a>
-</span>
+        <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+</button>
       </div>
       
       <div class="navbar-end-item">
@@ -170,7 +179,8 @@
           
           
           
-          <a href="https://github.com/AtlasOfLivingAustralia/galah_python" title="GitHub" class="nav-link" rel="noopener" target="_blank"><span><i class="fab fa-github-square"></i></span>
+          
+          <a href="https://github.com/AtlasOfLivingAustralia/galah_python" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-toggle="tooltip"><span><i class="fa-brands fa-square-github"></i></span>
             <label class="sr-only">GitHub</label></a>
         </li>
       </ul>
@@ -181,15 +191,17 @@
 
 
   
-  <div class="search-button-container--mobile">
-<button class="btn btn-sm navbar-btn search-button search-button__button" title="Search">
-  <i class="fas fa-search"></i>
+  
+    <div class="navbar-persistent--mobile">
+<button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-toggle="tooltip">
+  <i class="fa-solid fa-magnifying-glass"></i>
 </button>
-  </div>
+    </div>
+  
 
   
   <label class="sidebar-toggle secondary-toggle" for="__secondary">
-      <span class="fas fa-outdent"></span>
+      <span class="fa-solid fa-outdent"></span>
   </label>
   
 
@@ -215,32 +227,32 @@
     </p>
     <ul id="navbar-main-elements" class="navbar-nav">
         
-                <li class="nav-item">
-                    <a class="nav-link" href="../getting_started/index.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../getting_started/index.html">
                         Getting Started
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item current active">
-                    <a class="nav-link" href="index.html">
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="index.html">
                         Galah User Guide
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item">
-                    <a class="nav-link" href="../apidocs/galah.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../apidocs/galah.html">
                         API Docs
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item">
-                    <a class="nav-link" href="../authors/index.html">
-                        Authors and Citation
-                    </a>
-                </li>
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../authors/index.html">
+                        Authors
+                      </a>
+                    </li>
                 
     </ul>
 </nav>
@@ -254,11 +266,11 @@
     <div class="sidebar-header-items__end">
       
       <div class="navbar-end-item">
-        <span class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle">
-    <a class="theme-switch" data-mode="light"><i class="fas fa-sun"></i></a>
-    <a class="theme-switch" data-mode="dark"><i class="far fa-moon"></i></a>
-    <a class="theme-switch" data-mode="auto"><i class="fas fa-adjust"></i></a>
-</span>
+        <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+</button>
       </div>
       
       <div class="navbar-end-item">
@@ -270,7 +282,8 @@
           
           
           
-          <a href="https://github.com/AtlasOfLivingAustralia/galah_python" title="GitHub" class="nav-link" rel="noopener" target="_blank"><span><i class="fab fa-github-square"></i></span>
+          
+          <a href="https://github.com/AtlasOfLivingAustralia/galah_python" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-toggle="tooltip"><span><i class="fa-brands fa-square-github"></i></span>
             <label class="sr-only">GitHub</label></a>
         </li>
       </ul>
@@ -288,26 +301,10 @@
   </p>
   <div class="bd-toc-item navbar-nav">
     <ul class="current nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="Choosing_Atlas.html">
-   Choosing an Atlas
-  </a>
- </li>
- <li class="toctree-l1 current active">
-  <a class="current reference internal" href="#">
-   Download Data
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="Look_Up_Info.html">
-   Look Up Information
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="Narrow_Results.html">
-   Narrow Results
-  </a>
- </li>
+<li class="toctree-l1"><a class="reference internal" href="Choosing_Atlas.html">Choosing an Atlas</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Download Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Look_Up_Info.html">Look Up Information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Narrow_Results.html">Narrow Results</a></li>
 </ul>
 
   </div>
@@ -322,8 +319,11 @@
     </div>
   </div>
 
+  
+  <div id="rtd-footer-container"></div>
+
       </div>
-      <main class="bd-main">
+      <main id="main-content" class="bd-main">
         
         
         <div class="bd-content">
@@ -361,7 +361,7 @@ span.prompt1:before {
 0     114091351
 </pre></div>
 </div>
-<p>In addition to the filter arguments, it has an optional group_by argument, which provides counts binned
+<p>In addition to <code class="docutils literal notranslate"><span class="pre">filters</span></code> arguments, <code class="docutils literal notranslate"><span class="pre">galah.atlas_counts()</span></code> has an optional <code class="docutils literal notranslate"><span class="pre">group_by</span></code> argument, which provides counts grouped
 by the requested field.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">atlas_counts</span><span class="p">(</span><span class="n">group_by</span><span class="o">=</span><span class="s2">&quot;kingdom&quot;</span><span class="p">)</span></span>
 </pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>     kingdom     count
@@ -393,8 +393,8 @@ than the species; but also in being more flexible by supporting filtering:</p>
 <h2>Occurrence data<a class="headerlink" href="#occurrence-data" title="Permalink to this heading">#</a></h2>
 <p>To download occurrence data you will need to specify your email in <code class="docutils literal notranslate"><span class="pre">galah.galah_config()</span></code>. This email must be
 associated with an active account on your chosen atlas. See more information in the config section.</p>
-<p>galah_config(email = “<a class="reference external" href="mailto:your_email&#37;&#52;&#48;email&#46;com">your_email<span>&#64;</span>email<span>&#46;</span>com</a>”, atlas = “Australia”)</p>
-<p>An example here is to download occurrence records for Eolophus roseicapilla:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah_config</span><span class="p">(</span><span class="n">email</span> <span class="o">=</span> <span class="s2">&quot;your_email@email.com&quot;</span><span class="p">,</span> <span class="n">atlas</span> <span class="o">=</span> <span class="s2">&quot;Australia&quot;</span><span class="p">)</span></span>
+</pre></div></div><p>After specifying your email, you can download occurrence records of, for example, Eolophus roseicapilla:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">atlas_occurrences</span><span class="p">(</span><span class="n">taxa</span><span class="o">=</span><span class="s2">&quot;Eolophus roseicapilla&quot;</span><span class="p">,</span><span class="n">filters</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;stateProvince=Australian Capital Territory&quot;</span><span class="p">,</span><span class="s2">&quot;year&gt;=2010&quot;</span><span class="p">],</span><span class="n">fields</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;institutionID&quot;</span><span class="p">,</span><span class="s2">&quot;basic&quot;</span><span class="p">])</span></span>
 </pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>      institutionID  decimalLatitude  decimalLongitude             eventDate         scientificName                                                             taxonConceptID                              recordID                   dataResourceName occurrenceStatus
 0               NaN       -35.324650        149.051770  2016-09-26T14:00:00Z  Eolophus roseicapilla  https://biodiversity.org.au/afd/taxa/9b4ad548-8bb3-486a-ab0a-905506c463ea  b9b806ef-19ca-439c-8d50-df4b9f93d943                    eBird Australia          PRESENT
@@ -440,16 +440,15 @@ current working directory, but you can specify the folder to download to with th
 </section>
 <section id="configuring-galah">
 <h2>Configuring galah<a class="headerlink" href="#configuring-galah" title="Permalink to this heading">#</a></h2>
-<p>Various aspects of the galah package can be customized. To preserve configuration for future sessions, set profile_path to a location of a .Rprofile file.</p>
+<p>Various aspects of the galah package can be customized.</p>
 <p><em>Email</em></p>
 <p>To download occurrence records, you will need to provide an email address registered with the ALA. You can create an account
 here. Once an email is registered with the ALA, it should be stored in the config:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">galah_config</span><span class="p">(</span><span class="n">email</span> <span class="o">=</span> <span class="s2">&quot;myemail@gmail.com&quot;</span><span class="p">)</span></span>
-</pre></div></div><p><em>Setting the download reason</em></p>
-<p>ALA requires that you provide a reason when downloading occurrence data (via the galah atlas_occurrences() function).
-The reason is set as “scientific research” by default, but you can change this using galah_config(). See show_all_reasons()
+</pre></div></div><p><em>Setting a download reason</em></p>
+<p>ALA requires that you provide a reason when downloading occurrence data (via the <code class="docutils literal notranslate"><span class="pre">galah.atlas_occurrences()</span></code> function).
+The reason is set to 4 (scientific research) by default, but you can change this using <code class="docutils literal notranslate"><span class="pre">galah_config()</span></code>. See <code class="docutils literal notranslate"><span class="pre">galah.show_all(reasons=True)</span></code>
 for valid download reasons.</p>
-<p>galah_config(download_reason_id = your_reason_id)</p>
 </section>
 <section id="debugging">
 <h2>Debugging<a class="headerlink" href="#debugging" title="Permalink to this heading">#</a></h2>
@@ -467,7 +466,7 @@ can be obtained by setting the <code class="docutils literal notranslate"><span 
                 <!-- Previous / next buttons -->
 <div class='prev-next-area'>
   <a class='left-prev' id="prev-link" href="Choosing_Atlas.html" title="previous page">
-      <i class="fas fa-angle-left"></i>
+      <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
           <p class="prev-next-subtitle">previous</p>
           <p class="prev-next-title">Choosing an Atlas</p>
@@ -478,7 +477,7 @@ can be obtained by setting the <code class="docutils literal notranslate"><span 
       <p class="prev-next-subtitle">next</p>
       <p class="prev-next-title">Look Up Information</p>
   </div>
-  <i class="fas fa-angle-right"></i>
+  <i class="fa-solid fa-angle-right"></i>
   </a>
 </div>
             </footer>
@@ -492,7 +491,7 @@ can be obtained by setting the <code class="docutils literal notranslate"><span 
 <div class="toc-item">
   
 <div class="tocsection onthispage">
-    <i class="fas fa-list"></i> On this page
+    <i class="fa-solid fa-list"></i> On this page
 </div>
 <nav id="bd-toc-nav" class="page-toc">
     <ul class="visible nav section-nav flex-column">
@@ -531,6 +530,25 @@ can be obtained by setting the <code class="docutils literal notranslate"><span 
 </nav>
 </div>
 
+<div class="toc-item">
+  
+<div id="searchbox"></div>
+</div>
+
+<div class="toc-item">
+  
+</div>
+
+<div class="toc-item">
+  
+<div class="tocsection sourcelink">
+    <a href="../_sources/galah_user_guide/Download_Data.rst.txt">
+        <i class="fa-solid fa-file-lines"></i> Show Source
+    </a>
+</div>
+
+</div>
+
             </div>
           
           
@@ -548,7 +566,8 @@ can be obtained by setting the <code class="docutils literal notranslate"><span 
   
     
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../_static/scripts/pydata-sphinx-theme.js?digest=9b1a4fa89bdd0e95b23b"></script>
+  <script src="../_static/scripts/bootstrap.js?digest=796348d33e8b1d947c94"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=796348d33e8b1d947c94"></script>
 
   <footer class="bd-footer"><div class="bd-footer__inner container">
   
@@ -560,6 +579,16 @@ can be obtained by setting the <code class="docutils literal notranslate"><span 
 
 </p>
 
+  </div>
+  
+  <div class="footer-item">
+    <p class="theme-version">
+    Built with the
+    <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">
+        PyData Sphinx Theme
+    </a>
+    0.12.0.
+</p>
   </div>
   
   <div class="footer-item">

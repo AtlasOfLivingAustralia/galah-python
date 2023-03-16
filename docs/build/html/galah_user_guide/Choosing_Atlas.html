@@ -7,22 +7,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
     <title>Choosing an Atlas &#8212; Galah 0.1.0 documentation</title>
-  <script>
+  
+  
+  
+  <script data-cfasync="false">
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
   </script>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../_static/styles/theme.css?digest=9b1a4fa89bdd0e95b23b" rel="stylesheet">
-<link href="../_static/styles/pydata-sphinx-theme.css?digest=9b1a4fa89bdd0e95b23b" rel="stylesheet">
+  <link href="../_static/styles/theme.css?digest=796348d33e8b1d947c94" rel="stylesheet">
+<link href="../_static/styles/bootstrap.css?digest=796348d33e8b1d947c94" rel="stylesheet">
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=796348d33e8b1d947c94" rel="stylesheet">
 
   
-  <link rel="stylesheet"
-    href="../_static/vendor/fontawesome/6.1.2/css/all.min.css">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2">
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=796348d33e8b1d947c94" rel="stylesheet">
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2">
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2">
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2">
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/css/extra.css" />
@@ -31,7 +33,8 @@
     <link rel="stylesheet" type="text/css" href="../_static/css/extra.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=9b1a4fa89bdd0e95b23b">
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=796348d33e8b1d947c94">
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=796348d33e8b1d947c94">
 
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/doctools.js"></script>
@@ -51,6 +54,10 @@
   <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="180" data-default-mode="">
 
   
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  
   <input type="checkbox" class="sidebar-toggle" name="__primary" id="__primary">
   <label class="overlay overlay-primary" for="__primary"></label>
 
@@ -64,7 +71,7 @@
     <div class="search-button__search-container">
       
 <form class="bd-search d-flex align-items-center" action="../search.html" method="get">
-  <i class="icon fas fa-search"></i>
+  <i class="fa-solid fa-magnifying-glass"></i>
   <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
 </form>
@@ -74,7 +81,7 @@
   
   <nav class="bd-header navbar navbar-expand-lg bd-navbar" id="navbar-main"><div class="bd-header__inner bd-page-width">
   <label class="sidebar-toggle primary-toggle" for="__primary">
-      <span class="fas fa-bars"></span>
+      <span class="fa-solid fa-bars"></span>
   </label>
   <div id="navbar-start">
     
@@ -112,32 +119,32 @@
     </p>
     <ul id="navbar-main-elements" class="navbar-nav">
         
-                <li class="nav-item">
-                    <a class="nav-link" href="../getting_started/index.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../getting_started/index.html">
                         Getting Started
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item current active">
-                    <a class="nav-link" href="index.html">
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="index.html">
                         Galah User Guide
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item">
-                    <a class="nav-link" href="../apidocs/galah.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../apidocs/galah.html">
                         API Docs
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item">
-                    <a class="nav-link" href="../authors/index.html">
-                        Authors and Citation
-                    </a>
-                </li>
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../authors/index.html">
+                        Authors
+                      </a>
+                    </li>
                 
     </ul>
 </nav>
@@ -146,19 +153,21 @@
     </div>
 
     <div id="navbar-end">
-      <div class="navbar-end-item navbar-end__search-button-container">
-        
-<button class="btn btn-sm navbar-btn search-button search-button__button" title="Search">
-  <i class="fas fa-search"></i>
+      
+        <div class="navbar-end-item navbar-persistent--container">
+          
+<button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-toggle="tooltip">
+  <i class="fa-solid fa-magnifying-glass"></i>
 </button>
-      </div>
+        </div>
+      
       
       <div class="navbar-end-item">
-        <span class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle">
-    <a class="theme-switch" data-mode="light"><i class="fas fa-sun"></i></a>
-    <a class="theme-switch" data-mode="dark"><i class="far fa-moon"></i></a>
-    <a class="theme-switch" data-mode="auto"><i class="fas fa-adjust"></i></a>
-</span>
+        <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+</button>
       </div>
       
       <div class="navbar-end-item">
@@ -170,7 +179,8 @@
           
           
           
-          <a href="https://github.com/AtlasOfLivingAustralia/galah_python" title="GitHub" class="nav-link" rel="noopener" target="_blank"><span><i class="fab fa-github-square"></i></span>
+          
+          <a href="https://github.com/AtlasOfLivingAustralia/galah_python" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-toggle="tooltip"><span><i class="fa-brands fa-square-github"></i></span>
             <label class="sr-only">GitHub</label></a>
         </li>
       </ul>
@@ -181,15 +191,17 @@
 
 
   
-  <div class="search-button-container--mobile">
-<button class="btn btn-sm navbar-btn search-button search-button__button" title="Search">
-  <i class="fas fa-search"></i>
+  
+    <div class="navbar-persistent--mobile">
+<button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-toggle="tooltip">
+  <i class="fa-solid fa-magnifying-glass"></i>
 </button>
-  </div>
+    </div>
+  
 
   
   <label class="sidebar-toggle secondary-toggle" for="__secondary">
-      <span class="fas fa-outdent"></span>
+      <span class="fa-solid fa-outdent"></span>
   </label>
   
 
@@ -215,32 +227,32 @@
     </p>
     <ul id="navbar-main-elements" class="navbar-nav">
         
-                <li class="nav-item">
-                    <a class="nav-link" href="../getting_started/index.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../getting_started/index.html">
                         Getting Started
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item current active">
-                    <a class="nav-link" href="index.html">
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="index.html">
                         Galah User Guide
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item">
-                    <a class="nav-link" href="../apidocs/galah.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../apidocs/galah.html">
                         API Docs
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item">
-                    <a class="nav-link" href="../authors/index.html">
-                        Authors and Citation
-                    </a>
-                </li>
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../authors/index.html">
+                        Authors
+                      </a>
+                    </li>
                 
     </ul>
 </nav>
@@ -254,11 +266,11 @@
     <div class="sidebar-header-items__end">
       
       <div class="navbar-end-item">
-        <span class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle">
-    <a class="theme-switch" data-mode="light"><i class="fas fa-sun"></i></a>
-    <a class="theme-switch" data-mode="dark"><i class="far fa-moon"></i></a>
-    <a class="theme-switch" data-mode="auto"><i class="fas fa-adjust"></i></a>
-</span>
+        <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+</button>
       </div>
       
       <div class="navbar-end-item">
@@ -270,7 +282,8 @@
           
           
           
-          <a href="https://github.com/AtlasOfLivingAustralia/galah_python" title="GitHub" class="nav-link" rel="noopener" target="_blank"><span><i class="fab fa-github-square"></i></span>
+          
+          <a href="https://github.com/AtlasOfLivingAustralia/galah_python" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-toggle="tooltip"><span><i class="fa-brands fa-square-github"></i></span>
             <label class="sr-only">GitHub</label></a>
         </li>
       </ul>
@@ -288,26 +301,10 @@
   </p>
   <div class="bd-toc-item navbar-nav">
     <ul class="current nav bd-sidenav">
- <li class="toctree-l1 current active">
-  <a class="current reference internal" href="#">
-   Choosing an Atlas
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="Download_Data.html">
-   Download Data
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="Look_Up_Info.html">
-   Look Up Information
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="Narrow_Results.html">
-   Narrow Results
-  </a>
- </li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Choosing an Atlas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Download_Data.html">Download Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Look_Up_Info.html">Look Up Information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Narrow_Results.html">Narrow Results</a></li>
 </ul>
 
   </div>
@@ -322,8 +319,11 @@
     </div>
   </div>
 
+  
+  <div id="rtd-footer-container"></div>
+
       </div>
-      <main class="bd-main">
+      <main id="main-content" class="bd-main">
         
         
         <div class="bd-content">
@@ -370,50 +370,19 @@ span.prompt1:before {
 Available information may vary for each Living Atlas.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">galah_config</span><span class="p">(</span><span class="n">atlas</span><span class="o">=</span><span class="s2">&quot;Australia&quot;</span><span class="p">)</span></span>
 </pre></div></div><div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">show_all</span><span class="p">(</span><span class="n">datasets</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></span>
-</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>                                                                                                          name                                                     uri      uid
-0                                                                       River Torrens Linear Park Species List  https://collections.ala.org.au/ws/dataResource/dr14140  dr14140
-1                                                                                       Warringah Species List   https://collections.ala.org.au/ws/dataResource/dr4047   dr4047
-2                                                                                     &#39;A Genome&#39; Oryza species   https://collections.ala.org.au/ws/dataResource/dr8221   dr8221
-3                                                                                                    *Brigalow  https://collections.ala.org.au/ws/dataResource/dr14507  dr14507
-4                                                                                                      0662409  https://collections.ala.org.au/ws/dataResource/dr19938  dr19938
-...                                                                                                        ...                                                     ...      ...
-12773                                                       [C4OC] Torres Strait Regional Landcare Facilitator   https://collections.ala.org.au/ws/dataResource/dr3529   dr3529
-12774                        [C4OC] Traditional Ecological Knowledge Recording and Management in Torres Strait   https://collections.ala.org.au/ws/dataResource/dr3199   dr3199
-12775  [C4OC] Trialling and demonstrating farmer innovation for improved environmental and resource management   https://collections.ala.org.au/ws/dataResource/dr3519   dr3519
-12776                                                                      [C4OC] Urban and Coastal Protection   https://collections.ala.org.au/ws/dataResource/dr6802   dr6802
-12777                                                              _River_Torrens_Linear_Park_Species_List.csv  https://collections.ala.org.au/ws/dataResource/dr19265  dr19265
-
-[12778 rows x 3 columns]
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Python was not found; run without arguments to install from the Microsoft Store, or disable this shortcut from Settings &gt; Manage App Execution Aliases.
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">show_all</span><span class="p">(</span><span class="n">fields</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></span>
-</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>                      id                                                        description   type link
-0         abcdTypeStatus                                      ABCD field in use by herbaria  field  NaN
-1      acceptedNameUsage                     http://rs.tdwg.org/dwc/terms/acceptedNameUsage  field  NaN
-2    acceptedNameUsageID                   http://rs.tdwg.org/dwc/terms/acceptedNameUsageID  field  NaN
-3           accessRights                                                                NaN  field  NaN
-4        assertionUserId  User ID of the person who has made an assertion about this record  field  NaN
-..                   ...                                                                ...    ...  ...
-606    multimediaLicence                                                 Media filter field  media     
-607               images                                                 Media filter field  media     
-608               videos                                                 Media filter field  media     
-609               sounds                                                 Media filter field  media     
-610                  qid                                   Reference to pre-generated query  other     
-
-[611 rows x 4 columns]
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Python was not found; run without arguments to install from the Microsoft Store, or disable this shortcut from Settings &gt; Manage App Execution Aliases.
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">search_all</span><span class="p">(</span><span class="n">datasets</span><span class="o">=</span><span class="s2">&quot;year&quot;</span><span class="p">)</span></span>
-</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>                                                                                    name                                                     uri      uid
-26                                                                    123species_40years  https://collections.ala.org.au/ws/dataResource/dr21038  dr21038
-2544                                                      Elgin Road 3 year observations    https://collections.ala.org.au/ws/dataResource/dr661    dr661
-21                                                  10Km_40years_specieslist_prairie_orm  https://collections.ala.org.au/ws/dataResource/dr21039  dr21039
-11    10 year trend of levels of organochlorine pollutants in Antarctic seabirds 2003/04  https://collections.ala.org.au/ws/dataResource/dr16247  dr16247
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Python was not found; run without arguments to install from the Microsoft Store, or disable this shortcut from Settings &gt; Manage App Execution Aliases.
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">search_taxa</span><span class="p">(</span><span class="n">taxa</span><span class="o">=</span><span class="s2">&quot;Heleioporus&quot;</span><span class="p">)</span></span>
-</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>  scientificName scientificNameAuthorship                                                             taxonConceptID   rank   kingdom    phylum  order           family        genus   issues
-0    Heleioporus               Gray, 1841  https://biodiversity.org.au/afd/taxa/990ee116-dd7d-40c6-93dc-40d5773e3e6e  genus  Animalia  Chordata  Anura  Limnodynastidae  Heleioporus  noIssue
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Python was not found; run without arguments to install from the Microsoft Store, or disable this shortcut from Settings &gt; Manage App Execution Aliases.
 </pre></div>
 </div>
 </section>
@@ -424,15 +393,12 @@ make sure your searches are returning the correct taxonomic data.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">galah_config</span><span class="p">(</span><span class="n">atlas</span><span class="o">=</span><span class="s2">&quot;Australia&quot;</span><span class="p">)</span></span>
 </pre></div></div><div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="c1"># Returns no data due to misspelling</span></span>
 <span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">search_taxa</span><span class="p">(</span><span class="n">taxa</span><span class="o">=</span><span class="s2">&quot;vlps&quot;</span><span class="p">)</span></span>
-</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Empty DataFrame
-Columns: []
-Index: []
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Python was not found; run without arguments to install from the Microsoft Store, or disable this shortcut from Settings &gt; Manage App Execution Aliases.
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="c1"># Returns data</span></span>
 <span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">search_taxa</span><span class="p">(</span><span class="n">taxa</span><span class="o">=</span><span class="s2">&quot;Vulpes vulpes&quot;</span><span class="p">)</span></span>
-</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>  scientificName scientificNameAuthorship                                                             taxonConceptID     rank   kingdom    phylum      order   family   genus        species   issues vernacularName
-0  Vulpes vulpes           Linnaeus, 1758  https://biodiversity.org.au/afd/taxa/2869ce8a-8212-46c2-8327-dfb7fabb8296  species  Animalia  Chordata  Carnivora  Canidae  Vulpes  Vulpes vulpes  noIssue            Fox
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Python was not found; run without arguments to install from the Microsoft Store, or disable this shortcut from Settings &gt; Manage App Execution Aliases.
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">atlas_counts</span><span class="p">(</span><span class="n">taxa</span><span class="o">=</span><span class="s2">&quot;Vulpes vulpes&quot;</span><span class="p">,</span> <span class="n">filters</span><span class="o">=</span><span class="s2">&quot;year&gt;2010&quot;</span><span class="p">)</span></span>
@@ -460,8 +426,8 @@ return the total 0number of species records in each Living Atlas in one table.</
 <span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">counts_dict</span><span class="p">)</span></span>
 </pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>       Atlas  Total Records
 0  Australia      114091351
-1     Brazil       24096491
-2      Spain       38330113
+1     Brazil       24103282
+2      Spain       38330115
 </pre></div>
 </div>
 </section>
@@ -476,7 +442,7 @@ return the total 0number of species records in each Living Atlas in one table.</
                 <!-- Previous / next buttons -->
 <div class='prev-next-area'>
   <a class='left-prev' id="prev-link" href="index.html" title="previous page">
-      <i class="fas fa-angle-left"></i>
+      <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
           <p class="prev-next-subtitle">previous</p>
           <p class="prev-next-title">Galah User Guide</p>
@@ -487,7 +453,7 @@ return the total 0number of species records in each Living Atlas in one table.</
       <p class="prev-next-subtitle">next</p>
       <p class="prev-next-title">Download Data</p>
   </div>
-  <i class="fas fa-angle-right"></i>
+  <i class="fa-solid fa-angle-right"></i>
   </a>
 </div>
             </footer>
@@ -501,7 +467,7 @@ return the total 0number of species records in each Living Atlas in one table.</
 <div class="toc-item">
   
 <div class="tocsection onthispage">
-    <i class="fas fa-list"></i> On this page
+    <i class="fa-solid fa-list"></i> On this page
 </div>
 <nav id="bd-toc-nav" class="page-toc">
     <ul class="visible nav section-nav flex-column">
@@ -530,6 +496,25 @@ return the total 0number of species records in each Living Atlas in one table.</
 </nav>
 </div>
 
+<div class="toc-item">
+  
+<div id="searchbox"></div>
+</div>
+
+<div class="toc-item">
+  
+</div>
+
+<div class="toc-item">
+  
+<div class="tocsection sourcelink">
+    <a href="../_sources/galah_user_guide/Choosing_Atlas.rst.txt">
+        <i class="fa-solid fa-file-lines"></i> Show Source
+    </a>
+</div>
+
+</div>
+
             </div>
           
           
@@ -547,7 +532,8 @@ return the total 0number of species records in each Living Atlas in one table.</
   
     
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../_static/scripts/pydata-sphinx-theme.js?digest=9b1a4fa89bdd0e95b23b"></script>
+  <script src="../_static/scripts/bootstrap.js?digest=796348d33e8b1d947c94"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=796348d33e8b1d947c94"></script>
 
   <footer class="bd-footer"><div class="bd-footer__inner container">
   
@@ -559,6 +545,16 @@ return the total 0number of species records in each Living Atlas in one table.</
 
 </p>
 
+  </div>
+  
+  <div class="footer-item">
+    <p class="theme-version">
+    Built with the
+    <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">
+        PyData Sphinx Theme
+    </a>
+    0.12.0.
+</p>
   </div>
   
   <div class="footer-item">

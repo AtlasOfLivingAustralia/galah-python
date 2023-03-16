@@ -4,6 +4,7 @@
 :root {
   --pst-color-text-base: #495057!important;
   --pst-text-size: 1.1rem;
+  --pst-color-inline-code: #222322!important;
 }
 
 p {
@@ -127,7 +128,7 @@ pre {
 }
 
 dt:target, span.highlighted {
-  background-color: #f5b2d0;!important
+  background-color: #60a3a3;!important
 }
 
 /*
@@ -166,4 +167,12 @@ main-index-title {
   display: flex;
   flex: left;
   padding-left: 30px;
+}
+
+.code {
+  color: #222322!important;
+}
+
+code.literal {
+  background-color: #ffebf3;
 }

@@ -4,6 +4,7 @@
 :root {
   --pst-color-text-base: #495057!important;
   --pst-text-size: 1.1rem;
+  --pst-color-inline-code: #222322;
 }
 
 p {
@@ -166,4 +167,12 @@ main-index-title {
   display: flex;
   flex: left;
   padding-left: 30px;
+}
+
+.code {
+  color: #222322;
+}
+
+code.literal {
+  background-color: #ffebf3;
 }

@@ -54,39 +54,38 @@ Here is a list of information types that can be used with ``galah.show_all()`` a
     +========================+=============================================================================+
     | *Configuration*        |                                                                             |
     +------------------------+-----------------------------------------------------------------------------+
-    | atlases                | Show what living atlases are available                                      |
+    | ``atlases``            | Show what living atlases are available                                      |
     +------------------------+-----------------------------------------------------------------------------+
-    | apis                   | Show what APIs & functions are available for each atlas                     |
+    | ``apis``               | Show what APIs & functions are available for each atlas                     |
     +------------------------+-----------------------------------------------------------------------------+
-    | reasons                | Show what values are acceptable as ‘download reasons’ for a specified atlas |
+    | ``reasons``            | Show what values are acceptable as ‘download reasons’ for a specified atlas |
     +------------------------+-----------------------------------------------------------------------------+
     | *Taxonomy*             |                                                                             |
     +------------------------+-----------------------------------------------------------------------------+
-    | identifiers            | Take a universal identifier and return taxonomic information                |
+    | ``identifiers``        | Take a universal identifier and return taxonomic information                |
     +------------------------+-----------------------------------------------------------------------------+
-    | ranks                  | Show valid taxonomic ranks (e.g. Kingdom, Class, Order, etc.)               |
+    | ``ranks``              | Show valid taxonomic ranks (e.g. Kingdom, Class, Order, etc.)               |
     +------------------------+-----------------------------------------------------------------------------+
     | *Filters*              |                                                                             |
     +------------------------+-----------------------------------------------------------------------------+
-    | fields                 | Show fields that are stored in an atlas                                     |
+    | ``fields``             | Show fields that are stored in an atlas                                     |
     +------------------------+-----------------------------------------------------------------------------+
-    | assertions             | Show results of data quality checks run by each atlas                       |
+    | ``assertions``         | Show results of data quality checks run by each atlas                       |
     +------------------------+-----------------------------------------------------------------------------+
     | *Group filters*        |                                                                             |
     +------------------------+-----------------------------------------------------------------------------+
-    | profiles               | Show what data quality profiles are available                               | 
+    | ``profiles``           | Show what data quality profiles are available                               | 
     +------------------------+-----------------------------------------------------------------------------+
-    | lists                  | Show what species lists are available                                       |
+    | ``lists``              | Show what species lists are available                                       |
     +------------------------+-----------------------------------------------------------------------------+
     | *Data providers*       |                                                                             |
     +------------------------+-----------------------------------------------------------------------------+
-    | providers              | Show which institutions have provided data                                  |
+    | ``providers``          | Show which institutions have provided data                                  |
     +------------------------+-----------------------------------------------------------------------------+
-    | collections            | Show the specific collections within those institutions                     |	
+    | ``collections``        | Show the specific collections within those institutions                     |	
     +------------------------+-----------------------------------------------------------------------------+
-    | datasets               | Shows all the data groupings within those collections                       |
+    | ``datasets``           | Shows all the data groupings within those collections                       |
     +------------------------+-----------------------------------------------------------------------------+
-
 
 ``_values`` functions
 ---------------------

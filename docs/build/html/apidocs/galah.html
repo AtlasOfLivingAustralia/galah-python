@@ -7,22 +7,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
     <title>API Docs &#8212; Galah 0.1.0 documentation</title>
-  <script>
+  
+  
+  
+  <script data-cfasync="false">
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
   </script>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../_static/styles/theme.css?digest=9b1a4fa89bdd0e95b23b" rel="stylesheet">
-<link href="../_static/styles/pydata-sphinx-theme.css?digest=9b1a4fa89bdd0e95b23b" rel="stylesheet">
+  <link href="../_static/styles/theme.css?digest=796348d33e8b1d947c94" rel="stylesheet">
+<link href="../_static/styles/bootstrap.css?digest=796348d33e8b1d947c94" rel="stylesheet">
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=796348d33e8b1d947c94" rel="stylesheet">
 
   
-  <link rel="stylesheet"
-    href="../_static/vendor/fontawesome/6.1.2/css/all.min.css">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2">
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=796348d33e8b1d947c94" rel="stylesheet">
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2">
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2">
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2">
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/css/extra.css" />
@@ -31,7 +33,8 @@
     <link rel="stylesheet" type="text/css" href="../_static/css/extra.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=9b1a4fa89bdd0e95b23b">
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=796348d33e8b1d947c94">
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=796348d33e8b1d947c94">
 
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/doctools.js"></script>
@@ -51,6 +54,10 @@
   <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="180" data-default-mode="">
 
   
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  
   <input type="checkbox" class="sidebar-toggle" name="__primary" id="__primary">
   <label class="overlay overlay-primary" for="__primary"></label>
 
@@ -64,7 +71,7 @@
     <div class="search-button__search-container">
       
 <form class="bd-search d-flex align-items-center" action="../search.html" method="get">
-  <i class="icon fas fa-search"></i>
+  <i class="fa-solid fa-magnifying-glass"></i>
   <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
 </form>
@@ -74,7 +81,7 @@
   
   <nav class="bd-header navbar navbar-expand-lg bd-navbar" id="navbar-main"><div class="bd-header__inner bd-page-width">
   <label class="sidebar-toggle primary-toggle" for="__primary">
-      <span class="fas fa-bars"></span>
+      <span class="fa-solid fa-bars"></span>
   </label>
   <div id="navbar-start">
     
@@ -112,32 +119,32 @@
     </p>
     <ul id="navbar-main-elements" class="navbar-nav">
         
-                <li class="nav-item">
-                    <a class="nav-link" href="../getting_started/index.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../getting_started/index.html">
                         Getting Started
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item">
-                    <a class="nav-link" href="../galah_user_guide/index.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../galah_user_guide/index.html">
                         Galah User Guide
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item current active">
-                    <a class="nav-link" href="#">
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="#">
                         API Docs
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item">
-                    <a class="nav-link" href="../authors/index.html">
-                        Authors and Citation
-                    </a>
-                </li>
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../authors/index.html">
+                        Authors
+                      </a>
+                    </li>
                 
     </ul>
 </nav>
@@ -146,19 +153,21 @@
     </div>
 
     <div id="navbar-end">
-      <div class="navbar-end-item navbar-end__search-button-container">
-        
-<button class="btn btn-sm navbar-btn search-button search-button__button" title="Search">
-  <i class="fas fa-search"></i>
+      
+        <div class="navbar-end-item navbar-persistent--container">
+          
+<button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-toggle="tooltip">
+  <i class="fa-solid fa-magnifying-glass"></i>
 </button>
-      </div>
+        </div>
+      
       
       <div class="navbar-end-item">
-        <span class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle">
-    <a class="theme-switch" data-mode="light"><i class="fas fa-sun"></i></a>
-    <a class="theme-switch" data-mode="dark"><i class="far fa-moon"></i></a>
-    <a class="theme-switch" data-mode="auto"><i class="fas fa-adjust"></i></a>
-</span>
+        <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+</button>
       </div>
       
       <div class="navbar-end-item">
@@ -170,7 +179,8 @@
           
           
           
-          <a href="https://github.com/AtlasOfLivingAustralia/galah_python" title="GitHub" class="nav-link" rel="noopener" target="_blank"><span><i class="fab fa-github-square"></i></span>
+          
+          <a href="https://github.com/AtlasOfLivingAustralia/galah_python" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-toggle="tooltip"><span><i class="fa-brands fa-square-github"></i></span>
             <label class="sr-only">GitHub</label></a>
         </li>
       </ul>
@@ -181,15 +191,17 @@
 
 
   
-  <div class="search-button-container--mobile">
-<button class="btn btn-sm navbar-btn search-button search-button__button" title="Search">
-  <i class="fas fa-search"></i>
+  
+    <div class="navbar-persistent--mobile">
+<button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-toggle="tooltip">
+  <i class="fa-solid fa-magnifying-glass"></i>
 </button>
-  </div>
+    </div>
+  
 
   
   <label class="sidebar-toggle secondary-toggle" for="__secondary">
-      <span class="fas fa-outdent"></span>
+      <span class="fa-solid fa-outdent"></span>
   </label>
   
 
@@ -215,32 +227,32 @@
     </p>
     <ul id="navbar-main-elements" class="navbar-nav">
         
-                <li class="nav-item">
-                    <a class="nav-link" href="../getting_started/index.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../getting_started/index.html">
                         Getting Started
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item">
-                    <a class="nav-link" href="../galah_user_guide/index.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../galah_user_guide/index.html">
                         Galah User Guide
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item current active">
-                    <a class="nav-link" href="#">
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="#">
                         API Docs
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item">
-                    <a class="nav-link" href="../authors/index.html">
-                        Authors and Citation
-                    </a>
-                </li>
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../authors/index.html">
+                        Authors
+                      </a>
+                    </li>
                 
     </ul>
 </nav>
@@ -254,11 +266,11 @@
     <div class="sidebar-header-items__end">
       
       <div class="navbar-end-item">
-        <span class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle">
-    <a class="theme-switch" data-mode="light"><i class="fas fa-sun"></i></a>
-    <a class="theme-switch" data-mode="dark"><i class="far fa-moon"></i></a>
-    <a class="theme-switch" data-mode="auto"><i class="fas fa-adjust"></i></a>
-</span>
+        <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+</button>
       </div>
       
       <div class="navbar-end-item">
@@ -270,7 +282,8 @@
           
           
           
-          <a href="https://github.com/AtlasOfLivingAustralia/galah_python" title="GitHub" class="nav-link" rel="noopener" target="_blank"><span><i class="fab fa-github-square"></i></span>
+          
+          <a href="https://github.com/AtlasOfLivingAustralia/galah_python" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-toggle="tooltip"><span><i class="fa-brands fa-square-github"></i></span>
             <label class="sr-only">GitHub</label></a>
         </li>
       </ul>
@@ -288,8 +301,11 @@
     </div>
   </div>
 
+  
+  <div id="rtd-footer-container"></div>
+
       </div>
-      <main class="bd-main">
+      <main id="main-content" class="bd-main">
         
         
         <div class="bd-content">
@@ -359,25 +375,31 @@ associated with a given record. <code class="docutils literal notranslate"><span
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>taxa</strong> (<em>string</em><em> or </em><em>list</em>) – one or more scientific names. Use <code class="docutils literal notranslate"><span class="pre">galah.search_taxa()</span></code> to search for valid scientific names.</p></li>
-<li><p><strong>filters</strong> (<em>string</em><em> or </em><em>list</em>) – filters, in the form <code class="docutils literal notranslate"><span class="pre">field</span></code> <code class="docutils literal notranslate"><span class="pre">logical</span></code> <code class="docutils literal notranslate"><span class="pre">value</span></code> (e.g. <code class="docutils literal notranslate"><span class="pre">&quot;year=2021&quot;</span></code>)</p></li>
-<li><p><strong>fields</strong> (<em>string</em><em> or </em><em>list</em>) – <p>Data fields you want to return, i.e. “decimalLatitude” or “decimalLongitude” (equivalent to <code class="docutils literal notranslate"><span class="pre">galah_select()</span></code> in R version).
-Default is different for every atlas, but includes:</p>
+<li><p><strong>taxa</strong> (<em>string / list</em>) – one or more scientific names. Use <code class="docutils literal notranslate"><span class="pre">galah.search_taxa()</span></code> to search for valid scientific names.</p></li>
+<li><p><strong>filters</strong> (<em>string / list</em>) – filters, in the form <code class="docutils literal notranslate"><span class="pre">field</span></code> <code class="docutils literal notranslate"><span class="pre">logical</span></code> <code class="docutils literal notranslate"><span class="pre">value</span></code> (e.g. <code class="docutils literal notranslate"><span class="pre">&quot;year=2021&quot;</span></code>)</p></li>
+<li><p><strong>fields</strong> (<em>string / list</em>) – <p>Name of one or more column groups to include. Valid options are “basic”, “event” and “assertions”
+Default is set to <code class="docutils literal notranslate"><span class="pre">&quot;fields=basic&quot;</span></code>, which returns:</p>
 <blockquote>
 <div><ul>
-<li><p>latitude and longitude</p></li>
-<li><p>date of occurrence</p></li>
-<li><p>species name and common name</p></li>
-<li><p>taxon concept ID and record ID</p></li>
-<li><p>what data resource is responsible for occurrence</p></li>
-<li><p>status of occurrence</p></li>
-<li><p>what multimedia is available, along with links for download</p></li>
+<li><p>decimalLatitude, decimalLongitude, eventDate, scientificName, taxonConceptID, recordID, dataResourceName, occurrenceStatus</p></li>
 </ul>
 </div></blockquote>
-<p>See <code class="docutils literal notranslate"><span class="pre">galah.show_all()</span></code> and <code class="docutils literal notranslate"><span class="pre">galah.search_all()</span></code> to see valid fields.</p>
+<p>Using <code class="docutils literal notranslate"><span class="pre">&quot;fields=&quot;event&quot;</span></code> returns:</p>
+<blockquote>
+<div><ul>
+<li><p>eventRemarks, eventTime, eventID, eventDate, samplingEffort, samplingProtocol</p></li>
+</ul>
+</div></blockquote>
+<p>Using <code class="docutils literal notranslate"><span class="pre">fields=&quot;media&quot;</span></code> returns:</p>
+<blockquote>
+<div><ul>
+<li><p>multimedia, multimediaLicence, images, videos, sounds</p></li>
+</ul>
+</div></blockquote>
+<p>See <code class="docutils literal notranslate"><span class="pre">galah.show_all()</span></code> and <code class="docutils literal notranslate"><span class="pre">galah.search_all()</span></code> to see all valid fields.</p>
 </p></li>
 <li><p><strong>verbose</strong> (<em>logical</em>) – If <code class="docutils literal notranslate"><span class="pre">True</span></code>, galah gives more information like progress bars. Defaults to <code class="docutils literal notranslate"><span class="pre">False</span></code></p></li>
-<li><p><strong>multimedia</strong> (<em>string</em><em> or </em><em>list</em>) – This is for specifying what types of multimedia you would like, i.e “images”.  Defaults to [‘images’,’videos’,’sounds’]</p></li>
+<li><p><strong>multimedia</strong> (<em>string / list</em>) – This is for specifying what types of multimedia you would like, i.e “images”.  Defaults to [‘images’,’videos’,’sounds’]</p></li>
 <li><p><strong>assertions</strong> (<em>string</em>) – Using “assertions” returns all quality assertion-related columns. These columns are data quality checks run by each living atlas. The list of assertions is shown by <code class="docutils literal notranslate"><span class="pre">galah.show_all(assertions=True)</span></code>.</p></li>
 <li><p><strong>use_data_profile</strong> (<em>logical</em>) – if <code class="docutils literal notranslate"><span class="pre">True</span></code>, uses data profile set in <code class="docutils literal notranslate"><span class="pre">galah_config()</span></code>. Valid values can be seen using <code class="docutils literal notranslate"><span class="pre">galah.show_all(profiles=True)</span></code>. Default is <code class="docutils literal notranslate"><span class="pre">False</span></code></p></li>
 <li><p><strong>collect</strong> (<em>logical</em>) – if <code class="docutils literal notranslate"><span class="pre">True</span></code>, downloads full-sized images and media files returned to a local directory.</p></li>
@@ -420,47 +442,31 @@ citation and re-use of specific data resources.</p>
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>taxa</strong> (<em>string</em>) – one or more scientific names. Use <code class="docutils literal notranslate"><span class="pre">galah.search_taxa()</span></code> to search for valid scientific names.</p></li>
-<li><p><strong>filters</strong> (<em>string</em><em> or </em><em>list</em>) – filters, in the form <code class="docutils literal notranslate"><span class="pre">field</span></code> <code class="docutils literal notranslate"><span class="pre">logical</span></code> <code class="docutils literal notranslate"><span class="pre">value</span></code> (e.g. <code class="docutils literal notranslate"><span class="pre">&quot;year=2021&quot;</span></code>)</p></li>
+<li><p><strong>filters</strong> (<em>string / list</em>) – filters, in the form <code class="docutils literal notranslate"><span class="pre">field</span></code> <code class="docutils literal notranslate"><span class="pre">logical</span></code> <code class="docutils literal notranslate"><span class="pre">value</span></code> (e.g. <code class="docutils literal notranslate"><span class="pre">&quot;year=2021&quot;</span></code>)</p></li>
 <li><p><strong>test</strong> (<em>logical</em>) – Test if the API is up and running correctly.  Prints status of Atlas and returns.</p></li>
 <li><p><strong>verbose</strong> (<em>logical</em>) – If <code class="docutils literal notranslate"><span class="pre">True</span></code>, galah gives more information like URLs of your queries. Defaults to <code class="docutils literal notranslate"><span class="pre">False</span></code></p></li>
-<li><p><strong>fields</strong> (<em>string</em><em> or </em><em>list</em>) – <p>Data fields you want to return, i.e. “decimalLatitude” or “decimalLongitude” (equivalent to <code class="docutils literal notranslate"><span class="pre">galah_select()</span></code> in R version).
-Default is titled “basic”, which includes:</p>
+<li><p><strong>fields</strong> (<em>string / list</em>) – <p>Name of one or more column groups to include. Valid options are “basic”, “event” and “assertions”
+Default is set to <code class="docutils literal notranslate"><span class="pre">&quot;fields=basic&quot;</span></code>, which returns:</p>
 <blockquote>
 <div><ul>
-<li><p><cite>decimalLatitude</cite></p></li>
-<li><p><cite>decimalLongitude</cite></p></li>
-<li><p><cite>eventDate</cite></p></li>
-<li><p><cite>scientificName</cite></p></li>
-<li><p><cite>taxonConceptID</cite></p></li>
-<li><p><cite>recordID</cite></p></li>
-<li><p><cite>dataResourceName</cite></p></li>
-<li><p><cite>occurrenceStatus</cite></p></li>
+<li><p>decimalLatitude, decimalLongitude, eventDate, scientificName, taxonConceptID, recordID, dataResourceName, occurrenceStatus</p></li>
 </ul>
 </div></blockquote>
-<p>Other preset defaults “event” and “media”.  “Event returns the following:</p>
+<p>Using <code class="docutils literal notranslate"><span class="pre">&quot;fields=&quot;event&quot;</span></code> returns:</p>
 <blockquote>
 <div><ul>
-<li><p><cite>eventRemarks</cite></p></li>
-<li><p><cite>eventTime</cite></p></li>
-<li><p><cite>eventID</cite></p></li>
-<li><p><cite>eventDate</cite></p></li>
-<li><p><cite>samplingEffort</cite></p></li>
-<li><p><cite>samplingProtocol</cite></p></li>
+<li><p>eventRemarks, eventTime, eventID, eventDate, samplingEffort, samplingProtocol</p></li>
 </ul>
 </div></blockquote>
-<p>While “media” returns</p>
+<p>Using <code class="docutils literal notranslate"><span class="pre">fields=&quot;media&quot;</span></code> returns:</p>
 <blockquote>
 <div><ul>
-<li><p><cite>multimedia</cite></p></li>
-<li><p><cite>multimediaLicence</cite></p></li>
-<li><p><cite>images</cite></p></li>
-<li><p><cite>videos</cite></p></li>
-<li><p><cite>sounds</cite></p></li>
+<li><p>multimedia, multimediaLicence, images, videos, sounds</p></li>
 </ul>
 </div></blockquote>
-<p>See <code class="docutils literal notranslate"><span class="pre">galah.show_all()</span></code> and <code class="docutils literal notranslate"><span class="pre">galah.search_all()</span></code> to see valid fields.</p>
+<p>See <code class="docutils literal notranslate"><span class="pre">galah.show_all()</span></code> and <code class="docutils literal notranslate"><span class="pre">galah.search_all()</span></code> to see all valid fields.</p>
 </p></li>
-<li><p><strong>assertions</strong> (<em>string</em><em> or </em><em>list</em>) – Using “assertions” returns all quality assertion-related columns. These columns are data quality checks run by each living atlas. The list of assertions is shown by <code class="docutils literal notranslate"><span class="pre">galah.show_all(assertions=True)</span></code>.</p></li>
+<li><p><strong>assertions</strong> (<em>string / list</em>) – Using “assertions” returns all quality assertion-related columns. These columns are data quality checks run by each living atlas. The list of assertions is shown by <code class="docutils literal notranslate"><span class="pre">galah.show_all(assertions=True)</span></code>.</p></li>
 <li><p><strong>use_data_profile</strong> (<em>string</em>) – A profile name. Should be a string - the name or abbreviation of a data quality profile to apply to the query. Valid values can be seen using <code class="docutils literal notranslate"><span class="pre">galah.show_all(profiles=True)</span></code></p></li>
 </ul>
 </dd>
@@ -486,6 +492,25 @@ Default is titled “basic”, which includes:</p>
 171       -26.643078        150.017945  ...  iNaturalist Australia          PRESENT
 
 [172 rows x 8 columns]
+</pre></div>
+</div>
+<p>Download records of Vulpes vulpes in 2023, returning only <code class="docutils literal notranslate"><span class="pre">eventDate</span></code> field</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="kn">import</span> <span class="nn">galah</span></span>
+<span class="prompt1"><span class="n">galah</span><span class="o">.</span><span class="n">atlas_occurrences</span><span class="p">(</span><span class="n">taxa</span><span class="o">=</span><span class="s2">&quot;Vulpes vulpes&quot;</span><span class="p">,</span><span class="n">filters</span><span class="o">=</span><span class="s2">&quot;year=2023&quot;</span><span class="p">,</span><span class="n">fields</span><span class="o">=</span><span class="s2">&quot;eventDate&quot;</span><span class="p">)</span></span>
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>                eventDate
+0    2022-12-31T14:56:00Z
+1    2022-12-31T21:21:27Z
+2    2023-01-01T12:11:00Z
+3    2023-01-01T12:20:00Z
+4    2023-01-01T14:03:00Z
+..                    ...
+167  2023-02-26T20:16:00Z
+168  2023-02-28T21:07:35Z
+169  2023-03-02T01:32:00Z
+170  2023-03-03T23:27:35Z
+171  2023-03-04T07:05:00Z
+
+[172 rows x 1 columns]
 </pre></div>
 </div>
 </dd></dl>
@@ -532,7 +557,7 @@ to manage these issues as simply as possible.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>email</strong> (<em>string</em>) – An email address that has been registered with the chosen atlas. For the ALA, you can register at [this address](<a class="reference external" href="https://auth.ala.org.au/userdetails/registration/createAccount">https://auth.ala.org.au/userdetails/registration/createAccount</a>).</p></li>
+<li><p><strong>email</strong> (<em>string</em>) – An email address that has been registered with the chosen atlas. For the ALA, you can register <a class="reference external" href="https://auth.ala.org.au/userdetails/registration/createAccount">here</a>.</p></li>
 <li><p><strong>email_notify</strong> (<em>string</em>) – Used to receive an email for each query to <code class="docutils literal notranslate"><span class="pre">galah.atlas_occurrences()</span></code>. Defaults to <code class="docutils literal notranslate"><span class="pre">None</span></code>, but can be useful in some instances, for example for tracking DOIs assigned to specific downloads for later citation.</p></li>
 <li><p><strong>atlas</strong> (<em>string</em>) – Living Atlas to point to, <code class="docutils literal notranslate"><span class="pre">Australia</span></code> by default. Can be an organisation name, acronym, or region (see <code class="docutils literal notranslate"><span class="pre">show_all(atlases=True)</span></code> for admissible values)</p></li>
 <li><p><strong>data_profile</strong> (<em>string</em>) – A profile name. Should be a string - the name or abbreviation of a data quality profile to apply to the query. Valid values can be seen using <code class="docutils literal notranslate"><span class="pre">galah.show_all(profiles=True)</span></code></p></li>
@@ -710,13 +735,13 @@ displaying all valid options for the information specified.</p>
 3                                              *Brigalow  ...  dr14507
 4                                                0662409  ...  dr19938
 ...                                                  ...  ...      ...
-12773  [C4OC] Torres Strait Regional Landcare Facilit...  ...   dr3529
-12774  [C4OC] Traditional Ecological Knowledge Record...  ...   dr3199
-12775  [C4OC] Trialling and demonstrating farmer inno...  ...   dr3519
-12776                [C4OC] Urban and Coastal Protection  ...   dr6802
-12777        _River_Torrens_Linear_Park_Species_List.csv  ...  dr19265
+12788  [C4OC] Torres Strait Regional Landcare Facilit...  ...   dr3529
+12789  [C4OC] Traditional Ecological Knowledge Record...  ...   dr3199
+12790  [C4OC] Trialling and demonstrating farmer inno...  ...   dr3519
+12791                [C4OC] Urban and Coastal Protection  ...   dr6802
+12792        _River_Torrens_Linear_Park_Species_List.csv  ...  dr19265
 
-[12778 rows x 3 columns]
+[12793 rows x 3 columns]
 </pre></div>
 </div>
 </dd></dl>
@@ -765,7 +790,7 @@ more about the information of interest. <code class="docutils literal notranslat
                 <!-- Previous / next buttons -->
 <div class='prev-next-area'>
   <a class='left-prev' id="prev-link" href="../galah_user_guide/Narrow_Results.html" title="previous page">
-      <i class="fas fa-angle-left"></i>
+      <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
           <p class="prev-next-subtitle">previous</p>
           <p class="prev-next-title">Narrow Results</p>
@@ -776,7 +801,7 @@ more about the information of interest. <code class="docutils literal notranslat
       <p class="prev-next-subtitle">next</p>
       <p class="prev-next-title">Authors and Citation</p>
   </div>
-  <i class="fas fa-angle-right"></i>
+  <i class="fa-solid fa-angle-right"></i>
   </a>
 </div>
             </footer>
@@ -790,7 +815,7 @@ more about the information of interest. <code class="docutils literal notranslat
 <div class="toc-item">
   
 <div class="tocsection onthispage">
-    <i class="fas fa-list"></i> On this page
+    <i class="fa-solid fa-list"></i> On this page
 </div>
 <nav id="bd-toc-nav" class="page-toc">
     <ul class="visible nav section-nav flex-column">
@@ -939,6 +964,25 @@ more about the information of interest. <code class="docutils literal notranslat
 </nav>
 </div>
 
+<div class="toc-item">
+  
+<div id="searchbox"></div>
+</div>
+
+<div class="toc-item">
+  
+</div>
+
+<div class="toc-item">
+  
+<div class="tocsection sourcelink">
+    <a href="../_sources/apidocs/galah.rst.txt">
+        <i class="fa-solid fa-file-lines"></i> Show Source
+    </a>
+</div>
+
+</div>
+
             </div>
           
           
@@ -956,7 +1000,8 @@ more about the information of interest. <code class="docutils literal notranslat
   
     
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../_static/scripts/pydata-sphinx-theme.js?digest=9b1a4fa89bdd0e95b23b"></script>
+  <script src="../_static/scripts/bootstrap.js?digest=796348d33e8b1d947c94"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=796348d33e8b1d947c94"></script>
 
   <footer class="bd-footer"><div class="bd-footer__inner container">
   
@@ -968,6 +1013,16 @@ more about the information of interest. <code class="docutils literal notranslat
 
 </p>
 
+  </div>
+  
+  <div class="footer-item">
+    <p class="theme-version">
+    Built with the
+    <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">
+        PyData Sphinx Theme
+    </a>
+    0.12.0.
+</p>
   </div>
   
   <div class="footer-item">
