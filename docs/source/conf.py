@@ -40,16 +40,24 @@ extensions = [
     'sphinx.ext.napoleon',
 ]
 
+# old autoapi code
+
 '''
 	'autoapi.extension',
 	'sphinx_autodoc_typehints'
 	'sphinx.ext.autodoc',
 	'sphinx.ext.autosummary',
+    
+autoapi_member_order = "alphabetical"
+
+# where all the API documentation lives
+#autoapi_dirs = ['../../galah/src/galah/'] # see if this is the case
+
+# don't automaticalliy generate api docs
+#autoapi_generate_api_docs=False
 '''
 
 napoleon_use_param = True
-
-#autoapi_member_order = "alphabetical"
 
 myst_enable_extensions = ["colon_fence"]
 
@@ -58,12 +66,6 @@ templates_path = ['_templates']
 version = str(galah.__version__)
 release = version
 source_path = os.path.dirname(os.path.abspath(__file__))
-
-# where all the API documentation lives
-#autoapi_dirs = ['../../galah/src/galah/'] # see if this is the case
-
-# don't automaticalliy generate api docs
-#autoapi_generate_api_docs=False
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
