@@ -101,6 +101,7 @@ The reason is set to 4 (scientific research) by default, but you can change this
 for valid download reasons.
 
 .. prompt:: python
+
     >>> galah.galah_config(reason = 5)
 
 

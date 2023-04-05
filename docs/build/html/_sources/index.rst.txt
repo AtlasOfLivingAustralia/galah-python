@@ -3,11 +3,11 @@
 |galah-logo|   galah 
 =====================================
 
-.. |galah-logo| image:: _static/logo/logo.png
+.. |galah-logo| image:: _static/logo/logo.png   
     :width: 150px
     :alt: galah hexagon logo
 
-**Date**: |today| **Version**: |version|
+**Date**: |today|  **Version**: |version|
 
 **galah** is an interface to biodiversity data hosted by the ‘living atlases’; a set of organisations that share a common codebase, 
 and act as nodes of the Global Biodiversity Information Facility (`GBIF <https://www.gbif.org/>`_). These organisations collate and store observations of 

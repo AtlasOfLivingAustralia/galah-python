@@ -37,20 +37,19 @@ extensions = [
 	'sphinx-prompt',
 	'sphinxcontrib.programoutput',
 	'sphinx_design',
+    'sphinx.ext.napoleon',
+]
+
+'''
+	'autoapi.extension',
+	'sphinx_autodoc_typehints'
 	'sphinx.ext.autodoc',
 	'sphinx.ext.autosummary',
-	'autoapi.extension',
-	'sphinx.ext.napoleon',
-	'sphinx_autodoc_typehints'
-]
+'''
 
 napoleon_use_param = True
 
-#"sphinx.ext.linkcode",
-
-autosummary_generate = True
-autoapi_member_order = "alphabetical"
-# 'autoapi.extension' is an addition - disable if doesn't work
+#autoapi_member_order = "alphabetical"
 
 myst_enable_extensions = ["colon_fence"]
 
@@ -60,17 +59,11 @@ version = str(galah.__version__)
 release = version
 source_path = os.path.dirname(os.path.abspath(__file__))
 
-# added
-#autoapi_options = ['members', 'undoc-members', 'private-members', 'show-inheritance', 'show-module-summary','special-members', 'imported-members' ]
+# where all the API documentation lives
+#autoapi_dirs = ['../../galah/src/galah/'] # see if this is the case
 
-#, 'undoc-members'] #, 'private-members', 'show-inheritance', 'show-module-summary', 'special-members', 'imported-members' ]
-
-autoapi_dirs = ['../../galah/src/galah/',]
-
-autoapi_generate_api_docs=False
-
-# try this
-#autoapi_add_toctree_entry = False
+# don't automaticalliy generate api docs
+#autoapi_generate_api_docs=False
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
@@ -84,15 +77,13 @@ exclude_patterns = ['apply_data_profile.py','get_api_url.py']
 #
 html_theme = 'pydata_sphinx_theme'
 
-#        "navbar_start": ["navbar-logo"],
-#        "navbar_center": ["navbar-nav"],
 html_theme_options = {
 	"navbar_align": "content",
 	"github_url": "https://github.com/AtlasOfLivingAustralia/galah_python",
 	"page_sidebar_items": ["page-toc"],
     "logo": {
-		"image_light": "logo.png", #"_static/logo/logo.png"
-        "image_dark": "logo.png", #"_static/logo/logo.png"
+		"image_light": "logo.png",
+        "image_dark": "logo.png", 
 	},
 }
 
