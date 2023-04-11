@@ -36,7 +36,7 @@ def apply_data_profile(baseURL):
     else:
         data_profile_list = list(show_all(profiles=True)['shortName'])
         if configs['galahSettings']['data_profile'] in data_profile_list:
-            baseURL += "&qualityProfile={}".format(configs['galahSettings']['data_profile'])
+            baseURL += "qualityProfile={}&".format(configs['galahSettings']['data_profile'])
         else:
             raise ValueError("The data quality profile not recognised. To see valid data quality profiles, run \n\n"
                              "profiles = galah.show_all(profiles=True)\n\n"

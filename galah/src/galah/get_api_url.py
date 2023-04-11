@@ -1,4 +1,4 @@
-import configparser,os
+import configparser,os,urllib
 import pandas as pd
 
 def readConfig():
@@ -58,11 +58,11 @@ def get_api_url(column1=None,
             raise ValueError("You need to provide a valid email address for this function to be able to download data")
         else:
             if "download" in baseURL:
-                baseURL += "?email={}&dwcHeaders=True".format(configs['galahSettings']['email'])
+                baseURL += "?email={}&dwcHeaders=True".format(urllib.parse.quote(configs['galahSettings']['email']))
                 baseURL += "&reasonTypeId={}".format(configs['galahSettings']['reason'])
             else:
-                baseURL += "&email={}&dwcHeaders=True".format(configs['galahSettings']['email'])
-                baseURL += "&reasonTypeId={}".format(configs['galahSettings']['reason'])
+                baseURL += "&email={}&dwcHeaders=True".format(urllib.parse.quote(configs['galahSettings']['email']))
+                baseURL += "&reasonTypeId={}".format(urllib.parse.quote(configs['galahSettings']['email']))
             if configs['galahSettings']['email_notify'].lower() == "false":
                 baseURL += "&emailNotify=false&"
             elif configs['galahSettings']['email_notify'].lower() == "true":

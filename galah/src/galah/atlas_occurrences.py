@@ -172,9 +172,9 @@ def atlas_occurrences(taxa=None,
 
     # goes to the 'fields' argument in occurrence download (csv list, commas between)
     if fields is not None:
-        baseURL += galah_select(select=fields) + "&"
+        baseURL += galah_select(select=fields)[:-3] + "&"
     elif configs['galahSettings']['atlas'] in ["Australia","Brazil","Spain"]:
-        baseURL += galah_select(select=ATLAS_SELECTIONS[configs['galahSettings']['atlas']])
+        baseURL += galah_select(select=ATLAS_SELECTIONS[configs['galahSettings']['atlas']])[:-3] + "&"
     else:
         raise ValueError("We currently cannot get occurrences from the {} atlas.".format(configs['galahSettings']['atlas']))
 
@@ -202,10 +202,11 @@ def atlas_occurrences(taxa=None,
             if filters is not None:
                 URL += "%20AND%20%28"
                 if type(filters) is str:
-                    URL += galah_filter(filters) + "%20AND%20"
+                    URL += galah_filter(filters) + "%29"
                 elif type(filters) is list:
                     for f in filters:
                         URL += galah_filter(f) + "%20AND%20"
+                    URL = URL[:-len("%20AND%20")] + "%29"
                 else:
                     raise ValueError("The filters argument needs to be either a string or a list")
                 
@@ -215,15 +216,16 @@ def atlas_occurrences(taxa=None,
                 # check type
                 if type(assertions) is list or type(assertions) is str:
                     if type(assertions) is str:
-                        assertions=[assertions]
-                    for a in assertions:
-                        URL += galah_filter(a) + "%20AND%20"
-
+                        URL += galah_filter(assertions) + "%29"
+                    elif type(assertions) is list:
+                        for a in assertions:
+                            URL += galah_filter(a) + "%20AND%20"
+                        URL = URL[:-len("%20AND%20")] + "%29"
                 else:
                     raise ValueError("Assertions needs to be a string or a list of strings, i.e. identificationIncorrect == TRUE")
             
             # add final part of URL
-            URL = URL[:-len("%20AND%20")] + "%29&qa=none&"
+            URL += "&qa=none&"
 
             # check to see if user wants the query URL
             if verbose:
