@@ -22,6 +22,6 @@ setup(
     include_package_data = True,
     package_data = {
     # If any package contains *.ini files or *.csv files, include them
-    '': ['*.ini','*.csv'],
+    '': ['config.ini','node_config.csv'],
     },
 )
