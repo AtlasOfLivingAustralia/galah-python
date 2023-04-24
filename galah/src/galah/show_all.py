@@ -95,8 +95,8 @@ def show_all(assertions=False,
     # return all the atlases you can query
     if type(atlases) is bool and atlases:
         # dictionary of all atlases galah currently supports
-        data = {
-            "atlas": ["Australia","Austria","Brazil","Canada","Estonia","France","Guatemala","Portugal","Spain","Sweden","United Kingdom"],
+        '''
+         "atlas": ["Australia","Austria","Brazil","Canada","Estonia","France","Guatemala","Portugal","Spain","Sweden","United Kingdom"],
             "institution": ["Atlas of Living Australia","Biodiversitäts-Atlas Österreich","Sistemas de Informações sobre a Biodiversidade Brasileira",
                             "Canadensys", "eElurikkus","Inventaire National du Patrimoine Naturel","Sistema Nacional de Información sobre Diversidad Biológica de Guatemala",
                             "GBIF Portugal","GBIF Spain","Swedish Biodiversity Data Infrastructure","National Biodiversity Network"],
@@ -104,6 +104,13 @@ def show_all(assertions=False,
             "url": ["https://www.ala.org.au","https://biodiversityatlas.at","https://sibbr.gov.br","http://www.canadensys.net/",
                     "https://elurikkus.ee","https://inpn.mnhn.fr","https://snib.conap.gob.gt","https://www.gbif.pt",
                     "https://www.gbif.es","https://biodiversitydata.se","https://nbn.org.uk"],
+        '''
+        data = {
+            "atlas": ["Australia","Brazil","Spain"],
+            "institution": ["Atlas of Living Australia","Sistemas de Informações sobre a Biodiversidade Brasileira",
+                            "GBIF Spain"],
+            "acronym": ["ALA","SiBBr","GBIF.es"],
+            "url": ["https://www.ala.org.au","https://sibbr.gov.br","https://www.gbif.es"],
         }
         # append this data frame to the return_array
         return_array.append(pd.DataFrame.from_dict(data))
