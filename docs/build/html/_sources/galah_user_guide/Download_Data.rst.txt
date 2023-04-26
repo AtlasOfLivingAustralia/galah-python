@@ -61,7 +61,7 @@ After specifying your email, you can download occurrence records of, for example
 
     >>> galah.atlas_occurrences(taxa="Eolophus roseicapilla",filters=["stateProvince=Australian Capital Territory","year>=2010"],fields=["institutionID","basic"])
 
-.. program-output:: python -c "import galah;galah.galah_config(atlas=\"Australia\");import pandas as pd;pd.set_option('display.max_columns', None);pd.set_option('display.expand_frame_repr', False);pd.set_option('max_colwidth', None);print(galah.atlas_occurrences(taxa=\"Eolophus roseicapilla\",filters=[\"stateProvince=Australian Capital Territory\",\"year>=2010\"],fields=[\"institutionID\",\"basic\"]))"
+.. program-output:: python -c "import galah;galah.galah_config(atlas=\"Australia\",email=\"amanda.buyan@csiro.au\");import pandas as pd;pd.set_option('display.max_columns', None);pd.set_option('display.expand_frame_repr', False);pd.set_option('max_colwidth', None);galah.galah_config(atlas=\"Australia\",email=\"amanda.buyan@csiro.au\");print(galah.atlas_occurrences(taxa=\"Eolophus roseicapilla\",filters=[\"stateProvince=Australian Capital Territory\",\"year>=2010\"],fields=[\"institutionID\",\"basic\"]))"
 
 Media metadata
 --------------

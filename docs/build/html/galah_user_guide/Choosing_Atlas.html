@@ -376,13 +376,13 @@ Available information may vary for each Living Atlas.</p>
 3                                                                                                    *Brigalow  https://collections.ala.org.au/ws/dataResource/dr14507  dr14507
 4                                                                                                      0662409  https://collections.ala.org.au/ws/dataResource/dr19938  dr19938
 ...                                                                                                        ...                                                     ...      ...
-13138                                                       [C4OC] Torres Strait Regional Landcare Facilitator   https://collections.ala.org.au/ws/dataResource/dr3529   dr3529
-13139                        [C4OC] Traditional Ecological Knowledge Recording and Management in Torres Strait   https://collections.ala.org.au/ws/dataResource/dr3199   dr3199
-13140  [C4OC] Trialling and demonstrating farmer innovation for improved environmental and resource management   https://collections.ala.org.au/ws/dataResource/dr3519   dr3519
-13141                                                                      [C4OC] Urban and Coastal Protection   https://collections.ala.org.au/ws/dataResource/dr6802   dr6802
-13142                                                              _River_Torrens_Linear_Park_Species_List.csv  https://collections.ala.org.au/ws/dataResource/dr19265  dr19265
+13142                                                       [C4OC] Torres Strait Regional Landcare Facilitator   https://collections.ala.org.au/ws/dataResource/dr3529   dr3529
+13143                        [C4OC] Traditional Ecological Knowledge Recording and Management in Torres Strait   https://collections.ala.org.au/ws/dataResource/dr3199   dr3199
+13144  [C4OC] Trialling and demonstrating farmer innovation for improved environmental and resource management   https://collections.ala.org.au/ws/dataResource/dr3519   dr3519
+13145                                                                      [C4OC] Urban and Coastal Protection   https://collections.ala.org.au/ws/dataResource/dr6802   dr6802
+13146                                                              _River_Torrens_Linear_Park_Species_List.csv  https://collections.ala.org.au/ws/dataResource/dr19265  dr19265
 
-[13143 rows x 3 columns]
+[13147 rows x 3 columns]
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">show_all</span><span class="p">(</span><span class="n">fields</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></span>
@@ -432,8 +432,8 @@ Index: []
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="c1"># Returns data</span></span>
 <span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">search_taxa</span><span class="p">(</span><span class="n">taxa</span><span class="o">=</span><span class="s2">&quot;Vulpes vulpes&quot;</span><span class="p">)</span></span>
-</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>  scientificName scientificNameAuthorship                                                             taxonConceptID     rank   kingdom    phylum      order   family   genus        species   issues vernacularName
-0  Vulpes vulpes           Linnaeus, 1758  https://biodiversity.org.au/afd/taxa/2869ce8a-8212-46c2-8327-dfb7fabb8296  species  Animalia  Chordata  Carnivora  Canidae  Vulpes  Vulpes vulpes  noIssue            Fox
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>  scientificName scientificNameAuthorship                                                             taxonConceptID     rank   kingdom    phylum      order   family   genus        species vernacularName   issues
+0  Vulpes vulpes           Linnaeus, 1758  https://biodiversity.org.au/afd/taxa/2869ce8a-8212-46c2-8327-dfb7fabb8296  species  Animalia  Chordata  Carnivora  Canidae  Vulpes  Vulpes vulpes            Fox  noIssue
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">atlas_counts</span><span class="p">(</span><span class="n">taxa</span><span class="o">=</span><span class="s2">&quot;Vulpes vulpes&quot;</span><span class="p">,</span> <span class="n">filters</span><span class="o">=</span><span class="s2">&quot;year&gt;2010&quot;</span><span class="p">)</span></span>
@@ -443,7 +443,22 @@ Index: []
 </div>
 <p>Download species occurrence records from other atlases with <code class="docutils literal notranslate"><span class="pre">galah.atlas_occurrences()</span></code></p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">atlas_occurrences</span><span class="p">(</span><span class="n">taxa</span><span class="o">=</span><span class="s2">&quot;Vulpes vulpes&quot;</span><span class="p">,</span> <span class="n">filters</span><span class="o">=</span><span class="s2">&quot;year&gt;2010&quot;</span><span class="p">,</span> <span class="n">fields</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;taxon_name&quot;</span><span class="p">,</span> <span class="s2">&quot;year&quot;</span><span class="p">])</span></span>
-</pre></div></div><p>#.. program-output:: python -c “import galah;import pandas as pd;pd.set_option(‘display.max_columns’, None);pd.set_option(‘display.expand_frame_repr’, False);pd.set_option(‘max_colwidth’, None);print(galah.atlas_occurrences(taxa=&quot;Vulpes vulpes&quot;, filters=&quot;year&gt;2010&quot;, fields=[&quot;taxon_name&quot;, &quot;year&quot;]))”</p>
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>             scientificName  year
+0             Vulpes vulpes  2019
+1             Vulpes vulpes  2013
+2             Vulpes vulpes  2021
+3             Vulpes vulpes  2022
+4             Vulpes vulpes  2022
+...                     ...   ...
+89713         Vulpes vulpes  2012
+89714         Vulpes vulpes  2018
+89715  Vulpes vulpes vulpes  2018
+89716  Vulpes vulpes vulpes  2019
+89717  Vulpes vulpes vulpes  2019
+
+[89718 rows x 2 columns]
+</pre></div>
+</div>
 </section>
 <section id="complex-queries-with-multiple-atlases">
 <h2>Complex queries with multiple Atlases<a class="headerlink" href="#complex-queries-with-multiple-atlases" title="Permalink to this heading">#</a></h2>
@@ -461,7 +476,7 @@ return the total 0number of species records in each Living Atlas in one table.</
 <span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">counts_dict</span><span class="p">)</span></span>
 </pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>       Atlas  Total Records
 0  Australia      114456987
-1     Brazil       22944189
+1     Brazil       23397685
 2      Spain       39912343
 </pre></div>
 </div>

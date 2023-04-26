@@ -352,24 +352,16 @@ span.prompt1:before {
   content: " ";
 }
 </style><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">show_all</span><span class="p">(</span><span class="n">atlases</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></span>
-</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>             atlas                                                              institution  acronym                           url
-0        Australia                                                Atlas of Living Australia      ALA        https://www.ala.org.au
-1          Austria                                          Biodiversitäts-Atlas Österreich      BAO  https://biodiversityatlas.at
-2           Brazil                Sistemas de Informações sobre a Biodiversidade Brasileira    SiBBr          https://sibbr.gov.br
-3           Canada                                                               Canadensys     &lt;NA&gt;    http://www.canadensys.net/
-4          Estonia                                                               eElurikkus     &lt;NA&gt;          https://elurikkus.ee
-5           France                                Inventaire National du Patrimoine Naturel     INPN          https://inpn.mnhn.fr
-6        Guatemala  Sistema Nacional de Información sobre Diversidad Biológica de Guatemala   SNIBgt     https://snib.conap.gob.gt
-7         Portugal                                                            GBIF Portugal  GBIF.pt           https://www.gbif.pt
-8            Spain                                                               GBIF Spain  GBIF.es           https://www.gbif.es
-9           Sweden                                 Swedish Biodiversity Data Infrastructure     SBDI   https://biodiversitydata.se
-10  United Kingdom                                            National Biodiversity Network      NBN            https://nbn.org.uk
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>       atlas                                                institution  acronym                     url
+0  Australia                                  Atlas of Living Australia      ALA  https://www.ala.org.au
+1     Brazil  Sistemas de Informações sobre a Biodiversidade Brasileira    SiBBr    https://sibbr.gov.br
+2      Spain                                                 GBIF Spain  GBIF.es     https://www.gbif.es
 </pre></div>
 </div>
 <p>To search for a specific available Living Atlas:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">search_all</span><span class="p">(</span><span class="n">atlases</span><span class="o">=</span><span class="s2">&quot;Spain&quot;</span><span class="p">)</span></span>
 </pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>   atlas institution  acronym                  url
-8  Spain  GBIF Spain  GBIF.es  https://www.gbif.es
+2  Spain  GBIF Spain  GBIF.es  https://www.gbif.es
 </pre></div>
 </div>
 <p>To show all fields:</p>

@@ -99,7 +99,7 @@ Download species occurrence records from other atlases with ``galah.atlas_occurr
 
     >>> galah.atlas_occurrences(taxa="Vulpes vulpes", filters="year>2010", fields=["taxon_name", "year"])
 
-#.. program-output:: python -c "import galah;import pandas as pd;pd.set_option('display.max_columns', None);pd.set_option('display.expand_frame_repr', False);pd.set_option('max_colwidth', None);print(galah.atlas_occurrences(taxa=\"Vulpes vulpes\", filters=\"year>2010\", fields=[\"taxon_name\", \"year\"]))"
+.. program-output:: python -c "import galah;import pandas as pd;pd.set_option('display.max_columns', None);pd.set_option('display.expand_frame_repr', False);pd.set_option('max_colwidth', None);galah.galah_config(atlas=\"Australia\",email=\"amanda.buyan@csiro.au\");print(galah.atlas_occurrences(taxa=\"Vulpes vulpes\", filters=\"year>2010\", fields=[\"taxon_name\", \"year\"]))"
 
 
 Complex queries with multiple Atlases
