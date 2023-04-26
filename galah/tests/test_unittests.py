@@ -96,7 +96,7 @@ class test_galah(unittest2.TestCase):
     
     # unit test to make sure galah_select works as intended
     def test_galah_select(self):
-        output = galah.galah_select(selectionList=['decimalLatitude','decimalLongitude'])
+        output = galah.galah_select(select=['decimalLatitude','decimalLongitude'])
         self.assertEqual(output,"fields=decimalLatitude%2CdecimalLongitude%2C")
 
     # unit test for galah_group_by

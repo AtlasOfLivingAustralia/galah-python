@@ -18,6 +18,20 @@ ATLAS_KEYWORDS = {
     "United Kingdom": "guid",
 }
 
+ATLAS_COMMON_NAMES = {
+    "Australia": "vernacularName",
+    "Austria": "",
+    "Brazil": "commonName",
+    "Canada": "",
+    "Estonia": "",
+    "France": "",
+    "Guatemala": "",
+    "Portugal": "",
+    "Spain": "vernacularName",
+    "Sweden": "",
+    "United Kingdom": "",
+}
+
 atlases = ["Australia","Austria","Brazil","Canada","Estonia","France","Guatemala","Portugal","Sweden","Spain","United Kingdom"]
 
 def search_taxa(taxa):
@@ -82,29 +96,28 @@ def search_taxa(taxa):
 
             # get the response
             json = response.json()
+            if configs['galahSettings']['atlas'] in ["Brazil"]:
+                raw_data = None
+                for i,item in enumerate(json['searchResults']['results']):
+                    if item['scientificName'].lower() == name.lower():
+                        raw_data = json['searchResults']['results'][i]
+                if raw_data is None:
+                    continue # return pd.DataFrame()
+            elif configs['galahSettings']['atlas'] in ["Australia","Spain"]:
+                raw_data = json
+            else:
+                raise ValueError("The atlas {} is not taken into account".format(configs['galahSettings']['atlas']))
 
             # check to see if the taxa was successfully returned
-            # don't think this is the best solution for Austria but this is a first shot
             if configs['galahSettings']['atlas'] in ["Australia","Spain"] and not json['success']:
                 continue
-            elif configs['galahSettings']['atlas'] in ["Brazil"]:
-                data={}
-                for item in json['searchResults']['results']:
-                    if item['scientificName'].lower() == name.lower():
-                        for entry in ['scientificName', 'scientificNameAuthorship', ATLAS_KEYWORDS[configs['galahSettings']['atlas']], 'rank',
-                                      'match_type','kingdom', 'phylum', 'class', 'order', 'family', 'genus', 'species', 'issues', 'vernacular_name']:
-                            data[entry] = item[entry]    
             else:
-                # this is for atlas for Australia
-                ### TODO: Test Spain
-                if configs['galahSettings']['atlas'] in ["Australia","Spain"]:
-                    # change vernacularName if need be
-                    data = dict(
-                        (k, json[k]) for k in ('scientificName', 'scientificNameAuthorship', ATLAS_KEYWORDS[configs['galahSettings']['atlas']], 'rank',
-                                               'match_type','kingdom', 'phylum', 'class', 'order', 'family', 'genus', 'species', 'issues', 'vernacularName') if
-                        k in json)
-                else:
-                    raise ValueError("The atlas {} is not taken into account".format(configs['galahSettings']['atlas']))
+                data={}
+                for item in raw_data: 
+                    if item in ['scientificName', 'scientificNameAuthorship', ATLAS_KEYWORDS[configs['galahSettings']['atlas']],
+                                'rank', 'match_type','kingdom', 'phylum', 'class', 'order', 'family', 'genus', 'species', 'issues', 
+                                ATLAS_COMMON_NAMES[configs['galahSettings']['atlas']]]:
+                        data[item] = raw_data[item] 
 
             # add every instance of 
             tempdf = pd.DataFrame(data,index=[1])

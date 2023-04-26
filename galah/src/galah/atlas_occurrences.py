@@ -96,18 +96,20 @@ def atlas_occurrences(taxa=None,
     .. prompt:: python
 
         import galah
+        galah.galah_config(atlas="Australia",email="your-email@example.com")
         galah.atlas_occurrences(taxa="Vulpes vulpes",filters="year=2023")
 
-    .. program-output:: python -c "import galah; print(galah.atlas_occurrences(taxa=\\\"Vulpes vulpes\\\",filters=\\\"year=2023\\\"))"
+    .. program-output:: python -c "import galah; galah.galah_config(atlas=\\\"Australia\\\",email=\\\"amanda.buyan@csiro.au\\\");print(galah.atlas_occurrences(taxa=\\\"Vulpes vulpes\\\",filters=\\\"year=2023\\\"))"
     
     Download records of Vulpes vulpes in 2023, returning only ``eventDate`` field
 
     .. prompt:: python
 
         import galah
+        galah.galah_config(atlas="Australia",email="your-email@example.com")
         galah.atlas_occurrences(taxa="Vulpes vulpes",filters="year=2023",fields="eventDate")
 
-    .. program-output:: python -c "import galah; print(galah.atlas_occurrences(taxa=\\\"Vulpes vulpes\\\",filters=\\\"year=2023\\\",fields=\\\"eventDate\\\"))"
+    .. program-output:: python -c "import galah; galah.galah_config(atlas=\\\"Australia\\\",email=\\\"amanda.buyan@csiro.au\\\"); print(galah.atlas_occurrences(taxa=\\\"Vulpes vulpes\\\",filters=\\\"year=2023\\\",fields=\\\"eventDate\\\"))"
 
     """
 

@@ -179,7 +179,7 @@ def atlas_species(taxa=None,filters=None,verbose=False):
         
         # get taxonomic information
         for depth in ['kingdom','phylum','class','order','family']:
-            if json['classification'][depth]:
+            if depth in json['classification']:
                 data_dict[depth].append(json['classification'][depth].lower().capitalize())
             else:
                 data_dict[depth].append("")

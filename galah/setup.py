@@ -8,7 +8,7 @@ from setuptools import setup,find_packages
 setup(
     name='galah',
     version='0.1.0',
-    license='MIT',
+    license='GPL-2.0-or-later',
     author='Amanda Buyan',
     author_email='amanda.buyan@csiro.au',
     packages=find_packages('src'),
