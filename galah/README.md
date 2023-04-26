@@ -18,7 +18,7 @@ Interested in contributing? Check out the contributing guidelines. Please note t
 
 ## License
 
-`galah` was created by Amanda Buyan. It is licensed under the terms of the MIT license.
+`galah` was created by Amanda Buyan. It is licensed under the terms of the MPL-2.0 license.
 
 ## Credits
 

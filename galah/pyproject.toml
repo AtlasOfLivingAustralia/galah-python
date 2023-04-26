@@ -3,7 +3,7 @@ name = "galah"
 version = "0.1.0" # for testing
 description = "Get counts and information on species"
 authors = ["Amanda Buyan"]
-license = "GPL-2.0-or-later"
+license = "MPL-2.0"
 readme = "README.md"
 
 [tool.poetry.dependencies]
