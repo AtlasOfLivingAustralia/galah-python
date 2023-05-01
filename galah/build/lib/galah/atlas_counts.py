@@ -10,12 +10,13 @@ from .apply_data_profile import apply_data_profile
 ATLAS_KEYWORDS = {
     "Australia": "taxonConceptID",
     "Austria": "guid",
-    "Brazil": "guid", #speciesGuid
+    "Brazil": "guid", 
     "Canada": "usageKey",
     "Estonia": "guid",
     "France": "usageKey",
     "Guatemala": "guid",
     "Portugal": "usageKey",
+    "Spain": "taxonConceptID",
     "Sweden": "guid",
     "United Kingdom": "guid",
 }
@@ -26,32 +27,60 @@ def atlas_counts(taxa=None,
                  filters=None,
                  group_by=None,
                  expand=True,
-                 separate=False,
                  verbose=False,
                  use_data_profile=False,
                  ):
     """
-    Used for getting the number of occurrence records before you're ready
-    to download the actual occurrences.
+    Prior to downloading data it is often valuable to have some estimate of how many records are available, both for deciding 
+    if the query is feasible, and for estimating how long it will take to download. Alternatively, for some kinds of reporting, 
+    the count of observations may be all that is required, for example for understanding how observations are growing or shrinking 
+    in particular locations, or for particular taxa. 
+    
+    To this end, ``galah.atlas_counts()`` takes arguments in the same format as 
+    ``galah.atlas_occurrences()``, and provides either a total count of records matching the criteria, or a data.frame of counts matching 
+    the criteria supplied to the `group_by` argument.
 
-    To know how many total records are in your chosen atlas, type
+    Parameters
+    ----------
+        taxa : string
+            one or more scientific names. Use ``galah.search_taxa()`` to search for valid scientific names.  
+        filters : pandas.DataFrame
+            filters, in the form ``field`` ``logical`` ``value`` (e.g. ``"year=2021"``)
+        group_by : string
+            zero or more individual column names (i.e. fields) to include. See ``galah.show_all()`` and ``galah.search_all()`` to see valid fields.
+        expand : logical
+            When using the ``group_by`` argument of ``galah.atlas_counts()``, controls whether counts for each row value are combined or calculated separately. Defaults to ``True``.
+        verbose : logical
+            If ``True``, galah gives more information like progress bars. Defaults to ``False``.
+        use_data_profile : string
+            A profile name. Should be a string - the name or abbreviation of a data quality profile to apply to the query. Valid values can be seen using ``galah.show_all(profiles=True)``
 
-    .. prompt:: python
+    Returns
+    -------
+        An object of class ``pandas.DataFrame``.
 
-        import galah
-        galah.atlas_counts()
+    Examples
+    --------
+        Return total records in your chosen atlas
 
-    which returns
+        .. prompt:: python
 
-    .. program-output:: python3 -c "import galah; print(galah.atlas_counts())"
+            galah.atlas_counts()
 
-    example of filters that can be used: "year=2020","basisOfRecord=HUMAN_OBSERVATION"
-    example of group_by groups that can be used: "year","basisOfRecord"
+        .. program-output:: python -c "import galah; print(galah.atlas_counts())"
+
+        Return records from 2020 onwards, grouped by year    
+
+        .. prompt:: python
+
+            galah.atlas_counts(filters="year>2019",group_by="year")
+
+        .. program-output:: python -c "import galah; print(galah.atlas_counts(filters=\\\"year>2019\\\",group_by=\\\"year\\\",expand=False))"
+
     """
 
     # get configs
     configs = readConfig()
-
     # get the URL needed for the query
     if use_data_profile and configs['galahSettings']['atlas'] == "Australia":
         baseURL = apply_data_profile("{}?".format(get_api_url(column1='called_by',column1value='atlas_counts',column2="api_name",
@@ -72,11 +101,6 @@ def atlas_counts(taxa=None,
                          "galah.galah_config(data_profile=\"None\")"
                          )
 
-    # set initial variables
-    num_taxa = 0
-    len_taxa = 0
-    group_by_dataframe = pd.DataFrame()
-
     # if there is no taxa, assume you will get the total number of records in the ALA
     if taxa is None:
 
@@ -94,14 +118,14 @@ def atlas_counts(taxa=None,
                         filters = [filters]
 
                     # start URL - might need to add + "&" later
-                    URL = baseURL + "&"
+                    URL = baseURL + "fq=%28"
 
                     # loop over filters
                     for f in filters:
                         URL += galah_filter(f, ifgroupBy=expand) + "%20AND%20"
 
                     # add final part of URL
-                    URL = URL[:-len("%20AND%20")] #+ "&pageSize=0"
+                    URL = URL[:-len("%20AND%20")] + "%29"
 
                 # else, make sure that the filters is in the following format
                 else:
@@ -110,7 +134,10 @@ def atlas_counts(taxa=None,
 
             # else, add the final bit of the URL
             else:
-                URL = baseURL + "flimit=200&pageSize=0"
+                if configs["galahSettings"]["atlas"] == "Australia":
+                    URL = baseURL + "flimit=10000&pageSize=0"
+                else:
+                    URL = baseURL
 
             # check to see if the user wants the querying URL
             if verbose:
@@ -126,8 +153,9 @@ def atlas_counts(taxa=None,
         # else, the user wants a grouped dataFrame
         else:
 
-           # return a grouped dataFrame
-            return galah_group_by(baseURL, group_by=group_by, filters=filters, expand=expand, verbose=verbose)
+            # return a grouped dataFrame
+            URL = baseURL + "fq="
+            return galah_group_by(URL, group_by=group_by, filters=filters, expand=expand, verbose=verbose)
 
     # if taxa exist, do this
     elif type(taxa) is str or type(taxa) is list:
@@ -135,14 +163,8 @@ def atlas_counts(taxa=None,
         # change taxa into list for easier looping
         if type(taxa) is str:
             taxa = [taxa]
-        '''
-            len_taxa = 1
-        else:
-            len_taxa = len(taxa)
-        '''
 
         # get the number of records associated with each taxa
-        # check for separate here first?
         for i,name in enumerate(taxa):
 
             # create temporary dataframe for taxon id
@@ -169,7 +191,11 @@ def atlas_counts(taxa=None,
         # return a grouped dataFrame
         if group_by is not None:
 
-            return galah_group_by(URL, group_by=group_by, filters=filters, expand=expand, verbose=verbose)
+            if filters is not None:
+                URL += "%20AND%20"
+                return galah_group_by(URL, group_by=group_by, filters=filters, expand=expand, verbose=verbose)
+            else:
+                return galah_group_by(URL, group_by=group_by, filters=filters, expand=expand, verbose=verbose)
 
         else:
 
@@ -183,21 +209,14 @@ def atlas_counts(taxa=None,
                     if type(filters) is str:
                         filters = [filters]
 
-                    URL += "%20AND%20"
+                    URL += "%20AND%20%28"
 
                     # loop over filters
                     for f in filters:
-                        print(f)
                         URL += galah_filter(f, ifgroupBy=expand) + "%20AND%20"
 
                     # add final part of URL
-                    URL = URL[:-len("%20AND%20")]
-
-                    if separate:
-                        URL += "&facets=species"
-
-                    # add final part of URL
-                    URL += "&flimit=200&pageSize=0"
+                    URL = URL[:-len("%20AND%20")] + "%29&flimit=10000&pageSize=0"
 
                 # else, make sure that the filters is in the following format
                 else:
@@ -208,11 +227,7 @@ def atlas_counts(taxa=None,
             else:
 
                 # check if it's separate one last time
-                if separate:
-                    URL += "&facets=species"
-
-                # last bit of URL
-                URL += "&flimit=200&pageSize=0"
+                URL += "&flimit=10000&pageSize=0"
 
         # check to see if the user wants the URL for querying
         if verbose:
@@ -222,28 +237,7 @@ def atlas_counts(taxa=None,
         response = requests.get(URL)
         json = response.json()
 
-        # if the user wants them separated, add counts to a temporary array to make a dataframe with
-        if separate:
-            separate_dict={entry:[] for entry in ['label','count']}
-            for entry in json['facetResults'][0]['fieldResult']:
-                for name in ['label','count']:
-                    separate_dict[name].append(entry[name])
-            dataFrame = pd.DataFrame(separate_dict)
-            if dataFrame.shape[0] < len(taxa):
-                warnings.warn("One of the taxa is not found in your designated atlas")
-            return dataFrame
-
-        if not group_by_dataframe.empty:
-            return group_by_dataframe
-
-        ### TODO: Figure this out
-        # raise warning if one of the taxa isn't in the atlas
-        #if num_taxa < len_taxa:
-        #    warnings.warn("One of the taxa is not found in your designated atlas")
-
-        # make a dataframe with the total number of records
-        else:
-            return pd.DataFrame({'totalRecords': [int(json['totalRecords'])]})
+        return pd.DataFrame({'totalRecords': [int(json['totalRecords'])]})
 
     # if the taxa variable isn't a string or a list, raise an exception
     else:

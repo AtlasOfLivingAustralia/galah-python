@@ -6,7 +6,7 @@ and dependencies
 from setuptools import setup,find_packages
 
 setup(
-    name='galah',
+    #name='galah',
     version='0.1.0',
     license='MPL-2.0',
     author='Amanda Buyan',

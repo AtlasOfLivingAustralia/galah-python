@@ -4,18 +4,32 @@ import pandas as pd
 from .get_api_url import get_api_url
 
 # comment on what this function does later
-def show_values(field=None,verbose=False):
+def show_values(field=None,
+                verbose=False):
     """
-    Used for getting the values from a field you want to query.  To see how this is used, type
+    Users may wish to see the specific values within a chosen field, profile or list to narrow queries or understand 
+    more about the information of interest. ``show_values()`` provides users with these values. 
+
+    Parameters
+    ----------
+        field : string
+            A string to specify what type of parameters should be shown.  
+        verbose : logical
+            This option is available for users who want to know what URLs this function is using to get the value.  Default is False.
+
+    Returns
+    -------
+        An object of class ``pandas.DataFrame``.
+
+    Examples
+    --------
 
     .. prompt:: python
 
         import galah
         galah.show_values(field="basisOfRecord")
 
-    which returns
-
-    .. program-output:: python3 -c "import galah; print(galah.show_values(field=\\\"basisOfRecord\\\"))"
+    .. program-output:: python -c "import galah; print(galah.show_values(field=\\\"basisOfRecord\\\"))"
     """
 
     if field is None:
@@ -30,8 +44,8 @@ def show_values(field=None,verbose=False):
     # add a buttload of checks to make sure that the field they entered actually is something they can query
     ### TODO: talk to Martin about this
     # "field", "profile", "list", "collection", "dataset", "provider")
-    #collections,datasets,fields,lists,profiles,providers
-    raw_valid_values = show_all(collections=True,datasets=True,fields=True,lists=True,profiles=True,providers=True)
+    #collection,datasets,fields,lists,profiles,providers
+    raw_valid_values = show_all(collection=True,datasets=True,fields=True,lists=True,profiles=True,providers=True)
     for i,df in enumerate(raw_valid_values):
         if i == 0:
             if 'listName' in list(df.columns):
@@ -54,7 +68,7 @@ def show_values(field=None,verbose=False):
     if field not in valid_values:
         raise ValueError("{} is not a valid field query.  Use the show_all() function with any of the following set as"
                          "True to show valid values:\n\n"
-                         "collections, datasets, fields, lists, profiles, providers\n")
+                         "collection, datasets, fields, lists, profiles, providers\n")
     '''
     # add the field
     URL = baseURL + "?facets=" + field + "&flimit=10000"

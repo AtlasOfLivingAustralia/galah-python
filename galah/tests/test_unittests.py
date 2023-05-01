@@ -110,6 +110,7 @@ class test_galah(unittest2.TestCase):
     # unit test for galah.atlas_counts()
     def test_atlas_counts(self):
         # first test is to test if galah.atlas_counts() returns greater than 0
+        galah.galah_config(atlas="Australia")
         output = galah.atlas_counts()
         self.assertGreater(output['totalRecords'][0],0)
     

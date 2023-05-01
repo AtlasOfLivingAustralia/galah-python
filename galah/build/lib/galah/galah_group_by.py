@@ -35,15 +35,14 @@ def galah_group_by(URL,
             if type(filters) == str:
                 filters = [filters]
 
-            URL += "%20AND%20%28"
+            URL += "%28"
 
             # loop over filters
             for f in filters:
-                # check to see if fq is needed here
-                URL += galah_filter(f,ifgroupBy=ifGroupBy) + "%29%20AND%20%28"
-                #URL += "%28" + galah_filter(f, ifgroupBy=ifGroupBy) + "%29%20AND%20%28"
-
-            URL = URL[:-len("%20AND%20%28")] #+ "&pageSize=0" #%29%20AND%20%28
+                
+                URL += galah_filter(f,ifgroupBy=ifGroupBy) + "%20AND%20"
+                   
+            URL = URL[:-len("%20AND%20")] + "%29" 
 
         # else, raise a TypeError because this variable needs to be either a string or a list
         else:
@@ -78,7 +77,7 @@ def galah_group_by(URL,
                 startingURL += "&facets={}".format(g)
 
             # round out the URL
-            startingURL += "&flimit=200&pageSize=0"
+            startingURL += "&flimit=10000&pageSize=0"
 
             # check to see if the user wants the URL for querying
             if verbose:
@@ -89,8 +88,10 @@ def galah_group_by(URL,
             json = response.json()
             facets_array=[]
             # try to make it generalised
+            # add a check to see if a single value is there for filters; otherwise, can do this?
             for i in range(1,len(group_by)):
                 temp_array=[]
+                # how to ensure we catch the 
                 for entry in json['facetResults'][i]['fieldResult']:
                     temp_array.append(entry['fq'])
                 facets_array.append(temp_array)
@@ -101,11 +102,14 @@ def galah_group_by(URL,
                 for facet in f:
                     name,value = facet.split(':')
                     value = value.replace('"', '')
-                    tempURL = URL + "%20AND%20%28{}%3A%22{}%22%29".format(name,value)
+                    if name in group_by:
+                        tempURL = URL + "%20AND%20%28{}%3A%22{}%22%29".format(name,value)
+                    else:
+                        continue
                     for group in group_by:
-                        if group != name and "facets={}".format(group) not in URL:
+                        if (group != name) and ("facets={}".format(group) not in URL):
                             tempURL += "&facets={}".format(group)
-                    tempURL += "&flimit=200&&pageSize=0"
+                    tempURL += "&flimit=10000&pageSize=0"
 
                     # check to see if the user wants the URL for querying
                     if verbose:
@@ -129,6 +133,7 @@ def galah_group_by(URL,
                             for key in dict_values:
                                 if (key != name2) and (key != name) and (key != 'count'):
                                     dict_values[key].append("-")
+
             # format table
             return pd.DataFrame(dict_values) #, columns=[*group_by,'count'])
 
@@ -141,7 +146,7 @@ def galah_group_by(URL,
                 URL += "&facets={}".format(g)
 
             # round out the URL
-            URL += "&flimit=200&&pageSize=0"
+            URL += "&flimit=10000&pageSize=0"
 
             # check to see if the user wants the URL for querying
             if verbose:

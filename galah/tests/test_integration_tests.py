@@ -1137,6 +1137,7 @@ def test_atlas_occurrences_taxa_filters_fields_brazil():
     occurrences = galah.atlas_occurrences(taxa="Ramphastos Toco",filters=["year>2018","basis_of_record=HumanObservation"],
                                            fields=['latitude', 'longitude'])
     assert occurrences.shape[1] == 2
+
 #'''
 # -------------------------------------------------------------------------------------------------
 # Spain

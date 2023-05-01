@@ -1,17 +1,11 @@
-import requests,urllib.parse,os,time,zipfile,io,shutils,tempfile
+import requests,os
 import pandas as pd
-import numpy as np
 
 from .atlas_occurrences import atlas_occurrences
-from .search_taxa import search_taxa
-from .galah_select import galah_select
-from .galah_filter import galah_filter
 from .get_api_url import get_api_url
 from .get_api_url import readConfig
 from .apply_data_profile import apply_data_profile
 from .atlas_occurrences import atlas_occurrences
-
-import sys
 
 # this function parses everything to atlas_occurrences first, and it adds something to the galah_filter argument to say
 # that the multimedia field is not empty
@@ -29,18 +23,57 @@ def atlas_media(taxa=None,
                 path=None,
                 ):
     """
-    Used for getting media, such as images, videos and sounds.  An example query (filtering to ensure a small
-    nunber of results) is
+    In addition to text data describing individual occurrences and their attributes, ALA stores images, sounds and videos 
+    associated with a given record. ``galah.atlas_media()`` displays metadata for any and all of the media types.
+
+    Parameters
+    ----------
+        taxa : string / list
+            one or more scientific names. Use ``galah.search_taxa()`` to search for valid scientific names.  
+        filters : string / list
+            filters, in the form ``field`` ``logical`` ``value`` (e.g. ``"year=2021"``)
+        fields : string / list
+            Name of one or more column groups to include. Valid options are "basic", "event" and "assertions"
+            Default is set to ``"fields=basic"``, which returns:
+
+                - decimalLatitude, decimalLongitude, eventDate, scientificName, taxonConceptID, recordID, dataResourceName, occurrenceStatus
+
+            Using ``"fields="event"`` returns:
+
+                - eventRemarks, eventTime, eventID, eventDate, samplingEffort, samplingProtocol
+
+            Using ``fields="media"`` returns:
+
+                - multimedia, multimediaLicence, images, videos, sounds
+
+            See ``galah.show_all()`` and ``galah.search_all()`` to see all valid fields.
+        verbose : logical
+            If ``True``, galah gives more information like progress bars. Defaults to ``False``
+        multimedia : string / list
+            This is for specifying what types of multimedia you would like, i.e "images".  Defaults to ['images','videos','sounds']
+        assertions : string
+            Using "assertions" returns all quality assertion-related columns. These columns are data quality checks run by each living atlas. The list of assertions is shown by ``galah.show_all(assertions=True)``.
+        use_data_profile : logical
+            if ``True``, uses data profile set in ``galah_config()``. Valid values can be seen using ``galah.show_all(profiles=True)``. Default is ``False``
+        collect : logical
+            if ``True``, downloads full-sized images and media files returned to a local directory.
+        path : string
+            path to directory where downloaded media will be stored.  Defaults to current directory.
+
+    Returns
+    -------
+        An object of class ``pandas.DataFrame``. If ``collect=True``, available image & media files are downloaded to a user local directory.
+
+    Examples
+    --------
 
     .. prompt:: python
 
-        import galah
         filters = ["year=2020","decimalLongitude>153.0"]
         galah.atlas_media(taxa="Ornithorhynchus anatinus",filters=filters)
 
-    which returns
-
-    .. program-output:: python3 -c "import galah; filters = [\\\"year=2020\\\",\\\"decimalLongitude>153.0\\\"];print(galah.atlas_media(taxa=\\\"Ornithorhynchus anatinus\\\",filters=filters))"
+    .. program-output:: python -c "import galah; filters = [\\\"year=2020\\\",\\\"decimalLongitude>153.0\\\"];print(galah.atlas_media(taxa=\\\"Ornithorhynchus anatinus\\\",filters=filters))"
+    
     """
 
     # get configs
@@ -139,11 +172,11 @@ def atlas_media(taxa=None,
             basemediaURL = "{}".format(get_api_url(column1='called_by', column1value='media_metadata'))
         else:
             raise ValueError("True and False are the only values accepted for data_profile.  Your data profile is \n"
-                             "set in your config file.  To set your default filter, find out what profiles are on offer:\n"
+                             "set in your config file.  To see valid data quality profiles, run:\n"
                              "profiles = galah.show_all(profiles=True)\n\n"
                              "and then type\n\n"
                              "profiles['shortName']\n\n"
-                             "to get the names of the data quality profiles you can use.  To set a data profile, type\n"
+                             "To set your data profile, type\n"
                              "galah.galah_config(data_profile=\"NAME FROM SHORTNAME HERE\")"
                              "If you don't want to use a data quality profile, set it to None by typing the following:\n\n"
                              "galah.galah_config(data_profile=\"None\")"
@@ -187,14 +220,8 @@ def atlas_media(taxa=None,
     # third, if option is true, collect data
     if collect:
         if path is None:
-            # need to actually read about how to cache files
-            #tfd, tfname = tempfile.mkstemp(
-            #    prefix='image-'.format(path,data_columns['imageIdentifier'][i],ext),
-            #    suffix='.tif',
-            #)
             print("setting the path to your current directory...")
             path="./"
-            #raise ValueError("The default path isn't currently set - please provide a path name")
         else:
             if not os.path.exists(path):
                 os.mkdir(path)
