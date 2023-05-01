@@ -1,10 +1,16 @@
 [tool.poetry]
 name = "galah"
-version = "0.1.0" # for testing
+version = "0.1.0" 
 description = "Get counts and information on species"
-authors = ["Amanda Buyan"]
+authors = [
+    "Amanda Buyan <amanda.buyan@csiro.au>", 
+    "Martin Westgate <martin.westgate@csiro.au>",
+    "Atlas of Living Australia <support@ala.org.au>"
+]
 license = "MPL-2.0"
 readme = "README.md"
+homepage = "https://galah.ala.org.au/Python/"
+repository = "https://github.com/AtlasOfLivingAustralia/galah-python"
 
 [tool.poetry.dependencies]
 python = "^3.9"
@@ -16,7 +22,7 @@ requests = "^2.28.2"
 urllib3 = "^1.26.14"
 time-python = "^0.0.16"
 zip-files = "^0.4.1"
-pandas = "^1.5.3"
+pandas = "^2.0.0" 
 numpy = "^1.24.1"
 unittest2 = "^1.1.0"
 
