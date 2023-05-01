@@ -336,16 +336,16 @@ span.prompt1:before {
 }
 </style><span class="prompt1"><span class="n">galah</span><span class="o">.</span><span class="n">atlas_counts</span><span class="p">()</span></span>
 </pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>   totalRecords
-0     114456987
+0     114489442
 </pre></div>
 </div>
 <p>Return records from 2020 onwards, grouped by year</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="n">galah</span><span class="o">.</span><span class="n">atlas_counts</span><span class="p">(</span><span class="n">filters</span><span class="o">=</span><span class="s2">&quot;year&gt;2019&quot;</span><span class="p">,</span><span class="n">group_by</span><span class="o">=</span><span class="s2">&quot;year&quot;</span><span class="p">)</span></span>
 </pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>   year    count
-0  2020  6655784
-1  2021  7349311
-2  2022  1716083
-3  2023   463801
+0  2020  6655859
+1  2021  7349495
+2  2022  1716751
+3  2023   493458
 </pre></div>
 </div>
 </dd></dl>
@@ -460,6 +460,7 @@ Default is set to <code class="docutils literal notranslate"><span class="pre">&
 <p class="rubric">Examples</p>
 <p>Download records of Vulpes vulpes in 2023</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="kn">import</span> <span class="nn">galah</span></span>
+<span class="prompt1"><span class="n">galah</span><span class="o">.</span><span class="n">galah_config</span><span class="p">(</span><span class="n">atlas</span><span class="o">=</span><span class="s2">&quot;Australia&quot;</span><span class="p">,</span><span class="n">email</span><span class="o">=</span><span class="s2">&quot;your-email@example.com&quot;</span><span class="p">)</span></span>
 <span class="prompt1"><span class="n">galah</span><span class="o">.</span><span class="n">atlas_occurrences</span><span class="p">(</span><span class="n">taxa</span><span class="o">=</span><span class="s2">&quot;Vulpes vulpes&quot;</span><span class="p">,</span><span class="n">filters</span><span class="o">=</span><span class="s2">&quot;year=2023&quot;</span><span class="p">)</span></span>
 </pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>      decimalLatitude  ...  occurrenceStatus
 0          -39.083564  ...           PRESENT
@@ -468,17 +469,18 @@ Default is set to <code class="docutils literal notranslate"><span class="pre">&
 3          -38.639731  ...           PRESENT
 4          -38.631438  ...           PRESENT
 ...               ...  ...               ...
-1354       -24.071733  ...           PRESENT
-1355       -23.915604  ...           PRESENT
-1356       -23.295037  ...           PRESENT
-1357        37.808811  ...           PRESENT
-1358        51.100000  ...           PRESENT
+1370       -24.071733  ...           PRESENT
+1371       -23.915604  ...           PRESENT
+1372       -23.295037  ...           PRESENT
+1373        37.808811  ...           PRESENT
+1374        51.100000  ...           PRESENT
 
-[1359 rows x 8 columns]
+[1375 rows x 8 columns]
 </pre></div>
 </div>
 <p>Download records of Vulpes vulpes in 2023, returning only <code class="docutils literal notranslate"><span class="pre">eventDate</span></code> field</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="kn">import</span> <span class="nn">galah</span></span>
+<span class="prompt1"><span class="n">galah</span><span class="o">.</span><span class="n">galah_config</span><span class="p">(</span><span class="n">atlas</span><span class="o">=</span><span class="s2">&quot;Australia&quot;</span><span class="p">,</span><span class="n">email</span><span class="o">=</span><span class="s2">&quot;your-email@example.com&quot;</span><span class="p">)</span></span>
 <span class="prompt1"><span class="n">galah</span><span class="o">.</span><span class="n">atlas_occurrences</span><span class="p">(</span><span class="n">taxa</span><span class="o">=</span><span class="s2">&quot;Vulpes vulpes&quot;</span><span class="p">,</span><span class="n">filters</span><span class="o">=</span><span class="s2">&quot;year=2023&quot;</span><span class="p">,</span><span class="n">fields</span><span class="o">=</span><span class="s2">&quot;eventDate&quot;</span><span class="p">)</span></span>
 </pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>                 eventDate
 0     2022-12-31T14:56:00Z
@@ -487,13 +489,13 @@ Default is set to <code class="docutils literal notranslate"><span class="pre">&
 3     2023-01-01T00:00:00Z
 4     2023-01-01T00:00:00Z
 ...                    ...
-1354  2023-04-12T00:00:00Z
-1355  2023-04-12T04:33:17Z
-1356  2023-04-13T00:00:00Z
-1357  2023-04-13T00:00:00Z
-1358  2023-04-15T00:49:00Z
+1370  2023-04-18T23:35:35Z
+1371  2023-04-19T00:13:40Z
+1372  2023-04-19T01:08:00Z
+1373  2023-04-21T13:52:00Z
+1374  2023-04-21T22:54:38Z
 
-[1359 rows x 1 columns]
+[1375 rows x 1 columns]
 </pre></div>
 </div>
 </dd></dl>
@@ -718,13 +720,13 @@ displaying all valid options for the information specified.</p>
 3                                              *Brigalow  ...  dr14507
 4                                                0662409  ...  dr19938
 ...                                                  ...  ...      ...
-13142  [C4OC] Torres Strait Regional Landcare Facilit...  ...   dr3529
-13143  [C4OC] Traditional Ecological Knowledge Record...  ...   dr3199
-13144  [C4OC] Trialling and demonstrating farmer inno...  ...   dr3519
-13145                [C4OC] Urban and Coastal Protection  ...   dr6802
-13146        _River_Torrens_Linear_Park_Species_List.csv  ...  dr19265
+13189  [C4OC] Torres Strait Regional Landcare Facilit...  ...   dr3529
+13190  [C4OC] Traditional Ecological Knowledge Record...  ...   dr3199
+13191  [C4OC] Trialling and demonstrating farmer inno...  ...   dr3519
+13192                [C4OC] Urban and Coastal Protection  ...   dr6802
+13193        _River_Torrens_Linear_Park_Species_List.csv  ...  dr19265
 
-[13147 rows x 3 columns]
+[13194 rows x 3 columns]
 </pre></div>
 </div>
 </dd></dl>

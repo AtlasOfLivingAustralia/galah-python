@@ -10,7 +10,7 @@ To install the latest version of galah using pip do:
 
 .. prompt:: 
 
-    pip install galah 
+    pip install galah-python
 
 To upgrade to the latest release:
 

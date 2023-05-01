@@ -41,15 +41,14 @@ results of our queries:
 .. program-output:: python3 -c "import galah;import pandas as pd;pd.set_option('display.max_columns', None);pd.set_option('display.expand_frame_repr', False);pd.set_option('max_colwidth', None);print(galah.atlas_counts(taxa=\"Reptilia\"))"
 
 If you’re using an international atlas, ``galah.search_taxa()`` will automatically switch to using the local name-matching 
-service. For example, Portugal uses the GBIF taxonomic backbone, but integrates seamlessly with our standard 
-workflow.
+service. We have the Brazilian atlas as an example here:
 
 .. prompt:: python
 
     >>> galah.galah_config(atlas="Spain")
-    >>> galah.atlas_counts(taxa="Bufo", group_by="species",expand=False)
+    >>> galah.atlas_counts(taxa="Ramphastos", group_by="species",expand=False)
 
-.. program-output:: python -c "import galah;import pandas as pd;pd.set_option('display.max_columns', None);pd.set_option('display.expand_frame_repr', False);pd.set_option('max_colwidth', None);galah.galah_config(atlas=\"Spain\");print(galah.atlas_counts(taxa=\"Bufo\", group_by=\"species\",expand=False))"
+.. program-output:: python -c "import galah;import pandas as pd;pd.set_option('display.max_columns', None);pd.set_option('display.expand_frame_repr', False);pd.set_option('max_colwidth', None);galah.galah_config(atlas=\"Brazil\");print(galah.atlas_counts(taxa=\"Ramphastos\", group_by=\"species\",expand=False))"
 
 
 filters
