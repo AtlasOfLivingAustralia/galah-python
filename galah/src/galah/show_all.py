@@ -77,16 +77,22 @@ def show_all(assertions=False,
 
     # check for assertions boolean
     if type(assertions) is bool and assertions:
-        if configs['galahSettings']['atlas'] in ["Australia","Brazil","Spain"]:
+        returned = False
+        if configs['galahSettings']['atlas'] in ["Australia","Austria","Brazil","France","Spain"]:
             response = requests.get(get_api_url(column1='called_by',column1value='show_all-assertions'))
+        elif configs['galahSettings']['atlas'] in ["Global","GBIF"]:
+            json = pd.read_csv(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'gbif_assertions.csv'))
+            json.reset_index(drop=True,inplace=True)
+            return_array.append(json)
+            returned = True
         else:
             response = requests.get(get_api_url(column1='called_by',column1value='show_all_assertions'))
-        # create a dataFrame from the response
-        json = pd.DataFrame.from_dict(response.json())
-        # set default value for the 'type' column
-        json['type'] = assertions
-        # append this data frame to the return_array
-        return_array.append(json[['name','description','category','type']])
+        if not returned:
+            json = pd.DataFrame.from_dict(response.json())
+            # set default value for the 'type' column
+            json['type'] = assertions
+            # append this data frame to the return_array
+            return_array.append(json[['name','description','category','type']])
     elif not assertions:
         pass
     else:
@@ -96,21 +102,21 @@ def show_all(assertions=False,
     if type(atlases) is bool and atlases:
         # dictionary of all atlases galah currently supports
         '''
-         "atlas": ["Australia","Austria","Brazil","Canada","Estonia","France","Guatemala","Portugal","Spain","Sweden","United Kingdom"],
-            "institution": ["Atlas of Living Australia","Biodiversitäts-Atlas Österreich","Sistemas de Informações sobre a Biodiversidade Brasileira",
-                            "Canadensys", "eElurikkus","Inventaire National du Patrimoine Naturel","Sistema Nacional de Información sobre Diversidad Biológica de Guatemala",
-                            "GBIF Portugal","GBIF Spain","Swedish Biodiversity Data Infrastructure","National Biodiversity Network"],
-            "acronym": ["ALA","BAO","SiBBr","<NA>","<NA>","INPN","SNIBgt","GBIF.pt","GBIF.es","SBDI","NBN",],
-            "url": ["https://www.ala.org.au","https://biodiversityatlas.at","https://sibbr.gov.br","http://www.canadensys.net/",
-                    "https://elurikkus.ee","https://inpn.mnhn.fr","https://snib.conap.gob.gt","https://www.gbif.pt",
-                    "https://www.gbif.es","https://biodiversitydata.se","https://nbn.org.uk"],
+         "atlas": ["Canada","Estonia","Guatemala","Portugal","Sweden","United Kingdom"],
+            "institution": ["Canadensys", "eElurikkus","Sistema Nacional de Información sobre Diversidad Biológica de Guatemala",
+                            "GBIF Portugal","Swedish Biodiversity Data Infrastructure","National Biodiversity Network"],
+            "acronym": ["<NA>","<NA>","SNIBgt","GBIF.pt","SBDI","NBN",],
+            "url": ["http://www.canadensys.net/",
+                    "https://elurikkus.ee","https://snib.conap.gob.gt","https://www.gbif.pt",
+                    "https://biodiversitydata.se","https://nbn.org.uk"],
         '''
         data = {
-            "atlas": ["Australia","Brazil","Spain"],
-            "institution": ["Atlas of Living Australia","Sistemas de Informações sobre a Biodiversidade Brasileira",
-                            "GBIF Spain"],
-            "acronym": ["ALA","SiBBr","GBIF.es"],
-            "url": ["https://www.ala.org.au","https://sibbr.gov.br","https://www.gbif.es"],
+            "atlas": ["Australia","Austria","Brazil","France","Global","Spain"],
+            "institution": ["Atlas of Living Australia","Biodiversitäts-Atlas Österreich","Sistemas de Informações sobre a Biodiversidade Brasileira",
+                            "Inventaire National du Patrimoine Naturel","Global Biodiversity Information Facility", "GBIF Spain"],
+            "acronym": ["ALA","BAO","SiBBr","INPN","GBIF","GBIF.es"],
+            "url": ["https://www.ala.org.au","https://biodiversityatlas.at","https://sibbr.gov.br","https://inpn.mnhn.fr","https://gbif.org",
+                    "https://www.gbif.es"],
         }
         # append this data frame to the return_array
         return_array.append(pd.DataFrame.from_dict(data))
@@ -132,8 +138,10 @@ def show_all(assertions=False,
 
     # check for collection
     if type(collection) is bool and collection:
-        if configs['galahSettings']['atlas'] in ["Australia","Brazil","Spain"]:
+        if configs['galahSettings']['atlas'] in ["Australia","Austria","Brazil","France","Spain"]:
             response = requests.get(get_api_url(column1='called_by',column1value='show_all-collections'))
+        elif configs['galahSettings']['atlas'] in ["Global","GBIF"]:
+            raise ValueError("{} altas does not have a list of collections".format(configs['galahSettings']['atlas']))
         else:
             response = requests.get(get_api_url(column1='called_by', column1value='show_all_collections'))
         # append data frame to return_array
@@ -145,12 +153,17 @@ def show_all(assertions=False,
 
     # check for datasets
     if type(datasets) is bool and datasets:
-        if configs['galahSettings']['atlas'] in ["Australia","Brazil","Spain"]:
+        if configs['galahSettings']['atlas'] in ["Australia","Austria","Brazil","France","Spain"]:
             response = requests.get(get_api_url(column1='called_by',column1value='show_all-datasets'))
+            datasets_list = pd.DataFrame.from_dict(response.json())
+        elif configs['galahSettings']['atlas'] in ["Global","GBIF"]:
+            response = requests.get(get_api_url(column1='called_by',column1value='show_all-datasets'))
+            datasets_list = pd.DataFrame.from_dict(response.json()['results'])
         else:
             response = requests.get(get_api_url(column1='called_by', column1value='show_all_datasets'))
+            datasets_list = pd.DataFrame.from_dict(response.json())
         # append data frame to return_array
-        return_array.append(pd.DataFrame.from_dict(response.json()))
+        return_array.append(datasets_list)
     elif not datasets:
         pass
     else:
@@ -160,12 +173,11 @@ def show_all(assertions=False,
     if type(fields) is bool and fields:
 
         # get all possible fields
-        if configs['galahSettings']['atlas'] in ["Australia","Brazil","Spain"]:
+        if configs['galahSettings']['atlas'] in ["Australia","Austria","Brazil","France","Spain"]:
             response = requests.get(get_api_url(column1='called_by',column1value='show_all-fields',column2='api_name',column2value='records_fields'))
             fields_values = pd.DataFrame.from_dict(response.json())
 
             # remove anything with "Contextual" or "Environmental" from the options for Australian atlas
-            ### TODO: Check for Spanish and Brazilian atlases
             if configs['galahSettings']['atlas'] in ["Australia","Brazil","Spain"]:
                 fields_values = fields_values[~fields_values["classs"].astype(str).str.contains("Contextual|Environmental")]
 
@@ -179,7 +191,8 @@ def show_all(assertions=False,
                 dataFrame = fields_select.rename(columns={"name": "id","info": "description"}) #, inplace=True)
                 dataFrame["type"] = "field"
                 dataFrame["link"] = ""
-        
+        elif configs['galahSettings']['atlas'] in ["Global","GBIF"]:
+            dataFrame = pd.read_csv(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'gbif_fields.csv'))
         else:
             raise ValueError("Atlas {} not taken into account.".format(configs['galahSettings']['atlas']))
         
@@ -242,12 +255,12 @@ def show_all(assertions=False,
 
     # get all licences from the API
     if type(licences) is bool and licences:
-        if configs['galahSettings']['atlas'] in ["Austria","Canada","Estonia","France"]:
+        if configs['galahSettings']['atlas'] in ["Canada","Estonia","France","Global","GBIF"]:
             raise ValueError("The {} atlas does not have a list of licences".format(configs['galahSettings']['atlas']))
         elif configs['galahSettings']['atlas'] in ["Australia","Spain"]:
             response = requests.get(get_api_url(column1='called_by',column1value='show_all-licences'))
-        elif configs['galahSettings']['atlas'] in ["Brazil"]:
-            raise ValueError("Brazil has an API endpoint for licences, but it is empty.")
+        elif configs['galahSettings']['atlas'] in ["Austria","Brazil"]:
+            raise ValueError("{} has an API endpoint for licences, but it is empty.".format(configs['galahSettings']['atlas']))
         else:
             response = requests.get(get_api_url(column1='called_by', column1value='show_all_licences'))
         if response.status_code == 404:
@@ -263,10 +276,10 @@ def show_all(assertions=False,
 
     # get all lists from the API
     if type(lists) is bool and lists:
-        if  configs['galahSettings']['atlas'] in ["Canada","Estonia","France","Guatemala","Portugal","Sweden"]:
+        if  configs['galahSettings']['atlas'] in ["Canada","Estonia","France","GBIF","Global","Guatemala","Portugal","Sweden"]:
             raise ValueError("The {} atlas does not have a lists API.".format(configs['galahSettings']['atlas']))
         for i,maxoffsets in enumerate(["?max=1000&offset=0","?max=1000&offset=1000","?max=1000&offset=2000"]):
-            if configs['galahSettings']['atlas'] in ["Australia","Brazil","Spain"]:
+            if configs['galahSettings']['atlas'] in ["Australia","Austria","Brazil","Spain"]:
                 response = requests.get(get_api_url(column1='called_by',column1value='show_all-lists'))
             else:
                 response = requests.get(
@@ -308,12 +321,20 @@ def show_all(assertions=False,
 
     # get all providers from the API
     if type(providers) is bool and providers:
-        if configs['galahSettings']['atlas'] in ["Australia","Brazil","Spain"]:
+        if configs['galahSettings']['atlas'] in ["Australia","Austria","Brazil","Spain"]:
+            print(get_api_url(column1='called_by',column1value='show_all-providers'))
             response = requests.get(get_api_url(column1='called_by',column1value='show_all-providers'))
+            providers_list = pd.DataFrame.from_dict(response.json())
+        elif configs['galahSettings']['atlas'] in ["Global","GBIF"]:
+            response = requests.get(get_api_url(column1='called_by',column1value='show_all-providers'))
+            providers_list = pd.DataFrame.from_dict(response.json()['results'])
+        elif configs['galahSettings']['atlas'] in ["France"]:
+            raise ValueError("{} has an API endpoint for licences, but it is empty.".format(configs['galahSettings']['atlas']))
         else:
             response = requests.get(get_api_url(column1='called_by', column1value='show_all_providers'))
+            providers_list = pd.DataFrame.from_dict(response.json())
         # append data frame to return_array
-        return_array.append(pd.DataFrame.from_dict(response.json()))
+        return_array.append(providers_list)
     elif not providers:
         pass
     else:
@@ -357,9 +378,9 @@ def show_all(assertions=False,
 
     # check for reasons
     if type(reasons) is bool and reasons:
-        if  configs['galahSettings']['atlas'] in ["Brazil","Estonia","France"]:
+        if  configs['galahSettings']['atlas'] in ["Brazil","Estonia","France","Global","GBIF"]:
             raise ValueError("The {} atlas does not have a reasons API.".format(configs['galahSettings']['atlas']))
-        elif configs['galahSettings']['atlas'] in ["Australia","Spain"]:
+        elif configs['galahSettings']['atlas'] in ["Australia","Austria","Spain"]:
             response = requests.get(get_api_url(column1='called_by',column1value='show_all-reasons'))
         else:
             response = requests.get(get_api_url(column1='called_by', column1value='show_all_reasons'))

@@ -4,64 +4,9 @@ import pandas as pd
 from .search_taxa import search_taxa
 from .get_api_url import get_api_url,readConfig
 from .galah_filter import galah_filter
+from .common_dictionaries import ATLAS_KEYWORDS,DEPTH_STRINGS,FACETS_STRINGS,TAXONCONCEPT_NAMES,VERNACULAR_NAMES
 
 import sys
-
-ATLAS_KEYWORDS = {
-    "Australia": "taxonConceptID",
-    "Austria": "guid",
-    "Brazil": "guid", 
-    "Canada": "usageKey",
-    "Estonia": "guid",
-    "France": "usageKey",
-    "Guatemala": "guid",
-    "Portugal": "usageKey",
-    "Spain": "taxonConceptID",
-    "Sweden": "guid",
-    "United Kingdom": "guid",
-}
-
-VERNACULAR_NAMES = {
-    "Australia": ["commonNames","nameString"],
-    "Austria": "",
-    "Brazil": ["commonNames","nameString"], 
-    "Canada": "",
-    "Estonia": "",
-    "France": "",
-    "Guatemala": "",
-    "Portugal": "",
-    "Spain": ["commonNames","nameString"],
-    "Sweden": "",
-    "United Kingdom": "",
-}
-
-TAXONCONCEPT_NAMES = {
-    "Australia": {"species_guid": "guid","species": "nameString","author": "author"},
-    "Austria": "",
-    "Brazil": {"species_guid": "guid","species": "nameString","author": "author"},
-    "Canada": "",
-    "Estonia": "",
-    "France": "",
-    "Guatemala": "",
-    "Portugal": "",
-    "Spain": {"species_guid": "guid","species": "nameString","author": "author"},
-    "Sweden": "",
-    "United Kingdom": "",
-}
-
-FACETS_STRINGS = {
-    "Australia": "speciesID",
-    "Austria": "",
-    "Brazil": "species", 
-    "Canada": "",
-    "Estonia": "",
-    "France": "",
-    "Guatemala": "",
-    "Portugal": "",
-    "Spain": "species",
-    "Sweden": "",
-    "United Kingdom": "",
-}
 
 # this function looks for all species with the associated name
 def atlas_species(taxa=None,filters=None,verbose=False):
@@ -119,15 +64,24 @@ def atlas_species(taxa=None,filters=None,verbose=False):
             if type(filters) is str:
                 filters = [filters]
 
-            # start URL - might need to add + "&" later
-            URL = baseURL + "?&fq=%28"
+            if configs['galahSettings']['atlas'] in ["Global","GBIF"]:
 
-            # loop over filters
-            for f in filters:
-                URL += galah_filter(f) + "%20AND%20"
+                URL = baseURL
 
-            # add final part of URL
-            URL = URL[:-len("%20AND%20")] + "%29"
+                for f in filters:
+                    URL += "&{}".format(f)
+
+            else:
+
+                # start URL - might need to add + "&" later
+                URL = baseURL + "?&fq=%28"
+
+                # loop over filters
+                for f in filters:
+                    URL += galah_filter(f) + "%20AND%20"
+
+                # add final part of URL
+                URL = URL[:-len("%20AND%20")] + "%29"
 
         # else, make sure that the filters is in the following format
         else:
@@ -137,7 +91,7 @@ def atlas_species(taxa=None,filters=None,verbose=False):
         URL = baseURL + "?"
     
      # get the taxonConceptID for taxa
-    if configs['galahSettings']['atlas'] in ["Australia","Brazil","Spain"]:
+    if configs['galahSettings']['atlas'] in ["Australia","Austria","Brazil","Global","GBIF","Spain"]:
         taxonConceptID = search_taxa(taxa)[ATLAS_KEYWORDS[configs['galahSettings']['atlas']]][0]
         URL += "&fq=%28lsid%3A" + urllib.parse.quote(taxonConceptID) + "%29&facets={}".format(FACETS_STRINGS[configs['galahSettings']['atlas']])
     else:
@@ -156,16 +110,22 @@ def atlas_species(taxa=None,filters=None,verbose=False):
                  "class": [],"order": [],"family": [], "vernacular_name": []}
 
     # species_lookup for each individual species
-    baseURL = get_api_url(column1='api_name', column1value='species_lookup')
+    # names_search_single is for APIs without namematching service
+    if configs['galahSettings']['atlas'] in ["Austria"]:
+        baseURL = get_api_url(column1='api_name', column1value='names_search_single')
+    else:
+        baseURL = get_api_url(column1='api_name', column1value='species_lookup')
 
     # get all the taxonomic information for every species ID
     for species_guid in all_ids:
         
         # check for atlas
-        if configs['galahSettings']['atlas'] in ["Brazil","Spain"]:
+        if configs['galahSettings']['atlas'] in ["Brazil","Spain"]: # try this
             URL = baseURL + "/" + urllib.parse.quote(species_guid)
         elif configs['galahSettings']['atlas'] in ["Australia"]:
-            URL = baseURL.replace("{id}", species_guid)
+            URL = baseURL.replace("{id}", urllib.parse.quote(species_guid))
+        elif configs['galahSettings']['atlas'] in ["Austria"]:
+            URL = baseURL.replace("{name}", urllib.parse.quote(species_guid))
         else:
             raise ValueError("Atlas {} is not taken into account".format(configs['galahSettings']['atlas']))
 
@@ -177,24 +137,35 @@ def atlas_species(taxa=None,filters=None,verbose=False):
         response = requests.get(URL)
         json = response.json()
         
-        # get taxonomic information
+        # set up arrays to loop over for different atlases
+        if configs["galahSettings"]["atlas"] in ["Austria"]:
+            array_depth = json[DEPTH_STRINGS[configs['galahSettings']['atlas']]]['results'][0]
+            array_others = json[DEPTH_STRINGS[configs['galahSettings']['atlas']]]['results'][0]
+            array_vernacular = json[DEPTH_STRINGS[configs['galahSettings']['atlas']]]['results'][0]
+        else:
+            array_depth = json[DEPTH_STRINGS[configs['galahSettings']['atlas']]]
+            array_others = json['taxonConcept']
+            array_vernacular = json[VERNACULAR_NAMES[configs['galahSettings']['atlas']][0]][0]
+
+        # first check for higher orders
         for depth in ['kingdom','phylum','class','order','family']:
-            if depth in json['classification']:
-                data_dict[depth].append(json['classification'][depth].lower().capitalize())
+            if depth in array_depth:
+                data_dict[depth].append(array_depth[depth].lower().capitalize())
             else:
                 data_dict[depth].append("")
-            
+
+        # now look for species and author
         for others in ['species','author','species_guid']:
-            if json['taxonConcept'][TAXONCONCEPT_NAMES[configs["galahSettings"]["atlas"]][others]]:
+            # if others in array_others:
+            if array_others:
                 data_dict[others].append(
-                    json['taxonConcept'][TAXONCONCEPT_NAMES[configs["galahSettings"]["atlas"]][others]].lower().capitalize())
+                    array_others[TAXONCONCEPT_NAMES[configs["galahSettings"]["atlas"]][others]].lower().capitalize())
             else:
                 data_dict[others].append("")
 
         # get common names (vernacular names)
-        if json[VERNACULAR_NAMES[configs['galahSettings']['atlas']][0]]:
-            data_dict["vernacular_name"].append(
-                json[VERNACULAR_NAMES[configs['galahSettings']['atlas']][0]][0][VERNACULAR_NAMES[configs['galahSettings']['atlas']][1]])
+        if array_vernacular:
+            data_dict["vernacular_name"].append(array_vernacular[VERNACULAR_NAMES[configs['galahSettings']['atlas']][1]])
         else:
             data_dict["vernacular_name"].append("")
 

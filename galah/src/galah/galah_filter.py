@@ -1,19 +1,5 @@
 import re
 
-ATLAS_KEYWORDS = {
-    "Australia": "taxonConceptID",
-    "Austria": "guid",
-    "Brazil": "guid",
-    "Canada": "usageKey",
-    "Estonia": "guid",
-    "France": "usageKey",
-    "Guatemala": "guid",
-    "Portugal": "usageKey",
-    "Spain": "taxonConceptID",
-    "Sweden": "guid",
-    "United Kingdom": "guid",
-}
-
 def galah_filter(f, ifgroupBy=False):
     """
     "Filters" are arguments of the form field logical value that are used to narrow down the number of records returned by 

@@ -1,7 +1,7 @@
 import requests
 import pandas as pd
 
-from .get_api_url import get_api_url
+from .get_api_url import get_api_url,readConfig
 
 # comment on what this function does later
 def show_values(field=None,
@@ -37,8 +37,14 @@ def show_values(field=None,
     elif type(field) is not str:
         raise TypeError("show_values() only takes a single string as the field argument, i.e. field=\"basisOfRecord\"")
 
+    # get configurations
+    configs = readConfig()
+
     # get base URL for querying
-    baseURL = get_api_url(column1='api_name',column1value='records_facets')
+    if configs['galahSettings']['atlas'] in ["Global","GBIF"]:
+        baseURL = get_api_url(column1='api_name',column1value='records_counts')
+    else:
+        baseURL = get_api_url(column1='api_name',column1value='records_facets')
 
     '''
     # add a buttload of checks to make sure that the field they entered actually is something they can query
@@ -71,7 +77,10 @@ def show_values(field=None,
                          "collection, datasets, fields, lists, profiles, providers\n")
     '''
     # add the field
-    URL = baseURL + "?facets=" + field + "&flimit=10000"
+    if configs['galahSettings']['atlas'] in ["Global","GBIF"]:
+        URL = baseURL + "?facet=" + field + "&limit=0&facetLimit=10000"
+    else:
+        URL = baseURL + "?facets=" + field + "&flimit=10000"
 
     # check to see if the user wants the URL for querying
     if verbose:
@@ -84,15 +93,27 @@ def show_values(field=None,
     # create empty dataFrame to concatenate results to
     dataFrame = pd.DataFrame()
 
-    # loop over results and create dataFrame
-    for i,entry in enumerate(json[0]['fieldResult']):
-        # check if last character is a full stop
-        if entry['i18nCode'][-1] == ".":
-            tempdf = pd.DataFrame([entry['i18nCode'][0:-1].split('.')], columns=['field', 'category'])
-            dataFrame = pd.concat([dataFrame, tempdf], ignore_index=True)
-        else:
-            tempdf = pd.DataFrame([entry['i18nCode'].split('.')],columns=['field','category'])
+    # loop over results - look to see if GBIF is being used
+    if configs['galahSettings']['atlas'] in ["Global","GBIF"]:
+        result = json['facets'][0]['counts']
+        for entry in result:
+            tempdf = pd.DataFrame(entry,index=[0])
             dataFrame = pd.concat([dataFrame,tempdf],ignore_index=True)
+    else:
+        result = json[0]['fieldResult']
+        for i,entry in enumerate(result):
+            # check if last character is a full stop
+            if entry['i18nCode'][-1] == ".":
+                tempdf = pd.DataFrame([entry['i18nCode'][0:-1].split('.')], columns=['field', 'category'])
+                dataFrame = pd.concat([dataFrame, tempdf], ignore_index=True)
+            elif len(entry['i18nCode'].split('.')) > 2:
+                temparray = entry['i18nCode'].split('.')
+                name = " ".join(temparray[1:])
+                tempdf = pd.DataFrame([[temparray[0],name]],columns=['field','category'])
+                dataFrame = pd.concat([dataFrame,tempdf],ignore_index=True)
+            else:
+                tempdf = pd.DataFrame([entry['i18nCode'].split('.')],columns=['field','category'])
+                dataFrame = pd.concat([dataFrame,tempdf],ignore_index=True)
 
     # return dataFrame
     return dataFrame

@@ -1,38 +1,8 @@
 import requests
 import pandas as pd
 
-from .get_api_url import get_api_url
-from .get_api_url import readConfig
-
-ATLAS_KEYWORDS = {
-    "Australia": "taxonConceptID",
-    "Austria": "guid",
-    "Brazil": "guid",
-    "Canada": "usageKey",
-    "Estonia": "guid",
-    "France": "usageKey",
-    "Guatemala": "guid",
-    "Portugal": "usageKey",
-    "Spain": "taxonConceptID",
-    "Sweden": "guid",
-    "United Kingdom": "guid",
-}
-
-ATLAS_COMMON_NAMES = {
-    "Australia": "vernacularName",
-    "Austria": "",
-    "Brazil": "commonName",
-    "Canada": "",
-    "Estonia": "",
-    "France": "",
-    "Guatemala": "",
-    "Portugal": "",
-    "Spain": "vernacularName",
-    "Sweden": "",
-    "United Kingdom": "",
-}
-
-atlases = ["Australia","Austria","Brazil","Canada","Estonia","France","Guatemala","Portugal","Sweden","Spain","United Kingdom"]
+from .get_api_url import get_api_url,readConfig
+from .common_dictionaries import ATLAS_KEYWORDS,ATLAS_COMMON_NAMES,atlases
 
 def search_taxa(taxa):
     """
@@ -96,15 +66,24 @@ def search_taxa(taxa):
 
             # get the response
             json = response.json()
-            if configs['galahSettings']['atlas'] in ["Brazil"]:
+            if configs['galahSettings']['atlas'] in ["Austria","Brazil"]:
                 raw_data = None
                 for i,item in enumerate(json['searchResults']['results']):
                     if item['scientificName'].lower() == name.lower():
                         raw_data = json['searchResults']['results'][i]
+                        break
                 if raw_data is None:
-                    continue # return pd.DataFrame()
-            elif configs['galahSettings']['atlas'] in ["Australia","Spain"]:
+                    continue
+            elif configs['galahSettings']['atlas'] in ["Australia","Global","Spain"]:
                 raw_data = json
+            elif configs['galahSettings']['atlas'] in ["France"]:
+                raw_data = None
+                for i,item in enumerate(json['_embedded']['taxa']):
+                    if item['scientificName'].lower() == name.lower():
+                        raw_data = item
+                        break
+                if raw_data is None:
+                    continue
             else:
                 raise ValueError("The atlas {} is not taken into account".format(configs['galahSettings']['atlas']))
 
@@ -114,8 +93,12 @@ def search_taxa(taxa):
             else:
                 data={}
                 for item in raw_data: 
+                    # France:
+                    # 'genusName', 'familyName', 'orderName', 'className', 'phylumName', 'kingdomName', 
+                    # 'vernacularGenusName', 'vernacularFamilyName', 'vernacularOrderName', 'vernacularClassName'
+                    # , 'vernacularPhylumName', 'vernacularKingdomName',
                     if item in ['scientificName', 'scientificNameAuthorship', ATLAS_KEYWORDS[configs['galahSettings']['atlas']],
-                                'rank', 'match_type','kingdom', 'phylum', 'class', 'order', 'family', 'genus', 'species', 'issues', 
+                                'rank','match_type','kingdom', 'phylum', 'class', 'order', 'family', 'genus', 'species', 'issues', 
                                 ATLAS_COMMON_NAMES[configs['galahSettings']['atlas']]]:
                         data[item] = raw_data[item] 
 

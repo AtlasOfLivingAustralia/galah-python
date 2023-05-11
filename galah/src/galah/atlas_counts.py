@@ -6,22 +6,11 @@ from .search_taxa import search_taxa
 from .get_api_url import get_api_url
 from .get_api_url import readConfig
 from .apply_data_profile import apply_data_profile
+from .common_functions import add_filters
+from .common_dictionaries import ATLAS_KEYWORDS,COUNTS_NAMES
 
-ATLAS_KEYWORDS = {
-    "Australia": "taxonConceptID",
-    "Austria": "guid",
-    "Brazil": "guid", 
-    "Canada": "usageKey",
-    "Estonia": "guid",
-    "France": "usageKey",
-    "Guatemala": "guid",
-    "Portugal": "usageKey",
-    "Spain": "taxonConceptID",
-    "Sweden": "guid",
-    "United Kingdom": "guid",
-}
-
-atlases = ["Australia","Austria","Brazil","Canada","Estonia","France","Guatemala","Portugal","Sweden","Spain","United Kingdom"]
+atlases = ["Australia","Austria","Brazil","Canada","Estonia","France","Global","GBIF",
+           "Guatemala","Portugal","Sweden","Spain","United Kingdom"]
 
 def atlas_counts(taxa=None,
                  filters=None,
@@ -117,15 +106,14 @@ def atlas_counts(taxa=None,
                     if type(filters) is str:
                         filters = [filters]
 
-                    # start URL - might need to add + "&" later
-                    URL = baseURL + "fq=%28"
-
-                    # loop over filters
-                    for f in filters:
-                        URL += galah_filter(f, ifgroupBy=expand) + "%20AND%20"
-
-                    # add final part of URL
-                    URL = URL[:-len("%20AND%20")] + "%29"
+                    # add extra character
+                    if configs['galahSettings']['atlas'] not in ["Global","GBIF"]:
+                        URL = baseURL + "fq=%28"
+                        end_url = "%29&pageSize=0"
+                    else:
+                        URL = baseURL
+                        end_url = "&pageSize=0"
+                    URL = add_filters(URL=URL,atlas=configs['galahSettings']['atlas'],filters=filters) + end_url
 
                 # else, make sure that the filters is in the following format
                 else:
@@ -137,7 +125,7 @@ def atlas_counts(taxa=None,
                 if configs["galahSettings"]["atlas"] == "Australia":
                     URL = baseURL + "flimit=10000&pageSize=0"
                 else:
-                    URL = baseURL
+                    URL = baseURL + "&pageSize=0"
 
             # check to see if the user wants the querying URL
             if verbose:
@@ -146,16 +134,20 @@ def atlas_counts(taxa=None,
             # get the response and data
             response = requests.get(URL)
             json = response.json()
+            print(json)
 
             # return dataFrame with total number of records
-            return pd.DataFrame({'totalRecords': [json['totalRecords']]})
+            return pd.DataFrame({'totalRecords': [json[COUNTS_NAMES[configs['galahSettings']['atlas']]]]})
 
         # else, the user wants a grouped dataFrame
         else:
 
             # return a grouped dataFrame
-            URL = baseURL + "fq="
-            return galah_group_by(URL, group_by=group_by, filters=filters, expand=expand, verbose=verbose)
+            if configs["galahSettings"]['atlas'] not in ["Global","GBIF"]:
+                URL = baseURL + "fq="
+                return galah_group_by(URL, group_by=group_by, filters=filters, expand=expand, verbose=verbose)
+            else:
+                return galah_group_by(baseURL, group_by=group_by, filters=filters, expand=expand, verbose=verbose)
 
     # if taxa exist, do this
     elif type(taxa) is str or type(taxa) is list:
@@ -185,14 +177,18 @@ def atlas_counts(taxa=None,
             raise ValueError("Atlas {} is not taken into account".format(configs['galahSettings']['atlas']))
 
         # add this ID to the URL
-        URL = baseURL + "fq=%28lsid%3A" + "%20OR%20lsid%3A".join(
-            urllib.parse.quote(str(tid)) for tid in taxonConceptID) + "%29"
+        if configs['galahSettings']['atlas'] in ["Global","GBIF"]:
+            URL = baseURL + "".join(["taxonKey={}&".format(urllib.parse.quote(str(tid))) for tid in taxonConceptID])
+        else:
+            URL = baseURL + "fq=%28lsid%3A" + "%20OR%20lsid%3A".join(
+                urllib.parse.quote(str(tid)) for tid in taxonConceptID) + "%29"
 
         # return a grouped dataFrame
         if group_by is not None:
 
             if filters is not None:
-                URL += "%20AND%20"
+                if configs["galahSettings"]['atlas'] not in ["Global","GBIF"]:
+                    URL += "%20AND%20"
                 return galah_group_by(URL, group_by=group_by, filters=filters, expand=expand, verbose=verbose)
             else:
                 return galah_group_by(URL, group_by=group_by, filters=filters, expand=expand, verbose=verbose)
@@ -209,14 +205,7 @@ def atlas_counts(taxa=None,
                     if type(filters) is str:
                         filters = [filters]
 
-                    URL += "%20AND%20%28"
-
-                    # loop over filters
-                    for f in filters:
-                        URL += galah_filter(f, ifgroupBy=expand) + "%20AND%20"
-
-                    # add final part of URL
-                    URL = URL[:-len("%20AND%20")] + "%29&flimit=10000&pageSize=0"
+                    URL = add_filters(URL=URL,atlas=configs['galahSettings']['atlas'],filters=filters) + "&pageSize=0"
 
                 # else, make sure that the filters is in the following format
                 else:
@@ -237,7 +226,8 @@ def atlas_counts(taxa=None,
         response = requests.get(URL)
         json = response.json()
 
-        return pd.DataFrame({'totalRecords': [int(json['totalRecords'])]})
+        # return data frame
+        return pd.DataFrame({'totalRecords': [json[COUNTS_NAMES[configs['galahSettings']['atlas']]]]})
 
     # if the taxa variable isn't a string or a list, raise an exception
     else:

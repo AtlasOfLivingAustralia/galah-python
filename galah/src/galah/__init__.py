@@ -27,7 +27,7 @@ from .search_values import search_values
 #-------------------------------------------------------
 # version
 #-------------------------------------------------------
-__version__ = "0.1.0"
+__version__ = "0.2.0"
 
 # get all functions to display
 __all__=["atlas_counts","atlas_media","atlas_occurrences","atlas_species","galah_config","search_all","search_taxa",

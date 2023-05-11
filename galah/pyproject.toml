@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [tool.poetry]
 package = "galah"
 version = "0.1.0" 
-description = "Get counts and information on species"
+description = "Get counts and information on species from many different atlases"
 authors = [
     "Amanda Buyan <amanda.buyan@csiro.au>", 
     "Martin Westgate <martin.westgate@csiro.au>",

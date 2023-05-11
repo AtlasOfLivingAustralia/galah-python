@@ -1,0 +1,11 @@
+numpy
+pandas
+requests
+urllib3
+TIME-python
+zip-files
+configparser
+glob2
+bytesbufio
+shutils
+setuptools

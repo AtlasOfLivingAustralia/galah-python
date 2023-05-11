@@ -1,5 +1,6 @@
 import configparser,os,urllib
 import pandas as pd
+from .galah_config import galah_config
 
 def readConfig():
     configFile=configparser.ConfigParser()
@@ -23,10 +24,16 @@ def get_api_url(column1=None,
     if column1value is None:
         raise ValueError("You need to provide a value for this function to search for in the column")
 
+    # check if GBIF is in atlas; if so, 
+
     # first, get specific atlas
     atlasfile = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'node_config.csv')
     atlaslist = pd.read_csv(atlasfile)
     configs = readConfig()
+    # check for global atlas
+    if configs['galahSettings']['atlas'] == "GBIF":
+        galah_config(atlas="Global")
+        configs = readConfig()
     specific_atlas = atlaslist[atlaslist['atlas'] == configs['galahSettings']['atlas']]
 
     # get rows with specific value

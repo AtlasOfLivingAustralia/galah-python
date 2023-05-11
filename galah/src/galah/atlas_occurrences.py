@@ -5,40 +5,9 @@ from .galah_select import galah_select
 from .search_taxa import search_taxa
 from .get_api_url import get_api_url, readConfig
 from .apply_data_profile import apply_data_profile
+from .common_dictionaries import ATLAS_KEYWORDS,ATLAS_SELECTIONS
 
-ATLAS_KEYWORDS = {
-    "Australia": "taxonConceptID",
-    "Austria": "guid",
-    "Brazil": "guid",
-    "Canada": "usageKey",
-    "Estonia": "guid",
-    "France": "usageKey",
-    "Guatemala": "guid",
-    "Portugal": "usageKey",
-    "Spain": "taxonConceptID",
-    "Sweden": "guid",
-    "United Kingdom": "guid",
-}
-
-ATLAS_SELECTIONS = {
-    "Australia": "basic",
-    "Austria": [],
-    "Brazil": ["latitude","longitude","occurrence_date","taxon_name","common_name",
-                "taxon_concept_lsid","occurrence_id","data_resource_uid","occurrence_status"],
-    "Canada": [],
-    "Estonia": [],
-    "France": [],
-    "Guatemala": [],
-    "Portugal": [],
-    "Spain": ["latitude","longitude","occurrence_date","taxon_name","common_name",
-                "taxon_concept_lsid","occurrence_id","data_resource_uid","occurrence_status"],
-    "Sweden": [],
-    "United Kingdom": [],
-}
-
-#atlases = ["Australia","Austria","Brazil","Canada","Estonia","France","Guatemala","Portugal","Sweden","Spain","United Kingdom"]
-
-atlases = ["Australia","Brazil","Spain"]
+atlases = ["Australia","Austria","Brazil","Canada","Estonia","France","Guatemala","Portugal","Sweden","Spain","United Kingdom"]
 
 def atlas_occurrences(taxa=None,
                       filters=None,
@@ -175,7 +144,7 @@ def atlas_occurrences(taxa=None,
     # goes to the 'fields' argument in occurrence download (csv list, commas between)
     if fields is not None:
         baseURL += galah_select(select=fields)[:-3] + "&"
-    elif configs['galahSettings']['atlas'] in ["Australia","Brazil","Spain"]:
+    elif configs['galahSettings']['atlas'] in ["Australia","Austria","Brazil","Spain"]:
         baseURL += galah_select(select=ATLAS_SELECTIONS[configs['galahSettings']['atlas']])[:-3] + "&"
     else:
         raise ValueError("We currently cannot get occurrences from the {} atlas.".format(configs['galahSettings']['atlas']))
