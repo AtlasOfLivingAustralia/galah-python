@@ -18,8 +18,12 @@ def add_filters(URL=None,
     # filters for all other atlases
     else:
 
-        # add parenthesis
-        URL += "%28"
+        # check to see if taxa are already in the URL - if not, add fq
+        if "fq=" not in URL:
+            print("here")
+            URL += "fq=%28"
+        else:
+            URL += "%28"
 
         # loop over filters
         for f in filters:

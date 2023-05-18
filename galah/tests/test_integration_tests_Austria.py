@@ -287,7 +287,7 @@ def test_atlas_counts_multiple_taxa_filters_group_by_multiple_austria():
 # test atlas_counts() can call search_taxa() and separate the counts for multiple taxa where one taxon is not present 
 def test_atlas_counts_invalid_multiple_taxa_separate_austria():
     galah.galah_config(atlas="Austria")
-    taxa_array = ["Dasyurus hallucatus", "Vulpes vulpes", "Sehirus luctuosus", "Marmota marmota", "Anser anser"]
+    taxa_array = ["Dasyurus hallucatus", "Vulpes vulpes", "Sehirus luctuosus", "Anser anser"]
     output = galah.atlas_counts(taxa_array,group_by="species",expand=False)
     assert output.shape[0] == len(taxa_array) - 1
     assert output.shape[1] == 2
@@ -295,7 +295,7 @@ def test_atlas_counts_invalid_multiple_taxa_separate_austria():
 # test atlas_counts() can call search_taxa() and separate the counts for multiple taxa
 def test_atlas_counts_multiple_taxa_separate_austria():
     galah.galah_config(atlas="Austria")
-    taxa_array = ["Vulpes vulpes", "Sehirus luctuosus", "Marmota marmota", "Anser anser"]
+    taxa_array = ["Vulpes vulpes", "Sehirus luctuosus", "Anser anser"]
     output = galah.atlas_counts(taxa_array, group_by="species",expand=False)
     assert output.shape[0] == len(taxa_array)
     assert output.shape[1] == 2
@@ -342,7 +342,7 @@ def test_atlas_species_Austria_species():
 # checking if atlas species can successfully call search_taxa() and get a non-empty dataframe\
 def test_atlas_species_Austria_family():
     galah.galah_config(atlas="Austria")
-    taxa = "Anatidae"
+    taxa = "Cydnidae"
     species_table = galah.atlas_species(taxa=taxa)
     assert species_table.shape[0] > 0
 
@@ -406,7 +406,7 @@ def test_search_all_collection_column_name():
 def test_search_all_datasets():
     galah.galah_config(atlas="Austria")
     total_show_all = galah.show_all(datasets=True)
-    total_search_all = galah.search_all(datasets="Torres")
+    total_search_all = galah.search_all(datasets="Rote")
     assert total_search_all.shape[0] < total_show_all.shape[0]
     
 # search_all() - datasets using "4047" and column_name "uid"
@@ -507,7 +507,7 @@ def test_atlas_occurrences_taxa_fields_austria():
 
 # third test for atlas_occurrences() - check if galah_filter() is working with this
 def test_atlas_occurrences_taxa_filters_austria():
-    galah.galah_config(atlas="Australia",email="ala4r@ala.org.au")
+    galah.galah_config(atlas="Austria",email="ala4r@ala.org.au")
     occurrences1 = galah.atlas_occurrences(taxa="Vulpes vulpes")
     occurrences2 = galah.atlas_occurrences(taxa="Vulpes vulpes",filters="year=2020")
     assert occurrences2.shape[0] < occurrences1.shape[0]

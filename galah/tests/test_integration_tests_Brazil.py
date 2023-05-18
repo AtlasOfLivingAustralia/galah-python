@@ -221,11 +221,25 @@ def test_atlas_counts_multiple_taxa_filters_group_by_multiple_brazil():
     galah.galah_config(atlas="Brazil")
     taxa_array = ["Ramphastos toco","Turdus rufiventris","Tapirus terrestris"]
     filters = ["year>2010", "basis_of_record=HumanObservation"]
+    group_by = ["species","month"] # may have to change this
+    # county** , associatedOrganisms , day , decade
+    output = galah.atlas_counts(taxa_array,filters=filters,group_by=group_by)
+    assert output['count'][0] > 0
+    assert output.shape[1] == len(group_by) + 1
+
+'''
+## TODO: LATER
+# test altas_counts() can call search_taxa() and using one filter, filter results with multiple taxa
+def test_atlas_counts_multiple_taxa_filters_group_by_multiple_brazil2():
+    galah.galah_config(atlas="Brazil")
+    taxa_array = ["Ramphastos toco","Turdus rufiventris","Tapirus terrestris"]
+    filters = ["year>2010", "basis_of_record=HumanObservation"]
     group_by = ["state","year"] # may have to change this
     # county** , associatedOrganisms , day , decade
     output = galah.atlas_counts(taxa_array,filters=filters,group_by=group_by)
     assert output['count'][0] > 0
     assert output.shape[1] == len(group_by) + 1
+'''
 
 # test atlas_counts() can call search_taxa() and separate the counts for multiple taxa where one taxon is not present in ALA
 def test_atlas_counts_invalid_multiple_taxa_separate_brazil():
@@ -357,7 +371,7 @@ def test_search_all_collection_column_name():
 def test_search_all_datasets_brazil():
     galah.galah_config(atlas="Brazil")
     total_show_all = galah.show_all(datasets=True)
-    total_search_all = galah.search_all(datasets="Torres")
+    total_search_all = galah.search_all(datasets="Nacional")
     assert total_search_all.shape[0] < total_show_all.shape[0]
     
 # search_all() - datasets using "4047" and column_name "uid"

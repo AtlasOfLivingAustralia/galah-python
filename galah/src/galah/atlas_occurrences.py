@@ -1,13 +1,12 @@
-import sys,requests,urllib.parse,time,zipfile,io
+import sys,requests,urllib.parse,time,zipfile,io,json
 import pandas as pd
 from .galah_filter import galah_filter
 from .galah_select import galah_select
 from .search_taxa import search_taxa
 from .get_api_url import get_api_url, readConfig
 from .apply_data_profile import apply_data_profile
-from .common_dictionaries import ATLAS_KEYWORDS,ATLAS_SELECTIONS
-
-atlases = ["Australia","Austria","Brazil","Canada","Estonia","France","Guatemala","Portugal","Sweden","Spain","United Kingdom"]
+from .common_dictionaries import ATLAS_KEYWORDS,ATLAS_SELECTIONS, atlases
+from .common_functions import add_filters
 
 def atlas_occurrences(taxa=None,
                       filters=None,
@@ -85,6 +84,9 @@ def atlas_occurrences(taxa=None,
     # get configs
     configs = readConfig()
 
+    # get atlas
+    atlas = configs['galahSettings']['atlas']
+
     if configs["galahSettings"]["email"] is None:
         raise ValueError("Please provide an email for querying")
 
@@ -99,35 +101,35 @@ def atlas_occurrences(taxa=None,
         if test:
             return
     except requests.exceptions.HTTPError as e:
-        print("The Atlas might be down...")
+        print("The {} atlas might be down...")
         print("Error: " + str(e))
         sys.exit()
 
     # get base URL
-    if use_data_profile and configs['galahSettings']['atlas'] == "Australia":
+    if use_data_profile and atlas == "Australia":
         baseURL = apply_data_profile("{}".format(get_api_url(column1='called_by', column1value='atlas_occurrences',
                                                               column2='api_name',column2value='records_occurrences',
                                                               add_email=True)))
     elif not use_data_profile:
         # check for these atlases
-        if configs['galahSettings']['atlas'] in ["Australia","Austria","Brazil","Guatemala","Spain","Sweden","United Kingdom"]:
+        if atlas in ["Australia","Austria","Brazil","France","Guatemala","Spain","Sweden","United Kingdom"]:
             baseURL = "{}disableAllQualityfilters=true&".format(get_api_url(column1='called_by', column1value='atlas_occurrences',
                                                                  column2='api_name', column2value='records_occurrences',
                                                                  add_email=True))
-        elif configs['galahSettings']['atlas'] in ["Estonia"]:
+        elif atlas in ["Estonia","Global","GBIF"]:
             baseURL = "{}disableAllQualityfilters=true&".format(get_api_url(column1='called_by',
                                                                                 column1value='atlas_occurrences',
                                                                                 column2='api_name',
                                                                                 column2value='records',
                                                                                 add_email=True))
-        elif configs['galahSettings']['atlas'] in ["France","Portugal"]:
+        elif atlas in ["Portugal"]:
             baseURL = "{}disableAllQualityfilters=true&".format(get_api_url(column1='called_by',
                                                                                 column1value='atlas_occurrences',
                                                                                 column2='api_name',
                                                                                 column2value='records_query',
                                                                                 add_email=True))
         else:
-            raise ValueError("Atlas {} not taken into account".format(configs['galahSettings']['atlas']))
+            raise ValueError("Atlas {} not taken into account".format(atlas))
     else:
         raise ValueError("True and False are the only values accepted for data_profile, and the only atlas using a data \n"
                          "quality profile is Australia.  Your atlas and data profile is \n"
@@ -144,10 +146,12 @@ def atlas_occurrences(taxa=None,
     # goes to the 'fields' argument in occurrence download (csv list, commas between)
     if fields is not None:
         baseURL += galah_select(select=fields)[:-3] + "&"
-    elif configs['galahSettings']['atlas'] in ["Australia","Austria","Brazil","Spain"]:
-        baseURL += galah_select(select=ATLAS_SELECTIONS[configs['galahSettings']['atlas']])[:-3] + "&"
+    elif atlas in ["Australia","Austria","Brazil","France","Spain"]:
+        baseURL += galah_select(select=ATLAS_SELECTIONS[atlas])[:-3] + "&"
+    elif atlas in ["Global","GBIF"]:
+        n=1
     else:
-        raise ValueError("We currently cannot get occurrences from the {} atlas.".format(configs['galahSettings']['atlas']))
+        raise ValueError("We currently cannot get occurrences from the {} atlas.".format(atlas))
 
     # check if taxa is specified
     if taxa is not None:
@@ -160,54 +164,82 @@ def atlas_occurrences(taxa=None,
                 taxa=[taxa]
 
             # get the taxonConceptID for taxa - first check for extant atlas
-            if configs['galahSettings']['atlas'] in atlases:
-                taxonConceptID = list(search_taxa(taxa)[ATLAS_KEYWORDS[configs['galahSettings']['atlas']]])
+            if atlas in atlases:
+                taxonConceptID = list(search_taxa(taxa)[ATLAS_KEYWORDS[atlas]])
             else:
-                raise ValueError("Atlas {} is not taken into account".format(configs['galahSettings']['atlas']))
+                raise ValueError("Atlas {} is not taken into account".format(atlas))
 
             # generate the desired URL and get a response from the API - add taxonConceptIDs to the URL
-            URL = baseURL + "&fq=%28lsid%3A" + "%20OR%20lsid%3A".join(
-                urllib.parse.quote(str(tid)) for tid in taxonConceptID) + "%29"
+            if atlas in ["Global","GBIF"]:
+                URL = baseURL + "".join(["taxonKey={}".format(urllib.parse.quote(str(tid))) for tid in taxonConceptID])
+            else:
+                URL = baseURL + "&fq=%28lsid%3A" + "%20OR%20lsid%3A".join(
+                    urllib.parse.quote(str(tid)) for tid in taxonConceptID) + "%29"
 
             # check what type of variable filters is; handle accordingly
             if filters is not None:
-                URL += "%20AND%20%28"
-                if type(filters) is str:
-                    URL += galah_filter(filters) + "%29"
-                elif type(filters) is list:
-                    for f in filters:
-                        URL += galah_filter(f) + "%20AND%20"
-                    URL = URL[:-len("%20AND%20")] + "%29"
-                else:
-                    raise ValueError("The filters argument needs to be either a string or a list")
+
+                if type(filters) is list or type(filters) is str:
                 
+                    # try this out
+                    if atlas in ["Global","GBIF"]:
+                        URL = add_filters(URL=URL,atlas=atlas,filters=filters)
+                    else:
+                        URL += "%20AND%20"
+                        URL = add_filters(URL=URL,atlas=atlas,filters=filters)
+
             # take care of assertions
             if assertions is not None:
 
                 # check type
                 if type(assertions) is list or type(assertions) is str:
-                    if type(assertions) is str:
-                        URL += galah_filter(assertions) + "%29"
-                    elif type(assertions) is list:
-                        for a in assertions:
-                            URL += galah_filter(a) + "%20AND%20"
-                        URL = URL[:-len("%20AND%20")] + "%29"
+
+                    # try this out
+                    URL = add_filters(URL=URL,atlas=atlas,filters=assertions)
+
                 else:
                     raise ValueError("Assertions needs to be a string or a list of strings, i.e. identificationIncorrect == TRUE")
             
             # add final part of URL
-            URL += "&qa=none&"
+            if atlas not in ["Global","GBIF"]:
+                URL += "&qa=none&"
+            else:
+                URL += "&limit=0"
 
             # check to see if user wants the query URL
             if verbose:
                 print("URL for querying:\n\n{}\n".format(URL))
 
+            # authentication
+            if atlas in ["Global","GBIF"]:
+                headers = json.dumps({
+                    'creator': "ALA", # change default
+                    'notificationAddresses': "ala4r@ala.org.au", # change from hard-coded
+                    'User-Agent': "galah-python v0.1.0",
+                    'X-USER-AGENT': "galah-python v0.1.0",
+                    'Content-type': 'application/json',
+                    'Accept': 'application/json'
+                })
+                #userpwd =  "{}:{}".format(configs['galahSettings']['username_GBIF'],
+                #                          configs['galahSettings']['password_GBIF'])
+                userpwd = "atlasoflivingaustralia:galah-gbif-test-login" # change from hard coded
+                #print(type(userpwd))
+                print("doing authentication now")
+                authentication=json.dumps({'httpauth': 1,'userpwd':userpwd}),
+                print(URL)
+                response = requests.post(URL,headers=headers,auth=authentication)
+            else:
+                response = requests.get(URL)
+
+            print(response)
+            print(dir(response))
+            print("something else")
+            
             # query the api
-            response = requests.get(URL)
             if response.status_code == 403:
-                if configs['galahSettings']['atlas'] == "Brazil":
+                if atlas == "Brazil":
                     raise ValueError("It appears that you are not registered as a user on the Brazilian atlas.  Please email atendimento_sibbr@rnp.br to find out more information.")
-                if configs['galahSettings']['atlas'] == "Spain":
+                if atlas == "Spain":
                     raise ValueError("It appears that you are not registered as a user on the Spanish atlas.  Please go to https://auth.gbif.es/cas/login?lang=en to register.")
             if response.json()['status'] == "skipped":
                 raise ValueError(response.json()["error"])
@@ -272,9 +304,9 @@ def atlas_occurrences(taxa=None,
         response = requests.get(URL)
         if response.status_code == 403:
             # TODO: write more exceptions to make sure contact details are ok
-            if configs['galahSettings']['atlas'] == "Brazil":
+            if atlas == "Brazil":
                 raise ValueError("It appears that you are not registered as a user on the Brazilian atlas.  Please email atendimento_sibbr@rnp.br to find out more information.")
-            if configs['galahSettings']['atlas'] == "Spain":
+            if atlas == "Spain":
                 raise ValueError("It appears that you are not registered as a user on the Spanish atlas.  Please go to https://auth.gbif.es/cas/login?lang=en to register.")
         if response.json()['status'] == "skipped":
             raise ValueError(response.json()["error"])

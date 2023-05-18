@@ -75,16 +75,19 @@ def search_all(assertions=None,
     # configs
     configs = readConfig()
 
+    # get atlas
+    atlas = configs["galahSettings"]["atlas"]
+
     # search options for assertions
     if assertions is not None:
         # call show_all to get all the possible values
         dataFrame = show_all(assertions=True)
         # check to see if user wants default column name
-        if configs["galahSettings"]["atlas"] in ["Global","GBIF"]:
+        if atlas in ["Global","GBIF"]:
             sort_name = "ID"
         else:
             sort_name = "name"
-        if column_name is None and configs["galahSettings"]["atlas"] in ["Global","GBIF"]:
+        if column_name is None and atlas in ["Global","GBIF"]:
             column_name = 'Description'
         elif column_name is None:
             column_name = 'description'
@@ -159,8 +162,13 @@ def search_all(assertions=None,
         # call show_all to get all the possible values
         dataFrame = show_all(datasets=True)
         # check to see if user wants default column name
-        if column_name is None and configs["galahSettings"]["atlas"] in ["Global","GBIF"]:
+        '''
+        if column_name is None and atlas in ["Global","GBIF"]:
             column_name = 'Description'
+        '''
+        # was elif
+        if column_name is None and atlas in ["Australia","Austria","Brazil","France"]:
+            column_name = 'name'   
         elif column_name is None:
             column_name = 'description'
         # throw ValueError if column_name variable is not a string
@@ -169,7 +177,10 @@ def search_all(assertions=None,
         # check to see if the user input the correct variable type; else, throw value error
         if type(datasets) is str:
             return_dataFrame = dataFrame.loc[dataFrame[column_name].astype(str).str.contains(datasets, case=True, na=False)]
-            return_array.append(return_dataFrame.sort_values('name', key=lambda x: x.str.len()))
+            if atlas not in ["Global","GBIF"]:
+                return_array.append(return_dataFrame.sort_values('name', key=lambda x: x.str.len()))
+            else:
+                return_array.append(return_dataFrame.sort_values('title', key=lambda x: x.str.len()))
         else:
             raise ValueError(
                 "You can only pass one string to your search parameter = run show_all(datasets=True) to get strings to pass")
@@ -180,7 +191,7 @@ def search_all(assertions=None,
         dataFrame = show_all(fields=True)
 
         # check to see if user wants default column name
-        if column_name is None and configs["galahSettings"]["atlas"] in ["Global","GBIF"]:
+        if column_name is None and atlas in ["Global","GBIF"]:
             column_name = 'Description'
         elif column_name is None:
             column_name = 'description'
@@ -190,7 +201,7 @@ def search_all(assertions=None,
             raise ValueError("Only strings are a valid query for the column_name variable")
         if type(fields) is str:
             return_dataFrame = dataFrame.loc[dataFrame[column_name].astype(str).str.contains(fields, case=True, na=False)]
-            if  configs["galahSettings"]["atlas"] in ["Global","GBIF"]:
+            if  atlas in ["Global","GBIF"]:
                 return_array.append(return_dataFrame.sort_values('Parameter', key=lambda x: x.str.len()))
             else:
                 return_array.append(return_dataFrame.sort_values('id', key=lambda x: x.str.len()))
@@ -239,7 +250,7 @@ def search_all(assertions=None,
         # call show_all to get all the possible values
         dataFrame = show_all(profiles=True)
         # check to see if user wants default column name
-        if column_name is None and configs["galahSettings"]["atlas"] in ["Global","GBIF"]:
+        if column_name is None and atlas in ["Global","GBIF"]:
             column_name = 'Description'
         elif column_name is None:
             column_name = 'description'
@@ -259,7 +270,7 @@ def search_all(assertions=None,
         # call show_all to get all the possible values
         dataFrame = show_all(providers=True)
         # check to see if user wants default column name
-        if column_name is None and configs["galahSettings"]["atlas"] in ["Global","GBIF"]:
+        if column_name is None and atlas in ["Global","GBIF"]:
             column_name = 'title'
         elif column_name is None:
             column_name = 'name'
@@ -269,7 +280,10 @@ def search_all(assertions=None,
         # check to see if the user input the correct variable type; else, throw value error
         if type(providers) is str:
             return_dataFrame = dataFrame.loc[dataFrame[column_name].astype(str).str.contains(providers, case=True, na=False)]
-            return_array.append(return_dataFrame.sort_values('name', key=lambda x: x.str.len()))
+            if atlas in ["Global","GBIF"]:
+                return_array.append(return_dataFrame.sort_values('title', key=lambda x: x.str.len()))
+            else:
+                return_array.append(return_dataFrame.sort_values('name', key=lambda x: x.str.len()))
         else:
             raise ValueError(
                 "You can only pass one string to your search parameter = run show_all(providers=True) to get strings to pass")

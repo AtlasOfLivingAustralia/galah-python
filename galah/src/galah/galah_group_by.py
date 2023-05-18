@@ -3,13 +3,6 @@ import pandas as pd
 from .get_api_url import readConfig
 from .common_functions import add_filters
 
-'''
-TODO
-----
-1. Generalise this to N group_by, where N>2
-
-
-'''
 def galah_group_by(URL,
                    group_by=None,
                    filters=None,
@@ -20,7 +13,11 @@ def galah_group_by(URL,
     Used for grouping counts by a specific query, i.e. "year" or "basisOfRecord".  It's mainly utilized in atlas_counts.
     """
 
+    # get configs
     configs = readConfig()
+
+    # get atlas
+    atlas = configs['galahSettings']['atlas']
 
     # check if expand option works
     if expand:
@@ -34,7 +31,7 @@ def galah_group_by(URL,
         # check type of filter
         if type(filters) == str or type(filters) == list:
 
-            URL = add_filters(URL=URL,atlas=configs['galahSettings']['atlas'],filters=filters,ifGroupBy=ifGroupBy)
+            URL = add_filters(URL=URL,atlas=atlas,filters=filters,ifGroupBy=ifGroupBy)
 
         # else, raise a TypeError because this variable needs to be either a string or a list
         else:
@@ -66,7 +63,7 @@ def galah_group_by(URL,
             # loop over group_by
             for g in group_by:
 
-                if configs['galahSettings']['atlas'] in ["Global","GBIF"]:
+                if atlas in ["Global","GBIF"]:
                     startingURL += "&facet={}".format(g)
                 else:
                     startingURL += "&facets={}".format(g)
@@ -80,26 +77,31 @@ def galah_group_by(URL,
 
             # get thing
             response = requests.get(startingURL)
-            json = response.json()
+            response_json = response.json()
             facets_array=[]
 
             # try this
-            if configs['galahSettings']['atlas'] in ["Global","GBIF"]:
+            if atlas in ["Global","GBIF"]:
                 group_by = sorted(group_by)
-                length = len(json['facets'])
-                results_array = json['facets']
+                response_json['facets'] = sorted(response_json['facets'],key = lambda d: d['field'])
+                length = len(response_json['facets'])
+                results_array = response_json['facets']
                 field_name = 'counts'
                 facet_name = 'name'
+            elif atlas in ["Brazil"]:
+                length = len(response_json)
+                results_array = response_json 
+                field_name = 'fieldResult' 
+                facet_name = 'fq'
             else:
-                length = json['facetResults']
-                results_array = json['facetResults']
-                field_name = 'fieldResult'
+                length = len(response_json['facetResults'])
+                results_array = response_json['facetResults']
+                field_name = 'fieldResult' #i18nCode
                 facet_name = 'fq'
 
             # add a check to see if a single value is there for filters; otherwise, can do this?
             for i in range(1,len(group_by)):
                 temp_array=[]
-                # how to ensure we catch the 
                 for entry in results_array[i][field_name]:
                     temp_array.append(entry[facet_name])
                 facets_array.append(temp_array)
@@ -107,9 +109,13 @@ def galah_group_by(URL,
             # get all counts for each value
             dict_values = {entry: [] for entry in [*group_by,'count']}
             for i,f in enumerate(facets_array):
-                if configs['galahSettings']['atlas'] in ["Global","GBIF"]:
+                if atlas in ["Global","GBIF"]:
                     for facet in f:
-                        tempURL = URL + "&{}={}".format(group_by[i+1],facet) + "&facet=" + group_by[i] + "&pageSize=0"
+
+                        if group_by[i+1] == "scientificName":
+                            tempURL = URL + "&{}={}".format(group_by[i+1],"%20".join(facet.split(" ")[0:2])) + "&facet=" + group_by[i] + "&pageSize=0"
+                        else:
+                            tempURL = URL + "&{}={}".format(group_by[i+1],"%20".join(facet.split(" "))) + "&facet=" + group_by[i] + "&pageSize=0"
 
                         # print the URL
                         if verbose:
@@ -117,10 +123,10 @@ def galah_group_by(URL,
 
                         # get the data
                         response=requests.get(tempURL)
-                        json = response.json()
+                        response_json = response.json()
 
                         # put data in dict
-                        for entry in json['facets'][0]['counts']:
+                        for entry in response_json['facets'][0]['counts']:
                             dict_values[group_by[i]].append(entry['name'])
                             dict_values['count'].append(int(entry['count']))
                             dict_values[group_by[i+1]].append(facet)
@@ -146,10 +152,18 @@ def galah_group_by(URL,
 
                         # get data
                         response=requests.get(tempURL)
-                        json = response.json()
+                        response_json = response.json()
+
+                        if response_json is None:
+                            continue
 
                         # put data in table
-                        for entry in json['facetResults'][0]['fieldResult']:
+                        if atlas in ["Brazil"]:
+                            results_array = response_json[0]['fieldResult']
+                        else:
+                            results_array = response_json['facetResults'][0]['fieldResult']
+
+                        for entry in results_array:
                             # generalise this for more than one thing
                             if entry['fq'].split(":")[0] == group_by[0]:
                                 name2,value2 = entry['fq'].split(":")
@@ -176,7 +190,7 @@ def galah_group_by(URL,
             # add facets to make sure you get results
             for g in group_by:
 
-                if configs['galahSettings']['atlas'] in ["Global","GBIF"]:
+                if atlas in ["Global","GBIF"]:
                     URL += "&facet={}".format(g)
                 else:
                     URL += "&facets={}".format(g)
@@ -190,22 +204,27 @@ def galah_group_by(URL,
 
             # tab this if this doesn't work
             response = requests.get(URL)
-            json = response.json()
+            response_json = response.json()
 
             # get name of results
-            if configs['galahSettings']['atlas'] in ["Global","GBIF"]:
-                length = len(json['facets'])
-                name_results = json['facets']
+            if atlas in ["Global","GBIF"]:
+                length = len(response_json['facets'])
+                name_results = response_json['facets']
                 field_name = 'counts'
+            elif atlas in ["Brazil"]:
+                length = len(response_json)
+                name_results = response_json 
+                field_name = 'fieldResult' 
+                facet_name = 'fq'
             else:
-                length = len(json['facetResults'])
-                name_results = json['facetResults']
+                length = len(response_json['facetResults'])
+                name_results = response_json['facetResults']
                 field_name = 'fieldResult'
 
             # get all counts for each value
             dict_values = {entry: [] for entry in [*group_by,'count']}
             for i in range(length):
-                if configs['galahSettings']['atlas'] in ["Global","GBIF"]:
+                if atlas in ["Global","GBIF"]:
                     for g in group_by:
                         if "_" in name_results[i]['field']:
                             test_name = name_results[i]['field'].split("_")
@@ -237,7 +256,7 @@ def galah_group_by(URL,
                                     if (entry != name) and (entry != 'count'):
                                         dict_values[entry].append("-")
 
-            ## TODO: figure out ranking with numbers
+            # get all counts into a dictionary and sort them
             counts = pd.DataFrame(dict_values).reset_index(drop=True)
             counts.sort_values(by=group_by)
 

@@ -1,8 +1,7 @@
 import requests,os
 import pandas as pd
 
-from .get_api_url import get_api_url
-from .get_api_url import readConfig
+from .get_api_url import get_api_url, readConfig
 
 '''
 function is meant to show all values for possible query fields - they are defined as a boolean variable so you can see
@@ -78,7 +77,7 @@ def show_all(assertions=False,
     # check for assertions boolean
     if type(assertions) is bool and assertions:
         returned = False
-        if configs['galahSettings']['atlas'] in ["Australia","Austria","Brazil","France","Spain"]:
+        if configs['galahSettings']['atlas'] in ["Australia","Austria","Brazil","France","Guatemala","Spain","Sweden"]:
             response = requests.get(get_api_url(column1='called_by',column1value='show_all-assertions'))
         elif configs['galahSettings']['atlas'] in ["Global","GBIF"]:
             json = pd.read_csv(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'gbif_assertions.csv'))
@@ -138,7 +137,7 @@ def show_all(assertions=False,
 
     # check for collection
     if type(collection) is bool and collection:
-        if configs['galahSettings']['atlas'] in ["Australia","Austria","Brazil","France","Spain"]:
+        if configs['galahSettings']['atlas'] in ["Australia","Austria","Brazil","France","Guatemala","Spain","Sweden"]:
             response = requests.get(get_api_url(column1='called_by',column1value='show_all-collections'))
         elif configs['galahSettings']['atlas'] in ["Global","GBIF"]:
             raise ValueError("{} altas does not have a list of collections".format(configs['galahSettings']['atlas']))
@@ -153,7 +152,7 @@ def show_all(assertions=False,
 
     # check for datasets
     if type(datasets) is bool and datasets:
-        if configs['galahSettings']['atlas'] in ["Australia","Austria","Brazil","France","Spain"]:
+        if configs['galahSettings']['atlas'] in ["Australia","Austria","Brazil","France","Guatemala","Spain","Sweden"]:
             response = requests.get(get_api_url(column1='called_by',column1value='show_all-datasets'))
             datasets_list = pd.DataFrame.from_dict(response.json())
         elif configs['galahSettings']['atlas'] in ["Global","GBIF"]:
@@ -173,7 +172,7 @@ def show_all(assertions=False,
     if type(fields) is bool and fields:
 
         # get all possible fields
-        if configs['galahSettings']['atlas'] in ["Australia","Austria","Brazil","France","Spain"]:
+        if configs['galahSettings']['atlas'] in ["Australia","Austria","Brazil","France","Guatemala","Spain","Sweden"]:
             response = requests.get(get_api_url(column1='called_by',column1value='show_all-fields',column2='api_name',column2value='records_fields'))
             fields_values = pd.DataFrame.from_dict(response.json())
 
@@ -257,7 +256,7 @@ def show_all(assertions=False,
     if type(licences) is bool and licences:
         if configs['galahSettings']['atlas'] in ["Canada","Estonia","France","Global","GBIF"]:
             raise ValueError("The {} atlas does not have a list of licences".format(configs['galahSettings']['atlas']))
-        elif configs['galahSettings']['atlas'] in ["Australia","Spain"]:
+        elif configs['galahSettings']['atlas'] in ["Australia","Guatemala","Spain","Sweden"]:
             response = requests.get(get_api_url(column1='called_by',column1value='show_all-licences'))
         elif configs['galahSettings']['atlas'] in ["Austria","Brazil"]:
             raise ValueError("{} has an API endpoint for licences, but it is empty.".format(configs['galahSettings']['atlas']))
@@ -321,8 +320,7 @@ def show_all(assertions=False,
 
     # get all providers from the API
     if type(providers) is bool and providers:
-        if configs['galahSettings']['atlas'] in ["Australia","Austria","Brazil","Spain"]:
-            print(get_api_url(column1='called_by',column1value='show_all-providers'))
+        if configs['galahSettings']['atlas'] in ["Australia","Austria","Brazil","Guatemala","Spain","Sweden"]:
             response = requests.get(get_api_url(column1='called_by',column1value='show_all-providers'))
             providers_list = pd.DataFrame.from_dict(response.json())
         elif configs['galahSettings']['atlas'] in ["Global","GBIF"]:
@@ -378,7 +376,7 @@ def show_all(assertions=False,
 
     # check for reasons
     if type(reasons) is bool and reasons:
-        if  configs['galahSettings']['atlas'] in ["Brazil","Estonia","France","Global","GBIF"]:
+        if  configs['galahSettings']['atlas'] in ["Brazil","Estonia","France","Global","GBIF","Guatemala","Sweden"]:
             raise ValueError("The {} atlas does not have a reasons API.".format(configs['galahSettings']['atlas']))
         elif configs['galahSettings']['atlas'] in ["Australia","Austria","Spain"]:
             response = requests.get(get_api_url(column1='called_by',column1value='show_all-reasons'))

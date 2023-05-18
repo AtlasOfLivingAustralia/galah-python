@@ -89,7 +89,8 @@ def show_values(field=None,
     # query the API
     response = requests.get(URL)
     json = response.json()
-
+    #print(json)
+    
     # create empty dataFrame to concatenate results to
     dataFrame = pd.DataFrame()
 
@@ -97,14 +98,20 @@ def show_values(field=None,
     if configs['galahSettings']['atlas'] in ["Global","GBIF"]:
         result = json['facets'][0]['counts']
         for entry in result:
-            tempdf = pd.DataFrame(entry,index=[0])
+            tempdf = pd.DataFrame({'field': json['facets'][0]['field'], 'category': entry['name']},index=[0])
             dataFrame = pd.concat([dataFrame,tempdf],ignore_index=True)
     else:
         result = json[0]['fieldResult']
         for i,entry in enumerate(result):
             # check if last character is a full stop
             if entry['i18nCode'][-1] == ".":
-                tempdf = pd.DataFrame([entry['i18nCode'][0:-1].split('.')], columns=['field', 'category'])
+                # check to see if the length is more than 2
+                if len(entry['i18nCode'].split('.')) > 2:
+                    temparray = entry['i18nCode'].split('.')
+                    name = " ".join(temparray[1:])
+                    tempdf = pd.DataFrame([[temparray[0],name]],columns=['field','category'])
+                else:
+                    tempdf = pd.DataFrame([entry['i18nCode'][0:-1].split('.')], columns=['field', 'category'])
                 dataFrame = pd.concat([dataFrame, tempdf], ignore_index=True)
             elif len(entry['i18nCode'].split('.')) > 2:
                 temparray = entry['i18nCode'].split('.')
