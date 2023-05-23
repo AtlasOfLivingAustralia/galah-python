@@ -322,11 +322,32 @@ def test_atlas_species_Australia_species():
     species_table = galah.atlas_species(taxa=taxa)
     assert species_table.shape[0] > 0
 
+# check if you can get subspecies
+def test_atlas_species_Australia_species_rank():
+    galah.galah_config(atlas="Australia")
+    taxa = "Vulpes"
+    species_table = galah.atlas_species(taxa=taxa,rank="subspecies")
+    assert species_table.shape[0] > 0
+
 # checking if atlas species can successfully call search_taxa() and get a non-empty dataframe\
 def test_atlas_species_Australia_family():
     galah.galah_config(atlas="Australia")
     taxa = "Limnodynastidae"
     species_table = galah.atlas_species(taxa=taxa)
+    assert species_table.shape[0] > 0
+
+# check to see if you can get something when specifying the rank of genus
+def test_atlas_species_Australia_family_rank():
+    galah.galah_config(atlas="Australia")
+    taxa = "Limnodynastidae"
+    species_table = galah.atlas_species(taxa=taxa,rank="genus")
+    assert species_table.shape[0] > 0
+
+# check to see if you can get something when specifying the rank of genus
+def test_atlas_species_Australia_family():
+    galah.galah_config(atlas="Australia")
+    taxa = "Limnodynastidae"
+    species_table = galah.atlas_species(taxa=taxa,rank="subspecies")
     assert species_table.shape[0] > 0
 
 # test galah_group_by with one filter (galah_filter()) and one group

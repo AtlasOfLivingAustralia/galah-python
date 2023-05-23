@@ -283,10 +283,31 @@ def test_atlas_species_Spain_species():
     assert species_table.shape[0] > 0
 
 # checking if atlas species can successfully call search_taxa() and get a non-empty dataframe\
+def test_atlas_species_Spain_species_rank_subspecies():
+    galah.galah_config(atlas="Spain")
+    taxa = "Crotalus"
+    species_table = galah.atlas_species(taxa=taxa,rank="subspecies")
+    assert species_table.shape[0] > 0
+
+# checking if atlas species can successfully call search_taxa() and get a non-empty dataframe\
 def test_atlas_species_Spain_family():
     galah.galah_config(atlas="Spain")
     taxa = "Viperidae"
     species_table = galah.atlas_species(taxa=taxa)
+    assert species_table.shape[0] > 0
+
+# checking if atlas species can successfully call search_taxa() and get a non-empty dataframe\
+def test_atlas_species_Spain_family_rank_genus():
+    galah.galah_config(atlas="Spain")
+    taxa = "Viperidae"
+    species_table = galah.atlas_species(taxa=taxa,rank="genus")
+    assert species_table.shape[0] > 0
+
+# checking if atlas species can successfully call search_taxa() and get a non-empty dataframe\
+def test_atlas_species_Spain_family_rank_subspecies():
+    galah.galah_config(atlas="Spain")
+    taxa = "Viperidae"
+    species_table = galah.atlas_species(taxa=taxa,rank="subspecies")
     assert species_table.shape[0] > 0
 
 # search_all() - assertions using "AMBIGUOUS_COLLECTION"
@@ -349,7 +370,7 @@ def test_search_all_collection_column_name_spain():
 def test_search_all_datasets_spain():
     galah.galah_config(atlas="Spain")
     total_show_all = galah.show_all(datasets=True)
-    total_search_all = galah.search_all(datasets="Torres")
+    total_search_all = galah.search_all(datasets="bio")
     assert total_search_all.shape[0] < total_show_all.shape[0]
     
 # search_all() - datasets using "4047" and column_name "uid"

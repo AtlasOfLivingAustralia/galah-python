@@ -167,7 +167,7 @@ def search_all(assertions=None,
             column_name = 'Description'
         '''
         # was elif
-        if column_name is None and atlas in ["Australia","Austria","Brazil","France"]:
+        if column_name is None and atlas in ["Australia","Austria","Brazil","France","Spain"]:
             column_name = 'name'   
         elif column_name is None:
             column_name = 'description'

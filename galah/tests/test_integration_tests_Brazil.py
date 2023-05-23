@@ -44,7 +44,7 @@ def test_show_all_ranks_brazil():
     galah.galah_config(atlas="Brazil")
     output = galah.show_all(ranks=True)
     assert output.shape[1] > 1
-
+#'''
 # integration test for search_taxa() - have to test get_api_url
 def test_search_taxa_brazil():
     galah.galah_config(atlas="Brazil")
@@ -239,7 +239,7 @@ def test_atlas_counts_multiple_taxa_filters_group_by_multiple_brazil2():
     output = galah.atlas_counts(taxa_array,filters=filters,group_by=group_by)
     assert output['count'][0] > 0
     assert output.shape[1] == len(group_by) + 1
-'''
+#'''
 
 # test atlas_counts() can call search_taxa() and separate the counts for multiple taxa where one taxon is not present in ALA
 def test_atlas_counts_invalid_multiple_taxa_separate_brazil():
@@ -306,10 +306,31 @@ def test_atlas_species_Brazil_species():
     assert species_table.shape[0] > 0
 
 # checking if atlas species can successfully call search_taxa() and get a non-empty dataframe\
+def test_atlas_species_Brazil_species_rank():
+    galah.galah_config(atlas="Brazil")
+    taxa = "Ramphastos"
+    species_table = galah.atlas_species(taxa=taxa,rank="subspecies")
+    assert species_table.shape[0] > 0
+
+# checking if atlas species can successfully call search_taxa() and get a non-empty dataframe\
 def test_atlas_species_Brazil_family():
     galah.galah_config(atlas="Brazil")
     taxa = "Ramphastidae"
     species_table = galah.atlas_species(taxa=taxa)
+    assert species_table.shape[0] > 0
+
+# checking if atlas species can successfully call search_taxa() and get a non-empty dataframe\
+def test_atlas_species_Brazil_family_rank_genus():
+    galah.galah_config(atlas="Brazil")
+    taxa = "Ramphastidae"
+    species_table = galah.atlas_species(taxa=taxa,rank="genus")
+    assert species_table.shape[0] > 0
+
+# checking if atlas species can successfully call search_taxa() and get a non-empty dataframe\
+def test_atlas_species_Brazil_family_rank_subspecies():
+    galah.galah_config(atlas="Brazil")
+    taxa = "Ramphastidae"
+    species_table = galah.atlas_species(taxa=taxa,rank="subspecies")
     assert species_table.shape[0] > 0
 
 # search_all() - assertions using "AMBIGUOUS_COLLECTION"
@@ -483,3 +504,4 @@ def test_atlas_occurrences_taxa_filters_fields_brazil():
     occurrences = galah.atlas_occurrences(taxa="Ramphastos Toco",filters=["year>2018","basis_of_record=HumanObservation"],
                                            fields=['latitude', 'longitude'])
     assert occurrences.shape[1] == 2
+#'''

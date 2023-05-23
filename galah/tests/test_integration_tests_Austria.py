@@ -346,6 +346,13 @@ def test_atlas_species_Austria_family():
     species_table = galah.atlas_species(taxa=taxa)
     assert species_table.shape[0] > 0
 
+# checking if atlas species can successfully call search_taxa() and get a non-empty dataframe\
+def test_atlas_species_Austria_family():
+    galah.galah_config(atlas="Austria")
+    taxa = "Cydnidae"
+    species_table = galah.atlas_species(taxa=taxa,rank="genus")
+    assert species_table.shape[0] > 0
+
 # search_all() - assertions using "AMBIGUOUS_COLLECTION"
 def test_search_all_assertions_austria():
     galah.galah_config(atlas="Austria")

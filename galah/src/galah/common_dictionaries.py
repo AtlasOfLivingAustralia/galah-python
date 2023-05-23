@@ -36,6 +36,39 @@ ATLAS_KEYWORDS = {
     "United Kingdom": "guid",
 }
 
+ATLAS_RANKS = {
+    "Australia": "rank",
+    "Austria": "rank",
+    "Brazil": "rank",
+    "Canada": "",
+    "Estonia": "",
+    "France": "rankName",
+    "Global": "rank",
+    "GBIF": "rank",
+    "Guatemala": "",
+    "Portugal": "",
+    "Spain": "rank",
+    "Sweden": "",
+    "United Kingdom": "",
+}
+
+# expanding species fields
+ATLAS_SPECIES_FIELDS = {
+    "Australia": ["kingdom", "phylum", "class", "order", "family", "genus", "species", "subspecies"],
+    "Austria": ["kingdom", "phylum", "class", "order", "family", "genus", "species"],
+    "Brazil": ["kingdom", "phylum", "class", "order", "family", "genus", "species", "subspecies"],
+    "Canada": [],
+    "Estonia": [],
+    "France": ["kingdom", "phylum", "class", "order", "family", "genus", "species", "subspecies"],
+    "GBIF": [],
+    "Global": [],
+    "Guatemala": [],
+    "Portugal": [],
+    "Spain": ["kingdom", "phylum", "class", "order", "family", "genus", "species", "subspecies"],
+    "Sweden": [],
+    "United Kingdom": []
+}
+
 # default selections for occurrence data
 ATLAS_SELECTIONS = {
     "Australia": "basic",
@@ -55,22 +88,6 @@ ATLAS_SELECTIONS = {
                 "taxon_concept_lsid","occurrence_id","data_resource_uid","occurrence_status"],
     "Sweden": [],
     "United Kingdom": [],
-}
-
-ATLAS_SPECIES_FIELDS = {
-    "Australia": ['kingdom','phylum', 'class', 'order', 'family', 'genus'],
-    "Austria": ['kingdom','phylum', 'class', 'order', 'family', 'genus'],
-    "Brazil": ['kingdom','phylum', 'class', 'order', 'family', 'genus'],
-    "Canada": "",
-    "Estonia": "",
-    "France": ['kingdomName', 'phylumName','className', 'orderName', 'familyName', 'genusName'],
-    "GBIF": ['kingdom','phylum', 'class', 'order', 'family', 'genus'],
-    "Global": ['kingdom','phylum', 'class', 'order', 'family', 'genus'],
-    "Guatemala": ['kingdom','phylum', 'class', 'order', 'family', 'genus'],
-    "Portugal": "",
-    "Spain": ['kingdom','phylum', 'class', 'order', 'family', 'genus'],
-    "Sweden": "",
-    "United Kingdom": "",
 }
 
 # name of number of counts for atlas_counts
@@ -107,36 +124,42 @@ DEPTH_STRINGS = {
     "United Kingdom": "",
 }
 
-# strings for facets
-FACETS_STRINGS = {
-    "Australia": "speciesID",
-    "Austria": "species",
-    "Brazil": "species", 
-    "Canada": "",
-    "Estonia": "",
-    "France": "species",
-    "GBIF": "species",
-    "Global": "species",
-    "Guatemala": "",
-    "Portugal": "",
-    "Spain": "species",
-    "Sweden": "",
-    "United Kingdom": "",
+FRANCE_FIELDS = {
+    "subspecies": "subspecies" ,
+    "species": "species", 
+    "genus": "genusName",
+    "family": "familyName",
+    "order": "orderName",
+    "class": "className",
+    "phylum": "phylumName",
+    "kingdom": "kingdomName",
+}
+
+# translating French ranks into English ranks
+FRANCE_TRANSLATION_RANKS = {
+    "Sous-Espèce": "subspecies" ,
+    "Espèce": "species" , 
+    "Genre": "genus" ,
+    "Famille": "family" ,
+    "Ordre": "order" ,
+    "Classe": "class" ,
+    "Phylum": "phylum" ,
+    "Règne": "kingdom" ,
 }
 
 # names of species and author for each atlas
 TAXONCONCEPT_NAMES = {
-    "Australia": {"species_guid": "guid","species": "nameString","author": "author"},
-    "Austria": {"species_guid": "guid","species": "species","author": "author"},
-    "Brazil": {"species_guid": "id","species": "nameString","author": "author"},
+    "Australia": {"guid": "guid","author": "author"}, # "species": "nameString",
+    "Austria": {"guid": "guid","author": "author"}, # "species": "species",
+    "Brazil": {"guid": "id","author": "author"}, #"species": "nameString",
     "Canada": "",
     "Estonia": "",
-    "France": {"species_guid": "id","species": "scientificName","author": "authority"},
-    "GBIF": {"species_guid": "guid","species": "nameString","author": "author"},
-    "Global": {"species_guid": "guid","species": "nameString","author": "author"},
+    "France": {"guid": "id","author": "authority"}, #"species": "scientificName",
+    "GBIF": {"guid": "guid","author": "author"}, #"species": "nameString",
+    "Global": {"guid": "guid","author": "author"}, #"species": "nameString",
     "Guatemala": "",
     "Portugal": "",
-    "Spain": {"species_guid": "guid","species": "nameString","author": "author"},
+    "Spain": {"guid": "guid","author": "author"}, #"species": "nameString",
     "Sweden": "",
     "United Kingdom": "",
 }

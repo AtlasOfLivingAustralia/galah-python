@@ -39,13 +39,12 @@ def test_show_all_ranks_guatemala():
     galah.galah_config(atlas="Guatemala")
     output = galah.show_all(ranks=True)
     assert output.shape[1] > 1
-
+'''
 # integration test for search_taxa() - have to test get_api_url
 def test_search_taxa_guatemala():
     galah.galah_config(atlas="Guatemala")
     output = galah.search_taxa("Herpailurus yaguarondi")
     assert output['guid'][0] != None
-
 # test atlas_counts() can call search_taxa() function with single taxa
 def test_atlas_counts_guatemala():
     galah.galah_config(atlas="Guatemala")
@@ -84,7 +83,7 @@ def test_atlas_counts_taxa_filter_guatemala():
     taxa = "Herpailurus yaguarondi "
     filter1 = "year=2020"
     assert galah.atlas_counts(taxa,filters=filter1)['totalRecords'][0] > 0
-'''
+
 # test atlas counts for a taxa and empty filter
 def test_atlas_counts_taxa_filter_empty_guatemala():
     galah.galah_config(atlas="Guatemala")
