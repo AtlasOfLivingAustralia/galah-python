@@ -13,7 +13,9 @@ def galah_config(email=None,
                  atlas=None,
                  data_profile = None,
                  ranks = None,
-                 reason = None):
+                 reason = None,
+                 usernameGBIF = None,
+                 passwordGBIF = None):
     """
     The galah package supports large data downloads, and also interfaces with the ALA which requires that users of some 
     services provide a registered email address and reason for downloading data. The ``galah_config()`` function provides a way 
@@ -82,6 +84,10 @@ def galah_config(email=None,
             configParser["galahSettings"]["ranks"] = ranks
         if reason is not None:
             configParser["galahSettings"]["reason"] = reason
+        if usernameGBIF is not None:
+            configParser["galahSettings"]["usernameGBIF"] = usernameGBIF
+        if passwordGBIF is not None:
+            configParser["galahSettings"]["passwordGBIF"] = passwordGBIF
 
         # write to file
         with open(inifile,"w") as fileObject:

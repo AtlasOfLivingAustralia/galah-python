@@ -1,5 +1,18 @@
 from .galah_filter import galah_filter
 
+# for adding filters specifically to atlas_occurrences
+def add_predicates(predicates=None,
+                   filters=None):
+
+    if type(filters) == str:
+        filters = [filters]
+
+    for f in filters:
+
+        predicates.append(galah_filter(f))
+
+    return predicates
+
 # for adding filters to the URL
 def add_filters(URL=None,
                 atlas=None,

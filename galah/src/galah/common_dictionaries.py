@@ -147,6 +147,27 @@ FRANCE_TRANSLATION_RANKS = {
     "Règne": "kingdom" ,
 }
 
+GBIF_PREDICATE_DEFINITIONS = {
+    '=':'equals',
+    '==':'equals',
+    'and':['and','equals'],
+    '|':['or','equals'],
+    '<':'lessThan',
+    '<=':'lessThanOrEquals',
+    '=<':'lessThanOrEquals',
+    '>':'greaterThan',
+    '>=':'greaterThanOrEquals',
+    '=>':'greaterThanOrEquals',
+    'in':'in',
+    'within':'within', # geometry
+    'geoDistance':'geoDistance', #latitude, longitude, distance
+    '!=':['not','equals'],
+    '=!':['not','equals'],
+    'like':'like',
+    'isNull':'isNull', # parameter
+    'isNotNull':'isNotNull', # parameter
+}
+
 # names of species and author for each atlas
 TAXONCONCEPT_NAMES = {
     "Australia": {"guid": "guid","author": "author"}, # "species": "nameString",
