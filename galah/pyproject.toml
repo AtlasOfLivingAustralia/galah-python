@@ -29,7 +29,7 @@ zip-files = "^0.4.1"
 pandas = "^2.0.0" 
 numpy = "^1.24.1"
 unittest2 = "^1.1.0"
-setuptools = "^50.0.0"
+setuptools = "^60.0.0"
 
 [tool.poetry.dev-dependencies]
 
