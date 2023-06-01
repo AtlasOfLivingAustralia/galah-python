@@ -276,35 +276,35 @@ def test_atlas_counts_multiple_taxa_filters_group_by_multiple_separate_expand_sp
     assert output['count'][0] >= 0 # checks that all species counts are greater than or equal zero
 
 # checking if atlas species can successfully call search_taxa() and get a non-empty dataframe\
-def test_atlas_species_Spain_species():
+def test_atlas_species_Spain_species_spain():
     galah.galah_config(atlas="Spain")
     taxa = "Vipera latastei"
     species_table = galah.atlas_species(taxa=taxa)
     assert species_table.shape[0] > 0
 
 # checking if atlas species can successfully call search_taxa() and get a non-empty dataframe\
-def test_atlas_species_Spain_species_rank_subspecies():
+def test_atlas_species_Spain_species_rank_subspecies_spain():
     galah.galah_config(atlas="Spain")
     taxa = "Crotalus"
     species_table = galah.atlas_species(taxa=taxa,rank="subspecies")
     assert species_table.shape[0] > 0
 
 # checking if atlas species can successfully call search_taxa() and get a non-empty dataframe\
-def test_atlas_species_Spain_family():
+def test_atlas_species_Spain_family_spain():
     galah.galah_config(atlas="Spain")
     taxa = "Viperidae"
     species_table = galah.atlas_species(taxa=taxa)
     assert species_table.shape[0] > 0
 
 # checking if atlas species can successfully call search_taxa() and get a non-empty dataframe\
-def test_atlas_species_Spain_family_rank_genus():
+def test_atlas_species_Spain_family_rank_genus_spain():
     galah.galah_config(atlas="Spain")
     taxa = "Viperidae"
     species_table = galah.atlas_species(taxa=taxa,rank="genus")
     assert species_table.shape[0] > 0
 
 # checking if atlas species can successfully call search_taxa() and get a non-empty dataframe\
-def test_atlas_species_Spain_family_rank_subspecies():
+def test_atlas_species_Spain_family_rank_subspecies_spain():
     galah.galah_config(atlas="Spain")
     taxa = "Viperidae"
     species_table = galah.atlas_species(taxa=taxa,rank="subspecies")

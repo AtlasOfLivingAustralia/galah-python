@@ -146,12 +146,15 @@ def atlas_occurrences(taxa=None,
                          )
 
     # goes to the 'fields' argument in occurrence download (csv list, commas between)
-    if fields is not None:
-        baseURL += galah_select(select=fields)[:-3] + "&"
+    if fields is not None and atlas not in ["Global","GBIF"]:
+        if fields != "all":
+            baseURL += galah_select(select=fields)[:-3] + "&"
     elif atlas in ["Australia","Austria","Brazil","France","Spain"]:
         baseURL += galah_select(select=ATLAS_SELECTIONS[atlas])[:-3] + "&"
-    elif atlas in ["Global","GBIF"]:
+    elif fields is not None and atlas in ["Global","GBIF"]:
         print("GBIF, unfortunately, does not support choosing your desired data fields before download.  You will have to download them and then get categories you want.")
+    elif atlas in ["Global","GBIF"]:
+        pass
     else:
         raise ValueError("We currently cannot get occurrences from the {} atlas.".format(atlas))
 
@@ -197,7 +200,9 @@ def atlas_occurrences(taxa=None,
                 if type(filters) is list or type(filters) is str:
                 
                     # try this out
-                    if atlas in ["Global","GBIF"]:
+                    if atlas in ["Global","GBIF"] and ("!=" in filters or "=!" in filters):
+                        raise ValueError("The current iteration of GBIF and galah does not support != as an option.")
+                    elif atlas in ["Global","GBIF"]:
                         predicates = add_predicates(predicates=predicates,filters=filters)
                     else:
                         URL += "%20AND%20"
@@ -222,7 +227,6 @@ def atlas_occurrences(taxa=None,
             if atlas not in ["Global","GBIF"]:
                 URL += "&qa=none&"
 
-            # check to see if user wants the query URL
             if verbose:
                 print("URL for querying:\n\n{}\n".format(URL))
 
@@ -241,6 +245,11 @@ def atlas_occurrences(taxa=None,
                         "predicates": predicates
                     }
                 })
+
+                # check to see if user wants the query URL
+                if verbose:
+                    print("URL for querying:\n\n{}\n".format(URL))
+                    print("payload: \n\n{}\n".format(payload))
                 # check counts
                 counts = atlas_counts(taxa,filters=filters)
                 print("total records for occurrences: {}".format(counts['totalRecords'][0]))
@@ -272,6 +281,9 @@ def atlas_occurrences(taxa=None,
             # this may take a while - occasionally check if status has changed
             if atlas in ["Global","GBIF"]:
                 downloadURL = URL.replace("request",job_number)
+                # check to see if the user wants the zip URL
+                if verbose:
+                    print("URL for download:\n\n{}\n".format(downloadURL))
                 response_download = requests.get(downloadURL,headers=headers,auth=authentication)
                 while response_download.json()["status"] != "SUCCEEDED":
                     time.sleep(5)
@@ -295,7 +307,7 @@ def atlas_occurrences(taxa=None,
                     time.sleep(5)
                     statusURL = requests.get(response.json()['statusUrl'])
                 zipURL = statusURL.json()['downloadUrl']
-                data = requests.getzipURL
+                data = requests.get(zipURL)
 
                 # check to see if the user wants the zip URL
                 if verbose:
@@ -315,11 +327,13 @@ def atlas_occurrences(taxa=None,
         # start URL
         URL = baseURL + "&fq=%28"
 
-        if type(filters) is str:
-            URL += galah_filter(filters) + "%20AND%20"
-        elif type(filters) is list:
-            for f in filters:
-                URL += galah_filter(f) + "%20AND%20"
+        if type(filters) is str or type(filters) is list:
+            if atlas in ["Global","GBIF"] and ("!=" in filters or "=!" in filters):
+                raise ValueError("The current iteration of GBIF and galah does not support != as an option.")
+            elif atlas in ["Global","GBIF"]:
+                predicates = add_predicates(predicates=predicates,filters=filters)
+            else:
+                URL = add_filters(URL=URL,atlas=atlas,filters=filters)
         else:
             raise ValueError("The filters argument needs to be either a string or a list")
 

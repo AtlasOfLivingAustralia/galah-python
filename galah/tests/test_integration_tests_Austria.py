@@ -333,21 +333,21 @@ def test_atlas_counts_multiple_taxa_filters_group_by_multiple_separate_expand_au
     assert output['count'][0] >= 0 # checks that all species counts are greater than or equal zero
 
 # checking if atlas species can successfully call search_taxa() and get a non-empty dataframe\
-def test_atlas_species_Austria_species():
+def test_atlas_species_Austria_species_austria():
     galah.galah_config(atlas="Austria")
     taxa = "Sehirus"
     species_table = galah.atlas_species(taxa=taxa)
     assert species_table.shape[0] > 0
 
 # checking if atlas species can successfully call search_taxa() and get a non-empty dataframe\
-def test_atlas_species_Austria_family():
+def test_atlas_species_Austria_family_austria():
     galah.galah_config(atlas="Austria")
     taxa = "Cydnidae"
     species_table = galah.atlas_species(taxa=taxa)
     assert species_table.shape[0] > 0
 
 # checking if atlas species can successfully call search_taxa() and get a non-empty dataframe\
-def test_atlas_species_Austria_family():
+def test_atlas_species_Austria_family_austria():
     galah.galah_config(atlas="Austria")
     taxa = "Cydnidae"
     species_table = galah.atlas_species(taxa=taxa,rank="genus")
@@ -361,133 +361,133 @@ def test_search_all_assertions_austria():
     assert total_search_all.shape[0] < total_show_all.shape[0]
 
 # search_all() - assertions using "collection" and column name "description"
-def test_search_all_assertions_column_name():
+def test_search_all_assertions_column_name_austria():
     galah.galah_config(atlas="Austria")
     total_show_all = galah.show_all(assertions=True)
     total_search_all = galah.search_all(assertions="status",column_name="name")
     assert total_search_all.shape[0] < total_show_all.shape[0]
 
 # search_all() - atlases using "Austria"
-def test_search_all_atlases():
+def test_search_all_atlases_austria():
     galah.galah_config(atlas="Austria")
     total_show_all = galah.show_all(atlases=True)
     total_search_all = galah.search_all(atlases="Austria")
     assert total_search_all.shape[0] < total_show_all.shape[0]
 
 # search_all() - atlases using "Australia" and column name "institution"
-def test_search_all_atlases_column_name():
+def test_search_all_atlases_column_name_austria():
     galah.galah_config(atlas="Austria")
     total_show_all = galah.show_all(atlases=True)
     total_search_all = galah.search_all(atlases="Austria",column_name="institution")
     assert total_search_all.shape[0] < total_show_all.shape[0]
 
 # search_all() - apis using "Austria"
-def test_search_all_apis():
+def test_search_all_apis_austria():
     galah.galah_config(atlas="Austria")
     total_show_all = galah.show_all(apis=True)
     total_search_all = galah.search_all(apis="Austria")
     assert total_search_all.shape[0] < total_show_all.shape[0]
     
 # search_all() - apis using "collection" and column name "systems"
-def test_search_all_apis_column_name():
+def test_search_all_apis_column_name_austria():
     galah.galah_config(atlas="Austria")
     total_show_all = galah.show_all(apis=True)
     total_search_all = galah.search_all(apis="collection",column_name="system")
     assert total_search_all.shape[0] < total_show_all.shape[0]
 
 # search_all() - collection using "Agricultural"
-def test_search_all_collection():
+def test_search_all_collection_austria():
     galah.galah_config(atlas="Austria")
     total_show_all = galah.show_all(collection=True)
     total_search_all = galah.search_all(collection="Agricultural")
     assert total_search_all.shape[0] < total_show_all.shape[0]
     
 # search_all() - collection using "Agricultural" and column name "uid"
-def test_search_all_collection_column_name():
+def test_search_all_collection_column_name_austria():
     galah.galah_config(atlas="Austria")
     total_show_all = galah.show_all(collection=True)
     total_search_all = galah.search_all(collection="85",column_name="uid")
     assert total_search_all.shape[0] < total_show_all.shape[0]
 
 # search_all() - datasets using "Torres"
-def test_search_all_datasets():
+def test_search_all_datasets_austria():
     galah.galah_config(atlas="Austria")
     total_show_all = galah.show_all(datasets=True)
     total_search_all = galah.search_all(datasets="Rote")
     assert total_search_all.shape[0] < total_show_all.shape[0]
     
 # search_all() - datasets using "4047" and column_name "uid"
-def test_search_all_datasets_column_name():
+def test_search_all_datasets_column_name_austria():
     galah.galah_config(atlas="Austria")
     total_show_all = galah.show_all(datasets=True)
     total_search_all = galah.search_all(datasets="4047",column_name="uid")
     assert total_search_all.shape[0] < total_show_all.shape[0]
 
 # search_all() - fields using "accepted"
-def test_search_all_fields():
+def test_search_all_fields_austria():
     galah.galah_config(atlas="Austria")
     total_show_all = galah.show_all(fields=True)
     total_search_all = galah.search_all(fields="accepted")
     assert total_search_all.shape[0] < total_show_all.shape[0]
     
 # search_all() - fields using "field" and column_nane "info"
-def test_search_all_fields_column_name():
+def test_search_all_fields_column_name_austria():
     galah.galah_config(atlas="Austria")
     total_show_all = galah.show_all(fields=True)
     total_search_all = galah.search_all(fields="layer",column_name="type")
     assert total_search_all.shape[0] < total_show_all.shape[0]
         
 # search_all() - lists using "Quadrat"
-def test_search_all_lists():
+def test_search_all_lists_austria():
     galah.galah_config(atlas="Austria")
     total_show_all = galah.show_all(lists=True)
     total_search_all = galah.search_all(lists="Quadrat")
     assert total_search_all.shape[0] < total_show_all.shape[0]
     
 # search_all() - lists using "SPATIAL" and column_name "listType"
-def test_search_all_lists_column_name():
+def test_search_all_lists_column_name_austria():
     galah.galah_config(atlas="Austria")
     total_show_all = galah.show_all(lists=True)
     total_search_all = galah.search_all(lists="SPATIAL",column_name="listType")
     assert total_search_all.shape[0] < total_show_all.shape[0]
 
 # search_all() - providers using "Ecological"
-def test_search_all_providers():
+def test_search_all_providers_austria():
     galah.galah_config(atlas="Austria")
     total_show_all = galah.show_all(providers=True)
     total_search_all = galah.search_all(providers="Ecological")
     assert total_search_all.shape[0] < total_show_all.shape[0]
     
 # search_all() - providers using "1518" and column_name "uid"
-def test_search_all_providers_column_name():
+def test_search_all_providers_column_name_austria():
     galah.galah_config(atlas="Austria")
     total_show_all = galah.show_all(providers=True)
     total_search_all = galah.search_all(providers="1518",column_name="uid")
     assert total_search_all.shape[0] < total_show_all.shape[0]
 
 # search_all() - ranks using "kingdom"
-def test_search_all_ranks():
+def test_search_all_ranks_austria():
     galah.galah_config(atlas="Austria")
     total_show_all = galah.show_all(ranks=True)
     total_search_all = galah.search_all(ranks="kingdom")
     assert total_search_all.shape[0] < total_show_all.shape[0]
 
 # search_all() - ranks using "0" and column_name "id"
-def test_search_all_ranks_column_name():
+def test_search_all_ranks_column_name_austria():
     galah.galah_config(atlas="Austria")
     total_show_all = galah.show_all(ranks=True)
     total_search_all = galah.search_all(ranks="0",column_name="id")
     assert total_search_all.shape[0] < total_show_all.shape[0]
 
 # search_all() - reasons using "conservation"
-def test_search_all_reasons():
+def test_search_all_reasons_austria():
     galah.galah_config(atlas="Austria")
     total_show_all = galah.show_all(reasons=True)
     total_search_all = galah.search_all(reasons="conservation")
     assert total_search_all.shape[0] < total_show_all.shape[0]
     
 # search_all() - reasons using "0" and column_name "id"
-def test_search_all_reasons_column_name():
+def test_search_all_reasons_column_name_austria():
     galah.galah_config(atlas="Austria")
     total_show_all = galah.show_all(reasons=True)
     total_search_all = galah.search_all(reasons="0",column_name="id")

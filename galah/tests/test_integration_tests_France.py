@@ -273,21 +273,21 @@ def test_atlas_counts_multiple_taxa_filters_group_by_multiple_separate_expand_fr
     assert output['count'][0] >= 0 # checks that all species counts are greater than or equal zero
 
 # checking if atlas species can successfully call search_taxa() and get a non-empty dataframe\
-def test_atlas_species_France_species():
+def test_atlas_species_France_species_france():
     galah.galah_config(atlas="France")
     taxa = "Ichthyosaura"
     species_table = galah.atlas_species(taxa=taxa)
     assert species_table.shape[0] > 0
 
 # checking if atlas species can successfully call search_taxa() and get a non-empty dataframe\
-def test_atlas_species_France_family():
+def test_atlas_species_France_family_france():
     galah.galah_config(atlas="France")
     taxa = "Salamandridae"
     species_table = galah.atlas_species(taxa=taxa)
     assert species_table.shape[0] > 0
 
 # checking if atlas species can successfully call search_taxa() and get a non-empty dataframe\
-def test_atlas_species_France_family_rank_genus():
+def test_atlas_species_France_family_rank_genus_france():
     galah.galah_config(atlas="France")
     taxa = "Salamandridae"
     species_table = galah.atlas_species(taxa=taxa,rank="genus")
@@ -295,98 +295,98 @@ def test_atlas_species_France_family_rank_genus():
 
 
 # search_all() - assertions using "AMBIGUOUS_COLLECTION"
-def test_search_all_assertions():
+def test_search_all_assertions_france():
     galah.galah_config(atlas="France")
     total_show_all = galah.show_all(assertions=True)
     total_search_all = galah.search_all(assertions="collection")
     assert total_search_all.shape[0] < total_show_all.shape[0]
 
 # search_all() - assertions using "collection" and column name "description"
-def test_search_all_assertions_column_name():
+def test_search_all_assertions_column_name_france():
     galah.galah_config(atlas="France")
     total_show_all = galah.show_all(assertions=True)
     total_search_all = galah.search_all(assertions="status",column_name="name")
     assert total_search_all.shape[0] < total_show_all.shape[0]
 
 # search_all() - atlases using "France"
-def test_search_all_atlases():
+def test_search_all_atlases_france():
     galah.galah_config(atlas="France")
     total_show_all = galah.show_all(atlases=True)
     total_search_all = galah.search_all(atlases="France")
     assert total_search_all.shape[0] < total_show_all.shape[0]
 
 # search_all() - atlases using "France" and column name "institution"
-def test_search_all_atlases_column_name():
+def test_search_all_atlases_column_name_france():
     galah.galah_config(atlas="France")
     total_show_all = galah.show_all(atlases=True)
     total_search_all = galah.search_all(atlases="France",column_name="institution")
     assert total_search_all.shape[0] < total_show_all.shape[0]
 
 # search_all() - apis using "France"
-def test_search_all_apis():
+def test_search_all_apis_france():
     galah.galah_config(atlas="France")
     total_show_all = galah.show_all(apis=True)
     total_search_all = galah.search_all(apis="France")
     assert total_search_all.shape[0] < total_show_all.shape[0]
     
 # search_all() - apis using "collection" and column name "systems"
-def test_search_all_apis_column_name():
+def test_search_all_apis_column_name_france():
     galah.galah_config(atlas="France")
     total_show_all = galah.show_all(apis=True)
     total_search_all = galah.search_all(apis="collection",column_name="system")
     assert total_search_all.shape[0] < total_show_all.shape[0]
 
 # search_all() - collection using "Agricultural"
-def test_search_all_collection():
+def test_search_all_collection_france():
     galah.galah_config(atlas="France")
     total_show_all = galah.show_all(collection=True)
     total_search_all = galah.search_all(collection="Agricultural")
     assert total_search_all.shape[0] < total_show_all.shape[0]
     
 # search_all() - collection using "Agricultural" and column name "uid"
-def test_search_all_collection_column_name():
+def test_search_all_collection_column_name_france():
     galah.galah_config(atlas="France")
     total_show_all = galah.show_all(collection=True)
     total_search_all = galah.search_all(collection="85",column_name="uid")
     assert total_search_all.shape[0] < total_show_all.shape[0]
 
 # search_all() - datasets using "Projet"
-def test_search_all_datasets():
+def test_search_all_datasets_france():
     galah.galah_config(atlas="France")
     total_show_all = galah.show_all(datasets=True)
     total_search_all = galah.search_all(datasets="Projet")
     assert total_search_all.shape[0] < total_show_all.shape[0]
     
 # search_all() - datasets using "4047" and column_name "uid"
-def test_search_all_datasets_column_name():
+def test_search_all_datasets_column_name_france():
     galah.galah_config(atlas="France")
     total_show_all = galah.show_all(datasets=True)
     total_search_all = galah.search_all(datasets="4047",column_name="uid")
     assert total_search_all.shape[0] < total_show_all.shape[0]
 
 # search_all() - fields using "accepted"
-def test_search_all_fields():
+def test_search_all_fields_france():
     galah.galah_config(atlas="France")
     total_show_all = galah.show_all(fields=True)
     total_search_all = galah.search_all(fields="accepted")
     assert total_search_all.shape[0] < total_show_all.shape[0]
     
 # search_all() - fields using "field" and column_nane "info"
-def test_search_all_fields_column_name():
+def test_search_all_fields_column_name_france():
     galah.galah_config(atlas="France")
     total_show_all = galah.show_all(fields=True)
     total_search_all = galah.search_all(fields="layer",column_name="type")
     assert total_search_all.shape[0] < total_show_all.shape[0]
 
 # search_all() - ranks using "kingdom"
-def test_search_all_ranks():
+def test_search_all_ranks_france():
     galah.galah_config(atlas="France")
     total_show_all = galah.show_all(ranks=True)
     total_search_all = galah.search_all(ranks="kingdom")
     assert total_search_all.shape[0] < total_show_all.shape[0]
 
 # search_all() - ranks using "0" and column_name "id"
-def test_search_all_ranks_column_name():
+def test_search_all_ranks_column_name_france():
     galah.galah_config(atlas="France")
     total_show_all = galah.show_all(ranks=True)
     total_search_all = galah.search_all(ranks="0",column_name="id")
@@ -399,33 +399,33 @@ def test_search_values_france():
     assert first_output.shape[0] > second_output.shape[0]
 
 # first test for atlas_occurrences() - check if search_taxa() is working
-def test_atlas_occurrences_taxa():
+def test_atlas_occurrences_taxa_france():
     galah.galah_config(atlas="France",email="ala4r@ala.org.au")
     occurrences = galah.atlas_occurrences(taxa="Triturus marmoratus")
     assert occurrences.shape[0] > 1
 
 # second test for atlas_occurrences() - check if galah_select() is working
-def test_atlas_occurrences_taxa_fields():
+def test_atlas_occurrences_taxa_fields_france():
     galah.galah_config(atlas="France",email="ala4r@ala.org.au")
     occurrences = galah.atlas_occurrences(taxa="Triturus marmoratus",fields=['decimalLatitude', 'decimalLongitude'])
     # columns
     assert occurrences.shape[1] == 2
 
 # third test for atlas_occurrences() - check if galah_filter() is working with this
-def test_atlas_occurrences_taxa_filters():
+def test_atlas_occurrences_taxa_filters_france():
     galah.galah_config(atlas="France",email="ala4r@ala.org.au")
     occurrences1 = galah.atlas_occurrences(taxa="Triturus marmoratus")
     occurrences2 = galah.atlas_occurrences(taxa="Triturus marmoratus",filters="year=2020")
     assert occurrences2.shape[0] < occurrences1.shape[0]
 
 # fourth test for atlas_occurrences() - check if galah_select() and galah_filter() are working concurrently
-def test_atlas_occurrences_taxa_filter_fields():
+def test_atlas_occurrences_taxa_filter_fields_france():
     galah.galah_config(atlas="France",email="ala4r@ala.org.au")
     occurrences = galah.atlas_occurrences(taxa="Triturus marmoratus",filters="year=2020",fields=['decimalLatitude', 'decimalLongitude'])
     assert occurrences.shape[1] == 2
 
 # testing atlas occurrences with multiple filters
-def test_atlas_occurrences_taxa_filters():
+def test_atlas_occurrences_taxa_filters_france():
     galah.galah_config(atlas="France",email="ala4r@ala.org.au")
     filters=["year>2018","basisOfRecord=HUMAN_OBSERVATION"]
     occurrences1 = galah.atlas_occurrences(taxa="Triturus marmoratus")
@@ -433,7 +433,7 @@ def test_atlas_occurrences_taxa_filters():
     assert occurrences2.shape[0] < occurrences1.shape[0]
 
 # testing atlas occurrences with multiple filters and fields
-def test_atlas_occurrences_taxa_filters_fields():
+def test_atlas_occurrences_taxa_filters_fields_france():
     galah.galah_config(atlas="France",email="ala4r@ala.org.au")
     occurrences = galah.atlas_occurrences(taxa="Triturus marmoratus",filters=["year>2018","basisOfRecord=HUMAN_OBSERVATION"],
                                            fields=['decimalLatitude', 'decimalLongitude'])

@@ -9,7 +9,7 @@ def add_predicates(predicates=None,
 
     for f in filters:
 
-        predicates.append(galah_filter(f))
+        predicates.append(galah_filter(f,occurrencesGBIF=True))
 
     return predicates
 
@@ -26,7 +26,7 @@ def add_filters(URL=None,
     # check if the atlas being used is GBIF
     if atlas in ["Global","GBIF"]:
         for f in filters:
-            URL += "&{}".format(f,ifgroupBy=ifGroupBy)
+            URL += "&{}".format(galah_filter(f,ifgroupBy=ifGroupBy))
 
     # filters for all other atlases
     else:

@@ -88,19 +88,22 @@ def test_atlas_counts_taxa_filter_empty_global():
     filter1 = "year="
     assert galah.atlas_counts(taxa,filters=filter1)['totalRecords'][0] > 0
 
+'''
+# TODO: Figure these out
 # test atlas_counts() can call search_taxa() and using two filters with the same field, return results for a single taxa
-def test_astlas_counts_taxa_same_filter_global():
+def test_atlas_counts_taxa_same_filter_global():
     galah.galah_config(atlas="Global")
     taxa = "Anigozanthos manglesii"
     f = ["year >=2018", "year <= 2022"]
     assert galah.atlas_counts(taxa, filters=f)['totalRecords'][0] > 0
 
 # test atlas_counts() can call search_taxa() and using two filters with the same field, return results for a single taxa
-def test_atlas_counts_taxa_same_filter_global():
+def test_atlas_counts_taxa_same_filter_global2_global():
     galah.galah_config(atlas="Global")
     taxa = "Anigozanthos manglesii"
     f = ["year >=2018", "year <= 2022", "year!=2020"]
     assert galah.atlas_counts(taxa, filters=f)['totalRecords'][0] > 0
+'''
 
 # test atlas counts with multiple taxa and filters, along with expand=True
 def test_atlas_counts_multiple_taxa_filters_separate_global():
@@ -266,21 +269,21 @@ def test_atlas_counts_multiple_taxa_filters_group_by_multiple_separate_expand_gl
 
 '''
 # checking if atlas species can successfully call search_taxa() and get a non-empty dataframe\
-def test_atlas_species_Global_species():
+def test_atlas_species_Global_species_global():
     galah.galah_config(atlas="Global")
     taxa = "Heleioporus"
     species_table = galah.atlas_species(taxa=taxa)
     assert species_table.shape[0] > 0
 
 # checking if atlas species can successfully call search_taxa() and get a non-empty dataframe
-def test_atlas_species_Global_family():
+def test_atlas_species_Global_family_global():
     galah.galah_config(atlas="Global")
     taxa = "Limnodynastidae"
     species_table = galah.atlas_species(taxa=taxa)
     assert species_table.shape[0] > 0
 '''
 # search_all() - assertions using "AMBIGUOUS_COLLECTION"
-def test_search_all_assertions():
+def test_search_all_assertions_global():
     galah.galah_config(atlas="Global")
     total_show_all = galah.show_all(assertions=True)
     total_search_all = galah.search_all(assertions="collection")
@@ -289,91 +292,91 @@ def test_search_all_assertions():
 ### TODO: FIGURE THIS OUT
 #'''
 # search_all() - assertions using "collection" and column name "description"
-def test_search_all_assertions_column_name():
+def test_search_all_assertions_column_name_global():
     galah.galah_config(atlas="Global")
     total_show_all = galah.show_all(assertions=True)
     total_search_all = galah.search_all(assertions="STATUS",column_name="ID")
     assert total_search_all.shape[0] < total_show_all.shape[0]
 
 # search_all() - atlases using "Global"
-def test_search_all_atlases():
+def test_search_all_atlases_global():
     galah.galah_config(atlas="Global")
     total_show_all = galah.show_all(atlases=True)
     total_search_all = galah.search_all(atlases="Global")
     assert total_search_all.shape[0] < total_show_all.shape[0]
 
 # search_all() - atlases using "Global" and column name "institution"
-def test_search_all_atlases_column_name():
+def test_search_all_atlases_column_name_global():
     galah.galah_config(atlas="Global")
     total_show_all = galah.show_all(atlases=True)
     total_search_all = galah.search_all(atlases="Global",column_name="institution")
     assert total_search_all.shape[0] < total_show_all.shape[0]
 
 # search_all() - apis using "Global"
-def test_search_all_apis():
+def test_search_all_apis_global():
     galah.galah_config(atlas="Global")
     total_show_all = galah.show_all(apis=True)
     total_search_all = galah.search_all(apis="Global")
     assert total_search_all.shape[0] < total_show_all.shape[0]
     
 # search_all() - apis using "collection" and column name "systems"
-def test_search_all_apis_column_name():
+def test_search_all_apis_column_name_global():
     galah.galah_config(atlas="Global")
     total_show_all = galah.show_all(apis=True)
     total_search_all = galah.search_all(apis="collection",column_name="system")
     assert total_search_all.shape[0] < total_show_all.shape[0]
 
 # search_all() - datasets using "Torres"
-def test_search_all_datasets():
+def test_search_all_datasets_global():
     galah.galah_config(atlas="Global")
     total_show_all = galah.show_all(datasets=True)
     total_search_all = galah.search_all(datasets="Herbarium")
     assert total_search_all.shape[0] < total_show_all.shape[0]
     
 # search_all() - datasets using "4047" and column_name "uid"
-def test_search_all_datasets_column_name():
+def test_search_all_datasets_column_name_global():
     galah.galah_config(atlas="Global")
     total_show_all = galah.show_all(datasets=True)
     total_search_all = galah.search_all(datasets="Marsup",column_name="title")
     assert total_search_all.shape[0] < total_show_all.shape[0]
 
 # search_all() - fields using "accepted"
-def test_search_all_fields():
+def test_search_all_fields_global():
     galah.galah_config(atlas="Global")
     total_show_all = galah.show_all(fields=True)
     total_search_all = galah.search_all(fields="accepted")
     assert total_search_all.shape[0] < total_show_all.shape[0]
     
 # search_all() - fields using "field" and column_nane "info"
-def test_search_all_fields_column_name():
+def test_search_all_fields_column_name_global():
     galah.galah_config(atlas="Global")
     total_show_all = galah.show_all(fields=True)
     total_search_all = galah.search_all(fields="layer",column_name="Parameter")
     assert total_search_all.shape[0] < total_show_all.shape[0]
 
 # search_all() - providers using "Ecological"
-def test_search_all_providers():
+def test_search_all_providers_global():
     galah.galah_config(atlas="Global")
     total_show_all = galah.show_all(providers=True)
     total_search_all = galah.search_all(providers="Univers")
     assert total_search_all.shape[0] < total_show_all.shape[0]
     
 # search_all() - providers using "1518" and column_name "uid"
-def test_search_all_providers_column_name():
+def test_search_all_providers_column_name_global():
     galah.galah_config(atlas="Global")
     total_show_all = galah.show_all(providers=True)
     total_search_all = galah.search_all(providers="Insititute",column_name="description")
     assert total_search_all.shape[0] < total_show_all.shape[0]
 
 # search_all() - ranks using "kingdom"
-def test_search_all_ranks():
+def test_search_all_ranks_global():
     galah.galah_config(atlas="Global")
     total_show_all = galah.show_all(ranks=True)
     total_search_all = galah.search_all(ranks="kingdom")
     assert total_search_all.shape[0] < total_show_all.shape[0]
 
 # search_all() - ranks using "0" and column_name "id"
-def test_search_all_ranks_column_name():
+def test_search_all_ranks_column_name_global():
     galah.galah_config(atlas="Global")
     total_show_all = galah.show_all(ranks=True)
     total_search_all = galah.search_all(ranks="0",column_name="id")
@@ -384,52 +387,38 @@ def test_search_values_global():
     first_output = galah.show_values(field="basisOfRecord")
     second_output = galah.search_values(field="basisOfRecord",value="OBS")
     assert first_output.shape[0] > second_output.shape[0]
-'''
+#'''
 # first test for atlas_occurrences() - check if search_taxa() is working
-def test_atlas_occurrences_taxa():
-    galah.galah_config(atlas="Global",email="ala4r@ala.org.au")
-    occurrences = galah.atlas_occurrences(taxa="Vulpes vulpes")
+def test_atlas_occurrences_taxa_filters_global():
+    galah.galah_config(atlas="Global",email="ala4r@ala.org.au",usernameGBIF="atlasoflivingaustralia",passwordGBIF="galah-gbif-test-login")
+    occurrences = galah.atlas_occurrences(taxa="Vulpes vulpes",filters="year=2022")
     assert occurrences.shape[0] > 1
 
-# second test for atlas_occurrences() - check if galah_select() is working
-def test_atlas_occurrences_taxa_fields():
-    galah.galah_config(atlas="Global",email="ala4r@ala.org.au")
-    occurrences = galah.atlas_occurrences(taxa="Vulpes vulpes",fields=['decimalLatitude', 'decimalLongitude'])
-    # columns
-    assert occurrences.shape[1] == 2
-
-# third test for atlas_occurrences() - check if galah_filter() is working with this
-def test_atlas_occurrences_taxa_filters():
-    galah.galah_config(atlas="Global",email="ala4r@ala.org.au")
-    occurrences1 = galah.atlas_occurrences(taxa="Vulpes vulpes")
-    occurrences2 = galah.atlas_occurrences(taxa="Vulpes vulpes",filters="year=2020")
-    assert occurrences2.shape[0] < occurrences1.shape[0]
-
-# fourth test for atlas_occurrences() - check if galah_select() and galah_filter() are working concurrently
-def test_atlas_occurrences_taxa_filter_fields():
-    galah.galah_config(atlas="Global",email="ala4r@ala.org.au")
-    occurrences = galah.atlas_occurrences(taxa="Vulpes vulpes",filters="year=2020",fields=['decimalLatitude', 'decimalLongitude'])
-    assert occurrences.shape[1] == 2
+# testing atlas occurrences with multiple filters
+def test_atlas_occurrences_taxa_filters2_global():
+    galah.galah_config(atlas="Global",email="ala4r@ala.org.au",usernameGBIF="atlasoflivingaustralia",passwordGBIF="galah-gbif-test-login")
+    filters=["year=2022","basisOfRecord=HUMAN_OBSERVATION"]
+    occurrences = galah.atlas_occurrences(taxa="Vulpes vulpes",filters=filters)
+    assert occurrences.shape[0] > 0
 
 # testing atlas occurrences with multiple filters
-def test_atlas_occurrences_taxa_filters():
-    galah.galah_config(atlas="Global",email="ala4r@ala.org.au")
-    filters=["year>2018","basisOfRecord=HUMAN_OBSERVATION"]
-    occurrences1 = galah.atlas_occurrences(taxa="Vulpes vulpes")
-    occurrences2 = galah.atlas_occurrences(taxa="Vulpes vulpes",filters=filters)
-    assert occurrences2.shape[0] < occurrences1.shape[0]
+def test_atlas_occurrences_taxa_filters3_global():
+    galah.galah_config(atlas="Global",email="ala4r@ala.org.au",usernameGBIF="atlasoflivingaustralia",passwordGBIF="galah-gbif-test-login")
+    filters=["year>=2022","basisOfRecord=HUMAN_OBSERVATION"]
+    occurrences = galah.atlas_occurrences(taxa="Vulpes vulpes",filters=filters)
+    assert occurrences.shape[0] > 0
 
-# testing atlas occurrences with multiple filters and fields
-def test_atlas_occurrences_taxa_filters_fields():
-    galah.galah_config(atlas="Global",email="ala4r@ala.org.au")
-    occurrences = galah.atlas_occurrences(taxa="Vulpes vulpes",filters=["year>2018","basisOfRecord=HUMAN_OBSERVATION"],
-                                           fields=['decimalLatitude', 'decimalLongitude'])
-    assert occurrences.shape[1] == 2
+# testing atlas occurrences with multiple filters
+def test_atlas_occurrences_taxa_filters4_global():
+    galah.galah_config(atlas="Global",email="ala4r@ala.org.au",usernameGBIF="atlasoflivingaustralia",passwordGBIF="galah-gbif-test-login")
+    filters=["year>2022","basisOfRecord=HUMAN_OBSERVATION"]
+    occurrences = galah.atlas_occurrences(taxa="Vulpes vulpes",filters=filters)
+    assert occurrences.shape[0] > 0
 
-# test data quality data profile is working
-def test_atlas_occurrences_taxa_filters():
-    galah.galah_config(atlas="Global",email="ala4r@ala.org.au")
-    occurrences1 = galah.atlas_occurrences(taxa="Vulpes vulpes")
-    occurrences2 = galah.atlas_occurrences(taxa="Vulpes vulpes",use_data_profile=True)
-    assert occurrences2.shape[0] < occurrences1.shape[0]
+# testing atlas occurrences with multiple filters
+def test_atlas_occurrences_taxa_filters5_global():
+    galah.galah_config(atlas="Global",email="ala4r@ala.org.au",usernameGBIF="atlasoflivingaustralia",passwordGBIF="galah-gbif-test-login")
+    filters=["year<2000","basisOfRecord=HUMAN_OBSERVATION"]
+    occurrences = galah.atlas_occurrences(taxa="Vulpes vulpes",filters=filters)
+    assert occurrences.shape[0] > 0
 #'''

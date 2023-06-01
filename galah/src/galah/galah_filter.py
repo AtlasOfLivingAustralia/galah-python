@@ -2,7 +2,9 @@ import re,json
 from .get_api_url import readConfig
 from .common_dictionaries import GBIF_PREDICATE_DEFINITIONS
 
-def galah_filter(f, ifgroupBy=False):
+def galah_filter(f, 
+                 ifgroupBy=False,
+                 occurrencesGBIF=False):
     """
     "Filters" are arguments of the form field logical value that are used to narrow down the number of records returned by 
     a specific query. For example, it is common for users to request records from a particular year (``year=2020``), or 
@@ -35,6 +37,9 @@ def galah_filter(f, ifgroupBy=False):
     # get configs
     configs = readConfig()
 
+    # get atlas
+    atlas = configs["galahSettings"]['atlas']
+
         # check to make sure the filter type is correct
     if type(f) is str:
 
@@ -56,7 +61,7 @@ def galah_filter(f, ifgroupBy=False):
         for i, p in enumerate(parts):
             parts[i] = p.strip()
 
-        if configs['galahSettings']['atlas'] in ["Global","GBIF"]:
+        if atlas in ["Global","GBIF"] and occurrencesGBIF:
 
             # how would within even be formatted?
             if specialChar in ["within"]:
@@ -97,6 +102,24 @@ def galah_filter(f, ifgroupBy=False):
                 }
             else:
                 raise ValueError("{} is not a valid logical filter for GBIF.  For a list of those, go to https://www.gbif.org/developer/occurrence#download".format(f))
+
+        elif atlas in ["Global","GBIF"]:
+
+            # start checking for different logical operators, starting with equals
+            if specialChar == '=' or specialChar == '==':
+                returnString+="{}={}".format(parts[0],parts[1].replace(" ", "%20"))
+            elif specialChar == '>=' or specialChar == '=>':
+                returnString+="{}={}%2C%2A".format(parts[0],parts[1].replace(" ", "%20")) #,*
+            elif specialChar == '>':
+                returnString+="{}={}%2C%2A".format(parts[0],int(parts[1])+1) #,*
+            elif specialChar == '<':
+                returnString+="{}=%2A%2C{}".format(parts[0],int(parts[1])-1) #,*
+            elif specialChar == '!=' or specialChar == '=!': ### NOT SURE ABOUT THIS
+                returnString+="{}=%2A%2C{}".format(parts[0],parts[1].replace(" ", "%20")) #,*
+            else:
+                raise ValueError("The symbol {} is not currently available in galah for atlas {}.".format(specialChar,atlas))
+
+            return returnString
 
         # all other atlases are like this
         else:

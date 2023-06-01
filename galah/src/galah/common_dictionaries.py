@@ -29,10 +29,10 @@ ATLAS_KEYWORDS = {
     "France": "id",
     "Global": "usageKey",
     "GBIF": "usageKey",
-    "Guatemala": "id", # was guid
+    "Guatemala": "guid", # was guid
     "Portugal": "usageKey",
     "Spain": "taxonConceptID",
-    "Sweden": "id", # was guid
+    "Sweden": "guid", # was guid
     "United Kingdom": "guid",
 }
 
@@ -45,10 +45,10 @@ ATLAS_RANKS = {
     "France": "rankName",
     "Global": "rank",
     "GBIF": "rank",
-    "Guatemala": "",
+    "Guatemala": "rank",
     "Portugal": "",
     "Spain": "rank",
-    "Sweden": "",
+    "Sweden": "rank",
     "United Kingdom": "",
 }
 
@@ -62,10 +62,10 @@ ATLAS_SPECIES_FIELDS = {
     "France": ["kingdom", "phylum", "class", "order", "family", "genus", "species", "subspecies"],
     "GBIF": [],
     "Global": [],
-    "Guatemala": [],
+    "Guatemala": ["kingdom", "phylum", "class", "order", "family", "genus", "species", "subspecies"],
     "Portugal": [],
     "Spain": ["kingdom", "phylum", "class", "order", "family", "genus", "species", "subspecies"],
-    "Sweden": [],
+    "Sweden": ["kingdom", "phylum", "class", "order", "family", "genus", "species", "subspecies"],
     "United Kingdom": []
 }
 
@@ -117,10 +117,10 @@ DEPTH_STRINGS = {
     "France": "_embedded",
     "GBIF": "classification",
     "Global": "classification",
-    "Guatemala": "",
+    "Guatemala": "searchResults",
     "Portugal": "",
     "Spain": "classification",
-    "Sweden": "",
+    "Sweden": "searchResults",
     "United Kingdom": "",
 }
 
@@ -150,7 +150,7 @@ FRANCE_TRANSLATION_RANKS = {
 GBIF_PREDICATE_DEFINITIONS = {
     '=':'equals',
     '==':'equals',
-    'and':['and','equals'],
+    '&':['and','equals'],
     '|':['or','equals'],
     '<':'lessThan',
     '<=':'lessThanOrEquals',
@@ -178,10 +178,10 @@ TAXONCONCEPT_NAMES = {
     "France": {"guid": "id","author": "authority"}, #"species": "scientificName",
     "GBIF": {"guid": "guid","author": "author"}, #"species": "nameString",
     "Global": {"guid": "guid","author": "author"}, #"species": "nameString",
-    "Guatemala": "",
+    "Guatemala": {"guid": "guid","author": "author"},
     "Portugal": "",
     "Spain": {"guid": "guid","author": "author"}, #"species": "nameString",
-    "Sweden": "",
+    "Sweden": {"guid": "guid","author": "author"},
     "United Kingdom": "",
 }
 
@@ -209,12 +209,13 @@ SEARCH_TAXA_FIELDS = {
     "Global": ['scientificName', 'scientificNameAuthorship', 'usageKey','rank','match_type','kingdom', 
                   'phylum', 'class', 'order', 'family', 'genus', 'species', 'issues', 'canonicalName'],
     # was guid
-    "Guatemala": ['scientificName', 'scientificNameAuthorship', 'id','rank','match_type','kingdom', 
+    "Guatemala": ['scientificName', 'scientificNameAuthorship', 'guid','rank','match_type','kingdom', 
                   'phylum', 'class', 'order', 'family', 'genus', 'species', 'issues', 'commonName'],
     "Portugal": "",
     "Spain": ['scientificName', 'scientificNameAuthorship', 'taxonConceptID','rank','match_type','kingdom', 
                   'phylum', 'class', 'order', 'family', 'genus', 'species', 'issues', 'vernacularName'],
-    "Sweden": "",
+    "Sweden": ['scientificName', 'scientificNameAuthorship', 'guid','rank','match_type','kingdom', 
+                  'phylum', 'class', 'order', 'family', 'genus', 'species', 'issues', 'commonName'],
     "United Kingdom": "",
 }
 
@@ -229,9 +230,9 @@ VERNACULAR_NAMES = {
     "France": ["commonNames","englishVernacularName"],
     "GBIF": "",
     "Global": "",
-    "Guatemala": "",
+    "Guatemala": ["commonName","commonName"],
     "Portugal": "",
     "Spain": ["commonNames","nameString"],
-    "Sweden": "",
+    "Sweden": ["commonName","commonName"],
     "United Kingdom": "",
 }

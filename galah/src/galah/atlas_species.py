@@ -64,6 +64,9 @@ def atlas_species(taxa=None,
     # raise warning - not sure how to fix it
     if atlas in ["Spain"]:
         print("There have been some issues getting all species when using a genus name.  If genus doesn't work, either use a species name or anything of family or higher order.")
+    if atlas in ["Sweden"]:
+        print("There have been some issues getting taxonomy from the Swedish atlas, as they don't store names of taxon higher than species.")
+
 
     # check if filters are specified
     if filters is not None:
@@ -84,7 +87,7 @@ def atlas_species(taxa=None,
         URL = baseURL + "?"
 
     # get the taxonConceptID for taxa
-    if atlas in ["Australia","Austria","Brazil","France","Spain"]:
+    if atlas in ["Australia","Austria","Brazil","France","Guatemala","Spain","Sweden"]:
         taxon_info = search_taxa(taxa)
         if atlas in ["France"]:
             taxon_rank = FRANCE_TRANSLATION_RANKS[taxon_info[ATLAS_RANKS[atlas]][0]]
@@ -105,6 +108,7 @@ def atlas_species(taxa=None,
     # get url and transform from a text string to a list
     response = requests.get(URL)
     all_ids = response.text[1:-2].split('"\n"')[1:]
+    print(all_ids)
 
     # check if ids couldn't be found
     if not all_ids:
@@ -122,7 +126,7 @@ def atlas_species(taxa=None,
     
     # species_lookup for each individual species
     # names_search_single is for APIs without namematching service
-    if atlas in ["Austria","France"]:
+    if atlas in ["Austria","France","Guatemala","Sweden"]:
         baseURL = get_api_url(column1='api_name', column1value='names_search_single')
     else:
         baseURL = get_api_url(column1='api_name', column1value='species_lookup')
@@ -135,7 +139,7 @@ def atlas_species(taxa=None,
             URL = baseURL + "/" + urllib.parse.quote(species_guid)
         elif atlas in ["Australia"]:
             URL = baseURL.replace("{id}", urllib.parse.quote(species_guid))
-        elif atlas in ["Austria","France"]:
+        elif atlas in ["Austria","France","Guatemala","Sweden"]:
             URL = baseURL.replace("{name}", urllib.parse.quote(species_guid))
         else:
             raise ValueError("Atlas {} is not taken into account".format(atlas))
@@ -147,9 +151,10 @@ def atlas_species(taxa=None,
         # get response from the API
         response = requests.get(URL)
         response_json = response.json()
+        #print(response_json)
         
         # set up arrays to loop over for different atlases
-        if atlas in ["Austria"]:
+        if atlas in ["Austria","Guatemala","Sweden"]:
             array_depth = response_json[DEPTH_STRINGS[atlas]]['results'] 
             array_others = response_json[DEPTH_STRINGS[atlas]]['results'] 
             array_vernacular = response_json[DEPTH_STRINGS[atlas]]['results']
@@ -203,7 +208,7 @@ def atlas_species(taxa=None,
             if type(array_depth) is list:
                 for entry in array_depth:
                     # was atlas_depth with entry and "for atlas_depth in entry"
-                    if atlas_depth in entry and entry[ATLAS_RANKS[atlas]] is not None:
+                    if atlas_depth in entry and entry[ATLAS_RANKS[atlas]] is not None and entry [ATLAS_RANKS[atlas]] is not "None":
                         if type(entry[atlas_depth]) is not str:
                             data_dict[depth].append(entry[atlas_depth])
                         elif type(entry[atlas_depth]) is str:
@@ -230,16 +235,17 @@ def atlas_species(taxa=None,
         if array_vernacular and type(array_vernacular) is list:
             
             # do a check for Austria and France
-            if len(array_vernacular) > 1 and atlas in ["Austria","France"]:
+            if len(array_vernacular) > 1 and atlas in ["Austria","France","Guatemala","Sweden"]:
                 for entry in array_vernacular:
                     vernacular_name_string = ""
-                    if entry[VERNACULAR_NAMES[atlas][1]] is not None and entry[VERNACULAR_NAMES[atlas][1]] is not "":
-                        if entry[VERNACULAR_NAMES[atlas][1]] not in vernacular_name_string:
-                            vernacular_name_string += entry[VERNACULAR_NAMES[atlas][1]] + ", "
+                    if VERNACULAR_NAMES[atlas][1] in entry:
+                        if entry[VERNACULAR_NAMES[atlas][1]] is not None and entry[VERNACULAR_NAMES[atlas][1]] is not "":
+                            if entry[VERNACULAR_NAMES[atlas][1]] not in vernacular_name_string:
+                                vernacular_name_string += entry[VERNACULAR_NAMES[atlas][1]] + ", "
                     vernacular_name_string = vernacular_name_string[:-2]
                     data_dict["vernacular_name"].append(vernacular_name_string)
             # all other atlases fall under this
-            elif len(array_vernacular) > 1 and atlas not in ["Austria","France"]:
+            elif len(array_vernacular) > 1 and atlas not in ["Austria","France","Guatemala","Sweden"]:
                 vernacular_name_string = ""
                 for entry in array_vernacular:
                     if entry[VERNACULAR_NAMES[atlas][1]] is not None and entry[VERNACULAR_NAMES[atlas][1]] is not "":
@@ -260,11 +266,20 @@ def atlas_species(taxa=None,
         else:
             data_dict["vernacular_name"].append("")
 
+    #print(data_dict)
+    #for entry in data_dict:
+    #    print(entry)
+    #    print(len(data_dict[entry]))
+    #    print(data_dict[entry])
+    print(pd.DataFrame.from_dict(data_dict))
+
     # index any extra or faulty entries in the dictionary
     indexes_to_delete = []
     for i,entry in enumerate(data_dict[taxon_rank]): # was 'species', then 'rank'
         if taxa.lower() not in entry.lower() or data_dict[taxon_rank][i] == "":
             indexes_to_delete.append(i)
+
+    #print(indexes_to_delete)
 
     # remove these entries from dictionary
     for index in reversed(indexes_to_delete):

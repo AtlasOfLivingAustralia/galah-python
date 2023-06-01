@@ -45,6 +45,7 @@ def test_search_taxa_guatemala():
     galah.galah_config(atlas="Guatemala")
     output = galah.search_taxa("Herpailurus yaguarondi")
     assert output['guid'][0] != None
+    
 # test atlas_counts() can call search_taxa() function with single taxa
 def test_atlas_counts_guatemala():
     galah.galah_config(atlas="Guatemala")
@@ -295,182 +296,182 @@ def test_atlas_counts_multiple_taxa_filters_group_by_multiple_separate_expand_gu
     assert output['count'][0] >= 0 # checks that all species counts are greater than or equal zero
 
 # checking if atlas species can successfully call search_taxa() and get a non-empty dataframe\
-def test_atlas_species_Guatemala_species():
+def test_atlas_species_Guatemala_species_guatemala():
     galah.galah_config(atlas="Guatemala")
     taxa = "Heleioporus"
     species_table = galah.atlas_species(taxa=taxa)
     assert species_table.shape[0] > 0
 
 # checking if atlas species can successfully call search_taxa() and get a non-empty dataframe\
-def test_atlas_species_Guatemala_family():
+def test_atlas_species_Guatemala_family_guatemala():
     galah.galah_config(atlas="Guatemala")
     taxa = "Limnodynastidae"
     species_table = galah.atlas_species(taxa=taxa)
     assert species_table.shape[0] > 0
 
 # search_all() - assertions using "AMBIGUOUS_COLLECTION"
-def test_search_all_assertions():
+def test_search_all_assertions_guatemala():
     galah.galah_config(atlas="Guatemala")
     total_show_all = galah.show_all(assertions=True)
     total_search_all = galah.search_all(assertions="collection")
     assert total_search_all.shape[0] < total_show_all.shape[0]
 
 # search_all() - assertions using "collection" and column name "description"
-def test_search_all_assertions_column_name():
+def test_search_all_assertions_column_name_guatemala():
     galah.galah_config(atlas="Guatemala")
     total_show_all = galah.show_all(assertions=True)
     total_search_all = galah.search_all(assertions="status",column_name="name")
     assert total_search_all.shape[0] < total_show_all.shape[0]
 
 # search_all() - atlases using "Guatemala"
-def test_search_all_atlases():
+def test_search_all_atlases_guatemala():
     galah.galah_config(atlas="Guatemala")
     total_show_all = galah.show_all(atlases=True)
     total_search_all = galah.search_all(atlases="Guatemala")
     assert total_search_all.shape[0] < total_show_all.shape[0]
 
 # search_all() - atlases using "Guatemala" and column name "institution"
-def test_search_all_atlases_column_name():
+def test_search_all_atlases_column_name_guatemala():
     galah.galah_config(atlas="Guatemala")
     total_show_all = galah.show_all(atlases=True)
     total_search_all = galah.search_all(atlases="Guatemala",column_name="institution")
     assert total_search_all.shape[0] < total_show_all.shape[0]
 
 # search_all() - apis using "Guatemala"
-def test_search_all_apis():
+def test_search_all_apis_guatemala():
     galah.galah_config(atlas="Guatemala")
     total_show_all = galah.show_all(apis=True)
     total_search_all = galah.search_all(apis="Guatemala")
     assert total_search_all.shape[0] < total_show_all.shape[0]
     
 # search_all() - apis using "collection" and column name "systems"
-def test_search_all_apis_column_name():
+def test_search_all_apis_column_name_guatemala():
     galah.galah_config(atlas="Guatemala")
     total_show_all = galah.show_all(apis=True)
     total_search_all = galah.search_all(apis="collection",column_name="system")
     assert total_search_all.shape[0] < total_show_all.shape[0]
 
 # search_all() - collection using "Agricultural"
-def test_search_all_collection():
+def test_search_all_collection_guatemala():
     galah.galah_config(atlas="Guatemala")
     total_show_all = galah.show_all(collection=True)
     total_search_all = galah.search_all(collection="Agricultural")
     assert total_search_all.shape[0] < total_show_all.shape[0]
     
 # search_all() - collection using "Agricultural" and column name "uid"
-def test_search_all_collection_column_name():
+def test_search_all_collection_column_name_guatemala():
     galah.galah_config(atlas="Guatemala")
     total_show_all = galah.show_all(collection=True)
     total_search_all = galah.search_all(collection="85",column_name="uid")
     assert total_search_all.shape[0] < total_show_all.shape[0]
 
 # search_all() - datasets using "Torres"
-def test_search_all_datasets():
+def test_search_all_datasets_guatemala():
     galah.galah_config(atlas="Guatemala")
     total_show_all = galah.show_all(datasets=True)
     total_search_all = galah.search_all(datasets="Torres")
     assert total_search_all.shape[0] < total_show_all.shape[0]
     
 # search_all() - datasets using "4047" and column_name "uid"
-def test_search_all_datasets_column_name():
+def test_search_all_datasets_column_name_guatemala():
     galah.galah_config(atlas="Guatemala")
     total_show_all = galah.show_all(datasets=True)
     total_search_all = galah.search_all(datasets="4047",column_name="uid")
     assert total_search_all.shape[0] < total_show_all.shape[0]
 
 # search_all() - fields using "accepted"
-def test_search_all_fields():
+def test_search_all_fields_guatemala():
     galah.galah_config(atlas="Guatemala")
     total_show_all = galah.show_all(fields=True)
     total_search_all = galah.search_all(fields="accepted")
     assert total_search_all.shape[0] < total_show_all.shape[0]
     
 # search_all() - fields using "field" and column_nane "info"
-def test_search_all_fields_column_name():
+def test_search_all_fields_column_name_guatemala():
     galah.galah_config(atlas="Guatemala")
     total_show_all = galah.show_all(fields=True)
     total_search_all = galah.search_all(fields="layer",column_name="type")
     assert total_search_all.shape[0] < total_show_all.shape[0]
     
 # search_all() - licences using "accepted"
-def test_search_all_licences():
+def test_search_all_licences_guatemala():
     galah.galah_config(atlas="Guatemala")
     total_show_all = galah.show_all(licences=True)
     total_search_all = galah.search_all(licences="Creative")
     assert total_search_all.shape[0] < total_show_all.shape[0]
     
 # search_all() - licences using "CC BY" and column_name "acronym"
-def test_search_all_licences_column_name():
+def test_search_all_licences_column_name_guatemala():
     galah.galah_config(atlas="Guatemala")
     total_show_all = galah.show_all(licences=True)
     total_search_all = galah.search_all(licences="CC BY",column_name="acronym")
     assert total_search_all.shape[0] < total_show_all.shape[0]
         
 # search_all() - lists using "Quadrat"
-def test_search_all_lists():
+def test_search_all_lists_guatemala():
     galah.galah_config(atlas="Guatemala")
     total_show_all = galah.show_all(lists=True)
     total_search_all = galah.search_all(lists="Quadrat")
     assert total_search_all.shape[0] < total_show_all.shape[0]
     
 # search_all() - lists using "SPATIAL" and column_name "listType"
-def test_search_all_lists_column_name():
+def test_search_all_lists_column_name_guatemala():
     galah.galah_config(atlas="Guatemala")
     total_show_all = galah.show_all(lists=True)
     total_search_all = galah.search_all(lists="SPATIAL",column_name="listType")
     assert total_search_all.shape[0] < total_show_all.shape[0]
 
 # search_all() - profiles using "ALA"
-def test_search_all_profiles():
+def test_search_all_profiles_guatemala():
     galah.galah_config(atlas="Guatemala")
     total_show_all = galah.show_all(profiles=True)
     total_search_all = galah.search_all(profiles="ALA")
     assert total_search_all.shape[0] < total_show_all.shape[0]
     
 # search_all() - profiles using "ALA" and column_name "shortName"
-def test_search_all_profiles_column_name():
+def test_search_all_profiles_column_name_guatemala():
     galah.galah_config(atlas="Guatemala")
     total_show_all = galah.show_all(profiles=True)
     total_search_all = galah.search_all(profiles="ALA",column_name="shortName")
     assert total_search_all.shape[0] < total_show_all.shape[0]
 
 # search_all() - providers using "Ecological"
-def test_search_all_providers():
+def test_search_all_providers_guatemala():
     galah.galah_config(atlas="Guatemala")
     total_show_all = galah.show_all(providers=True)
     total_search_all = galah.search_all(providers="Ecological")
     assert total_search_all.shape[0] < total_show_all.shape[0]
     
 # search_all() - providers using "1518" and column_name "uid"
-def test_search_all_providers_column_name():
+def test_search_all_providers_column_name_guatemala():
     galah.galah_config(atlas="Guatemala")
     total_show_all = galah.show_all(providers=True)
     total_search_all = galah.search_all(providers="1518",column_name="uid")
     assert total_search_all.shape[0] < total_show_all.shape[0]
 
 # search_all() - ranks using "kingdom"
-def test_search_all_ranks():
+def test_search_all_ranks_guatemala():
     galah.galah_config(atlas="Guatemala")
     total_show_all = galah.show_all(ranks=True)
     total_search_all = galah.search_all(ranks="kingdom")
     assert total_search_all.shape[0] < total_show_all.shape[0]
 
 # search_all() - ranks using "0" and column_name "id"
-def test_search_all_ranks_column_name():
+def test_search_all_ranks_column_name_guatemala():
     galah.galah_config(atlas="Guatemala")
     total_show_all = galah.show_all(ranks=True)
     total_search_all = galah.search_all(ranks="0",column_name="id")
     assert total_search_all.shape[0] < total_show_all.shape[0]
 
 # search_all() - reasons using "conservation"
-def test_search_all_reasons():
+def test_search_all_reasons_guatemala():
     galah.galah_config(atlas="Guatemala")
     total_show_all = galah.show_all(reasons=True)
     total_search_all = galah.search_all(reasons="conservation")
     assert total_search_all.shape[0] < total_show_all.shape[0]
     
 # search_all() - reasons using "0" and column_name "id"
-def test_search_all_reasons_column_name():
+def test_search_all_reasons_column_name_guatemala():
     galah.galah_config(atlas="Guatemala")
     total_show_all = galah.show_all(reasons=True)
     total_search_all = galah.search_all(reasons="0",column_name="id")
@@ -482,34 +483,34 @@ def test_search_values_guatemala():
     second_output = galah.search_values(field="basis_of_record",value="OBS")
     assert first_output.shape[0] > second_output.shape[0]
 
-# first test for atlas_occurrences() - check if search_taxa() is working
-def test_atlas_occurrences_taxa():
+# first test for atlas_occurrences_guatemala() - check if search_taxa() is working
+def test_atlas_occurrences_taxa_guatemala():
     galah.galah_config(atlas="Guatemala",email="amanda.buyan@csiro.au")
     occurrences = galah.atlas_occurrences(taxa="Herpailurus yaguarondi ")
     assert occurrences.shape[0] > 1
 
-# second test for atlas_occurrences() - check if galah_select() is working
-def test_atlas_occurrences_taxa_fields():
+# second test for atlas_occurrences_guatemala() - check if galah_select() is working
+def test_atlas_occurrences_taxa_fields_guatemala():
     galah.galah_config(atlas="Guatemala",email="amanda.buyan@csiro.au")
     occurrences = galah.atlas_occurrences(taxa="Herpailurus yaguarondi ",fields=['decimalLatitude', 'decimalLongitude'])
     # columns
     assert occurrences.shape[1] == 2
 
 # third test for atlas_occurrences() - check if galah_filter() is working with this
-def test_atlas_occurrences_taxa_filters():
+def test_atlas_occurrences_taxa_filters_guatemala():
     galah.galah_config(atlas="Guatemala",email="amanda.buyan@csiro.au")
     occurrences1 = galah.atlas_occurrences(taxa="Herpailurus yaguarondi ")
     occurrences2 = galah.atlas_occurrences(taxa="Herpailurus yaguarondi ",filters="year=2020")
     assert occurrences2.shape[0] < occurrences1.shape[0]
 
 # fourth test for atlas_occurrences() - check if galah_select() and galah_filter() are working concurrently
-def test_atlas_occurrences_taxa_filter_fields():
+def test_atlas_occurrences_taxa_filter_fields_guatemala():
     galah.galah_config(atlas="Guatemala",email="amanda.buyan@csiro.au")
     occurrences = galah.atlas_occurrences(taxa="Herpailurus yaguarondi ",filters="year=2020",fields=['decimalLatitude', 'decimalLongitude'])
     assert occurrences.shape[1] == 2
 
 # testing atlas occurrences with multiple filters
-def test_atlas_occurrences_taxa_filters():
+def test_atlas_occurrences_taxa_filters_guatemala():
     galah.galah_config(atlas="Guatemala",email="amanda.buyan@csiro.au")
     filters=["year>2018","basis_of_record=HUMAN_OBSERVATION"]
     occurrences1 = galah.atlas_occurrences(taxa="Herpailurus yaguarondi ")
@@ -517,7 +518,7 @@ def test_atlas_occurrences_taxa_filters():
     assert occurrences2.shape[0] < occurrences1.shape[0]
 
 # testing atlas occurrences with multiple filters and fields
-def test_atlas_occurrences_taxa_filters_fields():
+def test_atlas_occurrences_taxa_filters_fields_guatemala():
     galah.galah_config(atlas="Guatemala",email="amanda.buyan@csiro.au")
     occurrences = galah.atlas_occurrences(taxa="Herpailurus yaguarondi ",filters=["year>2018","basis_of_record=HUMAN_OBSERVATION"],
                                            fields=['decimalLatitude', 'decimalLongitude'])

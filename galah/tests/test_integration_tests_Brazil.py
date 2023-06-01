@@ -230,7 +230,7 @@ def test_atlas_counts_multiple_taxa_filters_group_by_multiple_brazil():
 '''
 ## TODO: LATER
 # test altas_counts() can call search_taxa() and using one filter, filter results with multiple taxa
-def test_atlas_counts_multiple_taxa_filters_group_by_multiple_brazil2():
+def test_atlas_counts_multiple_taxa_filters_group_by_multiple_brazil2_brazil():
     galah.galah_config(atlas="Brazil")
     taxa_array = ["Ramphastos toco","Turdus rufiventris","Tapirus terrestris"]
     filters = ["year>2010", "basis_of_record=HumanObservation"]
@@ -299,35 +299,35 @@ def test_atlas_counts_multiple_taxa_filters_group_by_multiple_separate_expand_br
     assert output['count'][0] >= 0 # checks that all species counts are greater than or equal zero
 
 # checking if atlas species can successfully call search_taxa() and get a non-empty dataframe\
-def test_atlas_species_Brazil_species():
+def test_atlas_species_Brazil_species_brazil():
     galah.galah_config(atlas="Brazil")
     taxa = "Ramphastos"
     species_table = galah.atlas_species(taxa=taxa)
     assert species_table.shape[0] > 0
 
 # checking if atlas species can successfully call search_taxa() and get a non-empty dataframe\
-def test_atlas_species_Brazil_species_rank():
+def test_atlas_species_Brazil_species_rank_brazil():
     galah.galah_config(atlas="Brazil")
     taxa = "Ramphastos"
     species_table = galah.atlas_species(taxa=taxa,rank="subspecies")
     assert species_table.shape[0] > 0
 
 # checking if atlas species can successfully call search_taxa() and get a non-empty dataframe\
-def test_atlas_species_Brazil_family():
+def test_atlas_species_Brazil_family_brazil():
     galah.galah_config(atlas="Brazil")
     taxa = "Ramphastidae"
     species_table = galah.atlas_species(taxa=taxa)
     assert species_table.shape[0] > 0
 
 # checking if atlas species can successfully call search_taxa() and get a non-empty dataframe\
-def test_atlas_species_Brazil_family_rank_genus():
+def test_atlas_species_Brazil_family_rank_genus_brazil():
     galah.galah_config(atlas="Brazil")
     taxa = "Ramphastidae"
     species_table = galah.atlas_species(taxa=taxa,rank="genus")
     assert species_table.shape[0] > 0
 
 # checking if atlas species can successfully call search_taxa() and get a non-empty dataframe\
-def test_atlas_species_Brazil_family_rank_subspecies():
+def test_atlas_species_Brazil_family_rank_subspecies_brazil():
     galah.galah_config(atlas="Brazil")
     taxa = "Ramphastidae"
     species_table = galah.atlas_species(taxa=taxa,rank="subspecies")
@@ -383,7 +383,7 @@ def test_search_all_collection_brazil():
     assert total_search_all.shape[0] < total_show_all.shape[0]
     
 # search_all() - collection using "Agricultural" and column name "uid"
-def test_search_all_collection_column_name():
+def test_search_all_collection_column_name_brazil():
     total_show_all = galah.show_all(collection=True)
     total_search_all = galah.search_all(collection="85",column_name="uid")
     assert total_search_all.shape[0] < total_show_all.shape[0]

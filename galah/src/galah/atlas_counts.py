@@ -1,12 +1,11 @@
-import requests,urllib.parse,warnings
+import requests,urllib.parse,warnings,json
 import pandas as pd
-from .galah_filter import galah_filter
 from .galah_group_by import galah_group_by
 from .search_taxa import search_taxa
 from .get_api_url import get_api_url
 from .get_api_url import readConfig
 from .apply_data_profile import apply_data_profile
-from .common_functions import add_filters
+from .common_functions import add_filters,add_predicates
 from .common_dictionaries import ATLAS_KEYWORDS,COUNTS_NAMES,atlases
 
 def atlas_counts(taxa=None,
@@ -94,6 +93,18 @@ def atlas_counts(taxa=None,
                          "galah.galah_config(data_profile=\"None\")"
                          )
 
+        # create headers for GBIF
+    # did have username and notification thing here
+    headers = {
+        "User-Agent": "galah-python v0.1.0",
+        "X-USER-AGENT": "galah-python v0.1.0",
+        "Content-type": "application/json",
+        "Accept": "application/json",
+    }
+
+    # try this
+    predicates = []
+
     # if there is no taxa, assume you will get the total number of records in the ALA
     if taxa is None:
 
@@ -105,8 +116,11 @@ def atlas_counts(taxa=None,
 
                 # check the type of variable filters is
                 if type(filters) is list or type(filters) is str:
-
-                   URL = add_filters(URL=baseURL,atlas=atlas,filters=filters)
+                   
+                    # if atlas in ["Global","GBIF"]:
+                    #     predicates = add_predicates(predicates=predicates,filters=filters)
+                    # else:
+                    URL = add_filters(URL=baseURL,atlas=atlas,filters=filters)
 
                 # else, make sure that the filters is in the following format
                 else:
@@ -170,6 +184,9 @@ def atlas_counts(taxa=None,
 
         # add this ID to the URL
         if atlas in ["Global","GBIF"]:
+            #for tid in taxonConceptID:
+            #    predicates.append({"type":"equals","key":"TAXON_KEY","value":str(tid)})
+            # revert to this if above doesn't work
             URL = baseURL + "".join(["taxonKey={}&".format(urllib.parse.quote(str(tid))) for tid in taxonConceptID])
         else:
             URL = baseURL + "fq=%28lsid%3A" + "%20OR%20lsid%3A".join(
@@ -197,6 +214,11 @@ def atlas_counts(taxa=None,
                     if type(filters) is str:
                         filters = [filters]
 
+                    # raise an exception until I can figure out how to do this
+                    if atlas in ["Global","GBIF"] and ("!=" in filters or "=!" in filters):
+                        raise ValueError("The current iteration of GBIF and galah does not support != as an option.")
+                    
+                    # add filters to URL
                     URL = add_filters(URL=URL,atlas=atlas,filters=filters) + "&pageSize=0"
 
                 # else, make sure that the filters is in the following format
@@ -207,15 +229,33 @@ def atlas_counts(taxa=None,
             # add the last bit of the URL
             else:
 
+                if atlas not in ["Global","GBIF"]:
                 # check if it's separate one last time
-                URL += "&flimit=10000&pageSize=0"
+                    URL += "&flimit=10000&pageSize=0"
 
-        # check to see if the user wants the URL for querying
-        if verbose:
-            print("URL for querying:\n\n{}\n".format(URL))
+        #if atlas in ["Global","GBIF"]:
+        #    URL = baseURL
 
         # get results form the URL
+        # if atlas in ["Global","GBIF"]:
+        #     payload = json.dumps({
+        #             "predicate": {
+        #                 "type": "and",
+        #                 "predicates": predicates
+        #             }
+        #     })
+        #     # check to see if the user wants the URL for querying
+        #     if verbose:
+        #         print("URL for querying:\n\n{}\n".format(URL))
+        #         print("payload:\n{}".format(payload))
+        #     response = requests.get(URL,headers=headers,data=payload)
+        # else:
+        #     # check to see if the user wants the URL for querying
+        if verbose:
+            print("URL for querying:\n\n{}\n".format(URL))
         response = requests.get(URL)
+
+        # get response
         response_json = response.json()
 
         # return data frame

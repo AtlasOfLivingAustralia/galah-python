@@ -4,7 +4,8 @@ import pandas as pd
 from .get_api_url import get_api_url,readConfig
 from .common_dictionaries import ATLAS_KEYWORDS,ATLAS_COMMON_NAMES,SEARCH_TAXA_ENTRIES,SEARCH_TAXA_FIELDS,atlases
 
-def search_taxa(taxa):
+def search_taxa(taxa,
+                verbose=False):
     """
     Look up taxonomic names before downloading data from the ALA, using ``atlas_occurrences()``, ``atlas_species()`` or 
     ``atlas_counts()``. Taxon information returned by ``search_taxa()`` may be passed to the ``taxa`` argument of ``atlas`` 
@@ -65,11 +66,16 @@ def search_taxa(taxa):
                 URL = baseURL.replace("{name}","%20".join(name.split(" ")))
             else:
                 raise ValueError("Atlas {} is not taken into account".format(atlas))
+            
+            if verbose:
+                print("URL for querying:\n\n{}\n".format(URL))
+        
             response = requests.get(URL)
 
             # get the response
+
             response_json = response.json()
-            
+            #print(response_json)
             # France was here
             if atlas in ["Austria","Sweden"]:
                 raw_data = [] #None
