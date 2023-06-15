@@ -1,50 +1,5 @@
 import galah
 
-def test_show_all_assertions_austria(self):
-    galah.galah_config(atlas="Austria")
-    output = galah.show_all(assertions=True)
-    self.assertGreater(output.shape[1],1)
-
-def test_show_all_atlases_austria(self):
-    galah.galah_config(atlas="Austria")
-    output = galah.show_all(atlases=True)
-    self.assertGreater(output.shape[1],1)
-
-def test_show_all_apis_austria(self):
-    galah.galah_config(atlas="Austria")
-    output = galah.show_all(apis=True)
-    self.assertGreater(output.shape[1],1)
-
-def test_show_all_collection_austria(self):
-    galah.galah_config(atlas="Austria")
-    output = galah.show_all(collection=True)
-    self.assertGreater(output.shape[1],1)
-
-def test_show_all_datasets_austria(self):
-    galah.galah_config(atlas="Austria")
-    output = galah.show_all(datasets=True)
-    self.assertGreater(output.shape[1],1)
-
-def test_show_all_fields_austria(self):
-    galah.galah_config(atlas="Austria")
-    output = galah.show_all(fields=True)
-    self.assertGreater(output.shape[1],1)
-
-def test_show_all_lists_austria(self):
-    galah.galah_config(atlas="Austria")
-    output = galah.show_all(lists=True)
-    self.assertGreater(output.shape[1],1)
-
-def test_show_all_providers_austria(self):
-    galah.galah_config(atlas="Austria")
-    output = galah.show_all(providers=True)
-    self.assertGreater(output.shape[1],1)
-
-def test_show_all_reasons_austria(self):
-    galah.galah_config(atlas="Austria")
-    output = galah.show_all(reasons=True)
-    self.assertGreater(output.shape[1],1)
-
 def test_show_all_assertions_austria():
     galah.galah_config(atlas="Austria")
     output = galah.show_all(assertions=True)
@@ -90,6 +45,46 @@ def test_show_all_reasons_austria():
     output = galah.show_all(reasons=True)
     assert output.shape[1] > 1
 
+def test_show_all_assertions_austria():
+    galah.galah_config(atlas="Austria")
+    output = galah.show_all(assertions=True)
+    assert output.shape[1] > 1
+
+def test_show_all_atlases_austria():
+    galah.galah_config(atlas="Austria")
+    output = galah.show_all(atlases=True)
+    assert output.shape[1] > 1
+
+def test_show_all_apis_austria():
+    galah.galah_config(atlas="Austria")
+    output = galah.show_all(apis=True)
+    assert output.shape[1] > 1
+
+def test_show_all_collection_austria():
+    galah.galah_config(atlas="Austria")
+    output = galah.show_all(collection=True)
+    assert output.shape[1] > 1
+
+def test_show_all_datasets_austria():
+    galah.galah_config(atlas="Austria")
+    output = galah.show_all(datasets=True)
+    assert output.shape[1] > 1
+
+def test_show_all_fields_austria():
+    galah.galah_config(atlas="Austria")
+    output = galah.show_all(fields=True)
+    assert output.shape[1] > 1
+
+def test_show_all_lists_austria():
+    galah.galah_config(atlas="Austria")
+    output = galah.show_all(lists=True)
+    assert output.shape[1] > 1
+
+def test_show_all_providers_austria():
+    galah.galah_config(atlas="Austria")
+    output = galah.show_all(providers=True)
+    assert output.shape[1] > 1
+
 def test_show_all_ranks_austria():
     galah.galah_config(atlas="Austria")
     output = galah.show_all(ranks=True)
@@ -98,13 +93,13 @@ def test_show_all_ranks_austria():
 # integration test for search_taxa() - have to test get_api_url
 def test_search_taxa_austria():
     galah.galah_config(atlas="Austria")
-    output = galah.search_taxa("Vulpes vulpes")
+    output = galah.search_taxa("Sehirus luctuosus")
     assert output['guid'][0] != None
 
 # test atlas_counts() can call search_taxa() function with single taxa
 def test_atlas_counts_austria():
     galah.galah_config(atlas="Austria")
-    taxa="Vulpes vulpes"
+    taxa="Sehirus luctuosus"
     assert galah.atlas_counts(taxa)['totalRecords'][0] > 0
 
 # testing filtering works when no taxa are entered
@@ -136,35 +131,35 @@ def test_atlas_counts_filters_groupby_austria():
 # test altas_counts() can call search_taxa() and using one filter, filter results with single taxa
 def test_atlas_counts_taxa_filter_austria():
     galah.galah_config(atlas="Austria")
-    taxa = "Vulpes vulpes"
+    taxa = "Sehirus luctuosus"
     filter1 = "year=2020"
     assert galah.atlas_counts(taxa,filters=filter1)['totalRecords'][0] > 0
 
 # test atlas counts for a taxa and empty filter
 def test_atlas_counts_taxa_filter_empty_austria():
     galah.galah_config(atlas="Austria")
-    taxa = "Vulpes vulpes"
+    taxa = "Sehirus luctuosus"
     filter1 = "year="
     assert galah.atlas_counts(taxa,filters=filter1)['totalRecords'][0] > 0
 
 # test atlas_counts() can call search_taxa() and using two filters with the same field, return results for a single taxa
 def test_astlas_counts_taxa_same_filter_austria():
     galah.galah_config(atlas="Austria")
-    taxa = "Vulpes vulpes"
+    taxa = "Sehirus luctuosus"
     f = ["year >=2018", "year <= 2022"]
     assert galah.atlas_counts(taxa, filters=f)['totalRecords'][0] > 0
 
 # test atlas_counts() can call search_taxa() and using two filters with the same field, return results for a single taxa
 def test_atlas_counts_taxa_same_filter_austria():
     galah.galah_config(atlas="Austria")
-    taxa = "Vulpes vulpes"
+    taxa = "Sehirus luctuosus"
     f = ["year >=2018", "year <= 2022", "year!=2020"]
     assert galah.atlas_counts(taxa, filters=f)['totalRecords'][0] > 0
 
 # test atlas counts with multiple taxa and filters, along with expand=True
 def test_atlas_counts_multiple_taxa_filters_separate_austria():
     galah.galah_config(atlas="Austria")
-    taxa_array = ["Vulpes vulpes", "Sehirus luctuosus", "Marmota marmota", "Anser anser"]
+    taxa_array = ["Sehirus luctuosus", "Marmota marmota", "Anser anser"]
     f = ["basis_of_record=HumanObservation","year=2022"]
     output = galah.atlas_counts(taxa=taxa_array, filters=f,group_by="species",expand=False)
     assert output.shape[0] > 0
@@ -172,7 +167,7 @@ def test_atlas_counts_multiple_taxa_filters_separate_austria():
 # test if you can group counts by a single group_by
 def test_atlas_counts_taxa_group_austria():
     galah.galah_config(atlas="Austria")
-    taxa = "Vulpes vulpes"
+    taxa = "Sehirus luctuosus"
     group_by = "year"
     output = galah.atlas_counts(taxa,group_by=group_by,expand=False)
     assert output.shape[0] > 0
@@ -181,7 +176,7 @@ def test_atlas_counts_taxa_group_austria():
 # group counts by multiple groups (expand=False in this one)
 def test_atlas_counts_taxa_groups_austria():
     galah.galah_config(atlas="Austria")
-    taxa = "Vulpes vulpes"
+    taxa = "Sehirus luctuosus"
     group_by = ["year","basis_of_record"]
     output = galah.atlas_counts(taxa,group_by=group_by,expand=False)
     assert output.shape[0] > 0
@@ -190,7 +185,7 @@ def test_atlas_counts_taxa_groups_austria():
 # group counts by multiple groups
 def test_atlas_counts_taxa_groups_expand_austria():
     galah.galah_config(atlas="Austria")
-    taxa = "Vulpes vulpes"
+    taxa = "Anser anser"
     group_by = ["year","basis_of_record"]
     output = galah.atlas_counts(taxa,group_by=group_by)
     assert output.shape[0] > 0
@@ -199,7 +194,7 @@ def test_atlas_counts_taxa_groups_expand_austria():
 # test altas_counts() can call search_taxa() and using two filter, filter results with single taxa
 def test_atlas_counts_taxa_filters_austria():
     galah.galah_config(atlas="Austria")
-    taxa = "Vulpes vulpes"
+    taxa = "Sehirus luctuosus"
     filters=["year=2020","basis_of_record=HumanObservation"]
     # test single taxa is working (search_taxa(), galah_filter() x 2)
     assert galah.atlas_counts(taxa,filters=filters)['totalRecords'][0] > 0
@@ -207,7 +202,7 @@ def test_atlas_counts_taxa_filters_austria():
 # test altas_counts() can call search_taxa() and using two filter, filter results with single taxa and group by one group
 def test_atlas_counts_taxa_filters_group_by_no_expand_austria():
     galah.galah_config(atlas="Austria")
-    taxa = "Vulpes vulpes"
+    taxa = "Anser anser"
     filters=["year=2020","basis_of_record=HumanObservation"]
     group_by="basis_of_record"
     output = galah.atlas_counts(taxa,filters=filters,group_by=group_by,expand=False)
@@ -218,13 +213,13 @@ def test_atlas_counts_taxa_filters_group_by_no_expand_austria():
 # test atlas_counts() can call search_taxa() function with multiple taxa
 def test_atlas_counts_multiple_taxa_austria():
     galah.galah_config(atlas="Austria")
-    taxa_array = ["Vulpes vulpes", "Sehirus luctuosus", "Marmota marmota", "Anser anser"]
+    taxa_array = ["Sehirus luctuosus", "Marmota marmota", "Anser anser"]
     assert galah.atlas_counts(taxa_array)['totalRecords'][0] > 0
 
 # test atlas_counts() can call search_taxa() function with multiple taxa
 def test_atlas_counts_multiple_taxa_austria():
     galah.galah_config(atlas="Austria")
-    taxa_array = ["Vulpes vulpes", "Sehirus luctuosus", "Marmota marmota", "Anser anser"]
+    taxa_array = ["Sehirus luctuosus", "Marmota marmota", "Anser anser"]
     group_by="year"
     output = galah.atlas_counts(taxa_array,group_by=group_by,expand=False)
     assert output['count'][0] > 0
@@ -233,7 +228,7 @@ def test_atlas_counts_multiple_taxa_austria():
 # test atlas_counts() can call search_taxa() function with multiple taxa
 def test_atlas_counts_multiple_taxa_group_by_austria():
     galah.galah_config(atlas="Austria")
-    taxa_array = ["Vulpes vulpes", "Sehirus luctuosus", "Marmota marmota", "Anser anser"]
+    taxa_array = ["Sehirus luctuosus", "Marmota marmota", "Anser anser"]
     group_by=["year",'basis_of_record']
     output = galah.atlas_counts(taxa_array,group_by=group_by)
     assert output['count'][0] > 0
@@ -242,14 +237,14 @@ def test_atlas_counts_multiple_taxa_group_by_austria():
 # test altas_counts() can call search_taxa() and using one filter, filter results with multiple taxa
 def test_atlas_counts_multiple_taxa_filter_austria():
     galah.galah_config(atlas="Austria")
-    taxa_array = ["Vulpes vulpes", "Sehirus luctuosus", "Marmota marmota", "Anser anser"]
+    taxa_array = ["Sehirus luctuosus", "Marmota marmota", "Anser anser"]
     filter1 = "year=2020"
     assert galah.atlas_counts(taxa_array,filters=filter1)['totalRecords'][0] > 0
 
 # test altas_counts() can call search_taxa() and using one filter, filter results with multiple taxa
 def test_atlas_counts_multiple_taxa_filter_group_by_austria():
     galah.galah_config(atlas="Austria")
-    taxa_array = ["Vulpes vulpes", "Sehirus luctuosus", "Marmota marmota", "Anser anser"]
+    taxa_array = ["Sehirus luctuosus", "Marmota marmota", "Anser anser"]
     filter1 = "year=2020"
     group_by="basis_of_record"
     output = galah.atlas_counts(taxa_array,filters=filter1,group_by=group_by,expand=False)
@@ -259,14 +254,14 @@ def test_atlas_counts_multiple_taxa_filter_group_by_austria():
 # test altas_counts() can call search_taxa() and using one filter, filter results with multiple taxa
 def test_atlas_counts_multiple_taxa_filters_austria():
     galah.galah_config(atlas="Austria")
-    taxa_array = ["Vulpes vulpes", "Sehirus luctuosus", "Marmota marmota", "Anser anser"]
+    taxa_array = ["Sehirus luctuosus", "Marmota marmota", "Anser anser"]
     filters = ["year=2020", "basis_of_record=HumanObservation"]
     assert galah.atlas_counts(taxa_array,filters=filters)['totalRecords'][0] > 0
 
 # test altas_counts() can call search_taxa() and using one filter, filter results with multiple taxa
 def test_atlas_counts_multiple_taxa_filters_group_by_austria():
     galah.galah_config(atlas="Austria")
-    taxa_array = ["Vulpes vulpes", "Sehirus luctuosus", "Marmota marmota", "Anser anser"]
+    taxa_array = ["Sehirus luctuosus", "Marmota marmota", "Anser anser"]
     filters = ["year=2020", "basis_of_record=HumanObservation"]
     group_by = "year"
     output = galah.atlas_counts(taxa_array,filters=filters,group_by=group_by,expand=False)
@@ -276,7 +271,7 @@ def test_atlas_counts_multiple_taxa_filters_group_by_austria():
 # test altas_counts() can call search_taxa() and using one filter, filter results with multiple taxa
 def test_atlas_counts_multiple_taxa_filters_group_by_multiple_austria():
     galah.galah_config(atlas="Austria")
-    taxa_array = ["Vulpes vulpes", "Sehirus luctuosus", "Marmota marmota", "Anser anser"]
+    taxa_array = ["Sehirus luctuosus", "Marmota marmota", "Anser anser"]
     filters = ["year>2010", "basis_of_record=HumanObservation"]
     group_by = ["country","year"]
     # county** , associatedOrganisms , day , decade
@@ -287,7 +282,7 @@ def test_atlas_counts_multiple_taxa_filters_group_by_multiple_austria():
 # test atlas_counts() can call search_taxa() and separate the counts for multiple taxa where one taxon is not present 
 def test_atlas_counts_invalid_multiple_taxa_separate_austria():
     galah.galah_config(atlas="Austria")
-    taxa_array = ["Dasyurus hallucatus", "Vulpes vulpes", "Sehirus luctuosus", "Anser anser"]
+    taxa_array = ["Dasyurus hallucatus", "Sehirus luctuosus", "Sehirus morio"]
     output = galah.atlas_counts(taxa_array,group_by="species",expand=False)
     assert output.shape[0] == len(taxa_array) - 1
     assert output.shape[1] == 2
@@ -295,7 +290,7 @@ def test_atlas_counts_invalid_multiple_taxa_separate_austria():
 # test atlas_counts() can call search_taxa() and separate the counts for multiple taxa
 def test_atlas_counts_multiple_taxa_separate_austria():
     galah.galah_config(atlas="Austria")
-    taxa_array = ["Vulpes vulpes", "Sehirus luctuosus", "Anser anser"]
+    taxa_array = ["Sehirus luctuosus", "Sehirus morio"]
     output = galah.atlas_counts(taxa_array, group_by="species",expand=False)
     assert output.shape[0] == len(taxa_array)
     assert output.shape[1] == 2
@@ -305,8 +300,8 @@ def test_atlas_counts_multiple_taxa_separate_austria():
 # test altas_counts() can call search_taxa() and using one filter, filter and group results with multiple taxa separated
 def test_atlas_counts_multiple_taxa_filters_group_by_separate_austria():
     galah.galah_config(atlas="Austria")
-    taxa_array = ["Vulpes vulpes", "Sehirus luctuosus", "Marmota marmota", "Anser anser"]
-    f = ["country = Austria", "year=2019"]
+    taxa_array = ["Sehirus luctuosus", "Marmota marmota", "Sehirus morio"]
+    f = ["basis_of_record=HumanObservation", "year>2000"]
     group_by = ["month","species"]
     output = galah.atlas_counts(taxa_array, filters=f, group_by=group_by, expand=True)
     assert output.shape[1] == len(group_by) + 1
@@ -315,8 +310,8 @@ def test_atlas_counts_multiple_taxa_filters_group_by_separate_austria():
 # test altas_counts() can call search_taxa() and using one filter, filter and group results with multiple taxa separated
 def test_atlas_counts_multiple_taxa_filter_group_by_multiple_separate_austria():
     galah.galah_config(atlas="Austria")
-    taxa_array = ["Vulpes vulpes", "Sehirus luctuosus", "Marmota marmota", "Anser anser"]
-    f = ["country = Austria"]
+    taxa_array = ["Sehirus luctuosus", "Marmota marmota", "Sehirus morio"]
+    f = ["basis_of_record=HumanObservation"]
     group_by = ["year", "month"]
     output = galah.atlas_counts(taxa_array, filters=f, group_by=group_by, expand=True)
     assert output.shape[1] == len(group_by) + 1
@@ -325,7 +320,7 @@ def test_atlas_counts_multiple_taxa_filter_group_by_multiple_separate_austria():
 # test altas_counts() can call search_taxa() and using one filter, filter and group results with multiple taxa separated
 def test_atlas_counts_multiple_taxa_filters_group_by_multiple_separate_expand_austria():
     galah.galah_config(atlas="Austria")
-    taxa_array = ["Vulpes vulpes", "Sehirus luctuosus", "Marmota marmota", "Anser anser"]
+    taxa_array = ["Sehirus luctuosus", "Marmota marmota", "Sehirus morio"]
     f = ["country = Austria", "year=2022"]
     group_by = ["year", "month"]
     output = galah.atlas_counts(taxa_array, filters=f, group_by=group_by, expand=True)
@@ -502,40 +497,40 @@ def test_search_values_austria():
 # first test for atlas_occurrences() - check if search_taxa() is working
 def test_atlas_occurrences_taxa_austria():
     galah.galah_config(atlas="Austria",email="ala4r@ala.org.au")
-    occurrences = galah.atlas_occurrences(taxa="Vulpes vulpes")
+    occurrences = galah.atlas_occurrences(taxa="Sehirus luctuosus")
     assert occurrences.shape[0] > 1
 
 # second test for atlas_occurrences() - check if galah_select() is working
 def test_atlas_occurrences_taxa_fields_austria():
     galah.galah_config(atlas="Austria",email="ala4r@ala.org.au")
-    occurrences = galah.atlas_occurrences(taxa="Vulpes vulpes",fields=['latitude', 'longitude'])
+    occurrences = galah.atlas_occurrences(taxa="Sehirus luctuosus",fields=['latitude', 'longitude'])
     # columns
     assert occurrences.shape[1] == 2
 
 # third test for atlas_occurrences() - check if galah_filter() is working with this
 def test_atlas_occurrences_taxa_filters_austria():
     galah.galah_config(atlas="Austria",email="ala4r@ala.org.au")
-    occurrences1 = galah.atlas_occurrences(taxa="Vulpes vulpes")
-    occurrences2 = galah.atlas_occurrences(taxa="Vulpes vulpes",filters="year=2020")
+    occurrences1 = galah.atlas_occurrences(taxa="Sehirus luctuosus")
+    occurrences2 = galah.atlas_occurrences(taxa="Sehirus luctuosus",filters="year=2020")
     assert occurrences2.shape[0] < occurrences1.shape[0]
 
 # fourth test for atlas_occurrences() - check if galah_select() and galah_filter() are working concurrently
 def test_atlas_occurrences_taxa_filter_fields_austria():
     galah.galah_config(atlas="Austria",email="ala4r@ala.org.au")
-    occurrences = galah.atlas_occurrences(taxa="Vulpes vulpes",filters="year=2020",fields=['latitude', 'longitude'])
+    occurrences = galah.atlas_occurrences(taxa="Sehirus luctuosus",filters="year=2020",fields=['latitude', 'longitude'])
     assert occurrences.shape[1] == 2
 
 # testing atlas occurrences with multiple filters
 def test_atlas_occurrences_taxa_filters_austria():
     galah.galah_config(atlas="Austria",email="ala4r@ala.org.au")
     filters=["year>2018","basis_of_record=HumanObservation"]
-    occurrences1 = galah.atlas_occurrences(taxa="Vulpes vulpes")
-    occurrences2 = galah.atlas_occurrences(taxa="Vulpes vulpes",filters=filters)
+    occurrences1 = galah.atlas_occurrences(taxa="Sehirus luctuosus")
+    occurrences2 = galah.atlas_occurrences(taxa="Sehirus luctuosus",filters=filters)
     assert occurrences2.shape[0] < occurrences1.shape[0]
 
 # testing atlas occurrences with multiple filters and fields
 def test_atlas_occurrences_taxa_filters_fields_austria():
     galah.galah_config(atlas="Austria",email="ala4r@ala.org.au")
-    occurrences = galah.atlas_occurrences(taxa="Vulpes vulpes",filters=["year>2018","basis_of_record=HumanObservation"],
+    occurrences = galah.atlas_occurrences(taxa="Sehirus luctuosus",filters=["year>2018","basis_of_record=HumanObservation"],
                                            fields=['latitude', 'longitude'])
     assert occurrences.shape[1] == 2

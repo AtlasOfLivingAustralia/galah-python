@@ -1,11 +1,12 @@
-import requests,urllib.parse
+import requests,urllib.parse,math
 import pandas as pd
 
 from .search_taxa import search_taxa
 from .get_api_url import get_api_url,readConfig
+from .atlas_occurrences import atlas_occurrences
 from .common_dictionaries import ATLAS_KEYWORDS,ATLAS_RANKS,DEPTH_STRINGS,FRANCE_TRANSLATION_RANKS
 from .common_dictionaries import VERNACULAR_NAMES,ATLAS_SPECIES_FIELDS,TAXONCONCEPT_NAMES,FRANCE_FIELDS
-from .common_functions import add_filters
+from .common_functions import add_filters,add_predicates
 
 import sys
 
@@ -24,6 +25,8 @@ def atlas_species(taxa=None,
         taxa : string / list
             one or more scientific names. Use ``galah.search_taxa()`` to search for valid scientific names.  
         rank : string
+            the rank you ultimately want to get names for, i.e. "genus" or "species"
+        filters : string
             filters, in the form ``field`` ``logical`` ``value`` (e.g. ``"year=2021"``)
         verbose : 
             If ``True``, galah gives you the URLs used to query all the data.  Default to ``False``.
@@ -49,9 +52,7 @@ def atlas_species(taxa=None,
     atlas = configs['galahSettings']['atlas'] 
 
     # first, check if the user has specified a taxa
-    if taxa is None:
-        raise ValueError("You need to specify a name for this function to work, i.e. \"Heleioporus\"")
-    elif type(taxa) is not str and type(taxa) is not list:
+    if type(taxa) is not str and type(taxa) is not list and taxa is not None:
         raise ValueError("Only a string or list can be specified for taxa names")
 
     # check to see if rank is in possible ranks for atlas
@@ -59,7 +60,11 @@ def atlas_species(taxa=None,
         raise ValueError("{} is not a valid rank for the {} atlas.  Possible ranks are:\n\n{}\n".format(rank,atlas,", ".join(ATLAS_SPECIES_FIELDS[atlas])))
 
     # get initial url
-    baseURL = get_api_url(column1='api_name', column1value='records_species')
+    if atlas not in ["Global","GBIF"]:
+        baseURL = get_api_url(column1='api_name', column1value='records_species')
+    else:
+        # is this correct?
+        baseURL = get_api_url(column1='api_name', column1value='records_occurrences')
 
     # raise warning - not sure how to fix it
     if atlas in ["Spain"]:
@@ -67,48 +72,78 @@ def atlas_species(taxa=None,
     if atlas in ["Sweden"]:
         print("There have been some issues getting taxonomy from the Swedish atlas, as they don't store names of taxon higher than species.")
 
-
-    # check if filters are specified
-    if filters is not None:
-
-        # check the type of variable filters is
-        if type(filters) is list or type(filters) is str:
-
-            # add filters to URL
-            URL = add_filters(URL=URL,atlas=atlas,filters=filters)
-
-        # else, make sure that the filters is in the following format
-        else:
-            raise TypeError("filters should only be a list, and are in the following format:\n\nfilters=[\'year:2020\']")
-    
-    else:
-
-        # get base URL for querying
-        URL = baseURL + "?"
-
     # get the taxonConceptID for taxa
     if atlas in ["Australia","Austria","Brazil","France","Guatemala","Spain","Sweden"]:
+
+        # if there is no taxa, just add question mark
+        if taxa is None:
+            
+            URL = baseURL + "?"
+
+        # if there is taxa, add these as fields on the URL
+        else:
+            taxon_info = search_taxa(taxa)
+            if atlas in ["France"]:
+                taxon_rank = FRANCE_TRANSLATION_RANKS[taxon_info[ATLAS_RANKS[atlas]][0]]
+            else:
+                taxon_rank = taxon_info[ATLAS_RANKS[atlas]][0]
+            taxonConceptID = taxon_info[ATLAS_KEYWORDS[atlas]][0]
+            if atlas in ["Brazil","Spain"] and rank == "subspecies":
+                URL = baseURL + "?fq=%28lsid%3A" + urllib.parse.quote(str(taxonConceptID)) # did have fq=
+            else:
+                URL = baseURL + "?fq=%28lsid%3A" + urllib.parse.quote(str(taxonConceptID)) 
+        
+        # check if filters are specified
+        if filters is not None:
+
+            # check the type of variable filters is
+            if type(filters) is list or type(filters) is str:
+
+                # add filters to URL
+                if taxa is None:
+                    URL = add_filters(URL=URL+"fq=",atlas=atlas,filters=filters) #URL=URL
+                    if atlas in ["Brazil","Spain"] and rank == "subspecies":
+                    # get base URL for querying
+                        URL += "&facets={}".format("subspecies_name")
+                    else:
+                        URL += "&facets={}".format(rank)
+                else:
+                    URL = add_filters(URL=URL+"%20AND%20",atlas=atlas,filters=filters)
+                    if atlas in ["Brazil","Spain"] and rank == "subspecies":
+                    # get base URL for querying
+                        URL += "%29&facets={}".format("subspecies_name")
+                    else:
+                        URL += "%29&facets={}".format(rank)
+
+            # else, make sure that the filters is in the following format
+            else:
+                raise TypeError("filters should only be a list, and are in the following format:\n\nfilters=[\'year:2020\']")
+        
+        else:
+            
+            # get base URL for querying
+            if atlas in ["Brazil","Spain"] and rank == "subspecies":
+                URL += "%29&facets={}".format("subspecies_name")
+            else:
+                URL += "%29&facets={}".format(rank)
+        
+        # check to see if user wants the query URL
+        if verbose:
+            print("URL for querying:\n\n{}\n".format(URL))
+
+        # get url and transform from a text string to a list
+        response = requests.get(URL)
+        all_ids = response.text[1:-2].split('"\n"')[1:]
+        print(sorted(all_ids)[:2])
+        
+    elif atlas in ["Global","GBIF"]:
         taxon_info = search_taxa(taxa)
-        if atlas in ["France"]:
-            taxon_rank = FRANCE_TRANSLATION_RANKS[taxon_info[ATLAS_RANKS[atlas]][0]]
-        else:
-            taxon_rank = taxon_info[ATLAS_RANKS[atlas]][0]
-        taxonConceptID = taxon_info[ATLAS_KEYWORDS[atlas]][0]
-        if atlas in ["Brazil","Spain"] and rank == "subspecies":
-            URL += "&fq=%28lsid%3A" + urllib.parse.quote(str(taxonConceptID)) + "%29&facets={}".format("subspecies_name")
-        else:
-            URL += "&fq=%28lsid%3A" + urllib.parse.quote(str(taxonConceptID)) + "%29&facets={}".format(rank)
+        taxon_rank = taxon_info[ATLAS_RANKS[atlas]][0].lower()
+        test_list = atlas_occurrences(taxa=taxa,filters=filters,species_list=True,verbose=verbose)
+        all_ids = list(set(test_list['species']))
+        all_ids = [id for id in all_ids if str(id) != "NaN" and str(id) != "nan"]
     else:
         raise ValueError("Atlas {} is not taken into account".format(atlas))
-
-    # check to see if user wants the query URL
-    if verbose:
-        print("URL for querying:\n\n{}\n".format(URL))
-
-    # get url and transform from a text string to a list
-    response = requests.get(URL)
-    all_ids = response.text[1:-2].split('"\n"')[1:]
-    print(all_ids)
 
     # check if ids couldn't be found
     if not all_ids:
@@ -122,11 +157,11 @@ def atlas_species(taxa=None,
     index = ATLAS_SPECIES_FIELDS[atlas].index(rank) + 1
     temp_data_dict = {entry:[] for entry in ATLAS_SPECIES_FIELDS[atlas][:index]}
     temp_data_dict2 = {"vernacular_name": [], "author": [], "guid": []}
-    data_dict = temp_data_dict | temp_data_dict2
+    data_dict = {**temp_data_dict, **temp_data_dict2}
     
     # species_lookup for each individual species
     # names_search_single is for APIs without namematching service
-    if atlas in ["Austria","France","Guatemala","Sweden"]:
+    if atlas in ["Austria","France","Global","GBIF","Guatemala","Sweden"]:
         baseURL = get_api_url(column1='api_name', column1value='names_search_single')
     else:
         baseURL = get_api_url(column1='api_name', column1value='species_lookup')
@@ -139,7 +174,7 @@ def atlas_species(taxa=None,
             URL = baseURL + "/" + urllib.parse.quote(species_guid)
         elif atlas in ["Australia"]:
             URL = baseURL.replace("{id}", urllib.parse.quote(species_guid))
-        elif atlas in ["Austria","France","Guatemala","Sweden"]:
+        elif atlas in ["Austria","France","Global","GBIF","Guatemala","Sweden"]:
             URL = baseURL.replace("{name}", urllib.parse.quote(species_guid))
         else:
             raise ValueError("Atlas {} is not taken into account".format(atlas))
@@ -151,7 +186,6 @@ def atlas_species(taxa=None,
         # get response from the API
         response = requests.get(URL)
         response_json = response.json()
-        #print(response_json)
         
         # set up arrays to loop over for different atlases
         if atlas in ["Austria","Guatemala","Sweden"]:
@@ -162,6 +196,11 @@ def atlas_species(taxa=None,
             array_depth = response_json[DEPTH_STRINGS[atlas]]['taxa']
             array_others = response_json[DEPTH_STRINGS[atlas]]['taxa']
             array_vernacular = response_json[DEPTH_STRINGS[atlas]]['taxa']
+        elif atlas in ["Global","GBIF"]:
+            array_depth = response_json
+            array_others = response_json
+            response_vernacular = requests.get("https://api.gbif.org/v1/species/{}/vernacularNames".format(response_json[TAXONCONCEPT_NAMES[atlas]["guid"]]))
+            array_vernacular = response_vernacular.json()['results']
         else:
             array_depth = response_json[DEPTH_STRINGS[atlas]]
             array_others = response_json['taxonConcept']
@@ -233,7 +272,7 @@ def atlas_species(taxa=None,
 
         # get common names (vernacular names)
         if array_vernacular and type(array_vernacular) is list:
-            
+
             # do a check for Austria and France
             if len(array_vernacular) > 1 and atlas in ["Austria","France","Guatemala","Sweden"]:
                 for entry in array_vernacular:
@@ -258,20 +297,13 @@ def atlas_species(taxa=None,
         
         # haven't come across this loop before; write it when I come to it 
         elif array_vernacular:
-            print(type(array_vernacular))
-            print(array_vernacular)
-            raise ValueError("This loop needs to be written.")
-        
+            if VERNACULAR_NAMES[atlas][1] in array_vernacular:
+                data_dict["vernacular_name"].append(array_vernacular[VERNACULAR_NAMES[atlas][1]])
+            else:
+                data_dict["vernacular_name"].append("")
         # else, no vernacular name
         else:
             data_dict["vernacular_name"].append("")
-
-    #print(data_dict)
-    #for entry in data_dict:
-    #    print(entry)
-    #    print(len(data_dict[entry]))
-    #    print(data_dict[entry])
-    print(pd.DataFrame.from_dict(data_dict))
 
     # index any extra or faulty entries in the dictionary
     indexes_to_delete = []

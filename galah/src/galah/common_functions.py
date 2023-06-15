@@ -7,6 +7,9 @@ def add_predicates(predicates=None,
     if type(filters) == str:
         filters = [filters]
 
+    if any("!=" in f for f in filters):
+        raise ValueError("!= cannot be used with GBIF atlas.  Run separate queries.")
+
     for f in filters:
 
         predicates.append(galah_filter(f,occurrencesGBIF=True))
@@ -25,15 +28,19 @@ def add_filters(URL=None,
 
     # check if the atlas being used is GBIF
     if atlas in ["Global","GBIF"]:
-        for f in filters:
-            URL += "&{}".format(galah_filter(f,ifgroupBy=ifGroupBy))
+
+        # check for filters that are not valid with GBIF
+        if any("!=" in f for f in filters):
+            raise ValueError("!= cannot be used with GBIF atlas.  Run separate queries.")
+        else:
+            for f in filters:
+                URL += "&{}".format(galah_filter(f,ifgroupBy=ifGroupBy))
 
     # filters for all other atlases
     else:
 
         # check to see if taxa are already in the URL - if not, add fq
         if "fq=" not in URL:
-            print("here")
             URL += "fq=%28"
         else:
             URL += "%28"

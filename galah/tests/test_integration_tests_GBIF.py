@@ -267,21 +267,20 @@ def test_atlas_counts_multiple_taxa_filters_group_by_multiple_separate_expand_gl
     assert output.shape[1] == len(group_by) + 1
     assert output['count'][0] >= 0 # checks that all species counts are greater than or equal zero
 
-'''
 # checking if atlas species can successfully call search_taxa() and get a non-empty dataframe\
 def test_atlas_species_Global_species_global():
-    galah.galah_config(atlas="Global")
+    galah.galah_config(atlas="Global",email="ala4r@ala.org.au",usernameGBIF="atlasoflivingaustralia",passwordGBIF="galah-gbif-test-login")
     taxa = "Heleioporus"
     species_table = galah.atlas_species(taxa=taxa)
     assert species_table.shape[0] > 0
 
 # checking if atlas species can successfully call search_taxa() and get a non-empty dataframe
 def test_atlas_species_Global_family_global():
-    galah.galah_config(atlas="Global")
+    galah.galah_config(atlas="Global",email="ala4r@ala.org.au",usernameGBIF="atlasoflivingaustralia",passwordGBIF="galah-gbif-test-login")
     taxa = "Limnodynastidae"
     species_table = galah.atlas_species(taxa=taxa)
     assert species_table.shape[0] > 0
-'''
+
 # search_all() - assertions using "AMBIGUOUS_COLLECTION"
 def test_search_all_assertions_global():
     galah.galah_config(atlas="Global")
@@ -289,8 +288,6 @@ def test_search_all_assertions_global():
     total_search_all = galah.search_all(assertions="collection")
     assert total_search_all.shape[0] < total_show_all.shape[0]
 
-### TODO: FIGURE THIS OUT
-#'''
 # search_all() - assertions using "collection" and column name "description"
 def test_search_all_assertions_column_name_global():
     galah.galah_config(atlas="Global")

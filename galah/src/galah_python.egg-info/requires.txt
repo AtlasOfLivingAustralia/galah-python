@@ -9,3 +9,4 @@ glob2
 bytesbufio
 shutils
 setuptools
+unittest2

@@ -5,6 +5,7 @@ from .common_functions import add_filters
 
 def galah_group_by(URL,
                    group_by=None,
+                   total_group_by=False,
                    filters=None,
                    expand=True,
                    verbose=False
@@ -181,6 +182,10 @@ def galah_group_by(URL,
             counts = pd.DataFrame(dict_values).reset_index(drop=True)
             counts.sort_values(by=group_by)
 
+            # if user wants total, return total number of rows
+            if total_group_by:
+                return pd.DataFrame({'count': [counts.shape[0]]})
+
             # return dataFrame with all counts values
             return counts
 
@@ -259,6 +264,10 @@ def galah_group_by(URL,
             # get all counts into a dictionary and sort them
             counts = pd.DataFrame(dict_values).reset_index(drop=True)
             counts.sort_values(by=group_by)
+
+            # if user wants total, return total number of rows
+            if total_group_by:
+                return pd.DataFrame({'count': [counts.shape[0]]})
 
             # return dataFrame with all counts values
             return counts

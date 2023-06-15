@@ -17,6 +17,7 @@ def atlas_occurrences(taxa=None,
                       fields=None,
                       assertions=None,
                       use_data_profile=False,
+                      species_list=False,
                       ):
     """
     The most common form of data stored by living atlases are observations of individual life forms, known as 'occurrences'. 
@@ -235,11 +236,15 @@ def atlas_occurrences(taxa=None,
                 # create authentication key
                 authentication = HTTPBasicAuth(configs['galahSettings']['usernameGBIF'],configs['galahSettings']['passwordGBIF'])
                 # create payload
+                if species_list:
+                    format="SPECIES_LIST"
+                else:
+                    format="SIMPLE_CSV"
                 payload = json.dumps({
-                    "creator": "atlasoflivingaustralia", # username
+                    "creator": configs['galahSettings']['usernameGBIF'], # username
                     "notificationAddresses": [configs['galahSettings']['email']], # change from hard-coded
                     "sendNotification": "false",
-                    "format": "SIMPLE_CSV",
+                    "format": format,
                     "predicate": {
                         "type": "and",
                         "predicates": predicates
@@ -252,9 +257,10 @@ def atlas_occurrences(taxa=None,
                     print("payload: \n\n{}\n".format(payload))
                 # check counts
                 counts = atlas_counts(taxa,filters=filters)
-                print("total records for occurrences: {}".format(counts['totalRecords'][0]))
-                if int(counts['totalRecords'][0]) > 101000:
-                    raise ValueError("Your data request of {} is too large. \nThe maximum number of requests is 101,000.\nPlease filter your data and use atlas_counts() to get the counts to a reasonable number.".format(counts['totalRecords'][0]))
+                if not species_list:
+                    print("total records for occurrences: {}".format(counts['totalRecords'][0]))
+                    if int(counts['totalRecords'][0]) > 101000:
+                        raise ValueError("Your data request of {} is too large. \nThe maximum number of requests is 101,000.\nPlease filter your data and use atlas_counts() to get the counts to a reasonable number.".format(counts['totalRecords'][0]))
                 # get resposne
                 response = requests.post(URL,headers=headers,auth=authentication,data=payload)
             else:

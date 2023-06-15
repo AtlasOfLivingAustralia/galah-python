@@ -1,6 +1,7 @@
 Metadata-Version: 2.1
 Name: galah-python
-Version: 0.1.0
+Version: 0.2.0
+Summary: Get counts and information on species from many different atlases
 Home-page: 
 Author: Amanda Buyan
 Author-email: amanda.buyan@csiro.au

@@ -350,6 +350,12 @@ def test_atlas_species_Australia_family_australia():
     species_table = galah.atlas_species(taxa=taxa,rank="subspecies")
     assert species_table.shape[0] > 0
 
+def test_atlas_species_Australia_filter():
+    galah.galah_config(atlas="Australia")
+    full_species_table = galah.atlas_species(taxa="Rodentia")
+    filtered_species_table = galah.atlas_species(taxa="Rodentia",filters="stateProvince=Northern Territory")
+    assert full_species_table.shape[0] > filtered_species_table.shape[0]
+
 # test galah_group_by with one filter (galah_filter()) and one group
 def test_galah_group_by_filter_australia():
     # third test to test single filter

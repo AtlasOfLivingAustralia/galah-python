@@ -11,6 +11,7 @@ from .common_dictionaries import ATLAS_KEYWORDS,COUNTS_NAMES,atlases
 def atlas_counts(taxa=None,
                  filters=None,
                  group_by=None,
+                 total_group_by=False,
                  expand=True,
                  verbose=False,
                  use_data_profile=False,
@@ -92,19 +93,7 @@ def atlas_counts(taxa=None,
                          "If you don't want to use a data quality profile, set it to None by typing the following:\n\n"
                          "galah.galah_config(data_profile=\"None\")"
                          )
-
-        # create headers for GBIF
-    # did have username and notification thing here
-    headers = {
-        "User-Agent": "galah-python v0.1.0",
-        "X-USER-AGENT": "galah-python v0.1.0",
-        "Content-type": "application/json",
-        "Accept": "application/json",
-    }
-
-    # try this
-    predicates = []
-
+    
     # if there is no taxa, assume you will get the total number of records in the ALA
     if taxa is None:
 
@@ -117,9 +106,6 @@ def atlas_counts(taxa=None,
                 # check the type of variable filters is
                 if type(filters) is list or type(filters) is str:
                    
-                    # if atlas in ["Global","GBIF"]:
-                    #     predicates = add_predicates(predicates=predicates,filters=filters)
-                    # else:
                     URL = add_filters(URL=baseURL,atlas=atlas,filters=filters)
 
                 # else, make sure that the filters is in the following format
@@ -151,9 +137,9 @@ def atlas_counts(taxa=None,
             # return a grouped dataFrame
             if configs["galahSettings"]['atlas'] not in ["Global","GBIF"]:
                 URL = baseURL + "fq="
-                return galah_group_by(URL, group_by=group_by, filters=filters, expand=expand, verbose=verbose)
+                return galah_group_by(URL, group_by=group_by, filters=filters, expand=expand, verbose=verbose, total_group_by=total_group_by)
             else:
-                return galah_group_by(baseURL, group_by=group_by, filters=filters, expand=expand, verbose=verbose)
+                return galah_group_by(baseURL, group_by=group_by, filters=filters, expand=expand, verbose=verbose, total_group_by=total_group_by)
 
     # if taxa exist, do this
     elif type(taxa) is str or type(taxa) is list:
@@ -184,8 +170,6 @@ def atlas_counts(taxa=None,
 
         # add this ID to the URL
         if atlas in ["Global","GBIF"]:
-            #for tid in taxonConceptID:
-            #    predicates.append({"type":"equals","key":"TAXON_KEY","value":str(tid)})
             # revert to this if above doesn't work
             URL = baseURL + "".join(["taxonKey={}&".format(urllib.parse.quote(str(tid))) for tid in taxonConceptID])
         else:
@@ -198,9 +182,9 @@ def atlas_counts(taxa=None,
             if filters is not None:
                 if configs["galahSettings"]['atlas'] not in ["Global","GBIF"]:
                     URL += "%20AND%20"
-                return galah_group_by(URL, group_by=group_by, filters=filters, expand=expand, verbose=verbose)
+                return galah_group_by(URL, group_by=group_by, filters=filters, expand=expand, verbose=verbose, total_group_by=total_group_by)
             else:
-                return galah_group_by(URL, group_by=group_by, filters=filters, expand=expand, verbose=verbose)
+                return galah_group_by(URL, group_by=group_by, filters=filters, expand=expand, verbose=verbose, total_group_by=total_group_by)
 
         else:
 
@@ -219,7 +203,7 @@ def atlas_counts(taxa=None,
                         raise ValueError("The current iteration of GBIF and galah does not support != as an option.")
                     
                     # add filters to URL
-                    URL = add_filters(URL=URL,atlas=atlas,filters=filters) + "&pageSize=0"
+                    URL = add_filters(URL=URL+"%20AND%20",atlas=atlas,filters=filters) + "&pageSize=0"
 
                 # else, make sure that the filters is in the following format
                 else:
@@ -233,24 +217,6 @@ def atlas_counts(taxa=None,
                 # check if it's separate one last time
                     URL += "&flimit=10000&pageSize=0"
 
-        #if atlas in ["Global","GBIF"]:
-        #    URL = baseURL
-
-        # get results form the URL
-        # if atlas in ["Global","GBIF"]:
-        #     payload = json.dumps({
-        #             "predicate": {
-        #                 "type": "and",
-        #                 "predicates": predicates
-        #             }
-        #     })
-        #     # check to see if the user wants the URL for querying
-        #     if verbose:
-        #         print("URL for querying:\n\n{}\n".format(URL))
-        #         print("payload:\n{}".format(payload))
-        #     response = requests.get(URL,headers=headers,data=payload)
-        # else:
-        #     # check to see if the user wants the URL for querying
         if verbose:
             print("URL for querying:\n\n{}\n".format(URL))
         response = requests.get(URL)
