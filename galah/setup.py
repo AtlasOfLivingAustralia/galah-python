@@ -17,7 +17,7 @@ setup(
     keywords='galah',
     #'tempfile'
     install_requires=[
-        'numpy','pandas','requests','urllib3','TIME-python','zip-files','configparser','glob2','bytesbufio','shutils','setuptools'
+        'numpy','pandas','requests','urllib3','TIME-python','zip-files','configparser','glob2','bytesbufio','shutils','setuptools','unittest2'
     ],
     include_package_data = True,
     package_data = {
