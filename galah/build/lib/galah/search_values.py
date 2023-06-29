@@ -1,4 +1,5 @@
 from .show_values import show_values
+from .get_api_url import readConfig
 
 def search_values(field=None,
                   value=None,
@@ -36,14 +37,18 @@ def search_values(field=None,
         raise ValueError("Please specify the field you want to see query-able values for, i.e. field=\"basisOfRecord\"")
     elif type(value) is not str:
         raise TypeError("show_values() only takes a single string as the field argument, i.e. field=\"basisOfRecord\"")
-
+    
+    # get initial data frame
     dataFrame = show_values(field=field)
     
+    # check for column name to search by
     if column_name is None:
         column_name = dataFrame.columns[-1]
+
     # throw ValueError if column_name variable is not a string
     elif type(column_name) is not str:
         raise ValueError("Only strings are a valid query for the column_name variable")
+    
     # check to see if the user input the correct variable type; else, throw value error
     if type(value) is str:
         return dataFrame.loc[dataFrame[column_name].astype(str).str.contains(value,case=False, na=False)].sort_values(column_name,key=lambda x: x.str.len())

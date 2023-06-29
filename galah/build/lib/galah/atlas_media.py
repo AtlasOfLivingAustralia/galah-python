@@ -69,10 +69,10 @@ def atlas_media(taxa=None,
 
     .. prompt:: python
 
-        filters = ["year=2020","decimalLongitude>153.0"]
-        galah.atlas_media(taxa="Ornithorhynchus anatinus",filters=filters)
+        galah.galah_config(atlas="Australia",email="youremail@example.com")
+        galah.atlas_media(taxa="Ornithorhynchus anatinus",filters=["year=2020","decimalLongitude>153.0")
 
-    .. program-output:: python -c "import galah; filters = [\\\"year=2020\\\",\\\"decimalLongitude>153.0\\\"];print(galah.atlas_media(taxa=\\\"Ornithorhynchus anatinus\\\",filters=filters))"
+    .. program-output:: python -c "import galah; galah.galah_config(atlas=\\\"Australia\\\",email=\\\"amanda.buyan@csiro.au\\\");print(galah.atlas_media(taxa=\\\"Ornithorhynchus anatinus\\\",filters=[\\\"year=2020\\\",\\\"decimalLongitude>153.0\\\"]))"
     
     """
 

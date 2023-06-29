@@ -24,6 +24,24 @@ Australia,spatial,spatial_layers,https://spatial.ala.org.au/ws/layers,show_all-f
 Australia,species,species_children,https://bie-ws.ala.org.au/ws/childConcepts/{id},atlas_taxonomy,TRUE
 Australia,species,species_lookup,https://bie-ws.ala.org.au/ws/species/{id},atlas_taxonomy,TRUE
 Austria,collections,collections_collections,https://collectory.biodiversityatlas.at/ws/collection,show_all-collections,TRUE
+Austria,collections,collections_datasets,https://collectory.biodiversityatlas.at/ws/dataResource,show_all-datasets,TRUE
+Austria,collections,collections_providers,https://collectory.biodiversityatlas.at/ws/dataProvider,show_all-providers,TRUE
+Austria,images,image_licences,https://images.biodiversityatlas.at/ws/licence,show_all-licences,TRUE
+Austria,images,image_metadata,https://images.biodiversityatlas.at/ws/image/,media_metadata,FALSE
+Austria,lists,lists_all,https://lists.biodiversityatlas.at/ws/speciesList/,show_all-lists,TRUE
+Austria,lists,lists_lookup,https://lists.biodiversityatlas.at/ws/speciesListItems/{list_id},show_values-lists,TRUE
+Austria,logger,logger_reasons,https://logger.biodiversityatlas.at/service/logger/reasons,show_all-reasons,TRUE
+Austria,records,records_assertions,https://biocache-ws.biodiversityatlas.at/assertions/codes,show_all-assertions,TRUE
+Austria,records,records_counts,https://biocache-ws.biodiversityatlas.at/occurrences/search,atlas_counts,TRUE
+Austria,records,records_facets,https://biocache-ws.biodiversityatlas.at/occurrence/facets,"atlas_counts, show_values-fields",TRUE
+Austria,records,records_fields,https://biocache-ws.biodiversityatlas.at/index/fields,show_all-fields,TRUE
+Austria,records,records_occurrences,https://biocache-ws.biodiversityatlas.at/occurrences/offline/download,atlas_occurrences,TRUE
+Austria,records,records_query,https://biocache-ws.biodiversityatlas.at/webportal/params,atlas_occurrences,TRUE
+Austria,records,records_species,https://biocache-ws.biodiversityatlas.at/occurrences/facets/download,atlas_species,TRUE
+Austria,spatial,spatial_layers,https://spatial.biodiversityatlas.at/ws/layers,show_all-fields,TRUE
+Austria,species,names_search_single,https://bie-ws.biodiversityatlas.at/search?q={name}&pageSize=5,search_taxa,TRUE
+Austria,species,species_children,https://bie-ws.biodiversityatlas.at/childConcepts/,atlas_taxonomy,TRUE
+Austria,species,species_lookup,https://bie-ws.biodiversityatlas.at/species,atlas_taxonomy,TRUE
 Brazil,collections,collections_collections,https://collectory.sibbr.gov.br/collectory/ws/collection,show_all-collections,TRUE
 Brazil,collections,collections_datasets,https://collectory.sibbr.gov.br/collectory/ws/dataResource,show_all-datasets,TRUE
 Brazil,collections,collections_providers,https://collectory.sibbr.gov.br/collectory/ws/dataProvider,show_all-providers,TRUE
@@ -42,6 +60,26 @@ Brazil,spatial,spatial_layers,https://portal-espacial.sibbr.gov.br/spatial-hub/l
 Brazil,species,names_search_single,https://bie-webservice.sibbr.gov.br/bie-index/search?q={name}&pageSize=5,search_taxa,TRUE
 Brazil,species,species_children,https://bie-webservice.sibbr.gov.br/bie-index/childConcepts/,atlas_taxonomy,TRUE
 Brazil,species,species_lookup,https://bie-webservice.sibbr.gov.br/bie-index/species,atlas_taxonomy,TRUE
+France,collections,collections_collections,https://openobs.mnhn.fr/collectory/ws/collection,show_all-collections,TRUE
+France,collections,collections_datasets,https://openobs.mnhn.fr/collectory/ws/dataResource,show_all-datasets,TRUE
+France,collections,collections_providers,https://openobs.mnhn.fr/collectory/ws/dataProvider,show_all-providers,TRUE
+France,records,records_assertions,https://openobs.mnhn.fr/biocache-service/assertions/codes,show_all-assertions,TRUE
+France,records,records_counts,https://openobs.mnhn.fr/biocache-service/occurrences/search,atlas_counts,TRUE
+France,records,records_facets,https://openobs.mnhn.fr/biocache-service/occurrence/facets,"atlas_counts, show_values-fields",TRUE
+France,records,records_fields,https://openobs.mnhn.fr/biocache-service/index/fields,show_all-fields,TRUE
+France,records,records_occurrences,https://openobs.mnhn.fr/biocache-service/occurrences/offline/download,atlas_occurrences,TRUE
+France,records,records_query,https://openobs.mnhn.fr/biocache-service/webportal/params,atlas_occurrences,TRUE
+France,records,records_species,https://openobs.mnhn.fr/biocache-service/occurrences/facets/download,atlas_species,TRUE
+France,name-matching,names_lookup,https://taxref.mnhn.fr/api/taxa/,search_identifiers,TRUE
+France,name-matching,names_search_single,https://taxref.mnhn.fr/api/taxa/search?scientificNames={name}&page=1&size=5,search_taxa,TRUE
+Global,species,names_search_single,https://api.gbif.org/v1/species/match?verbose=FALSE&name={name},search_taxa,TRUE
+Global,collections,collections_providers,https://api.gbif.org/v1/organization,show_all-providers,TRUE
+Global,collections,collections_collections,https://api.gbif.org/v1/grscicoll/collection,show_all-collections,TRUE
+Global,collections,collections_collections_search,https://api.gbif.org/v1/grscicoll/search,search_all-collections,TRUE
+Global,collections,collections_datasets,https://api.gbif.org/v1/dataset,show_all-datasets,TRUE
+Global,collections,collections_datasets_search,https://api.gbif.org/v1/dataset/search,search_all-datasets,TRUE
+Global,records,records_counts,https://api.gbif.org/v1/occurrence/search,"atlas_counts, show_values-fields",TRUE
+Global,records,records_occurrences,https://api.gbif.org/v1/occurrence/download/request,atlas_occurrences,TRUE
 Spain,collections,collections_collections,https://colecciones.gbif.es/ws/collection,show_all-collections,TRUE
 Spain,collections,collections_datasets,https://colecciones.gbif.es/ws/dataResource,show_all-datasets,TRUE
 Spain,collections,collections_providers,https://colecciones.gbif.es/ws/dataProvider,show_all-providers,TRUE
