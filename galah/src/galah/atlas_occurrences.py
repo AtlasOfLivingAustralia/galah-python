@@ -18,6 +18,7 @@ def atlas_occurrences(taxa=None,
                       assertions=None,
                       use_data_profile=False,
                       species_list=False,
+                      status_accepted=True
                       ):
     """
     The most common form of data stored by living atlases are observations of individual life forms, known as 'occurrences'. 
@@ -54,7 +55,11 @@ def atlas_occurrences(taxa=None,
             Using "assertions" returns all quality assertion-related columns. These columns are data quality checks run by each living atlas. The list of assertions is shown by ``galah.show_all(assertions=True)``.
         use_data_profile : string
             A profile name. Should be a string - the name or abbreviation of a data quality profile to apply to the query. Valid values can be seen using ``galah.show_all(profiles=True)``
-
+        species_list : logical
+            Denotes whether or not you want a species list for GBIF.  Default to ``False``.  For species lists, refer to ``atlas_species``
+        status_accepted : logical
+            Denotes whether or not you want only accepted taxonomic ranks for GBIF.  Default to ``True``.  For species lists, refer to ``atlas_species``
+    
     Returns
     -------
         An object of class ``pandas.DataFrame``.
@@ -238,6 +243,8 @@ def atlas_occurrences(taxa=None,
                 # create payload
                 if species_list:
                     format="SPECIES_LIST"
+                    if status_accepted:
+                        predicates.append({"type": "equals","key":"TAXONOMIC_STATUS","value":"ACCEPTED"})
                 else:
                     format="SIMPLE_CSV"
                 payload = json.dumps({
@@ -261,11 +268,12 @@ def atlas_occurrences(taxa=None,
                     print("total records for occurrences: {}".format(counts['totalRecords'][0]))
                     if int(counts['totalRecords'][0]) > 101000:
                         raise ValueError("Your data request of {} is too large. \nThe maximum number of requests is 101,000.\nPlease filter your data and use atlas_counts() to get the counts to a reasonable number.".format(counts['totalRecords'][0]))
-                # get resposne
+                # get response
                 response = requests.post(URL,headers=headers,auth=authentication,data=payload)
             else:
                 response = requests.get(URL)
-            
+
+            # get job number
             job_number = response.text
 
             # query the api
@@ -329,9 +337,6 @@ def atlas_occurrences(taxa=None,
                         "\n         taxa.taxa([\"Osphranter rufus\",\"Vulpes vulpes\",\"Macropus giganteus\",\"Phascolarctos cinereus\"])")
     
     elif filters is not None:
-    
-        # start URL
-        URL = baseURL + "&fq=%28"
 
         if type(filters) is str or type(filters) is list:
             if atlas in ["Global","GBIF"] and ("!=" in filters or "=!" in filters):
@@ -339,6 +344,8 @@ def atlas_occurrences(taxa=None,
             elif atlas in ["Global","GBIF"]:
                 predicates = add_predicates(predicates=predicates,filters=filters)
             else:
+                # start URL
+                URL += "&fq=%28"
                 URL = add_filters(URL=URL,atlas=atlas,filters=filters)
         else:
             raise ValueError("The filters argument needs to be either a string or a list")
@@ -350,46 +357,106 @@ def atlas_occurrences(taxa=None,
             if type(assertions) is list or type(assertions) is str:
                 if type(assertions) is str:
                     assertions=[assertions]
-                for a in assertions:
-                    URL += galah_filter(a) + "%20AND%20"
-
+                if atlas in ["Global","GBIF"]:
+                    predicates = add_predicates(predicates=predicates,filters=filters)
+                else:
+                    for a in assertions:
+                        URL += galah_filter(a) + "%20AND%20"
+                        URL = URL[:-len("%20AND%20")] + "%29&qa=none&"
             else:
                 raise ValueError("Assertions needs to be a string or a list of strings, i.e. identificationIncorrect == TRUE")
-
-        # add final part of URL
-        URL = URL[:-len("%20AND%20")] + "%29&qa=none&"
 
         # check to see if user wants the query URL
         if verbose:
             print("URL for querying:\n\n{}\n".format(URL))
 
         # query the api
-        response = requests.get(URL)
-        if response.status_code == 403:
-            # TODO: write more exceptions to make sure contact details are ok
-            if atlas == "Brazil":
-                raise ValueError("It appears that you are not registered as a user on the Brazilian atlas.  Please email atendimento_sibbr@rnp.br to find out more information.")
-            if atlas == "Spain":
-                raise ValueError("It appears that you are not registered as a user on the Spanish atlas.  Please go to https://auth.gbif.es/cas/login?lang=en to register.")
-        if response.json()['status'] == "skipped":
-            raise ValueError(response.json()["error"])
+        # authentication
+        if atlas in ["Global","GBIF"]:
+            # create authentication key
+            authentication = HTTPBasicAuth(configs['galahSettings']['usernameGBIF'],configs['galahSettings']['passwordGBIF'])
+                
+            # create payload
+            if species_list:
+                format="SPECIES_LIST"
+                if status_accepted:
+                    predicates.append({"type": "equals","key":"TAXONOMIC_STATUS","value":"ACCEPTED"})
+                else:
+                    format="SIMPLE_CSV"
+            payload = json.dumps({
+                "creator": configs['galahSettings']['usernameGBIF'], # username
+                "notificationAddresses": [configs['galahSettings']['email']], # change from hard-coded
+                "sendNotification": "false",
+                "format": format,
+                "predicate": {
+                    "type": "and",
+                    "predicates": predicates
+                }
+            })
 
-        # this may take a while - occasionally check if status has changed
-        statusURL = requests.get(response.json()['statusUrl'])
-        while statusURL.json()['status'] == 'inQueue':
-            time.sleep(5)
+            # check to see if user wants the query URL
+            if verbose:
+                print("URL for querying:\n\n{}\n".format(URL))
+                print("payload: \n\n{}\n".format(payload))
+            
+            # check counts
+            counts = atlas_counts(taxa,filters=filters)
+            if not species_list:
+                print("total records for occurrences: {}".format(counts['totalRecords'][0]))
+                if int(counts['totalRecords'][0]) > 101000:
+                    raise ValueError("Your data request of {} is too large. \nThe maximum number of requests is 101,000.\nPlease filter your data and use atlas_counts() to get the counts to a reasonable number.".format(counts['totalRecords'][0]))
+            # get response
+            response = requests.post(URL,headers=headers,auth=authentication,data=payload)
+            
+            # get job number
+            job_number = response.text
+
+            # get download URL
+            downloadURL = URL.replace("request",job_number)
+            # check to see if the user wants the zip URL
+            if verbose:
+                print("URL for download:\n\n{}\n".format(downloadURL))
+            response_download = requests.get(downloadURL,headers=headers,auth=authentication)
+            while response_download.json()["status"] != "SUCCEEDED":
+                time.sleep(5)
+                response_download = requests.get(downloadURL,headers=headers,auth=authentication)
+            zipURL = response_download.json()["downloadLink"]
+
+            # check to see if the user wants the zip URL
+            if verbose:
+                print("Data for download:\n\n{}\n".format(zipURL))
+
+            # return dataFrame
+            data = requests.get(zipURL)
+            return pd.read_csv(zipfile.ZipFile(io.BytesIO(data.content)).open('{}.csv'.format(job_number)),sep='\t',low_memory=False)    
+            
+        else:    
+            response = requests.get(URL)
+
+            # if response.status_code == 403:
+            #     # TODO: write more exceptions to make sure contact details are ok
+            #     if atlas == "Brazil":
+            #         raise ValueError("It appears that you are not registered as a user on the Brazilian atlas.  Please email atendimento_sibbr@rnp.br to find out more information.")
+            #     if atlas == "Spain":
+            #         raise ValueError("It appears that you are not registered as a user on the Spanish atlas.  Please go to https://auth.gbif.es/cas/login?lang=en to register.")
+            # if response.json()['status'] == "skipped":
+            #     raise ValueError(response.json()["error"])
+
             statusURL = requests.get(response.json()['statusUrl'])
-        while statusURL.json()['status'] == 'running':
-            time.sleep(5)
-            statusURL = requests.get(response.json()['statusUrl'])
-        zipURL = requests.get(statusURL.json()['downloadUrl'])
+            while statusURL.json()['status'] == 'inQueue':
+                time.sleep(5)
+                statusURL = requests.get(response.json()['statusUrl'])
+            while statusURL.json()['status'] == 'running':
+                time.sleep(5)
+                statusURL = requests.get(response.json()['statusUrl'])
+            zipURL = requests.get(statusURL.json()['downloadUrl'])
 
-        # check to see if the user wants the zip URL
-        if verbose:
-            print("Data for download:\n\n{}\n".format(statusURL.json()['downloadUrl']))
+            # check to see if the user wants the zip URL
+            if verbose:
+                print("Data for download:\n\n{}\n".format(statusURL.json()['downloadUrl']))
 
-        # return dataFrame
-        return pd.read_csv(zipfile.ZipFile(io.BytesIO(zipURL.content)).open('data.csv'),low_memory=False)
+            # return dataFrame
+            return pd.read_csv(zipfile.ZipFile(io.BytesIO(zipURL.content)).open('data.csv'),low_memory=False)
 
     else:
         raise Exception('You cannot get all 10 million records for the ALA.  Please specify at least one taxa and/or '

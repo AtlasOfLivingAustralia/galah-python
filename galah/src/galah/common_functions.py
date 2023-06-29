@@ -47,9 +47,9 @@ def add_filters(URL=None,
 
         # loop over filters
         for f in filters:
-            URL += galah_filter(f,ifgroupBy=ifGroupBy) + "%20AND%20"
+            URL += galah_filter(f,ifgroupBy=ifGroupBy) + "AND" 
                     
         # remove last AND and add a closing parenthesis
-        URL = URL[:-len("%20AND%20")] + "%29" 
-
+        URL = URL[:-len("AND")] + "%29"
+        
     return URL

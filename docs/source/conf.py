@@ -18,12 +18,9 @@ import galah
 
 project = 'Galah'
 copyright = 'Atlas of Living Australia'
-author = 'Amanda Buyan, Atlas of Living Australia'
+author = 'Atlas of Living Australia'
 
-# The full version, including alpha/beta/rc tags
-release = '0.1.0'
-
-# try this
+# add path for galah
 sys.path.insert(0,"../../galah/src/galah/")
 
 # -- General configuration ---------------------------------------------------
@@ -31,7 +28,6 @@ sys.path.insert(0,"../../galah/src/galah/")
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
-# 'sphinx.ext.autosectionlabel',
 extensions = [
 	'myst_parser',
 	'sphinx-prompt',
@@ -39,23 +35,6 @@ extensions = [
 	'sphinx_design',
     'sphinx.ext.napoleon',
 ]
-
-# old autoapi code
-
-'''
-	'autoapi.extension',
-	'sphinx_autodoc_typehints'
-	'sphinx.ext.autodoc',
-	'sphinx.ext.autosummary',
-    
-autoapi_member_order = "alphabetical"
-
-# where all the API documentation lives
-#autoapi_dirs = ['../../galah/src/galah/'] # see if this is the case
-
-# don't automaticalliy generate api docs
-#autoapi_generate_api_docs=False
-'''
 
 napoleon_use_param = True
 
@@ -76,13 +55,12 @@ exclude_patterns = ['apply_data_profile.py','get_api_url.py']
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
-#
 html_theme = 'pydata_sphinx_theme'
 
 html_theme_options = {
 	"navbar_align": "content",
 	"github_url": "https://github.com/AtlasOfLivingAustralia/galah_python",
-	"page_sidebar_items": ["page-toc"],
+	"secondary_sidebar_items": ["page-toc"],
     "logo": {
 		"image_light": "logo.png",
         "image_dark": "logo.png", 

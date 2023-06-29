@@ -9,7 +9,10 @@ by the ALA.
 At present, galah supports the following functions and atlases:
 
     * Australia
+    * Austria
     * Brazil
+    * France
+    * GBIF
     * Spain
 
 Set Organisation
@@ -113,7 +116,7 @@ return the total 0number of species records in each Living Atlas in one table.
 
     >>> import galah
     >>> import pandas as pd
-    >>> atlases = ["Australia","Brazil","Spain"]
+    >>> atlases = ["Australia","Austria","Brazil","France","GBIF","Spain"]
     >>> counts_dict = {"Atlas": [], "Total Records": []}
     >>> for atlas in atlases:
     >>>     galah.galah_config(atlas=atlas)

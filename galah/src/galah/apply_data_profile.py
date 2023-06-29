@@ -10,29 +10,21 @@ def apply_data_profile(baseURL):
     Parameters
     ----------
         baseURL : string
-            TBD  
+            The base URL that   
 
     Returns
     -------
-        TBD
-
-    Examples
-    --------
-
-        .. prompt:: python
-
-            galah.apply_data_profile()
-
-        .. program-output:: python -c "import galah; print(galah.atlas_counts())"
-
+        a string with the URL containing the data quality profile a user wants.
     """
 
     # first, get configurations and check for configurations
     configs = readConfig()
 
-    # adding a few things to baseURL
+    # check if the user has specified no data quality profile
     if configs['galahSettings']['data_profile'].lower() == "none":
         baseURL += "disableAllQualityfilters=true"
+
+    # if they have specified, add their specified data quality profile or throw an error
     else:
         data_profile_list = list(show_all(profiles=True)['shortName'])
         if configs['galahSettings']['data_profile'] in data_profile_list:
@@ -47,4 +39,5 @@ def apply_data_profile(baseURL):
                              "If you don't want to use a data quality profile, set it to None by typing the following:\n\n"
                              "galah.galah_config(data_profile=\"None\")")
 
+    # return URL with data quality filter
     return baseURL

@@ -35,6 +35,10 @@ def galah_config(email=None,
             A string letting galah know what taxonomic ranks to show.  Use "all" to see all 69 possible ranks, and "gbif" to see the 9 most common ranks.
         reason: integer
             A number (integer) providing the reason you are downloading data.  Default is set to 4 (scientific research).  For a list of all possible reasons run ``galah.show_all_reasons()``
+        usernameGBIF: string
+            Your username for GBIF atlas.  Default is "".
+        passwordGBIF: string
+            Your password for GBIF atlas.  Default is "".
             
     Returns
     -------
@@ -92,6 +96,3 @@ def galah_config(email=None,
         # write to file
         with open(inifile,"w") as fileObject:
             configParser.write(fileObject)
-
-    
-

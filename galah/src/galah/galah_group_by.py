@@ -64,24 +64,25 @@ def galah_group_by(URL,
             # loop over group_by
             for g in group_by:
 
+                # ensure each group is given its own facet
                 if atlas in ["Global","GBIF"]:
                     startingURL += "&facet={}".format(g)
                 else:
                     startingURL += "&facets={}".format(g)
 
             # round out the URL
-            startingURL += "&flimit=10000&pageSize=0"
+            startingURL += "&&flimit=-1&pageSize=0"
 
             # check to see if the user wants the URL for querying
             if verbose:
                 print("URL for querying:\n\n{}\n".format(startingURL))
 
-            # get thing
+            # get response from your query, which will include all available fields
             response = requests.get(startingURL)
             response_json = response.json()
             facets_array=[]
 
-            # try this
+            # set some common variables
             if atlas in ["Global","GBIF"]:
                 group_by = sorted(group_by)
                 response_json['facets'] = sorted(response_json['facets'],key = lambda d: d['field'])
@@ -100,7 +101,7 @@ def galah_group_by(URL,
                 field_name = 'fieldResult' #i18nCode
                 facet_name = 'fq'
 
-            # add a check to see if a single value is there for filters; otherwise, can do this?
+            # add a check to see if a single value is there for filters; otherwise, will do this
             for i in range(1,len(group_by)):
                 temp_array=[]
                 for entry in results_array[i][field_name]:
@@ -109,14 +110,21 @@ def galah_group_by(URL,
 
             # get all counts for each value
             dict_values = {entry: [] for entry in [*group_by,'count']}
+
+            # loop over facets array
             for i,f in enumerate(facets_array):
+
+                # check for GBIF atlas
                 if atlas in ["Global","GBIF"]:
+
+                    # loop over all specified facets
                     for facet in f:
 
+                        # check if user is grouping by scientific name
                         if group_by[i+1] == "scientificName":
-                            tempURL = URL + "&{}={}".format(group_by[i+1],"%20".join(facet.split(" ")[0:2])) + "&facet=" + group_by[i] + "&pageSize=0"
+                            tempURL = URL + "&{}={}".format(group_by[i+1],"%20".join(facet.split(" ")[0:2])) + "&facet=" + group_by[i] + "&flimit=-1&pageSize=0"
                         else:
-                            tempURL = URL + "&{}={}".format(group_by[i+1],"%20".join(facet.split(" "))) + "&facet=" + group_by[i] + "&pageSize=0"
+                            tempURL = URL + "&{}={}".format(group_by[i+1],"%20".join(facet.split(" "))) + "&facet=" + group_by[i] + "&flimit=-1&pageSize=0"
 
                         # print the URL
                         if verbose:
@@ -134,8 +142,14 @@ def galah_group_by(URL,
                             for key in dict_values:
                                 if (key != group_by[i+1]) and (key != group_by[i]) and (key != 'count'):
                                     dict_values[key].append("-")
+                
+                # do this loop for all other atlases 
                 else:
+
+                    # loop over each facet
                     for facet in f:
+
+                        # split each facet to make it human readable
                         name,value = facet.split(':')
                         value = value.replace('"', '')
                         if name in group_by:
@@ -145,7 +159,9 @@ def galah_group_by(URL,
                         for group in group_by:
                             if (group != name) and ("facets={}".format(group) not in URL):
                                 tempURL += "&facets={}".format(group)
-                        tempURL += "&flimit=10000&pageSize=0"
+
+                        # finalise the URL for querying
+                        tempURL += "&flimit=-1&pageSize=0"
 
                         # check to see if the user wants the URL for querying
                         if verbose:
@@ -155,17 +171,20 @@ def galah_group_by(URL,
                         response=requests.get(tempURL)
                         response_json = response.json()
 
+                        # if there is no data available, move onto next variable
                         if response_json is None:
                             continue
 
-                        # put data in table
+                        # put data in table (and check if user wants Brazil, because that is an exception)
                         if atlas in ["Brazil"]:
                             results_array = response_json[0]['fieldResult']
                         else:
                             results_array = response_json['facetResults'][0]['fieldResult']
 
+                        # loop over each entry in the results
                         for entry in results_array:
-                            # generalise this for more than one thing
+
+                            # put entries in dictionary
                             if entry['fq'].split(":")[0] == group_by[0]:
                                 name2,value2 = entry['fq'].split(":")
                                 value2 = value2.replace('"', '')
@@ -201,8 +220,8 @@ def galah_group_by(URL,
                     URL += "&facets={}".format(g)
 
             # round out the URL
-            URL += "&flimit=10000&pageSize=0"
-
+            URL += "&flimit=-1&pageSize=0"
+            
             # check to see if the user wants the URL for querying
             if verbose:
                 print("URL for querying:\n\n{}\n".format(URL))
@@ -211,7 +230,7 @@ def galah_group_by(URL,
             response = requests.get(URL)
             response_json = response.json()
 
-            # get name of results
+            # set some common variables
             if atlas in ["Global","GBIF"]:
                 length = len(response_json['facets'])
                 name_results = response_json['facets']
@@ -228,8 +247,15 @@ def galah_group_by(URL,
 
             # get all counts for each value
             dict_values = {entry: [] for entry in [*group_by,'count']}
+
+            # loop over the array length
             for i in range(length):
+
+                # check if atlas is GBIF
                 if atlas in ["Global","GBIF"]:
+
+                    # loop over each group and make sure entry is human readable and have a dash if 
+                    # it doesn't have a count
                     for g in group_by:
                         if "_" in name_results[i]['field']:
                             test_name = name_results[i]['field'].split("_")
@@ -247,9 +273,18 @@ def galah_group_by(URL,
                                 for entry in dict_values:
                                     if (entry != g) and (entry != 'count'):
                                         dict_values[entry].append("-")
+                
+                # otherwise, it's all other atlases
                 else:
+
+                    # loop over entry in results
                     for item in name_results[i][field_name]:
+
+                        # loop over each group and make sure entry is human readable and have a dash if 
+                        # it doesn't have a count
                         for g in group_by:
+
+                            # check for only itesm you want
                             if g in item['fq'] and item['fq'].split(':')[0] == g:
                                 name,value=item['fq'].split(':')
                                 value=value.replace('"','')

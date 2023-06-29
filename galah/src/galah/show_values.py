@@ -32,6 +32,7 @@ def show_values(field=None,
     .. program-output:: python -c "import galah; print(galah.show_values(field=\\\"basisOfRecord\\\"))"
     """
 
+    # check to see if field is input correctly
     if field is None:
         raise ValueError("Please specify the field you want to see query-able values for, i.e. field=\"basisOfRecord\"")
     elif type(field) is not str:
@@ -47,8 +48,8 @@ def show_values(field=None,
         baseURL = get_api_url(column1='api_name',column1value='records_facets')
 
     '''
-    # add a buttload of checks to make sure that the field they entered actually is something they can query
-    ### TODO: talk to Martin about this
+    # add checks to make sure that the field they entered actually is something they can query
+    ### TODO: brainstorm
     # "field", "profile", "list", "collection", "dataset", "provider")
     #collection,datasets,fields,lists,profiles,providers
     raw_valid_values = show_all(collection=True,datasets=True,fields=True,lists=True,profiles=True,providers=True)
@@ -78,9 +79,9 @@ def show_values(field=None,
     '''
     # add the field
     if configs['galahSettings']['atlas'] in ["Global","GBIF"]:
-        URL = baseURL + "?facet=" + field + "&limit=0&facetLimit=10000"
+        URL = baseURL + "facets?facet=" + field # + "&limit=0&facetLimit=10000"
     else:
-        URL = baseURL + "?facets=" + field + "&flimit=10000"
+        URL = baseURL + "?facets=" + field
 
     # check to see if the user wants the URL for querying
     if verbose:
@@ -89,17 +90,19 @@ def show_values(field=None,
     # query the API
     response = requests.get(URL)
     json = response.json()
-    #print(json)
     
     # create empty dataFrame to concatenate results to
     dataFrame = pd.DataFrame()
 
     # loop over results - look to see if GBIF is being used
     if configs['galahSettings']['atlas'] in ["Global","GBIF"]:
-        result = json['facets'][0]['counts']
+        # result = json['facets'][0]['counts']
+        result = json['results'][0]['counts']
         for entry in result:
-            tempdf = pd.DataFrame({'field': json['facets'][0]['field'], 'category': entry['name']},index=[0])
+            tempdf = pd.DataFrame({'field': json['results'][0]['field'], 'category': entry['name']},index=[0]) # facets
             dataFrame = pd.concat([dataFrame,tempdf],ignore_index=True)
+    
+    # otherwise, assume it is other atlases
     else:
         result = json[0]['fieldResult']
         for i,entry in enumerate(result):

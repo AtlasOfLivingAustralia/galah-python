@@ -42,8 +42,6 @@ And to search for a specific field:
 
 .. program-output:: python3 -c "import galah;import pandas as pd;pd.set_option('display.max_columns', None);pd.set_option('display.expand_frame_repr', False);pd.set_option('max_colwidth', None);galah.galah_config(atlas=\"Australia\");print(galah.search_all(fields=\"Australian States\",column_name=\"description\"))"
 
-
-
 Here is a list of information types that can be used with ``galah.show_all()`` and ``galah.search_all()``:
 
 .. table:: Information for ``galah.show_all()`` and ``galah.search_all()``

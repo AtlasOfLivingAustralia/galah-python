@@ -1,4 +1,4 @@
-import re,json
+import re,urllib
 from .get_api_url import readConfig
 from .common_dictionaries import GBIF_PREDICATE_DEFINITIONS
 
@@ -11,21 +11,6 @@ def galah_filter(f,
     to return all records except for fossils (``basisOfRecord!=FossilSpecimen``).
 
     Filters are passed to ``atlas_occurrences()``, ``atlas_species()``, ``atlas_counts()`` or ``atlas_media()``.
-
-    
-    Examples
-    --------
-
-    To know how many total records are in your chosen atlas, type
-
-    .. prompt:: python
-
-        import galah
-        galah.galah_filter(filters="year=2020")
-
-    which returns
-
-    .. program-output:: python -c "import galah; print(galah.galah_filter(filters=\\\"year=2020\\\"))"
     """
 
     # first, check for special characters
@@ -134,7 +119,8 @@ def galah_filter(f,
                     returnString += "%28{}%3A%22{}%22%29".format(parts[0], parts[1].replace(" ", "%20"))
                 # if filter is querying a field that has no value
                 elif parts[1] == '':
-                    returnString += "%28{}%3A%28*%29%29".format(parts[0])
+                    #returnString += "%28{}%3A%28%2A%29%29".format(parts[0])
+                    returnString += "%2A%3A%2A%20AND%20-{}%3A%2A".format(parts[0])
                 elif parts[1] == "True":
                     returnString += "%28assertions%3A%22{}%22%29".format(parts[0])
                 elif parts[1] == "False":

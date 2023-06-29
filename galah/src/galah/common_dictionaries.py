@@ -36,37 +36,35 @@ ATLAS_KEYWORDS = {
     "United Kingdom": "guid",
 }
 
-ATLAS_RANKS = {
-    "Australia": "rank",
-    "Austria": "rank",
-    "Brazil": "rank",
-    "Canada": "",
-    "Estonia": "",
-    "France": "rankName",
-    "Global": "rank",
-    "GBIF": "rank",
-    "Guatemala": "rank",
-    "Portugal": "",
-    "Spain": "rank",
-    "Sweden": "rank",
-    "United Kingdom": "",
-}
-
 # expanding species fields
 ATLAS_SPECIES_FIELDS = {
-    "Australia": ["kingdom", "phylum", "class", "order", "family", "genus", "species", "subspecies"],
-    "Austria": ["kingdom", "phylum", "class", "order", "family", "genus", "species"],
-    "Brazil": ["kingdom", "phylum", "class", "order", "family", "genus", "species", "subspecies"],
-    "Canada": [],
-    "Estonia": [],
-    "France": ["kingdom", "phylum", "class", "order", "family", "genus", "species", "subspecies"],
-    "GBIF": ["kingdom", "phylum", "class", "order", "family", "genus", "species"],
-    "Global": ["kingdom", "phylum", "class", "order", "family", "genus", "species"],
-    "Guatemala": ["kingdom", "phylum", "class", "order", "family", "genus", "species", "subspecies"],
-    "Portugal": [],
-    "Spain": ["kingdom", "phylum", "class", "order", "family", "genus", "species", "subspecies"],
-    "Sweden": ["kingdom", "phylum", "class", "order", "family", "genus", "species", "subspecies"],
-    "United Kingdom": []
+    "Australia": {"kingdom": "kingdomID", "phylum": "phylumID", "class": "classID", 
+                  "order": "orderID", "family": "familyID","genus": "genusID", 
+                  "species": "speciesID", "subspecies": "subspeciesID"},
+    "Austria": {"kingdom": "kingdom_guid", "phylum": "phylum_guid","class": "class_guid", 
+               "order": "order_guid", "family": "family_guid","genus": "genus_guid", 
+               "species": "species_guid", "subspecies": "subspecies_guid"},
+    "Brazil": {"kingdom": "kingdom_guid", "phylum": "phylum_guid","class": "class_guid", 
+               "order": "order_guid", "family": "family_guid","genus": "genus_guid", 
+               "species": "species_guid", "subspecies": "subspecies_guid"},
+    "Canada": {},
+    "Estonia": {},
+    "France": {"kingdom": "kingdomID", "phylum": "phylumID", "class": "classID", 
+                  "order": "orderID", "family": "familyID","genus": "genusID", 
+                  "species": "speciesID", "subspecies": "subspeciesID"},
+    "GBIF": {"kingdom": "KIMGDOM_KEY", "phylum": "PHYLUM_KEY", "class": "CLASS_KEY", 
+                  "order": "ORDER_KEY", "family": "FAMILY_KEY","genus": "GENUS_KEY", 
+                  "species": "SPECIES_KEY", "subspecies": "SUBSPECIES_KEY"},
+    "Global": {"kingdom": "KIMGDOM_KEY", "phylum": "PHYLUM_KEY", "class": "CLASS_KEY", 
+                  "order": "ORDER_KEY", "family": "FAMILY_KEY","genus": "GENUS_KEY", 
+                  "species": "SPECIES_KEY"}, #, "subspecies": "SUBSPECIES_KEY"},
+    "Guatemala": {},
+    "Portugal": {},
+    "Spain": {"kingdom": "kingdomID", "phylum": "phylumID", 
+                  "class": "classID", "order": "orderID", "family": "familyID", 
+                  "genus": "genusID", "species": "speciesID", "subspecies":"subspeciesID"},
+    "Sweden": {},
+    "United Kingdom": {}
 }
 
 # default selections for occurrence data
@@ -105,46 +103,6 @@ COUNTS_NAMES = {
     "Spain": "totalRecords",
     "Sweden": "totalRecords",
     "United Kingdom": "totalRecords",
-}
-
-# strings for each atlas for depth to determine what taxa it is (improve this selection)
-DEPTH_STRINGS = {
-    "Australia": "classification",
-    "Austria": "searchResults",
-    "Brazil": "classification", 
-    "Canada": "",
-    "Estonia": "",
-    "France": "_embedded",
-    "GBIF": "classification",
-    "Global": "classification",
-    "Guatemala": "searchResults",
-    "Portugal": "",
-    "Spain": "classification",
-    "Sweden": "searchResults",
-    "United Kingdom": "",
-}
-
-FRANCE_FIELDS = {
-    "subspecies": "subspecies" ,
-    "species": "species", 
-    "genus": "genusName",
-    "family": "familyName",
-    "order": "orderName",
-    "class": "className",
-    "phylum": "phylumName",
-    "kingdom": "kingdomName",
-}
-
-# translating French ranks into English ranks
-FRANCE_TRANSLATION_RANKS = {
-    "Sous-Espèce": "subspecies" ,
-    "Espèce": "species" , 
-    "Genre": "genus" ,
-    "Famille": "family" ,
-    "Ordre": "order" ,
-    "Classe": "class" ,
-    "Phylum": "phylum" ,
-    "Règne": "kingdom" ,
 }
 
 GBIF_PREDICATE_DEFINITIONS = {

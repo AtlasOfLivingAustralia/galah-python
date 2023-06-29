@@ -9,4 +9,7 @@ glob2
 bytesbufio
 shutils
 setuptools
-unittest2
+shapely
+pytest
+unittest2py3k
+mkl

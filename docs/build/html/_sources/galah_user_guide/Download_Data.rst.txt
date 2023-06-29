@@ -35,7 +35,7 @@ Species lists
 
 A common use case of atlas data is to identify which species occur in a specified region, time period, 
 or taxonomic group. ``galah.atlas_species()`` is similar to search_taxa, in that it returns taxonomic information and 
-unique identifiers in a tibble. It differs in not being able to return information on taxonomic levels other 
+unique identifiers in a dataframe. It differs in not being able to return information on taxonomic levels other 
 than the species; but also in being more flexible by supporting filtering:
 
 .. prompt:: python

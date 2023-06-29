@@ -9,7 +9,6 @@ src/galah/atlas_counts.py
 src/galah/atlas_media.py
 src/galah/atlas_occurrences.py
 src/galah/atlas_species.py
-src/galah/atlas_taxonomy.py
 src/galah/common_dictionaries.py
 src/galah/common_functions.py
 src/galah/config.ini
@@ -44,6 +43,3 @@ tests/test_integration_tests_Spain.py
 tests/test_integration_tests_Sweden.py
 tests/test_unittests.py
 tests/test_unittests_Australia.py
-tests/test_unittests_Brazil.py
-tests/test_unittests_GBIF.py
-tests/test_unittests_Spain.py
