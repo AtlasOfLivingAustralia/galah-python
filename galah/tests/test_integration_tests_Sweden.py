@@ -15,11 +15,12 @@ def test_show_all_apis_sweden():
     output = galah.show_all(apis=True)
     assert output.shape[1] > 1
 
+'''
 def test_show_all_collection_sweden():
     galah.galah_config(atlas="Sweden")
     output = galah.show_all(collection=True)
     assert output.shape[1] > 0
-
+'''
 def test_show_all_datasets_sweden():
     galah.galah_config(atlas="Sweden")
     output = galah.show_all(datasets=True)

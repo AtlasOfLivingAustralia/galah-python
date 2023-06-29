@@ -104,6 +104,13 @@ def test_astlas_counts_taxa_same_filter_brazil():
     f = ["year >=2018", "year <= 2022"]
     assert galah.atlas_counts(taxa, filters=f)['totalRecords'][0] > 0
 
+# test altas_counts() with total_group_by
+def test_atlas_counts_taxa_filters_brazil_total_group_by():
+    galah.galah_config(atlas="Brazil")
+    output = galah.atlas_counts(taxa="reptilia",filters="year=2020",group_by="species",expand=False,total_group_by=True)
+    assert output.shape[0] == 1
+    assert output['count'][0] > 0
+
 # test atlas counts with multiple taxa and filters, along with expand=True
 def test_atlas_counts_multiple_taxa_filters_separate_brazil():
     galah.galah_config(atlas="Brazil")
@@ -332,6 +339,11 @@ def test_atlas_species_Brazil_family_rank_subspecies_brazil():
     taxa = "Ramphastidae"
     species_table = galah.atlas_species(taxa=taxa,rank="subspecies")
     assert species_table.shape[0] > 0
+
+def test_atlas_species_brazil_filter_notaxa():
+    galah.galah_config(atlas="Brazil")
+    filtered_species_table = galah.atlas_species(filters=["year=2022","basis_of_record=HumanObservation"])
+    assert filtered_species_table.shape[0] > 0
 
 # search_all() - assertions using "AMBIGUOUS_COLLECTION"
 def test_search_all_assertions_brazil():

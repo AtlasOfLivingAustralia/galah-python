@@ -251,6 +251,13 @@ def test_atlas_counts_multiple_taxa_filter_group_by_austria():
     assert output['count'][0] > 0
     assert output.shape[1] == 2
 
+# test altas_counts() with total_group_by
+def test_atlas_counts_taxa_filters_austria_total_group_by():
+    galah.galah_config(atlas="Austria")
+    output = galah.atlas_counts(filters="year>=2020",group_by="species",expand=False,total_group_by=True)
+    assert output.shape[0] == 1
+    assert output['count'][0] > 0
+
 # test altas_counts() can call search_taxa() and using one filter, filter results with multiple taxa
 def test_atlas_counts_multiple_taxa_filters_austria():
     galah.galah_config(atlas="Austria")
@@ -347,6 +354,11 @@ def test_atlas_species_Austria_family_austria():
     taxa = "Cydnidae"
     species_table = galah.atlas_species(taxa=taxa,rank="genus")
     assert species_table.shape[0] > 0
+
+def test_atlas_species_Australia_filter_notaxa():
+    galah.galah_config(atlas="Australia")
+    filtered_species_table = galah.atlas_species(filters=["year=2022","basis_of_record=HumanObservation"])
+    assert filtered_species_table.shape[0] > 0
 
 # search_all() - assertions using "AMBIGUOUS_COLLECTION"
 def test_search_all_assertions_austria():

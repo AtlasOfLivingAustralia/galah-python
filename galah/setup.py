@@ -6,7 +6,7 @@ from setuptools import setup,find_packages
 
 setup(
     #name='galah',
-    version='0.2.0', # 0.1.0
+    version='0.5.0',
     license='MPL-2.0',
     author='Amanda Buyan',
     author_email='amanda.buyan@csiro.au',
@@ -17,7 +17,7 @@ setup(
     keywords='galah',
     #'tempfile'
     install_requires=[
-        'numpy','pandas','requests','urllib3','TIME-python','zip-files','configparser','glob2','bytesbufio','shutils','setuptools','unittest2'
+        'numpy','pandas','requests','urllib3','TIME-python','zip-files','configparser','glob2','bytesbufio','shutils','setuptools','shapely','pytest','unittest2py3k','mkl'
     ],
     include_package_data = True,
     package_data = {

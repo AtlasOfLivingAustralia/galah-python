@@ -149,6 +149,13 @@ def test_atlas_counts_taxa_filters_group_by_no_expand_spain():
     assert output['count'][0] > 0
     assert output.shape[1] == 2
 
+# test altas_counts() with total_group_by
+def test_atlas_counts_taxa_filters_spain_total_group_by():
+    galah.galah_config(atlas="Spain")
+    output = galah.atlas_counts(taxa="pinales",filters="year=2020",group_by="species",expand=False,total_group_by=True)
+    assert output.shape[0] == 1
+    assert output['count'][0] > 0
+
 # test atlas_counts() can call search_taxa() function with multiple taxa
 def test_atlas_counts_multiple_taxa_spain():
     galah.galah_config(atlas="Spain")
@@ -309,6 +316,11 @@ def test_atlas_species_Spain_family_rank_subspecies_spain():
     taxa = "Viperidae"
     species_table = galah.atlas_species(taxa=taxa,rank="subspecies")
     assert species_table.shape[0] > 0
+
+def test_atlas_species_spain_filter_notaxa():
+    galah.galah_config(atlas="Spain")
+    filtered_species_table = galah.atlas_species(filters=["year=2022","basis_of_record=HumanObservation"])
+    assert filtered_species_table.shape[0] > 0
 
 # search_all() - assertions using "AMBIGUOUS_COLLECTION"
 def test_search_all_assertions_spain():

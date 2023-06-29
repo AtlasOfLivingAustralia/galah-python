@@ -1,70 +1,18 @@
-import requests,urllib.parse
+import requests,urllib.parse,io
 import pandas as pd
 
 from .search_taxa import search_taxa
 from .get_api_url import get_api_url,readConfig
-from .galah_filter import galah_filter
-
-import sys
-
-ATLAS_KEYWORDS = {
-    "Australia": "taxonConceptID",
-    "Austria": "guid",
-    "Brazil": "guid", 
-    "Canada": "usageKey",
-    "Estonia": "guid",
-    "France": "usageKey",
-    "Guatemala": "guid",
-    "Portugal": "usageKey",
-    "Spain": "taxonConceptID",
-    "Sweden": "guid",
-    "United Kingdom": "guid",
-}
-
-VERNACULAR_NAMES = {
-    "Australia": ["commonNames","nameString"],
-    "Austria": "",
-    "Brazil": ["commonNames","nameString"], 
-    "Canada": "",
-    "Estonia": "",
-    "France": "",
-    "Guatemala": "",
-    "Portugal": "",
-    "Spain": ["commonNames","nameString"],
-    "Sweden": "",
-    "United Kingdom": "",
-}
-
-TAXONCONCEPT_NAMES = {
-    "Australia": {"species_guid": "guid","species": "nameString","author": "author"},
-    "Austria": "",
-    "Brazil": {"species_guid": "guid","species": "nameString","author": "author"},
-    "Canada": "",
-    "Estonia": "",
-    "France": "",
-    "Guatemala": "",
-    "Portugal": "",
-    "Spain": {"species_guid": "guid","species": "nameString","author": "author"},
-    "Sweden": "",
-    "United Kingdom": "",
-}
-
-FACETS_STRINGS = {
-    "Australia": "speciesID",
-    "Austria": "",
-    "Brazil": "species", 
-    "Canada": "",
-    "Estonia": "",
-    "France": "",
-    "Guatemala": "",
-    "Portugal": "",
-    "Spain": "species",
-    "Sweden": "",
-    "United Kingdom": "",
-}
+from .atlas_occurrences import atlas_occurrences
+from .common_dictionaries import ATLAS_KEYWORDS,ATLAS_SPECIES_FIELDS,atlases
+from .common_functions import add_filters
 
 # this function looks for all species with the associated name
-def atlas_species(taxa=None,filters=None,verbose=False):
+def atlas_species(taxa=None,
+                  rank="species",
+                  filters=None,
+                  verbose=False,
+                  status_accepted=True):
     """
     While there are reasons why users may need to check every record meeting their search criteria (i.e. using ``galah.atlas_occurrences()``), 
     a common use case is to simply identify which species occur in a specified region, time period, or taxonomic group. 
@@ -75,9 +23,13 @@ def atlas_species(taxa=None,filters=None,verbose=False):
         taxa : string / list
             one or more scientific names. Use ``galah.search_taxa()`` to search for valid scientific names.  
         rank : string
+            the rank you ultimately want to get names for, i.e. "genus" or "species".  Default is ``species``.
+        filters : string
             filters, in the form ``field`` ``logical`` ``value`` (e.g. ``"year=2021"``)
-        verbose : 
+        verbose : logical
             If ``True``, galah gives you the URLs used to query all the data.  Default to ``False``.
+        status_accepted : logical
+            If ``True``, galah gives you only the accepted taxonomic ranks. Default is ``False``.  **FOR GBIF ONLY
 
     Returns
     -------
@@ -96,107 +48,121 @@ def atlas_species(taxa=None,filters=None,verbose=False):
     # get configs
     configs = readConfig()
 
-    # first, check if the user has specified a taxa
-    if taxa is None:
-        raise ValueError("You need to specify a name for this function to work, i.e. \"Heleioporus\"")
-    elif type(taxa) is not str and type(taxa) is not list:
+    # get atlas
+    atlas = configs['galahSettings']['atlas'] 
+
+    # first, check if the user has specified a taxa and if it is of the right variable type
+    if type(taxa) is not str and type(taxa) is not list and taxa is not None:
         raise ValueError("Only a string or list can be specified for taxa names")
 
-    # call galah_identify (or search_taxa for now?) to do something
-    baseURL = get_api_url(column1='api_name', column1value='records_species')
+    # check to see if rank is in possible ranks for atlas
+    if rank.lower() not in ATLAS_SPECIES_FIELDS[atlas]:
+        raise ValueError("{} is not a valid rank for the {} atlas.  Possible ranks are:\n\n{}\n".format(rank,atlas,", ".join(ATLAS_SPECIES_FIELDS[atlas])))
+
+    # get the ID of the rank to use to facet the data
+    rankID = ATLAS_SPECIES_FIELDS[atlas][rank]
+    
+    # get initial url
+    if atlas not in ["Global","GBIF"]:
+        baseURL = get_api_url(column1='api_name', column1value='records_species')
+    else:
+        baseURL = get_api_url(column1='api_name', column1value='records_occurrences')
 
     # raise warning - not sure how to fix it
-    if configs['galahSettings']['atlas'] in ["Spain"]:
-        print("There have been some issues getting all species when using a genus name.  Instead, either use a species name or anything of family or higher order.")
+    if atlas in ["Spain"]:
+        print("There have been some issues getting all species when using a genus name.  If genus doesn't work, either use a species name or anything of family or higher order.")
+    if atlas in ["Sweden"]:
+        print("There have been some issues getting taxonomy from the Swedish atlas, as they don't store names of taxon higher than species.")
 
-    # check if filters are specified
-    if filters is not None:
+    # get the taxonConceptID for taxa
+    if atlas in ["Australia","Austria","Brazil","France","Guatemala","Spain","Sweden"]:
 
-        # check the type of variable filters is
-        if type(filters) is list or type(filters) is str:
+        # if there is no taxa, just add question mark
+        if taxa is None:
+            
+            # remember to add question mark
+            URL = baseURL + "?"
 
-            # change to list for easier looping
-            if type(filters) is str:
-                filters = [filters]
-
-            # start URL - might need to add + "&" later
-            URL = baseURL + "?&fq=%28"
-
-            # loop over filters
-            for f in filters:
-                URL += galah_filter(f) + "%20AND%20"
-
-            # add final part of URL
-            URL = URL[:-len("%20AND%20")] + "%29"
-
-        # else, make sure that the filters is in the following format
+        # if there is taxa, add these as fields on the URL
         else:
-            raise TypeError("filters should only be a list, and are in the following format:\n\nfilters=[\'year:2020\']")
-    else:
+            
+            # get the taxonConceptID for taxa - first check for extant atlas
+            if atlas in atlases:
+                taxonConceptID = list(search_taxa(taxa)[ATLAS_KEYWORDS[atlas]])
+            else:
+                raise ValueError("Atlas {} is not taken into account".format(atlas))
 
-        URL = baseURL + "?"
-    
-     # get the taxonConceptID for taxa
-    if configs['galahSettings']['atlas'] in ["Australia","Brazil","Spain"]:
-        taxonConceptID = search_taxa(taxa)[ATLAS_KEYWORDS[configs['galahSettings']['atlas']]][0]
-        URL += "&fq=%28lsid%3A" + urllib.parse.quote(taxonConceptID) + "%29&facets={}".format(FACETS_STRINGS[configs['galahSettings']['atlas']])
-    else:
-        raise ValueError("Atlas {} is not taken into account".format(configs['galahSettings']['atlas']))
-
-    # check to see if user wants the query URL
-    if verbose:
-        print("URL for querying:\n\n{}\n".format(URL))
-
-    # get url and transform from a text string to a list
-    response = requests.get(URL)
-    all_ids = response.text[1:-2].split('"\n"')[1:]
-
-    # need to get species, author and
-    data_dict = {"species": [], "author": [], "species_guid": [], "kingdom": [],"phylum": [],
-                 "class": [],"order": [],"family": [], "vernacular_name": []}
-
-    # species_lookup for each individual species
-    baseURL = get_api_url(column1='api_name', column1value='species_lookup')
-
-    # get all the taxonomic information for every species ID
-    for species_guid in all_ids:
+            # add taxon IDs to the URL
+            if atlas in ["Global","GBIF"]:
+                URL = baseURL + "".join(["taxonKey={}&".format(
+                    urllib.parse.quote(str(tid))) for tid in taxonConceptID])
+            else:
+                URL = baseURL + "?fq=%28lsid%3A" + "%20OR%20lsid%3A".join(
+                    urllib.parse.quote(str(tid)) for tid in taxonConceptID) + "%29"
         
-        # check for atlas
-        if configs['galahSettings']['atlas'] in ["Brazil","Spain"]:
-            URL = baseURL + "/" + urllib.parse.quote(species_guid)
-        elif configs['galahSettings']['atlas'] in ["Australia"]:
-            URL = baseURL.replace("{id}", species_guid)
+        # check if filters are specified
+        if filters is not None:
+
+            # check the type of variable filters is
+            if type(filters) is list or type(filters) is str:
+
+                # add filters to URL
+                if taxa is None:
+                    URL = add_filters(URL=URL+"fq=",atlas=atlas,filters=filters) + "&facets={}".format(rankID)
+                else:
+                    URL = add_filters(URL=URL+"AND",atlas=atlas,filters=filters) + "&facets={}".format(rankID) #%29
+
+            # else, make sure that the filters is in the following format
+            else:
+                raise TypeError("filters should only be a list, and are in the following format:\n\nfilters=[\'year:2020\']")
+        
         else:
-            raise ValueError("Atlas {} is not taken into account".format(configs['galahSettings']['atlas']))
+             
+            # add facets into URL
+            URL += "&facets={}".format(rankID)
+
+        # set lookup=True to get all species data
+        URL += "&lookup=True"
 
         # check to see if user wants the query URL
         if verbose:
             print("URL for querying:\n\n{}\n".format(URL))
 
-        # get response from the API
+        # get url and transform from a text string to a list
         response = requests.get(URL)
-        json = response.json()
+        return pd.read_csv(io.StringIO(response.text))
         
-        # get taxonomic information
-        for depth in ['kingdom','phylum','class','order','family']:
-            if depth in json['classification']:
-                data_dict[depth].append(json['classification'][depth].lower().capitalize())
-            else:
-                data_dict[depth].append("")
+    # GBIF is treated differently, as it gives us a species list
+    elif atlas in ["Global","GBIF"]:
+
+        # get the initial list
+        test_list = atlas_occurrences(taxa=taxa,filters=filters,species_list=True,verbose=verbose,status_accepted=status_accepted)
+        
+        # get the species fields for the data frame to check against
+        species_fields = list(ATLAS_SPECIES_FIELDS[atlas].keys())
+
+        # get the index of your rank, and the one below it
+        index = species_fields.index(rank)
+        
+        # if rank is not species, only select for rank user has specified
+        if rank != "species":
+
+            rank_below = species_fields[index+1]
+
+            # only select ranks user is interested in
+            curated_list = test_list[test_list[rank_below].map(type) == float]
             
-        for others in ['species','author','species_guid']:
-            if json['taxonConcept'][TAXONCONCEPT_NAMES[configs["galahSettings"]["atlas"]][others]]:
-                data_dict[others].append(
-                    json['taxonConcept'][TAXONCONCEPT_NAMES[configs["galahSettings"]["atlas"]][others]].lower().capitalize())
-            else:
-                data_dict[others].append("")
+            # remove unnecessary fields
+            for i in species_fields[index+1:]:
+                del curated_list[i]
+                del curated_list["{}Key".format(i)]
 
-        # get common names (vernacular names)
-        if json[VERNACULAR_NAMES[configs['galahSettings']['atlas']][0]]:
-            data_dict["vernacular_name"].append(
-                json[VERNACULAR_NAMES[configs['galahSettings']['atlas']][0]][0][VERNACULAR_NAMES[configs['galahSettings']['atlas']][1]])
-        else:
-            data_dict["vernacular_name"].append("")
-
-    # return data as a pandas dataframe
-    return pd.DataFrame.from_dict(data_dict)
+            # return the curated list
+            return curated_list.reset_index(drop=True)
+        
+        # else, return everything
+        return test_list.reset_index(drop=True)
+    
+    # else, this atlas hasn't been integrated into atlas_species yet
+    else:
+        raise ValueError("Atlas {} is not taken into account".format(atlas))

@@ -13,6 +13,7 @@ from .galah_config import galah_config
 from .galah_filter import galah_filter
 from .galah_group_by import galah_group_by
 from .galah_select import galah_select
+from .galah_geolocate import galah_geolocate
 
 #-------------------------------------------------------
 # search and show titled functions
@@ -27,7 +28,7 @@ from .search_values import search_values
 #-------------------------------------------------------
 # version
 #-------------------------------------------------------
-__version__ = "0.1.0"
+__version__ = "0.5.0"
 
 # get all functions to display
 __all__=["atlas_counts","atlas_media","atlas_occurrences","atlas_species","galah_config","search_all","search_taxa",

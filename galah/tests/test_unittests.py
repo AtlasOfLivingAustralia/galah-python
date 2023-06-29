@@ -4,7 +4,6 @@ import unittest2
 import galah
 import pandas as pd
 import os,configparser
-#import nose2
 
 '''
 # Austria 

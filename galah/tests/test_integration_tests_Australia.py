@@ -66,6 +66,26 @@ def test_search_taxa_australia():
     output = galah.search_taxa("Vulpes vulpes")
     assert output['taxonConceptID'][0] != None
 
+# integration test for search_taxa() - have to test get_api_url
+def test_search_taxa_australia_identifiers():
+    galah.galah_config(atlas="Australia")
+    output = galah.search_taxa(identifiers="https://id.biodiversity.org.au/node/apni/2914510")
+    assert output['taxonConceptID'][0] != None
+
+# integration test for search_taxa() - have to test get_api_url
+def test_search_taxa_australia_specific_epithet():
+    galah.galah_config(atlas="Australia")
+    output = galah.search_taxa(specific_epithet=["class=aves","family=pardalotidae",
+                                                "genus=pardalotus","specificEpithet=punctatus"])
+    assert output.shape[0] > 0
+
+# integration test for search_taxa() - have to test get_api_url
+def test_search_taxa_australia_scientific_name():
+    galah.galah_config(atlas="Australia")
+    output = galah.search_taxa(scientific_name={"family": ["pardalotidae","maluridae"],
+                                                "scientificName": ["pardolatus striatus","malurus cyaneus"]})
+    assert output.shape[0] > 0
+
 # test atlas_counts() can call search_taxa() function with single taxa
 def test_atlas_counts_australia():
     galah.galah_config(atlas="Australia")
@@ -141,7 +161,9 @@ def test_atlas_counts_multiple_taxa_filters_separate_australia():
     taxa_array = ["Swainsona formosa", "Crocodylus johnstoni", "Platalea (Platalea) regia", "Notamacropus agilis"]
     f = ["dataResourceName = iNaturalist Australia","year=2022"]
     output = galah.atlas_counts(taxa=taxa_array, filters=f,group_by="species",expand=False)
-    assert output.shape[0] > 0
+    assert output.shape[0] == len(taxa_array)
+    assert output.shape[1] == 2
+    assert (output['count'] >= 0).all() # checks that all species counts are greater than or equal zero
 
 # test if you can group counts by a single group_by
 def test_atlas_counts_taxa_group_australia():
@@ -188,6 +210,13 @@ def test_atlas_counts_taxa_filters_group_by_no_expand_australia():
     # test single taxa is working (search_taxa(), galah_filter() x 2)
     assert output['count'][0] > 0
     assert output.shape[1] == 2
+
+# test altas_counts() with total_group_by
+def test_atlas_counts_taxa_filters_australia_total_group_by():
+    galah.galah_config(atlas="Australia")
+    output = galah.atlas_counts(taxa="reptilia",filters="year=2020",group_by="species",expand=False,total_group_by=True)
+    assert output.shape[0] == 1
+    assert output['count'][0] > 0
 
 # test atlas_counts() can call search_taxa() function with multiple taxa
 def test_atlas_counts_multiple_taxa_australia():
@@ -275,16 +304,6 @@ def test_atlas_counts_multiple_taxa_separate_australia():
     assert output.shape[1] == 2
     assert (output['count'] >= 0).all() # checks that all species counts are greater than or equal to zero
 
-# test altas_counts() can call search_taxa() and using one filter, filter results with multiple taxa separated
-def test_atlas_counts_multiple_taxa_filters_separate_australia():
-    galah.galah_config(atlas="Australia")
-    taxa_array = ["Swainsona formosa", "Crocodylus johnstoni", "Platalea (Platalea) regia", "Xeromys myoides"]
-    f = ["state = Northern Territory", "month=11"]
-    output = galah.atlas_counts(taxa_array, filters=f, group_by="species",expand=False)
-    assert output.shape[0] == len(taxa_array)
-    assert output.shape[1] == 2
-    assert (output['count'] >= 0).all() # checks that all species counts are greater than or equal zero
-
 # test altas_counts() can call search_taxa() and using one filter, filter and group results with multiple taxa separated
 def test_atlas_counts_multiple_taxa_filters_group_by_separate_australia():
     galah.galah_config(atlas="Australia")
@@ -353,8 +372,13 @@ def test_atlas_species_Australia_family_australia():
 def test_atlas_species_Australia_filter():
     galah.galah_config(atlas="Australia")
     full_species_table = galah.atlas_species(taxa="Rodentia")
-    filtered_species_table = galah.atlas_species(taxa="Rodentia",filters="stateProvince=Northern Territory")
+    filtered_species_table = galah.atlas_species(taxa="Rodentia",filters="stateProvince=Victoria")
     assert full_species_table.shape[0] > filtered_species_table.shape[0]
+
+def test_atlas_species_Australia_filter_notaxa():
+    galah.galah_config(atlas="Australia")
+    filtered_species_table = galah.atlas_species(filters=["year=2022","stateProvince=Victoria"])
+    assert filtered_species_table.shape[0] > 0
 
 # test galah_group_by with one filter (galah_filter()) and one group
 def test_galah_group_by_filter_australia():
@@ -634,6 +658,7 @@ def test_atlas_occurrences_taxa_filters_australia():
     occurrences1 = galah.atlas_occurrences(taxa="Vulpes vulpes")
     occurrences2 = galah.atlas_occurrences(taxa="Vulpes vulpes",use_data_profile=True)
     assert occurrences2.shape[0] < occurrences1.shape[0]
+#'''
 '''
 #test if it can get a taxa and return output
 def test_atlas_media_taxa_australia():

@@ -20,7 +20,7 @@ def galah_select(select=None):
     if select is None:
         raise ValueError("You need to provide one argument: category(ies) to get from the ALA API as a string or list.")
     
-    # otherwise, create a string and return it
+    # otherwise, create a URL string and return it
     elif type(select) is str or type(select) is list:
         if type(select) is str:
             select=[select]
@@ -38,5 +38,6 @@ def galah_select(select=None):
                 tempstring+="{}%2C".format(selection)
         return tempstring
 
+    # else, throw an error
     else:
         raise ValueError("This function only takes strings or lists as its arguments")

@@ -13,7 +13,9 @@ def galah_config(email=None,
                  atlas=None,
                  data_profile = None,
                  ranks = None,
-                 reason = None):
+                 reason = None,
+                 usernameGBIF = None,
+                 passwordGBIF = None):
     """
     The galah package supports large data downloads, and also interfaces with the ALA which requires that users of some 
     services provide a registered email address and reason for downloading data. The ``galah_config()`` function provides a way 
@@ -33,6 +35,10 @@ def galah_config(email=None,
             A string letting galah know what taxonomic ranks to show.  Use "all" to see all 69 possible ranks, and "gbif" to see the 9 most common ranks.
         reason: integer
             A number (integer) providing the reason you are downloading data.  Default is set to 4 (scientific research).  For a list of all possible reasons run ``galah.show_all_reasons()``
+        usernameGBIF: string
+            Your username for GBIF atlas.  Default is "".
+        passwordGBIF: string
+            Your password for GBIF atlas.  Default is "".
             
     Returns
     -------
@@ -82,10 +88,11 @@ def galah_config(email=None,
             configParser["galahSettings"]["ranks"] = ranks
         if reason is not None:
             configParser["galahSettings"]["reason"] = reason
+        if usernameGBIF is not None:
+            configParser["galahSettings"]["usernameGBIF"] = usernameGBIF
+        if passwordGBIF is not None:
+            configParser["galahSettings"]["passwordGBIF"] = passwordGBIF
 
         # write to file
         with open(inifile,"w") as fileObject:
             configParser.write(fileObject)
-
-    
-

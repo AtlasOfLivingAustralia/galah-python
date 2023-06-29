@@ -101,6 +101,13 @@ def test_atlas_counts_taxa_same_filter_france():
     f = ["year >=2018", "year <= 2022", "year!=2020"]
     assert galah.atlas_counts(taxa, filters=f)['totalRecords'][0] > 0
 
+# test altas_counts() with total_group_by
+def test_atlas_counts_taxa_filters_france_total_group_by():
+    galah.galah_config(atlas="France")
+    output = galah.atlas_counts(taxa="Urodela",filters="year=2020",group_by="species",expand=False,total_group_by=True)
+    assert output.shape[0] == 1
+    assert output['count'][0] > 0
+
 # test atlas counts with multiple taxa and filters, along with expand=True
 def test_atlas_counts_multiple_taxa_filters_separate_france():
     galah.galah_config(atlas="France")
@@ -140,7 +147,7 @@ def test_atlas_counts_taxa_groups_expand_france():
 def test_atlas_counts_taxa_filters_france():
     galah.galah_config(atlas="France")
     taxa = "Triturus marmoratus"
-    filters=["year=2020","basisOfRecord=HUMAN_OBSERVATION"]
+    filters=["year=2020","basisOfRecord=OCCURRENCE"]
     # test single taxa is working (search_taxa(), galah_filter() x 2)
     assert galah.atlas_counts(taxa,filters=filters)['totalRecords'][0] > 0
 
@@ -200,7 +207,7 @@ def test_atlas_counts_multiple_taxa_filter_group_by_france():
 def test_atlas_counts_multiple_taxa_filters_france():
     galah.galah_config(atlas="France")
     taxa_array = ["Triturus marmoratus","Galium anisophyllon","Plantago media","Festuca eskia"]
-    filters = ["year=2020", "basisOfRecord=HUMAN_OBSERVATION"]
+    filters = ["year>=2020", "basisOfRecord=OCCURRENCE"]
     assert galah.atlas_counts(taxa_array,filters=filters)['totalRecords'][0] > 0
 
 # test altas_counts() can call search_taxa() and using one filter, filter results with multiple taxa
@@ -293,7 +300,11 @@ def test_atlas_species_France_family_rank_genus_france():
     species_table = galah.atlas_species(taxa=taxa,rank="genus")
     assert species_table.shape[0] > 0
 
-
+def test_atlas_species_France_filter_notaxa():
+    galah.galah_config(atlas="France")
+    filtered_species_table = galah.atlas_species(filters=["year=2022","basisOfRecord=OCCURRENCE"])
+    assert filtered_species_table.shape[0] > 0
+    
 # search_all() - assertions using "AMBIGUOUS_COLLECTION"
 def test_search_all_assertions_france():
     galah.galah_config(atlas="France")
@@ -427,7 +438,7 @@ def test_atlas_occurrences_taxa_filter_fields_france():
 # testing atlas occurrences with multiple filters
 def test_atlas_occurrences_taxa_filters_france():
     galah.galah_config(atlas="France",email="ala4r@ala.org.au")
-    filters=["year>2018","basisOfRecord=HUMAN_OBSERVATION"]
+    filters=["year>2018","basisOfRecord=OCCURRENCE"]
     occurrences1 = galah.atlas_occurrences(taxa="Triturus marmoratus")
     occurrences2 = galah.atlas_occurrences(taxa="Triturus marmoratus",filters=filters)
     assert occurrences2.shape[0] < occurrences1.shape[0]
@@ -435,7 +446,7 @@ def test_atlas_occurrences_taxa_filters_france():
 # testing atlas occurrences with multiple filters and fields
 def test_atlas_occurrences_taxa_filters_fields_france():
     galah.galah_config(atlas="France",email="ala4r@ala.org.au")
-    occurrences = galah.atlas_occurrences(taxa="Triturus marmoratus",filters=["year>2018","basisOfRecord=HUMAN_OBSERVATION"],
+    occurrences = galah.atlas_occurrences(taxa="Triturus marmoratus",filters=["year>2018","basisOfRecord=OCCURRENCE"],
                                            fields=['decimalLatitude', 'decimalLongitude'])
     assert occurrences.shape[1] == 2
 #'''

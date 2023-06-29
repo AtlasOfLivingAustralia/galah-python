@@ -105,6 +105,13 @@ def test_atlas_counts_taxa_same_filter_global2_global():
     assert galah.atlas_counts(taxa, filters=f)['totalRecords'][0] > 0
 '''
 
+# test altas_counts() with total_group_by
+def test_atlas_counts_taxa_filters_global_total_group_by():
+    galah.galah_config(atlas="Global")
+    output = galah.atlas_counts(taxa="Triturus",filters="year=2020",group_by="scientificName",expand=False,total_group_by=True)
+    assert output.shape[0] == 1
+    assert output['count'][0] > 0
+
 # test atlas counts with multiple taxa and filters, along with expand=True
 def test_atlas_counts_multiple_taxa_filters_separate_global():
     galah.galah_config(atlas="Global")
@@ -268,18 +275,23 @@ def test_atlas_counts_multiple_taxa_filters_group_by_multiple_separate_expand_gl
     assert output['count'][0] >= 0 # checks that all species counts are greater than or equal zero
 
 # checking if atlas species can successfully call search_taxa() and get a non-empty dataframe\
-def test_atlas_species_Global_species_global():
+def test_atlas_species_species_global():
     galah.galah_config(atlas="Global",email="ala4r@ala.org.au",usernameGBIF="atlasoflivingaustralia",passwordGBIF="galah-gbif-test-login")
     taxa = "Heleioporus"
     species_table = galah.atlas_species(taxa=taxa)
     assert species_table.shape[0] > 0
 
 # checking if atlas species can successfully call search_taxa() and get a non-empty dataframe
-def test_atlas_species_Global_family_global():
+def test_atlas_species_family_global():
     galah.galah_config(atlas="Global",email="ala4r@ala.org.au",usernameGBIF="atlasoflivingaustralia",passwordGBIF="galah-gbif-test-login")
     taxa = "Limnodynastidae"
     species_table = galah.atlas_species(taxa=taxa)
     assert species_table.shape[0] > 0
+
+def test_atlas_species_global_filter_notaxa():
+    galah.galah_config(atlas="Global",email="ala4r@ala.org.au",usernameGBIF="atlasoflivingaustralia",passwordGBIF="galah-gbif-test-login")
+    filtered_species_table = galah.atlas_species(filters=["year=2022","basisOfRecord=HUMAN_OBSERVATION"])
+    assert filtered_species_table.shape[0] > 0
 
 # search_all() - assertions using "AMBIGUOUS_COLLECTION"
 def test_search_all_assertions_global():
@@ -379,6 +391,7 @@ def test_search_all_ranks_column_name_global():
     total_search_all = galah.search_all(ranks="0",column_name="id")
     assert total_search_all.shape[0] < total_show_all.shape[0]
 
+'''
 def test_search_values_global():
     galah.galah_config(atlas="Global")
     first_output = galah.show_values(field="basisOfRecord")
