@@ -11,6 +11,8 @@ setup(
     author='Amanda Buyan',
     author_email='amanda.buyan@csiro.au',
     description="Get counts and information on species from many different atlases",
+    long_description="Get counts and information on species from many different atlases",
+    long_description_content_type='text/markdown',
     packages=find_packages('src'),
     package_dir={'':'src'},
     url='',

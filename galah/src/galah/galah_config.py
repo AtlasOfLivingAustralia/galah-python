@@ -15,7 +15,8 @@ def galah_config(email=None,
                  ranks = None,
                  reason = None,
                  usernameGBIF = None,
-                 passwordGBIF = None):
+                 passwordGBIF = None,
+                 ALA_API_key = None,):
     """
     The galah package supports large data downloads, and also interfaces with the ALA which requires that users of some 
     services provide a registered email address and reason for downloading data. The ``galah_config()`` function provides a way 
@@ -92,6 +93,8 @@ def galah_config(email=None,
             configParser["galahSettings"]["usernameGBIF"] = usernameGBIF
         if passwordGBIF is not None:
             configParser["galahSettings"]["passwordGBIF"] = passwordGBIF
+        if ALA_API_key is not None:
+            configParser["galahSettings"]["ALA_API_key"] = ALA_API_key
 
         # write to file
         with open(inifile,"w") as fileObject:
