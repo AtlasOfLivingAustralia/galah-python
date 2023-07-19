@@ -65,7 +65,7 @@ class test_galah_Australia(unittest2.TestCase):
     def test_galah_group_by_1(self):
         URL = "https://biocache-ws.ala.org.au/ws/occurrence/search?fq=%28lsid%3Ahttps%3A//biodiversity.org.au/afd/taxa/2869ce8a-8212-46c2-8327-dfb7fabb8296%29"
         groups = ["year"]
-        output = galah.galah_group_by(URL,group_by=groups,expand=False)
+        output = galah.galah_group_by(URL,method="GET",group_by=groups,expand=False)
         self.assertGreater(output.shape[0], 1)
         self.assertGreater(output.shape[1], 1)
     

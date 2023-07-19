@@ -19,7 +19,7 @@ setup(
     keywords='galah',
     #'tempfile'
     install_requires=[
-        'numpy','pandas','requests','urllib3','TIME-python','zip-files','configparser','glob2','bytesbufio','shutils','setuptools','shapely','pytest','unittest2py3k','mkl'
+        'numpy','pandas','requests','urllib3','TIME-python','zip-files','configparser','glob2','bytesbufio','shutils','setuptools','shapely','pytest','unittest2py3k','mkl','PyJWT'
     ],
     include_package_data = True,
     package_data = {

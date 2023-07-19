@@ -391,13 +391,18 @@ def test_search_all_ranks_column_name_global():
     total_search_all = galah.search_all(ranks="0",column_name="id")
     assert total_search_all.shape[0] < total_show_all.shape[0]
 
-'''
+def test_show_values_global():
+    galah.galah_config(atlas="Global")
+    first_output = galah.show_values(field="basisOfRecord")
+    assert first_output.shape[0] > 0
+    assert first_output.shape[1] > 0
+
 def test_search_values_global():
     galah.galah_config(atlas="Global")
     first_output = galah.show_values(field="basisOfRecord")
     second_output = galah.search_values(field="basisOfRecord",value="OBS")
     assert first_output.shape[0] > second_output.shape[0]
-#'''
+
 # first test for atlas_occurrences() - check if search_taxa() is working
 def test_atlas_occurrences_taxa_filters_global():
     galah.galah_config(atlas="Global",email="ala4r@ala.org.au",usernameGBIF="atlasoflivingaustralia",passwordGBIF="galah-gbif-test-login")

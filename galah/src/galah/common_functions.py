@@ -1,4 +1,6 @@
+import requests
 from .galah_filter import galah_filter
+from .get_api_url import get_api_url
 
 # for adding filters specifically to atlas_occurrences
 def add_predicates(predicates=None,
@@ -53,3 +55,25 @@ def add_filters(URL=None,
         URL = URL[:-len("AND")] + "%29"
         
     return URL
+
+def get_response_show_all(column1=None,
+                      column1value=None,
+                      column2=None,
+                      column2value=None,
+                      atlas=None,
+                      headers={},
+                      max_entries=-1,
+                      offset=None):
+
+    # get data and check for 
+    URL,method = get_api_url(column1=column1,column1value=column1value,column2=column2,column2value=column2value)
+    if max_entries is not None and offset is not None:
+        URL += "?max={}&offset={}".format(max_entries,offset)
+    response = requests.request(method,URL,headers=headers)
+    if response.status_code == 403:
+        raise ValueError("Provide a/an {} API key to get this information".format(atlas))
+    if response.status_code == 429:
+        raise ValueError("You have reached the maximum number of daily queries for the ALA.")
+
+    # return response
+    return response

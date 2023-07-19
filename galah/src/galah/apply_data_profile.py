@@ -1,7 +1,8 @@
 from .get_api_url import readConfig
 from .show_all import show_all
 
-def apply_data_profile(baseURL):
+def apply_data_profile(baseURL=None,
+                       use_data_profile=False):
     """
     A 'profile' is a group of filters that are pre-applied by the ALA. Using a data profile allows a query to be filtered 
     quickly to the most relevant or quality-assured data that is fit-for-purpose. For example, the "ALA" profile is designed 
@@ -20,9 +21,13 @@ def apply_data_profile(baseURL):
     # first, get configurations and check for configurations
     configs = readConfig()
 
+    # check for question mark at the end
+    if "?" not in baseURL:
+        baseURL += "?"
+
     # check if the user has specified no data quality profile
-    if configs['galahSettings']['data_profile'].lower() == "none":
-        baseURL += "disableAllQualityfilters=true"
+    if not use_data_profile or configs['galahSettings']['data_profile'].lower() == "none":
+        baseURL += "disableAllQualityfilters=true&"
 
     # if they have specified, add their specified data quality profile or throw an error
     else:

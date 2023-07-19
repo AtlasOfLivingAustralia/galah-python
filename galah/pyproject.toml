@@ -33,6 +33,7 @@ setuptools = "^60.0.0"
 shapely = "^2.0.0"
 pytest = "^7.2.1"
 mkl = "^1.0.0"
+PyJWT = "^2.5.0"
 
 [tool.poetry.dev-dependencies]
 

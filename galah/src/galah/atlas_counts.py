@@ -75,38 +75,37 @@ def atlas_counts(taxa=None,
     # get atlas
     atlas = configs['galahSettings']['atlas']
 
-    # check for data quality profile for Australian atlas
-    if use_data_profile and atlas == "Australia":
-        baseURL = apply_data_profile("{}?".format(get_api_url(column1='called_by',column1value='atlas_counts',column2="api_name",
-                                                              column2value="records_counts"))) + "&"
+    # raise error if argument is wrong type and/or the atlas doesn't have a quality profile but the user has specified one
+    if use_data_profile and atlas not in ["Australia","ALA"]:
+                raise ValueError("True and False are the only values accepted for data_profile, and the only atlas using a data \n"
+                                "quality profile is Australia.  Your atlas and data profile is \n"
+                                "set in your config file.  To set your default filter, find out what profiles are on offer:\n"
+                                "profiles = galah.show_all(profiles=True)\n\n"
+                                "and then type\n\n"
+                                "profiles['shortName']\n\n"
+                                "to get the names of the data quality profiles you can use.  To set a data profile, type\n" 
+                                "galah.galah_config(data_profile=\"NAME FROM SHORTNAME HERE\")"
+                                "If you don't want to use a data quality profile, set it to None by typing the following:\n\n"
+                                "galah.galah_config(data_profile=\"None\")")
     
     # check for Brazilian atlas
-    elif not use_data_profile and group_by is not None and atlas in ["Brazil"]:
-        baseURL = "{}?".format(get_api_url(column1='called_by', column1value='atlas_counts',column2="api_name",
-                                           column2value="records_facets"))
-    
+    elif group_by is not None and atlas in ["Brazil"]:
+        baseURL,method = get_api_url(column1='called_by', column1value='atlas_counts',column2="api_name",
+                                           column2value="records_facets")
     # use this if they don't want a data quality profile or none exists
-    elif not use_data_profile:
-        baseURL = "{}?".format(get_api_url(column1='called_by', column1value='atlas_counts',column2="api_name",
-                                           column2value="records_counts"))
-        
-    # raise error if argument is wrong type and/or the atlas doesn't have a quality profile but the user has specified one
     else:
-        raise ValueError("True and False are the only values accepted for data_profile, and the only atlas using a data \n"
-                         "quality profile is Australia.  Your atlas and data profile is \n"
-                         "set in your config file.  To set your default filter, find out what profiles are on offer:\n"
-                         "profiles = galah.show_all(profiles=True)\n\n"
-                         "and then type\n\n"
-                         "profiles['shortName']\n\n"
-                         "to get the names of the data quality profiles you can use.  To set a data profile, type\n" 
-                         "galah.galah_config(data_profile=\"NAME FROM SHORTNAME HERE\")"
-                         "If you don't want to use a data quality profile, set it to None by typing the following:\n\n"
-                         "galah.galah_config(data_profile=\"None\")"
-                         )
-    
+        baseURL,method = get_api_url(column1='called_by', column1value='atlas_counts',column2="api_name",
+                                           column2value="records_counts")
+
+    # add a question mark at the end of the URL to separate between endpoint and queries
+    baseURL += "?"
+          
     # test for data quality profile
-    if atlas in ["Australia"]:
-        baseURL = apply_data_profile(baseURL=baseURL)
+    if atlas in ["Australia","ALA"]:
+        baseURL = apply_data_profile(baseURL=baseURL,use_data_profile=use_data_profile)
+        headers = {"x-api-key": configs["galahSettings"]["ALA_API_key"]}
+    else:
+        headers = {}
 
     # if there is no taxa, assume you will get the total number of records in the ALA
     if taxa is None:
@@ -143,7 +142,13 @@ def atlas_counts(taxa=None,
                 print("URL for querying:\n\n{}\n".format(URL))
 
             # get the response and data
-            response = requests.get(URL)
+            response = requests.request(method,URL,headers=headers)
+
+            # check for daily maximum
+            if response.status_code == 429:
+                raise ValueError("You have reached the maximum number of daily queries for the ALA.")
+            
+            # get data from response
             response_json = response.json()
             
             # return dataFrame with total number of records
@@ -159,13 +164,13 @@ def atlas_counts(taxa=None,
                 URL = baseURL + "fq="
                 
                 # return grouped data frame
-                return galah_group_by(URL, group_by=group_by, filters=filters, expand=expand, verbose=verbose, total_group_by=total_group_by)
+                return galah_group_by(URL, method, group_by=group_by, filters=filters, expand=expand, verbose=verbose, total_group_by=total_group_by)
             
             # else, if not GBIF, just run group_by
             else:
 
                 # return grouped data frame
-                return galah_group_by(baseURL, group_by=group_by, filters=filters, expand=expand, verbose=verbose, total_group_by=total_group_by)
+                return galah_group_by(baseURL, method, group_by=group_by, filters=filters, expand=expand, verbose=verbose, total_group_by=total_group_by)
 
     # if taxa exist, do this
     elif type(taxa) is str or type(taxa) is list:
@@ -221,13 +226,13 @@ def atlas_counts(taxa=None,
                     URL += "AND" #"%20AND%20"
                 
                 # return grouped data frame
-                return galah_group_by(URL, group_by=group_by, filters=filters, expand=expand, verbose=verbose, total_group_by=total_group_by)
+                return galah_group_by(URL, method, group_by=group_by, filters=filters, expand=expand, verbose=verbose, total_group_by=total_group_by)
             
             # no filters
             else:
 
                 # return grouped data frame
-                return galah_group_by(URL, group_by=group_by, filters=filters, expand=expand, verbose=verbose, total_group_by=total_group_by)
+                return galah_group_by(URL, method, group_by=group_by, filters=filters, expand=expand, verbose=verbose, total_group_by=total_group_by)
 
         else:
 
@@ -246,10 +251,8 @@ def atlas_counts(taxa=None,
                         raise ValueError("The current iteration of GBIF and galah does not support != as an option.")
                     
                     # add filters to URL
-                    print(URL)
                     URL = add_filters(URL=URL+"AND",atlas=atlas,filters=filters) + "&pageSize=0"
-                    print(URL)
-
+                    
                 # else, make sure that the filters is in the following format
                 else:
                     raise TypeError(
@@ -269,7 +272,11 @@ def atlas_counts(taxa=None,
             print("URL for querying:\n\n{}\n".format(URL))
 
         # response from query
-        response = requests.get(URL)
+        response = requests.request(method,URL,headers=headers)
+
+        # check if user has reached daily maximum of queries
+        if response.status_code == 429:
+            raise ValueError("You have reached the maximum number of daily queries for the ALA.")
 
         # turn response into json 
         response_json = response.json()

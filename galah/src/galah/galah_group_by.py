@@ -4,6 +4,7 @@ from .get_api_url import readConfig
 from .common_functions import add_filters
 
 def galah_group_by(URL,
+                   method,
                    group_by=None,
                    total_group_by=False,
                    filters=None,
@@ -19,6 +20,11 @@ def galah_group_by(URL,
 
     # get atlas
     atlas = configs['galahSettings']['atlas']
+
+    if atlas in ["Australia","ALA"]:
+        headers = {"x-api-key": configs["galahSettings"]["ALA_API_key"]}
+    else:
+        headers = {}
 
     # check if expand option works
     if expand:
@@ -71,14 +77,14 @@ def galah_group_by(URL,
                     startingURL += "&facets={}".format(g)
 
             # round out the URL
-            startingURL += "&&flimit=-1&pageSize=0"
+            startingURL += "&flimit=-1&pageSize=0"
 
             # check to see if the user wants the URL for querying
             if verbose:
                 print("URL for querying:\n\n{}\n".format(startingURL))
 
             # get response from your query, which will include all available fields
-            response = requests.get(startingURL)
+            response = requests.request(method,startingURL,headers=headers)
             response_json = response.json()
             facets_array=[]
 
@@ -131,7 +137,7 @@ def galah_group_by(URL,
                             print("URL for querying:\n\n{}\n".format(tempURL))
 
                         # get the data
-                        response=requests.get(tempURL)
+                        response=requests.request(method,tempURL,headers=headers)
                         response_json = response.json()
 
                         # put data in dict
@@ -168,7 +174,7 @@ def galah_group_by(URL,
                             print("URL for querying:\n\n{}\n".format(tempURL))
 
                         # get data
-                        response=requests.get(tempURL)
+                        response=requests.request(method,tempURL,headers=headers)
                         response_json = response.json()
 
                         # if there is no data available, move onto next variable
@@ -227,7 +233,7 @@ def galah_group_by(URL,
                 print("URL for querying:\n\n{}\n".format(URL))
 
             # tab this if this doesn't work
-            response = requests.get(URL)
+            response = requests.request(method,URL,headers=headers)
             response_json = response.json()
 
             # set some common variables

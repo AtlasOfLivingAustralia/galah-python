@@ -51,6 +51,11 @@ def atlas_species(taxa=None,
     # get atlas
     atlas = configs['galahSettings']['atlas'] 
 
+    if atlas in ["Australia","ALA"]:
+        headers = {"x-api-key": configs["galahSettings"]["ALA_API_key"]}
+    else:
+        headers = {}
+
     # first, check if the user has specified a taxa and if it is of the right variable type
     if type(taxa) is not str and type(taxa) is not list and taxa is not None:
         raise ValueError("Only a string or list can be specified for taxa names")
@@ -64,9 +69,9 @@ def atlas_species(taxa=None,
     
     # get initial url
     if atlas not in ["Global","GBIF"]:
-        baseURL = get_api_url(column1='api_name', column1value='records_species')
+        baseURL,method = get_api_url(column1='api_name', column1value='records_species')
     else:
-        baseURL = get_api_url(column1='api_name', column1value='records_occurrences')
+        baseURL,method = get_api_url(column1='api_name', column1value='records_occurrences')
 
     # raise warning - not sure how to fix it
     if atlas in ["Spain"]:
@@ -128,8 +133,14 @@ def atlas_species(taxa=None,
         if verbose:
             print("URL for querying:\n\n{}\n".format(URL))
 
-        # get url and transform from a text string to a list
-        response = requests.get(URL)
+        # get response from url
+        response = requests.request(method,URL,headers=headers)
+
+        # check response first to see if user has hit maximum number of queries
+        if response.status_code == 429:
+            raise ValueError("You have reached the maximum number of daily queries for the ALA.")
+        
+        # return data as pandas dataframe
         return pd.read_csv(io.StringIO(response.text))
         
     # GBIF is treated differently, as it gives us a species list
