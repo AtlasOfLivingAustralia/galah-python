@@ -65,7 +65,7 @@ def get_api_url(column1=None,
             index = rows[rows[column2].astype(str).str.contains(column2value,case=True,na=False)].index[0]
             baseURL = rows.loc[rows[column1].astype(str).str.contains(column1value, case=True, na=False)]['api_url'][index]
             method = rows.loc[rows[column1].astype(str).str.contains(column1value, case=True, na=False)]['method'][index]
-    
+            
     # else, the user has provided something incorrect
     else:
         raise ValueError("A value needs to be provided for both column2 and column2 value")

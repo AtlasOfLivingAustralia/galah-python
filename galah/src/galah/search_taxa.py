@@ -193,7 +193,7 @@ def search_taxa(taxa=None,
 
     # get base URL for querying
     baseURL, method = get_api_url(column1='called_by',column1value='search_taxa',column2='api_name',column2value='names_search_single')
-
+    
     # third, add fq=<search term> and converting it to URL
     if type(taxa) is list or type(taxa) is str:
 

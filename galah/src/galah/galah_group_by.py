@@ -235,7 +235,7 @@ def galah_group_by(URL,
             # tab this if this doesn't work
             response = requests.request(method,URL,headers=headers)
             response_json = response.json()
-
+            
             # set some common variables
             if atlas in ["Global","GBIF"]:
                 length = len(response_json['facets'])
