@@ -146,7 +146,6 @@ def search_taxa(taxa=None,
             
             # get base URL before adding anything onto it 
             baseURL, method = get_api_url(column1='called_by',column1value='search_taxa',column2='api_name',column2value='names_search_multiple')
-            
             # check to see if the correct information and type of variables is available
             if not any("scientificName" in sn for sn in list(scientific_name.keys())):
                 raise ValueError("you need to include a search term titled \"scientificName\"")

@@ -1,7 +1,7 @@
 Tutorial
 =================================
 
-Now that you have successfully installed ``galah``, we'll provide a quick introduction on the functions you will mainly be using to get data. If you're looking for a quick reference guide for commands, the User Guide (Amanda to add hyperlnk) collates all the available commands wih example.  This tutorial serves as an initial method to get you used to using different commands. 
+Now that you have successfully installed ``galah``, we'll provide a quick introduction on the functions you will mainly be using to get data. If you're looking for a quick reference guide for commands, the `User Guide <../galah_user_guide/index.rst>`_ collates all the available commands with examples.  This tutorial serves as an initial method to get you used to using different commands. 
 
 First, you will need to configure galah.  To do this, run the following:
 

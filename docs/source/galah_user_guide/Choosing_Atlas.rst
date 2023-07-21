@@ -110,7 +110,7 @@ Complex queries with multiple Atlases
 
 It is also possible to create more complex queries that return data from multiple Living Atlases. 
 As an example, setting atlases within a loop with galah_config() allows us to 
-return the total 0number of species records in each Living Atlas in one table.
+return the total number of species records in each Living Atlas in one table.
 
 .. prompt:: python
 

@@ -88,7 +88,8 @@ Various aspects of the galah package can be customized.
 *Email*
 
 To download occurrence records, you will need to provide an email address registered with the ALA. You can create an account 
-here. Once an email is registered with the ALA, it should be stored in the config:
+`here<https://auth.ala.org.au/userdetails/registration/createAccount>`_. Once an email is registered with the ALA, it should 
+be stored in the config:
 
 .. prompt:: python
     

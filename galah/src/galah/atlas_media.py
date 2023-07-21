@@ -88,6 +88,8 @@ def atlas_media(taxa=None,
     # get occurrence data from atlas_occurrences
     dataFrame = atlas_occurrences(taxa=taxa,filters=filters,fields=fields,assertions=assertions,
                                   use_data_profile=use_data_profile)
+    if dataFrame.empty:
+        raise ValueError("There are no occurrences or media associated with your query.  Please try your query on atlas_counts before trying it again on atlas_media.")
 
     # create the output data frame
     if configs['galahSettings']['atlas'] == "Australia":
@@ -167,9 +169,10 @@ def atlas_media(taxa=None,
         # get media metadata url
         # https://images.ala.org.au/ws#/Image%20metadata/getImageInfoForIdList
         if use_data_profile:
-            basemediaURL = apply_data_profile("{}".format(get_api_url(column1='called_by', column1value='media_metadata')))
+            basemediaURL, method = get_api_url(column1='called_by', column1value='media_metadata')
+            basemediaURL = apply_data_profile(basemediaURL)
         elif not use_data_profile:
-            basemediaURL = "{}".format(get_api_url(column1='called_by', column1value='media_metadata'))
+            basemediaURL, method = get_api_url(column1='called_by', column1value='media_metadata')
         else:
             raise ValueError("True and False are the only values accepted for data_profile.  Your data profile is \n"
                              "set in your config file.  To see valid data quality profiles, run:\n"
@@ -206,7 +209,7 @@ def atlas_media(taxa=None,
                         URL = basemediaURL.replace("{id}",entry)
                         if verbose:
                             print("URL for querying:\n\n{}\n".format(URL))
-                        response = requests.get(URL)
+                        response = requests.request(method,URL)
                         temp_dict = {k: [float("nan")] if not v else [v] for k, v in response.json().items()}
                         if collect:
                             image_urls.append(temp_dict['originalFileName'][0])
