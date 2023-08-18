@@ -45,17 +45,18 @@ def show_values(field=None,
     # get atlas
     atlas = configs['galahSettings']['atlas']
 
+    headers = {}
+
     # get headers
-    if atlas in ["Australia","ALA"]:
-        headers = {"x-api-key": configs["galahSettings"]["ALA_API_key"]}
-    else:
-        headers = {}
+    #if atlas in ["Australia","ALA"]:
+    #    headers = {"x-api-key": configs["galahSettings"]["ALA_API_key"]}
+    #else:
+    #    headers = {}
 
     # get base URL for querying
     if atlas in ["Global","GBIF"]:
         baseURL,method = get_api_url(column1='api_name',column1value='records_counts')
-        URL = baseURL + "?facet=" + field 
-
+        URL = baseURL + "?facet=" + field + "&flimit=-1"
         '''
         url,chosen_title,column_titles
 
@@ -72,7 +73,7 @@ def show_values(field=None,
         '''
     else:
         baseURL,method = get_api_url(column1='api_name',column1value='records_facets')
-        URL = baseURL + "?facets=" + field
+        URL = baseURL + "?facets=" + field + "&flimit=-1"
 
     # check to see if the user wants the URL for querying
     if verbose:

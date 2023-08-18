@@ -446,13 +446,13 @@ Available information may vary for each Living Atlas.</p>
 3                                                                                                                                                                   2007-08 Voyage 3 of the Aurora Australis, CEAMARC-CASO Krill Data  https://collections-test.ala.org.au/ws/dataResource/dr16226  dr16226
 4                                                                                                                                       2016 Aerial survey data of southern right whales (Eubalaena australis) off southern Australia  https://collections-test.ala.org.au/ws/dataResource/dr16218  dr16218
 ...                                                                                                                                                                                                                               ...                                                          ...      ...
-3143                                                                                                                                                                        [C4OC] Torres Strait Dugong and Turtle Management Project   https://collections-test.ala.org.au/ws/dataResource/dr5483   dr5483
-3144                                                                                                                                                                               [C4OC] Torres Strait Regional Landcare Facilitator   https://collections-test.ala.org.au/ws/dataResource/dr3529   dr3529
-3145                                                                                                                                                [C4OC] Traditional Ecological Knowledge Recording and Management in Torres Strait   https://collections-test.ala.org.au/ws/dataResource/dr3199   dr3199
-3146                                                                                                                          [C4OC] Trialling and demonstrating farmer innovation for improved environmental and resource management   https://collections-test.ala.org.au/ws/dataResource/dr3519   dr3519
-3147                                                                                                                                                                                              [C4OC] Urban and Coastal Protection   https://collections-test.ala.org.au/ws/dataResource/dr6802   dr6802
+3371                                                                                                                                                                        [C4OC] Torres Strait Dugong and Turtle Management Project   https://collections-test.ala.org.au/ws/dataResource/dr5483   dr5483
+3372                                                                                                                                                                               [C4OC] Torres Strait Regional Landcare Facilitator   https://collections-test.ala.org.au/ws/dataResource/dr3529   dr3529
+3373                                                                                                                                                [C4OC] Traditional Ecological Knowledge Recording and Management in Torres Strait   https://collections-test.ala.org.au/ws/dataResource/dr3199   dr3199
+3374                                                                                                                          [C4OC] Trialling and demonstrating farmer innovation for improved environmental and resource management   https://collections-test.ala.org.au/ws/dataResource/dr3519   dr3519
+3375                                                                                                                                                                                              [C4OC] Urban and Coastal Protection   https://collections-test.ala.org.au/ws/dataResource/dr6802   dr6802
 
-[3148 rows x 3 columns]
+[3376 rows x 3 columns]
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">show_all</span><span class="p">(</span><span class="n">fields</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></span>
@@ -473,9 +473,11 @@ Available information may vary for each Living Atlas.</p>
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">search_all</span><span class="p">(</span><span class="n">datasets</span><span class="o">=</span><span class="s2">&quot;year&quot;</span><span class="p">)</span></span>
-</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>                                                                                   name                                                          uri      uid
-811                                                      Elgin Road 3 year observations    https://collections-test.ala.org.au/ws/dataResource/dr661    dr661
-0    10 year trend of levels of organochlorine pollutants in Antarctic seabirds 2003/04  https://collections-test.ala.org.au/ws/dataResource/dr16247  dr16247
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>                                                                                                                                                                                                                name                                                          uri      uid
+869                                                                                                                                                                                   Elgin Road 3 year observations    https://collections-test.ala.org.au/ws/dataResource/dr661    dr661
+0                                                                                                                                 10 year trend of levels of organochlorine pollutants in Antarctic seabirds 2003/04  https://collections-test.ala.org.au/ws/dataResource/dr16247  dr16247
+567                                                                              Coccolithophore assemblages of a 9,000 year old marine sediment core from a climate hotspot in Tasmania, southeast Australia (2018)  https://collections-test.ala.org.au/ws/dataResource/dr21782  dr21782
+1497  Jellyfish Database Initiative: Global records on gelatinous zooplankton for the past 200 years, collected from global sources and literature, subset of records from Australian and adjacent seas. (1907-2011)  https://collections-test.ala.org.au/ws/dataResource/dr21871  dr21871
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">search_taxa</span><span class="p">(</span><span class="n">taxa</span><span class="o">=</span><span class="s2">&quot;Heleioporus&quot;</span><span class="p">)</span></span>
@@ -504,25 +506,25 @@ Index: []
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">atlas_counts</span><span class="p">(</span><span class="n">taxa</span><span class="o">=</span><span class="s2">&quot;Vulpes vulpes&quot;</span><span class="p">,</span> <span class="n">filters</span><span class="o">=</span><span class="s2">&quot;year&gt;2010&quot;</span><span class="p">)</span></span>
 </pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>   totalRecords
-0         90336
+0         90590
 </pre></div>
 </div>
 <p>Download species occurrence records from other atlases with <code class="docutils literal notranslate"><span class="pre">galah.atlas_occurrences()</span></code></p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">atlas_occurrences</span><span class="p">(</span><span class="n">taxa</span><span class="o">=</span><span class="s2">&quot;Vulpes vulpes&quot;</span><span class="p">,</span> <span class="n">filters</span><span class="o">=</span><span class="s2">&quot;year&gt;2010&quot;</span><span class="p">,</span> <span class="n">fields</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;taxon_name&quot;</span><span class="p">,</span> <span class="s2">&quot;year&quot;</span><span class="p">])</span></span>
 </pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>             scientificName  year
-0             Vulpes vulpes  2014
-1             Vulpes vulpes  2012
-2             Vulpes vulpes  2012
-3             Vulpes vulpes  2020
-4             Vulpes vulpes  2014
+0             Vulpes vulpes  2022
+1             Vulpes vulpes  2023
+2             Vulpes vulpes  2014
+3             Vulpes vulpes  2016
+4             Vulpes vulpes  2013
 ...                     ...   ...
-90331         Vulpes vulpes  2014
-90332         Vulpes vulpes  2021
-90333  Vulpes vulpes vulpes  2019
-90334  Vulpes vulpes vulpes  2018
-90335  Vulpes vulpes vulpes  2019
+90585         Vulpes vulpes  2016
+90586         Vulpes vulpes  2017
+90587  Vulpes vulpes vulpes  2019
+90588  Vulpes vulpes vulpes  2018
+90589  Vulpes vulpes vulpes  2019
 
-[90336 rows x 2 columns]
+[90590 rows x 2 columns]
 </pre></div>
 </div>
 </section>
@@ -541,12 +543,12 @@ return the total number of species records in each Living Atlas in one table.</p
 <span class="prompt1"><span class="o">&gt;&gt;&gt;</span>     <span class="n">counts_dict</span><span class="p">[</span><span class="s2">&quot;Total Records&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">galah</span><span class="o">.</span><span class="n">atlas_counts</span><span class="p">()[</span><span class="s2">&quot;totalRecords&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span></span>
 <span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">counts_dict</span><span class="p">)</span></span>
 </pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>       Atlas  Total Records
-0  Australia      132208469
-1    Austria        8674092
-2     Brazil       24340674
+0  Australia      159698094
+1    Austria        8976175
+2     Brazil       24319254
 3     France      138258300
-4       GBIF     2334585025
-5      Spain       56743955
+4       GBIF     2379518039
+5      Spain       57504954
 </pre></div>
 </div>
 </section>

@@ -4,7 +4,6 @@ setup.cfg
 setup.py
 src/galah/__init__.py
 src/galah/apply_data_profile.py
-src/galah/atlas_citation.py
 src/galah/atlas_counts.py
 src/galah/atlas_media.py
 src/galah/atlas_occurrences.py
@@ -20,6 +19,7 @@ src/galah/galah_group_by.py
 src/galah/galah_select.py
 src/galah/gbif_assertions.csv
 src/galah/gbif_fields.csv
+src/galah/generate_jwt_token.py
 src/galah/get_api_url.py
 src/galah/node_config.csv
 src/galah/search_all.py

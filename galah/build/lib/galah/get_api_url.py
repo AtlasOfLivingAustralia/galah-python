@@ -51,6 +51,7 @@ def get_api_url(column1=None,
         else:
             index = rows[rows[column1].astype(str).str.contains(column1value, case=True, na=False)].index[0]
             baseURL = rows[rows[column1].astype(str).str.contains(column1value, case=True, na=False)]['api_url'][index]
+            method = rows[rows[column1].astype(str).str.contains(column1value, case=True, na=False)]['method'][index]
     
     # if there are two columns to filter by, first check for the name and value
     elif column2 is not None and column2value is not None:
@@ -63,7 +64,8 @@ def get_api_url(column1=None,
         else:
             index = rows[rows[column2].astype(str).str.contains(column2value,case=True,na=False)].index[0]
             baseURL = rows.loc[rows[column1].astype(str).str.contains(column1value, case=True, na=False)]['api_url'][index]
-    
+            method = rows.loc[rows[column1].astype(str).str.contains(column1value, case=True, na=False)]['method'][index]
+            
     # else, the user has provided something incorrect
     else:
         raise ValueError("A value needs to be provided for both column2 and column2 value")
@@ -90,4 +92,4 @@ def get_api_url(column1=None,
                                  "galah_config(email_notify=\"False\") or galah_config(email_notify=\"True\")")
 
     # return the final URL
-    return baseURL
+    return baseURL,method

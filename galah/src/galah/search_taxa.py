@@ -78,11 +78,13 @@ def search_taxa(taxa=None,
     # get configuration
     configs = readConfig()
 
+    headers = {}
+
     # get headers for ALA
-    if configs['galahSettings']['atlas'] == "Australia":
-        headers = {"x-api-key": configs["galahSettings"]["ALA_API_key"]}
-    else:
-        headers = {}
+    #if configs['galahSettings']['atlas'] == "Australia":
+    #    headers = {"x-api-key": configs["galahSettings"]["ALA_API_key"]}
+    #else:
+    #    headers = {}
 
     # get atlas
     atlas = configs['galahSettings']['atlas']
@@ -109,6 +111,10 @@ def search_taxa(taxa=None,
             elif identifiers is not None:
                 baseURL, method = get_api_url(column1='called_by',column1value='search_identifiers',column2='api_name',column2value='names_lookup')
                 URL = baseURL + "?taxonID=" + urllib.parse.quote(identifiers)
+                response = requests.request(method,URL,headers=headers)
+                taxa = response.text
+                baseURL, method = get_api_url(column1='called_by',column1value='search_taxa',column2='api_name',column2value='names_search_single')
+                URL = baseURL.replace("{name}","%20".join(taxa.split(" ")))
             
             # else, something wasn't put into the argyments correctly
             else:
@@ -116,6 +122,10 @@ def search_taxa(taxa=None,
         else:
             raise ValueError("identifiers and specific_epithet are only available for the Australian atlas.")
         
+        # check to see if the user wants the querying URL
+        if verbose:
+            print("URL for querying:\n\n{}\n".format(URL))
+
         # get response from URL
         response = requests.request(method,URL,headers=headers)
         

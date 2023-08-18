@@ -401,6 +401,7 @@ document.write(`
                   
   <section id="tutorial">
 <h1>Tutorial<a class="headerlink" href="#tutorial" title="Permalink to this heading">#</a></h1>
+<p><em>Note: You will need to register your email address at the atlas you want to download data for, otherwise you will get no data!</em></p>
 <p>Now that you have successfully installed <code class="docutils literal notranslate"><span class="pre">galah</span></code>, we’ll provide a quick introduction on the functions you will mainly be using to get data. If you’re looking for a quick reference guide for commands, the <a class="reference external" href="../galah_user_guide/index.rst">User Guide</a> collates all the available commands with examples.  This tutorial serves as an initial method to get you used to using different commands.</p>
 <p>First, you will need to configure galah.  To do this, run the following:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><style type="text/css">
@@ -415,7 +416,7 @@ span.prompt1:before {
 <span class="prompt1">galah.atlas_counts(taxa=&quot;Vulpes vulpes&quot;)</span>
 </pre></div></div><p>which returns</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>   totalRecords
-0        124779
+0        125071
 </pre></div>
 </div>
 <p>From here, you can narrow down your query by doing a few things.  Let’s first investigate how to apply filters.</p>
@@ -424,7 +425,7 @@ span.prompt1:before {
 <span class="prompt1">galah.atlas_counts(taxa=&quot;Vulpes vulpes&quot;,filters=&quot;year=2020&quot;)</span>
 </pre></div></div><p>which returns</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>   totalRecords
-0          5661
+0          5662
 </pre></div>
 </div>
 <p>Now that you have successfully determined the number of records for the red fox, you can download the occurrence records.  To do this, write the following:</p>
@@ -438,13 +439,13 @@ span.prompt1:before {
 3          -38.700056  ...           PRESENT
 4          -38.694837  ...           PRESENT
 ...               ...  ...               ...
-5656        42.065789  ...           PRESENT
-5657        45.902841  ...           PRESENT
-5658        46.700000  ...           PRESENT
+5657        42.065789  ...           PRESENT
+5658        45.902841  ...           PRESENT
 5659        46.700000  ...           PRESENT
-5660        51.574697  ...           PRESENT
+5660        46.700000  ...           PRESENT
+5661        51.574697  ...           PRESENT
 
-[5661 rows x 8 columns]
+[5662 rows x 8 columns]
 </pre></div>
 </div>
 </section>

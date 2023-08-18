@@ -26,23 +26,23 @@ def apply_data_profile(baseURL=None,
         baseURL += "?"
 
     # check if the user has specified no data quality profile
-    if not use_data_profile or configs['galahSettings']['data_profile'].lower() == "none":
-        baseURL += "disableAllQualityfilters=true&"
+    #if not use_data_profile or configs['galahSettings']['data_profile'].lower() == "none":
+    #    baseURL += "disableAllQualityfilters=true&"
 
     # if they have specified, add their specified data quality profile or throw an error
+    #else:
+    data_profile_list = list(show_all(profiles=True)['shortName'])
+    if configs['galahSettings']['data_profile'] in data_profile_list:
+        baseURL += "qualityProfile={}&".format(configs['galahSettings']['data_profile'])
     else:
-        data_profile_list = list(show_all(profiles=True)['shortName'])
-        if configs['galahSettings']['data_profile'] in data_profile_list:
-            baseURL += "qualityProfile={}&".format(configs['galahSettings']['data_profile'])
-        else:
-            raise ValueError("The data quality profile not recognised. To see valid data quality profiles, run \n\n"
-                             "profiles = galah.show_all(profiles=True)\n\n"
-                             "then type\n\n"
-                             "profiles['shortName']\n\n"
-                             "  To set a data profile, type\n" 
-                             "galah.galah_config(data_profile=\"NAME FROM SHORTNAME HERE\")"
-                             "If you don't want to use a data quality profile, set it to None by typing the following:\n\n"
-                             "galah.galah_config(data_profile=\"None\")")
+        raise ValueError("The data quality profile not recognised. To see valid data quality profiles, run \n\n"
+                            "profiles = galah.show_all(profiles=True)\n\n"
+                            "then type\n\n"
+                            "profiles['shortName']\n\n"
+                            "  To set a data profile, type\n" 
+                            "galah.galah_config(data_profile=\"NAME FROM SHORTNAME HERE\")"
+                            "If you don't want to use a data quality profile, set it to None by typing the following:\n\n"
+                            "galah.galah_config(data_profile=\"None\")")
 
     # return URL with data quality filter
     return baseURL

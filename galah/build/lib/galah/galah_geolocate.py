@@ -35,11 +35,18 @@ def galah_geolocate(polygon=None,
 
     if polygon is not None:
 
-        print(polygon)
-        print(type(polygon))
-
         if type(polygon) is list:
-            raise ValueError("Unsure how to deal with polygon lists")
+            polygon_string = ""
+            for p in polygon:
+                if type(polygon) is str:
+                    if "POLYGON" not in polygon and "MULTIPOLYGON" not in polygon:
+                        raise ValueError("Only a wkt should be passed to polygon")
+                    geometry = shapely.wkt.loads(p)
+                    new_geom = str(p).replace("POLYGON ","MULTIPOLYGON (") + ")"
+                    polygon_string += "wkt={}&".format(urllib.parse.quote(str(new_geom))) # geometry
+                elif type(polygon) is Polygon or MultiPolygon:
+                    polygon_string += "wkt={}&".format(urllib.parse.quote(str(p)))
+            return polygon_string
         elif type(polygon) is str:
             if "POLYGON" not in polygon and "MULTIPOLYGON" not in polygon:
                 if "shp" not in polygon:
@@ -50,12 +57,11 @@ def galah_geolocate(polygon=None,
         elif type(polygon) is Polygon or MultiPolygon:
             return "wkt={}".format(urllib.parse.quote(str(polygon)))
         else:
+            print(polygon)
+            print(type(polygon))
             raise ValueError("The only types of variables geolocate takes are list, str and polygons")
 
     elif bbox is not None:
-
-        print(bbox)
-        print(type(bbox))
 
         if type(bbox) is list:
             new_bbox = Polygon.from_bounds(bbox[0],bbox[1],bbox[2],bbox[3])
@@ -69,4 +75,6 @@ def galah_geolocate(polygon=None,
             new_bbox = box(bounds[0],bounds[1],bounds[2],bounds[3])
             return "wkt={}".format(urllib.parse.quote(str(new_bbox)))
         else:
+            print(bbox)
+            print(type(bbox))
             raise ValueError("The only types of variables geolocate takes are list, str and polygons")

@@ -7,3 +7,6 @@ Author: Amanda Buyan
 Author-email: amanda.buyan@csiro.au
 License: MPL-2.0
 Keywords: galah
+Description-Content-Type: text/markdown
+
+Get counts and information on species from many different atlases

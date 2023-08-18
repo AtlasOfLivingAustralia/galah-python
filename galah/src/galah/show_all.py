@@ -1,7 +1,7 @@
-import requests,os
+import os
 import pandas as pd
 
-from .get_api_url import get_api_url, readConfig
+from .get_api_url import readConfig
 from .common_functions import get_response_show_all
 from .common_dictionaries import atlases as ATLASES
 
@@ -75,10 +75,12 @@ def show_all(assertions=False,
 
     atlas = configs['galahSettings']['atlas']
 
-    if atlas in ["Australia","ALA"]:
-        headers = {"x-api-key": configs["galahSettings"]["ALA_API_key"]}
-    else:
-        headers = {}
+    headers = {}
+
+    #if atlas in ["Australia","ALA"]:
+    #    headers = {"x-api-key": configs["galahSettings"]["ALA_API_key"]}
+    #else:
+    #    headers = {}
 
     # set up the option for getting back multiple values
     return_array=[]

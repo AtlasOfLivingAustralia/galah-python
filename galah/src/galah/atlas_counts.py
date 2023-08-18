@@ -4,8 +4,9 @@ from .galah_group_by import galah_group_by
 from .search_taxa import search_taxa
 from .get_api_url import get_api_url,readConfig
 from .apply_data_profile import apply_data_profile
-#from .galah_geolocate import galah_geolocate
-from .common_functions import add_filters
+from .galah_geolocate import galah_geolocate
+from .galah_filter import galah_filter
+from .common_functions import add_filters,add_to_payload_ALA,generate_list_taxonConceptIDs
 from .common_dictionaries import ATLAS_KEYWORDS,COUNTS_NAMES,atlases
 
 #  polygon=None,
@@ -17,9 +18,11 @@ def atlas_counts(taxa=None,
                  expand=True,
                  use_data_profile=False,
                  verbose=False,
+                 polygon=None,
+                 bbox=None
                  ):
     """
-    Prior to downloading data it is often valuable to have some estimate of how many records are available, both for deciding
+    Prior to downloading data, it is often valuable to have some estimate of how many records are available, both for deciding
     if the query is feasible, and for estimating how long it will take to download. Alternatively, for some kinds of reporting,
     the count of observations may be all that is required, for example for understanding how observations are growing or shrinking
     in particular locations, or for particular taxa.
@@ -99,116 +102,129 @@ def atlas_counts(taxa=None,
 
     # add a question mark at the end of the URL to separate between endpoint and queries
     URL = baseURL + "?"
-          
-    # test for data quality profile
+
+    # create headers
+    headers = {}
+    # headers (just in case)
+    #if atlas in ["Australia","ALA"]:
+    #    headers = {"x-api-key": configs["galahSettings"]["ALA_API_key"]}
+    #else:
+    #    headers = {}
+
+    # create payload (for ALA)
+    payload = {}
+
     if atlas in ["Australia","ALA"]:
-        baseURL = apply_data_profile(baseURL=baseURL,use_data_profile=use_data_profile)
-        headers = {"x-api-key": configs["galahSettings"]["ALA_API_key"]}
+
+        # check for data profile first
+        if use_data_profile:
+
+            # add data quality profile directly to URL
+            baseURL = apply_data_profile(baseURL=baseURL,use_data_profile=use_data_profile)
+
+        
+        # create payload
+        payload = add_to_payload_ALA(payload=payload,atlas=atlas,taxa=taxa,filters=filters,geolocate=galah_geolocate(polygon=polygon,bbox=bbox))
+        
+        # check for group by
+        if group_by is not None:
+
+            # get grouped table
+            return galah_group_by(group_by=group_by, expand=expand, verbose=verbose, total_group_by=total_group_by,payload=payload)
+
+        # create the query id
+        qid_URL, method2 = get_api_url(column1="api_name",column1value="occurrences_qid")
+        qid = requests.request(method2,qid_URL,data=payload)
+        
+        # create the URL to grab your queryID and counts
+        if use_data_profile:
+            URL = baseURL + "fq=%28qid%3A" + qid.text + "%29&flimit=-1&pageSize=0"
+        else:
+            URL = baseURL + "?fq=%28qid%3A" + qid.text + "%29&flimit=-1&pageSize=0"
+
+        if verbose:
+            print("URL for querying: {}".format(URL))
+            print("Method: {}".format(method))
+
+        # get data
+        response = requests.request(method,URL,headers=headers)
+
+        # check for daily maximum
+        if response.status_code == 429:
+            raise ValueError("You have reached the maximum number of daily queries for the ALA.")
+        
+        # get data from response
+        response_json = response.json()
+        
+        # return dataFrame with total number of records
+        return pd.DataFrame({'totalRecords': [response_json[COUNTS_NAMES[atlas]]]})
+
     else:
-        headers = {}
 
-    # if there is no taxa, assume you will get the total number of records in the ALA
-    if taxa is not None:
+        # if there is no taxa, assume you will get the total number of records in the ALA
+        if taxa is not None:
 
-        # change taxa into list for easier looping and check if type of variable is correct
-        if type(taxa) is str:
-            taxa = [taxa]
-        elif type(taxa) is list:
-            pass
-        else:
-            raise TypeError("The taxa argument can only be a string or a list."
-                        "\nExample: atlas.counts(\"Vulpes vulpes\")"
-                        "\n         atlas.counts[\"Osphranter rufus\",\"Vulpes vulpes\",\"Macropus giganteus\",\"Phascolarctos cinereus\"])")
+            URL += generate_list_taxonConceptIDs(taxa=taxa,atlas=atlas)
 
-        # get the number of records associated with each taxa
-        for name in taxa:
+        # check if user wants to gropu counts
+        if group_by is not None:
 
-            # create temporary dataframe for taxon id
-            tempdf = search_taxa(name)
+            # check for GBIF first
+            if configs["galahSettings"]['atlas'] not in ["Global","GBIF"]:
+
+                # add a separator if the user has taxa specified
+                if taxa is not None and filters is not None:
+                    URL += "%20AND%20"
+                
+                # return grouped data frame
+                return galah_group_by(URL, method, group_by=group_by, filters=filters, expand=expand, verbose=verbose, total_group_by=total_group_by)
             
-            # check if dataframe is empty - if so, return None; else, continue
-            if tempdf.empty:
-                print("No taxon matches were found for {} in the selected atlas ({})".format(name, configs[
-                    'galahSettings']['atlas']))
-                if len(taxa) == 1:
-                    return None
-                continue
+            # else, if not GBIF, just run group_by
+            else:
 
-        # get the taxonConceptID for taxa while checking for extant atlas
-        if atlas in atlases:
-            taxonConceptID = list(search_taxa(taxa)[ATLAS_KEYWORDS[atlas]])
-        else:
-            raise ValueError("Atlas {} is not taken into account".format(atlas))
+                # return grouped data frame
+                return galah_group_by(URL, method, group_by=group_by, filters=filters, expand=expand, verbose=verbose, total_group_by=total_group_by)
 
-        # add taxon IDs to URL, but first check for GBIF
-        if atlas in ["Global","GBIF"]:
+        # check if filters are specified
+        if filters is not None:
 
-            # add using taxonKey
-            URL += "".join(["taxonKey={}&".format(urllib.parse.quote(str(tid))) for tid in taxonConceptID])
+            # check the type of variable filters is
+            if type(filters) is list or type(filters) is str:
+                
+                # add a separator if the user has taxa specified
+                if taxa is not None:
+                    URL += "%20AND%20"
+                    URL = add_filters(URL=URL,atlas=atlas,filters=filters)
+
+                # then, add filters
+                else:
+                    URL = add_filters(URL=URL,atlas=atlas,filters=filters)
+                    
+            # else, make sure that the filters is in the following format
+            else:
+                raise TypeError(
+                    "filters should only be a list, and are in the following format:\n\nfilters=[\'year:2020\']")
+
+        # testing for galah_geolocate - implemented in next version
+        if polygon is not None or bbox is not None:
+            URL += "&" + galah_geolocate(polygon=polygon,bbox=bbox)
         
-        else:
+        # use this to get only the data we need
+        URL += "&pageSize=0"
 
-            # add using lsid
-            URL += "fq=%28lsid%3A" + "%20OR%20lsid%3A".join(
-                urllib.parse.quote(str(tid)) for tid in taxonConceptID) + "%29"
+        # check to see if the user wants the querying URL
+        if verbose:
+            print("URL for querying:\n\n{}\n".format(URL))
 
-    # check if user wants to gropu counts
-    if group_by is not None:
+        # get data
+        response = requests.request(method,URL,headers=headers)
 
-        # check for GBIF first
-        if configs["galahSettings"]['atlas'] not in ["Global","GBIF"]:
-
-            # add a separator if the user has taxa specified
-            if taxa is not None and filters is not None:
-                URL += "%20AND%20"
-            
-            # return grouped data frame
-            return galah_group_by(URL, method, group_by=group_by, filters=filters, expand=expand, verbose=verbose, total_group_by=total_group_by)
+        # check for daily maximum
+        if response.status_code == 429:
+            raise ValueError("You have reached the maximum number of daily queries for the ALA.")
         
-        # else, if not GBIF, just run group_by
-        else:
-
-            # return grouped data frame
-            return galah_group_by(URL, method, group_by=group_by, filters=filters, expand=expand, verbose=verbose, total_group_by=total_group_by)
-
-    # check if filters are specified
-    if filters is not None:
-
-        # check the type of variable filters is
-        if type(filters) is list or type(filters) is str:
-            
-            # add a separator if the user has taxa specified
-            if taxa is not None:
-                URL += "%20AND%20"
-
-            # then, add filters
-            URL = add_filters(URL=URL,atlas=atlas,filters=filters)
-
-        # else, make sure that the filters is in the following format
-        else:
-            raise TypeError(
-                "filters should only be a list, and are in the following format:\n\nfilters=[\'year:2020\']")
-
-    # testing for galah_geolocate - implemented in next version
-    #if polygon or bbox:
-    #    URL += "&" + galah_geolocate(polygon=polygon,bbox=bbox)
-
-    # use this to get only the data we need
-    URL += "&pageSize=0"
-
-    # check to see if the user wants the querying URL
-    if verbose:
-        print("URL for querying:\n\n{}\n".format(URL))
-
-    # get the response and data
-    response = requests.request(method,URL,headers=headers)
-
-    # check for daily maximum
-    if response.status_code == 429:
-        raise ValueError("You have reached the maximum number of daily queries for the ALA.")
-    
-    # get data from response
-    response_json = response.json()
-    
-    # return dataFrame with total number of records
-    return pd.DataFrame({'totalRecords': [response_json[COUNTS_NAMES[atlas]]]})
+        # get data from response
+        response_json = response.json()
+        
+        # return dataFrame with total number of records
+        return pd.DataFrame({'totalRecords': [response_json[COUNTS_NAMES[atlas]]]})
