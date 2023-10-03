@@ -14,10 +14,7 @@ returnString: a string to add to the URL to query the API
 def galah_select(select=None,atlas=None):
 
     # generate a temporary string for fields to return to another function
-    if atlas in ["Australia","ALA"]:
-        tempstring="fl="
-    else:
-        tempstring="fields="
+    tempstring="fields="
 
     # check if this argument is provided
     if select is None:

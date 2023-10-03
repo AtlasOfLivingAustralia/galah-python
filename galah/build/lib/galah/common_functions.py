@@ -3,6 +3,7 @@ import urllib
 from .galah_filter import galah_filter
 from .get_api_url import get_api_url
 from .search_taxa import search_taxa
+from .galah_geolocate import galah_geolocate
 from .common_dictionaries import atlases, ATLAS_KEYWORDS
 
 # for adding filters specifically to atlas_occurrences
@@ -172,7 +173,8 @@ def add_to_payload_ALA(payload=None,
                        atlas=None,
                        taxa=None,
                        filters=None,
-                       geolocate=None,
+                       polygon=None,
+                       bbox=None
                        ):
 
     if payload is None:
@@ -201,7 +203,17 @@ def add_to_payload_ALA(payload=None,
                 else:
                     payload["fq"].append(galah_filter(f))
 
-    if geolocate is not None:
-        print("Amanda write this loop")
+    if polygon is not None or bbox is not None:
+        wkts = galah_geolocate(polygon=polygon,bbox=bbox)
+        if "wkt" not in payload:
+            if type(wkts) is str:
+                payload["wkt"] = [wkts]
+            else:
+                payload["wkt"] = wkts
+        else:
+            if type(wkts) is str:
+                payload["wkt"].append(wkts)
+            else:
+                payload["wkt"] += wkts
 
     return payload

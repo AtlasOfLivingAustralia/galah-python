@@ -1,0 +1,6 @@
+sphinx
+myst-parser
+sphinx-prompt
+sphinxcontrib-programoutput
+sphinx-design
+pydata-sphinx-theme

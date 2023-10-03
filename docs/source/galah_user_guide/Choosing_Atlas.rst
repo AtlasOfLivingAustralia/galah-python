@@ -1,3 +1,5 @@
+.. _Choosing an Atlas:
+
 Choosing an Atlas
 =================
 

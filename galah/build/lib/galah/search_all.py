@@ -66,7 +66,7 @@ def search_all(assertions=None,
         import galah
         galah.search_all(apis="Australia")
 
-    .. program-output:: python -c "import galah; print(galah.search_all(apis=\\\"Australia\\\"))"
+    .. program-output:: python -c "import galah; import pandas as pd;pd.set_option('display.max_columns', None);print(galah.search_all(apis=\\\"Australia\\\"))"
     """
 
     # set up the option for getting back multiple values
@@ -103,7 +103,7 @@ def search_all(assertions=None,
         # check to see if the user input the correct variable type; else, throw value error
         if type(assertions) is str:
             return_dataFrame = dataFrame.loc[dataFrame[column_name].astype(str).str.contains(assertions, case=False, na=False)]
-            return_array.append(return_dataFrame.sort_values(sort_name, key=lambda x: x.str.len()))
+            return_array.append(return_dataFrame.sort_values(sort_name, key=lambda x: x.str.len()).reset_index(drop=True))
         
         # else, throw error because this only takes strings for now
         else:
@@ -126,7 +126,7 @@ def search_all(assertions=None,
         # check to see if the user input the correct variable type; else, throw value error
         if type(atlases) is str:
             return_dataFrame = dataFrame.loc[dataFrame[column_name].astype(str).str.contains(atlases, case=False, na=False)]
-            return_array.append(return_dataFrame.sort_values('atlas', key=lambda x: x.str.len()))
+            return_array.append(return_dataFrame.sort_values('atlas', key=lambda x: x.str.len()).reset_index(drop=True))
         
         # else, throw error because this only takes strings for now
         else:
@@ -150,7 +150,7 @@ def search_all(assertions=None,
         # check to see if the user input the correct variable type; else, throw value error
         if type(apis) is str:
             return_dataFrame = dataFrame.loc[dataFrame[column_name].astype(str).str.contains(apis, case=False, na=False)]
-            return_array.append(return_dataFrame.sort_values('atlas', key=lambda x: x.str.len()))
+            return_array.append(return_dataFrame.sort_values('atlas', key=lambda x: x.str.len()).reset_index(drop=True))
         
         # else, throw error because this only takes strings for now
         else:
@@ -174,7 +174,7 @@ def search_all(assertions=None,
         # check to see if the user input the correct variable type; else, throw value error
         if type(collection) is str:
             return_dataFrame = dataFrame.loc[dataFrame[column_name].astype(str).str.contains(collection, case=False, na=False)]
-            return_array.append(return_dataFrame.sort_values('name', key=lambda x: x.str.len()))
+            return_array.append(return_dataFrame.sort_values('name', key=lambda x: x.str.len()).reset_index(drop=True))
         
         # else, throw error because this only takes strings for now
         else:
@@ -201,9 +201,9 @@ def search_all(assertions=None,
         if type(datasets) is str:
             return_dataFrame = dataFrame.loc[dataFrame[column_name].astype(str).str.contains(datasets, case=False, na=False)]
             if atlas not in ["Global","GBIF"]:
-                return_array.append(return_dataFrame.sort_values('name', key=lambda x: x.str.len()))
+                return_array.append(return_dataFrame.sort_values('name', key=lambda x: x.str.len()).reset_index(drop=True))
             else:
-                return_array.append(return_dataFrame.sort_values('title', key=lambda x: x.str.len()))
+                return_array.append(return_dataFrame.sort_values('title', key=lambda x: x.str.len()).reset_index(drop=True))
         
         # else, throw error because this only takes strings for now
         else:
@@ -230,9 +230,9 @@ def search_all(assertions=None,
         if type(fields) is str:
             return_dataFrame = dataFrame.loc[dataFrame[column_name].astype(str).str.contains(fields, case=False, na=False)]
             if  atlas in ["Global","GBIF"]:
-                return_array.append(return_dataFrame.sort_values('Parameter', key=lambda x: x.str.len()))
+                return_array.append(return_dataFrame.sort_values('Parameter', key=lambda x: x.str.len()).reset_index(drop=True))
             else:
-                return_array.append(return_dataFrame.sort_values('id', key=lambda x: x.str.len()))
+                return_array.append(return_dataFrame.sort_values('id', key=lambda x: x.str.len()).reset_index(drop=True))
         
         # else, throw error because this only takes strings for now
         else:
@@ -256,7 +256,7 @@ def search_all(assertions=None,
         # check to see if the user input the correct variable type; else, throw value error
         if type(licences) is str:
             return_dataFrame = dataFrame.loc[dataFrame[column_name].astype(str).str.contains(licences, case=False, na=False)]
-            return_array.append(return_dataFrame.sort_values('id', key=lambda x: x.astype(str).str.len()))
+            return_array.append(return_dataFrame.sort_values('id', key=lambda x: x.astype(str).str.len()).reset_index(drop=True))
         
         # check to see if the user input the correct variable type
         else:
@@ -280,7 +280,7 @@ def search_all(assertions=None,
         # check to see if the user input the correct variable type; else, throw value error
         if type(lists) is str:
             return_dataFrame = dataFrame.loc[dataFrame[column_name].astype(str).str.contains(lists, case=False, na=False)]
-            return_array.append(return_dataFrame.sort_values('listName', key=lambda x: x.str.len()))
+            return_array.append(return_dataFrame.sort_values('listName', key=lambda x: x.str.len()).reset_index(drop=True))
         
         # check to see if the user input the correct variable type
         else:
@@ -306,7 +306,7 @@ def search_all(assertions=None,
         # check to see if the user input the correct variable type; else, throw value error
         if type(profiles) is str:
             return_dataFrame = dataFrame.loc[dataFrame[column_name].astype(str).str.contains(profiles, case=False, na=False)]
-            return_array.append(return_dataFrame.sort_values('id', key=lambda x: x.astype(str).str.len()))
+            return_array.append(return_dataFrame.sort_values('id', key=lambda x: x.astype(str).str.len()).reset_index(drop=True))
        
         # check to see if the user input the correct variable type
         else:
@@ -333,9 +333,9 @@ def search_all(assertions=None,
         if type(providers) is str:
             return_dataFrame = dataFrame.loc[dataFrame[column_name].astype(str).str.contains(providers, case=False, na=False)]
             if atlas in ["Global","GBIF"]:
-                return_array.append(return_dataFrame.sort_values('title', key=lambda x: x.str.len()))
+                return_array.append(return_dataFrame.sort_values('title', key=lambda x: x.str.len()).reset_index(drop=True))
             else:
-                return_array.append(return_dataFrame.sort_values('name', key=lambda x: x.str.len()))
+                return_array.append(return_dataFrame.sort_values('name', key=lambda x: x.str.len()).reset_index(drop=True))
         
         # check to see if the user input the correct variable type
         else:
@@ -359,7 +359,7 @@ def search_all(assertions=None,
         # check to see if the user input the correct variable type; else, throw value error
         if type(ranks) is str:
             return_dataFrame = dataFrame.loc[dataFrame[column_name].astype(str).str.contains(ranks, case=False, na=False)]
-            return_array.append(return_dataFrame.sort_values('id', key=lambda x: x.astype(str).str.len()))
+            return_array.append(return_dataFrame.sort_values('id', key=lambda x: x.astype(str).str.len()).reset_index(drop=True))
         
         # check to see if the user input the correct variable type
         else:
@@ -383,7 +383,7 @@ def search_all(assertions=None,
         # check to see if the user input the correct variable type; else, throw value error
         if type(reasons) is str:
             return_dataFrame = dataFrame.loc[dataFrame[column_name].astype(str).str.contains(reasons, case=False, na=False)]
-            return_array.append(return_dataFrame.sort_values('id', key=lambda x: x.astype(str).str.len()))
+            return_array.append(return_dataFrame.sort_values('id', key=lambda x: x.astype(str).str.len()).reset_index(drop=True))
         
         # check to see if the user input the correct variable type
         else:

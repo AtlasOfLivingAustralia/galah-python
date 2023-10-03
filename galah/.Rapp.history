@@ -1,0 +1,298 @@
+show_all("assertions")
+t = show_all("assertions")
+print(t,n=120)
+t = search_all("assertions")
+t = search_assertions()
+t = search_assertions("UNKNOWN_KINGDOM")
+t
+atlas_media |> galah_call()
+atlas_media() |> galah_call()
+atlas_media("year=2019") |> galah_call()
+#atlas_media("year=2019") |> galah_call()
+galah_call() |> atlas_media("year=2019")
+show_all_atlases()
+show_all_apis()
+show_all_collections()
+show_all_datasets()
+show_all_fields()
+show_all_licenses()
+show_all_licences()
+show_all_lists()
+galah_config(verbose=True)()
+galah_config(verbose=True)
+galah_config(verbose)
+galah_config(email = "amanda.buyan@csiro.au")
+galah_config(email = "amanda.buyan@csiro.au", verbose = TRUE)
+show_all_lists()
+show_all_lists(verbose = True)
+show_all_lists(verbose = TRUE)
+show_all_lists(verbose)
+library(galah)
+show_all_profiles()
+show_all_providers()
+show_all_reasons()
+show_all_ranks()
+print(show_all_ranks(), n=70)
+print(show_all_ranks(), n=80)
+show_all_assertions()
+print(show_all_assertions(),n=120)
+show_all_cached_files()
+galah_config(email="amanda.buyan@csiro.au",verbose = TRUE)
+show_all_lists()
+galah_config(verbose = TRUE)
+show_all_lists()
+show_all_fields()
+show_all_lists()
+show_all_fields()
+print(show_all_fields(),n=100)
+print(show_all_fields(),n=300)
+print(show_all_fields(),n=600)
+print(show_all_fields(),n=1)
+library(galah)
+atlas_citation()
+galah_config(email="amanda.buyan@csiro.au",verbose = TRUE)
+media_data <- galah_call() |>#
+    galah_identify("Regent Honeyeater") |>#
+    galah_filter(year == 2011) |>#
+    atlas_media()
+media_data
+remotes::install_github("AtlasOfLivingAustralia/galah")
+library(galah)
+#galah_config(email="amanda.buyan@csiro.au",verbose = TRUE)#
+> media_data <- galah_call() |>#
++     galah_identify("Regent Honeyeater") |>#
++     galah_filter(year == 2011) |>#
++     atlas_media()
+galah_config(email="amanda.buyan@csiro.au",verbose = TRUE)
+media_data <- galah_call() |>#
+    galah_identify("Regent Honeyeater") |>#
+    galah_filter(year == 2011) |>#
+    atlas_media()
+library(galah)
+galah_select()
+atlas_media()
+media_data <- galah_call() |>#
+    galah_identify("Regent Honeyeater") |>#
+    galah_filter(year == 2011) |>#
+    atlas_media() |>
+library(galah)
+galah_select()
+media_data <- galah_call() |>#
+    galah_identify("Regent Honeyeater") |>#
+    galah_filter(year == 2011) |>#
+    atlas_media()
+galah_config(email="amanda.buyan@csiro.au")
+media_data <- galah_call() |>#
+    galah_identify("Regent Honeyeater") |>#
+    galah_filter(year == 2011) |>#
+    atlas_media()
+media_data
+colnames(media_data)
+galah_call() |>#
+  galah_identify("Heleioporus") |>#
+  atlas_species()
+library(galah)
+galah_call() |>#
+  galah_identify("Heleioporus") |>#
+  atlas_species()
+media_data <- galah_call() |>#
+     galah_identify("Ornithorhynchus anatinus") |>#
+     galah_filter(year == 2020) |>#
+     atlas_media()
+galah_config(email="amanda.buyan@csiro.au")
+media_data <- galah_call() |>#
+     galah_identify("Ornithorhynchus anatinus") |>#
+     galah_filter(year == 2020) |>#
+     atlas_media()
+media_data
+show_values()
+library(galah)
+media_data <- galah_call() |>#
+     galah_identify("Eolophus Roseicapilla") |>#
+     galah_filter(multimedia == "Sound") |>#
+     atlas_media()
+galah_config(email="amanda.buyan@csiro.au")
+media_data <- galah_call() |>#
+     galah_identify("Eolophus Roseicapilla") |>#
+     galah_filter(multimedia == "Sound") |>#
+     atlas_media()
+media_data
+media_data('recordID')
+media_data[]'recordID']
+media_data['recordID']
+library(galah)
+galah_call() |> #
+  galah_identify("chordata") |>#
+  galah_down_to(class) |>#
+  atlas_taxonomy()
+galah_call() |>#
+  galah_identify("fungi") |>#
+  galah_down_to(class) |>#
+  atlas_taxonomy()
+library(galah)
+galah_call() |> #
+  galah_identify("chordata") |>#
+  galah_down_to(class) |>#
+  atlas_taxonomy()
+library(galah)
+galah_call() |>
+galah_identify("Vulpes vulpes") |>
+galah_group_by()
+galah_call() |>#
++ galah_identify("Vulpes vulpes") |>#
++ galah_group_by() |>
+atlas_counts()
+galah_call() |>
+dfs
+galah_call() |> galah_identify("Vulpes vulpes") |> galah_group_by(year) |> atlas_counts()
+update.packages(galah)
+update.packages("galah")
+library(galah)
+galah_config(email="amanda.buyan@csiro.au",atlas="Austria")
+galah_call() |>
+atlas_counts()
+galah_call() |>
+galah_identify("Sehirus luctuosus") |>
+atlas_counts()
+library(galah)
+galah_config(email="amanda.buyan@csiro.au",atlas="Brazil")
+galah_call() |>
+galah_identify("Ramphastos toco") |>
+atlas_counts()
+galah_call() |>
+galah_identify("Ramphastos toco")
+library(galah)
+galah_config(email="amanda.buyan@csiro.au",atlas="Estonia")
+galah_call() |>
+galah_identify("Canis lupus")
+galah_call() |>
+galah_identify("Canis lupus") |>
+atlas_counts()
+galah_call() |>
+galah_identify("Canis lupus") |>
+atlas_occurrences()
+gala_config(atlas="United Kingdom")
+galah_config(atlas="United Kingdom")
+galah_call() |>#
++ galah_identify("Canis lupus") |>#
++ atlas_counts()
+galah_call() |>
+galah_indentify("Canis lupus") |>
+atlas_counts()
+galah_call() |>
+galah_identify("Canis lupus") |>
+atlas_counts()
+galah_call() |>
+galah_identify("Canis lupus")
+galah_call() |>
+galah_identify("Canis lupus") |>
+atlas_occurrences()
+galah_config(atlas="Sweden")
+galah_call( |>)
+galah_call() |>
+galah_identify("Alces alces")
+galah_call() |>
+galah_identify("alces alces")
+galah_call() |>
+search_taxa("Alces alces")
+galah_call() |>
+search_taxa("Castor fiber")
+galah_config(atlas="Portugal")
+galah_call() |>
+search_taxa("gallus gallus")
+search_taxa("Gallus gallus")
+galah_call() |> search_taxa("Gallus gallus")
+galah_call() |> galah_identify("Gallus gallus") |> atlas_counts()
+galah_call() |> galah_identify("Gallus gallus")
+galah_config(atlas="Portugal")
+galah_call() |> galah_identify("Gallus gallus") |> atlas_counts()
+galah_config(atlas="Guatemala")
+galah_call() |> galah_identify("Pharomachrus antisianus")
+galah_call() |> galah_identify("Pharomachrus antisianus") |> atlas_counts()
+galah_call() |> galah_identify("Herpailurus yagouaroundi") |> atlas_counts()
+galah_config(atlas="Spain")
+galah_call() |> galah_identify("Vipera latastei")
+galah_config(atlas="France")
+galah_call() |> galah_identify("Triturus marmoratus")
+galah_call() |> galah_identify("Triturus marmoratus") |> atlas_counts()
+galah_call() |> galah_identify("Hyptiotes dentatus") |> atlas_counts()
+galah_call() |> galah_identify("Cicadetta cantilatrix") |> atlas_counts()
+galah_call() |> galah_identify("Marmota marmota") |> atlas_counts()
+galah_call() |> galah_identify("Rupicapra rupicapra") |> atlas_counts()
+galah_config(atlas="Brazil")
+galah_call() |> galah_identify("Ramphastos toco") |> atlas_counts()
+galah_call() |> galah_identify("Ramphastos toco")
+galah_call() |> search_taxa("Ramphastos toco")
+library(galah)
+#show_all_fields
+galah_config(email="amanda.buyan@csiro.au",atlas="Austria")
+show_all_fields()
+galah_config(email="amanda.buyan@csiro.au",atlas="Estonia")
+show_all_fields()
+galah_config(email="amanda.buyan@csiro.au",atlas="Estonia")
+galah_call() |> galah_identify("Alces alces") |> atlas_counts()
+galah_config(email="amanda.buyan@csiro.au",atlas="Canada")
+show_all(atlases)
+library(galah)
+galah_call() |>
+galah_identify("Swainsona formosa", "Crocodylus johnstoni", "Platalea (Platalea) regia", "Notamacropus agilis") |>
+galah_filter("dataResourceName = iNaturalist Australia", "year=2022")
+galah_call() |>
+galah_identify("Swainsona formosa", "Crocodylus johnstoni", "Platalea (Platalea) regia", "Notamacropus agilis") |>
+galah_filter(dataResourceName == "iNaturalist Australia", year=="2022") |>
+galah_group_by(month) |>
+atlas_counts()
+library(galah)
+atlas_counts()
+galah_call() |>
+galah_identify("Swainsona formosa", "Crocodylus johnstoni", "Platalea (Platalea) regia", "Notamacropus agilis") |>
+galah_filter(dataResourceName == "iNaturalist Australia", year=="2022") |>
+galah_group_by(month) |>
+atlas_counts()
+galah_call() |>
+galah_identify("Swainsona formosa", "Crocodylus johnstoni", "Platalea (Platalea) regia", "Notamacropus agilis") |>
+galah_filter(dataResourceName == "iNaturalist Australia", year=="2022") |>
+galah_group_by(month) |>
+atlas_counts()
+galah_call() |>
+galah_identify("Swainsona formosa", "Crocodylus johnstoni", "Platalea (Platalea) regia", "Notamacropus agilis") |>
+galah_filter(dataResourceName == "iNaturalist Australia", year=="2022") |>
+galah_group_by(month,basisOfRecord) |>
+atlas_counts()
+galah_call() |>
+galah_identify("Swainsona formosa", "Crocodylus johnstoni", "Platalea (Platalea) regia", "Notamacropus agilis") |>
+galah_filter(dataResourceName == "iNaturalist Australia", year=="2022") |>
+galah_group_by(month,basisOfRecord,expand=FALSE) |>
+atlas_counts()
+galah_call() |>
+galah_identify("Swainsona formosa", "Crocodylus johnstoni", "Platalea (Platalea) regia", "Notamacropus agilis") |>
+galah_filter(dataResourceName == "iNaturalist Australia", year=="2022") |>
+galah_group_by(species) |>
+atlas_counts()
+install.packages(galah)
+install.packages("galah")
+install.packages("reticulate")
+library("knitr")
+install.packages("knitr")
+install.packages("reticulate")
+library(reticulate)
+py_install(packages='galah-python')
+py_install("galah-python")
+#py_install("galah-python")
+sudo pip install scipy
+py_install("galah-python",pip=TRUE)
+install.packages(ggplot2)
+install.packages("ggplot2")
+install.packages("ozmaps")
+pwd
+ls
+getwd()
+setwd("Users/buy003/Documents/Github/galah-python/galah")
+setwd(r"Users/buy003/Documents/Github/galah-python/galah")
+setwd("Users/buy003/Documents/Github/galah-python/galah")
+setwd("Users/buy003/Documents/Github/")
+setwd("Users/buy003")
+setwd("Users\\buy003")
+install.packages("sos")
+getwd()
+py_install("matplotlib",pip=TRUE)

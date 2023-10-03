@@ -2,6 +2,7 @@ README.md
 pyproject.toml
 setup.cfg
 setup.py
+src/galah/ALA_keys.json
 src/galah/__init__.py
 src/galah/apply_data_profile.py
 src/galah/atlas_counts.py
@@ -41,5 +42,4 @@ tests/test_integration_tests_GBIF.py
 tests/test_integration_tests_Guatemala.py
 tests/test_integration_tests_Spain.py
 tests/test_integration_tests_Sweden.py
-tests/test_unittests.py
 tests/test_unittests_Australia.py

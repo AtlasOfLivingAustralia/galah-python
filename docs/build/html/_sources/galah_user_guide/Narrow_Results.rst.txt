@@ -1,3 +1,5 @@
+.. _Narrow Results:
+
 Narrow Results
 ==============
 
@@ -10,9 +12,9 @@ Data fields are important because they provide a means to manipulate queries to 
 information that you need, and no more. Consequently, much of the architecture of galah has been designed 
 to make narrowing as simple as possible. These arguments include:
 
-* taxa
-* filters
-* group_by
+* ``taxa``
+* ``filters``
+* ``group_by``
 
 taxa
 ----
@@ -45,10 +47,10 @@ service. We have the Brazilian atlas as an example here:
 
 .. prompt:: python
 
-    >>> galah.galah_config(atlas="Spain")
-    >>> galah.atlas_counts(taxa="Ramphastos", group_by="species",expand=False)
+    >>> galah.galah_config(atlas="Brazil")
+    >>> galah.atlas_counts(taxa="Ramphastos")
 
-.. program-output:: python -c "import galah;import pandas as pd;pd.set_option('display.max_columns', None);pd.set_option('display.expand_frame_repr', False);pd.set_option('max_colwidth', None);galah.galah_config(atlas=\"Brazil\");print(galah.atlas_counts(taxa=\"Ramphastos\", group_by=\"species\",expand=False))"
+.. program-output:: python -c "import galah;import pandas as pd;pd.set_option('display.max_columns', None);pd.set_option('display.expand_frame_repr', False);pd.set_option('max_colwidth', None);galah.galah_config(atlas=\"Brazil\");print(galah.atlas_counts(taxa=\"Ramphastos\"))"
 
 
 filters

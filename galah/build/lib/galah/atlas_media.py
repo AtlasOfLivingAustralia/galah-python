@@ -6,6 +6,7 @@ from .get_api_url import get_api_url
 from .get_api_url import readConfig
 from .apply_data_profile import apply_data_profile
 from .atlas_occurrences import atlas_occurrences
+from .show_all import show_all
 
 # this function parses everything to atlas_occurrences first, and it adds something to the galah_filter argument to say
 # that the multimedia field is not empty
@@ -48,7 +49,7 @@ def atlas_media(taxa=None,
 
             See ``galah.show_all()`` and ``galah.search_all()`` to see all valid fields.
         verbose : logical
-            If ``True``, galah gives more information like progress bars. Defaults to ``False``
+            If ``True``, galah gives more information like URLs queried. Defaults to ``False``
         multimedia : string / list
             This is for specifying what types of multimedia you would like, i.e "images".  Defaults to ['images','videos','sounds']
         assertions : string
@@ -72,7 +73,7 @@ def atlas_media(taxa=None,
         galah.galah_config(atlas="Australia",email="youremail@example.com")
         galah.atlas_media(taxa="Ornithorhynchus anatinus",filters=["year=2020","decimalLongitude>153.0")
 
-    .. program-output:: python -c "import galah; galah.galah_config(atlas=\\\"Australia\\\",email=\\\"amanda.buyan@csiro.au\\\");print(galah.atlas_media(taxa=\\\"Ornithorhynchus anatinus\\\",filters=[\\\"year=2020\\\",\\\"decimalLongitude>153.0\\\"]))"
+    .. program-output:: python -c "import galah; import pandas as pd;pd.set_option('display.max_columns', None);galah.galah_config(atlas=\\\"Australia\\\",email=\\\"amanda.buyan@csiro.au\\\");print(galah.atlas_media(taxa=\\\"Ornithorhynchus anatinus\\\",filters=[\\\"year=2020\\\",\\\"decimalLongitude>153.0\\\"]))"
     
     """
 
@@ -81,6 +82,8 @@ def atlas_media(taxa=None,
 
     # get atlas
     atlas = configs['galahSettings']['atlas']
+
+    headers = {}
 
     # check for fields
     if fields is None:
@@ -94,14 +97,13 @@ def atlas_media(taxa=None,
     if dataFrame.empty:
         raise ValueError("There are no occurrences or media associated with your query.  Please try your query on atlas_counts before trying it again on atlas_media.")
 
-    if atlas in ["Australia","ALA"]:
-        headers = {"x-api-key": configs["galahSettings"]["ALA_API_key"]}
-    else:
-        headers = {}
-
+    #if atlas in ["Australia","ALA"]:
+    #    headers = {"x-api-key": configs["galahSettings"]["ALA_API_key"]}
+    #else:
+    #    headers = {}
 
     # create the output data frame
-    if configs['galahSettings']['atlas'] == "Australia":
+    if atlas == "Australia":
         data_columns = {
             'decimalLatitude': [],
             'decimalLongitude': [],
@@ -123,7 +125,7 @@ def atlas_media(taxa=None,
             'dataResourceUid': [],
             'occurrenceID': []
         }
-    elif configs['galahSettings']['atlas'] == "Austria":
+    elif atlas == "Austria":
         data_columns = {
             'decimalLatitude': [],
             'decimalLongitude': [],
@@ -145,7 +147,7 @@ def atlas_media(taxa=None,
             'occurrenceID': []
         }
     else:
-        raise ValueError("Atlas {} is not taken into account".format(configs['galahSettings']['atlas']))
+        raise ValueError("Atlas {} is not taken into account".format(atlas))
 
     # for if the user wants to collect the urls
     image_urls=[]
@@ -158,12 +160,12 @@ def atlas_media(taxa=None,
         else:
             raise ValueError("multimedia argument should either be a string or a list, i.e. multimedia=\"images\"")
     else:
-        if configs['galahSettings']['atlas'] == "Australia":
+        if atlas == "Australia":
             multimedia=['images','videos','sounds']
-        elif configs['galahSettings']['atlas'] == "Austria":
+        elif atlas == "Austria":
             multimedia = ['multimedia']
         else:
-            raise ValueError("Atlas {} is not taken into account".format(configs['galahSettings']['atlas']))
+            raise ValueError("Atlas {} is not taken into account".format(atlas))
 
     # loop through all possible media
     for media in multimedia:
@@ -178,8 +180,9 @@ def atlas_media(taxa=None,
         # get media metadata url
         # https://images.ala.org.au/ws#/Image%20metadata/getImageInfoForIdList
         if use_data_profile:
+            data_profile_list = list(show_all(profiles=True)['shortName'])
             basemediaURL, method = get_api_url(column1='called_by', column1value='media_metadata')
-            basemediaURL = apply_data_profile(basemediaURL)
+            basemediaURL = apply_data_profile(baseURL=basemediaURL,data_profile_list=data_profile_list)
         elif not use_data_profile:
             basemediaURL, method = get_api_url(column1='called_by', column1value='media_metadata')
         else:
@@ -194,14 +197,14 @@ def atlas_media(taxa=None,
                              "galah.galah_config(data_profile=\"None\")"
                              )
 
-        if configs['galahSettings']['atlas'] == "Australia":
+        if atlas == "Australia":
             columns_media=['decimalLatitude', 'decimalLongitude', 'eventDate', 'scientificName', 'recordID',
                            'dataResourceName', 'occurrenceStatus', 'multimedia']
-        elif configs['galahSettings']['atlas'] == "Austria":
+        elif atlas == "Austria":
             columns_media=['decimalLatitude', 'decimalLongitude', 'eventDate', 'scientificName', 'recordID',
                            'occurrenceStatus', 'multimedia']
         else:
-            raise ValueError("Atlas {} is not taken into account".format(configs['galahSettings']['atlas']))
+            raise ValueError("Atlas {} is not taken into account".format(atlas))
 
         # loop over arrays
         ### TODO: figure out how to make this faster?
@@ -217,10 +220,7 @@ def atlas_media(taxa=None,
                             data_columns[e].append(media_array[e].iloc[i])
                         URL = basemediaURL.replace("{id}",entry)
                         response = requests.request(method,URL,headers=headers)
-                        print(response)
-                        print(response.text)
                         temp_dict = {k: [float("nan")] if not v else [v] for k, v in response.json().items()}
-                        print(temp_dict)
                         if collect:
                             image_urls.append(temp_dict['originalFileName'][0])
                         for entry in ['imageIdentifier','mimeType', 'sizeInBytes', 'dateUploaded', 'dateTaken','height',

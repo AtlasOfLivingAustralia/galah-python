@@ -8,5 +8,19 @@ Author-email: amanda.buyan@csiro.au
 License: MPL-2.0
 Keywords: galah
 Description-Content-Type: text/markdown
+Requires-Dist: numpy
+Requires-Dist: pandas
+Requires-Dist: requests
+Requires-Dist: urllib3
+Requires-Dist: TIME-python
+Requires-Dist: zip-files
+Requires-Dist: configparser
+Requires-Dist: glob2
+Requires-Dist: bytesbufio
+Requires-Dist: shutils
+Requires-Dist: setuptools
+Requires-Dist: shapely
+Requires-Dist: pytest
+Requires-Dist: unittest2py3k
 
 Get counts and information on species from many different atlases

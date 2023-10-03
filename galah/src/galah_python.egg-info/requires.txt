@@ -12,5 +12,3 @@ setuptools
 shapely
 pytest
 unittest2py3k
-mkl
-PyJWT

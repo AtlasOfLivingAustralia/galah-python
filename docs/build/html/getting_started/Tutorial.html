@@ -1,5 +1,4 @@
 
-
 <!DOCTYPE html>
 
 
@@ -7,7 +6,7 @@
 
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>Tutorial &#8212; Galah 0.5.0 documentation</title>
   
@@ -29,21 +28,21 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/css/extra.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/css/extra.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/extra.css?v=bc76f7e5" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/extra.css?v=bc76f7e5" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
 
-    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-    <script src="../_static/doctools.js"></script>
-    <script src="../_static/sphinx_highlight.js"></script>
-    <script src="../_static/design-tabs.js"></script>
+    <script src="../_static/documentation_options.js?v=70f82a29"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/design-tabs.js?v=36754332"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'getting_started/Tutorial';</script>
-    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Galah User Guide" href="../galah_user_guide/index.html" />
@@ -400,9 +399,9 @@ document.write(`
                 <article class="bd-article" role="main">
                   
   <section id="tutorial">
-<h1>Tutorial<a class="headerlink" href="#tutorial" title="Permalink to this heading">#</a></h1>
+<h1>Tutorial<a class="headerlink" href="#tutorial" title="Link to this heading">#</a></h1>
 <p><em>Note: You will need to register your email address at the atlas you want to download data for, otherwise you will get no data!</em></p>
-<p>Now that you have successfully installed <code class="docutils literal notranslate"><span class="pre">galah</span></code>, we’ll provide a quick introduction on the functions you will mainly be using to get data. If you’re looking for a quick reference guide for commands, the <a class="reference external" href="../galah_user_guide/index.rst">User Guide</a> collates all the available commands with examples.  This tutorial serves as an initial method to get you used to using different commands.</p>
+<p>Now that you have successfully installed <code class="docutils literal notranslate"><span class="pre">galah-python</span></code>, we’ll provide a quick introduction on the functions you will mainly be using to get data. If you’re looking for a quick reference guide for commands, the <a class="reference external" href="../galah_user_guide/index.rst">User Guide</a> collates all the available commands with examples.  This tutorial serves as an initial method to get you used to using different commands.</p>
 <p>First, you will need to configure galah.  To do this, run the following:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><style type="text/css">
 span.prompt1:before {
@@ -416,7 +415,7 @@ span.prompt1:before {
 <span class="prompt1">galah.atlas_counts(taxa=&quot;Vulpes vulpes&quot;)</span>
 </pre></div></div><p>which returns</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>   totalRecords
-0        125071
+0        128714
 </pre></div>
 </div>
 <p>From here, you can narrow down your query by doing a few things.  Let’s first investigate how to apply filters.</p>
@@ -425,27 +424,47 @@ span.prompt1:before {
 <span class="prompt1">galah.atlas_counts(taxa=&quot;Vulpes vulpes&quot;,filters=&quot;year=2020&quot;)</span>
 </pre></div></div><p>which returns</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>   totalRecords
-0          5662
+0          6262
 </pre></div>
 </div>
 <p>Now that you have successfully determined the number of records for the red fox, you can download the occurrence records.  To do this, write the following:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">import galah</span>
 <span class="prompt1">galah.atlas_occurrences(taxa=&quot;Vulpes vulpes&quot;,filters=&quot;year=2020&quot;)</span>
 </pre></div></div><p>which returns</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>      decimalLatitude  ...  occurrenceStatus
-0          -38.927100  ...           PRESENT
-1          -38.911592  ...           PRESENT
-2          -38.904100  ...           PRESENT
-3          -38.700056  ...           PRESENT
-4          -38.694837  ...           PRESENT
-...               ...  ...               ...
-5657        42.065789  ...           PRESENT
-5658        45.902841  ...           PRESENT
-5659        46.700000  ...           PRESENT
-5660        46.700000  ...           PRESENT
-5661        51.574697  ...           PRESENT
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>                                  recordID catalogNumber                                                             taxonConceptID raw_scientificName raw_vernacularName scientificName taxonRank vernacularName   kingdom    phylum     class      order   family   genus        species  subspecies dataResourceUid  institutionUid  institutionName  collectionUid  collectionName     dcterms:license                                 institutionCode                collectionCode       raw_locality  raw_decimalLatitude  raw_decimalLongitude raw_geodeticDatum  decimalLatitude  decimalLongitude  coordinatePrecision  coordinateUncertaintyInMeters    country    stateProvince                        cl959 cl21                    cl1048  minimumElevationInMeters  maximumElevationInMeters  minimumDepthInMeters  maximumDepthInMeters  individualCount      recordedBy  year  month  day             eventDate raw_basisOfRecord      basisOfRecord occurrenceStatus       raw_sex  preparations  informationWithheld  dataGeneralizations  spatiallyValid
+0     00022581-7451-492f-87ab-ac3e4fd6484f  SDMPI0946045  https://biodiversity.org.au/afd/taxa/2869ce8a-8212-46c2-8327-dfb7fabb8296      Vulpes vulpes                Fox  Vulpes vulpes   species            Fox  Animalia  Chordata  Mammalia  Carnivora  Canidae  Vulpes  Vulpes vulpes         NaN           dr368             NaN              NaN            NaN             NaN     CC-BY 4.0 (Int)  NSW Dept of Planning, Industry and Environment  BioNet Atlas of NSW Wildlife  locality withheld           -33.814819            151.297418             GDA94       -33.814819        151.297418         1.000000e-09                            5.0  Australia  New South Wales                    Manly (A)  NaN              Sydney Basin                       NaN                       NaN                   NaN                   NaN              NaN    OPJG17071700  2020      7    5  2020-07-05T00:00:00Z  HumanObservation  HUMAN_OBSERVATION          PRESENT       Unknown           NaN                  NaN                  NaN            True
+1     000cbd8b-76a0-4b87-94d4-06012c96800c   FO-SI-17375  https://biodiversity.org.au/afd/taxa/2869ce8a-8212-46c2-8327-dfb7fabb8296      Vulpes vulpes                NaN  Vulpes vulpes   species            Fox  Animalia  Chordata  Mammalia  Carnivora  Canidae  Vulpes  Vulpes vulpes         NaN         dr19813             NaN              NaN            NaN             NaN  CC-BY-NC 4.0 (Int)                                             NaN                           NaN                NaN           -34.864232            138.697629               NaN       -34.864232        138.697629                  NaN                            NaN  Australia  South Australia        Campbelltown (C) (SA)  NaN      Flinders Lofty Block                       NaN                       NaN                   NaN                   NaN              NaN             NaN  2020      9   28  2020-09-28T00:00:00Z               NaN         OCCURRENCE          PRESENT           NaN           NaN                  NaN                  NaN            True
+2     000d658b-8d29-46f3-8cff-3c4994453dbf  SMZS2105061T  https://biodiversity.org.au/afd/taxa/2869ce8a-8212-46c2-8327-dfb7fabb8296      Vulpes vulpes                Fox  Vulpes vulpes   species            Fox  Animalia  Chordata  Mammalia  Carnivora  Canidae  Vulpes  Vulpes vulpes         NaN           dr368             NaN              NaN            NaN             NaN     CC-BY 4.0 (Int)  NSW Dept of Planning, Industry and Environment  BioNet Atlas of NSW Wildlife  locality withheld           -35.942098            148.605882             GDA94       -35.942098        148.605882         1.000000e-09                            3.0  Australia  New South Wales              Snowy River (A)  NaN   South Eastern Highlands                    1170.0                    1170.0                   NaN                   NaN              1.0        SCHM-035  2020     10   18  2020-10-18T00:00:00Z  HumanObservation  HUMAN_OBSERVATION          PRESENT           NaN           NaN                  NaN                  NaN            True
+3     00158556-b878-473b-9053-ff645d7c764f  SPJGI7456870  https://biodiversity.org.au/afd/taxa/2869ce8a-8212-46c2-8327-dfb7fabb8296      Vulpes vulpes                Fox  Vulpes vulpes   species            Fox  Animalia  Chordata  Mammalia  Carnivora  Canidae  Vulpes  Vulpes vulpes         NaN           dr368             NaN              NaN            NaN             NaN     CC-BY 4.0 (Int)  NSW Dept of Planning, Industry and Environment  BioNet Atlas of NSW Wildlife  locality withheld           -30.589422            149.256237             GDA94       -30.589422        149.256237         1.000000e-09                          100.0  Australia  New South Wales                 Narrabri (A)  NaN       Brigalow Belt South                       NaN                       NaN                   NaN                   NaN              NaN    OPJG19112505  2020     10    8  2020-10-08T00:00:00Z  HumanObservation  HUMAN_OBSERVATION          PRESENT  Not Recorded           NaN                  NaN                  NaN            True
+4     001e67ca-97cd-4851-b4a4-1b05d1a9baca   FO-SI-15288  https://biodiversity.org.au/afd/taxa/2869ce8a-8212-46c2-8327-dfb7fabb8296      Vulpes vulpes                NaN  Vulpes vulpes   species            Fox  Animalia  Chordata  Mammalia  Carnivora  Canidae  Vulpes  Vulpes vulpes         NaN         dr19813             NaN              NaN            NaN             NaN  CC-BY-NC 4.0 (Int)                                             NaN                           NaN                NaN           -37.871043            145.290300               NaN       -37.871043        145.290300                  NaN                            NaN  Australia         Victoria                     Knox (C)  NaN  South East Coastal Plain                       NaN                       NaN                   NaN                   NaN              NaN             NaN  2020      1   17  2020-01-17T00:00:00Z               NaN         OCCURRENCE          PRESENT           NaN           NaN                  NaN                  NaN            True
+...                                    ...           ...                                                                        ...                ...                ...            ...       ...            ...       ...       ...       ...        ...      ...     ...            ...         ...             ...             ...              ...            ...             ...                 ...                                             ...                           ...                ...                  ...                   ...               ...              ...               ...                  ...                            ...        ...              ...                          ...  ...                       ...                       ...                       ...                   ...                   ...              ...             ...   ...    ...  ...                   ...               ...                ...              ...           ...           ...                  ...                  ...             ...
+6257  ffbb5b1f-c517-4877-9c84-8c63737a720d      11269180  https://biodiversity.org.au/afd/taxa/2869ce8a-8212-46c2-8327-dfb7fabb8296      Vulpes vulpes            Red Fox  Vulpes vulpes   species            Fox  Animalia  Chordata  Mammalia  Carnivora  Canidae  Vulpes  Vulpes vulpes         NaN          dr1097             NaN              NaN            NaN             NaN     CC-BY 4.0 (Int)                                             NaN                           NaN                NaN           -37.252200            142.426000         epsg:4283       -37.252200        142.426000                  NaN                            0.5  Australia         Victoria       Northern Grampians (S)  NaN        Victorian Midlands                       NaN                       NaN                   NaN                   NaN              NaN  Sortino, Dylan  2020      8    1  2020-08-01T00:00:00Z          Captured         OCCURRENCE          PRESENT           NaN           NaN                  NaN                  NaN            True
+6258  ffc02c46-73b2-4774-ae54-68b6dc618352   FO-SI-16083  https://biodiversity.org.au/afd/taxa/2869ce8a-8212-46c2-8327-dfb7fabb8296      Vulpes vulpes                NaN  Vulpes vulpes   species            Fox  Animalia  Chordata  Mammalia  Carnivora  Canidae  Vulpes  Vulpes vulpes         NaN         dr19813             NaN              NaN            NaN             NaN  CC-BY-NC 4.0 (Int)                                             NaN                           NaN                NaN           -34.742133            138.594320               NaN       -34.742133        138.594320                  NaN                            NaN  Australia  South Australia                Salisbury (C)  NaN          Eyre Yorke Block                       NaN                       NaN                   NaN                   NaN              NaN             NaN  2020      5   12  2020-05-12T00:00:00Z               NaN         OCCURRENCE          PRESENT           NaN           NaN                  NaN                  NaN            True
+6259  ffc255a2-10c5-4ee1-8e76-13c3abb68f99  SPJGI6549550  https://biodiversity.org.au/afd/taxa/2869ce8a-8212-46c2-8327-dfb7fabb8296      Vulpes vulpes                Fox  Vulpes vulpes   species            Fox  Animalia  Chordata  Mammalia  Carnivora  Canidae  Vulpes  Vulpes vulpes         NaN           dr368             NaN              NaN            NaN             NaN     CC-BY 4.0 (Int)  NSW Dept of Planning, Industry and Environment  BioNet Atlas of NSW Wildlife  locality withheld           -30.596876            149.111963             GDA94       -30.596876        149.111963         1.000000e-09                          100.0  Australia  New South Wales                 Narrabri (A)  NaN       Brigalow Belt South                       NaN                       NaN                   NaN                   NaN              1.0    OPJG19112500  2020      3   17  2020-03-17T00:00:00Z  HumanObservation  HUMAN_OBSERVATION          PRESENT           NaN           NaN                  NaN                  NaN            True
+6260  ffd3a377-8b0c-4e49-9879-49d74821c57c   FO-SI-18099  https://biodiversity.org.au/afd/taxa/2869ce8a-8212-46c2-8327-dfb7fabb8296      Vulpes vulpes                NaN  Vulpes vulpes   species            Fox  Animalia  Chordata  Mammalia  Carnivora  Canidae  Vulpes  Vulpes vulpes         NaN         dr19813             NaN              NaN            NaN             NaN  CC-BY-NC 4.0 (Int)                                             NaN                           NaN                NaN           -33.645126            150.269286               NaN       -33.645126        150.269286                  NaN                            NaN  Australia  New South Wales           Blue Mountains (C)  NaN              Sydney Basin                       NaN                       NaN                   NaN                   NaN              NaN             NaN  2020     12   11  2020-12-11T00:00:00Z               NaN         OCCURRENCE          PRESENT           NaN           NaN                  NaN                  NaN            True
+6261  ffec6766-561d-448b-a984-c1b014e63874  SJJSI1254489  https://biodiversity.org.au/afd/taxa/2869ce8a-8212-46c2-8327-dfb7fabb8296      Vulpes vulpes                Fox  Vulpes vulpes   species            Fox  Animalia  Chordata  Mammalia  Carnivora  Canidae  Vulpes  Vulpes vulpes         NaN           dr368             NaN              NaN            NaN             NaN     CC-BY 4.0 (Int)  NSW Dept of Planning, Industry and Environment  BioNet Atlas of NSW Wildlife  locality withheld           -31.269932            152.812408             GDA94       -31.269932        152.812408         1.000000e-09                           10.0  Australia  New South Wales  Port Macquarie-Hastings (A)  NaN           NSW North Coast                       NaN                       NaN                   NaN                   NaN              NaN    OJJS17112104  2020      3   25  2020-03-25T00:00:00Z  HumanObservation  HUMAN_OBSERVATION          PRESENT           NaN           NaN                  NaN                  NaN            True
 
-[5662 rows x 8 columns]
+[6262 rows x 55 columns]
+</pre></div>
+</div>
+<p>If you only want a few columns of data, rather than the plethora above, use the <cite>fields</cite> option as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">import galah</span>
+<span class="prompt1">galah.atlas_occurrences(taxa=&quot;Vulpes vulpes&quot;,filters=&quot;year=2020&quot;,fields=[&quot;scientificName&quot;,&quot;decimalLatitude&quot;,&quot;decimalLongitude&quot;])</span>
+</pre></div></div><p>which returns</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>     scientificName  decimalLatitude  decimalLongitude
+0     Vulpes vulpes       -37.389077        144.267620
+1     Vulpes vulpes       -30.598460        149.175980
+2     Vulpes vulpes       -35.191985        149.119681
+3     Vulpes vulpes       -37.774590        144.940466
+4     Vulpes vulpes       -34.899563        138.765467
+...             ...              ...               ...
+6257  Vulpes vulpes       -35.021748        138.734192
+6258  Vulpes vulpes       -37.958445        145.063621
+6259  Vulpes vulpes       -33.715467        150.298910
+6260  Vulpes vulpes       -30.592873        149.254857
+6261  Vulpes vulpes       -34.601921        138.714026
+
+[6262 rows x 3 columns]
 </pre></div>
 </div>
 </section>
@@ -519,7 +538,7 @@ span.prompt1:before {
       
         <div class="footer-item">
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 6.0.0.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.5.
     <br/>
   </p>
 </div>

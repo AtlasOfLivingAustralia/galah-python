@@ -1,3 +1,5 @@
+.. _Look Up Information:
+
 Look Up Information
 ===================
 
@@ -5,6 +7,8 @@ There are two simplified functions to look up information:
 
     * ``galah.show_all()``
     * ``galah.search_all()``
+    * ``galah.show_values()``
+    * ``galah.search_values()``
 
 These are individual functions that are able to return all types of information in one place, rather than using specific 
 sub-functions to look up information.

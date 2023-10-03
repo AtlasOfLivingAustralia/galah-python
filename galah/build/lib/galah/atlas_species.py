@@ -4,10 +4,10 @@ import pandas as pd
 from .search_taxa import search_taxa
 from .get_api_url import get_api_url,readConfig
 from .atlas_occurrences import atlas_occurrences
-from .galah_geolocate import galah_geolocate
 from .apply_data_profile import apply_data_profile
 from .common_dictionaries import ATLAS_KEYWORDS,ATLAS_SPECIES_FIELDS,atlases
 from .common_functions import add_filters,add_to_payload_ALA
+from .show_all import show_all
 
 # this function looks for all species with the associated name
 def atlas_species(taxa=None,
@@ -35,6 +35,11 @@ def atlas_species(taxa=None,
             If ``True``, galah gives you the URLs used to query all the data.  Default to ``False``.
         status_accepted : logical
             If ``True``, galah gives you only the accepted taxonomic ranks. Default is ``False``.  **FOR GBIF ONLY
+        polygon : shapely Polygon
+            A polygon shape denoting a geographical region.  Defaults to ``None``.
+        bbox : dict or shapely Polygon
+            A polygon or dictionary type denoting four points, which are the corners of a geographical region.  Defaults to ``None``.
+
 
     Returns
     -------
@@ -47,7 +52,7 @@ def atlas_species(taxa=None,
 
         galah.atlas_species(taxa="Heleioporus")
 
-    .. program-output:: python -c "import galah; print(galah.atlas_species(taxa=\\\"Heleioporus\\\"))"
+    .. program-output:: python -c "import galah; import pandas as pd;pd.set_option('display.max_columns', None);print(galah.atlas_species(taxa=\\\"Heleioporus\\\"))"
     """
 
     # get configs
@@ -90,7 +95,7 @@ def atlas_species(taxa=None,
 
     if atlas in ["Australia","ALA"]:
         
-        payload = add_to_payload_ALA(payload=payload,atlas=atlas,taxa=taxa,filters=filters,geolocate=galah_geolocate(polygon=polygon,bbox=bbox))
+        payload = add_to_payload_ALA(payload=payload,atlas=atlas,taxa=taxa,filters=filters,polygon=polygon,bbox=bbox)
 
         # create the query id
         qid_URL, method2 = get_api_url(column1="api_name",column1value="occurrences_qid")
@@ -98,7 +103,8 @@ def atlas_species(taxa=None,
         
         # create the URL to grab the species ID and lists
         if use_data_profile:
-            baseURL = apply_data_profile(baseURL=baseURL,use_data_profile=use_data_profile)
+            data_profile_list = list(show_all(profiles=True)['shortName'])
+            baseURL = apply_data_profile(baseURL=baseURL,use_data_profile=use_data_profile,data_profile_list=data_profile_list)
             URL = baseURL + "fq=%28qid%3A" + qid.text + "%29&facets={}&lookup=True".format(rankID)
         else:
             URL = baseURL + "?fq=%28qid%3A" + qid.text + "%29&facets={}&lookup=True".format(rankID)

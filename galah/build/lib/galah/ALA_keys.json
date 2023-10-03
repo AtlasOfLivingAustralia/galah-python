@@ -1,0 +1,7 @@
+{
+    "access_token": "<<access token>>",
+    "refresh_token": "<<refresh token>>",
+    "id_token": "<<id_token>>",
+    "scope": "openid email roles ala",
+    "token_type": "bearer"
+}

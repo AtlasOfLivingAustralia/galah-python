@@ -1,16 +1,13 @@
-import requests,urllib.parse
+import requests
 import pandas as pd
 from .galah_group_by import galah_group_by
-from .search_taxa import search_taxa
 from .get_api_url import get_api_url,readConfig
 from .apply_data_profile import apply_data_profile
 from .galah_geolocate import galah_geolocate
-from .galah_filter import galah_filter
+from .show_all import show_all
 from .common_functions import add_filters,add_to_payload_ALA,generate_list_taxonConceptIDs
-from .common_dictionaries import ATLAS_KEYWORDS,COUNTS_NAMES,atlases
+from .common_dictionaries import COUNTS_NAMES
 
-#  polygon=None,
-#  bbox=None,
 def atlas_counts(taxa=None,
                  filters=None,
                  group_by=None,
@@ -27,9 +24,9 @@ def atlas_counts(taxa=None,
     the count of observations may be all that is required, for example for understanding how observations are growing or shrinking
     in particular locations, or for particular taxa.
     
-    To this end, ``galah.atlas_counts()`` takes arguments in the same format as
-    ``galah.atlas_occurrences()``, and provides either a total count of records matching the criteria, or a data.frame of counts matching
-    the criteria supplied to the `group_by` argument.
+    To this end, ``galah.atlas_counts()`` takes arguments in the same format as ``galah.atlas_occurrences()``, and provides either 
+    a total count of records matching the criteria, or a pandas dataframe of counts matching the criteria supplied to the `group_by` 
+    argument.  It can also return the total number of groups by using the `total_group_by` argument.
 
     Parameters
     ----------
@@ -47,6 +44,10 @@ def atlas_counts(taxa=None,
             If ``True``, galah gives more information like progress bars. Defaults to ``False``.
         use_data_profile : string
             A profile name. Should be a string - the name or abbreviation of a data quality profile to apply to the query. Valid values can be seen using ``galah.show_all(profiles=True)``
+        polygon : shapely Polygon
+            A polygon shape denoting a geographical region.  Defaults to ``None``.
+        bbox : dict or shapely Polygon
+            A polygon or dictionary type denoting four points, which are the corners of a geographical region.  Defaults to ``None``.
 
     Returns
     -------
@@ -105,7 +106,7 @@ def atlas_counts(taxa=None,
 
     # create headers
     headers = {}
-    # headers (just in case)
+
     #if atlas in ["Australia","ALA"]:
     #    headers = {"x-api-key": configs["galahSettings"]["ALA_API_key"]}
     #else:
@@ -120,11 +121,16 @@ def atlas_counts(taxa=None,
         if use_data_profile:
 
             # add data quality profile directly to URL
-            baseURL = apply_data_profile(baseURL=baseURL,use_data_profile=use_data_profile)
+            data_profile_list = list(show_all(profiles=True)['shortName'])
+            baseURL = apply_data_profile(baseURL=baseURL,data_profile_list=data_profile_list)
 
-        
+        # else, disable all quality filters
+        else:
+
+            baseURL += "?disableAllQualityfilters=true&"
+
         # create payload
-        payload = add_to_payload_ALA(payload=payload,atlas=atlas,taxa=taxa,filters=filters) #,geolocate=geolocate)
+        payload = add_to_payload_ALA(payload=payload,atlas=atlas,taxa=taxa,filters=filters,polygon=polygon,bbox=bbox)
         
         # check for group by
         if group_by is not None:
@@ -140,11 +146,13 @@ def atlas_counts(taxa=None,
         if use_data_profile:
             URL = baseURL + "fq=%28qid%3A" + qid.text + "%29&flimit=-1&pageSize=0"
         else:
-            URL = baseURL + "?fq=%28qid%3A" + qid.text + "%29&flimit=-1&pageSize=0"
+            URL = baseURL + "fq=%28qid%3A" + qid.text + "%29&flimit=-1&pageSize=0"
 
         if verbose:
+            print()
             print("URL for querying: {}".format(URL))
             print("Method: {}".format(method))
+            print()
 
         # get data
         response = requests.request(method,URL,headers=headers)

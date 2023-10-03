@@ -1,3 +1,5 @@
+.. _Download Data:
+
 Download Data
 =============
 
@@ -7,7 +9,6 @@ The ``atlas_`` functions are used to return data from the atlas chosen using ``g
     * ``atlas_occurrences()``
     * ``atlas_species()``
     * ``atlas_media()``
-    * ``atlas_taxonomy()``
 
 Record counts
 -------------
@@ -42,7 +43,7 @@ than the species; but also in being more flexible by supporting filtering:
 
     >>> galah.atlas_species(taxa="Rodentia",filters="stateProvince=Northern Territory")
 
-.. program-output:: python -c "import galah;galah.galah_config(atlas=\"Australia\");import pandas as pd;pd.set_option('display.max_columns', None);pd.set_option('display.expand_frame_repr', False);pd.set_option('max_colwidth', None);galah.atlas_species(taxa=\"Rodentia\",filters=\"stateProvince=Northern Territory\")"
+.. program-output:: python -c "import galah;galah.galah_config(atlas=\"Australia\");import pandas as pd;pd.set_option('display.max_columns', None);pd.set_option('display.expand_frame_repr', False);pd.set_option('max_colwidth', None);print(galah.atlas_species(taxa=\"Rodentia\",filters=\"stateProvince=Northern Territory\"))"
 
 
 Occurrence data

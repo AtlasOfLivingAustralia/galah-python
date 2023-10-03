@@ -54,7 +54,7 @@ def search_taxa(taxa=None,
         import galah
         galah.search_taxa(identifiers="https://id.biodiversity.org.au/node/apni/2914510")
 
-    .. program-output:: python -c "import galah; print(galah.search_taxa(identifiers=\\\"https://id.biodiversity.org.au/node/apni/2914510\\\"))"
+    .. program-output:: python -c "import galah; import pandas as pd;pd.set_option('display.max_columns', None);print(galah.search_taxa(identifiers=\\\"https://id.biodiversity.org.au/node/apni/2914510\\\"))"
 
     Search taxonomic levels by using the key word "specificEpithet"
 
@@ -63,7 +63,7 @@ def search_taxa(taxa=None,
         import galah
         galah.search_taxa(specific_epithet=["class=aves","family=pardalotidae","genus=pardalotus","specificEpithet=punctatus"])
 
-    .. program-output:: python -c "import galah; print(galah.search_taxa(specific_epithet=[\\\"class=aves\\\",\\\"family=pardalotidae\\\",\\\"genus=pardalotus\\\",\\\"specificEpithet=punctatus\\\"]))"
+    .. program-output:: python -c "import galah; import pandas as pd;pd.set_option('display.max_columns', None);print(galah.search_taxa(specific_epithet=[\\\"class=aves\\\",\\\"family=pardalotidae\\\",\\\"genus=pardalotus\\\",\\\"specificEpithet=punctatus\\\"]))"
     
     Search taxonomic levels by using the key word "scientificName"
 
@@ -72,7 +72,7 @@ def search_taxa(taxa=None,
         import galah
         galah.search_taxa(scientific_name=scientific_ name={"family": ["pardalotidae","maluridae"],"scientificName": ["pardolatus striatus","malurus cyaneus"]})
 
-    .. program-output:: python -c "import galah; print(galah.search_taxa(scientific_name={\\\"family\\\": [\\\"pardalotidae\\\",\\\"maluridae\\\"],\\\"scientificName\\\": [\\\"pardolatus striatus\\\",\\\"malurus cyaneus\\\"]}))"
+    .. program-output:: python -c "import galah; import pandas as pd;pd.set_option('display.max_columns', None);print(galah.search_taxa(scientific_name={\\\"family\\\": [\\\"pardalotidae\\\",\\\"maluridae\\\"],\\\"scientificName\\\": [\\\"pardolatus striatus\\\",\\\"malurus cyaneus\\\"]}))"
     """
 
     # get configuration
@@ -111,11 +111,7 @@ def search_taxa(taxa=None,
             elif identifiers is not None:
                 baseURL, method = get_api_url(column1='called_by',column1value='search_identifiers',column2='api_name',column2value='names_lookup')
                 URL = baseURL + "?taxonID=" + urllib.parse.quote(identifiers)
-                response = requests.request(method,URL,headers=headers)
-                taxa = response.text
-                baseURL, method = get_api_url(column1='called_by',column1value='search_taxa',column2='api_name',column2value='names_search_single')
-                URL = baseURL.replace("{name}","%20".join(taxa.split(" ")))
-            
+                
             # else, something wasn't put into the argyments correctly
             else:
                 raise ValueError("Something isn't right with identifiers or specific_epithet:\nidentifiers: {}\nspecific_epithet: {}\n".format(identifiers,specific_epithet))

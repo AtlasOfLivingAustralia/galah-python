@@ -2,8 +2,8 @@ import os
 import pandas as pd
 
 from .get_api_url import readConfig
-from .common_functions import get_response_show_all
 from .common_dictionaries import atlases as ATLASES
+from .common_functions import get_response_show_all
 
 '''
 function is meant to show all values for possible query fields - they are defined as a boolean variable so you can see
@@ -67,7 +67,7 @@ def show_all(assertions=False,
         import galah
         galah.show_all(datasets=True)
 
-    .. program-output:: python -c "import galah; print(galah.show_all(datasets=True))"
+    .. program-output:: python -c "import galah; import pandas as pd;pd.set_option('display.max_columns', None);print(galah.show_all(datasets=True))"
     """
 
     # get configurations for different atlases

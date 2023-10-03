@@ -17,6 +17,8 @@ from .galah_geolocate import galah_geolocate
 from .common_dictionaries import ATLAS_KEYWORDS,ATLAS_SELECTIONS, atlases, ATLAS_OCCURRENCES_ERROR_MESSAGES
 from .common_dictionaries import ATLAS_OCCURRENCES_DOWNLOAD_ARGUMENTS
 from .common_functions import add_filters,add_predicates,add_to_payload_ALA
+from .show_all import show_all
+from .generate_jwt_token import generate_token_config,get_jwt_token
 
 def atlas_occurrences(taxa=None,
                       filters=None,
@@ -69,7 +71,11 @@ def atlas_occurrences(taxa=None,
             Denotes whether or not you want a species list for GBIF.  Default to ``False``.  For species lists, refer to ``atlas_species``
         status_accepted : logical
             Denotes whether or not you want only accepted taxonomic ranks for GBIF.  Default to ``True``.  For species lists, refer to ``atlas_species``
-    
+        polygon : shapely Polygon
+            A polygon shape denoting a geographical region.  Defaults to ``None``.
+        bbox : dict or shapely Polygon
+            A polygon or dictionary type denoting four points, which are the corners of a geographical region.  Defaults to ``None``.
+            
     Returns
     -------
         An object of class ``pandas.DataFrame``.
@@ -85,7 +91,7 @@ def atlas_occurrences(taxa=None,
         galah.galah_config(atlas="Australia",email="your-email@example.com")
         galah.atlas_occurrences(taxa="Vulpes vulpes",filters="year=2023")
 
-    .. program-output:: python -c "import galah; galah.galah_config(atlas=\\\"Australia\\\",email=\\\"amanda.buyan@csiro.au\\\");print(galah.atlas_occurrences(taxa=\\\"Vulpes vulpes\\\",filters=\\\"year=2023\\\"))"
+    .. program-output:: python -c "import galah; import pandas as pd;pd.set_option('display.max_columns', None);galah.galah_config(atlas=\\\"Australia\\\",email=\\\"amanda.buyan@csiro.au\\\");print(galah.atlas_occurrences(taxa=\\\"Vulpes vulpes\\\",filters=\\\"year=2023\\\"))"
     
     Download records of Vulpes vulpes in 2023, returning only ``eventDate`` field
 
@@ -95,7 +101,7 @@ def atlas_occurrences(taxa=None,
         galah.galah_config(atlas="Australia",email="your-email@example.com")
         galah.atlas_occurrences(taxa="Vulpes vulpes",filters="year=2023",fields="eventDate")
 
-    .. program-output:: python -c "import galah; galah.galah_config(atlas=\\\"Australia\\\",email=\\\"amanda.buyan@csiro.au\\\"); print(galah.atlas_occurrences(taxa=\\\"Vulpes vulpes\\\",filters=\\\"year=2023\\\",fields=\\\"eventDate\\\"))"
+    .. program-output:: python -c "import galah; import pandas as pd;pd.set_option('display.max_columns', None);galah.galah_config(atlas=\\\"Australia\\\",email=\\\"amanda.buyan@csiro.au\\\"); print(galah.atlas_occurrences(taxa=\\\"Vulpes vulpes\\\",filters=\\\"year=2023\\\",fields=\\\"eventDate\\\"))"
 
     """
 
@@ -183,10 +189,10 @@ def atlas_occurrences(taxa=None,
             baseURL += galah_select(select=fields,atlas=atlas)[:-3] + "&"
         else:
             baseURL += galah_select(select=ATLAS_SELECTIONS[atlas],atlas=atlas)[:-3] + "&"
-    elif atlas in ["Australia","Austria","Brazil","France","Spain"]:
+    elif atlas in ["Australia"]:
         pass
-        #revisit this later
-        #baseURL += galah_select(select=ATLAS_SELECTIONS[atlas],atlas=atlas)[:-3] + "&"
+    elif atlas in ["Austria","Brazil","France","Spain"]:
+        baseURL += galah_select(select=ATLAS_SELECTIONS[atlas],atlas=atlas)[:-3] + "&"
     elif fields is not None and atlas in ["Global","GBIF"]:
         print("GBIF, unfortunately, does not support choosing your desired data fields before download.  You will have to download them and then get categories you want.")
     elif atlas in ["Global","GBIF"]:
@@ -209,7 +215,7 @@ def atlas_occurrences(taxa=None,
             filters=assertions
 
         # create payload
-        payload = add_to_payload_ALA(payload=payload,atlas=atlas,taxa=taxa,filters=filters,geolocate=galah_geolocate(polygon=polygon,bbox=bbox))
+        payload = add_to_payload_ALA(payload=payload,atlas=atlas,taxa=taxa,filters=filters,polygon=polygon,bbox=bbox)
         
         # create the query id
         qid_URL, method2 = get_api_url(column1="api_name",column1value="occurrences_qid")
@@ -217,8 +223,11 @@ def atlas_occurrences(taxa=None,
         
         # create the URL to grab your queryID and counts
         if use_data_profile:
-            baseURL = apply_data_profile(baseURL=baseURL,use_data_profile=use_data_profile)    
-        URL = baseURL + "fq=%28qid%3A" + qid.text + "%29&flimit=-1"
+            data_profile_list = list(show_all(profiles=True)['shortName'])
+            baseURL = apply_data_profile(baseURL=baseURL,data_profile_list=data_profile_list)   
+
+        # Add qa=None to not get any assertions 
+        URL = baseURL + "fq=%28qid%3A" + qid.text + "%29&qa=none&flimit=-1"
 
         if verbose:
             print("URL for querying: {}".format(URL))
@@ -250,7 +259,8 @@ def atlas_occurrences(taxa=None,
                     for tid in taxonConceptID:
                         predicates.append({"type":"equals","key":"TAXON_KEY","value":str(tid)})
                 else:
-                    URL = baseURL + "&fq=%28lsid%3A" + "%20OR%20lsid%3A".join(
+                    # remove & before fq
+                    URL = baseURL + "fq=%28lsid%3A" + "%20OR%20lsid%3A".join(
                         urllib.parse.quote(str(tid)) for tid in taxonConceptID) + "%29"
                 
             # else, the user needs to specify the taxa in the correct format
@@ -289,7 +299,8 @@ def atlas_occurrences(taxa=None,
             else:
                 raise ValueError("Assertions needs to be a string or a list of strings, i.e. identificationIncorrect == TRUE")
         
-        # geolocate (add later)
+        if polygon is not None or bbox is not None:
+            URL += "&" + galah_geolocate(polygon=polygon,bbox=bbox)
 
         # raise error if user hasn't specified any type of filters
         if taxa is None and filters is None and assertions is None:
@@ -336,7 +347,7 @@ def atlas_occurrences(taxa=None,
             
             # get response
             response = requests.request(method,URL,headers=headers,auth=authentication,data=payload)
-        
+            
         # else, get response from other APIs
         else:
 

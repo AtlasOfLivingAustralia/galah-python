@@ -19,11 +19,11 @@ setup(
     keywords='galah',
     #'tempfile'
     install_requires=[
-        'numpy','pandas','requests','urllib3','TIME-python','zip-files','configparser','glob2','bytesbufio','shutils','setuptools','shapely','pytest','unittest2py3k','mkl','PyJWT'
-    ],
+        'numpy','pandas','requests','urllib3','TIME-python','zip-files','configparser','glob2','bytesbufio','shutils','setuptools','shapely','pytest','unittest2py3k' 
+    ], #,'PyJWT','python-jwt'
     include_package_data = True,
     package_data = {
     # If any package contains *.ini files or *.csv files, include them
-    '': ['config.ini','node_config.csv','gbif_assertions.csv','gbif_fields.csv'],
+    '': ['config.ini','node_config.csv','gbif_assertions.csv','gbif_fields.csv','ALA_keys.json'],
     },
 )

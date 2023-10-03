@@ -11,7 +11,7 @@ returns
 ------- 
 returnString: a string to add to the URL to query the API
 '''
-def galah_select(select=None):
+def galah_select(select=None,atlas=None):
 
     # generate a temporary string for fields to return to another function
     tempstring="fields="

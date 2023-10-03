@@ -18,22 +18,6 @@ To upgrade to the latest release:
 
     pip install --upgrade galah-python
 
-Conda
------
-
-To install the latest release with conda do:
-    
-.. prompt:: 
-
-    conda config --add channels conda-forge
-    conda install galah-python
-
-To upgrade to the latest stable release:
-
-.. prompt:: 
-
-    conda update galah-python
-
 Source
 ------
 
