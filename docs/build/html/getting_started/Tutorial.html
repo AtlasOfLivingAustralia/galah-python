@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Tutorial &#8212; Galah 0.5.0 documentation</title>
+    <title>Tutorial &#8212; Galah 0.6.0 documentation</title>
   
   
   
@@ -37,7 +37,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
 
-    <script src="../_static/documentation_options.js?v=70f82a29"></script>
+    <script src="../_static/documentation_options.js?v=dda85ae5"></script>
     <script src="../_static/doctools.js?v=888ff710"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/design-tabs.js?v=36754332"></script>
@@ -415,7 +415,7 @@ span.prompt1:before {
 <span class="prompt1">galah.atlas_counts(taxa=&quot;Vulpes vulpes&quot;)</span>
 </pre></div></div><p>which returns</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>   totalRecords
-0        128714
+0        128721
 </pre></div>
 </div>
 <p>From here, you can narrow down your query by doing a few things.  Let’s first investigate how to apply filters.</p>
@@ -452,17 +452,17 @@ span.prompt1:before {
 <span class="prompt1">galah.atlas_occurrences(taxa=&quot;Vulpes vulpes&quot;,filters=&quot;year=2020&quot;,fields=[&quot;scientificName&quot;,&quot;decimalLatitude&quot;,&quot;decimalLongitude&quot;])</span>
 </pre></div></div><p>which returns</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>     scientificName  decimalLatitude  decimalLongitude
-0     Vulpes vulpes       -37.389077        144.267620
-1     Vulpes vulpes       -30.598460        149.175980
-2     Vulpes vulpes       -35.191985        149.119681
-3     Vulpes vulpes       -37.774590        144.940466
-4     Vulpes vulpes       -34.899563        138.765467
+0     Vulpes vulpes       -35.667370        150.156150
+1     Vulpes vulpes       -37.389077        144.267620
+2     Vulpes vulpes       -31.949370        150.781200
+3     Vulpes vulpes       -38.156664        145.130895
+4     Vulpes vulpes       -34.823932        138.643358
 ...             ...              ...               ...
-6257  Vulpes vulpes       -35.021748        138.734192
-6258  Vulpes vulpes       -37.958445        145.063621
-6259  Vulpes vulpes       -33.715467        150.298910
-6260  Vulpes vulpes       -30.592873        149.254857
-6261  Vulpes vulpes       -34.601921        138.714026
+6257  Vulpes vulpes       -34.517792        117.671478
+6258  Vulpes vulpes       -33.929510        150.857140
+6259  Vulpes vulpes       -33.549633        150.652332
+6260  Vulpes vulpes       -33.724884        150.968743
+6261  Vulpes vulpes       -33.430165        150.260458
 
 [6262 rows x 3 columns]
 </pre></div>

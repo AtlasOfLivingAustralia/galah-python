@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>API Docs &#8212; Galah 0.5.0 documentation</title>
+    <title>API Docs &#8212; Galah 0.6.0 documentation</title>
   
   
   
@@ -37,7 +37,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
 
-    <script src="../_static/documentation_options.js?v=70f82a29"></script>
+    <script src="../_static/documentation_options.js?v=dda85ae5"></script>
     <script src="../_static/doctools.js?v=888ff710"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/design-tabs.js?v=36754332"></script>
@@ -422,16 +422,16 @@ span.prompt1:before {
 }
 </style><span class="prompt1"><span class="n">galah</span><span class="o">.</span><span class="n">atlas_counts</span><span class="p">()</span></span>
 </pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>   totalRecords
-0     130570372
+0     130573493
 </pre></div>
 </div>
 <p>Return records from 2020 onwards, grouped by year</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="n">galah</span><span class="o">.</span><span class="n">atlas_counts</span><span class="p">(</span><span class="n">filters</span><span class="o">=</span><span class="s2">&quot;year&gt;2019&quot;</span><span class="p">,</span><span class="n">group_by</span><span class="o">=</span><span class="s2">&quot;year&quot;</span><span class="p">,</span><span class="n">expand</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></span>
 </pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>   year    count
-0  2020  7113428
-1  2021  8198985
-2  2022  8343591
-3  2023  2951123
+0  2020  7113758
+1  2021  8199180
+2  2022  8345173
+3  2023  2951853
 </pre></div>
 </div>
 </dd></dl>
@@ -635,11 +635,11 @@ Default is set to <code class="docutils literal notranslate"><span class="pre">&
 3     003fdc43-4489-49cb-9e11-0b5753f7da63   FO-SI-27440   
 4     005a66b1-7b4f-4dc0-9834-33201bedcca0   FO-SI-27655   
 ...                                    ...           ...   
-3938  ff82cedc-f30f-4b84-b78c-7d3a2cadb0b5     163943669   
-3939  ffb1756c-6906-4917-b811-dcb641d5e34f   FO-SI-28664   
-3940  ffb916b4-7ad5-494e-a071-fcd55a92774a     147557589   
-3941  ffebb23c-58c3-4bf8-8f5c-b49f890154c9   FO-SI-27243   
-3942  fff87988-89de-4533-837c-61f6cf8a82e6     147559823   
+3940  ff82cedc-f30f-4b84-b78c-7d3a2cadb0b5     163943669   
+3941  ffb1756c-6906-4917-b811-dcb641d5e34f   FO-SI-28664   
+3942  ffb916b4-7ad5-494e-a071-fcd55a92774a     147557589   
+3943  ffebb23c-58c3-4bf8-8f5c-b49f890154c9   FO-SI-27243   
+3944  fff87988-89de-4533-837c-61f6cf8a82e6     147559823   
 
                                          taxonConceptID raw_scientificName  \
 0     https://biodiversity.org.au/afd/taxa/2869ce8a-...      Vulpes vulpes   
@@ -648,11 +648,11 @@ Default is set to <code class="docutils literal notranslate"><span class="pre">&
 3     https://biodiversity.org.au/afd/taxa/2869ce8a-...      Vulpes vulpes   
 4     https://biodiversity.org.au/afd/taxa/2869ce8a-...      Vulpes vulpes   
 ...                                                 ...                ...   
-3938  https://biodiversity.org.au/afd/taxa/2869ce8a-...      Vulpes vulpes   
-3939  https://biodiversity.org.au/afd/taxa/2869ce8a-...      Vulpes vulpes   
 3940  https://biodiversity.org.au/afd/taxa/2869ce8a-...      Vulpes vulpes   
 3941  https://biodiversity.org.au/afd/taxa/2869ce8a-...      Vulpes vulpes   
 3942  https://biodiversity.org.au/afd/taxa/2869ce8a-...      Vulpes vulpes   
+3943  https://biodiversity.org.au/afd/taxa/2869ce8a-...      Vulpes vulpes   
+3944  https://biodiversity.org.au/afd/taxa/2869ce8a-...      Vulpes vulpes   
 
      raw_vernacularName scientificName taxonRank vernacularName   kingdom  \
 0                   NaN  Vulpes vulpes   species            Fox  Animalia   
@@ -661,11 +661,11 @@ Default is set to <code class="docutils literal notranslate"><span class="pre">&
 3                   NaN  Vulpes vulpes   species            Fox  Animalia   
 4                   NaN  Vulpes vulpes   species            Fox  Animalia   
 ...                 ...            ...       ...            ...       ...   
-3938                NaN  Vulpes vulpes   species            Fox  Animalia   
-3939                NaN  Vulpes vulpes   species            Fox  Animalia   
 3940                NaN  Vulpes vulpes   species            Fox  Animalia   
 3941                NaN  Vulpes vulpes   species            Fox  Animalia   
 3942                NaN  Vulpes vulpes   species            Fox  Animalia   
+3943                NaN  Vulpes vulpes   species            Fox  Animalia   
+3944                NaN  Vulpes vulpes   species            Fox  Animalia   
 
         phylum     class      order   family   genus        species  \
 0     Chordata  Mammalia  Carnivora  Canidae  Vulpes  Vulpes vulpes   
@@ -674,11 +674,11 @@ Default is set to <code class="docutils literal notranslate"><span class="pre">&
 3     Chordata  Mammalia  Carnivora  Canidae  Vulpes  Vulpes vulpes   
 4     Chordata  Mammalia  Carnivora  Canidae  Vulpes  Vulpes vulpes   
 ...        ...       ...        ...      ...     ...            ...   
-3938  Chordata  Mammalia  Carnivora  Canidae  Vulpes  Vulpes vulpes   
-3939  Chordata  Mammalia  Carnivora  Canidae  Vulpes  Vulpes vulpes   
 3940  Chordata  Mammalia  Carnivora  Canidae  Vulpes  Vulpes vulpes   
 3941  Chordata  Mammalia  Carnivora  Canidae  Vulpes  Vulpes vulpes   
 3942  Chordata  Mammalia  Carnivora  Canidae  Vulpes  Vulpes vulpes   
+3943  Chordata  Mammalia  Carnivora  Canidae  Vulpes  Vulpes vulpes   
+3944  Chordata  Mammalia  Carnivora  Canidae  Vulpes  Vulpes vulpes   
 
       subspecies dataResourceUid institutionUid institutionName collectionUid  \
 0            NaN         dr19813            NaN             NaN           NaN   
@@ -687,11 +687,11 @@ Default is set to <code class="docutils literal notranslate"><span class="pre">&
 3            NaN         dr19813            NaN             NaN           NaN   
 4            NaN         dr19813            NaN             NaN           NaN   
 ...          ...             ...            ...             ...           ...   
-3938         NaN          dr1411            NaN             NaN           NaN   
-3939         NaN         dr19813            NaN             NaN           NaN   
 3940         NaN          dr1411            NaN             NaN           NaN   
 3941         NaN         dr19813            NaN             NaN           NaN   
 3942         NaN          dr1411            NaN             NaN           NaN   
+3943         NaN         dr19813            NaN             NaN           NaN   
+3944         NaN          dr1411            NaN             NaN           NaN   
 
      collectionName     dcterms:license institutionCode collectionCode  \
 0               NaN  CC-BY-NC 4.0 (Int)             NaN            NaN   
@@ -700,11 +700,11 @@ Default is set to <code class="docutils literal notranslate"><span class="pre">&
 3               NaN  CC-BY-NC 4.0 (Int)             NaN            NaN   
 4               NaN  CC-BY-NC 4.0 (Int)             NaN            NaN   
 ...             ...                 ...             ...            ...   
-3938            NaN  CC-BY-NC 4.0 (Int)     iNaturalist   Observations   
-3939            NaN  CC-BY-NC 4.0 (Int)             NaN            NaN   
 3940            NaN  CC-BY-NC 4.0 (Int)     iNaturalist   Observations   
 3941            NaN  CC-BY-NC 4.0 (Int)             NaN            NaN   
 3942            NaN  CC-BY-NC 4.0 (Int)     iNaturalist   Observations   
+3943            NaN  CC-BY-NC 4.0 (Int)             NaN            NaN   
+3944            NaN  CC-BY-NC 4.0 (Int)     iNaturalist   Observations   
 
      raw_locality  raw_decimalLatitude  raw_decimalLongitude  \
 0             NaN           -33.367572            151.382845   
@@ -713,11 +713,11 @@ Default is set to <code class="docutils literal notranslate"><span class="pre">&
 3             NaN           -31.541154            152.057171   
 4             NaN           -33.964091            151.056703   
 ...           ...                  ...                   ...   
-3938          NaN           -37.388868            144.267693   
-3939          NaN           -31.949246            152.500526   
 3940          NaN           -37.388868            144.267693   
-3941          NaN           -33.834716            151.141071   
-3942          NaN           -37.388981            144.266958   
+3941          NaN           -31.949246            152.500526   
+3942          NaN           -37.388868            144.267693   
+3943          NaN           -33.834716            151.141071   
+3944          NaN           -37.388981            144.266958   
 
      raw_geodeticDatum  decimalLatitude  decimalLongitude  \
 0                  NaN       -33.367572        151.382845   
@@ -726,11 +726,11 @@ Default is set to <code class="docutils literal notranslate"><span class="pre">&
 3                  NaN       -31.541154        152.057171   
 4                  NaN       -33.964091        151.056703   
 ...                ...              ...               ...   
-3938         EPSG:4326       -37.388868        144.267693   
-3939               NaN       -31.949246        152.500526   
 3940         EPSG:4326       -37.388868        144.267693   
-3941               NaN       -33.834716        151.141071   
-3942         EPSG:4326       -37.388981        144.266958   
+3941               NaN       -31.949246        152.500526   
+3942         EPSG:4326       -37.388868        144.267693   
+3943               NaN       -33.834716        151.141071   
+3944         EPSG:4326       -37.388981        144.266958   
 
       coordinatePrecision  coordinateUncertaintyInMeters    country  \
 0                     NaN                            NaN  Australia   
@@ -739,11 +739,11 @@ Default is set to <code class="docutils literal notranslate"><span class="pre">&
 3                     NaN                            NaN  Australia   
 4                     NaN                            NaN  Australia   
 ...                   ...                            ...        ...   
-3938                  NaN                           10.0  Australia   
-3939                  NaN                            NaN  Australia   
 3940                  NaN                           10.0  Australia   
 3941                  NaN                            NaN  Australia   
 3942                  NaN                           10.0  Australia   
+3943                  NaN                            NaN  Australia   
+3944                  NaN                           10.0  Australia   
 
         stateProvince              cl959 cl21                cl1048  \
 0     New South Wales          Wyong (A)  NaN          Sydney Basin   
@@ -752,11 +752,11 @@ Default is set to <code class="docutils literal notranslate"><span class="pre">&
 3     New South Wales  Greater Taree (C)  NaN       NSW North Coast   
 4     New South Wales     Hurstville (C)  NaN          Sydney Basin   
 ...               ...                ...  ...                   ...   
-3938         Victoria        Hepburn (S)  NaN    Victorian Midlands   
-3939  New South Wales  Greater Taree (C)  NaN       NSW North Coast   
 3940         Victoria        Hepburn (S)  NaN    Victorian Midlands   
-3941  New South Wales   Hunters Hill (A)  NaN          Sydney Basin   
+3941  New South Wales  Greater Taree (C)  NaN       NSW North Coast   
 3942         Victoria        Hepburn (S)  NaN    Victorian Midlands   
+3943  New South Wales   Hunters Hill (A)  NaN          Sydney Basin   
+3944         Victoria        Hepburn (S)  NaN    Victorian Midlands   
 
       minimumElevationInMeters  maximumElevationInMeters  \
 0                          NaN                       NaN   
@@ -765,11 +765,11 @@ Default is set to <code class="docutils literal notranslate"><span class="pre">&
 3                          NaN                       NaN   
 4                          NaN                       NaN   
 ...                        ...                       ...   
-3938                       NaN                       NaN   
-3939                       NaN                       NaN   
 3940                       NaN                       NaN   
 3941                       NaN                       NaN   
 3942                       NaN                       NaN   
+3943                       NaN                       NaN   
+3944                       NaN                       NaN   
 
       minimumDepthInMeters  maximumDepthInMeters  individualCount  recordedBy  \
 0                      NaN                   NaN              NaN         NaN   
@@ -778,11 +778,11 @@ Default is set to <code class="docutils literal notranslate"><span class="pre">&
 3                      NaN                   NaN              NaN         NaN   
 4                      NaN                   NaN              NaN         NaN   
 ...                    ...                   ...              ...         ...   
-3938                   NaN                   NaN              NaN  Mononymous   
-3939                   NaN                   NaN              NaN         NaN   
 3940                   NaN                   NaN              NaN  Mononymous   
 3941                   NaN                   NaN              NaN         NaN   
 3942                   NaN                   NaN              NaN  Mononymous   
+3943                   NaN                   NaN              NaN         NaN   
+3944                   NaN                   NaN              NaN  Mononymous   
 
       year  month  day             eventDate raw_basisOfRecord  \
 0     2023      8   29  2023-08-29T00:00:00Z               NaN   
@@ -791,11 +791,11 @@ Default is set to <code class="docutils literal notranslate"><span class="pre">&
 3     2023      3    4  2023-03-04T00:00:00Z               NaN   
 4     2023      3   24  2023-03-24T00:00:00Z               NaN   
 ...    ...    ...  ...                   ...               ...   
-3938  2023      5    9  2023-05-09T12:43:00Z  HumanObservation   
-3939  2023      6    5  2023-06-05T00:00:00Z               NaN   
-3940  2023      1   13  2023-01-13T10:23:00Z  HumanObservation   
-3941  2023      2   20  2023-02-20T00:00:00Z               NaN   
-3942  2023      1    5  2023-01-05T04:16:00Z  HumanObservation   
+3940  2023      5    9  2023-05-09T12:43:00Z  HumanObservation   
+3941  2023      6    5  2023-06-05T00:00:00Z               NaN   
+3942  2023      1   13  2023-01-13T10:23:00Z  HumanObservation   
+3943  2023      2   20  2023-02-20T00:00:00Z               NaN   
+3944  2023      1    5  2023-01-05T04:16:00Z  HumanObservation   
 
           basisOfRecord occurrenceStatus raw_sex  preparations  \
 0            OCCURRENCE          PRESENT     NaN           NaN   
@@ -804,11 +804,11 @@ Default is set to <code class="docutils literal notranslate"><span class="pre">&
 3            OCCURRENCE          PRESENT     NaN           NaN   
 4            OCCURRENCE          PRESENT     NaN           NaN   
 ...                 ...              ...     ...           ...   
-3938  HUMAN_OBSERVATION          PRESENT     NaN           NaN   
-3939         OCCURRENCE          PRESENT     NaN           NaN   
 3940  HUMAN_OBSERVATION          PRESENT     NaN           NaN   
 3941         OCCURRENCE          PRESENT     NaN           NaN   
 3942  HUMAN_OBSERVATION          PRESENT     NaN           NaN   
+3943         OCCURRENCE          PRESENT     NaN           NaN   
+3944  HUMAN_OBSERVATION          PRESENT     NaN           NaN   
 
       informationWithheld  dataGeneralizations  spatiallyValid  
 0                     NaN                  NaN            True  
@@ -817,13 +817,13 @@ Default is set to <code class="docutils literal notranslate"><span class="pre">&
 3                     NaN                  NaN            True  
 4                     NaN                  NaN            True  
 ...                   ...                  ...             ...  
-3938                  NaN                  NaN            True  
-3939                  NaN                  NaN            True  
 3940                  NaN                  NaN            True  
 3941                  NaN                  NaN            True  
 3942                  NaN                  NaN            True  
+3943                  NaN                  NaN            True  
+3944                  NaN                  NaN            True  
 
-[3943 rows x 55 columns]
+[3945 rows x 55 columns]
 </pre></div>
 </div>
 <p>Download records of Vulpes vulpes in 2023, returning only <code class="docutils literal notranslate"><span class="pre">eventDate</span></code> field</p>
@@ -837,13 +837,13 @@ Default is set to <code class="docutils literal notranslate"><span class="pre">&
 3     2023-01-01T00:00:00Z
 4     2023-01-01T00:00:00Z
 ...                    ...
-3938  2023-09-29T00:00:00Z
-3939  2023-09-29T10:28:00Z
-3940  2023-09-29T11:16:31Z
-3941  2023-09-29T18:19:00Z
-3942  2023-09-29T18:19:00Z
+3940  2023-09-29T00:00:00Z
+3941  2023-09-29T10:28:00Z
+3942  2023-09-29T11:16:31Z
+3943  2023-09-29T18:19:00Z
+3944  2023-09-29T18:19:00Z
 
-[3943 rows x 1 columns]
+[3945 rows x 1 columns]
 </pre></div>
 </div>
 </dd></dl>
@@ -1208,11 +1208,11 @@ displaying all valid options for the information specified.</p>
 3     2016 Aerial survey data of southern right whal...   
 4                              2016CR16_SpeciesList.csv   
 ...                                                 ...   
-3229  Zooplankton abundance in the Kerguelen Axis re...   
-3230  Zooplankton Abundance_Umbrella net_sea ice zon...   
-3231  Zooplankton samples from Heron net trawls alon...   
-3232  Zooplankton sampling in the coastal waters of ...   
-3233                         Zoos Victoria Moth Tracker   
+3235  Zooplankton abundance in the Kerguelen Axis re...   
+3236  Zooplankton Abundance_Umbrella net_sea ice zon...   
+3237  Zooplankton samples from Heron net trawls alon...   
+3238  Zooplankton sampling in the coastal waters of ...   
+3239                         Zoos Victoria Moth Tracker   
 
                                                     uri      uid  
 0     https://collections.ala.org.au/ws/dataResource...  dr16247  
@@ -1221,13 +1221,13 @@ displaying all valid options for the information specified.</p>
 3     https://collections.ala.org.au/ws/dataResource...  dr16218  
 4     https://collections.ala.org.au/ws/dataResource...  dr23380  
 ...                                                 ...      ...  
-3229  https://collections.ala.org.au/ws/dataResource...  dr16244  
-3230  https://collections.ala.org.au/ws/dataResource...  dr16265  
-3231  https://collections.ala.org.au/ws/dataResource...  dr23120  
-3232  https://collections.ala.org.au/ws/dataResource...  dr15943  
-3233  https://collections.ala.org.au/ws/dataResource...  dr22371  
+3235  https://collections.ala.org.au/ws/dataResource...  dr16244  
+3236  https://collections.ala.org.au/ws/dataResource...  dr16265  
+3237  https://collections.ala.org.au/ws/dataResource...  dr23120  
+3238  https://collections.ala.org.au/ws/dataResource...  dr15943  
+3239  https://collections.ala.org.au/ws/dataResource...  dr22371  
 
-[3234 rows x 3 columns]
+[3240 rows x 3 columns]
 </pre></div>
 </div>
 </dd></dl>

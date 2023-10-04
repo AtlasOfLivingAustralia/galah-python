@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Narrow Results &#8212; Galah 0.5.0 documentation</title>
+    <title>Narrow Results &#8212; Galah 0.6.0 documentation</title>
   
   
   
@@ -37,7 +37,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
 
-    <script src="../_static/documentation_options.js?v=70f82a29"></script>
+    <script src="../_static/documentation_options.js?v=dda85ae5"></script>
     <script src="../_static/doctools.js?v=888ff710"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/design-tabs.js?v=36754332"></script>
@@ -436,7 +436,7 @@ span.prompt1:before {
 results of our queries:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">atlas_counts</span><span class="p">(</span><span class="n">taxa</span><span class="o">=</span><span class="s2">&quot;Reptilia&quot;</span><span class="p">)</span></span>
 </pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>   totalRecords
-0       1668217
+0       1668225
 </pre></div>
 </div>
 <p>If you’re using an international atlas, <code class="docutils literal notranslate"><span class="pre">galah.search_taxa()</span></code> will automatically switch to using the local name-matching
@@ -454,13 +454,13 @@ service. We have the Brazilian atlas as an example here:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="c1"># Get total record count since 2000</span></span>
 <span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">atlas_counts</span><span class="p">(</span><span class="n">filters</span><span class="o">=</span><span class="s2">&quot;year&gt;2000&quot;</span><span class="p">)</span></span>
 </pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>   totalRecords
-0      89956726
+0      89959652
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="c1"># Get total record count for iNaturalist in 2021</span></span>
 <span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">atlas_counts</span><span class="p">(</span><span class="n">filters</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;dataResourceName=iNaturalist Australia&quot;</span><span class="p">,</span><span class="s2">&quot;year=2021&quot;</span><span class="p">])</span></span>
 </pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>   totalRecords
-0       8186284
+0       8186479
 </pre></div>
 </div>
 <p>To find available fields and corresponding valid values, use the field lookup functions
@@ -495,7 +495,7 @@ Profiles are groups of data quality filters.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="n">galah</span><span class="o">.</span><span class="n">galah_config</span><span class="p">(</span><span class="n">data_profile</span><span class="o">=</span><span class="s2">&quot;ALA&quot;</span><span class="p">)</span></span>
 <span class="prompt1"><span class="n">galah</span><span class="o">.</span><span class="n">atlas_counts</span><span class="p">(</span><span class="nb">filter</span><span class="o">=</span><span class="s2">&quot;year&gt;2000&quot;</span><span class="p">,</span><span class="n">use_data_profile</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></span>
 </pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>   totalRecords
-0      81191754
+0      81194323
 </pre></div>
 </div>
 <p>To see a full list of data quality profiles, use <code class="docutils literal notranslate"><span class="pre">galah.show_all(profiles=True)</span></code>.</p>

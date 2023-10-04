@@ -3,6 +3,10 @@ This is the setup script for galah.  It contains all of the package information
 and dependencies
 '''
 from setuptools import setup,find_packages
+import os
+
+os.system("conda install geos")
+os.system("pip install packaging")
 
 setup(
     #name='galah',
@@ -19,8 +23,24 @@ setup(
     keywords='galah',
     #'tempfile'
     install_requires=[
-        'numpy','pandas','requests','urllib3','TIME-python','zip-files','configparser','glob2','bytesbufio','shutils','setuptools','shapely','pytest','unittest2py3k' 
-    ], #,'PyJWT','python-jwt'
+        'setuptools',
+        'numpy',
+        'pandas',
+        'requests',
+        'urllib3',
+        'zip-files',
+        'configparser',
+        'glob2',
+        'bytesbufio',
+        'shutils',
+        'pytest',
+        'unittest2py3k',
+        'shapely',
+        #'TIME-python',
+    ],
+
+
+    # ], #,'PyJWT','python-jwt'
     include_package_data = True,
     package_data = {
     # If any package contains *.ini files or *.csv files, include them

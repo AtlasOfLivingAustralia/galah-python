@@ -32,8 +32,6 @@ unittest2py3k = "^0.5.0"
 setuptools = "^65.5.1"
 shapely = "^2.0.0"
 pytest = "^7.2.1"
-mkl = "^1.0.0"
-PyJWT = "^2.5.0"
 
 [tool.poetry.dev-dependencies]
 
