@@ -110,8 +110,15 @@ def atlas_species(taxa=None,
             URL = baseURL + "?fq=%28qid%3A" + qid.text + "%29&facets={}&lookup=True".format(rankID)
 
         if verbose:
-            print("URL for querying: {}".format(URL))
-            print("Method: {}".format(method))
+            print()
+            print("payload for queryID: {}".format(payload))
+            print("queryID URL: {}".format(qid_URL))
+            print("method: {}".format(method2))
+            print()
+            print("qid for query: {}".format(qid.text))
+            print("URL for result:{}".format(URL))
+            print("method: {}".format(method))
+            print()
 
         # get data
         response = requests.request(method,URL,headers=headers)
@@ -175,7 +182,7 @@ def atlas_species(taxa=None,
 
         # check to see if user wants the query URL
         if verbose:
-            print("URL for querying:\n\n{}\n".format(URL))
+            print("\nURL being queried:\n\n{}\n".format(URL))
 
         # get response from url
         response = requests.request(method,URL,headers=headers)

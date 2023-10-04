@@ -1,9 +1,11 @@
 import requests
 import pandas as pd
 import urllib
+import copy
 from .get_api_url import readConfig
 from .common_functions import add_filters
 from .common_functions import get_api_url,put_entries_in_grouped_dict
+
 
 # for testing
 import sys
@@ -14,7 +16,7 @@ def galah_group_by(URL=None,
                    total_group_by=False,
                    filters=None,
                    expand=True,
-                   payload=None,
+                   payload={},
                    verbose=False
                    ):
     """
@@ -40,7 +42,6 @@ def galah_group_by(URL=None,
         # check to see if you can expand upon this
         if len(group_by) == 1:
             raise ValueError("You cannot use the expand=True option when you only have one group")
-
 
     # check if expand option works
     if expand:
@@ -92,8 +93,15 @@ def galah_group_by(URL=None,
 
             # check to see if the user wants the URL for querying
             if verbose:
-                print("qid for query: {}".format(qid))
-                print("URL for result:\n\n{}\n".format(URL))
+                print()
+                print("payload for queryID: {}".format(payload))
+                print("queryID URL: {}".format(qid_URL))
+                print("method: {}".format(method2))
+                print()
+                print("qid for query: {}".format(qid.text))
+                print("URL for result:{}".format(URL))
+                print("method: {}".format(method))
+                print()
 
             response = requests.request(method,URL,headers=headers)
             response_json = response.json()
@@ -115,7 +123,10 @@ def galah_group_by(URL=None,
             
             # check to see if the user wants the URL for querying
             if verbose:
-                print("URL for querying:\n\n{}\n".format(startingURL))
+                print()
+                print("URL for querying: {}".format(startingURL))
+                print("Method: {}".format(method))
+                print()
 
             # get response from your query, which will include all available fields
             response = requests.request(method,startingURL,headers=headers)
@@ -172,10 +183,12 @@ def galah_group_by(URL=None,
                             tempURL = URL + "&{}={}".format(group_by[i+1],"%20".join(facet.split(" ")[0:2])) + "&facet=" + group_by[i] + "&flimit=-1&pageSize=0"
                         else:
                             tempURL = URL + "&{}={}".format(group_by[i+1],"%20".join(facet.split(" "))) + "&facet=" + group_by[i] + "&flimit=-1&pageSize=0"
-
-                        # print the URL
+            
                         if verbose:
-                            print("URL for querying:\n\n{}\n".format(tempURL))
+                            print()
+                            print("URL for querying: {}".format(tempURL))
+                            print("Method: {}".format(method))
+                            print()
 
                         # get the data
                         response=requests.request(method,tempURL,headers=headers)
@@ -199,7 +212,15 @@ def galah_group_by(URL=None,
                         # and sum(s.count("lsid") for s in payload["fq"]) > 1:
                         if atlas in ["Australia","ALA"]: 
 
-                            payload["fq"].append(facet)
+                            # check for fq in payload
+                            if "fq" not in payload:
+                                payload["fq"] = [facet]
+                            else:
+                                payload["fq"].append(facet)
+
+                            payload_for_querying = copy.deepcopy(payload)
+                            
+                            # create payload and get qid
                             qid_URL, method2 = get_api_url(column1="api_name",column1value="occurrences_qid")
                             qid = requests.request(method2,qid_URL,data=payload)
                             tempURL = startingURL + "?fq=%28qid%3A" + qid.text + "%29"
@@ -230,7 +251,21 @@ def galah_group_by(URL=None,
 
                         # check to see if the user wants the URL for querying
                         if verbose:
-                            print("URL for querying:\n\n{}\n".format(tempURL))
+                            if atlas in ["Australia","ALA"]:
+                                print()
+                                print("payload for queryID: {}".format(payload_for_querying))
+                                print("queryID URL: {}".format(qid_URL))
+                                print("method: {}".format(method2))
+                                print()
+                                print("qid for query: {}".format(qid.text))
+                                print("URL for result:{}".format(tempURL))
+                                print("method: {}".format(method))
+                                print()
+                            else:
+                                print()
+                                print("URL for querying: {}".format(tempURL))
+                                print("Method: {}".format(method))
+                                print()
 
                         # get data
                         response=requests.request(method,tempURL,headers=headers)

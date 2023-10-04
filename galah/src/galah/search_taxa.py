@@ -120,7 +120,7 @@ def search_taxa(taxa=None,
         
         # check to see if the user wants the querying URL
         if verbose:
-            print("URL for querying:\n\n{}\n".format(URL))
+            print("\nURL being queried:\n\n{}\n".format(URL))
 
         # get response from URL
         response = requests.request(method,URL,headers=headers)
@@ -220,7 +220,7 @@ def search_taxa(taxa=None,
                 raise ValueError("Atlas {} is not taken into account".format(atlas))
             
             if verbose:
-                print("URL for querying:\n\n{}\n".format(URL))
+                print("\nURL being queried:\n\n{}\n".format(URL))
         
             # get the response
             response = requests.request(method,URL,headers=headers)

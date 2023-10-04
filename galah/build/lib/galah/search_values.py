@@ -51,7 +51,7 @@ def search_values(field=None,
     
     # check to see if the user input the correct variable type; else, throw value error
     if type(value) is str:
-        return dataFrame.loc[dataFrame[column_name].astype(str).str.contains(value,case=False, na=False)].sort_values(column_name,key=lambda x: x.str.len())
+        return dataFrame.loc[dataFrame[column_name].astype(str).str.contains(value,case=False, na=False)].sort_values(column_name,key=lambda x: x.str.len()).reset_index(drop=True)
     else:
         raise ValueError(
             "You can only pass one string to your search parameter = run show_all(assertions=True) to get strings to pass")

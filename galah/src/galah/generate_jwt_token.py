@@ -3,8 +3,8 @@ import requests
 import jwt
 import time
 import os
-import python_jwt as genjwt
-import jwcrypto.jwk as jwk
+#import python_jwt as genjwt
+#import jwcrypto.jwk as jwk
 
 # global to store current token info
 token_obj = {}

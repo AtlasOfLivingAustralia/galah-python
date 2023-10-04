@@ -93,7 +93,7 @@ def atlas_media(taxa=None,
 
     # get occurrence data from atlas_occurrences
     dataFrame = atlas_occurrences(taxa=taxa,filters=filters,fields=fields,assertions=assertions,
-                                  use_data_profile=use_data_profile)
+                                  use_data_profile=use_data_profile,verbose=verbose)
     if dataFrame.empty:
         raise ValueError("There are no occurrences or media associated with your query.  Please try your query on atlas_counts before trying it again on atlas_media.")
 
@@ -241,7 +241,7 @@ def atlas_media(taxa=None,
         for i,image in enumerate(image_urls):
             ext = image.split(".")[-1]
             if verbose:
-                print("URL for querying:\n\n{}\n".format(image))
+                print("\nURL being queried:\n\n{}\n".format(image))
             response = requests.get(image,stream=True,headers=headers)
             if response.status_code == 200:
                 f = open("{}/image-{}.{}".format(path,data_columns['imageIdentifier'][i],ext), 'wb')
