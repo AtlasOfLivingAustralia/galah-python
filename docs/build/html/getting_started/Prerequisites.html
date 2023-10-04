@@ -1,5 +1,4 @@
 
-
 <!DOCTYPE html>
 
 
@@ -7,9 +6,9 @@
 
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Prerequisites &#8212; Galah 0.5.0 documentation</title>
+    <title>Prerequisites &#8212; Galah 0.6.0 documentation</title>
   
   
   
@@ -29,21 +28,21 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/css/extra.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/css/extra.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/extra.css?v=bc76f7e5" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/extra.css?v=bc76f7e5" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
 
-    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-    <script src="../_static/doctools.js"></script>
-    <script src="../_static/sphinx_highlight.js"></script>
-    <script src="../_static/design-tabs.js"></script>
+    <script src="../_static/documentation_options.js?v=dda85ae5"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/design-tabs.js?v=36754332"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'getting_started/Prerequisites';</script>
-    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Installation" href="Installation.html" />
@@ -400,11 +399,10 @@ document.write(`
                 <article class="bd-article" role="main">
                   
   <section id="prerequisites">
-<h1>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this heading">#</a></h1>
+<h1>Prerequisites<a class="headerlink" href="#prerequisites" title="Link to this heading">#</a></h1>
 <p>You will need the following packages to be able to run <code class="docutils literal notranslate"><span class="pre">galah</span></code>:</p>
 <ul class="simple">
 <li><p><a class="reference external" href="https://numpy.org/">numpy</a></p></li>
-<li><p><a class="reference external" href="https://scipy.org/">scipy</a></p></li>
 <li><p><a class="reference external" href="https://pandas.pydata.org/">pandas</a></p></li>
 <li><p><a class="reference external" href="https://requests.readthedocs.io/en/latest/">requests</a></p></li>
 <li><p><a class="reference external" href="https://urllib3.readthedocs.io/en/stable/">urllib3</a></p></li>
@@ -412,15 +410,19 @@ document.write(`
 <li><p><a class="reference external" href="https://pypi.org/project/zip-files/">zip-files</a></p></li>
 <li><p><a class="reference external" href="https://pypi.org/project/configparser/">configparser</a></p></li>
 <li><p><a class="reference external" href="https://pypi.org/project/glob2/">glob2</a></p></li>
-<li><p><a class="reference external" href="https://pypi.org/project/bytesbufio/">bytesbufio</a></p></li>
+<li><p><a class="reference external" href="https://pypi.org/project/shutils/">shutils</a></p></li>
+<li><p><a class="reference external" href="https://pypi.org/project/setuptools/">setuptools</a></p></li>
+<li><p><a class="reference external" href="https://pypi.org/project/shapely/">shapely</a></p></li>
+<li><p><a class="reference external" href="https://pypi.org/project/pytest/">pytest</a></p></li>
+<li><p><a class="reference external" href="https://pypi.org/project/unittest2py3k/">unittest2py3k</a></p></li>
 </ul>
 <p>To install all of these at once, run</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><style type="text/css">
 span.prompt1:before {
   content: " ";
 }
-</style><span class="prompt1">pip install numpy scipy pandas requests urllib3 TIME-python zip-files configparser glob2 bytesbufio</span>
-</pre></div></div><p>WARNING: If you’re installing all of the packages in one go, make sure you check that the installation ran successfully.  If one package doesn’t work, the rest following won’t install..</p>
+</style><span class="prompt1">pip install numpy scipy pandas requests urllib3 TIME-python zip-files configparser glob2 bytesbufio shutils setuptools shapely pytest unittest2py3k</span>
+</pre></div></div><p>WARNING: If you’re installing all of the packages in one go, make sure you check that the installation ran successfully.  If one package doesn’t work, the rest following won’t install…</p>
 </section>
 
 
@@ -492,7 +494,7 @@ span.prompt1:before {
       
         <div class="footer-item">
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 6.0.0.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.5.
     <br/>
   </p>
 </div>

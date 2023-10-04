@@ -1,3 +1,5 @@
+.. _Download Data:
+
 Download Data
 =============
 
@@ -7,7 +9,6 @@ The ``atlas_`` functions are used to return data from the atlas chosen using ``g
     * ``atlas_occurrences()``
     * ``atlas_species()``
     * ``atlas_media()``
-    * ``atlas_taxonomy()``
 
 Record counts
 -------------
@@ -42,7 +43,7 @@ than the species; but also in being more flexible by supporting filtering:
 
     >>> galah.atlas_species(taxa="Rodentia",filters="stateProvince=Northern Territory")
 
-.. program-output:: python -c "import galah;galah.galah_config(atlas=\"Australia\");import pandas as pd;pd.set_option('display.max_columns', None);pd.set_option('display.expand_frame_repr', False);pd.set_option('max_colwidth', None);galah.atlas_species(taxa=\"Rodentia\",filters=\"stateProvince=Northern Territory\")"
+.. program-output:: python -c "import galah;galah.galah_config(atlas=\"Australia\");import pandas as pd;pd.set_option('display.max_columns', None);pd.set_option('display.expand_frame_repr', False);pd.set_option('max_colwidth', None);print(galah.atlas_species(taxa=\"Rodentia\",filters=\"stateProvince=Northern Territory\"))"
 
 
 Occurrence data
@@ -72,9 +73,9 @@ filters as the other data download functions.
 
 .. prompt:: python
 
-    >>> galah.atlas_media(taxa="Eolophus roseicapilla",filters=["year=2020","cl22=Australian Capital Territory"])    
+    >>> galah.atlas_media(taxa="Eolophus roseicapilla",filters=["year=2020","stateProvince=Australian Capital Territory"])    
 
-.. program-output:: python -c "import galah;import pandas as pd;pd.set_option('display.max_columns', None);pd.set_option('display.expand_frame_repr', False);pd.set_option('max_colwidth', None);print(galah.atlas_media(taxa=\"Eolophus roseicapilla\",filters=[\"year=2020\",\"cl22=Australian Capital Territory\"]))"
+.. program-output:: python -c "import galah;import pandas as pd;pd.set_option('display.max_columns', None);pd.set_option('display.expand_frame_repr', False);pd.set_option('max_colwidth', None);galah.galah_config(atlas=\"Australia\",email=\"amanda.buyan@csiro.au\");print(galah.atlas_media(taxa=\"Eolophus roseicapilla\",filters=[\"year=2020\",\"stateProvince=Australian Capital Territory\"]))"
 
 To actually download the media files to your computer, add the argument ``collect``.  By default, it downloads the data to your
 current working directory, but you can specify the folder to download to with the ``path`` argument.
@@ -88,7 +89,8 @@ Various aspects of the galah package can be customized.
 *Email*
 
 To download occurrence records, you will need to provide an email address registered with the ALA. You can create an account 
-here. Once an email is registered with the ALA, it should be stored in the config:
+`here <https://auth.ala.org.au/userdetails/registration/createAccount>`_. Once an email is registered with the ALA, it should 
+be stored in the config:
 
 .. prompt:: python
     

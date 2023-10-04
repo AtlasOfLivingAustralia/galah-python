@@ -1,5 +1,5 @@
 import galah
-
+'''
 def test_show_all_assertions_guatemala():
     galah.galah_config(atlas="Guatemala")
     output = galah.show_all(assertions=True)
@@ -39,7 +39,7 @@ def test_show_all_ranks_guatemala():
     galah.galah_config(atlas="Guatemala")
     output = galah.show_all(ranks=True)
     assert output.shape[1] > 1
-'''
+
 # integration test for search_taxa() - have to test get_api_url
 def test_search_taxa_guatemala():
     galah.galah_config(atlas="Guatemala")

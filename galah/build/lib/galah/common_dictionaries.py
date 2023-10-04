@@ -1,6 +1,5 @@
 # all available atlases
-atlases = ["Australia","Austria","Brazil","Canada","Estonia","France","Global","GBIF",
-           "Guatemala","Portugal","Sweden","Spain","United Kingdom"]
+atlases = ["Australia","Austria","Brazil","France","Global","GBIF","Spain"]
 
 # common names for each atlas
 ATLAS_COMMON_NAMES = {
@@ -34,6 +33,26 @@ ATLAS_KEYWORDS = {
     "Spain": "taxonConceptID",
     "Sweden": "guid", # was guid
     "United Kingdom": "guid",
+}
+
+ATLAS_OCCURRENCES_ERROR_MESSAGES = {
+    "Australia": "go to https://auth.ala.org.au/cas/login to register.",
+    "Austria": "go to https://auth.biodiversityatlas.at/cas/login to register.",
+    "Brazil": "email atendimento_sibbr@rnp.br to find out more information.",
+    "France": "visit https://inpn.mnhn.fr/contact/contacteznous to find out more information.",
+    "GBIF": "go to https://www.gbif.org/user/profile to register.",
+    "Global": "go to https://www.gbif.org/user/profile to register.",
+    "Spain": "go to https://auth.gbif.es/cas/login?lang=en to register."
+}
+
+ATLAS_OCCURRENCES_DOWNLOAD_ARGUMENTS = {
+    "Australia": {"finished_status": "finished","zipURL_arg": "downloadUrl","separator": ","},
+    "Austria": {"finished_status": "finished","zipURL_arg": "downloadUrl","separator": ","},
+    "Brazil": {"finished_status": "finished","zipURL_arg": "downloadUrl","separator": ","},
+    "France": {"finished_status": "finished","zipURL_arg": "downloadUrl","separator": ","},
+    "GBIF": {"finished_status": "SUCCEEDED","zipURL_arg": "downloadLink","separator": "\t"},
+    "Global": {"finished_status": "SUCCEEDED","zipURL_arg": "downloadLink","separator": "\t"},
+    "Spain": {"finished_status": "finished","zipURL_arg": "downloadUrl","separator": ","}
 }
 
 # expanding species fields

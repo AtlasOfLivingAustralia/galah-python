@@ -1,9 +1,25 @@
 Metadata-Version: 2.1
 Name: galah-python
-Version: 0.5.0
+Version: 0.6.0
 Summary: Get counts and information on species from many different atlases
 Home-page: 
 Author: Amanda Buyan
 Author-email: amanda.buyan@csiro.au
 License: MPL-2.0
 Keywords: galah
+Description-Content-Type: text/markdown
+Requires-Dist: setuptools
+Requires-Dist: numpy
+Requires-Dist: pandas
+Requires-Dist: requests
+Requires-Dist: urllib3
+Requires-Dist: zip-files
+Requires-Dist: configparser
+Requires-Dist: glob2
+Requires-Dist: bytesbufio
+Requires-Dist: shutils
+Requires-Dist: pytest
+Requires-Dist: unittest2py3k
+Requires-Dist: shapely
+
+Get counts and information on species from many different atlases

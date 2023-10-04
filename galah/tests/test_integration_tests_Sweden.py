@@ -1,5 +1,5 @@
 import galah
-
+'''
 def test_show_all_assertions_sweden():
     galah.galah_config(atlas="Sweden")
     output = galah.show_all(assertions=True)
@@ -15,12 +15,12 @@ def test_show_all_apis_sweden():
     output = galah.show_all(apis=True)
     assert output.shape[1] > 1
 
-'''
+
 def test_show_all_collection_sweden():
     galah.galah_config(atlas="Sweden")
     output = galah.show_all(collection=True)
     assert output.shape[1] > 0
-'''
+
 def test_show_all_datasets_sweden():
     galah.galah_config(atlas="Sweden")
     output = galah.show_all(datasets=True)
@@ -40,7 +40,7 @@ def test_show_all_ranks_sweden():
     galah.galah_config(atlas="Sweden")
     output = galah.show_all(ranks=True)
     assert output.shape[1] > 1
-#'''
+
 # integration test for search_taxa() - have to test get_api_url
 def test_search_taxa_sweden():
     galah.galah_config(atlas="Sweden")
@@ -93,7 +93,7 @@ def test_atlas_counts_taxa_filter_empty_sweden():
     filter1 = "year="
     assert galah.atlas_counts(taxa,filters=filter1)['totalRecords'][0] > 0
 
-'''
+
 # test atlas_counts() can call search_taxa() and using two filters with the same field, return results for a single taxa
 def test_astlas_counts_taxa_same_filter_sweden():
     galah.galah_config(atlas="Sweden")
@@ -302,7 +302,7 @@ def test_atlas_species_Sweden_family_sweden():
     taxa = "Limnodynastidae"
     species_table = galah.atlas_species(taxa=taxa)
     assert species_table.shape[0] > 0
-'''
+
 # search_all() - assertions using "AMBIGUOUS_COLLECTION"
 def test_search_all_assertions_sweden():
     galah.galah_config(atlas="Sweden")
@@ -421,7 +421,7 @@ def test_search_values_sweden():
     second_output = galah.search_values(field="basis_of_record",value="Obs")
     assert first_output.shape[0] > second_output.shape[0]
 
-'''
+
 # first test for atlas_occurrences() - check if search_taxa() is working
 def test_atlas_occurrences_taxa_sweden():
     galah.galah_config(atlas="Sweden",email="ala4r@ala.org.au")

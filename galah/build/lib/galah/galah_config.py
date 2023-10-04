@@ -8,6 +8,11 @@ import pandas as pd
 # how I did this:
 # https://www.codeproject.com/Articles/5319621/Configuration-Files-in-Python
 # run this first at installation
+'''
+ ALA_API_key = None,
+                 clientID = None,
+                 clientSecretID = None
+'''
 def galah_config(email=None,
                  email_notify=None,
                  atlas=None,
@@ -15,7 +20,8 @@ def galah_config(email=None,
                  ranks = None,
                  reason = None,
                  usernameGBIF = None,
-                 passwordGBIF = None):
+                 passwordGBIF = None,
+                ):
     """
     The galah package supports large data downloads, and also interfaces with the ALA which requires that users of some 
     services provide a registered email address and reason for downloading data. The ``galah_config()`` function provides a way 
@@ -92,6 +98,14 @@ def galah_config(email=None,
             configParser["galahSettings"]["usernameGBIF"] = usernameGBIF
         if passwordGBIF is not None:
             configParser["galahSettings"]["passwordGBIF"] = passwordGBIF
+        '''
+        if ALA_API_key is not None:
+            configParser["galahSettings"]["ALA_API_key"] = ALA_API_key
+        if clientID is not None:
+            configParser["galahSettings"]["clientID"] = clientID
+        if clientSecretID is not None:
+            configParser["galahSettings"]["clientSecretID"] = clientSecretID
+        '''
 
         # write to file
         with open(inifile,"w") as fileObject:

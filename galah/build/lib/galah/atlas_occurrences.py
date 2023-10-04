@@ -1,4 +1,10 @@
-import sys,requests,urllib.parse,time,zipfile,io,json
+import sys
+import requests
+import urllib.parse
+import time
+import zipfile
+import io
+import json
 from requests.auth import HTTPBasicAuth
 import pandas as pd
 from .atlas_counts import atlas_counts
@@ -7,8 +13,12 @@ from .galah_select import galah_select
 from .search_taxa import search_taxa
 from .get_api_url import get_api_url, readConfig
 from .apply_data_profile import apply_data_profile
-from .common_dictionaries import ATLAS_KEYWORDS,ATLAS_SELECTIONS, atlases
-from .common_functions import add_filters,add_predicates
+from .galah_geolocate import galah_geolocate
+from .common_dictionaries import ATLAS_KEYWORDS,ATLAS_SELECTIONS, atlases, ATLAS_OCCURRENCES_ERROR_MESSAGES
+from .common_dictionaries import ATLAS_OCCURRENCES_DOWNLOAD_ARGUMENTS
+from .common_functions import add_filters,add_predicates,add_to_payload_ALA
+from .show_all import show_all
+from .generate_jwt_token import generate_token_config,get_jwt_token
 
 def atlas_occurrences(taxa=None,
                       filters=None,
@@ -18,7 +28,9 @@ def atlas_occurrences(taxa=None,
                       assertions=None,
                       use_data_profile=False,
                       species_list=False,
-                      status_accepted=True
+                      status_accepted=True,
+                      polygon=None,
+                      bbox=None
                       ):
     """
     The most common form of data stored by living atlases are observations of individual life forms, known as 'occurrences'. 
@@ -59,7 +71,11 @@ def atlas_occurrences(taxa=None,
             Denotes whether or not you want a species list for GBIF.  Default to ``False``.  For species lists, refer to ``atlas_species``
         status_accepted : logical
             Denotes whether or not you want only accepted taxonomic ranks for GBIF.  Default to ``True``.  For species lists, refer to ``atlas_species``
-    
+        polygon : shapely Polygon
+            A polygon shape denoting a geographical region.  Defaults to ``None``.
+        bbox : dict or shapely Polygon
+            A polygon or dictionary type denoting four points, which are the corners of a geographical region.  Defaults to ``None``.
+            
     Returns
     -------
         An object of class ``pandas.DataFrame``.
@@ -75,7 +91,7 @@ def atlas_occurrences(taxa=None,
         galah.galah_config(atlas="Australia",email="your-email@example.com")
         galah.atlas_occurrences(taxa="Vulpes vulpes",filters="year=2023")
 
-    .. program-output:: python -c "import galah; galah.galah_config(atlas=\\\"Australia\\\",email=\\\"amanda.buyan@csiro.au\\\");print(galah.atlas_occurrences(taxa=\\\"Vulpes vulpes\\\",filters=\\\"year=2023\\\"))"
+    .. program-output:: python -c "import galah; import pandas as pd;pd.set_option('display.max_columns', None);galah.galah_config(atlas=\\\"Australia\\\",email=\\\"amanda.buyan@csiro.au\\\");print(galah.atlas_occurrences(taxa=\\\"Vulpes vulpes\\\",filters=\\\"year=2023\\\"))"
     
     Download records of Vulpes vulpes in 2023, returning only ``eventDate`` field
 
@@ -85,7 +101,7 @@ def atlas_occurrences(taxa=None,
         galah.galah_config(atlas="Australia",email="your-email@example.com")
         galah.atlas_occurrences(taxa="Vulpes vulpes",filters="year=2023",fields="eventDate")
 
-    .. program-output:: python -c "import galah; galah.galah_config(atlas=\\\"Australia\\\",email=\\\"amanda.buyan@csiro.au\\\"); print(galah.atlas_occurrences(taxa=\\\"Vulpes vulpes\\\",filters=\\\"year=2023\\\",fields=\\\"eventDate\\\"))"
+    .. program-output:: python -c "import galah; import pandas as pd;pd.set_option('display.max_columns', None);galah.galah_config(atlas=\\\"Australia\\\",email=\\\"amanda.buyan@csiro.au\\\"); print(galah.atlas_occurrences(taxa=\\\"Vulpes vulpes\\\",filters=\\\"year=2023\\\",fields=\\\"eventDate\\\"))"
 
     """
 
@@ -95,15 +111,32 @@ def atlas_occurrences(taxa=None,
     # get atlas
     atlas = configs['galahSettings']['atlas']
 
+    # check for email
     if configs["galahSettings"]["email"] is None:
         raise ValueError("Please provide an email for querying")
 
-    # test to check if ALA is working
-    requestURL = "{}?pageSize=0".format(get_api_url(column1='called_by',column1value='atlas_counts',column2="api_name",
-                                                    column2value="records_counts"))
+    headers = {}
 
-    # check if the ALA is working - if not, let the user know
-    response = requests.get(requestURL)
+    payload = {}
+
+    # add API key for ALA
+    #if atlas in ["Australia","ALA"]:
+    #    headers = {"x-api-key": configs["galahSettings"]["ALA_API_key"]}
+    #else:
+    #    headers = {}
+
+    # create authentication key
+    if atlas in ["Global","GBIF"]:
+        authentication = HTTPBasicAuth(configs['galahSettings']['usernameGBIF'],configs['galahSettings']['passwordGBIF'])
+    else:
+        authentication = None
+
+    # test to check if atlas is working
+    requestURL,method = get_api_url(column1='called_by',column1value='atlas_counts',column2="api_name",column2value="records_counts")
+    requestURL += "?pageSize=0"
+
+    # check if the atlas is working - if not, let the user know
+    response = requests.request(method,requestURL,headers=headers)
     try:
         response.raise_for_status()
         if test:
@@ -114,31 +147,7 @@ def atlas_occurrences(taxa=None,
         sys.exit()
 
     # get base URL
-    if use_data_profile and atlas == "Australia":
-        baseURL = apply_data_profile("{}".format(get_api_url(column1='called_by', column1value='atlas_occurrences',
-                                                              column2='api_name',column2value='records_occurrences',
-                                                              add_email=True)))
-    elif not use_data_profile:
-        # check for these atlases
-        if atlas in ["Australia","Austria","Brazil","France","Guatemala","Spain","Sweden","United Kingdom"]:
-            baseURL = "{}disableAllQualityfilters=true&".format(get_api_url(column1='called_by', column1value='atlas_occurrences',
-                                                                 column2='api_name', column2value='records_occurrences',
-                                                                 add_email=True))
-        elif atlas in ["Estonia"]:
-            baseURL = "{}&".format(get_api_url(column1='called_by',column1value='atlas_occurrences',
-                                               column2='api_name',column2value='records',add_email=False))
-        elif atlas in ["Global","GBIF"]:
-            URL = "{}".format(get_api_url(column1='called_by',column1value='atlas_occurrences',
-                                    column2='api_name',column2value='records',add_email=False))
-        elif atlas in ["Portugal"]:
-            baseURL = "{}disableAllQualityfilters=true&".format(get_api_url(column1='called_by',
-                                                                                column1value='atlas_occurrences',
-                                                                                column2='api_name',
-                                                                                column2value='records_query',
-                                                                                add_email=True))
-        else:
-            raise ValueError("Atlas {} not taken into account".format(atlas))
-    else:
+    if use_data_profile and atlas not in ["Australia","ALA"]:
         raise ValueError("True and False are the only values accepted for data_profile, and the only atlas using a data \n"
                          "quality profile is Australia.  Your atlas and data profile is \n"
                          "set in your config file.  To set your default filter, find out what profiles are on offer:\n"
@@ -150,13 +159,40 @@ def atlas_occurrences(taxa=None,
                          "If you don't want to use a data quality profile, set it to None by typing the following:\n\n"
                          "galah.galah_config(data_profile=\"None\")"
                          )
+    else:
+        # check for these atlases first
+        if atlas in ["Australia","Austria","Brazil","France","Spain"]:
+            baseURL, method = get_api_url(column1='called_by', column1value='atlas_occurrences',column2='api_name', 
+                                          column2value='records_occurrences',add_email=True)
+        elif atlas in ["Global","GBIF"]:
+            URL,method = get_api_url(column1='called_by',column1value='atlas_occurrences',
+                                    column2='api_name',column2value='records',add_email=False)
+        else:
+            raise ValueError("Atlas {} not taken into account".format(atlas))       
+
+    # Ensure headers are taken care of
+    #if atlas in ["Australia","ALA"]:
+    #    headers = {"x-api-key": configs["galahSettings"]["ALA_API_key"]}
+    if atlas in ["GBIF","Global"]:
+        headers = {
+            "User-Agent": "galah-python v0.5.0", #.format(VERSION HERE)
+            "X-USER-AGENT": "galah-python v0.5.0",
+            "Content-type": "application/json",
+            "Accept": "application/json",
+        }
+    else:
+        headers = {}
 
     # goes to the 'fields' argument in occurrence download (csv list, commas between)
     if fields is not None and atlas not in ["Global","GBIF"]:
-        if fields != "all":
-            baseURL += galah_select(select=fields)[:-3] + "&"
-    elif atlas in ["Australia","Austria","Brazil","France","Spain"]:
-        baseURL += galah_select(select=ATLAS_SELECTIONS[atlas])[:-3] + "&"
+        if fields != "basic":
+            baseURL += galah_select(select=fields,atlas=atlas)[:-3] + "&"
+        else:
+            baseURL += galah_select(select=ATLAS_SELECTIONS[atlas],atlas=atlas)[:-3] + "&"
+    elif atlas in ["Australia"]:
+        pass
+    elif atlas in ["Austria","Brazil","France","Spain"]:
+        baseURL += galah_select(select=ATLAS_SELECTIONS[atlas],atlas=atlas)[:-3] + "&"
     elif fields is not None and atlas in ["Global","GBIF"]:
         print("GBIF, unfortunately, does not support choosing your desired data fields before download.  You will have to download them and then get categories you want.")
     elif atlas in ["Global","GBIF"]:
@@ -164,191 +200,95 @@ def atlas_occurrences(taxa=None,
     else:
         raise ValueError("We currently cannot get occurrences from the {} atlas.".format(atlas))
 
-    # create headers for GBIF
-    # did have username and notification thing here
-    headers = {
-        "User-Agent": "galah-python v0.1.0",
-        "X-USER-AGENT": "galah-python v0.1.0",
-        "Content-type": "application/json",
-        "Accept": "application/json",
-    }
-
-    # try this
+    # GBIF takes predicates - initialise variable in case GBIF is their desired atlas
     predicates = []
 
-    # check if taxa is specified
-    if taxa is not None:
-
-        # check variable type
-        if type(taxa) == list or type(taxa) is str:
-
-            # make taxa a list for easier looping
-            if type(taxa) is str:
-                taxa=[taxa]
-
-            # get the taxonConceptID for taxa - first check for extant atlas
-            if atlas in atlases:
-                taxonConceptID = list(search_taxa(taxa)[ATLAS_KEYWORDS[atlas]])
+    if atlas in ["Australia","ALA"]:
+        
+        # check for assertions and lump them with filters, as filters takes care of these
+        if filters is not None and assertions is not None:
+            if type(assertions) is list:
+                filters += assertions
             else:
-                raise ValueError("Atlas {} is not taken into account".format(atlas))
+                filters.append(assertions)
+        elif filters is None and assertions is not None:
+            filters=assertions
 
-            # generate the desired URL and get a response from the API - add taxonConceptIDs to the URL
-            if atlas in ["Global","GBIF"]:
-                for tid in taxonConceptID:
-                    predicates.append({"type":"equals","key":"TAXON_KEY","value":str(tid)})
-            else:
-                URL = baseURL + "&fq=%28lsid%3A" + "%20OR%20lsid%3A".join(
-                    urllib.parse.quote(str(tid)) for tid in taxonConceptID) + "%29"
+        # create payload
+        payload = add_to_payload_ALA(payload=payload,atlas=atlas,taxa=taxa,filters=filters,polygon=polygon,bbox=bbox)
+        
+        # create the query id
+        qid_URL, method2 = get_api_url(column1="api_name",column1value="occurrences_qid")
+        qid = requests.request(method2,qid_URL,data=payload)
+        
+        # create the URL to grab your queryID and counts
+        if use_data_profile:
+            data_profile_list = list(show_all(profiles=True)['shortName'])
+            baseURL = apply_data_profile(baseURL=baseURL,data_profile_list=data_profile_list)   
 
-            # check what type of variable filters is; handle accordingly
-            if filters is not None:
+        # Add qa=None to not get any assertions 
+        URL = baseURL + "fq=%28qid%3A" + qid.text + "%29&qa=none&flimit=-1"
 
-                if type(filters) is list or type(filters) is str:
+        if verbose:
+            print()
+            print("payload for queryID: {}".format(payload))
+            print("queryID URL: {}".format(qid_URL))
+            print("method: {}".format(method2))
+            print()
+            print("qid for query: {}".format(qid.text))
+            print("URL for result:{}".format(URL))
+            print("method: {}".format(method))
+            print()
+
+        # get data
+        response = requests.request(method,URL,headers=headers)      
+
+    else:
+
+        # check if taxa is specified
+        if taxa is not None:
+
+            # check variable type
+            if type(taxa) == list or type(taxa) is str:
+
+                # make taxa a list for easier looping
+                if type(taxa) is str:
+                    taxa=[taxa]
+
+                # get the taxonConceptID for taxa - first check for extant atlas
+                if atlas in atlases:
+                    taxonConceptID = list(search_taxa(taxa)[ATLAS_KEYWORDS[atlas]])
+                else:
+                    raise ValueError("Atlas {} is not taken into account".format(atlas))
+
+                # generate the desired URL and get a response from the API - add taxonConceptIDs to the URL
+                if atlas in ["Global","GBIF"]:
+                    for tid in taxonConceptID:
+                        predicates.append({"type":"equals","key":"TAXON_KEY","value":str(tid)})
+                else:
+                    # remove & before fq
+                    URL = baseURL + "fq=%28lsid%3A" + "%20OR%20lsid%3A".join(
+                        urllib.parse.quote(str(tid)) for tid in taxonConceptID) + "%29"
                 
-                    # try this out
-                    if atlas in ["Global","GBIF"] and ("!=" in filters or "=!" in filters):
-                        raise ValueError("The current iteration of GBIF and galah does not support != as an option.")
-                    elif atlas in ["Global","GBIF"]:
-                        predicates = add_predicates(predicates=predicates,filters=filters)
-                    else:
+            # else, the user needs to specify the taxa in the correct format
+            else:
+                raise TypeError("The taxa argument can only be a string or a list."
+                            "\nExample: taxa.taxa(\"Vulpes vulpes\")"
+                            "\n         taxa.taxa([\"Osphranter rufus\",\"Vulpes vulpes\",\"Macropus giganteus\",\"Phascolarctos cinereus\"])")
+        
+        if filters is not None:
+
+            if type(filters) is str or type(filters) is list:
+                if atlas in ["Global","GBIF"] and ("!=" in filters or "=!" in filters):
+                    raise ValueError("The current iteration of GBIF and galah does not support != as an option.")
+                elif atlas in ["Global","GBIF"]:
+                    predicates = add_predicates(predicates=predicates,filters=filters)
+                else:
+                    if taxa is not None:
                         URL += "%20AND%20"
-                        URL = add_filters(URL=URL,atlas=atlas,filters=filters)
-
-            # take care of assertions
-            if assertions is not None:
-
-                # check type
-                if type(assertions) is list or type(assertions) is str:
-
-                    # check for GBIF
-                    if atlas in ["Global","GBIF"]:
-                        predicates = add_predicates(predicates=predicates,filters=filters)
-                    else:
-                        URL = add_filters(URL=URL,atlas=atlas,filters=assertions)
-
-                else:
-                    raise ValueError("Assertions needs to be a string or a list of strings, i.e. identificationIncorrect == TRUE")
-            
-            # add final part of URL
-            if atlas not in ["Global","GBIF"]:
-                URL += "&qa=none&"
-
-            if verbose:
-                print("URL for querying:\n\n{}\n".format(URL))
-
-            # authentication
-            if atlas in ["Global","GBIF"]:
-                # create authentication key
-                authentication = HTTPBasicAuth(configs['galahSettings']['usernameGBIF'],configs['galahSettings']['passwordGBIF'])
-                # create payload
-                if species_list:
-                    format="SPECIES_LIST"
-                    if status_accepted:
-                        predicates.append({"type": "equals","key":"TAXONOMIC_STATUS","value":"ACCEPTED"})
-                else:
-                    format="SIMPLE_CSV"
-                payload = json.dumps({
-                    "creator": configs['galahSettings']['usernameGBIF'], # username
-                    "notificationAddresses": [configs['galahSettings']['email']], # change from hard-coded
-                    "sendNotification": "false",
-                    "format": format,
-                    "predicate": {
-                        "type": "and",
-                        "predicates": predicates
-                    }
-                })
-
-                # check to see if user wants the query URL
-                if verbose:
-                    print("URL for querying:\n\n{}\n".format(URL))
-                    print("payload: \n\n{}\n".format(payload))
-                # check counts
-                counts = atlas_counts(taxa,filters=filters)
-                if not species_list:
-                    print("total records for occurrences: {}".format(counts['totalRecords'][0]))
-                    if int(counts['totalRecords'][0]) > 101000:
-                        raise ValueError("Your data request of {} is too large. \nThe maximum number of requests is 101,000.\nPlease filter your data and use atlas_counts() to get the counts to a reasonable number.".format(counts['totalRecords'][0]))
-                # get response
-                response = requests.post(URL,headers=headers,auth=authentication,data=payload)
+                    URL = add_filters(URL=URL,atlas=atlas,filters=filters)
             else:
-                response = requests.get(URL)
-
-            # get job number
-            job_number = response.text
-
-            # query the api
-            if response.status_code == 403:
-                if atlas == "Australia":
-                    raise ValueError("It appears that you are not registered as a user on the Australian atlas.  Please go to https://auth.ala.org.au/cas/login to register.")
-                if atlas == "Brazil":
-                    raise ValueError("It appears that you are not registered as a user on the Brazilian atlas.  Please email atendimento_sibbr@rnp.br to find out more information.")
-                if atlas == "France":
-                    raise ValueError("It appears that you are not registered as a user on the French atlas.  Please email ??? to find out more information.")
-                if atlas == "GBIF":
-                    raise ValueError("It appears that you are not registered as a user on the GBIF Global atlas.  Please go to https://www.gbif.org/user/profile to register.")
-                if atlas == "Spain":
-                    raise ValueError("It appears that you are not registered as a user on the Spanish atlas.  Please go to https://auth.gbif.es/cas/login?lang=en to register.")
-            if atlas not in ["GBIF","Global"]:
-                if response.json()['status'] == "skipped":
-                    raise ValueError(response.json()["error"])
-
-            # this may take a while - occasionally check if status has changed
-            if atlas in ["Global","GBIF"]:
-                downloadURL = URL.replace("request",job_number)
-                # check to see if the user wants the zip URL
-                if verbose:
-                    print("URL for download:\n\n{}\n".format(downloadURL))
-                response_download = requests.get(downloadURL,headers=headers,auth=authentication)
-                while response_download.json()["status"] != "SUCCEEDED":
-                    time.sleep(5)
-                    response_download = requests.get(downloadURL,headers=headers,auth=authentication)
-                zipURL = response_download.json()["downloadLink"]
-
-                # check to see if the user wants the zip URL
-                if verbose:
-                    print("Data for download:\n\n{}\n".format(zipURL))
-
-                # return dataFrame
-                data = requests.get(zipURL)
-                return pd.read_csv(zipfile.ZipFile(io.BytesIO(data.content)).open('{}.csv'.format(job_number)),sep='\t',low_memory=False)    
-            
-            else:
-                statusURL = requests.get(response.json()['statusUrl'])
-                while statusURL.json()['status'] == 'inQueue':
-                    time.sleep(5)
-                    statusURL = requests.get(response.json()['statusUrl'])
-                while statusURL.json()['status'] == 'running':
-                    time.sleep(5)
-                    statusURL = requests.get(response.json()['statusUrl'])
-                zipURL = statusURL.json()['downloadUrl']
-                data = requests.get(zipURL)
-
-                # check to see if the user wants the zip URL
-                if verbose:
-                    print("Data for download:\n\n{}\n".format(zipURL))
-
-                # return dataFrame
-                return pd.read_csv(zipfile.ZipFile(io.BytesIO(data.content)).open('data.csv'),low_memory=False)
-
-        # else, the user needs to specify the taxa in the correct format
-        else:
-            raise TypeError("The taxa argument can only be a string or a list."
-                        "\nExample: taxa.taxa(\"Vulpes vulpes\")"
-                        "\n         taxa.taxa([\"Osphranter rufus\",\"Vulpes vulpes\",\"Macropus giganteus\",\"Phascolarctos cinereus\"])")
-    
-    elif filters is not None:
-
-        if type(filters) is str or type(filters) is list:
-            if atlas in ["Global","GBIF"] and ("!=" in filters or "=!" in filters):
-                raise ValueError("The current iteration of GBIF and galah does not support != as an option.")
-            elif atlas in ["Global","GBIF"]:
-                predicates = add_predicates(predicates=predicates,filters=filters)
-            else:
-                # start URL
-                URL += "&fq=%28"
-                URL = add_filters(URL=URL,atlas=atlas,filters=filters)
-        else:
-            raise ValueError("The filters argument needs to be either a string or a list")
+                raise ValueError("The filters argument needs to be either a string or a list")
 
         # take care of assertions
         if assertions is not None:
@@ -365,24 +305,30 @@ def atlas_occurrences(taxa=None,
                         URL = URL[:-len("%20AND%20")] + "%29&qa=none&"
             else:
                 raise ValueError("Assertions needs to be a string or a list of strings, i.e. identificationIncorrect == TRUE")
+        
+        if polygon is not None or bbox is not None:
+            URL += "&" + galah_geolocate(polygon=polygon,bbox=bbox)
 
-        # check to see if user wants the query URL
-        if verbose:
-            print("URL for querying:\n\n{}\n".format(URL))
+        # raise error if user hasn't specified any type of filters
+        if taxa is None and filters is None and assertions is None:
+            raise Exception('You cannot get all records for the {} atlas.  Please specify at least one taxa and/or filters to get occurrence records associated with the taxa.'.format(atlas))
+        
+        # add final part of URL
+        if atlas not in ["Global","GBIF"]:
+            URL += "&qa=none&"
 
-        # query the api
-        # authentication
+        # download the file after you get the URL
         if atlas in ["Global","GBIF"]:
-            # create authentication key
-            authentication = HTTPBasicAuth(configs['galahSettings']['usernameGBIF'],configs['galahSettings']['passwordGBIF'])
-                
-            # create payload
+
+            # check if user wants species list
             if species_list:
                 format="SPECIES_LIST"
                 if status_accepted:
                     predicates.append({"type": "equals","key":"TAXONOMIC_STATUS","value":"ACCEPTED"})
-                else:
-                    format="SIMPLE_CSV"
+            else:
+                format="SIMPLE_CSV"
+
+            # create payload
             payload = json.dumps({
                 "creator": configs['galahSettings']['usernameGBIF'], # username
                 "notificationAddresses": [configs['galahSettings']['email']], # change from hard-coded
@@ -398,67 +344,76 @@ def atlas_occurrences(taxa=None,
             if verbose:
                 print("URL for querying:\n\n{}\n".format(URL))
                 print("payload: \n\n{}\n".format(payload))
-            
+
             # check counts
             counts = atlas_counts(taxa,filters=filters)
             if not species_list:
-                print("total records for occurrences: {}".format(counts['totalRecords'][0]))
+                print("total records for occurrences: {}\n".format(counts['totalRecords'][0]))
                 if int(counts['totalRecords'][0]) > 101000:
                     raise ValueError("Your data request of {} is too large. \nThe maximum number of requests is 101,000.\nPlease filter your data and use atlas_counts() to get the counts to a reasonable number.".format(counts['totalRecords'][0]))
+            
             # get response
-            response = requests.post(URL,headers=headers,auth=authentication,data=payload)
+            response = requests.request(method,URL,headers=headers,auth=authentication,data=payload)
             
-            # get job number
-            job_number = response.text
+        # else, get response from other APIs
+        else:
 
-            # get download URL
-            downloadURL = URL.replace("request",job_number)
-            # check to see if the user wants the zip URL
+            # check to see if user wants the query URL
             if verbose:
-                print("URL for download:\n\n{}\n".format(downloadURL))
-            response_download = requests.get(downloadURL,headers=headers,auth=authentication)
-            while response_download.json()["status"] != "SUCCEEDED":
-                time.sleep(5)
-                response_download = requests.get(downloadURL,headers=headers,auth=authentication)
-            zipURL = response_download.json()["downloadLink"]
+                print("\nURL being queried:\n\n{}\n".format(URL))
 
-            # check to see if the user wants the zip URL
-            if verbose:
-                print("Data for download:\n\n{}\n".format(zipURL))
+            response = requests.request(method,URL,headers=headers)
 
-            # return dataFrame
-            data = requests.get(zipURL)
-            return pd.read_csv(zipfile.ZipFile(io.BytesIO(data.content)).open('{}.csv'.format(job_number)),sep='\t',low_memory=False)    
-            
-        else:    
-            response = requests.get(URL)
+    # query the api
+    if response.status_code == 403:
+        raise ValueError("It appears that you are not registered as a user on the {} atlas.  Please {}".format(
+            atlas,
+            ATLAS_OCCURRENCES_ERROR_MESSAGES[atlas]
+        ))
+    
+    # raise an error if user has exceeded the limit of number of daily queries
+    if response.status_code == 429:
+        raise ValueError("You have reached the maximum number of daily queries for the ALA.")
+    
+    # # if we get an error, raise one
+    # if atlas not in ["GBIF","Global"]:
+    #     if response.status_code == 403:
+    #         raise ValueError(response.json()["error"])
 
-            # if response.status_code == 403:
-            #     # TODO: write more exceptions to make sure contact details are ok
-            #     if atlas == "Brazil":
-            #         raise ValueError("It appears that you are not registered as a user on the Brazilian atlas.  Please email atendimento_sibbr@rnp.br to find out more information.")
-            #     if atlas == "Spain":
-            #         raise ValueError("It appears that you are not registered as a user on the Spanish atlas.  Please go to https://auth.gbif.es/cas/login?lang=en to register.")
-            # if response.json()['status'] == "skipped":
-            #     raise ValueError(response.json()["error"])
+    # this may take a while - occasionally check if status has changed
+    if atlas in ["Global","GBIF"]:
 
-            statusURL = requests.get(response.json()['statusUrl'])
-            while statusURL.json()['status'] == 'inQueue':
-                time.sleep(5)
-                statusURL = requests.get(response.json()['statusUrl'])
-            while statusURL.json()['status'] == 'running':
-                time.sleep(5)
-                statusURL = requests.get(response.json()['statusUrl'])
-            zipURL = requests.get(statusURL.json()['downloadUrl'])
+        # get job number
+        job_number = response.text
 
-            # check to see if the user wants the zip URL
-            if verbose:
-                print("Data for download:\n\n{}\n".format(statusURL.json()['downloadUrl']))
-
-            # return dataFrame
-            return pd.read_csv(zipfile.ZipFile(io.BytesIO(zipURL.content)).open('data.csv'),low_memory=False)
+        # make the download url
+        statusURL = URL.replace("request",job_number)
 
     else:
-        raise Exception('You cannot get all 10 million records for the ALA.  Please specify at least one taxa and/or '
-                        'filters to get occurrence records associated with the taxa.')
 
+        statusURL = response.json()['statusUrl']
+
+    # check status of download
+    response_download = requests.get(statusURL,headers=headers,auth=authentication)
+    while response_download.json()["status"] != ATLAS_OCCURRENCES_DOWNLOAD_ARGUMENTS[atlas]["finished_status"]:
+        time.sleep(5)
+        response_download = requests.get(statusURL,headers=headers,auth=authentication)
+    zipURL = response_download.json()[ATLAS_OCCURRENCES_DOWNLOAD_ARGUMENTS[atlas]["zipURL_arg"]]
+
+    # check to see if the user wants the zip URL
+    if verbose:
+        print("Data for download:\n\n{}\n".format(zipURL))
+
+    # return dataFrame
+    data = requests.get(zipURL,headers=headers)
+
+    # check filename
+    if atlas in ["Global","GBIF"]:
+        filename = '{}.csv'.format(job_number)
+    else:
+        filename = 'data.csv'
+
+    # return dataframe
+    return pd.read_csv(zipfile.ZipFile(io.BytesIO(data.content))
+                        .open(filename),sep=ATLAS_OCCURRENCES_DOWNLOAD_ARGUMENTS[atlas]["separator"],
+                        low_memory=False)

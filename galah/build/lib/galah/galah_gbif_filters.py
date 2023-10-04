@@ -9,7 +9,7 @@ def get_table_from_html(url,chosen_title,column_titles):
     soup = BeautifulSoup(response.text,'html.parser')
 
     # find the title of table and get title
-    table_titles = soup.select('h3')
+    table_titles = soup.find_all('h3')
     for i,title in enumerate(table_titles):
         if title.text == chosen_title:
             index=i

@@ -4,15 +4,20 @@ import pandas as pd
 from .search_taxa import search_taxa
 from .get_api_url import get_api_url,readConfig
 from .atlas_occurrences import atlas_occurrences
+from .apply_data_profile import apply_data_profile
 from .common_dictionaries import ATLAS_KEYWORDS,ATLAS_SPECIES_FIELDS,atlases
-from .common_functions import add_filters
+from .common_functions import add_filters,add_to_payload_ALA
+from .show_all import show_all
 
 # this function looks for all species with the associated name
 def atlas_species(taxa=None,
                   rank="species",
                   filters=None,
                   verbose=False,
-                  status_accepted=True):
+                  status_accepted=True,
+                  use_data_profile=False,
+                  polygon=None,
+                  bbox=None):
     """
     While there are reasons why users may need to check every record meeting their search criteria (i.e. using ``galah.atlas_occurrences()``), 
     a common use case is to simply identify which species occur in a specified region, time period, or taxonomic group. 
@@ -30,6 +35,11 @@ def atlas_species(taxa=None,
             If ``True``, galah gives you the URLs used to query all the data.  Default to ``False``.
         status_accepted : logical
             If ``True``, galah gives you only the accepted taxonomic ranks. Default is ``False``.  **FOR GBIF ONLY
+        polygon : shapely Polygon
+            A polygon shape denoting a geographical region.  Defaults to ``None``.
+        bbox : dict or shapely Polygon
+            A polygon or dictionary type denoting four points, which are the corners of a geographical region.  Defaults to ``None``.
+
 
     Returns
     -------
@@ -42,7 +52,7 @@ def atlas_species(taxa=None,
 
         galah.atlas_species(taxa="Heleioporus")
 
-    .. program-output:: python -c "import galah; print(galah.atlas_species(taxa=\\\"Heleioporus\\\"))"
+    .. program-output:: python -c "import galah; import pandas as pd;pd.set_option('display.max_columns', None);print(galah.atlas_species(taxa=\\\"Heleioporus\\\"))"
     """
 
     # get configs
@@ -50,6 +60,15 @@ def atlas_species(taxa=None,
 
     # get atlas
     atlas = configs['galahSettings']['atlas'] 
+
+    headers = {}
+
+    payload = {}
+
+    #if atlas in ["Australia","ALA"]:
+    #    headers = {"x-api-key": configs["galahSettings"]["ALA_API_key"]}
+    #else:
+    #    headers = {}
 
     # first, check if the user has specified a taxa and if it is of the right variable type
     if type(taxa) is not str and type(taxa) is not list and taxa is not None:
@@ -64,9 +83,9 @@ def atlas_species(taxa=None,
     
     # get initial url
     if atlas not in ["Global","GBIF"]:
-        baseURL = get_api_url(column1='api_name', column1value='records_species')
+        baseURL,method = get_api_url(column1='api_name', column1value='records_species')
     else:
-        baseURL = get_api_url(column1='api_name', column1value='records_occurrences')
+        baseURL,method = get_api_url(column1='api_name', column1value='records_occurrences')
 
     # raise warning - not sure how to fix it
     if atlas in ["Spain"]:
@@ -74,8 +93,45 @@ def atlas_species(taxa=None,
     if atlas in ["Sweden"]:
         print("There have been some issues getting taxonomy from the Swedish atlas, as they don't store names of taxon higher than species.")
 
+    if atlas in ["Australia","ALA"]:
+        
+        payload = add_to_payload_ALA(payload=payload,atlas=atlas,taxa=taxa,filters=filters,polygon=polygon,bbox=bbox)
+
+        # create the query id
+        qid_URL, method2 = get_api_url(column1="api_name",column1value="occurrences_qid")
+        qid = requests.request(method2,qid_URL,data=payload)
+        
+        # create the URL to grab the species ID and lists
+        if use_data_profile:
+            data_profile_list = list(show_all(profiles=True)['shortName'])
+            baseURL = apply_data_profile(baseURL=baseURL,use_data_profile=use_data_profile,data_profile_list=data_profile_list)
+            URL = baseURL + "fq=%28qid%3A" + qid.text + "%29&facets={}&lookup=True".format(rankID)
+        else:
+            URL = baseURL + "?fq=%28qid%3A" + qid.text + "%29&facets={}&lookup=True".format(rankID)
+
+        if verbose:
+            print()
+            print("payload for queryID: {}".format(payload))
+            print("queryID URL: {}".format(qid_URL))
+            print("method: {}".format(method2))
+            print()
+            print("qid for query: {}".format(qid.text))
+            print("URL for result:{}".format(URL))
+            print("method: {}".format(method))
+            print()
+
+        # get data
+        response = requests.request(method,URL,headers=headers)
+
+        # check for daily maximum
+        if response.status_code == 429:
+            raise ValueError("You have reached the maximum number of daily queries for the ALA.")
+        
+        # return data as pandas dataframe
+        return pd.read_csv(io.StringIO(response.text))
+
     # get the taxonConceptID for taxa
-    if atlas in ["Australia","Austria","Brazil","France","Guatemala","Spain","Sweden"]:
+    elif atlas in ["Austria","Brazil","France","Guatemala","Spain","Sweden"]:
 
         # if there is no taxa, just add question mark
         if taxa is None:
@@ -126,10 +182,16 @@ def atlas_species(taxa=None,
 
         # check to see if user wants the query URL
         if verbose:
-            print("URL for querying:\n\n{}\n".format(URL))
+            print("\nURL being queried:\n\n{}\n".format(URL))
 
-        # get url and transform from a text string to a list
-        response = requests.get(URL)
+        # get response from url
+        response = requests.request(method,URL,headers=headers)
+
+        # check response first to see if user has hit maximum number of queries
+        if response.status_code == 429:
+            raise ValueError("You have reached the maximum number of daily queries for the ALA.")
+        
+        # return data as pandas dataframe
         return pd.read_csv(io.StringIO(response.text))
         
     # GBIF is treated differently, as it gives us a species list

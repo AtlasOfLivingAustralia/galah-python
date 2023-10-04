@@ -54,7 +54,7 @@ def search_taxa(taxa=None,
         import galah
         galah.search_taxa(identifiers="https://id.biodiversity.org.au/node/apni/2914510")
 
-    .. program-output:: python -c "import galah; print(galah.search_taxa(identifiers=\\\"https://id.biodiversity.org.au/node/apni/2914510\\\"))"
+    .. program-output:: python -c "import galah; import pandas as pd;pd.set_option('display.max_columns', None);print(galah.search_taxa(identifiers=\\\"https://id.biodiversity.org.au/node/apni/2914510\\\"))"
 
     Search taxonomic levels by using the key word "specificEpithet"
 
@@ -63,7 +63,7 @@ def search_taxa(taxa=None,
         import galah
         galah.search_taxa(specific_epithet=["class=aves","family=pardalotidae","genus=pardalotus","specificEpithet=punctatus"])
 
-    .. program-output:: python -c "import galah; print(galah.search_taxa(specific_epithet=[\\\"class=aves\\\",\\\"family=pardalotidae\\\",\\\"genus=pardalotus\\\",\\\"specificEpithet=punctatus\\\"]))"
+    .. program-output:: python -c "import galah; import pandas as pd;pd.set_option('display.max_columns', None);print(galah.search_taxa(specific_epithet=[\\\"class=aves\\\",\\\"family=pardalotidae\\\",\\\"genus=pardalotus\\\",\\\"specificEpithet=punctatus\\\"]))"
     
     Search taxonomic levels by using the key word "scientificName"
 
@@ -72,11 +72,19 @@ def search_taxa(taxa=None,
         import galah
         galah.search_taxa(scientific_name=scientific_ name={"family": ["pardalotidae","maluridae"],"scientificName": ["pardolatus striatus","malurus cyaneus"]})
 
-    .. program-output:: python -c "import galah; print(galah.search_taxa(scientific_name={\\\"family\\\": [\\\"pardalotidae\\\",\\\"maluridae\\\"],\\\"scientificName\\\": [\\\"pardolatus striatus\\\",\\\"malurus cyaneus\\\"]}))"
+    .. program-output:: python -c "import galah; import pandas as pd;pd.set_option('display.max_columns', None);print(galah.search_taxa(scientific_name={\\\"family\\\": [\\\"pardalotidae\\\",\\\"maluridae\\\"],\\\"scientificName\\\": [\\\"pardolatus striatus\\\",\\\"malurus cyaneus\\\"]}))"
     """
 
     # get configuration
     configs = readConfig()
+
+    headers = {}
+
+    # get headers for ALA
+    #if configs['galahSettings']['atlas'] == "Australia":
+    #    headers = {"x-api-key": configs["galahSettings"]["ALA_API_key"]}
+    #else:
+    #    headers = {}
 
     # get atlas
     atlas = configs['galahSettings']['atlas']
@@ -89,29 +97,35 @@ def search_taxa(taxa=None,
 
             # check for specific epithet
             if specific_epithet is not None:
-                
+
                 # if keyword is not correct, raise error
                 if not any("specificEpithet" in se for se in specific_epithet):
                     raise ValueError("you need to include a search term titled \"specificEpithet\"")
                 
                 # if keyword correct, add to URL
                 else:
-                    baseURL = get_api_url(column1='called_by',column1value='search_taxa',column2='api_name',column2value='names_search_multiple')
+                    baseURL,method = get_api_url(column1='called_by',column1value='search_taxa',column2='api_name',column2value='names_search_multiple')
                     URL = baseURL + "?" + "&".join(specific_epithet)        
             
             # check for identifiers from user
             elif identifiers is not None:
-                baseURL = get_api_url(column1='called_by',column1value='search_identifiers',column2='api_name',column2value='names_lookup')
+                baseURL, method = get_api_url(column1='called_by',column1value='search_identifiers',column2='api_name',column2value='names_lookup')
                 URL = baseURL + "?taxonID=" + urllib.parse.quote(identifiers)
-            
+                
             # else, something wasn't put into the argyments correctly
             else:
                 raise ValueError("Something isn't right with identifiers or specific_epithet:\nidentifiers: {}\nspecific_epithet: {}\n".format(identifiers,specific_epithet))
         else:
             raise ValueError("identifiers and specific_epithet are only available for the Australian atlas.")
         
+        # check to see if the user wants the querying URL
+        if verbose:
+            print("\nURL being queried:\n\n{}\n".format(URL))
+
         # get response from URL
-        response = requests.get(URL)
+        response = requests.request(method,URL,headers=headers)
+        
+        # get response in form of json
         response_json = response.json()
 
         # initialise data dictionary
@@ -137,8 +151,7 @@ def search_taxa(taxa=None,
         if atlas in ["Australia","ALA"]:
             
             # get base URL before adding anything onto it 
-            baseURL = get_api_url(column1='called_by',column1value='search_taxa',column2='api_name',column2value='names_search_multiple')
-            
+            baseURL, method = get_api_url(column1='called_by',column1value='search_taxa',column2='api_name',column2value='names_search_multiple')
             # check to see if the correct information and type of variables is available
             if not any("scientificName" in sn for sn in list(scientific_name.keys())):
                 raise ValueError("you need to include a search term titled \"scientificName\"")
@@ -159,7 +172,7 @@ def search_taxa(taxa=None,
             # loop over all entries in scientific name dictionary and concatenate them to data frame
             for i in range(len_dict[0]):
                 URL = baseURL + "?" + "&".join(["=".join([key,urllib.parse.quote(scientific_name[key][i])]) for key in scientific_name])
-                response = requests.get(URL)
+                response = requests.request(method,URL)
                 response_json = response.json()
                 data={}
                 for entry in response_json:
@@ -184,8 +197,8 @@ def search_taxa(taxa=None,
         raise Exception("You need to specify one of the following:\n\ntaxa\nidentifiers\nspecific_epithet\nscientific_name\n")
 
     # get base URL for querying
-    baseURL = get_api_url(column1='called_by',column1value='search_taxa',column2='api_name',column2value='names_search_single')
-
+    baseURL, method = get_api_url(column1='called_by',column1value='search_taxa',column2='api_name',column2value='names_search_single')
+    
     # third, add fq=<search term> and converting it to URL
     if type(taxa) is list or type(taxa) is str:
 
@@ -207,10 +220,10 @@ def search_taxa(taxa=None,
                 raise ValueError("Atlas {} is not taken into account".format(atlas))
             
             if verbose:
-                print("URL for querying:\n\n{}\n".format(URL))
+                print("\nURL being queried:\n\n{}\n".format(URL))
         
             # get the response
-            response = requests.get(URL)
+            response = requests.request(method,URL,headers=headers)
             response_json = response.json()
 
             # Check for the Swedish atlas

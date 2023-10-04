@@ -41,11 +41,82 @@ def show_values(field=None,
     # get configurations
     configs = readConfig()
 
+    # get atlas
+    atlas = configs['galahSettings']['atlas']
+
+    headers = {}
+
+    # get headers
+    #if atlas in ["Australia","ALA"]:
+    #    headers = {"x-api-key": configs["galahSettings"]["ALA_API_key"]}
+    #else:
+    #    headers = {}
+
     # get base URL for querying
-    if configs['galahSettings']['atlas'] in ["Global","GBIF"]:
-        baseURL = get_api_url(column1='api_name',column1value='records_counts')
+    if atlas in ["Global","GBIF"]:
+        baseURL,method = get_api_url(column1='api_name',column1value='records_counts')
+        URL = baseURL + "?facet=" + field + "&flimit=-1"
+        '''
+        url,chosen_title,column_titles
+
+        # get parameters from website
+        response = requests.get(url)
+        soup = BeautifulSoup(response.text,'html.parser')
+
+        # find the title of table and get title
+        table_titles = soup.select('h3')
+        for i,title in enumerate(table_titles):
+            if title.text == chosen_title:
+                index=i
+        table_to_parse = soup.find_all('table')[index]
+        '''
     else:
-        baseURL = get_api_url(column1='api_name',column1value='records_facets')
+        baseURL,method = get_api_url(column1='api_name',column1value='records_facets')
+        URL = baseURL + "?facets=" + field + "&flimit=-1"
+
+    # check to see if the user wants the URL for querying
+    if verbose:
+        print("URL for querying:\n\n{}\n".format(URL))
+
+    # query the API
+    response = requests.request(method,URL,headers=headers)
+    response_json = response.json()
+    
+    # create empty dataFrame to concatenate results to
+    dataFrame = pd.DataFrame()
+
+    # loop over results - look to see if GBIF is being used
+    if atlas in ["Global","GBIF"]:
+        result = response_json['facets'][0]['counts']
+        for entry in result:
+            tempdf = pd.DataFrame({'field': response_json['facets'][0]['field'], 'category': entry['name']},index=[0]) # facets
+            dataFrame = pd.concat([dataFrame,tempdf],ignore_index=True)
+    
+    # otherwise, assume it is other atlases
+    else:
+        result = response_json[0]['fieldResult']
+        for i,entry in enumerate(result):
+            # check if last character is a full stop
+            if entry['i18nCode'][-1] == ".":
+                # check to see if the length is more than 2
+                if len(entry['i18nCode'].split('.')) > 2:
+                    temparray = entry['i18nCode'].split('.')
+                    name = " ".join(temparray[1:])
+                    tempdf = pd.DataFrame([[temparray[0],name]],columns=['field','category'])
+                else:
+                    tempdf = pd.DataFrame([entry['i18nCode'][0:-1].split('.')], columns=['field', 'category'])
+                dataFrame = pd.concat([dataFrame, tempdf], ignore_index=True)
+            elif len(entry['i18nCode'].split('.')) > 2:
+                temparray = entry['i18nCode'].split('.')
+                name = " ".join(temparray[1:])
+                tempdf = pd.DataFrame([[temparray[0],name]],columns=['field','category'])
+                dataFrame = pd.concat([dataFrame,tempdf],ignore_index=True)
+            else:
+                tempdf = pd.DataFrame([entry['i18nCode'].split('.')],columns=['field','category'])
+                dataFrame = pd.concat([dataFrame,tempdf],ignore_index=True)
+
+    # return dataFrame
+    return dataFrame
 
     '''
     # add checks to make sure that the field they entered actually is something they can query
@@ -77,53 +148,3 @@ def show_values(field=None,
                          "True to show valid values:\n\n"
                          "collection, datasets, fields, lists, profiles, providers\n")
     '''
-    # add the field
-    if configs['galahSettings']['atlas'] in ["Global","GBIF"]:
-        URL = baseURL + "facets?facet=" + field # + "&limit=0&facetLimit=10000"
-    else:
-        URL = baseURL + "?facets=" + field
-
-    # check to see if the user wants the URL for querying
-    if verbose:
-        print("URL for querying:\n\n{}\n".format(URL))
-
-    # query the API
-    response = requests.get(URL)
-    json = response.json()
-    
-    # create empty dataFrame to concatenate results to
-    dataFrame = pd.DataFrame()
-
-    # loop over results - look to see if GBIF is being used
-    if configs['galahSettings']['atlas'] in ["Global","GBIF"]:
-        # result = json['facets'][0]['counts']
-        result = json['results'][0]['counts']
-        for entry in result:
-            tempdf = pd.DataFrame({'field': json['results'][0]['field'], 'category': entry['name']},index=[0]) # facets
-            dataFrame = pd.concat([dataFrame,tempdf],ignore_index=True)
-    
-    # otherwise, assume it is other atlases
-    else:
-        result = json[0]['fieldResult']
-        for i,entry in enumerate(result):
-            # check if last character is a full stop
-            if entry['i18nCode'][-1] == ".":
-                # check to see if the length is more than 2
-                if len(entry['i18nCode'].split('.')) > 2:
-                    temparray = entry['i18nCode'].split('.')
-                    name = " ".join(temparray[1:])
-                    tempdf = pd.DataFrame([[temparray[0],name]],columns=['field','category'])
-                else:
-                    tempdf = pd.DataFrame([entry['i18nCode'][0:-1].split('.')], columns=['field', 'category'])
-                dataFrame = pd.concat([dataFrame, tempdf], ignore_index=True)
-            elif len(entry['i18nCode'].split('.')) > 2:
-                temparray = entry['i18nCode'].split('.')
-                name = " ".join(temparray[1:])
-                tempdf = pd.DataFrame([[temparray[0],name]],columns=['field','category'])
-                dataFrame = pd.concat([dataFrame,tempdf],ignore_index=True)
-            else:
-                tempdf = pd.DataFrame([entry['i18nCode'].split('.')],columns=['field','category'])
-                dataFrame = pd.concat([dataFrame,tempdf],ignore_index=True)
-
-    # return dataFrame
-    return dataFrame
