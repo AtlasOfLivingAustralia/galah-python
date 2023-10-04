@@ -6,7 +6,7 @@ from setuptools import setup,find_packages
 
 setup(
     #name='galah',
-    version='1.0.0',
+    version='0.6.0',
     license='MPL-2.0',
     author='Amanda Buyan',
     author_email='amanda.buyan@csiro.au',
