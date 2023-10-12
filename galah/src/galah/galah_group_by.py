@@ -2,9 +2,10 @@ import requests
 import pandas as pd
 import urllib
 import copy
+import itertools
 from .get_api_url import readConfig
 from .common_functions import add_filters
-from .common_functions import get_api_url,put_entries_in_grouped_dict
+from .common_functions import get_api_url,put_entries_in_grouped_dict,add_to_payload_ALA
 
 
 # for testing
@@ -22,6 +23,9 @@ def galah_group_by(URL=None,
     """
     Used for grouping counts by a specific query, i.e. "year" or "basisOfRecord".  It's mainly utilized in atlas_counts.
     """
+
+    if len(group_by) > 3:
+        raise ValueError("Only 3 groups are allowed, as otherwise the queries will get complicated")
 
     # get configs
     configs = readConfig()
@@ -161,14 +165,18 @@ def galah_group_by(URL=None,
         # do this if the expand option is try
         if expand:
 
-            for i in range(1,len(group_by)):
+            # was 1,len(group_by)
+            for i in range(0,len(group_by)-1):
                 temp_array=[]
                 for entry in results_array[i][field_name]:
                     temp_array.append(entry[facet_name])
                 facets_array.append(temp_array)
 
+            combined_facets_array = list(itertools.product(*facets_array))
+
             # loop over facets array
-            for i,f in enumerate(facets_array):
+            # was combined_facets_array
+            for i,f in enumerate(combined_facets_array):
 
                 # check for GBIF atlas
                 if atlas in ["Global","GBIF"]:
@@ -207,10 +215,11 @@ def galah_group_by(URL=None,
                 else:
 
                     # loop over each facet
-                    for facet in f:
-
+                    #for facet in f:
+                    if atlas in ["Australia","ALA"]:
+                    
                         # and sum(s.count("lsid") for s in payload["fq"]) > 1:
-                        if atlas in ["Australia","ALA"]: 
+                        for facet in f: 
 
                             # check for fq in payload
                             if "fq" not in payload:
@@ -218,82 +227,91 @@ def galah_group_by(URL=None,
                             else:
                                 payload["fq"].append(facet)
 
-                            payload_for_querying = copy.deepcopy(payload)
-                            
-                            # create payload and get qid
-                            qid_URL, method2 = get_api_url(column1="api_name",column1value="occurrences_qid")
-                            qid = requests.request(method2,qid_URL,data=payload)
-                            tempURL = startingURL + "?fq=%28qid%3A" + qid.text + "%29"
-                            payload["fq"].pop()
-                            name,value = facet.split(':')
-                            if name not in group_by:
-                                continue
-                            value = value.replace('"', '')
-                            for group in group_by:
-                                if (group != name) and ("facets={}".format(group) not in tempURL):
-                                    tempURL += "&facets={}".format(group)
-
-                        else:
-
-                            # split each facet to make it human readable
-                            name,value = facet.split(':')
-                            value = value.replace('"', '')
-                            if name in group_by:
-                                tempURL = URL + "%20AND%20%28{}%3A%22{}%22%29".format(name,value)
-                            else:
-                                continue
-                            for group in group_by:
-                                if (group != name) and ("facets={}".format(group) not in URL):
-                                    tempURL += "&facets={}".format(group)
-
-                        # finalise the URL for querying
-                        tempURL += "&flimit=-1&pageSize=0"
-
-                        # check to see if the user wants the URL for querying
-                        if verbose:
-                            if atlas in ["Australia","ALA"]:
-                                print()
-                                print("payload for queryID: {}".format(payload_for_querying))
-                                print("queryID URL: {}".format(qid_URL))
-                                print("method: {}".format(method2))
-                                print()
-                                print("qid for query: {}".format(qid.text))
-                                print("URL for result:{}".format(tempURL))
-                                print("method: {}".format(method))
-                                print()
-                            else:
-                                print()
-                                print("URL for querying: {}".format(tempURL))
-                                print("Method: {}".format(method))
-                                print()
-
-                        # get data
-                        response=requests.request(method,tempURL,headers=headers)
-                        response_json = response.json()
+                        payload_for_querying = copy.deepcopy(payload)
                         
-                        # if there is no data available, move onto next variable
-                        if atlas not in ["Brazil"]:
-                            if response_json is None or not response_json['facetResults']:
-                                continue
+                        # create payload and get qid
+                        qid_URL, method2 = get_api_url(column1="api_name",column1value="occurrences_qid")
+                        qid = requests.request(method2,qid_URL,data=payload)
+                        tempURL = startingURL + "?fq=%28qid%3A" + qid.text + "%29"
+                        if any("lsid" in fq for fq in payload['fq']):
+                            index = [idx for idx, s in enumerate(payload['fq']) if 'lsid' in s][0]
+                            payload["fq"] = [payload["fq"][index]]
                         else:
-                            if response_json is None or not response_json[0]['fieldResult']:
-                                continue
+                            payload["fq"] = []
+                        if filters is not None:
+                            payload["fq"] = add_to_payload_ALA(payload=payload,
+                                                                   atlas=atlas,
+                                                                   filters=filters
+                                                                   )
+                        tempURL += "&facets={}".format(group_by[-1])
+                        
+                    else:
 
-                        # put data in table (and check if user wants Brazil, because that is an exception)
-                        if atlas in ["Brazil"]:
-                            results_array = response_json[0]['fieldResult']
+                        # split each facet to make it human readable
+                        name,value = facet.split(':')
+                        value = value.replace('"', '')
+                        if name in group_by:
+                            tempURL = URL + "%20AND%20%28{}%3A%22{}%22%29".format(name,value)
                         else:
-                            results_array = response_json['facetResults'][0]['fieldResult']
+                            continue
+                        for group in group_by:
+                            if (group != name) and ("facets={}".format(group) not in URL):
+                                tempURL += "&facets={}".format(group)
 
-                        # loop over each entry in the results
-                        for entry in results_array:
+                    # finalise the URL for querying
+                    tempURL += "&flimit=-1&pageSize=0"
 
-                            # put entries in dictionary
-                            if entry['fq'].split(":")[0] == group_by[0]:
+                    # check to see if the user wants the URL for querying
+                    if verbose:
+                        if atlas in ["Australia","ALA"]:
+                            print()
+                            print("payload for queryID: {}".format(payload_for_querying))
+                            print("queryID URL: {}".format(qid_URL))
+                            print("method: {}".format(method2))
+                            print()
+                            print("qid for query: {}".format(qid.text))
+                            print("URL for result:{}".format(tempURL))
+                            print("method: {}".format(method))
+                            print()
+                        else:
+                            print()
+                            print("URL for querying: {}".format(tempURL))
+                            print("Method: {}".format(method))
+                            print()
 
-                                # add values to dicutionary
-                                dict_values = put_entries_in_grouped_dict(entry=entry,dict_values=dict_values,name=name,value=value,expand=expand)
+                    # get data
+                    response=requests.request(method,tempURL,headers=headers)
+                    response_json = response.json()
+                    
+                    # if there is no data available, move onto next variable
+                    if atlas not in ["Brazil"]:
+                        if response_json is None or not response_json['facetResults']:
+                            continue
+                    else:
+                        if response_json is None or not response_json[0]['fieldResult']:
+                            continue
 
+                    # put data in table (and check if user wants Brazil, because that is an exception)
+                    if atlas in ["Brazil"]:
+                        results_array = response_json[0]['fieldResult']
+                    else:
+                        results_array = response_json['facetResults'][0]['fieldResult']
+
+                    # loop over each entry in the results
+                    for entry in results_array:
+
+                        if entry['fq'].split(":")[0] in group_by:
+                        
+                                # put entries in dictionary
+                                # if entry['fq'].split(":")[0] == group_by[0]:
+
+                            # add values to dicutionary
+                            # name=name
+                            for k,facet in enumerate(f):
+                                name,value = facet.split(":")
+                                value = value.replace('"','')
+                                dict_values[name].append(value)
+                            dict_values = put_entries_in_grouped_dict(entry=entry,dict_values=dict_values,expand=expand)
             # format table
             counts = pd.DataFrame(dict_values).reset_index(drop=True)
             counts.sort_values(by=group_by)

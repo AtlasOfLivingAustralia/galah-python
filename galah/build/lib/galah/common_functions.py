@@ -6,6 +6,9 @@ from .search_taxa import search_taxa
 from .galah_geolocate import galah_geolocate
 from .common_dictionaries import atlases, ATLAS_KEYWORDS
 
+# for debugging
+import sys
+
 # for adding filters specifically to atlas_occurrences
 def add_predicates(predicates=None,
                    filters=None):
@@ -62,22 +65,20 @@ def add_filters(URL=None,
 
 def put_entries_in_grouped_dict(entry=None,
                                 dict_values=None,
-                                name=None,
-                                value=None,
                                 expand=None
                                 ):
     '''X'''
     if expand:
-        name2,value2 = entry['fq'].split(":")
-        value2 = value2.replace('"', '')
-        if value2.isdigit():
-            value2 = int(value2)
-        dict_values[name2].append(value2)
-        dict_values['count'].append(int(entry['count']))
+        name,value = entry['fq'].split(":")
+        value = value.replace('"', '')
+        if value.isdigit():
+            value = int(value)
         dict_values[name].append(value)
+        dict_values['count'].append(int(entry['count']))
         for key in dict_values:
-            if (key != name2) and (key != name) and (key != 'count'):
-                dict_values[key].append("-")
+            if (key != name) and (key != 'count'):
+                while (len(dict_values[key]) < len(dict_values['count'])):
+                    dict_values[key].append("-")
 
     else:
         name,value=entry['fq'].split(':')
