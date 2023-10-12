@@ -10,7 +10,7 @@ os.system("pip install packaging")
 
 setup(
     #name='galah',
-    version='0.6.0',
+    version='0.7.0',
     license='MPL-2.0',
     author='Amanda Buyan',
     author_email='amanda.buyan@csiro.au',
