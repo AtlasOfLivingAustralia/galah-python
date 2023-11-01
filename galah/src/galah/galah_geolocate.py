@@ -19,7 +19,7 @@ def galah_geolocate(polygon=None,
 
     Returns
     -------
-        An object of class ``pandas.DataFrame``.
+        Either a string or a polygon object.
 
     Examples
     --------
@@ -62,7 +62,6 @@ def galah_geolocate(polygon=None,
 
             if type(bbox) is dict:
                 #xmin, ymin, xmax, ymax
-                print()
                 return str(shapely.box(xmin=bbox["xmin"],xmax=bbox["xmax"],ymin=bbox["ymin"],ymax=bbox["ymax"]))
             elif type(bbox) is Polygon or type(bbox) is MultiPolygon:
                 bounds=list(bbox.bounds)

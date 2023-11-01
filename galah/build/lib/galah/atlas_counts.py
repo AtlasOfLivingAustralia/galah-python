@@ -5,8 +5,11 @@ from .get_api_url import get_api_url,readConfig
 from .apply_data_profile import apply_data_profile
 from .galah_geolocate import galah_geolocate
 from .show_all import show_all
-from .common_functions import add_filters,add_to_payload_ALA,generate_list_taxonConceptIDs
+from .common_functions import add_filters,add_to_payload_ALA,generate_list_taxonConceptIDs,add_buffer
 from .common_dictionaries import COUNTS_NAMES
+
+# debugging
+import sys
 
 def atlas_counts(taxa=None,
                  filters=None,
@@ -16,7 +19,9 @@ def atlas_counts(taxa=None,
                  use_data_profile=False,
                  verbose=False,
                  polygon=None,
-                 bbox=None
+                 bbox=None,
+                 buffer=None,
+                 crs=4326
                  ):
     """
     Prior to downloading data, it is often valuable to have some estimate of how many records are available, both for deciding
@@ -48,6 +53,8 @@ def atlas_counts(taxa=None,
             A polygon shape denoting a geographical region.  Defaults to ``None``.
         bbox : dict or shapely Polygon
             A polygon or dictionary type denoting four points, which are the corners of a geographical region.  Defaults to ``None``.
+        buffer : int or float
+            A number (in meters) indicating the buffer you want to put around your provided shapefile. Defaults to ``None``.
 
     Returns
     -------
@@ -130,6 +137,8 @@ def atlas_counts(taxa=None,
             baseURL += "?disableAllQualityfilters=true&"
 
         # create payload
+        if buffer is not None:
+            polygon = add_buffer(polygon=polygon,bbox=bbox,buffer=buffer,crs=crs)
         payload = add_to_payload_ALA(payload=payload,atlas=atlas,taxa=taxa,filters=filters,polygon=polygon,bbox=bbox)
         
         # check for group by

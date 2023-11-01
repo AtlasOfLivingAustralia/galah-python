@@ -24,7 +24,7 @@ def galah_group_by(URL=None,
     Used for grouping counts by a specific query, i.e. "year" or "basisOfRecord".  It's mainly utilized in atlas_counts.
     """
 
-    if len(group_by) > 3:
+    if type(group_by) is not str and len(group_by) > 3:
         raise ValueError("Only 3 groups are allowed, as otherwise the queries will get complicated")
 
     # get configs
@@ -44,14 +44,12 @@ def galah_group_by(URL=None,
     if expand:
 
         # check to see if you can expand upon this
-        if len(group_by) == 1:
-            raise ValueError("You cannot use the expand=True option when you only have one group")
+        if (type(group_by) == str) or (type(group_by) == list and len(group_by) == 1):
+            raise ValueError("You can only use the expand=False option with one group")
 
     # check if expand option works
     if expand:
         ifGroupBy = True
-        if (type(group_by) == str) or (type(group_by) == list and len(group_by) == 1):
-            raise ValueError("You can only use the exapnd=False option with one group")
     else:
         ifGroupBy = False
 
@@ -225,6 +223,9 @@ def galah_group_by(URL=None,
                             if "fq" not in payload:
                                 payload["fq"] = [facet]
                             else:
+                                print(payload)
+                                print(type(payload))
+                                print(type(payload["fq"]))
                                 payload["fq"].append(facet)
 
                         payload_for_querying = copy.deepcopy(payload)
@@ -239,10 +240,9 @@ def galah_group_by(URL=None,
                         else:
                             payload["fq"] = []
                         if filters is not None:
-                            payload["fq"] = add_to_payload_ALA(payload=payload,
-                                                                   atlas=atlas,
-                                                                   filters=filters
-                                                                   )
+                            payload = add_to_payload_ALA(payload=payload,
+                                                         atlas=atlas,
+                                                         filters=filters)
                         tempURL += "&facets={}".format(group_by[-1])
                         
                     else:
@@ -310,7 +310,9 @@ def galah_group_by(URL=None,
                             for k,facet in enumerate(f):
                                 name,value = facet.split(":")
                                 value = value.replace('"','')
-                                dict_values[name].append(value)
+                                # tryint this
+                                if name in group_by:
+                                    dict_values[name].append(value)
                             dict_values = put_entries_in_grouped_dict(entry=entry,dict_values=dict_values,expand=expand)
             # format table
             counts = pd.DataFrame(dict_values).reset_index(drop=True)

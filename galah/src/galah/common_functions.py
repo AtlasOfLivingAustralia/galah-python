@@ -1,10 +1,13 @@
 import requests
 import urllib
+import geopandas as gpd
+import shapely
 from .galah_filter import galah_filter
 from .get_api_url import get_api_url
 from .search_taxa import search_taxa
 from .galah_geolocate import galah_geolocate
 from .common_dictionaries import atlases, ATLAS_KEYWORDS
+from shapely import Polygon,MultiPolygon
 
 # for debugging
 import sys
@@ -218,3 +221,48 @@ def add_to_payload_ALA(payload=None,
                 payload["wkt"] += wkts
 
     return payload
+
+def add_buffer(polygon=None,
+               bbox=None,
+               buffer=None,
+               crs=4326):
+    
+    if buffer is None:
+        raise ValueError("You need to include a buffer with this function")
+    
+    # make sure buffer is in meters
+    buffer = buffer*1000
+
+    if polygon is not None:
+
+        # make sure polygon is the correct type
+        if type(polygon) is str or type(polygon) is Polygon or type(polygon) is MultiPolygon:
+            polygon_df = gpd.GeoDataFrame({"name": "user_defined_polygon","geometry": polygon},index=[0],crs="EPSG:{}".format(crs))
+        else:
+            raise ValueError("The polygon must be either of type string or type Polygon/MultiPolygon")
+        
+        # change Coordinate Reference System, add buffer, and change it back to 
+        polygon_meters = polygon_df.to_crs(3577)
+        polygon_meters_buffer = polygon_meters.buffer(buffer)
+        polygon_buffer = polygon_meters_buffer.to_crs(4326)
+        
+        # return the polygon
+        return polygon_buffer[0]
+    
+    if bbox is not None:
+        
+        # make sure polygon is the correct type
+        if type(bbox) is str or type(bbox) is dict or type(bbox) is Polygon or type(bbox) is MultiPolygon:
+            if type(bbox) is dict:
+                bbox = shapely.box(bbox["xmin"], bbox["ymin"], bbox["xmax"], bbox["ymax"])
+            bbox_df = gpd.GeoDataFrame({"name": "user_defined_bbox","geometry": bbox},index=[0],crs="EPSG:{}".format(crs))
+        else:
+            raise ValueError("The polygon must be either of type string or type Polygon/MultiPolygon")
+        
+        # change Coordinate Reference System, add buffer, and change it back to 
+        bbox_meters = bbox_df.to_crs(3577)
+        bbox_meters_buffer = bbox_meters.buffer(buffer)
+        bbox_buffer = bbox_meters_buffer.to_crs(4326)
+        
+        # return the polygon
+        return bbox_buffer[0]

@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: galah-python
-Version: 0.6.0
+Version: 0.7.0
 Summary: Get counts and information on species from many different atlases
 Home-page: 
 Author: Amanda Buyan
@@ -21,5 +21,6 @@ Requires-Dist: shutils
 Requires-Dist: pytest
 Requires-Dist: unittest2py3k
 Requires-Dist: shapely
+Requires-Dist: geopandas
 
 Get counts and information on species from many different atlases

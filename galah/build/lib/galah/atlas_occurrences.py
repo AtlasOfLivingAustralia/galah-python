@@ -16,7 +16,7 @@ from .apply_data_profile import apply_data_profile
 from .galah_geolocate import galah_geolocate
 from .common_dictionaries import ATLAS_KEYWORDS,ATLAS_SELECTIONS, atlases, ATLAS_OCCURRENCES_ERROR_MESSAGES
 from .common_dictionaries import ATLAS_OCCURRENCES_DOWNLOAD_ARGUMENTS
-from .common_functions import add_filters,add_predicates,add_to_payload_ALA
+from .common_functions import add_filters,add_predicates,add_to_payload_ALA,add_buffer
 from .show_all import show_all
 from .generate_jwt_token import generate_token_config,get_jwt_token
 
@@ -30,7 +30,9 @@ def atlas_occurrences(taxa=None,
                       species_list=False,
                       status_accepted=True,
                       polygon=None,
-                      bbox=None
+                      bbox=None,
+                      buffer=None,
+                      crs=4326
                       ):
     """
     The most common form of data stored by living atlases are observations of individual life forms, known as 'occurrences'. 
@@ -215,6 +217,8 @@ def atlas_occurrences(taxa=None,
             filters=assertions
 
         # create payload
+        if buffer is not None:
+            polygon = add_buffer(polygon=polygon,bbox=bbox,buffer=buffer,crs=crs)
         payload = add_to_payload_ALA(payload=payload,atlas=atlas,taxa=taxa,filters=filters,polygon=polygon,bbox=bbox)
         
         # create the query id

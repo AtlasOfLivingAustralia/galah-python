@@ -36,6 +36,7 @@ setup(
         'pytest',
         'unittest2py3k',
         'shapely',
+        'geopandas'
         #'TIME-python',
     ],
 

@@ -6,7 +6,7 @@ from .get_api_url import get_api_url,readConfig
 from .atlas_occurrences import atlas_occurrences
 from .apply_data_profile import apply_data_profile
 from .common_dictionaries import ATLAS_KEYWORDS,ATLAS_SPECIES_FIELDS,atlases
-from .common_functions import add_filters,add_to_payload_ALA
+from .common_functions import add_filters,add_to_payload_ALA,add_buffer
 from .show_all import show_all
 
 # this function looks for all species with the associated name
@@ -17,7 +17,9 @@ def atlas_species(taxa=None,
                   status_accepted=True,
                   use_data_profile=False,
                   polygon=None,
-                  bbox=None):
+                  bbox=None,
+                  buffer=None,
+                  crs=4326):
     """
     While there are reasons why users may need to check every record meeting their search criteria (i.e. using ``galah.atlas_occurrences()``), 
     a common use case is to simply identify which species occur in a specified region, time period, or taxonomic group. 
@@ -95,6 +97,9 @@ def atlas_species(taxa=None,
 
     if atlas in ["Australia","ALA"]:
         
+        # create payload and add buffer to polygon if user specifies it
+        if buffer is not None:
+            polygon = add_buffer(polygon=polygon,bbox=bbox,buffer=buffer,crs=crs)
         payload = add_to_payload_ALA(payload=payload,atlas=atlas,taxa=taxa,filters=filters,polygon=polygon,bbox=bbox)
 
         # create the query id
