@@ -3,6 +3,7 @@ requires = ["setuptools","poetry-core>=1.0.0"]
 build-backend = "setuptools.build_meta"
 
 [tool.poetry]
+name = "galah"
 package = "galah"
 version = "0.7.0" 
 description = "Get counts and information on species from many different atlases"
