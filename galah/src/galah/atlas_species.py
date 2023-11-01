@@ -41,7 +41,10 @@ def atlas_species(taxa=None,
             A polygon shape denoting a geographical region.  Defaults to ``None``.
         bbox : dict or shapely Polygon
             A polygon or dictionary type denoting four points, which are the corners of a geographical region.  Defaults to ``None``.
-
+        buffer : int or float
+            A number (in km) to describe the buffer to add around your desired shape.  Defaults to ``None``.
+        crs : int
+            The number associated with the Coordinate Reference System (crs) of your shapefile.  Defaults to ``4326``, which is the CRS used in the ALA.
 
     Returns
     -------
