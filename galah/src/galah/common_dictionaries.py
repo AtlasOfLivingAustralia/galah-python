@@ -1,5 +1,5 @@
 # all available atlases
-atlases = ["Australia","Austria","Brazil","France","Global","GBIF","Spain"]
+atlases = ["Australia","Austria","Brazil","France","Global","GBIF","Spain","Sweden"]
 
 # common names for each atlas
 ATLAS_COMMON_NAMES = {
@@ -31,7 +31,7 @@ ATLAS_KEYWORDS = {
     "Guatemala": "guid", # was guid
     "Portugal": "usageKey",
     "Spain": "taxonConceptID",
-    "Sweden": "guid", # was guid
+    "Sweden": "id", # was guid
     "United Kingdom": "guid",
 }
 
@@ -82,7 +82,9 @@ ATLAS_SPECIES_FIELDS = {
     "Spain": {"kingdom": "kingdomID", "phylum": "phylumID", 
                   "class": "classID", "order": "orderID", "family": "familyID", 
                   "genus": "genusID", "species": "speciesID", "subspecies":"subspeciesID"},
-    "Sweden": {},
+    "Sweden": {"kingdom": "kingdom_id", "phylum": "phylum_id","class": "class_id", 
+               "order": "order_id", "family": "family_id","genus": "genus_id", 
+               "species": "species_id", "subspecies": "subspecies_id"},
     "United Kingdom": {}
 }
 

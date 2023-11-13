@@ -151,6 +151,12 @@ def atlas_counts(taxa=None,
 
         # create the query id
         qid_URL, method2 = get_api_url(column1="api_name",column1value="occurrences_qid")
+        # try this
+        if use_data_profile:
+            data_profile_list = list(show_all(profiles=True)['shortName'])
+            qid_URL = apply_data_profile(baseURL=qid_URL,data_profile_list=data_profile_list)
+        else:
+            qid_URL += "?disableAllQualityfilters=true&"
         qid = requests.request(method2,qid_URL,data=payload)
         
         # create the URL to grab your queryID and counts

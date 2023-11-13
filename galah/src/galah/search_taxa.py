@@ -5,6 +5,9 @@ import urllib
 from .get_api_url import get_api_url,readConfig
 from .common_dictionaries import SEARCH_TAXA_ENTRIES,SEARCH_TAXA_FIELDS,TAXONCONCEPT_NAMES,VERNACULAR_NAMES,atlases
 
+# debugging
+import sys
+
 def search_taxa(taxa=None,
                 identifiers=None,
                 specific_epithet=None,
@@ -196,9 +199,6 @@ def search_taxa(taxa=None,
     if taxa is None:
         raise Exception("You need to specify one of the following:\n\ntaxa\nidentifiers\nspecific_epithet\nscientific_name\n")
 
-    # get base URL for querying
-    baseURL, method = get_api_url(column1='called_by',column1value='search_taxa',column2='api_name',column2value='names_search_single')
-    
     # third, add fq=<search term> and converting it to URL
     if type(taxa) is list or type(taxa) is str:
 
@@ -209,8 +209,31 @@ def search_taxa(taxa=None,
         # create an empty dataframe
         dataFrame = pd.DataFrame()
 
+        # if atlas in ["Australia","Spain","Sweden"]:
+
+        #     # get base URL for querying
+        #     baseURL, method = get_api_url(column1='called_by',column1value='search_taxa',column2='api_name',column2value='names_search_multiple')
+        #     # create the query id
+        #     qid_URL, method2 = get_api_url(column1="api_name",column1value="occurrences_qid")
+        #     payload = {"q": [taxa[0]]}
+        #     #payload = {"fq": [" OR ".join("name:{}".format(id) for id in taxa)]}
+        #     print(payload)
+        #     qid = requests.request(method2,qid_URL,data=payload)
+            
+        #     # create the URL to grab your queryID and counts
+        #     URL = baseURL + "?fq=%28qid%3A" + qid.text + "%29&rank=species&flimit=-1&pageSize=0"
+        #     print(URL)
+        #     response = requests.request(method,URL,headers=headers)
+        #     print(response.json())
+        #     print("yep")
+        #     sys.exit()
+
+        # else:
         # currently only return information above kingdom
         for name in taxa:
+
+            # get base URL for querying
+            baseURL, method = get_api_url(column1='called_by',column1value='search_taxa',column2='api_name',column2value='names_search_single')
 
             # create URL, get result and concatenate result onto dataFrame
             # make sure all the atlases are checked

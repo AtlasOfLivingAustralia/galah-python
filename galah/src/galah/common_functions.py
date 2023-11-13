@@ -139,21 +139,23 @@ def generate_list_taxonConceptIDs(taxa=None,
                     "\n         atlas.counts[\"Osphranter rufus\",\"Vulpes vulpes\",\"Macropus giganteus\",\"Phascolarctos cinereus\"])")
 
     # get the number of records associated with each taxa
-    for name in taxa:
+    # for name in taxa:
 
-        # create temporary dataframe for taxon id
-        tempdf = search_taxa(name)
+    #     # create temporary dataframe for taxon id
+    #     tempdf = search_taxa(name)
         
-        # check if dataframe is empty - if so, return None; else, continue
-        if tempdf.empty:
-            print("No taxon matches were found for {} in the selected atlas ({})".format(name, atlas))
-            if len(taxa) == 1:
-                return None
-            continue
+    #     # check if dataframe is empty - if so, return None; else, continue
+    #     if tempdf.empty:
+    #         print("No taxon matches were found for {} in the selected atlas ({})".format(name, atlas))
+    #         if len(taxa) == 1:
+    #             return None
+    #         continue
 
     # get the taxonConceptID for taxa while checking for extant atlas
     if atlas in atlases:
-        taxonConceptID = list(search_taxa(taxa)[ATLAS_KEYWORDS[atlas]])
+        # adding verbose=True for now
+        #print("here")
+        taxonConceptID = list(search_taxa(taxa=taxa)[ATLAS_KEYWORDS[atlas]])
     else:
         raise ValueError("Atlas {} is not taken into account".format(atlas))
 
@@ -178,7 +180,7 @@ def add_to_payload_ALA(payload=None,
                        taxa=None,
                        filters=None,
                        polygon=None,
-                       bbox=None
+                       bbox=None,
                        ):
 
     if payload is None:
