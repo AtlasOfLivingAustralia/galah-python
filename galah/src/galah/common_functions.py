@@ -227,26 +227,29 @@ def add_to_payload_ALA(payload=None,
 def add_buffer(polygon=None,
                bbox=None,
                buffer=None,
-               crs=4326):
+               crs_deg=4326,
+               crs_meters=3577):
     
     if buffer is None:
         raise ValueError("You need to include a buffer with this function")
     
     # make sure buffer is in meters
+    if buffer>1000:
+        raise ValueError("Currently `galah-python` doesn't support buffers greater than 1000km.  Enter a number between 0 and 1000.")
     buffer = buffer*1000
 
     if polygon is not None:
 
         # make sure polygon is the correct type
         if type(polygon) is str or type(polygon) is Polygon or type(polygon) is MultiPolygon:
-            polygon_df = gpd.GeoDataFrame({"name": "user_defined_polygon","geometry": polygon},index=[0],crs="EPSG:{}".format(crs))
+            polygon_df = gpd.GeoDataFrame({"name": "user_defined_polygon","geometry": polygon},index=[0],crs="EPSG:{}".format(crs_deg))
         else:
             raise ValueError("The polygon must be either of type string or type Polygon/MultiPolygon")
         
         # change Coordinate Reference System, add buffer, and change it back to 
-        polygon_meters = polygon_df.to_crs(3577)
+        polygon_meters = polygon_df.to_crs(crs_meters)
         polygon_meters_buffer = polygon_meters.buffer(buffer)
-        polygon_buffer = polygon_meters_buffer.to_crs(4326)
+        polygon_buffer = polygon_meters_buffer.to_crs(crs_deg)
         
         # return the polygon
         return polygon_buffer[0]
@@ -257,14 +260,14 @@ def add_buffer(polygon=None,
         if type(bbox) is str or type(bbox) is dict or type(bbox) is Polygon or type(bbox) is MultiPolygon:
             if type(bbox) is dict:
                 bbox = shapely.box(bbox["xmin"], bbox["ymin"], bbox["xmax"], bbox["ymax"])
-            bbox_df = gpd.GeoDataFrame({"name": "user_defined_bbox","geometry": bbox},index=[0],crs="EPSG:{}".format(crs))
+            bbox_df = gpd.GeoDataFrame({"name": "user_defined_bbox","geometry": bbox},index=[0],crs="EPSG:{}".format(crs_deg))
         else:
             raise ValueError("The polygon must be either of type string or type Polygon/MultiPolygon")
         
         # change Coordinate Reference System, add buffer, and change it back to 
-        bbox_meters = bbox_df.to_crs(3577)
+        bbox_meters = bbox_df.to_crs(crs_meters)
         bbox_meters_buffer = bbox_meters.buffer(buffer)
-        bbox_buffer = bbox_meters_buffer.to_crs(4326)
+        bbox_buffer = bbox_meters_buffer.to_crs(crs_deg)
         
         # return the polygon
         return bbox_buffer[0]

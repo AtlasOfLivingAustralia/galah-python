@@ -16,10 +16,13 @@ def atlas_species(taxa=None,
                   verbose=False,
                   status_accepted=True,
                   use_data_profile=False,
+                  counts=False,
                   polygon=None,
                   bbox=None,
                   buffer=None,
-                  crs=4326):
+                  crs_deg=4326,
+                  crs_meters=3577
+                  ):
     """
     While there are reasons why users may need to check every record meeting their search criteria (i.e. using ``galah.atlas_occurrences()``), 
     a common use case is to simply identify which species occur in a specified region, time period, or taxonomic group. 
@@ -43,8 +46,10 @@ def atlas_species(taxa=None,
             A polygon or dictionary type denoting four points, which are the corners of a geographical region.  Defaults to ``None``.
         buffer : int or float
             A number (in km) to describe the buffer to add around your desired shape.  Defaults to ``None``.
-        crs : int
-            The number associated with the Coordinate Reference System (crs) of your shapefile.  Defaults to ``4326``, which is the CRS used in the ALA.
+        crs_deg : int
+            The number associated with the Coordinate Reference System (crs) of your shapefile in degrees.  Defaults to ``4326``, which is the CRS used in the ALA.
+        crs_meters : int
+            The number associated with the Coordinate Reference System (crs) of your shapefile in meters.  Defaults to ``3577``, which in Australian Albers.
 
     Returns
     -------
@@ -87,6 +92,8 @@ def atlas_species(taxa=None,
     rankID = ATLAS_SPECIES_FIELDS[atlas][rank]
     
     # get initial url
+    #if atlas in ["Australia","ALA"]:
+    #    baseURL,method = get_api_url(column1='api_name', column1value='names_search_bulk_species')
     if atlas not in ["Global","GBIF"]:
         baseURL,method = get_api_url(column1='api_name', column1value='records_species')
     else:
@@ -102,7 +109,7 @@ def atlas_species(taxa=None,
         
         # create payload and add buffer to polygon if user specifies it
         if buffer is not None:
-            polygon = add_buffer(polygon=polygon,bbox=bbox,buffer=buffer,crs=crs)
+            polygon = add_buffer(polygon=polygon,bbox=bbox,buffer=buffer,crs_deg=crs_deg,crs_meters=crs_meters)
         payload = add_to_payload_ALA(payload=payload,atlas=atlas,taxa=taxa,filters=filters,polygon=polygon,bbox=bbox)
 
         # create the query id
@@ -114,8 +121,12 @@ def atlas_species(taxa=None,
             data_profile_list = list(show_all(profiles=True)['shortName'])
             baseURL = apply_data_profile(baseURL=baseURL,use_data_profile=use_data_profile,data_profile_list=data_profile_list)
             URL = baseURL + "fq=%28qid%3A" + qid.text + "%29&facets={}&lookup=True".format(rankID)
+            if counts:
+                URL += "&count=true"
         else:
             URL = baseURL + "?fq=%28qid%3A" + qid.text + "%29&facets={}&lookup=True".format(rankID)
+            if counts:
+                URL += "&count=true"
 
         if verbose:
             print()

@@ -5,6 +5,9 @@ import urllib
 from .get_api_url import get_api_url,readConfig
 from .common_dictionaries import SEARCH_TAXA_ENTRIES,SEARCH_TAXA_FIELDS,TAXONCONCEPT_NAMES,VERNACULAR_NAMES,atlases
 
+# testing
+import json
+
 # debugging
 import sys
 
@@ -209,110 +212,111 @@ def search_taxa(taxa=None,
         # create an empty dataframe
         dataFrame = pd.DataFrame()
 
-        # if atlas in ["Australia","Spain","Sweden"]:
+        if atlas in ["Australia"] and len(taxa) > 10:
 
-        #     # get base URL for querying
-        #     baseURL, method = get_api_url(column1='called_by',column1value='search_taxa',column2='api_name',column2value='names_search_multiple')
-        #     # create the query id
-        #     qid_URL, method2 = get_api_url(column1="api_name",column1value="occurrences_qid")
-        #     payload = {"q": [taxa[0]]}
-        #     #payload = {"fq": [" OR ".join("name:{}".format(id) for id in taxa)]}
-        #     print(payload)
-        #     qid = requests.request(method2,qid_URL,data=payload)
-            
-        #     # create the URL to grab your queryID and counts
-        #     URL = baseURL + "?fq=%28qid%3A" + qid.text + "%29&rank=species&flimit=-1&pageSize=0"
-        #     print(URL)
-        #     response = requests.request(method,URL,headers=headers)
-        #     print(response.json())
-        #     print("yep")
-        #     sys.exit()
+            baseURL, method = get_api_url(column1='called_by',column1value='atlas_species',column2='api_name',column2value='names_search_bulk_species')
+            payload = {"vernacular":"true", "names": [], "issues": "true"}
+            payload["names"] = taxa #[" OR ".join("lsid:{}".format(id) for id in taxa)]
+            species_list_test = requests.request(method,baseURL,data=json.dumps(payload))
+            #print(species_list_test.text)
+            species_list_json = species_list_test.json()
+            species_list_dataframe = pd.DataFrame(species_list_json)
+            species_list_rename = species_list_dataframe.rename(columns={
+                'identifier': 'taxonConceptID',
+                'classs': 'class',
+                'author': 'scientificNameAuthorship',
+                'acceptedConceptName': 'scientificName',
+                'name': 'species',
+                'commonName': 'vernacularName'
+            })
+            return species_list_rename[['scientificName', 'scientificNameAuthorship', 'taxonConceptID','rank','kingdom', 
+                  'phylum', 'class', 'order', 'family', 'genus', 'species','vernacularName']]
 
-        # else:
-        # currently only return information above kingdom
-        for name in taxa:
-
-            # get base URL for querying
-            baseURL, method = get_api_url(column1='called_by',column1value='search_taxa',column2='api_name',column2value='names_search_single')
-
-            # create URL, get result and concatenate result onto dataFrame
-            # make sure all the atlases are checked
-            if atlas in atlases:
-                URL = baseURL.replace("{name}","%20".join(name.split(" ")))
-            else:
-                raise ValueError("Atlas {} is not taken into account".format(atlas))
-            
-            if verbose:
-                print("\nURL being queried:\n\n{}\n".format(URL))
+        else:
         
-            # get the response
-            response = requests.request(method,URL,headers=headers)
-            response_json = response.json()
+            for name in taxa:
 
-            # Check for the Swedish atlas
-            if atlas in ["Sweden"]: 
-                raw_data = [] 
-                if SEARCH_TAXA_ENTRIES[atlas][0] in response_json:
-                    for item in response_json[SEARCH_TAXA_ENTRIES[atlas][0]][SEARCH_TAXA_ENTRIES[atlas][1]]:
-                        if name.lower() in item['scientificName'].lower():
-                            raw_data = item
-                            break
-                if raw_data is None:
+                # get base URL for querying
+                baseURL, method = get_api_url(column1='called_by',column1value='search_taxa',column2='api_name',column2value='names_search_single')
+
+                # create URL, get result and concatenate result onto dataFrame
+                # make sure all the atlases are checked
+                if atlas in atlases:
+                    URL = baseURL.replace("{name}","%20".join(name.split(" ")))
+                else:
+                    raise ValueError("Atlas {} is not taken into account".format(atlas))
+                
+                if verbose:
+                    print("\nURL being queried:\n\n{}\n".format(URL))
+            
+                # get the response
+                response = requests.request(method,URL,headers=headers)
+                response_json = response.json()
+
+                # Check for the Swedish atlas
+                if atlas in ["Sweden"]: 
+                    raw_data = [] 
+                    if SEARCH_TAXA_ENTRIES[atlas][0] in response_json:
+                        for item in response_json[SEARCH_TAXA_ENTRIES[atlas][0]][SEARCH_TAXA_ENTRIES[atlas][1]]:
+                            if name.lower() in item['scientificName'].lower():
+                                raw_data = item
+                                break
+                    if raw_data is None:
+                        continue
+
+                # check for Austrian, Brazilian, French or Guatemalan atlas
+                elif atlas in ["Austria","Brazil","France", "Guatemala"]:
+                    raw_data = None
+                    if SEARCH_TAXA_ENTRIES[atlas][0] in response_json:
+                        for item in response_json[SEARCH_TAXA_ENTRIES[atlas][0]][SEARCH_TAXA_ENTRIES[atlas][1]]:
+                            if name.lower() == item['scientificName'].lower():
+                                raw_data = item
+                                break
+                    if raw_data is None:
+                        continue
+                
+                # check for Australian, Global, or Spanish atlas
+                elif atlas in ["Australia","Global","GBIF","Spain"]:
+                    raw_data = response_json
+                    if atlas in ["Global","GBIF"]:
+                        response_vernacular = requests.get("https://api.gbif.org/v1/species/{}/vernacularNames".format(raw_data[TAXONCONCEPT_NAMES[atlas]["guid"]]))
+                        array_vernacular = response_vernacular.json()['results']
+                
+                # else, throw an error saying this atlas is not taken into account
+                else:
+                    raise ValueError("The atlas {} is not taken into account".format(atlas))
+
+                # check to see if the taxa was successfully returned
+                if atlas in ["Australia","Spain"] and not response_json['success']:
                     continue
 
-            # check for Austrian, Brazilian, French or Guatemalan atlas
-            elif atlas in ["Austria","Brazil","France", "Guatemala"]:
-                raw_data = None
-                if SEARCH_TAXA_ENTRIES[atlas][0] in response_json:
-                    for item in response_json[SEARCH_TAXA_ENTRIES[atlas][0]][SEARCH_TAXA_ENTRIES[atlas][1]]:
-                        if name.lower() == item['scientificName'].lower():
-                            raw_data = item
-                            break
-                if raw_data is None:
-                    continue
-            
-            # check for Australian, Global, or Spanish atlas
-            elif atlas in ["Australia","Global","GBIF","Spain"]:
-                raw_data = response_json
-                if atlas in ["Global","GBIF"]:
-                    response_vernacular = requests.get("https://api.gbif.org/v1/species/{}/vernacularNames".format(raw_data[TAXONCONCEPT_NAMES[atlas]["guid"]]))
-                    array_vernacular = response_vernacular.json()['results']
-            
-            # else, throw an error saying this atlas is not taken into account
-            else:
-                raise ValueError("The atlas {} is not taken into account".format(atlas))
+                # process information and put it into a data frame
+                else:
 
-            # check to see if the taxa was successfully returned
-            if atlas in ["Australia","Spain"] and not response_json['success']:
-                continue
+                    # initialise dictionary
+                    data={}
 
-            # process information and put it into a data frame
-            else:
+                    # loop over data
+                    for item in raw_data: 
+                        if item in SEARCH_TAXA_FIELDS[atlas]:
+                            data[item] = raw_data[item] 
 
-                # initialise dictionary
-                data={}
+                    # check if the atlas is GBIF and get vernacular names accordingly
+                    if atlas in ["Global","GBIF"]:
+                        vernacular_name=""
+                        for item in array_vernacular:
+                            for key in item.keys():
+                                if key in SEARCH_TAXA_FIELDS[atlas]:
+                                    vernacular_name += item[key] + ", "
+                        vernacular_name = vernacular_name[:-2]
+                        data[VERNACULAR_NAMES[atlas][1]] = vernacular_name
 
-                # loop over data
-                for item in raw_data: 
-                    if item in SEARCH_TAXA_FIELDS[atlas]:
-                        data[item] = raw_data[item] 
+                # add every taxon to dataframe
+                tempdf = pd.DataFrame(data,index=[1])
+                dataFrame = pd.concat([dataFrame,tempdf],ignore_index=True)
 
-                # check if the atlas is GBIF and get vernacular names accordingly
-                if atlas in ["Global","GBIF"]:
-                    vernacular_name=""
-                    for item in array_vernacular:
-                        for key in item.keys():
-                            if key in SEARCH_TAXA_FIELDS[atlas]:
-                                vernacular_name += item[key] + ", "
-                    vernacular_name = vernacular_name[:-2]
-                    data[VERNACULAR_NAMES[atlas][1]] = vernacular_name
-
-            # add every taxon to dataframe
-            tempdf = pd.DataFrame(data,index=[1])
-            dataFrame = pd.concat([dataFrame,tempdf],ignore_index=True)
-
-        # return dataFrame with all data
-        return dataFrame
+            # return dataFrame with all data
+            return dataFrame
 
     # else, let the user know that the taxa argument can only be a string or a list
     else:

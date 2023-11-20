@@ -223,9 +223,6 @@ def galah_group_by(URL=None,
                             if "fq" not in payload:
                                 payload["fq"] = [facet]
                             else:
-                                print(payload)
-                                print(type(payload))
-                                print(type(payload["fq"]))
                                 payload["fq"].append(facet)
 
                         payload_for_querying = copy.deepcopy(payload)

@@ -21,7 +21,8 @@ def atlas_counts(taxa=None,
                  polygon=None,
                  bbox=None,
                  buffer=None,
-                 crs=4326
+                 crs_deg=4326,
+                 crs_meters=3577
                  ):
     """
     Prior to downloading data, it is often valuable to have some estimate of how many records are available, both for deciding
@@ -55,9 +56,12 @@ def atlas_counts(taxa=None,
             A polygon or dictionary type denoting four points, which are the corners of a geographical region.  Defaults to ``None``.
         buffer : int or float
             A number (in km) to describe the buffer to add around your desired shape.  Defaults to ``None``.
-        crs : int
-            The number associated with the Coordinate Reference System (crs) of your shapefile.  Defaults to ``4326``, which is the CRS used in the ALA.
+        crs_deg : int
+            The number associated with the Coordinate Reference System (crs) of your shapefile in degrees.  Defaults to ``4326``, which is the CRS used in the ALA.
+        crs_meters : int
+            The number associated with the Coordinate Reference System (crs) of your shapefile in meters.  Defaults to ``3577``, which in Australian Albers.
 
+            
     Returns
     -------
         An object of class ``pandas.DataFrame``.
@@ -140,7 +144,7 @@ def atlas_counts(taxa=None,
 
         # create payload
         if buffer is not None:
-            polygon = add_buffer(polygon=polygon,bbox=bbox,buffer=buffer,crs=crs)
+            polygon = add_buffer(polygon=polygon,bbox=bbox,buffer=buffer,crs_deg=crs_deg,crs_meters=crs_meters)
         payload = add_to_payload_ALA(payload=payload,atlas=atlas,taxa=taxa,filters=filters,polygon=polygon,bbox=bbox)
         
         # check for group by
