@@ -151,7 +151,7 @@ def atlas_counts(taxa=None,
         if group_by is not None:
 
             # get grouped table
-            return galah_group_by(group_by=group_by, expand=expand, verbose=verbose, total_group_by=total_group_by,payload=payload)
+            return galah_group_by(URL=baseURL,method=method,group_by=group_by, filters=filters, expand=expand, verbose=verbose, total_group_by=total_group_by,payload=payload)
 
         # create the query id
         qid_URL, method2 = get_api_url(column1="api_name",column1value="occurrences_qid")
@@ -211,13 +211,13 @@ def atlas_counts(taxa=None,
                     URL += "%20AND%20"
                 
                 # return grouped data frame
-                return galah_group_by(URL, method, group_by=group_by, filters=filters, expand=expand, verbose=verbose, total_group_by=total_group_by)
+                return galah_group_by(URL=URL, method=method, group_by=group_by, filters=filters, expand=expand, verbose=verbose, total_group_by=total_group_by, use_data_profile=use_data_profile)
             
             # else, if not GBIF, just run group_by
             else:
 
                 # return grouped data frame
-                return galah_group_by(URL, method, group_by=group_by, filters=filters, expand=expand, verbose=verbose, total_group_by=total_group_by)
+                return galah_group_by(URL=URL, method=method, group_by=group_by, filters=filters, expand=expand, verbose=verbose, total_group_by=total_group_by, use_data_profile=use_data_profile)
 
         # check if filters are specified
         if filters is not None:
