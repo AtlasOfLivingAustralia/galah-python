@@ -251,7 +251,10 @@ def galah_group_by(URL=None,
                         # create payload and get qid
                         qid_URL, method2 = get_api_url(column1="api_name",column1value="occurrences_qid")
                         qid = requests.request(method2,qid_URL,data=payload)
-                        tempURL = startingURL + "?fq=%28qid%3A" + qid.text + "%29"
+                        if startingURL[-1] == "&":
+                            tempURL = startingURL + "fq=%28qid%3A" + qid.text + "%29" 
+                        else:
+                            tempURL = startingURL + "?fq=%28qid%3A" + qid.text + "%29"
                         if any("lsid" in fq for fq in payload['fq']):
                             index = [idx for idx, s in enumerate(payload['fq']) if 'lsid' in s][0]
                             payload["fq"] = [payload["fq"][index]]
