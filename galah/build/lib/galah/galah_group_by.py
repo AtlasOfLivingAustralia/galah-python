@@ -6,6 +6,8 @@ import itertools
 from .get_api_url import readConfig
 from .common_functions import add_filters
 from .common_functions import get_api_url,put_entries_in_grouped_dict,add_to_payload_ALA
+from .show_all import show_all
+from .apply_data_profile import apply_data_profile
 
 
 # for testing
@@ -18,6 +20,7 @@ def galah_group_by(URL=None,
                    filters=None,
                    expand=True,
                    payload={},
+                   use_data_profile=False,
                    verbose=False
                    ):
     """
@@ -39,6 +42,20 @@ def galah_group_by(URL=None,
     #    headers = {"x-api-key": configs["galahSettings"]["ALA_API_key"]}
     #else:
     #    headers = {}
+
+    # if atlas in ["Australia","ALA"]:
+
+    #     # check for data profile first
+    #     if use_data_profile:
+
+    #         # add data quality profile directly to URL
+    #         data_profile_list = list(show_all(profiles=True)['shortName'])
+    #         URL = apply_data_profile(baseURL=URL,data_profile_list=data_profile_list)
+
+    #     # else, disable all quality filters
+    #     else:
+
+    #         URL += "?disableAllQualityfilters=true&"
 
     # check to see if the expand option is true
     if expand:
@@ -84,14 +101,18 @@ def galah_group_by(URL=None,
         startingURL = URL
 
         if atlas in ["Australia","ALA"]:
-            startingURL,method = get_api_url(column1='called_by',column1value='atlas_counts',column2="api_name",
-                                        column2value="records_counts")
+            # try startingURL2
+            #startingURL2,method = get_api_url(column1='called_by',column1value='atlas_counts',column2="api_name",
+            #                            column2value="records_counts")
 
             # get response from your query, which will include all available fields
             qid_URL, method2 = get_api_url(column1="api_name",column1value="occurrences_qid")
             qid = requests.request(method2,qid_URL,data=payload)
             facets = "".join("&facets={}".format(g) for g in group_by)
-            URL = startingURL + "?fq=%28qid%3A" + qid.text + "%29" + facets + "&flimit=-1&pageSize=0"
+            if startingURL[-1] == "&":
+                URL = startingURL + "fq=%28qid%3A" + qid.text + "%29" + facets + "&flimit=-1&pageSize=0"
+            else:
+                URL = startingURL + "?fq=%28qid%3A" + qid.text + "%29" + facets + "&flimit=-1&pageSize=0"
 
             # check to see if the user wants the URL for querying
             if verbose:
@@ -223,17 +244,17 @@ def galah_group_by(URL=None,
                             if "fq" not in payload:
                                 payload["fq"] = [facet]
                             else:
-                                print(payload)
-                                print(type(payload))
-                                print(type(payload["fq"]))
                                 payload["fq"].append(facet)
-
+                                
                         payload_for_querying = copy.deepcopy(payload)
                         
                         # create payload and get qid
                         qid_URL, method2 = get_api_url(column1="api_name",column1value="occurrences_qid")
                         qid = requests.request(method2,qid_URL,data=payload)
-                        tempURL = startingURL + "?fq=%28qid%3A" + qid.text + "%29"
+                        if startingURL[-1] == "&":
+                            tempURL = startingURL + "fq=%28qid%3A" + qid.text + "%29" 
+                        else:
+                            tempURL = startingURL + "?fq=%28qid%3A" + qid.text + "%29"
                         if any("lsid" in fq for fq in payload['fq']):
                             index = [idx for idx, s in enumerate(payload['fq']) if 'lsid' in s][0]
                             payload["fq"] = [payload["fq"][index]]
@@ -282,7 +303,7 @@ def galah_group_by(URL=None,
                     # get data
                     response=requests.request(method,tempURL,headers=headers)
                     response_json = response.json()
-                    
+
                     # if there is no data available, move onto next variable
                     if atlas not in ["Brazil"]:
                         if response_json is None or not response_json['facetResults']:

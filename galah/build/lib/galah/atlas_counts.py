@@ -21,7 +21,8 @@ def atlas_counts(taxa=None,
                  polygon=None,
                  bbox=None,
                  buffer=None,
-                 crs=4326
+                 crs_deg=4326,
+                 crs_meters=3577
                  ):
     """
     Prior to downloading data, it is often valuable to have some estimate of how many records are available, both for deciding
@@ -54,8 +55,13 @@ def atlas_counts(taxa=None,
         bbox : dict or shapely Polygon
             A polygon or dictionary type denoting four points, which are the corners of a geographical region.  Defaults to ``None``.
         buffer : int or float
-            A number (in meters) indicating the buffer you want to put around your provided shapefile. Defaults to ``None``.
+            A number (in km) to describe the buffer to add around your desired shape.  Defaults to ``None``.
+        crs_deg : int
+            The number associated with the Coordinate Reference System (crs) of your shapefile in degrees.  Defaults to ``4326``, which is the CRS used in the ALA.
+        crs_meters : int
+            The number associated with the Coordinate Reference System (crs) of your shapefile in meters.  Defaults to ``3577``, which in Australian Albers.
 
+            
     Returns
     -------
         An object of class ``pandas.DataFrame``.
@@ -138,17 +144,23 @@ def atlas_counts(taxa=None,
 
         # create payload
         if buffer is not None:
-            polygon = add_buffer(polygon=polygon,bbox=bbox,buffer=buffer,crs=crs)
+            polygon = add_buffer(polygon=polygon,bbox=bbox,buffer=buffer,crs_deg=crs_deg,crs_meters=crs_meters)
         payload = add_to_payload_ALA(payload=payload,atlas=atlas,taxa=taxa,filters=filters,polygon=polygon,bbox=bbox)
         
         # check for group by
         if group_by is not None:
 
             # get grouped table
-            return galah_group_by(group_by=group_by, expand=expand, verbose=verbose, total_group_by=total_group_by,payload=payload)
+            return galah_group_by(URL=baseURL,method=method,group_by=group_by, filters=filters, expand=expand, verbose=verbose, total_group_by=total_group_by,payload=payload)
 
         # create the query id
         qid_URL, method2 = get_api_url(column1="api_name",column1value="occurrences_qid")
+        # try this
+        if use_data_profile:
+            data_profile_list = list(show_all(profiles=True)['shortName'])
+            qid_URL = apply_data_profile(baseURL=qid_URL,data_profile_list=data_profile_list)
+        else:
+            qid_URL += "?disableAllQualityfilters=true&"
         qid = requests.request(method2,qid_URL,data=payload)
         
         # create the URL to grab your queryID and counts
@@ -199,13 +211,13 @@ def atlas_counts(taxa=None,
                     URL += "%20AND%20"
                 
                 # return grouped data frame
-                return galah_group_by(URL, method, group_by=group_by, filters=filters, expand=expand, verbose=verbose, total_group_by=total_group_by)
+                return galah_group_by(URL=URL, method=method, group_by=group_by, filters=filters, expand=expand, verbose=verbose, total_group_by=total_group_by, use_data_profile=use_data_profile)
             
             # else, if not GBIF, just run group_by
             else:
 
                 # return grouped data frame
-                return galah_group_by(URL, method, group_by=group_by, filters=filters, expand=expand, verbose=verbose, total_group_by=total_group_by)
+                return galah_group_by(URL=URL, method=method, group_by=group_by, filters=filters, expand=expand, verbose=verbose, total_group_by=total_group_by, use_data_profile=use_data_profile)
 
         # check if filters are specified
         if filters is not None:
