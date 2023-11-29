@@ -238,7 +238,12 @@ def atlas_occurrences(taxa=None,
             baseURL = apply_data_profile(baseURL=baseURL,data_profile_list=data_profile_list)   
 
         # Add qa=None to not get any assertions 
-        URL = baseURL + "fq=%28qid%3A" + qid.text + "%29&qa=none&flimit=-1"
+        if fields is None:
+            selected_fields = galah_select(select="basic",atlas=atlas)
+            URL = baseURL + "fq=%28qid%3A" + qid.text + "%29&" + selected_fields + "&qa=none&flimit=-1"
+        elif fields == "all":
+            URL = baseURL + "fq=%28qid%3A" + qid.text + "%29&&qa=none&flimit=-1"
+        #else:
 
         if verbose:
             print()
