@@ -16,9 +16,8 @@ from .apply_data_profile import apply_data_profile
 from .galah_geolocate import galah_geolocate
 from .common_dictionaries import ATLAS_KEYWORDS,ATLAS_SELECTIONS, atlases, ATLAS_OCCURRENCES_ERROR_MESSAGES
 from .common_dictionaries import ATLAS_OCCURRENCES_DOWNLOAD_ARGUMENTS
-from .common_functions import add_filters,add_predicates,add_to_payload_ALA,add_buffer
+from .common_functions import add_filters,add_predicates,add_to_payload_ALA
 from .show_all import show_all
-from .generate_jwt_token import generate_token_config,get_jwt_token
 
 def atlas_occurrences(taxa=None,
                       filters=None,

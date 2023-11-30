@@ -5,7 +5,7 @@ from .get_api_url import get_api_url,readConfig
 from .apply_data_profile import apply_data_profile
 from .galah_geolocate import galah_geolocate
 from .show_all import show_all
-from .common_functions import add_filters,add_to_payload_ALA,generate_list_taxonConceptIDs,add_buffer
+from .common_functions import add_filters,add_to_payload_ALA,generate_list_taxonConceptIDs
 from .common_dictionaries import COUNTS_NAMES
 
 def atlas_counts(taxa=None,

@@ -6,7 +6,7 @@ from .get_api_url import get_api_url,readConfig
 from .atlas_occurrences import atlas_occurrences
 from .apply_data_profile import apply_data_profile
 from .common_dictionaries import ATLAS_KEYWORDS,ATLAS_SPECIES_FIELDS,atlases
-from .common_functions import add_filters,add_to_payload_ALA,add_buffer
+from .common_functions import add_filters,add_to_payload_ALA
 from .show_all import show_all
 
 # this function looks for all species with the associated name
@@ -19,9 +19,6 @@ def atlas_species(taxa=None,
                   counts=False,
                   polygon=None,
                   bbox=None,
-                  buffer=None,
-                  crs_deg=4326,
-                  crs_meters=3577
                   ):
     """
     While there are reasons why users may need to check every record meeting their search criteria (i.e. using ``galah.atlas_occurrences()``), 
@@ -44,13 +41,7 @@ def atlas_species(taxa=None,
             A polygon shape denoting a geographical region.  Defaults to ``None``.
         bbox : dict or shapely Polygon
             A polygon or dictionary type denoting four points, which are the corners of a geographical region.  Defaults to ``None``.
-        buffer : int or float
-            A number (in km) to describe the buffer to add around your desired shape.  Defaults to ``None``.
-        crs_deg : int
-            The number associated with the Coordinate Reference System (crs) of your shapefile in degrees.  Defaults to ``4326``, which is the CRS used in the ALA.
-        crs_meters : int
-            The number associated with the Coordinate Reference System (crs) of your shapefile in meters.  Defaults to ``3577``, which in Australian Albers.
-
+        
     Returns
     -------
         An object of class ``pandas.DataFrame``.
@@ -108,8 +99,6 @@ def atlas_species(taxa=None,
     if atlas in ["Australia","ALA"]:
         
         # create payload and add buffer to polygon if user specifies it
-        if buffer is not None:
-            polygon = add_buffer(polygon=polygon,bbox=bbox,buffer=buffer,crs_deg=crs_deg,crs_meters=crs_meters)
         payload = add_to_payload_ALA(payload=payload,atlas=atlas,taxa=taxa,filters=filters,polygon=polygon,bbox=bbox)
 
         # create the query id
