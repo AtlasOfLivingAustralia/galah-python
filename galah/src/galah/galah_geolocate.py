@@ -1,6 +1,7 @@
 import urllib
 import shapely
 import shapely.wkt
+import pandas as pd
 from shapely import Polygon,MultiPolygon
 from .get_api_url import readConfig
 
@@ -67,6 +68,8 @@ def galah_geolocate(polygon=None,
                 bounds=list(bbox.bounds)
                 new_bbox = shapely.box(bounds[0],bounds[1],bounds[2],bounds[3])
                 return str(new_bbox)
+            elif type(bbox) is pd.core.frame.DataFrame:
+                return str(shapely.box(xmin=bbox["minx"][0],xmax=bbox["maxx"][0],ymin=bbox["miny"][0],ymax=bbox["maxy"][0]))
             else:
                 print(bbox)
                 print(type(bbox))

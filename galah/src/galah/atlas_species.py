@@ -1,6 +1,5 @@
 import requests,urllib.parse,io
 import pandas as pd
-
 from .search_taxa import search_taxa
 from .get_api_url import get_api_url,readConfig
 from .atlas_occurrences import atlas_occurrences
@@ -9,7 +8,6 @@ from .common_dictionaries import ATLAS_KEYWORDS,ATLAS_SPECIES_FIELDS,atlases
 from .common_functions import add_filters,add_to_payload_ALA
 from .show_all import show_all
 
-# this function looks for all species with the associated name
 def atlas_species(taxa=None,
                   rank="species",
                   filters=None,
@@ -62,8 +60,10 @@ def atlas_species(taxa=None,
     # get atlas
     atlas = configs['galahSettings']['atlas'] 
 
+    # specify headers for API call
     headers = {}
 
+    # create payload variable so it is available for some atlases
     payload = {}
 
     #if atlas in ["Australia","ALA"]:
@@ -83,8 +83,6 @@ def atlas_species(taxa=None,
     rankID = ATLAS_SPECIES_FIELDS[atlas][rank]
     
     # get initial url
-    #if atlas in ["Australia","ALA"]:
-    #    baseURL,method = get_api_url(column1='api_name', column1value='names_search_bulk_species')
     if atlas not in ["Global","GBIF"]:
         baseURL,method = get_api_url(column1='api_name', column1value='records_species')
     else:

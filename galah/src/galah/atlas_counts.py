@@ -169,7 +169,7 @@ def atlas_counts(taxa=None,
 
         # get data
         response = requests.request(method,URL,headers=headers)
-
+        
         # check for daily maximum
         if response.status_code == 429:
             raise ValueError("You have reached the maximum number of daily queries for the ALA.")
@@ -198,13 +198,13 @@ def atlas_counts(taxa=None,
                     URL += "%20AND%20"
                 
                 # return grouped data frame
-                return galah_group_by(URL=URL, method=method, group_by=group_by, filters=filters, expand=expand, verbose=verbose, total_group_by=total_group_by, use_data_profile=use_data_profile)
+                return galah_group_by(URL=URL, method=method, group_by=group_by, filters=filters, expand=expand, verbose=verbose, total_group_by=total_group_by)
             
             # else, if not GBIF, just run group_by
             else:
 
                 # return grouped data frame
-                return galah_group_by(URL=URL, method=method, group_by=group_by, filters=filters, expand=expand, verbose=verbose, total_group_by=total_group_by, use_data_profile=use_data_profile)
+                return galah_group_by(URL=URL, method=method, group_by=group_by, filters=filters, expand=expand, verbose=verbose, total_group_by=total_group_by)
 
         # check if filters are specified
         if filters is not None:

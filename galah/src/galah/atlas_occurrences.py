@@ -183,13 +183,13 @@ def atlas_occurrences(taxa=None,
         headers = {}
 
     # goes to the 'fields' argument in occurrence download (csv list, commas between)
-    if fields is not None and atlas not in ["Global","GBIF"]:
+    if atlas in ["Australia","ALA"]:
+        pass
+    elif fields is not None and atlas not in ["Global","GBIF","Australia","ALA"]:
         if fields != "basic":
             baseURL += galah_select(select=fields,atlas=atlas)[:-3] + "&"
         else:
             baseURL += galah_select(select=ATLAS_SELECTIONS[atlas],atlas=atlas)[:-3] + "&"
-    elif atlas in ["Australia"]:
-        pass
     elif atlas in ["Austria","Brazil","France","Spain"]:
         baseURL += galah_select(select=ATLAS_SELECTIONS[atlas],atlas=atlas)[:-3] + "&"
     elif fields is not None and atlas in ["Global","GBIF"]:
@@ -230,7 +230,7 @@ def atlas_occurrences(taxa=None,
             selected_fields = galah_select(select="basic",atlas=atlas)
             URL = baseURL + "fq=%28qid%3A" + qid.text + "%29&" + selected_fields + "&qa=none&flimit=-1"
         elif fields == "all":
-            URL = baseURL + "fq=%28qid%3A" + qid.text + "%29&&qa=none&flimit=-1"
+            URL = baseURL + "fq=%28qid%3A" + qid.text + "%29&qa=none&flimit=-1"
         else:
             URL = baseURL + "fq=%28qid%3A" + qid.text + "%29&" + galah_select(select=fields,atlas=atlas) + "&qa=none&flimit=-1"
 
@@ -246,7 +246,7 @@ def atlas_occurrences(taxa=None,
             print()
 
         # get data
-        response = requests.request(method,URL,headers=headers)      
+        response = requests.request(method,URL,headers=headers)   
 
     else:
 
