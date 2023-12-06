@@ -218,15 +218,12 @@ def galah_group_by(URL=None,
                     #for facet in f:
                     if atlas in ["Australia","ALA"]:
                     
-                        # and sum(s.count("lsid") for s in payload["fq"]) > 1:
-                        for facet in f: 
-
-                            # check for fq in payload
-                            if "fq" not in payload:
-                                payload["fq"] = [facet]
-                            else:
-                                payload["fq"].append(facet)
-                                
+                        # check for fq in payload
+                        if "fq" not in payload:
+                            payload["fq"] = [f]
+                        else:
+                            payload["fq"].append(f)
+                            
                         payload_for_querying = copy.deepcopy(payload)
                         
                         # create payload and get qid
@@ -304,18 +301,20 @@ def galah_group_by(URL=None,
 
                         if entry['fq'].split(":")[0] in group_by:
                         
-                                # put entries in dictionary
-                                # if entry['fq'].split(":")[0] == group_by[0]:
-
-                            # add values to dicutionary
-                            # name=name
-                            for k,facet in enumerate(f):
-                                name,value = facet.split(":")
+                            # add facet value to dictionary for expand
+                            for facet in f:
+                                if len(facet.split(':')) > 2:
+                                    name_and_values = facet.split(':')
+                                    name = name_and_values[0]
+                                    value = ":".join(name_and_values[1:])
+                                else:
+                                    name,value=facet.split(':')
                                 value = value.replace('"','')
-                                # tryint this
+                                # trying this
                                 if name in group_by:
                                     dict_values[name].append(value)
                             dict_values = put_entries_in_grouped_dict(entry=entry,dict_values=dict_values,expand=expand)
+            
             # format table
             counts = pd.DataFrame(dict_values).reset_index(drop=True)
             counts.sort_values(by=group_by)
@@ -369,7 +368,7 @@ def galah_group_by(URL=None,
                             # check for only itesm you want
                             if g in entry['fq'] and entry['fq'].split(':')[0] == g:
 
-                                # add values to dicutionary
+                                # add values to dictionary
                                 dict_values = put_entries_in_grouped_dict(entry=entry,dict_values=dict_values,expand=expand)
 
             # get all counts into a dictionary and sort them

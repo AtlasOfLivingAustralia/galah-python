@@ -70,7 +70,12 @@ def put_entries_in_grouped_dict(entry=None,
     '''Creating dictionaries for galah_group_by'''
 
     if expand:
-        name,value = entry['fq'].split(":")
+        if len(entry['fq'].split(':')) > 2:
+            name_and_values = entry['fq'].split(':')
+            name = name_and_values[0]
+            value = ":".join(name_and_values[1:])
+        else:
+            name,value=entry['fq'].split(':')
         value = value.replace('"', '')
         if value.isdigit():
             value = int(value)
@@ -82,7 +87,12 @@ def put_entries_in_grouped_dict(entry=None,
                     dict_values[key].append("-")
 
     else:
-        name,value=entry['fq'].split(':')
+        if len(entry['fq'].split(':')) > 2:
+            name_and_values = entry['fq'].split(':')
+            name = name_and_values[0]
+            value = ":".join(name_and_values[1:])
+        else:
+            name,value=entry['fq'].split(':')
         value=value.replace('"','')
         if value.isdigit():
             value = int(value)
