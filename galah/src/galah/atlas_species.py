@@ -17,6 +17,7 @@ def atlas_species(taxa=None,
                   counts=False,
                   polygon=None,
                   bbox=None,
+                  simplify_polygon=False
                   ):
     """
     While there are reasons why users may need to check every record meeting their search criteria (i.e. using ``galah.atlas_occurrences()``), 
@@ -97,7 +98,7 @@ def atlas_species(taxa=None,
     if atlas in ["Australia","ALA"]:
         
         # create payload and add buffer to polygon if user specifies it
-        payload = add_to_payload_ALA(payload=payload,atlas=atlas,taxa=taxa,filters=filters,polygon=polygon,bbox=bbox)
+        payload = add_to_payload_ALA(payload=payload,atlas=atlas,taxa=taxa,filters=filters,polygon=polygon,bbox=bbox,simplify_polygon=simplify_polygon)
 
         # create the query id
         qid_URL, method2 = get_api_url(column1="api_name",column1value="occurrences_qid")

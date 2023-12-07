@@ -29,7 +29,8 @@ def atlas_occurrences(taxa=None,
                       species_list=False,
                       status_accepted=True,
                       polygon=None,
-                      bbox=None
+                      bbox=None,
+                      simplify_polygon=False
                       ):
     """
     The most common form of data stored by living atlases are observations of individual life forms, known as 'occurrences'. 
@@ -111,7 +112,7 @@ def atlas_occurrences(taxa=None,
     atlas = configs['galahSettings']['atlas']
 
     # check for email
-    if configs["galahSettings"]["email"] is None:
+    if configs["galahSettings"]["email"] is None or configs["galahSettings"]["email"] is "email@example.com":
         raise ValueError("Please provide an email for querying")
 
     headers = {}
@@ -214,7 +215,7 @@ def atlas_occurrences(taxa=None,
             filters=assertions
 
         # create payload
-        payload = add_to_payload_ALA(payload=payload,atlas=atlas,taxa=taxa,filters=filters,polygon=polygon,bbox=bbox)
+        payload = add_to_payload_ALA(payload=payload,atlas=atlas,taxa=taxa,filters=filters,polygon=polygon,bbox=bbox,simplify_polygon=simplify_polygon)
         
         # create the query id
         qid_URL, method2 = get_api_url(column1="api_name",column1value="occurrences_qid")
@@ -312,7 +313,7 @@ def atlas_occurrences(taxa=None,
                 raise ValueError("Assertions needs to be a string or a list of strings, i.e. identificationIncorrect == TRUE")
         
         if polygon is not None or bbox is not None:
-            URL += "&" + galah_geolocate(polygon=polygon,bbox=bbox)
+            URL += "&" + galah_geolocate(polygon=polygon,bbox=bbox,simplify_polygon=simplify_polygon)
 
         # raise error if user hasn't specified any type of filters
         if taxa is None and filters is None and assertions is None:

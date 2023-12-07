@@ -5,11 +5,8 @@ from .get_api_url import get_api_url,readConfig
 from .apply_data_profile import apply_data_profile
 from .galah_geolocate import galah_geolocate
 from .show_all import show_all
-from .common_functions import add_filters,add_to_payload_ALA,generate_list_taxonConceptIDs,add_buffer
+from .common_functions import add_filters,add_to_payload_ALA,generate_list_taxonConceptIDs
 from .common_dictionaries import COUNTS_NAMES
-
-# debugging
-import sys
 
 def atlas_counts(taxa=None,
                  filters=None,
@@ -20,9 +17,7 @@ def atlas_counts(taxa=None,
                  verbose=False,
                  polygon=None,
                  bbox=None,
-                 buffer=None,
-                 crs_deg=4326,
-                 crs_meters=3577
+                 simplify_polygon=False
                  ):
     """
     Prior to downloading data, it is often valuable to have some estimate of how many records are available, both for deciding
@@ -51,17 +46,10 @@ def atlas_counts(taxa=None,
         use_data_profile : string
             A profile name. Should be a string - the name or abbreviation of a data quality profile to apply to the query. Valid values can be seen using ``galah.show_all(profiles=True)``
         polygon : shapely Polygon
-            A polygon shape denoting a geographical region.  Defaults to ``None``.
+            A polygon object denoting a geographical region.  Defaults to ``None``.
         bbox : dict or shapely Polygon
-            A polygon or dictionary type denoting four points, which are the corners of a geographical region.  Defaults to ``None``.
-        buffer : int or float
-            A number (in km) to describe the buffer to add around your desired shape.  Defaults to ``None``.
-        crs_deg : int
-            The number associated with the Coordinate Reference System (crs) of your shapefile in degrees.  Defaults to ``4326``, which is the CRS used in the ALA.
-        crs_meters : int
-            The number associated with the Coordinate Reference System (crs) of your shapefile in meters.  Defaults to ``3577``, which in Australian Albers.
-
-            
+            A polygon or dictionary object denoting four points, which are the corners of a geographical region.  Defaults to ``None``.
+                    
     Returns
     -------
         An object of class ``pandas.DataFrame``.
@@ -120,6 +108,7 @@ def atlas_counts(taxa=None,
     # create headers
     headers = {}
 
+    #future code for API keys
     #if atlas in ["Australia","ALA"]:
     #    headers = {"x-api-key": configs["galahSettings"]["ALA_API_key"]}
     #else:
@@ -128,6 +117,7 @@ def atlas_counts(taxa=None,
     # create payload (for ALA)
     payload = {}
 
+    # check for Australian atlas
     if atlas in ["Australia","ALA"]:
 
         # check for data profile first
@@ -143,8 +133,6 @@ def atlas_counts(taxa=None,
             baseURL += "?disableAllQualityfilters=true&"
 
         # create payload
-        if buffer is not None:
-            polygon = add_buffer(polygon=polygon,bbox=bbox,buffer=buffer,crs_deg=crs_deg,crs_meters=crs_meters)
         payload = add_to_payload_ALA(payload=payload,atlas=atlas,taxa=taxa,filters=filters,polygon=polygon,bbox=bbox)
         
         # check for group by
@@ -155,19 +143,19 @@ def atlas_counts(taxa=None,
 
         # create the query id
         qid_URL, method2 = get_api_url(column1="api_name",column1value="occurrences_qid")
-        # try this
+        
+        # add options for data quality profiles
         if use_data_profile:
             data_profile_list = list(show_all(profiles=True)['shortName'])
             qid_URL = apply_data_profile(baseURL=qid_URL,data_profile_list=data_profile_list)
         else:
             qid_URL += "?disableAllQualityfilters=true&"
+
+        # cache the user's query and get a query ID
         qid = requests.request(method2,qid_URL,data=payload)
         
         # create the URL to grab your queryID and counts
-        if use_data_profile:
-            URL = baseURL + "fq=%28qid%3A" + qid.text + "%29&flimit=-1&pageSize=0"
-        else:
-            URL = baseURL + "fq=%28qid%3A" + qid.text + "%29&flimit=-1&pageSize=0"
+        URL = baseURL + "fq=%28qid%3A" + qid.text + "%29&flimit=-1&pageSize=0"
 
         if verbose:
             print()
@@ -182,7 +170,7 @@ def atlas_counts(taxa=None,
 
         # get data
         response = requests.request(method,URL,headers=headers)
-
+        
         # check for daily maximum
         if response.status_code == 429:
             raise ValueError("You have reached the maximum number of daily queries for the ALA.")
@@ -211,13 +199,13 @@ def atlas_counts(taxa=None,
                     URL += "%20AND%20"
                 
                 # return grouped data frame
-                return galah_group_by(URL=URL, method=method, group_by=group_by, filters=filters, expand=expand, verbose=verbose, total_group_by=total_group_by, use_data_profile=use_data_profile)
+                return galah_group_by(URL=URL, method=method, group_by=group_by, filters=filters, expand=expand, verbose=verbose, total_group_by=total_group_by)
             
             # else, if not GBIF, just run group_by
             else:
 
                 # return grouped data frame
-                return galah_group_by(URL=URL, method=method, group_by=group_by, filters=filters, expand=expand, verbose=verbose, total_group_by=total_group_by, use_data_profile=use_data_profile)
+                return galah_group_by(URL=URL, method=method, group_by=group_by, filters=filters, expand=expand, verbose=verbose, total_group_by=total_group_by)
 
         # check if filters are specified
         if filters is not None:
@@ -241,7 +229,7 @@ def atlas_counts(taxa=None,
 
         # testing for galah_geolocate - implemented in next version
         if polygon is not None or bbox is not None:
-            URL += "&" + galah_geolocate(polygon=polygon,bbox=bbox)
+            URL += "&" + galah_geolocate(polygon=polygon,bbox=bbox,simplify_polygon=simplify_polygon)
         
         # use this to get only the data we need
         URL += "&pageSize=0"

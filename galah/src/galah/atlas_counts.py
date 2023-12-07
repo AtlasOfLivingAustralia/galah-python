@@ -16,7 +16,8 @@ def atlas_counts(taxa=None,
                  use_data_profile=False,
                  verbose=False,
                  polygon=None,
-                 bbox=None
+                 bbox=None,
+                 simplify_polygon=False
                  ):
     """
     Prior to downloading data, it is often valuable to have some estimate of how many records are available, both for deciding
@@ -228,7 +229,7 @@ def atlas_counts(taxa=None,
 
         # testing for galah_geolocate - implemented in next version
         if polygon is not None or bbox is not None:
-            URL += "&" + galah_geolocate(polygon=polygon,bbox=bbox)
+            URL += "&" + galah_geolocate(polygon=polygon,bbox=bbox,simplify_polygon=simplify_polygon)
         
         # use this to get only the data we need
         URL += "&pageSize=0"

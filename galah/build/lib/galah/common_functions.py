@@ -9,12 +9,9 @@ from .galah_geolocate import galah_geolocate
 from .common_dictionaries import atlases, ATLAS_KEYWORDS
 from shapely import Polygon,MultiPolygon
 
-# for debugging
-import sys
-
-# for adding filters specifically to atlas_occurrences
 def add_predicates(predicates=None,
                    filters=None):
+    '''for adding filters specifically to atlas_occurrences'''
 
     if type(filters) == str:
         filters = [filters]
@@ -28,11 +25,11 @@ def add_predicates(predicates=None,
 
     return predicates
 
-# for adding filters to the URL
 def add_filters(URL=None,
                 atlas=None,
                 filters=None,
                 ifGroupBy=False):
+    '''Adding filters directly to the URL'''
 
     # change type of filters to list for easy looping
     if type(filters) == str:
@@ -70,9 +67,15 @@ def put_entries_in_grouped_dict(entry=None,
                                 dict_values=None,
                                 expand=None
                                 ):
-    '''X'''
+    '''Creating dictionaries for galah_group_by'''
+
     if expand:
-        name,value = entry['fq'].split(":")
+        if len(entry['fq'].split(':')) > 2:
+            name_and_values = entry['fq'].split(':')
+            name = name_and_values[0]
+            value = ":".join(name_and_values[1:])
+        else:
+            name,value=entry['fq'].split(':')
         value = value.replace('"', '')
         if value.isdigit():
             value = int(value)
@@ -84,7 +87,12 @@ def put_entries_in_grouped_dict(entry=None,
                     dict_values[key].append("-")
 
     else:
-        name,value=entry['fq'].split(':')
+        if len(entry['fq'].split(':')) > 2:
+            name_and_values = entry['fq'].split(':')
+            name = name_and_values[0]
+            value = ":".join(name_and_values[1:])
+        else:
+            name,value=entry['fq'].split(':')
         value=value.replace('"','')
         if value.isdigit():
             value = int(value)
@@ -104,7 +112,7 @@ def get_response_show_all(column1=None,
                       headers={},
                       max_entries=-1,
                       offset=None):
-    '''Function for X'''
+    '''Function for getting responses for all of the show_all functions'''
 
     # get data and check for 
     URL,method = get_api_url(column1=column1,column1value=column1value,column2=column2,column2value=column2value)
@@ -121,6 +129,7 @@ def get_response_show_all(column1=None,
 
 def generate_list_taxonConceptIDs(taxa=None,
                                   atlas=None):
+    '''Function for getting more than one taxonConceptIDs'''
 
     if taxa is None:
         raise ValueError("Please provide a taxa for this information")
@@ -139,22 +148,20 @@ def generate_list_taxonConceptIDs(taxa=None,
                     "\n         atlas.counts[\"Osphranter rufus\",\"Vulpes vulpes\",\"Macropus giganteus\",\"Phascolarctos cinereus\"])")
 
     # get the number of records associated with each taxa
-    # for name in taxa:
+    for name in taxa:
 
-    #     # create temporary dataframe for taxon id
-    #     tempdf = search_taxa(name)
+        # create temporary dataframe for taxon id
+        tempdf = search_taxa(name)
         
-    #     # check if dataframe is empty - if so, return None; else, continue
-    #     if tempdf.empty:
-    #         print("No taxon matches were found for {} in the selected atlas ({})".format(name, atlas))
-    #         if len(taxa) == 1:
-    #             return None
-    #         continue
+        # check if dataframe is empty - if so, return None; else, continue
+        if tempdf.empty:
+            print("No taxon matches were found for {} in the selected atlas ({})".format(name, atlas))
+            if len(taxa) == 1:
+                return None
+            continue
 
     # get the taxonConceptID for taxa while checking for extant atlas
     if atlas in atlases:
-        # adding verbose=True for now
-        #print("here")
         taxonConceptID = list(search_taxa(taxa=taxa)[ATLAS_KEYWORDS[atlas]])
     else:
         raise ValueError("Atlas {} is not taken into account".format(atlas))
@@ -181,7 +188,9 @@ def add_to_payload_ALA(payload=None,
                        filters=None,
                        polygon=None,
                        bbox=None,
+                       simplify_polygon=False
                        ):
+    '''Function for adding variables to the payload when we cache (post) data to the ALA'''
 
     if payload is None:
         raise ValueError("You need to provide the payload for this function")
@@ -198,19 +207,19 @@ def add_to_payload_ALA(payload=None,
 
     if filters is not None:
         if type(filters) is str:
-            if "fq" not in payload:
-                payload["fq"] = [galah_filter(filters)]
-            else:
-                payload["fq"].append(galah_filter(filters))
+            filters_check = galah_filter(filters)
+            if " AND " in filters_check:
+                filters_check = filters_check.split(" AND ")
+            payload = add_filter_to_payload(filters_check,payload=payload)
         else:
             for f in filters:
-                if "fq" not in payload:
-                    payload["fq"] = [galah_filter(f)]
-                else:
-                    payload["fq"].append(galah_filter(f))
+                filters_check = galah_filter(f)
+                if " AND " in filters_check:
+                    filters_check = filters_check.split(" AND ")
+                payload = add_filter_to_payload(filters_check,payload=payload)
 
     if polygon is not None or bbox is not None:
-        wkts = galah_geolocate(polygon=polygon,bbox=bbox)
+        wkts = galah_geolocate(polygon=polygon,bbox=bbox,simplify_polygon=simplify_polygon)
         if "wkt" not in payload:
             if type(wkts) is str:
                 payload["wkt"] = [wkts]
@@ -224,11 +233,28 @@ def add_to_payload_ALA(payload=None,
 
     return payload
 
+def add_filter_to_payload(f,payload):
+    '''Checks for less than or greater than syntax and returns two strings'''
+    if "fq" not in payload:
+        if type(f) is list:
+            payload["fq"] = f
+        else:
+            payload["fq"] = [f]
+    else:
+        if type(f) is list:
+            for f in f:
+                payload["fq"].append(f)
+        else:
+            payload["fq"].append(f)
+    return payload
+
+
 def add_buffer(polygon=None,
                bbox=None,
                buffer=None,
                crs_deg=4326,
                crs_meters=3577):
+    '''DEPRECATED? function to add buffer to shapefile'''
     
     if buffer is None:
         raise ValueError("You need to include a buffer with this function")

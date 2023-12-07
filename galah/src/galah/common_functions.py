@@ -188,6 +188,7 @@ def add_to_payload_ALA(payload=None,
                        filters=None,
                        polygon=None,
                        bbox=None,
+                       simplify_polygon=False
                        ):
     '''Function for adding variables to the payload when we cache (post) data to the ALA'''
 
@@ -218,7 +219,7 @@ def add_to_payload_ALA(payload=None,
                 payload = add_filter_to_payload(filters_check,payload=payload)
 
     if polygon is not None or bbox is not None:
-        wkts = galah_geolocate(polygon=polygon,bbox=bbox)
+        wkts = galah_geolocate(polygon=polygon,bbox=bbox,simplify_polygon=simplify_polygon)
         if "wkt" not in payload:
             if type(wkts) is str:
                 payload["wkt"] = [wkts]

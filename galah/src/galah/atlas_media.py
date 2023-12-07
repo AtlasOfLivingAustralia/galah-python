@@ -24,6 +24,7 @@ def atlas_media(taxa=None,
                 use_data_profile=False,
                 polygon=None,
                 bbox=None,
+                simplify_polygon=False,
                 collect=False,
                 path=None,
                 ):
@@ -100,7 +101,8 @@ def atlas_media(taxa=None,
 
     # get occurrence data from atlas_occurrences
     dataFrame = atlas_occurrences(taxa=taxa,filters=filters,fields=fields,assertions=assertions,
-                                  use_data_profile=use_data_profile,polygon=polygon,bbox=bbox,verbose=verbose)
+                                  use_data_profile=use_data_profile,polygon=polygon,bbox=bbox,
+                                  simplify_polygon=simplify_polygon,verbose=verbose)
     if dataFrame.empty:
         raise ValueError("There are no occurrences or media associated with your query.  Please try your query on atlas_counts before trying it again on atlas_media.")
 
