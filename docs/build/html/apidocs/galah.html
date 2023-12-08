@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>API Docs &#8212; Galah 0.6.0 documentation</title>
+    <title>API Docs &#8212; Galah 0.7.0 documentation</title>
   
   
   
@@ -37,7 +37,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
 
-    <script src="../_static/documentation_options.js?v=dda85ae5"></script>
+    <script src="../_static/documentation_options.js?v=b9678aa1"></script>
     <script src="../_static/doctools.js?v=888ff710"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/design-tabs.js?v=36754332"></script>
@@ -46,7 +46,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Authors and Citation" href="../authors/index.html" />
-    <link rel="prev" title="Narrow Results" href="../galah_user_guide/Narrow_Results.html" />
+    <link rel="prev" title="Temporal filtering" href="../galah_user_guide/Temporal_Filtering.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -388,7 +388,7 @@ document.write(`
 <span id="api-docs"></span><h1>API Docs<a class="headerlink" href="#module-galah" title="Link to this heading">#</a></h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="galah.atlas_counts">
-<span class="sig-prename descclassname"><span class="pre">galah.</span></span><span class="sig-name descname"><span class="pre">atlas_counts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">taxa</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filters</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">group_by</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">total_group_by</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expand</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_data_profile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">polygon</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bbox</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#galah.atlas_counts" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">galah.</span></span><span class="sig-name descname"><span class="pre">atlas_counts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">taxa</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scientific_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filters</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">group_by</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">total_group_by</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expand</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_data_profile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">polygon</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bbox</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">simplify_polygon</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#galah.atlas_counts" title="Link to this definition">#</a></dt>
 <dd><p>Prior to downloading data, it is often valuable to have some estimate of how many records are available, both for deciding
 if the query is feasible, and for estimating how long it will take to download. Alternatively, for some kinds of reporting,
 the count of observations may be all that is required, for example for understanding how observations are growing or shrinking
@@ -406,8 +406,8 @@ argument.  It can also return the total number of groups by using the <cite>tota
 <li><p><strong>expand</strong> (<em>logical</em>) – When using the <code class="docutils literal notranslate"><span class="pre">group_by</span></code> argument of <code class="docutils literal notranslate"><span class="pre">galah.atlas_counts()</span></code>, controls whether counts for each row value are combined or calculated separately. Defaults to <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p></li>
 <li><p><strong>verbose</strong> (<em>logical</em>) – If <code class="docutils literal notranslate"><span class="pre">True</span></code>, galah gives more information like progress bars. Defaults to <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
 <li><p><strong>use_data_profile</strong> (<em>string</em>) – A profile name. Should be a string - the name or abbreviation of a data quality profile to apply to the query. Valid values can be seen using <code class="docutils literal notranslate"><span class="pre">galah.show_all(profiles=True)</span></code></p></li>
-<li><p><strong>polygon</strong> (<em>shapely Polygon</em>) – A polygon shape denoting a geographical region.  Defaults to <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
-<li><p><strong>bbox</strong> (<em>dict</em><em> or </em><em>shapely Polygon</em>) – A polygon or dictionary type denoting four points, which are the corners of a geographical region.  Defaults to <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
+<li><p><strong>polygon</strong> (<em>shapely Polygon</em>) – A polygon object denoting a geographical region.  Defaults to <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
+<li><p><strong>bbox</strong> (<em>dict</em><em> or </em><em>shapely Polygon</em>) – A polygon or dictionary object denoting four points, which are the corners of a geographical region.  Defaults to <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
@@ -422,23 +422,23 @@ span.prompt1:before {
 }
 </style><span class="prompt1"><span class="n">galah</span><span class="o">.</span><span class="n">atlas_counts</span><span class="p">()</span></span>
 </pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>   totalRecords
-0     130573493
+0     132325250
 </pre></div>
 </div>
 <p>Return records from 2020 onwards, grouped by year</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="n">galah</span><span class="o">.</span><span class="n">atlas_counts</span><span class="p">(</span><span class="n">filters</span><span class="o">=</span><span class="s2">&quot;year&gt;2019&quot;</span><span class="p">,</span><span class="n">group_by</span><span class="o">=</span><span class="s2">&quot;year&quot;</span><span class="p">,</span><span class="n">expand</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></span>
 </pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>   year    count
-0  2020  7113758
-1  2021  8199180
-2  2022  8345173
-3  2023  2951853
+0  2020  7124063
+1  2021  8253978
+2  2022  8409281
+3  2023  3400111
 </pre></div>
 </div>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="galah.atlas_media">
-<span class="sig-prename descclassname"><span class="pre">galah.</span></span><span class="sig-name descname"><span class="pre">atlas_media</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">taxa</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filters</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fields</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">multimedia</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">assertions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_data_profile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">collect</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#galah.atlas_media" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">galah.</span></span><span class="sig-name descname"><span class="pre">atlas_media</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">taxa</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scientific_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filters</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fields</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">multimedia</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">assertions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_data_profile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">polygon</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bbox</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">simplify_polygon</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">collect</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#galah.atlas_media" title="Link to this definition">#</a></dt>
 <dd><p>In addition to text data describing individual occurrences and their attributes, ALA stores images, sounds and videos
 associated with a given record. <code class="docutils literal notranslate"><span class="pre">galah.atlas_media()</span></code> displays metadata for any and all of the media types.</p>
 <dl class="field-list simple">
@@ -471,6 +471,8 @@ Default is set to <code class="docutils literal notranslate"><span class="pre">&
 <li><p><strong>multimedia</strong> (<em>string / list</em>) – This is for specifying what types of multimedia you would like, i.e “images”.  Defaults to [‘images’,’videos’,’sounds’]</p></li>
 <li><p><strong>assertions</strong> (<em>string</em>) – Using “assertions” returns all quality assertion-related columns. These columns are data quality checks run by each living atlas. The list of assertions is shown by <code class="docutils literal notranslate"><span class="pre">galah.show_all(assertions=True)</span></code>.</p></li>
 <li><p><strong>use_data_profile</strong> (<em>logical</em>) – if <code class="docutils literal notranslate"><span class="pre">True</span></code>, uses data profile set in <code class="docutils literal notranslate"><span class="pre">galah_config()</span></code>. Valid values can be seen using <code class="docutils literal notranslate"><span class="pre">galah.show_all(profiles=True)</span></code>. Default is <code class="docutils literal notranslate"><span class="pre">False</span></code></p></li>
+<li><p><strong>polygon</strong> (<em>shapely Polygon</em>) – A polygon shape denoting a geographical region.  Defaults to <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
+<li><p><strong>bbox</strong> (<em>dict</em><em> or </em><em>shapely Polygon</em>) – A polygon or dictionary type denoting four points, which are the corners of a geographical region.  Defaults to <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
 <li><p><strong>collect</strong> (<em>logical</em>) – if <code class="docutils literal notranslate"><span class="pre">True</span></code>, downloads full-sized images and media files returned to a local directory.</p></li>
 <li><p><strong>path</strong> (<em>string</em>) – path to directory where downloaded media will be stored.  Defaults to current directory.</p></li>
 </ul>
@@ -482,103 +484,84 @@ Default is set to <code class="docutils literal notranslate"><span class="pre">&
 <p class="rubric">Examples</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="n">galah</span><span class="o">.</span><span class="n">galah_config</span><span class="p">(</span><span class="n">atlas</span><span class="o">=</span><span class="s2">&quot;Australia&quot;</span><span class="p">,</span><span class="n">email</span><span class="o">=</span><span class="s2">&quot;youremail@example.com&quot;</span><span class="p">)</span></span>
 <span class="prompt1"><span class="n">galah</span><span class="o">.</span><span class="n">atlas_media</span><span class="p">(</span><span class="n">taxa</span><span class="o">=</span><span class="s2">&quot;Ornithorhynchus anatinus&quot;</span><span class="p">,</span><span class="n">filters</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;year=2020&quot;</span><span class="p">,</span><span class="s2">&quot;decimalLongitude&gt;153.0&quot;</span><span class="p">)</span></span>
-</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>    decimalLatitude  decimalLongitude             eventDate  \
-0        -30.311448        153.015910  2020-09-08T07:26:47Z   
-1        -30.300649        153.006628  2020-08-30T08:37:43Z   
-2        -30.298361        153.007479  2020-08-30T08:35:00Z   
-3        -30.298183        153.005912  2020-09-04T08:28:00Z   
-4        -30.297841        153.005873  2020-09-26T07:39:00Z   
-5        -28.678673        153.297699  2020-08-13T00:00:00Z   
-6        -28.661653        153.300439  2020-10-12T06:20:00Z   
-7        -28.661653        153.300439  2020-10-12T06:20:00Z   
-8        -28.213785        153.386929  2020-01-17T07:09:00Z   
-9        -28.213785        153.386929  2020-01-17T07:09:00Z   
-10       -28.765905        153.328527  2020-08-16T00:00:00Z   
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>   decimalLatitude  decimalLongitude             eventDate  \
+0       -30.311448        153.015910  2020-09-08T07:26:47Z   
+1       -30.300649        153.006628  2020-08-30T08:37:43Z   
+2       -30.298361        153.007479  2020-08-30T08:35:00Z   
+3       -30.298183        153.005912  2020-09-04T08:28:00Z   
+4       -30.297841        153.005873  2020-09-26T07:39:00Z   
+5       -28.678673        153.297699  2020-08-13T00:00:00Z   
+6       -28.661653        153.300439  2020-10-12T06:20:00Z   
+7       -28.661653        153.300439  2020-10-12T06:20:00Z   
+8       -28.213785        153.386929  2020-01-17T07:09:00Z   
+9       -28.213785        153.386929  2020-01-17T07:09:00Z   
 
-              scientificName                              recordID  \
-0   Ornithorhynchus anatinus  6882dfe3-5295-493d-a005-66f8392e9d5b   
-1   Ornithorhynchus anatinus  72ad295f-112d-442f-83e1-fd385ef9163a   
-2   Ornithorhynchus anatinus  42912016-2409-4125-a61f-13ffd4c32fcb   
-3   Ornithorhynchus anatinus  dd885218-bdb9-404a-8441-e5cd329f6605   
-4   Ornithorhynchus anatinus  072bc4f0-7581-44c6-b0ec-e3fe58d251fc   
-5   Ornithorhynchus anatinus  12d8c7f9-9d66-4312-9245-87a0a1021557   
-6   Ornithorhynchus anatinus  2a701513-b21d-4baa-bac4-5e6a3a65252b   
-7   Ornithorhynchus anatinus  2a701513-b21d-4baa-bac4-5e6a3a65252b   
-8   Ornithorhynchus anatinus  808b0c19-9616-45f1-994e-e3b33fc32836   
-9   Ornithorhynchus anatinus  808b0c19-9616-45f1-994e-e3b33fc32836   
-10  Ornithorhynchus anatinus  725579d7-d576-4e5f-8203-f691b933a743   
+             scientificName                              recordID  \
+0  Ornithorhynchus anatinus  6882dfe3-5295-493d-a005-66f8392e9d5b   
+1  Ornithorhynchus anatinus  72ad295f-112d-442f-83e1-fd385ef9163a   
+2  Ornithorhynchus anatinus  42912016-2409-4125-a61f-13ffd4c32fcb   
+3  Ornithorhynchus anatinus  dd885218-bdb9-404a-8441-e5cd329f6605   
+4  Ornithorhynchus anatinus  072bc4f0-7581-44c6-b0ec-e3fe58d251fc   
+5  Ornithorhynchus anatinus  12d8c7f9-9d66-4312-9245-87a0a1021557   
+6  Ornithorhynchus anatinus  2a701513-b21d-4baa-bac4-5e6a3a65252b   
+7  Ornithorhynchus anatinus  2a701513-b21d-4baa-bac4-5e6a3a65252b   
+8  Ornithorhynchus anatinus  808b0c19-9616-45f1-994e-e3b33fc32836   
+9  Ornithorhynchus anatinus  808b0c19-9616-45f1-994e-e3b33fc32836   
 
-               dataResourceName occurrenceStatus multimedia  \
-0         iNaturalist Australia          PRESENT      Image   
-1         iNaturalist Australia          PRESENT      Image   
-2         iNaturalist Australia          PRESENT      Image   
-3         iNaturalist Australia          PRESENT      Image   
-4         iNaturalist Australia          PRESENT      Image   
-5         iNaturalist Australia          PRESENT      Image   
-6         iNaturalist Australia          PRESENT      Image   
-7         iNaturalist Australia          PRESENT      Image   
-8   Earth Guardians Weekly Feed          PRESENT      Image   
-9   Earth Guardians Weekly Feed          PRESENT      Image   
-10                    cPlatypus          PRESENT      Video   
+              dataResourceName occurrenceStatus multimedia  \
+0        iNaturalist Australia          PRESENT      Image   
+1        iNaturalist Australia          PRESENT      Image   
+2        iNaturalist Australia          PRESENT      Image   
+3        iNaturalist Australia          PRESENT      Image   
+4        iNaturalist Australia          PRESENT      Image   
+5        iNaturalist Australia          PRESENT      Image   
+6        iNaturalist Australia          PRESENT      Image   
+7        iNaturalist Australia          PRESENT      Image   
+8  Earth Guardians Weekly Feed          PRESENT      Image   
+9  Earth Guardians Weekly Feed          PRESENT      Image   
 
-                         imageIdentifier    mimeType  sizeInBytes  \
-0   792a93d4-6436-4222-9a00-00cda0ec1f14  image/jpeg       175162   
-1   1aad7125-c6c0-4557-b9a2-112c03ac6709  image/jpeg      3079014   
-2   09efd0a0-aa51-4d00-80f9-4e78e19aa89e  image/jpeg      1503880   
-3   40aadbde-3918-4bba-9dc9-13fa1da3809b  image/jpeg      2678773   
-4   14374712-1c37-4e2d-af28-4572f64e7d3a  image/jpeg      3021372   
-5   393df479-5fbb-464e-82ed-4d6fd19dd863  image/jpeg        53063   
-6   7424399a-f327-4ea1-9ffa-aa7a2b69f82b  image/jpeg       173556   
-7   cee7bb9f-6b2e-4c47-8ba8-c9a3bdf92fa0  image/jpeg       115409   
-8   66904cee-f8ca-4e3a-b7d5-d738f4bd0978  image/jpeg      2944958   
-9   dfdbd258-d90a-484b-af19-2070705f166c  image/jpeg      3062881   
-10  52aea32a-c4f8-494d-a8dd-3c8e0aa97780   video/mp4     20971279   
+                                 images videos  sounds       creator  \
+0  792a93d4-6436-4222-9a00-00cda0ec1f14    NaN     NaN  kerrycameron   
+1  1aad7125-c6c0-4557-b9a2-112c03ac6709    NaN     NaN  Brett Vercoe   
+2  09efd0a0-aa51-4d00-80f9-4e78e19aa89e    NaN     NaN  Brett Vercoe   
+3  40aadbde-3918-4bba-9dc9-13fa1da3809b    NaN     NaN  Brett Vercoe   
+4  14374712-1c37-4e2d-af28-4572f64e7d3a    NaN     NaN  Brett Vercoe   
+5  393df479-5fbb-464e-82ed-4d6fd19dd863    NaN     NaN  julespetroff   
+6  7424399a-f327-4ea1-9ffa-aa7a2b69f82b    NaN     NaN  julespetroff   
+7  cee7bb9f-6b2e-4c47-8ba8-c9a3bdf92fa0    NaN     NaN  julespetroff   
+8  66904cee-f8ca-4e3a-b7d5-d738f4bd0978    NaN     NaN          None   
+9  dfdbd258-d90a-484b-af19-2070705f166c    NaN     NaN          None   
 
-           dateUploaded            dateTaken  height   width       creator  \
-0   2020-09-09 23:12:35  2020-09-09 23:12:35   701.0   927.0  kerrycameron   
-1   2020-09-07 09:45:24  2020-09-07 09:45:24  2048.0  1365.0  Brett Vercoe   
-2   2020-09-02 08:06:53  2020-09-02 08:06:53  1238.0  2048.0  Brett Vercoe   
-3   2020-09-07 11:34:57  2020-09-07 11:34:57  1365.0  2048.0  Brett Vercoe   
-4   2020-10-20 02:00:38  2020-10-20 02:00:38  1365.0  2048.0  Brett Vercoe   
-5   2020-09-27 03:39:22  2020-09-27 03:39:22   426.0   638.0  julespetroff   
-6   2020-10-14 23:06:14  2020-10-14 23:06:14   401.0   713.0  julespetroff   
-7   2020-10-14 23:05:32  2020-10-14 23:05:32   500.0   661.0  julespetroff   
-8   2020-02-01 04:10:14  2020-02-01 04:10:14  5312.0  2988.0           NaN   
-9   2020-02-01 04:10:13  2020-02-01 04:10:13  5312.0  2988.0           NaN   
-10  2022-09-06 21:10:51  2022-09-06 21:10:51     NaN     NaN           NaN   
+                                          license    mimetype  width  height  \
+0  http://creativecommons.org/licenses/by-nc/4.0/  image/jpeg    927     701   
+1  http://creativecommons.org/licenses/by-nc/4.0/  image/jpeg   1365    2048   
+2  http://creativecommons.org/licenses/by-nc/4.0/  image/jpeg   2048    1238   
+3  http://creativecommons.org/licenses/by-nc/4.0/  image/jpeg   2048    1365   
+4  http://creativecommons.org/licenses/by-nc/4.0/  image/jpeg   2048    1365   
+5  http://creativecommons.org/licenses/by-nc/4.0/  image/jpeg    638     426   
+6  http://creativecommons.org/licenses/by-nc/4.0/  image/jpeg    713     401   
+7  http://creativecommons.org/licenses/by-nc/4.0/  image/jpeg    661     500   
+8                                            None  image/jpeg   2988    5312   
+9                                            None  image/jpeg   2988    5312   
 
-                                           license dataResourceUid  \
-0   http://creativecommons.org/licenses/by-nc/4.0/          dr1411   
-1   http://creativecommons.org/licenses/by-nc/4.0/          dr1411   
-2   http://creativecommons.org/licenses/by-nc/4.0/          dr1411   
-3   http://creativecommons.org/licenses/by-nc/4.0/          dr1411   
-4   http://creativecommons.org/licenses/by-nc/4.0/          dr1411   
-5   http://creativecommons.org/licenses/by-nc/4.0/          dr1411   
-6   http://creativecommons.org/licenses/by-nc/4.0/          dr1411   
-7   http://creativecommons.org/licenses/by-nc/4.0/          dr1411   
-8                                              NaN          dr1902   
-9                                              NaN          dr1902   
-10                                             NaN          dr7973   
-
-                            occurrenceID  
-0   6882dfe3-5295-493d-a005-66f8392e9d5b  
-1   72ad295f-112d-442f-83e1-fd385ef9163a  
-2   42912016-2409-4125-a61f-13ffd4c32fcb  
-3   dd885218-bdb9-404a-8441-e5cd329f6605  
-4   072bc4f0-7581-44c6-b0ec-e3fe58d251fc  
-5   12d8c7f9-9d66-4312-9245-87a0a1021557  
-6   2a701513-b21d-4baa-bac4-5e6a3a65252b  
-7   2a701513-b21d-4baa-bac4-5e6a3a65252b  
-8   808b0c19-9616-45f1-994e-e3b33fc32836  
-9   808b0c19-9616-45f1-994e-e3b33fc32836  
-10                                   NaN
+                                            imageUrl  
+0  https://images.ala.org.au/store/4/1/f/1/792a93...  
+1  https://images.ala.org.au/store/9/0/7/6/1aad71...  
+2  https://images.ala.org.au/store/e/9/8/a/09efd0...  
+3  https://images.ala.org.au/store/b/9/0/8/40aadb...  
+4  https://images.ala.org.au/store/a/3/d/7/143747...  
+5  https://images.ala.org.au/store/3/6/8/d/393df4...  
+6  https://images.ala.org.au/store/b/2/8/f/742439...  
+7  https://images.ala.org.au/store/0/a/f/2/cee7bb...  
+8  https://images.ala.org.au/store/8/7/9/0/66904c...  
+9  https://images.ala.org.au/store/c/6/6/1/dfdbd2...
 </pre></div>
 </div>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="galah.atlas_occurrences">
-<span class="sig-prename descclassname"><span class="pre">galah.</span></span><span class="sig-name descname"><span class="pre">atlas_occurrences</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">taxa</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filters</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fields</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">assertions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_data_profile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">species_list</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">status_accepted</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">polygon</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bbox</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#galah.atlas_occurrences" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">galah.</span></span><span class="sig-name descname"><span class="pre">atlas_occurrences</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">taxa</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scientific_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filters</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fields</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">assertions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_data_profile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">species_list</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">status_accepted</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">polygon</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bbox</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">simplify_polygon</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#galah.atlas_occurrences" title="Link to this definition">#</a></dt>
 <dd><p>The most common form of data stored by living atlases are observations of individual life forms, known as ‘occurrences’.
 This function allows the user to search for occurrence records that match their specific criteria, and return them as a
 <code class="docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code> for analysis. Optionally, the user can also request a DOI for a given download to facilitate
@@ -628,202 +611,59 @@ Default is set to <code class="docutils literal notranslate"><span class="pre">&
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="kn">import</span> <span class="nn">galah</span></span>
 <span class="prompt1"><span class="n">galah</span><span class="o">.</span><span class="n">galah_config</span><span class="p">(</span><span class="n">atlas</span><span class="o">=</span><span class="s2">&quot;Australia&quot;</span><span class="p">,</span><span class="n">email</span><span class="o">=</span><span class="s2">&quot;your-email@example.com&quot;</span><span class="p">)</span></span>
 <span class="prompt1"><span class="n">galah</span><span class="o">.</span><span class="n">atlas_occurrences</span><span class="p">(</span><span class="n">taxa</span><span class="o">=</span><span class="s2">&quot;Vulpes vulpes&quot;</span><span class="p">,</span><span class="n">filters</span><span class="o">=</span><span class="s2">&quot;year=2023&quot;</span><span class="p">)</span></span>
-</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>                                  recordID catalogNumber  \
-0     001355be-9407-4911-950c-625b7ae3d340   FO-SI-29840   
-1     001af22b-7417-49ff-b27d-1da874c64488   FO-SI-27733   
-2     0035decc-82cd-475a-92e1-d4549d112459   FO-SI-28427   
-3     003fdc43-4489-49cb-9e11-0b5753f7da63   FO-SI-27440   
-4     005a66b1-7b4f-4dc0-9834-33201bedcca0   FO-SI-27655   
-...                                    ...           ...   
-3940  ff82cedc-f30f-4b84-b78c-7d3a2cadb0b5     163943669   
-3941  ffb1756c-6906-4917-b811-dcb641d5e34f   FO-SI-28664   
-3942  ffb916b4-7ad5-494e-a071-fcd55a92774a     147557589   
-3943  ffebb23c-58c3-4bf8-8f5c-b49f890154c9   FO-SI-27243   
-3944  fff87988-89de-4533-837c-61f6cf8a82e6     147559823   
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>      decimalLatitude  decimalLongitude             eventDate scientificName  \
+0          -39.083564        146.383184  2023-02-02T00:00:00Z  Vulpes vulpes   
+1          -39.055892        146.448243  2023-09-26T02:58:13Z  Vulpes vulpes   
+2          -39.029077        146.323238  2023-01-12T19:16:00Z  Vulpes vulpes   
+3          -39.026141        146.332604  2023-07-16T00:00:00Z  Vulpes vulpes   
+4          -39.021544        146.443742  2023-03-14T04:40:48Z  Vulpes vulpes   
+...               ...               ...                   ...            ...   
+4900        38.900000        -77.000000  2023-11-04T01:55:00Z  Vulpes vulpes   
+4901        39.300000        -75.400000  2023-11-02T04:54:00Z  Vulpes vulpes   
+4902        40.000000        -81.500000  2023-07-14T11:15:00Z  Vulpes vulpes   
+4903        43.600000        145.300000  2023-08-09T10:50:47Z  Vulpes vulpes   
+4904        51.100000         -0.500000  2023-03-17T12:04:54Z  Vulpes vulpes   
 
-                                         taxonConceptID raw_scientificName  \
-0     https://biodiversity.org.au/afd/taxa/2869ce8a-...      Vulpes vulpes   
-1     https://biodiversity.org.au/afd/taxa/2869ce8a-...      Vulpes vulpes   
-2     https://biodiversity.org.au/afd/taxa/2869ce8a-...      Vulpes vulpes   
-3     https://biodiversity.org.au/afd/taxa/2869ce8a-...      Vulpes vulpes   
-4     https://biodiversity.org.au/afd/taxa/2869ce8a-...      Vulpes vulpes   
-...                                                 ...                ...   
-3940  https://biodiversity.org.au/afd/taxa/2869ce8a-...      Vulpes vulpes   
-3941  https://biodiversity.org.au/afd/taxa/2869ce8a-...      Vulpes vulpes   
-3942  https://biodiversity.org.au/afd/taxa/2869ce8a-...      Vulpes vulpes   
-3943  https://biodiversity.org.au/afd/taxa/2869ce8a-...      Vulpes vulpes   
-3944  https://biodiversity.org.au/afd/taxa/2869ce8a-...      Vulpes vulpes   
+                                         taxonConceptID  \
+0     https://biodiversity.org.au/afd/taxa/2869ce8a-...   
+1     https://biodiversity.org.au/afd/taxa/2869ce8a-...   
+2     https://biodiversity.org.au/afd/taxa/2869ce8a-...   
+3     https://biodiversity.org.au/afd/taxa/2869ce8a-...   
+4     https://biodiversity.org.au/afd/taxa/2869ce8a-...   
+...                                                 ...   
+4900  https://biodiversity.org.au/afd/taxa/2869ce8a-...   
+4901  https://biodiversity.org.au/afd/taxa/2869ce8a-...   
+4902  https://biodiversity.org.au/afd/taxa/2869ce8a-...   
+4903  https://biodiversity.org.au/afd/taxa/2869ce8a-...   
+4904  https://biodiversity.org.au/afd/taxa/2869ce8a-...   
 
-     raw_vernacularName scientificName taxonRank vernacularName   kingdom  \
-0                   NaN  Vulpes vulpes   species            Fox  Animalia   
-1                   NaN  Vulpes vulpes   species            Fox  Animalia   
-2                   NaN  Vulpes vulpes   species            Fox  Animalia   
-3                   NaN  Vulpes vulpes   species            Fox  Animalia   
-4                   NaN  Vulpes vulpes   species            Fox  Animalia   
-...                 ...            ...       ...            ...       ...   
-3940                NaN  Vulpes vulpes   species            Fox  Animalia   
-3941                NaN  Vulpes vulpes   species            Fox  Animalia   
-3942                NaN  Vulpes vulpes   species            Fox  Animalia   
-3943                NaN  Vulpes vulpes   species            Fox  Animalia   
-3944                NaN  Vulpes vulpes   species            Fox  Animalia   
+                                  recordID             dataResourceName  \
+0     572341b6-94ca-4d96-bf4f-889cbd5e26f0                    FeralScan   
+1     c9e41540-1253-4db8-b13a-25b353dc93b5        iNaturalist Australia   
+2     cab54c0e-c06a-4998-8788-f918cf104154        iNaturalist Australia   
+3     147fbb76-92b6-460c-bb12-4f9fc5f353b0                    FeralScan   
+4     e82ec752-fbcc-40e4-97e4-41adbfdee088        iNaturalist Australia   
+...                                    ...                          ...   
+4900  493a16e9-5107-4656-a390-e27126a3ea42  Earth Guardians Weekly Feed   
+4901  531ca541-8c12-4bdd-834d-31980cd127ab  Earth Guardians Weekly Feed   
+4902  4065886d-ce29-48d2-b8b3-9bc4195ba8b3  Earth Guardians Weekly Feed   
+4903  47b6921d-3891-4e52-b1aa-9fbd57e76823  Earth Guardians Weekly Feed   
+4904  65fc1040-5675-4f6c-8c92-40f8de159bed  Earth Guardians Weekly Feed   
 
-        phylum     class      order   family   genus        species  \
-0     Chordata  Mammalia  Carnivora  Canidae  Vulpes  Vulpes vulpes   
-1     Chordata  Mammalia  Carnivora  Canidae  Vulpes  Vulpes vulpes   
-2     Chordata  Mammalia  Carnivora  Canidae  Vulpes  Vulpes vulpes   
-3     Chordata  Mammalia  Carnivora  Canidae  Vulpes  Vulpes vulpes   
-4     Chordata  Mammalia  Carnivora  Canidae  Vulpes  Vulpes vulpes   
-...        ...       ...        ...      ...     ...            ...   
-3940  Chordata  Mammalia  Carnivora  Canidae  Vulpes  Vulpes vulpes   
-3941  Chordata  Mammalia  Carnivora  Canidae  Vulpes  Vulpes vulpes   
-3942  Chordata  Mammalia  Carnivora  Canidae  Vulpes  Vulpes vulpes   
-3943  Chordata  Mammalia  Carnivora  Canidae  Vulpes  Vulpes vulpes   
-3944  Chordata  Mammalia  Carnivora  Canidae  Vulpes  Vulpes vulpes   
+     occurrenceStatus  
+0             PRESENT  
+1             PRESENT  
+2             PRESENT  
+3             PRESENT  
+4             PRESENT  
+...               ...  
+4900          PRESENT  
+4901          PRESENT  
+4902          PRESENT  
+4903          PRESENT  
+4904          PRESENT  
 
-      subspecies dataResourceUid institutionUid institutionName collectionUid  \
-0            NaN         dr19813            NaN             NaN           NaN   
-1            NaN         dr19813            NaN             NaN           NaN   
-2            NaN         dr19813            NaN             NaN           NaN   
-3            NaN         dr19813            NaN             NaN           NaN   
-4            NaN         dr19813            NaN             NaN           NaN   
-...          ...             ...            ...             ...           ...   
-3940         NaN          dr1411            NaN             NaN           NaN   
-3941         NaN         dr19813            NaN             NaN           NaN   
-3942         NaN          dr1411            NaN             NaN           NaN   
-3943         NaN         dr19813            NaN             NaN           NaN   
-3944         NaN          dr1411            NaN             NaN           NaN   
-
-     collectionName     dcterms:license institutionCode collectionCode  \
-0               NaN  CC-BY-NC 4.0 (Int)             NaN            NaN   
-1               NaN  CC-BY-NC 4.0 (Int)             NaN            NaN   
-2               NaN  CC-BY-NC 4.0 (Int)             NaN            NaN   
-3               NaN  CC-BY-NC 4.0 (Int)             NaN            NaN   
-4               NaN  CC-BY-NC 4.0 (Int)             NaN            NaN   
-...             ...                 ...             ...            ...   
-3940            NaN  CC-BY-NC 4.0 (Int)     iNaturalist   Observations   
-3941            NaN  CC-BY-NC 4.0 (Int)             NaN            NaN   
-3942            NaN  CC-BY-NC 4.0 (Int)     iNaturalist   Observations   
-3943            NaN  CC-BY-NC 4.0 (Int)             NaN            NaN   
-3944            NaN  CC-BY-NC 4.0 (Int)     iNaturalist   Observations   
-
-     raw_locality  raw_decimalLatitude  raw_decimalLongitude  \
-0             NaN           -33.367572            151.382845   
-1             NaN           -35.093937            138.637482   
-2             NaN           -35.040029            138.612555   
-3             NaN           -31.541154            152.057171   
-4             NaN           -33.964091            151.056703   
-...           ...                  ...                   ...   
-3940          NaN           -37.388868            144.267693   
-3941          NaN           -31.949246            152.500526   
-3942          NaN           -37.388868            144.267693   
-3943          NaN           -33.834716            151.141071   
-3944          NaN           -37.388981            144.266958   
-
-     raw_geodeticDatum  decimalLatitude  decimalLongitude  \
-0                  NaN       -33.367572        151.382845   
-1                  NaN       -35.093937        138.637482   
-2                  NaN       -35.040029        138.612555   
-3                  NaN       -31.541154        152.057171   
-4                  NaN       -33.964091        151.056703   
-...                ...              ...               ...   
-3940         EPSG:4326       -37.388868        144.267693   
-3941               NaN       -31.949246        152.500526   
-3942         EPSG:4326       -37.388868        144.267693   
-3943               NaN       -33.834716        151.141071   
-3944         EPSG:4326       -37.388981        144.266958   
-
-      coordinatePrecision  coordinateUncertaintyInMeters    country  \
-0                     NaN                            NaN  Australia   
-1                     NaN                            NaN  Australia   
-2                     NaN                            NaN  Australia   
-3                     NaN                            NaN  Australia   
-4                     NaN                            NaN  Australia   
-...                   ...                            ...        ...   
-3940                  NaN                           10.0  Australia   
-3941                  NaN                            NaN  Australia   
-3942                  NaN                           10.0  Australia   
-3943                  NaN                            NaN  Australia   
-3944                  NaN                           10.0  Australia   
-
-        stateProvince              cl959 cl21                cl1048  \
-0     New South Wales          Wyong (A)  NaN          Sydney Basin   
-1     South Australia    Onkaparinga (C)  NaN  Flinders Lofty Block   
-2     South Australia        Mitcham (C)  NaN  Flinders Lofty Block   
-3     New South Wales  Greater Taree (C)  NaN       NSW North Coast   
-4     New South Wales     Hurstville (C)  NaN          Sydney Basin   
-...               ...                ...  ...                   ...   
-3940         Victoria        Hepburn (S)  NaN    Victorian Midlands   
-3941  New South Wales  Greater Taree (C)  NaN       NSW North Coast   
-3942         Victoria        Hepburn (S)  NaN    Victorian Midlands   
-3943  New South Wales   Hunters Hill (A)  NaN          Sydney Basin   
-3944         Victoria        Hepburn (S)  NaN    Victorian Midlands   
-
-      minimumElevationInMeters  maximumElevationInMeters  \
-0                          NaN                       NaN   
-1                          NaN                       NaN   
-2                          NaN                       NaN   
-3                          NaN                       NaN   
-4                          NaN                       NaN   
-...                        ...                       ...   
-3940                       NaN                       NaN   
-3941                       NaN                       NaN   
-3942                       NaN                       NaN   
-3943                       NaN                       NaN   
-3944                       NaN                       NaN   
-
-      minimumDepthInMeters  maximumDepthInMeters  individualCount  recordedBy  \
-0                      NaN                   NaN              NaN         NaN   
-1                      NaN                   NaN              NaN         NaN   
-2                      NaN                   NaN              NaN         NaN   
-3                      NaN                   NaN              NaN         NaN   
-4                      NaN                   NaN              NaN         NaN   
-...                    ...                   ...              ...         ...   
-3940                   NaN                   NaN              NaN  Mononymous   
-3941                   NaN                   NaN              NaN         NaN   
-3942                   NaN                   NaN              NaN  Mononymous   
-3943                   NaN                   NaN              NaN         NaN   
-3944                   NaN                   NaN              NaN  Mononymous   
-
-      year  month  day             eventDate raw_basisOfRecord  \
-0     2023      8   29  2023-08-29T00:00:00Z               NaN   
-1     2023      3   28  2023-03-28T00:00:00Z               NaN   
-2     2023      5   17  2023-05-17T00:00:00Z               NaN   
-3     2023      3    4  2023-03-04T00:00:00Z               NaN   
-4     2023      3   24  2023-03-24T00:00:00Z               NaN   
-...    ...    ...  ...                   ...               ...   
-3940  2023      5    9  2023-05-09T12:43:00Z  HumanObservation   
-3941  2023      6    5  2023-06-05T00:00:00Z               NaN   
-3942  2023      1   13  2023-01-13T10:23:00Z  HumanObservation   
-3943  2023      2   20  2023-02-20T00:00:00Z               NaN   
-3944  2023      1    5  2023-01-05T04:16:00Z  HumanObservation   
-
-          basisOfRecord occurrenceStatus raw_sex  preparations  \
-0            OCCURRENCE          PRESENT     NaN           NaN   
-1            OCCURRENCE          PRESENT     NaN           NaN   
-2            OCCURRENCE          PRESENT     NaN           NaN   
-3            OCCURRENCE          PRESENT     NaN           NaN   
-4            OCCURRENCE          PRESENT     NaN           NaN   
-...                 ...              ...     ...           ...   
-3940  HUMAN_OBSERVATION          PRESENT     NaN           NaN   
-3941         OCCURRENCE          PRESENT     NaN           NaN   
-3942  HUMAN_OBSERVATION          PRESENT     NaN           NaN   
-3943         OCCURRENCE          PRESENT     NaN           NaN   
-3944  HUMAN_OBSERVATION          PRESENT     NaN           NaN   
-
-      informationWithheld  dataGeneralizations  spatiallyValid  
-0                     NaN                  NaN            True  
-1                     NaN                  NaN            True  
-2                     NaN                  NaN            True  
-3                     NaN                  NaN            True  
-4                     NaN                  NaN            True  
-...                   ...                  ...             ...  
-3940                  NaN                  NaN            True  
-3941                  NaN                  NaN            True  
-3942                  NaN                  NaN            True  
-3943                  NaN                  NaN            True  
-3944                  NaN                  NaN            True  
-
-[3945 rows x 55 columns]
+[4905 rows x 8 columns]
 </pre></div>
 </div>
 <p>Download records of Vulpes vulpes in 2023, returning only <code class="docutils literal notranslate"><span class="pre">eventDate</span></code> field</p>
@@ -837,20 +677,20 @@ Default is set to <code class="docutils literal notranslate"><span class="pre">&
 3     2023-01-01T00:00:00Z
 4     2023-01-01T00:00:00Z
 ...                    ...
-3940  2023-09-29T00:00:00Z
-3941  2023-09-29T10:28:00Z
-3942  2023-09-29T11:16:31Z
-3943  2023-09-29T18:19:00Z
-3944  2023-09-29T18:19:00Z
+4900  2023-12-04T00:00:00Z
+4901  2023-12-04T00:00:00Z
+4902  2023-12-04T00:00:00Z
+4903  2023-12-04T00:00:00Z
+4904  2023-12-04T00:00:00Z
 
-[3945 rows x 1 columns]
+[4905 rows x 1 columns]
 </pre></div>
 </div>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="galah.atlas_species">
-<span class="sig-prename descclassname"><span class="pre">galah.</span></span><span class="sig-name descname"><span class="pre">atlas_species</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">taxa</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rank</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'species'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filters</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">status_accepted</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_data_profile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">polygon</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bbox</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#galah.atlas_species" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">galah.</span></span><span class="sig-name descname"><span class="pre">atlas_species</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">taxa</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scientific_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rank</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'species'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filters</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">status_accepted</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_data_profile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">counts</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">polygon</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bbox</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">simplify_polygon</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#galah.atlas_species" title="Link to this definition">#</a></dt>
 <dd><p>While there are reasons why users may need to check every record meeting their search criteria (i.e. using <code class="docutils literal notranslate"><span class="pre">galah.atlas_occurrences()</span></code>),
 a common use case is to simply identify which species occur in a specified region, time period, or taxonomic group.
 This function returns a <code class="docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code> with one row per species, and columns giving associated taxonomic information.</p>
@@ -971,32 +811,33 @@ types of information.</p>
 <p class="rubric">Examples</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="kn">import</span> <span class="nn">galah</span></span>
 <span class="prompt1"><span class="n">galah</span><span class="o">.</span><span class="n">search_all</span><span class="p">(</span><span class="n">apis</span><span class="o">=</span><span class="s2">&quot;Australia&quot;</span><span class="p">)</span></span>
-</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>        atlas         system                 api_name  \
-0   Australia    collections  collections_collections   
-1   Australia        species         species_children   
-2   Australia        spatial           spatial_layers   
-3   Australia        records          records_species   
-4   Australia        records            records_query   
-5   Australia        records      records_occurrences   
-6   Australia        records           records_fields   
-7   Australia        records           records_facets   
-8   Australia        records           records_counts   
-9   Australia        records       records_assertions   
-10  Australia  name-matching      names_search_single   
-11  Australia        species           species_lookup   
-12  Australia  name-matching    names_search_multiple   
-13  Australia         logger           logger_reasons   
-14  Australia          lists             lists_lookup   
-15  Australia          lists                lists_all   
-16  Australia         images           image_metadata   
-17  Australia         images           image_licences   
-18  Australia            doi             doi_download   
-19  Australia   data-quality          profiles_lookup   
-20  Australia   data-quality             profiles_all   
-21  Australia    collections    collections_providers   
-22  Australia    collections     collections_datasets   
-23  Australia  name-matching             names_lookup   
-24  Australia    occurrences          occurrences_qid   
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>        atlas         system                   api_name  \
+0   Australia    collections    collections_collections   
+1   Australia        species           species_children   
+2   Australia        spatial             spatial_layers   
+3   Australia        records            records_species   
+4   Australia        records              records_query   
+5   Australia        records        records_occurrences   
+6   Australia        records             records_fields   
+7   Australia        records             records_facets   
+8   Australia        records             records_counts   
+9   Australia        records         records_assertions   
+10  Australia  name-matching        names_search_single   
+11  Australia  name-matching      names_search_multiple   
+12  Australia        species  names_search_bulk_species   
+13  Australia  name-matching               names_lookup   
+14  Australia         logger             logger_reasons   
+15  Australia          lists               lists_lookup   
+16  Australia          lists                  lists_all   
+17  Australia         images             image_metadata   
+18  Australia         images             image_licences   
+19  Australia            doi               doi_download   
+20  Australia   data-quality            profiles_lookup   
+21  Australia   data-quality               profiles_all   
+22  Australia    collections      collections_providers   
+23  Australia    collections       collections_datasets   
+24  Australia        species             species_lookup   
+25  Australia    occurrences            occurrences_qid   
 
                                               api_url  \
 0        https://collections.ala.org.au/ws/collection   
@@ -1010,20 +851,21 @@ types of information.</p>
 8   https://biocache-ws.ala.org.au/ws/occurrences/...   
 9   https://biocache-ws.ala.org.au/ws/assertions/c...   
 10  https://namematching-ws.ala.org.au/api/search?...   
-11          https://bie-ws.ala.org.au/ws/species/{id}   
-12  https://namematching-ws.ala.org.au/api/searchB...   
-13  https://api.ala.org.au/logger/service/logger/r...   
-14  https://lists.ala.org.au/ws/speciesListItems/{...   
-15            https://lists.ala.org.au/ws/speciesList   
-16            https://images.ala.org.au/ws/image/{id}   
-17               https://images.ala.org.au/ws/licence   
-18   https://doi.ala.org.au/doi/{doi_string}/download   
-19  https://data-quality-service.ala.org.au/api/v1...   
+11  https://namematching-ws.ala.org.au/api/searchB...   
+12   https://bie-ws.ala.org.au/ws/species/lookup/bulk   
+13  https://namematching-ws.ala.org.au/api/getByTa...   
+14  https://api.ala.org.au/logger/service/logger/r...   
+15  https://lists.ala.org.au/ws/speciesListItems/{...   
+16            https://lists.ala.org.au/ws/speciesList   
+17  https://api.ala.org.au/images/ws/getImageInfoF...   
+18               https://images.ala.org.au/ws/licence   
+19   https://doi.ala.org.au/doi/{doi_string}/download   
 20  https://data-quality-service.ala.org.au/api/v1...   
-21     https://collections.ala.org.au/ws/dataProvider   
-22     https://collections.ala.org.au/ws/dataResource   
-23  https://namematching-ws.ala.org.au/api/getByTa...   
-24  https://biocache-ws.ala.org.au/ws/webportal/pa...   
+21  https://data-quality-service.ala.org.au/api/v1...   
+22     https://collections.ala.org.au/ws/dataProvider   
+23     https://collections.ala.org.au/ws/dataResource   
+24          https://bie-ws.ala.org.au/ws/species/{id}   
+25  https://biocache-ws.ala.org.au/ws/webportal/pa...   
 
                            called_by  functional method  
 0               show_all-collections        True    GET  
@@ -1037,20 +879,21 @@ types of information.</p>
 8                       atlas_counts        True    GET  
 9                show_all-assertions        True    GET  
 10                       search_taxa        True    GET  
-11                    atlas_taxonomy        True    GET  
-12                       search_taxa        True    GET  
-13                  show_all-reasons        True    GET  
-14                 show_values-lists        True    GET  
-15                    show_all-lists        True    GET  
-16                    media_metadata        True    GET  
-17                 show_all-licences        True    GET  
-18                      doi_download        True    GET  
-19              show_values-profiles        True    GET  
-20                 show_all-profiles        True    GET  
-21                show_all-providers        True    GET  
-22                 show_all-datasets        True    GET  
-23                search_identifiers        True    GET  
-24                 atlas_occurrences        True   POST
+11                       search_taxa        True    GET  
+12                     atlas_species        True   POST  
+13                search_identifiers        True    GET  
+14                  show_all-reasons        True    GET  
+15                 show_values-lists        True    GET  
+16                    show_all-lists        True    GET  
+17                    media_metadata        True   POST  
+18                 show_all-licences        True    GET  
+19                      doi_download        True    GET  
+20              show_values-profiles        True    GET  
+21                 show_all-profiles        True    GET  
+22                show_all-providers        True    GET  
+23                 show_all-datasets        True    GET  
+24                    atlas_taxonomy        True    GET  
+25                 atlas_occurrences        True   POST
 </pre></div>
 </div>
 </dd></dl>
@@ -1121,7 +964,7 @@ clades) prior to downloading data.</p>
 </div>
 <p>Search taxonomic levels by using the key word “scientificName”</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="kn">import</span> <span class="nn">galah</span></span>
-<span class="prompt1"><span class="n">galah</span><span class="o">.</span><span class="n">search_taxa</span><span class="p">(</span><span class="n">scientific_name</span><span class="o">=</span><span class="n">scientific_</span> <span class="n">name</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;family&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;pardalotidae&quot;</span><span class="p">,</span><span class="s2">&quot;maluridae&quot;</span><span class="p">],</span><span class="s2">&quot;scientificName&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;pardolatus striatus&quot;</span><span class="p">,</span><span class="s2">&quot;malurus cyaneus&quot;</span><span class="p">]})</span></span>
+<span class="prompt1"><span class="n">galah</span><span class="o">.</span><span class="n">search_taxa</span><span class="p">(</span><span class="n">scientific_name</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;family&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;pardalotidae&quot;</span><span class="p">,</span><span class="s2">&quot;maluridae&quot;</span><span class="p">],</span><span class="s2">&quot;scientificName&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;pardolatus striatus&quot;</span><span class="p">,</span><span class="s2">&quot;malurus cyaneus&quot;</span><span class="p">]})</span></span>
 </pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>                       scientificName scientificNameAuthorship  \
 0  Pardalotus (Pardalotinus) striatus           (Gmelin, 1789)   
 0           Malurus (Malurus) cyaneus            (Ellis, 1782)   
@@ -1202,32 +1045,32 @@ displaying all valid options for the information specified.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="kn">import</span> <span class="nn">galah</span></span>
 <span class="prompt1"><span class="n">galah</span><span class="o">.</span><span class="n">show_all</span><span class="p">(</span><span class="n">datasets</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></span>
 </pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>                                                   name  \
-0     10 year trend of levels of organochlorine poll...   
-1                                             2 species   
-2     2007-08 Voyage 3 of the Aurora Australis, CEAM...   
-3     2016 Aerial survey data of southern right whal...   
-4                              2016CR16_SpeciesList.csv   
+0      ALA Taxonomy List for Species Missing from Co...   
+1     10 year trend of levels of organochlorine poll...   
+2                                                    12   
+3                                                    12   
+4                                 1962 Range Extensions   
 ...                                                 ...   
-3235  Zooplankton abundance in the Kerguelen Axis re...   
-3236  Zooplankton Abundance_Umbrella net_sea ice zon...   
-3237  Zooplankton samples from Heron net trawls alon...   
-3238  Zooplankton sampling in the coastal waters of ...   
-3239                         Zoos Victoria Moth Tracker   
+3903  Zooplankton abundance in the Kerguelen Axis re...   
+3904  Zooplankton Abundance_Umbrella net_sea ice zon...   
+3905  Zooplankton samples from Heron net trawls alon...   
+3906  Zooplankton sampling in the coastal waters of ...   
+3907                         Zoos Victoria Moth Tracker   
 
                                                     uri      uid  
-0     https://collections.ala.org.au/ws/dataResource...  dr16247  
-1     https://collections.ala.org.au/ws/dataResource...  dr22919  
-2     https://collections.ala.org.au/ws/dataResource...  dr16226  
-3     https://collections.ala.org.au/ws/dataResource...  dr16218  
-4     https://collections.ala.org.au/ws/dataResource...  dr23380  
+0     https://collections.ala.org.au/ws/dataResource...  dr23929  
+1     https://collections.ala.org.au/ws/dataResource...  dr16247  
+2     https://collections.ala.org.au/ws/dataResource...  dr23456  
+3     https://collections.ala.org.au/ws/dataResource...  dr23457  
+4     https://collections.ala.org.au/ws/dataResource...  dr24114  
 ...                                                 ...      ...  
-3235  https://collections.ala.org.au/ws/dataResource...  dr16244  
-3236  https://collections.ala.org.au/ws/dataResource...  dr16265  
-3237  https://collections.ala.org.au/ws/dataResource...  dr23120  
-3238  https://collections.ala.org.au/ws/dataResource...  dr15943  
-3239  https://collections.ala.org.au/ws/dataResource...  dr22371  
+3903  https://collections.ala.org.au/ws/dataResource...  dr16244  
+3904  https://collections.ala.org.au/ws/dataResource...  dr16265  
+3905  https://collections.ala.org.au/ws/dataResource...  dr23120  
+3906  https://collections.ala.org.au/ws/dataResource...  dr15943  
+3907  https://collections.ala.org.au/ws/dataResource...  dr22371  
 
-[3240 rows x 3 columns]
+[3908 rows x 3 columns]
 </pre></div>
 </div>
 </dd></dl>
@@ -1279,12 +1122,12 @@ more about the information of interest. <code class="docutils literal notranslat
     <div class="footer-article-item"><!-- Previous / next buttons -->
 <div class="prev-next-area">
     <a class="left-prev"
-       href="../galah_user_guide/Narrow_Results.html"
+       href="../galah_user_guide/Temporal_Filtering.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Narrow Results</p>
+        <p class="prev-next-title">Temporal filtering</p>
       </div>
     </a>
     <a class="right-next"

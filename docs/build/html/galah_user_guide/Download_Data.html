@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Download Data &#8212; Galah 0.6.0 documentation</title>
+    <title>Download Data &#8212; Galah 0.7.0 documentation</title>
   
   
   
@@ -37,7 +37,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
 
-    <script src="../_static/documentation_options.js?v=dda85ae5"></script>
+    <script src="../_static/documentation_options.js?v=b9678aa1"></script>
     <script src="../_static/doctools.js?v=888ff710"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/design-tabs.js?v=36754332"></script>
@@ -340,10 +340,19 @@ document.write(`
      aria-label="Section Navigation">
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
   <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="Choosing_Atlas.html">Choosing an Atlas</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Download Data</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Look_Up_Info.html">Look Up Information</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Narrow_Results.html">Narrow Results</a></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="Getting_Started.html">Getting Started</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="Choosing_Atlas.html">Choosing an Atlas</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Download Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Look_Up_Info.html">Look Up Information</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Narrow_Results.html">Narrow Results</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="Advanced.html">Advanced</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="Taxonomic_Filtering.html">Taxonomic Filtering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Spatial_Filtering.html">Spatial filtering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Temporal_Filtering.html">Temporal filtering</a></li>
+</ul>
+</li>
 </ul>
 </div>
 </nav></div>
@@ -384,6 +393,9 @@ document.write(`
     
     <li class="breadcrumb-item"><a href="index.html" class="nav-link">Galah User Guide</a></li>
     
+    
+    <li class="breadcrumb-item"><a href="Getting_Started.html" class="nav-link">Getting Started</a></li>
+    
     <li class="breadcrumb-item active" aria-current="page">Download Data</li>
   </ul>
 </nav>
@@ -422,24 +434,24 @@ span.prompt1:before {
 </style><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">galah_config</span><span class="p">(</span><span class="n">atlas</span><span class="o">=</span><span class="s2">&quot;Australia&quot;</span><span class="p">)</span></span>
 <span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">atlas_counts</span><span class="p">()</span></span>
 </pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>   totalRecords
-0     130573493
+0     132325250
 </pre></div>
 </div>
 <p>In addition to <code class="docutils literal notranslate"><span class="pre">filters</span></code> arguments, <code class="docutils literal notranslate"><span class="pre">galah.atlas_counts()</span></code> has an optional <code class="docutils literal notranslate"><span class="pre">group_by</span></code> argument, which provides counts grouped
 by the requested field.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">atlas_counts</span><span class="p">(</span><span class="n">group_by</span><span class="o">=</span><span class="s2">&quot;kingdom&quot;</span><span class="p">)</span></span>
 </pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>      kingdom      count
-0    Animalia  100284793
+0    Animalia  101442434
 1     Archaea       4119
-2    Bacteria     113130
-3   Chromista    1019817
-4   Eukaryota       8818
-5       Fungi    2275927
-6     Plantae   25611885
-7    Protista     351544
-8    Protozoa       4706
+2    Bacteria     113108
+3   Chromista    1021766
+4   Eukaryota       8826
+5       Fungi    2292097
+6     Plantae   26121664
+7    Protista     352918
+8    Protozoa       4762
 9      Viroid        103
-10      Virus       2298
+10      Virus       2308
 </pre></div>
 </div>
 </section>
@@ -459,49 +471,40 @@ than the species; but also in being more flexible by supporting filtering:</p>
 5   https://biodiversity.org.au/afd/taxa/49001532-929e-4b78-97d3-c885e97d671b               Notomys alexis                 Thomas, 1922    species  Animalia  Chordata  Mammalia  Rodentia  Muridae       Notomys      Spinifex Hopping-mouse
 6   https://biodiversity.org.au/afd/taxa/107696b5-063c-4c09-a015-6edfdb6f4d52                 Mus musculus               Linnaeus, 1758    species  Animalia  Chordata  Mammalia  Rodentia  Muridae           Mus                 House Mouse
 7   https://biodiversity.org.au/afd/taxa/f2453962-1dcf-49f4-944a-dbad66765ca7       Conilurus penicillatus                (Gould, 1842)    species  Animalia  Chordata  Mammalia  Rodentia  Muridae     Conilurus     Brush-tailed Rabbit-rat
-8   https://biodiversity.org.au/afd/taxa/178a17ff-2135-48e8-856b-39f546f02092                Rattus rattus             (Linnaeus, 1758)    species  Animalia  Chordata  Mammalia  Rodentia  Muridae        Rattus                   Black Rat
-9   https://biodiversity.org.au/afd/taxa/ee8f37fd-7222-411a-bb00-c121dd894db1               Rattus tunneyi               (Thomas, 1904)    species  Animalia  Chordata  Mammalia  Rodentia  Muridae        Rattus              Pale Field-rat
+8   https://biodiversity.org.au/afd/taxa/ee8f37fd-7222-411a-bb00-c121dd894db1               Rattus tunneyi               (Thomas, 1904)    species  Animalia  Chordata  Mammalia  Rodentia  Muridae        Rattus              Pale Field-rat
+9   https://biodiversity.org.au/afd/taxa/178a17ff-2135-48e8-856b-39f546f02092                Rattus rattus             (Linnaeus, 1758)    species  Animalia  Chordata  Mammalia  Rodentia  Muridae        Rattus                   Black Rat
 10  https://biodiversity.org.au/afd/taxa/bc623514-ce79-4ba8-bb9c-41cb5767dcc1         Rattus villosissimus                (Waite, 1898)    species  Animalia  Chordata  Mammalia  Rodentia  Muridae        Rattus             Long-haired Rat
 11  https://biodiversity.org.au/afd/taxa/63adcf86-8158-462f-a6f6-6e37456360e2           Pseudomys desertor              Troughton, 1932    species  Animalia  Chordata  Mammalia  Rodentia  Muridae     Pseudomys                Desert Mouse
 12  https://biodiversity.org.au/afd/taxa/2d870345-42d8-45df-b0ee-29f520809b12              Pseudomys nanus                (Gould, 1858)    species  Animalia  Chordata  Mammalia  Rodentia  Muridae     Pseudomys      Western Chestnut Mouse
-13  https://biodiversity.org.au/afd/taxa/9baa55f2-69c1-486c-91f7-f96e58b7c945        Hydromys chrysogaster               Geoffroy, 1804    species  Animalia  Chordata  Mammalia  Rodentia  Muridae      Hydromys                      Rakali
-14  https://biodiversity.org.au/afd/taxa/a16db23d-322a-4d15-9200-f28fa8ab9c89              Rattus colletti               (Thomas, 1904)    species  Animalia  Chordata  Mammalia  Rodentia  Muridae        Rattus                   Dusky Rat
-15  https://biodiversity.org.au/afd/taxa/3f638397-38b9-4bca-85f1-0c98430fdef4                Zyzomys maini              Kitchener, 1989    species  Animalia  Chordata  Mammalia  Rodentia  Muridae       Zyzomys             Arnhem Rock-rat
-16  https://biodiversity.org.au/afd/taxa/96e81ce0-ba02-4f33-b831-b598eece44a7              Rattus fuscipes           (Waterhouse, 1839)    species  Animalia  Chordata  Mammalia  Rodentia  Muridae        Rattus                    Bush Rat
-17  https://biodiversity.org.au/afd/taxa/642a7a82-363b-4775-b165-1d93e0ef2d9b      Leggadina lakedownensis                  Watts, 1976    species  Animalia  Chordata  Mammalia  Rodentia  Muridae     Leggadina                   Kerakenga
-18  https://biodiversity.org.au/afd/taxa/87497f45-a52b-4ee2-9472-8566cfdce22a          Pseudomys australis              J.E. Gray, 1832    species  Animalia  Chordata  Mammalia  Rodentia  Muridae     Pseudomys                  Plains Rat
-19  https://biodiversity.org.au/afd/taxa/54aa72cc-525b-4134-bf48-d9de4d905fa5            Zyzomys palatalis              Kitchener, 1989    species  Animalia  Chordata  Mammalia  Rodentia  Muridae       Zyzomys       Carpentarian Rock-rat
-20  https://biodiversity.org.au/afd/taxa/33ab483d-5bec-45a4-857a-f0a1bbd36bfe         Zyzomys pedunculatus                (Waite, 1896)    species  Animalia  Chordata  Mammalia  Rodentia  Muridae       Zyzomys            Central Rock-rat
-21  https://biodiversity.org.au/afd/taxa/9e4c1a0a-057b-414c-848e-0659b0181d46           Leggadina forresti               (Thomas, 1906)    species  Animalia  Chordata  Mammalia  Rodentia  Muridae     Leggadina             Forrest&#39;s Mouse
-22  https://biodiversity.org.au/afd/taxa/6ac36ddd-54f5-4ab4-9ad4-1a5405307c26               Notomys aquilo                 Thomas, 1921    species  Animalia  Chordata  Mammalia  Rodentia  Muridae       Notomys      Northern Hopping-mouse
-23  https://biodiversity.org.au/afd/taxa/cf17f3c1-672d-4be3-be00-a1d6f332678e           Pseudomys johnsoni              Kitchener, 1985    species  Animalia  Chordata  Mammalia  Rodentia  Muridae     Pseudomys  Central Pebble-mound Mouse
-24  https://biodiversity.org.au/afd/taxa/acc6935d-b55f-43b6-b51c-64c89957277e            Pseudomys calabyi  Kitchener &amp; Humphreys, 1987    species  Animalia  Chordata  Mammalia  Rodentia  Muridae     Pseudomys   Kakadu Pebble-mound Mouse
-25  https://biodiversity.org.au/afd/taxa/a2923e80-ee6c-49a2-b923-8e4905f4d174             Rattus lutreolus            (J.E. Gray, 1841)    species  Animalia  Chordata  Mammalia  Rodentia  Muridae        Rattus                   Swamp Rat
-26  https://biodiversity.org.au/afd/taxa/5ac0db97-0266-442f-86b3-f21c3f98f58a          Leporillus apicalis                (Gould, 1853)    species  Animalia  Chordata  Mammalia  Rodentia  Muridae    Leporillus       Lesser Stick-nest Rat
-27  https://biodiversity.org.au/afd/taxa/b90c3bf4-a12a-4123-9ae6-d798cb716380        Notomys longicaudatus                (Gould, 1844)    species  Animalia  Chordata  Mammalia  Rodentia  Muridae       Notomys   Long-tailed Hopping-mouse
-28  https://biodiversity.org.au/afd/taxa/1b91de2d-8394-4dd0-b3f0-48ca06fea2d6             Notomys cervinus                (Gould, 1853)    species  Animalia  Chordata  Mammalia  Rodentia  Muridae       Notomys          Fawn Hopping-mouse
-29  https://biodiversity.org.au/afd/taxa/c0f62baa-5df3-4383-a96b-16162e72d1a1            Rattus norvegicus           (Berkenhout, 1769)    species  Animalia  Chordata  Mammalia  Rodentia  Muridae        Rattus                   Brown Rat
-30  https://biodiversity.org.au/afd/taxa/a84b9233-458d-41ca-ace8-b77fbe9753ef               Notomys amplus               Brazenor, 1936    species  Animalia  Chordata  Mammalia  Rodentia  Muridae       Notomys  Short-tailed Hopping-mouse
-31  https://biodiversity.org.au/afd/taxa/e570a40a-15fb-40d4-9429-c2a9417249b3           Notomys mitchellii               (Ogilby, 1838)    species  Animalia  Chordata  Mammalia  Rodentia  Muridae       Notomys    Mitchell&#39;s Hopping-mouse
-32  https://biodiversity.org.au/afd/taxa/d71168ec-1151-4cdc-a95d-6182179e25e4            Mastacomys fuscus                 Thomas, 1882    species  Animalia  Chordata  Mammalia  Rodentia  Muridae    Mastacomys           Broad-toothed Rat
-33  https://biodiversity.org.au/afd/taxa/5eff1656-0bd8-481a-8dbb-b10968c0fbf9              Rattus sordidus                (Gould, 1858)    species  Animalia  Chordata  Mammalia  Rodentia  Muridae        Rattus               Canefield Rat
-34  https://biodiversity.org.au/afd/taxa/dbb2125e-bf71-4388-b129-562e4d7a8eb4               Notomys fuscus                (Jones, 1925)    species  Animalia  Chordata  Mammalia  Rodentia  Muridae       Notomys         Dusky Hopping-mouse
-35  https://biodiversity.org.au/afd/taxa/812a70cf-c76d-4beb-ac56-3b8c4d7c009c        Pseudomys apodemoides              Finlayson, 1932    species  Animalia  Chordata  Mammalia  Rodentia  Muridae     Pseudomys                 Silky Mouse
-36  https://biodiversity.org.au/afd/taxa/9cfd14c5-9ead-491a-ae5a-5141f5253401              Xeromys myoides                 Thomas, 1889    species  Animalia  Chordata  Mammalia  Rodentia  Muridae       Xeromys                 Water Mouse
-37  https://biodiversity.org.au/afd/taxa/8884b130-b6cb-4b2e-87ed-98367734f02d        Mesembriomys macrurus               (Peters, 1876)    species  Animalia  Chordata  Mammalia  Rodentia  Muridae  Mesembriomys      Golden-backed Tree-rat
-38  https://biodiversity.org.au/afd/taxa/12dfa510-d908-467e-8a53-ab94eace6535    Pseudomys gracilicaudatus                (Gould, 1845)    species  Animalia  Chordata  Mammalia  Rodentia  Muridae     Pseudomys      Eastern Chestnut Mouse
-39  https://biodiversity.org.au/afd/taxa/8ca9a58d-df94-4706-99a2-bf18279734ac           Melomys cervinipes                (Gould, 1852)    species  Animalia  Chordata  Mammalia  Rodentia  Muridae       Melomys         Fawn-footed Melomys
-40  https://biodiversity.org.au/afd/taxa/90d9427a-e91d-433b-982c-760f40d71d3e             Pseudomys oralis                 Thomas, 1921    species  Animalia  Chordata  Mammalia  Rodentia  Muridae     Pseudomys        Hastings River Mouse
-41  https://biodiversity.org.au/afd/taxa/427dae95-2031-4c6f-aea6-311d269f7309              Rattus leucopus            (J.E. Gray, 1867)    species  Animalia  Chordata  Mammalia  Rodentia  Muridae        Rattus               Cape York Rat
-42  https://biodiversity.org.au/afd/taxa/edcf01fa-7b87-4bfe-b8ae-8b1a4b08f777             Pseudomys fieldi                (Waite, 1896)    species  Animalia  Chordata  Mammalia  Rodentia  Muridae     Pseudomys             Shark Bay Mouse
-43  https://biodiversity.org.au/afd/taxa/037a578c-4009-476a-8816-95f16867ae6f            Zyzomys woodwardi               (Thomas, 1909)    species  Animalia  Chordata  Mammalia  Rodentia  Muridae       Zyzomys          Kimberley Rock-rat
-44  https://biodiversity.org.au/afd/taxa/c8ba3449-d6f3-405a-9c8a-7b4db471c52a             Pseudomys fumeus               Brazenor, 1934    species  Animalia  Chordata  Mammalia  Rodentia  Muridae     Pseudomys                 Smoky Mouse
-45  https://biodiversity.org.au/afd/taxa/511a0e34-de40-43f8-af39-13278cbf4f1d               Rattus exulans                (Peale, 1848)    species  Animalia  Chordata  Mammalia  Rodentia  Muridae        Rattus              Polynesian Rat
-46  https://biodiversity.org.au/afd/taxa/e83f0154-8bbb-406e-9850-def41f6fbb69           Pseudomys higginsi           (Trouessart, 1897)    species  Animalia  Chordata  Mammalia  Rodentia  Muridae     Pseudomys           Long-tailed Mouse
-47  https://biodiversity.org.au/afd/taxa/5ebc59f2-02c2-41b2-918b-fcc7aa9ddaae          Leporillus conditor                (Sturt, 1848)    species  Animalia  Chordata  Mammalia  Rodentia  Muridae    Leporillus      Greater Stick-nest Rat
-48  https://biodiversity.org.au/afd/taxa/19c57444-226b-4f18-9fba-8cac4b0366d1            Pseudomys gouldii           (Waterhouse, 1839)    species  Animalia  Chordata  Mammalia  Rodentia  Muridae     Pseudomys                     Koontin
-49  https://biodiversity.org.au/afd/taxa/9299c88b-7f51-421e-bfe0-06121ba5f21c       Pseudomys occidentalis                   Tate, 1951    species  Animalia  Chordata  Mammalia  Rodentia  Muridae     Pseudomys               Western Mouse
-50  https://biodiversity.org.au/afd/taxa/88caff5d-1b7a-4d1d-93a0-cd4e4ec1148c        Uromys caudimaculatus               (Krefft, 1867)    species  Animalia  Chordata  Mammalia  Rodentia  Muridae        Uromys         White-tailed Uromys
+13  https://biodiversity.org.au/afd/taxa/a16db23d-322a-4d15-9200-f28fa8ab9c89              Rattus colletti               (Thomas, 1904)    species  Animalia  Chordata  Mammalia  Rodentia  Muridae        Rattus                   Dusky Rat
+14  https://biodiversity.org.au/afd/taxa/3f638397-38b9-4bca-85f1-0c98430fdef4                Zyzomys maini              Kitchener, 1989    species  Animalia  Chordata  Mammalia  Rodentia  Muridae       Zyzomys             Arnhem Rock-rat
+15  https://biodiversity.org.au/afd/taxa/54aa72cc-525b-4134-bf48-d9de4d905fa5            Zyzomys palatalis              Kitchener, 1989    species  Animalia  Chordata  Mammalia  Rodentia  Muridae       Zyzomys       Carpentarian Rock-rat
+16  https://biodiversity.org.au/afd/taxa/642a7a82-363b-4775-b165-1d93e0ef2d9b      Leggadina lakedownensis                  Watts, 1976    species  Animalia  Chordata  Mammalia  Rodentia  Muridae     Leggadina                   Kerakenga
+17  https://biodiversity.org.au/afd/taxa/87497f45-a52b-4ee2-9472-8566cfdce22a          Pseudomys australis              J.E. Gray, 1832    species  Animalia  Chordata  Mammalia  Rodentia  Muridae     Pseudomys                  Plains Rat
+18  https://biodiversity.org.au/afd/taxa/9baa55f2-69c1-486c-91f7-f96e58b7c945        Hydromys chrysogaster               Geoffroy, 1804    species  Animalia  Chordata  Mammalia  Rodentia  Muridae      Hydromys                      Rakali
+19  https://biodiversity.org.au/afd/taxa/33ab483d-5bec-45a4-857a-f0a1bbd36bfe         Zyzomys pedunculatus                (Waite, 1896)    species  Animalia  Chordata  Mammalia  Rodentia  Muridae       Zyzomys            Central Rock-rat
+20  https://biodiversity.org.au/afd/taxa/9e4c1a0a-057b-414c-848e-0659b0181d46           Leggadina forresti               (Thomas, 1906)    species  Animalia  Chordata  Mammalia  Rodentia  Muridae     Leggadina             Forrest&#39;s Mouse
+21  https://biodiversity.org.au/afd/taxa/cf17f3c1-672d-4be3-be00-a1d6f332678e           Pseudomys johnsoni              Kitchener, 1985    species  Animalia  Chordata  Mammalia  Rodentia  Muridae     Pseudomys  Central Pebble-mound Mouse
+22  https://biodiversity.org.au/afd/taxa/acc6935d-b55f-43b6-b51c-64c89957277e            Pseudomys calabyi  Kitchener &amp; Humphreys, 1987    species  Animalia  Chordata  Mammalia  Rodentia  Muridae     Pseudomys   Kakadu Pebble-mound Mouse
+23  https://biodiversity.org.au/afd/taxa/6ac36ddd-54f5-4ab4-9ad4-1a5405307c26               Notomys aquilo                 Thomas, 1921    species  Animalia  Chordata  Mammalia  Rodentia  Muridae       Notomys      Northern Hopping-mouse
+24  https://biodiversity.org.au/afd/taxa/b90c3bf4-a12a-4123-9ae6-d798cb716380        Notomys longicaudatus                (Gould, 1844)    species  Animalia  Chordata  Mammalia  Rodentia  Muridae       Notomys   Long-tailed Hopping-mouse
+25  https://biodiversity.org.au/afd/taxa/5ac0db97-0266-442f-86b3-f21c3f98f58a          Leporillus apicalis                (Gould, 1853)    species  Animalia  Chordata  Mammalia  Rodentia  Muridae    Leporillus       Lesser Stick-nest Rat
+26  https://biodiversity.org.au/afd/taxa/a84b9233-458d-41ca-ace8-b77fbe9753ef               Notomys amplus               Brazenor, 1936    species  Animalia  Chordata  Mammalia  Rodentia  Muridae       Notomys  Short-tailed Hopping-mouse
+27  https://biodiversity.org.au/afd/taxa/1b91de2d-8394-4dd0-b3f0-48ca06fea2d6             Notomys cervinus                (Gould, 1853)    species  Animalia  Chordata  Mammalia  Rodentia  Muridae       Notomys          Fawn Hopping-mouse
+28  https://biodiversity.org.au/afd/taxa/5eff1656-0bd8-481a-8dbb-b10968c0fbf9              Rattus sordidus                (Gould, 1858)    species  Animalia  Chordata  Mammalia  Rodentia  Muridae        Rattus               Canefield Rat
+29  https://biodiversity.org.au/afd/taxa/dbb2125e-bf71-4388-b129-562e4d7a8eb4               Notomys fuscus                (Jones, 1925)    species  Animalia  Chordata  Mammalia  Rodentia  Muridae       Notomys         Dusky Hopping-mouse
+30  https://biodiversity.org.au/afd/taxa/9cfd14c5-9ead-491a-ae5a-5141f5253401              Xeromys myoides                 Thomas, 1889    species  Animalia  Chordata  Mammalia  Rodentia  Muridae       Xeromys                 Water Mouse
+31  https://biodiversity.org.au/afd/taxa/8884b130-b6cb-4b2e-87ed-98367734f02d        Mesembriomys macrurus               (Peters, 1876)    species  Animalia  Chordata  Mammalia  Rodentia  Muridae  Mesembriomys      Golden-backed Tree-rat
+32  https://biodiversity.org.au/afd/taxa/c0f62baa-5df3-4383-a96b-16162e72d1a1            Rattus norvegicus           (Berkenhout, 1769)    species  Animalia  Chordata  Mammalia  Rodentia  Muridae        Rattus                   Brown Rat
+33  https://biodiversity.org.au/afd/taxa/e570a40a-15fb-40d4-9429-c2a9417249b3           Notomys mitchellii               (Ogilby, 1838)    species  Animalia  Chordata  Mammalia  Rodentia  Muridae       Notomys    Mitchell&#39;s Hopping-mouse
+34  https://biodiversity.org.au/afd/taxa/8ca9a58d-df94-4706-99a2-bf18279734ac           Melomys cervinipes                (Gould, 1852)    species  Animalia  Chordata  Mammalia  Rodentia  Muridae       Melomys         Fawn-footed Melomys
+35  https://biodiversity.org.au/afd/taxa/427dae95-2031-4c6f-aea6-311d269f7309              Rattus leucopus            (J.E. Gray, 1867)    species  Animalia  Chordata  Mammalia  Rodentia  Muridae        Rattus               Cape York Rat
+36  https://biodiversity.org.au/afd/taxa/edcf01fa-7b87-4bfe-b8ae-8b1a4b08f777             Pseudomys fieldi                (Waite, 1896)    species  Animalia  Chordata  Mammalia  Rodentia  Muridae     Pseudomys             Shark Bay Mouse
+37  https://biodiversity.org.au/afd/taxa/037a578c-4009-476a-8816-95f16867ae6f            Zyzomys woodwardi               (Thomas, 1909)    species  Animalia  Chordata  Mammalia  Rodentia  Muridae       Zyzomys          Kimberley Rock-rat
+38  https://biodiversity.org.au/afd/taxa/9299c88b-7f51-421e-bfe0-06121ba5f21c       Pseudomys occidentalis                   Tate, 1951    species  Animalia  Chordata  Mammalia  Rodentia  Muridae     Pseudomys               Western Mouse
+39  https://biodiversity.org.au/afd/taxa/12dfa510-d908-467e-8a53-ab94eace6535    Pseudomys gracilicaudatus                (Gould, 1845)    species  Animalia  Chordata  Mammalia  Rodentia  Muridae     Pseudomys      Eastern Chestnut Mouse
+40  https://biodiversity.org.au/afd/taxa/88caff5d-1b7a-4d1d-93a0-cd4e4ec1148c        Uromys caudimaculatus               (Krefft, 1867)    species  Animalia  Chordata  Mammalia  Rodentia  Muridae        Uromys         White-tailed Uromys
+41  https://biodiversity.org.au/afd/taxa/a2923e80-ee6c-49a2-b923-8e4905f4d174             Rattus lutreolus            (J.E. Gray, 1841)    species  Animalia  Chordata  Mammalia  Rodentia  Muridae        Rattus                   Swamp Rat
 </pre></div>
 </div>
 </section>
@@ -512,20 +515,20 @@ associated with an active account on your chosen atlas. See more information in 
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah_config</span><span class="p">(</span><span class="n">email</span> <span class="o">=</span> <span class="s2">&quot;your_email@email.com&quot;</span><span class="p">,</span> <span class="n">atlas</span> <span class="o">=</span> <span class="s2">&quot;Australia&quot;</span><span class="p">)</span></span>
 </pre></div></div><p>After specifying your email, you can download occurrence records of, for example, Eolophus roseicapilla:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">atlas_occurrences</span><span class="p">(</span><span class="n">taxa</span><span class="o">=</span><span class="s2">&quot;Eolophus roseicapilla&quot;</span><span class="p">,</span><span class="n">filters</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;stateProvince=Australian Capital Territory&quot;</span><span class="p">,</span><span class="s2">&quot;year&gt;=2010&quot;</span><span class="p">],</span><span class="n">fields</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;institutionID&quot;</span><span class="p">,</span><span class="s2">&quot;basic&quot;</span><span class="p">])</span></span>
-</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>       institutionID  decimalLatitude  decimalLongitude             eventDate         scientificName                                                             taxonConceptID                              recordID                   dataResourceName occurrenceStatus
-0                NaN       -35.277220        149.175440  2017-11-24T13:15:00Z  Eolophus roseicapilla  https://biodiversity.org.au/afd/taxa/9b4ad548-8bb3-486a-ab0a-905506c463ea  a3cef496-a973-4a67-bad5-e43a08217002                    eBird Australia          PRESENT
-1                NaN       -35.345848        149.062067  2014-05-21T00:00:00Z  Eolophus roseicapilla  https://biodiversity.org.au/afd/taxa/9b4ad548-8bb3-486a-ab0a-905506c463ea  81d02a3b-3786-431a-86c1-1b4e309ab3ca                Garden Bird Surveys          PRESENT
-2                NaN       -35.232280        149.156280  2018-09-19T08:53:00Z  Eolophus roseicapilla  https://biodiversity.org.au/afd/taxa/9b4ad548-8bb3-486a-ab0a-905506c463ea  51c144d9-b49f-4126-b6d2-29282a0f1ed6                    eBird Australia          PRESENT
-3                NaN       -22.120000        133.420000  2010-05-03T00:00:00Z  Eolophus roseicapilla  https://biodiversity.org.au/afd/taxa/9b4ad548-8bb3-486a-ab0a-905506c463ea  6f7a19dd-b1a1-4134-b7c1-25173a1f6119        BirdLife Australia, Birdata          PRESENT
-4                NaN       -35.255861        149.043983  2019-07-03T09:12:00Z  Eolophus roseicapilla  https://biodiversity.org.au/afd/taxa/9b4ad548-8bb3-486a-ab0a-905506c463ea  ffba43c8-9fab-49b0-abe5-0c5fe851e764                    eBird Australia          PRESENT
-...              ...              ...               ...                   ...                    ...                                                                        ...                                   ...                                ...              ...
-103317        in1033       -35.160122        149.140961  2018-07-05T06:30:46Z  Eolophus roseicapilla  https://biodiversity.org.au/afd/taxa/9b4ad548-8bb3-486a-ab0a-905506c463ea  59d49f01-33d2-46e2-92cb-f4c5f9ecd4fa  ALA species sightings and OzAtlas          PRESENT
-103318        in1033       -16.920195        131.525574  2019-05-03T04:20:18Z  Eolophus roseicapilla  https://biodiversity.org.au/afd/taxa/9b4ad548-8bb3-486a-ab0a-905506c463ea  3530afbc-5e81-4a3e-a9c7-a157da48a790  ALA species sightings and OzAtlas          PRESENT
-103319        in1033       -35.226993        149.020481  2017-06-25T14:00:00Z  Eolophus roseicapilla  https://biodiversity.org.au/afd/taxa/9b4ad548-8bb3-486a-ab0a-905506c463ea  32735c4a-bb78-4ffe-b7c1-7a7b7cc599ce  ALA species sightings and OzAtlas          PRESENT
-103320         in468       -14.329623        132.417688  2016-08-20T00:00:00Z  Eolophus roseicapilla  https://biodiversity.org.au/afd/taxa/9b4ad548-8bb3-486a-ab0a-905506c463ea  d3f3db88-0036-4cbe-ac3d-8807ba10fd40       Northern Territory WildWatch          PRESENT
-103321         in468       -14.189070        130.881329  2019-06-27T00:00:00Z  Eolophus roseicapilla  https://biodiversity.org.au/afd/taxa/9b4ad548-8bb3-486a-ab0a-905506c463ea  0012e374-5de4-492f-bff3-144f547396a3       Northern Territory WildWatch          PRESENT
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>      institutionID  decimalLatitude  decimalLongitude             eventDate         scientificName                                                             taxonConceptID                              recordID                   dataResourceName occurrenceStatus
+0               NaN       -35.288450        149.132780  2019-02-09T18:11:00Z  Eolophus roseicapilla  https://biodiversity.org.au/afd/taxa/9b4ad548-8bb3-486a-ab0a-905506c463ea  e7e5dbb8-9fd1-471c-8b30-65515379808e                    eBird Australia          PRESENT
+1               NaN       -35.204720        149.033900  2012-12-01T00:00:00Z  Eolophus roseicapilla  https://biodiversity.org.au/afd/taxa/9b4ad548-8bb3-486a-ab0a-905506c463ea  97e40ef3-eecf-4fee-85ac-d7111295dc7e        BirdLife Australia, Birdata          PRESENT
+2               NaN       -35.351840        149.076610  2018-10-25T07:43:00Z  Eolophus roseicapilla  https://biodiversity.org.au/afd/taxa/9b4ad548-8bb3-486a-ab0a-905506c463ea  328a72cb-cdf9-4545-98ac-fd69b2825af6                    eBird Australia          PRESENT
+3               NaN       -35.265393        149.133021  2021-10-05T20:07:00Z  Eolophus roseicapilla  https://biodiversity.org.au/afd/taxa/9b4ad548-8bb3-486a-ab0a-905506c463ea  197985b0-bba5-40c6-b9ff-ff5e111bf255                    eBird Australia          PRESENT
+4               NaN       -35.314565        149.162235  2015-10-14T06:30:00Z  Eolophus roseicapilla  https://biodiversity.org.au/afd/taxa/9b4ad548-8bb3-486a-ab0a-905506c463ea  b790eab5-af27-4852-aa18-c95fc0ac3ffe                    eBird Australia          PRESENT
+...             ...              ...               ...                   ...                    ...                                                                        ...                                   ...                                ...              ...
+86436           NaN       -35.326697        149.123731  2015-07-03T00:00:00Z  Eolophus roseicapilla  https://biodiversity.org.au/afd/taxa/9b4ad548-8bb3-486a-ab0a-905506c463ea  686e6c78-5a98-4c50-bbd2-acf3cc7d13f2                Garden Bird Surveys          PRESENT
+86437           NaN       -35.326697        149.123731  2015-10-02T00:00:00Z  Eolophus roseicapilla  https://biodiversity.org.au/afd/taxa/9b4ad548-8bb3-486a-ab0a-905506c463ea  5b78751e-547a-438c-af68-fa64b987b2d3                Garden Bird Surveys          PRESENT
+86438        in1033       -35.226993        149.020481  2017-06-25T14:00:00Z  Eolophus roseicapilla  https://biodiversity.org.au/afd/taxa/9b4ad548-8bb3-486a-ab0a-905506c463ea  32735c4a-bb78-4ffe-b7c1-7a7b7cc599ce  ALA species sightings and OzAtlas          PRESENT
+86439        in1033       -35.276619        149.112914  2017-07-25T21:34:37Z  Eolophus roseicapilla  https://biodiversity.org.au/afd/taxa/9b4ad548-8bb3-486a-ab0a-905506c463ea  150d3252-111e-41ec-ab32-7f0567ac0330  ALA species sightings and OzAtlas          PRESENT
+86440        in1033       -35.160122        149.140961  2018-07-05T06:30:46Z  Eolophus roseicapilla  https://biodiversity.org.au/afd/taxa/9b4ad548-8bb3-486a-ab0a-905506c463ea  59d49f01-33d2-46e2-92cb-f4c5f9ecd4fa  ALA species sightings and OzAtlas          PRESENT
 
-[103322 rows x 9 columns]
+[86441 rows x 9 columns]
 </pre></div>
 </div>
 </section>
@@ -535,20 +538,20 @@ associated with an active account on your chosen atlas. See more information in 
 associated with a given record. Metadata on these records can be downloaded using <code class="docutils literal notranslate"><span class="pre">galah.atlas_media()</span></code> and the same set of
 filters as the other data download functions.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">atlas_media</span><span class="p">(</span><span class="n">taxa</span><span class="o">=</span><span class="s2">&quot;Eolophus roseicapilla&quot;</span><span class="p">,</span><span class="n">filters</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;year=2020&quot;</span><span class="p">,</span><span class="s2">&quot;stateProvince=Australian Capital Territory&quot;</span><span class="p">])</span></span>
-</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>     decimalLatitude  decimalLongitude             eventDate                      scientificName                              recordID             dataResourceName occurrenceStatus multimedia                       imageIdentifier    mimeType  sizeInBytes         dateUploaded            dateTaken  height  width   creator                                         license dataResourceUid                          occurrenceID
-0         -35.599952        149.051230  2020-08-04T01:50:00Z               Eolophus roseicapilla  063bb0fd-541b-4182-8bf6-6dc79c81ef41        iNaturalist Australia          PRESENT      Image  2f4d32c0-a084-4bb3-a926-2ffd920610b9  image/jpeg      2654217  2020-08-05 01:07:32  2020-08-05 01:07:32    1200   1800   deborod  http://creativecommons.org/licenses/by-nc/4.0/          dr1411  063bb0fd-541b-4182-8bf6-6dc79c81ef41
-1         -35.599952        149.051230  2020-08-04T01:50:00Z               Eolophus roseicapilla  063bb0fd-541b-4182-8bf6-6dc79c81ef41        iNaturalist Australia          PRESENT      Image  73407414-0707-4292-a21a-97acb587239b  image/jpeg      2422643  2020-08-05 01:07:21  2020-08-05 01:07:21    1200   1800   deborod  http://creativecommons.org/licenses/by-nc/4.0/          dr1411  063bb0fd-541b-4182-8bf6-6dc79c81ef41
-2         -35.599952        149.051230  2020-08-04T01:50:00Z               Eolophus roseicapilla  063bb0fd-541b-4182-8bf6-6dc79c81ef41        iNaturalist Australia          PRESENT      Image  89171c49-5a64-423c-a768-2db20847b558  image/jpeg      2212660  2020-08-05 01:08:07  2020-08-05 01:08:07    1200   1800   deborod  http://creativecommons.org/licenses/by-nc/4.0/          dr1411  063bb0fd-541b-4182-8bf6-6dc79c81ef41
-3         -35.599952        149.051230  2020-08-04T01:50:00Z               Eolophus roseicapilla  063bb0fd-541b-4182-8bf6-6dc79c81ef41        iNaturalist Australia          PRESENT      Image  e681d31d-4088-4738-81cb-e04d056bb305  image/jpeg      3414736  2020-08-05 01:07:59  2020-08-05 01:07:59    1200   1800   deborod  http://creativecommons.org/licenses/by-nc/4.0/          dr1411  063bb0fd-541b-4182-8bf6-6dc79c81ef41
-4         -35.532558        149.062855  2020-08-26T01:53:00Z               Eolophus roseicapilla  28684160-f9eb-42b2-8491-b99d36528d77        iNaturalist Australia          PRESENT      Image  1295c202-f7d2-4030-ad4b-339e6eb110a7  image/jpeg       863158  2021-06-26 03:27:15  2021-06-26 03:27:15    1200   1800   deborod  http://creativecommons.org/licenses/by-nc/4.0/          dr1411                                   NaN
-..               ...               ...                   ...                                 ...                                   ...                          ...              ...        ...                                   ...         ...          ...                  ...                  ...     ...    ...       ...                                             ...             ...                                   ...
-347       -25.256741        130.986176  2020-01-25T01:38:21Z               Eolophus roseicapilla  3a72db19-8b0c-4626-977d-cf27c16ddd13        iNaturalist Australia          PRESENT      Image  4ba5ef6e-fd40-49ec-a10f-bc844efdabaa  image/jpeg      3030620  2020-01-26 04:07:59  2020-01-26 04:07:59    1536   2048      Alex  http://creativecommons.org/licenses/by-nc/4.0/          dr1411  3a72db19-8b0c-4626-977d-cf27c16ddd13
-348       -25.256488        130.986166  2020-01-27T03:38:57Z               Eolophus roseicapilla  a661fd22-3b48-4c6f-8957-a60f8047260c        iNaturalist Australia          PRESENT      Image  2e91ae8b-2934-4924-bc54-2e840d38871f  image/jpeg       817720  2020-02-03 02:18:29  2020-02-03 02:18:29    2048   1536  wblandon  http://creativecommons.org/licenses/by-nc/4.0/          dr1411  a661fd22-3b48-4c6f-8957-a60f8047260c
-349       -23.706595        133.883850  2020-09-26T07:24:29Z               Eolophus roseicapilla  90cd3039-d89c-456f-80b8-8b0ba29f8088        iNaturalist Australia          PRESENT      Image  b0e8a0a6-c71a-4bf1-949e-35ca2b07dc2f  image/jpeg      1482240  2020-09-27 05:29:55  2020-09-27 05:29:55    2048   1536    lucy-s  http://creativecommons.org/licenses/by-nc/4.0/          dr1411  90cd3039-d89c-456f-80b8-8b0ba29f8088
-350       -23.704297        133.851583  2020-04-25T10:43:00Z  Eolophus roseicapilla roseicapilla  89da2622-f152-4b03-80cd-f13629253e62  Earth Guardians Weekly Feed          PRESENT      Image  1301d1e9-2513-4f45-b1cf-30bcf3b27e5e  image/jpeg       174997  2020-05-09 05:43:20  2020-05-09 05:43:20    1000   1000       NaN                                             NaN          dr1902  89da2622-f152-4b03-80cd-f13629253e62
-351       -23.704297        133.851583  2020-04-25T10:43:00Z  Eolophus roseicapilla roseicapilla  89da2622-f152-4b03-80cd-f13629253e62  Earth Guardians Weekly Feed          PRESENT      Image  82c6d91d-ca08-49d4-8e25-193064b5f255  image/jpeg        69194  2020-05-09 05:43:20  2020-05-09 05:43:20     747   1000       NaN                                             NaN          dr1902  89da2622-f152-4b03-80cd-f13629253e62
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>     decimalLatitude  decimalLongitude             eventDate         scientificName                              recordID       dataResourceName occurrenceStatus multimedia                                images  videos  sounds           creator                                         license    mimetype  width  height                                                                               imageUrl
+0         -35.166122        149.166048  2020-11-07T01:29:00Z  Eolophus roseicapilla  c91faaef-1df3-41e6-a12e-c0dcd13e47b0  iNaturalist Australia          PRESENT      Image  9889254d-2a57-41dc-bc85-def7b8d3f0e0     NaN     NaN  David Cunningham  http://creativecommons.org/licenses/by-nd/4.0/  image/jpeg   1947    1947  https://images.ala.org.au/store/0/e/0/f/9889254d-2a57-41dc-bc85-def7b8d3f0e0/original
+1         -35.278123        149.177378  2020-10-10T00:55:00Z  Eolophus roseicapilla  5006c14b-00e7-4967-9091-2b413b1d7d63  iNaturalist Australia          PRESENT      Image  d668e506-0f3b-4d70-98d9-e35034c260b4     NaN     NaN           deborod  http://creativecommons.org/licenses/by-nc/4.0/  image/jpeg   1800    1200  https://images.ala.org.au/store/4/b/0/6/d668e506-0f3b-4d70-98d9-e35034c260b4/original
+2         -35.328299        149.101087  2020-04-02T06:06:00Z  Eolophus roseicapilla  14e3c386-a204-4221-88fe-2a71c3335fd8             NatureMapr          PRESENT      Image  5f4b7510-6c44-4e97-ad37-38177d85c75e     NaN     NaN              None                                            None  image/jpeg    800     600  https://images.ala.org.au/store/e/5/7/c/5f4b7510-6c44-4e97-ad37-38177d85c75e/original
+3         -35.276720        149.178877  2020-10-12T21:21:00Z  Eolophus roseicapilla  3e1dd883-f0c3-4d58-bc7a-7af5a7b97887             NatureMapr          PRESENT      Image  266513f2-6d22-488b-847f-45fceb838393     NaN     NaN              None                                            None  image/jpeg    800     600  https://images.ala.org.au/store/3/9/3/8/266513f2-6d22-488b-847f-45fceb838393/original
+4         -35.328845        149.191573  2020-08-13T00:02:00Z  Eolophus roseicapilla  2b25fff2-cb89-45da-a860-e07436974280  iNaturalist Australia          PRESENT      Image  a9084ee7-5ad7-478c-b4cb-634b087629b6     NaN     NaN  David Cunningham  http://creativecommons.org/licenses/by-nd/4.0/  image/jpeg   2048    2048  https://images.ala.org.au/store/6/b/9/2/a9084ee7-5ad7-478c-b4cb-634b087629b6/original
+..               ...               ...                   ...                    ...                                   ...                    ...              ...        ...                                   ...     ...     ...               ...                                             ...         ...    ...     ...                                                                                    ...
+341       -35.408187        149.131098  2020-01-17T07:09:00Z  Eolophus roseicapilla  2a78518b-7c0f-485b-be6b-61cc877cfd41  iNaturalist Australia          PRESENT      Image  016246bf-9e7e-4318-8753-6ddda30f1d40     NaN     NaN           deborod  http://creativecommons.org/licenses/by-nc/4.0/  image/jpeg   1800    1200  https://images.ala.org.au/store/0/4/d/1/016246bf-9e7e-4318-8753-6ddda30f1d40/original
+342       -35.408187        149.131098  2020-01-17T07:09:00Z  Eolophus roseicapilla  2a78518b-7c0f-485b-be6b-61cc877cfd41  iNaturalist Australia          PRESENT      Image  3e1598ee-a859-4c63-ac32-9437eabe8a4c     NaN     NaN           deborod  http://creativecommons.org/licenses/by-nc/4.0/  image/jpeg   1800    1200  https://images.ala.org.au/store/c/4/a/8/3e1598ee-a859-4c63-ac32-9437eabe8a4c/original
+343       -35.408187        149.131098  2020-01-17T07:09:00Z  Eolophus roseicapilla  2a78518b-7c0f-485b-be6b-61cc877cfd41  iNaturalist Australia          PRESENT      Image  78b0b7f0-b2a4-4646-b59b-4a6d1a91a6f4     NaN     NaN           deborod  http://creativecommons.org/licenses/by-nc/4.0/  image/jpeg   1800    1200  https://images.ala.org.au/store/4/f/6/a/78b0b7f0-b2a4-4646-b59b-4a6d1a91a6f4/original
+344       -35.408187        149.131098  2020-01-17T07:09:00Z  Eolophus roseicapilla  2a78518b-7c0f-485b-be6b-61cc877cfd41  iNaturalist Australia          PRESENT      Image  79e5ad3d-dfad-44f7-83ba-b576a91742b7     NaN     NaN           deborod  http://creativecommons.org/licenses/by-nc/4.0/  image/jpeg   1800    1200  https://images.ala.org.au/store/7/b/2/4/79e5ad3d-dfad-44f7-83ba-b576a91742b7/original
+345       -35.408187        149.131098  2020-01-17T07:09:00Z  Eolophus roseicapilla  2a78518b-7c0f-485b-be6b-61cc877cfd41  iNaturalist Australia          PRESENT      Image  f7fbae15-aa1a-4010-9f11-88232588e59b     NaN     NaN           deborod  http://creativecommons.org/licenses/by-nc/4.0/  image/jpeg   1800    1200  https://images.ala.org.au/store/b/9/5/e/f7fbae15-aa1a-4010-9f11-88232588e59b/original
 
-[352 rows x 19 columns]
+[346 rows x 17 columns]
 </pre></div>
 </div>
 <p>To actually download the media files to your computer, add the argument <code class="docutils literal notranslate"><span class="pre">collect</span></code>.  By default, it downloads the data to your

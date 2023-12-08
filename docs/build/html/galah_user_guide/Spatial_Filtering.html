@@ -1,0 +1,757 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Spatial filtering &#8212; Galah 0.7.0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/extra.css?v=bc76f7e5" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/extra.css?v=bc76f7e5" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script src="../_static/documentation_options.js?v=b9678aa1"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/design-tabs.js?v=36754332"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'galah_user_guide/Spatial_Filtering';</script>
+    <link rel="icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Temporal filtering" href="Temporal_Filtering.html" />
+    <link rel="prev" title="Taxonomic Filtering" href="Taxonomic_Filtering.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  <div class="navbar-header-items__start">
+    
+      <div class="navbar-item">
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+    
+  </div>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../getting_started/index.html">
+                        Getting Started
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="index.html">
+                        Galah User Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../apidocs/galah.html">
+                        API Docs
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../authors/index.html">
+                        Authors
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../cheatsheet/index.html">
+                        Cheat Sheet
+                      </a>
+                    </li>
+                
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+        </div>
+      
+      
+        <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/AtlasOfLivingAustralia/galah_python" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-square-github"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+    </div>
+  
+
+  
+    <label class="sidebar-toggle secondary-toggle" for="__secondary">
+      <span class="fa-solid fa-outdent"></span>
+    </label>
+  
+</div>
+
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../getting_started/index.html">
+                        Getting Started
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="index.html">
+                        Galah User Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../apidocs/galah.html">
+                        API Docs
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../authors/index.html">
+                        Authors
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../cheatsheet/index.html">
+                        Cheat Sheet
+                      </a>
+                    </li>
+                
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/AtlasOfLivingAustralia/galah_python" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-square-github"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item"><nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="Getting_Started.html">Getting Started</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="Choosing_Atlas.html">Choosing an Atlas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Download_Data.html">Download Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Look_Up_Info.html">Look Up Information</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Narrow_Results.html">Narrow Results</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="Advanced.html">Advanced</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="Taxonomic_Filtering.html">Taxonomic Filtering</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Spatial filtering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Temporal_Filtering.html">Temporal filtering</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumbs">
+  <ul class="bd-breadcrumbs" role="navigation" aria-label="Breadcrumb">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="index.html" class="nav-link">Galah User Guide</a></li>
+    
+    
+    <li class="breadcrumb-item"><a href="Advanced.html" class="nav-link">Advanced</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">Spatial filtering</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="spatial-filtering">
+<span id="id1"></span><h1>Spatial filtering<a class="headerlink" href="#spatial-filtering" title="Link to this heading">#</a></h1>
+<p>Adapted from <a class="reference external" href="galah.ala.org.au/R/articles/spatial_filtering.html">the Temporal Filtering galah-R article</a>.</p>
+<p><em>Callum Waite, Shandiya Balasubramaniam, Amanda Buyan</em></p>
+<p>Biodiversity queries to the ALA usually require some spatial filtering. Let’s see how spatial data
+are stored in the ALA and a few different methods to spatially filter data with <code class="docutils literal notranslate"><span class="pre">{galah}</span></code>, <code class="docutils literal notranslate"><span class="pre">{shapely}</span></code>
+and <code class="docutils literal notranslate"><span class="pre">{geopandas}</span></code>.</p>
+<p>Most records in the ALA contain location data in the form of two key fields: <code class="docutils literal notranslate"><span class="pre">decimalLatitude</span></code> and
+<code class="docutils literal notranslate"><span class="pre">decimalLongitude</span></code>. As expected, these fields are the decimal coordinates of each occurrence, with south
+and west values denoted by negatives. While there may be some uncertainty in these values (see field
+<code class="docutils literal notranslate"><span class="pre">coordinateUncertaintyInMeters</span></code>), they are generally very accurate.</p>
+<p>While these are very important and useful fields, very rarely will we encounter situations that require
+queries directly calling <code class="docutils literal notranslate"><span class="pre">decimalLatitude</span></code> and <code class="docutils literal notranslate"><span class="pre">decimalLongitude</span></code>. Instead, the ALA and galah have a number
+of features that make spatial queries simpler.</p>
+<section id="contextual-and-spatial-layers">
+<h2>Contextual and spatial layers<a class="headerlink" href="#contextual-and-spatial-layers" title="Link to this heading">#</a></h2>
+<p>Often we want to filter results down to some commonly defined spatial regions, such as states, LGAs or
+IBRA/IMCRA regions. The ALA contains a large range (&gt;100) of contextual and spatial layers, in-built as
+searchable and queriable fields. They are denoted by names beginning with “cl”, followed by an identifying
+number that may be up to 6 digits long. These fields are each based on shapefiles, and contain the names of
+the regions in these layers that each record lies in.</p>
+<p>We strongly recommend using <code class="docutils literal notranslate"><span class="pre">galah.search_all(fields=&quot;&lt;your-search-term-here&gt;&quot;)</span></code> to check whether a contextual
+layer already exists in the ALA that matches what you require before proceeding with other methods of spatial
+filtering. These fields are all able to be used in the <code class="docutils literal notranslate"><span class="pre">filters</span></code> argument of <code class="docutils literal notranslate"><span class="pre">atlas_counts</span></code>, <code class="docutils literal notranslate"><span class="pre">atlas_occurrences</span></code>,
+<code class="docutils literal notranslate"><span class="pre">atlas_species</span></code> or <code class="docutils literal notranslate"><span class="pre">atlas_media</span></code>, so they are generally easier to use.</p>
+<p>Suppose we are interested in querying records of the Red-Necked Avocet (<em>Recurvirostra novaehollandiae</em>) in a
+particular protected wetlands, the Coorong wetlands in South Australia. We can search the ALA fields for
+wetlands.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><style type="text/css">
+span.prompt1:before {
+  content: " ";
+}
+</style><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">galah</span></span>
+<span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">galah_config</span><span class="p">(</span><span class="n">email</span><span class="o">=</span><span class="s2">&quot;your-email-here&quot;</span><span class="p">)</span></span>
+<span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">search_all</span><span class="p">(</span><span class="n">fields</span><span class="o">=</span><span class="s2">&quot;wetlands&quot;</span><span class="p">)</span></span>
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>      id                                                                                                            description    type link
+0  cl901  Directory of Important Wetlands Directory of Important Wetlands Spatial Database including Wetlands Type and Criteria  layers
+</pre></div>
+</div>
+<p>Our search identifies that layer <code class="docutils literal notranslate"><span class="pre">cl901</span></code> seems to match what we are looking for. We can then either view all
+possible values in the field with <code class="docutils literal notranslate"><span class="pre">galah.show_values()</span></code>, or use <code class="docutils literal notranslate"><span class="pre">galah.search_values()</span></code> again for our particular field.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">search_values</span><span class="p">(</span><span class="n">field</span><span class="o">=</span><span class="s2">&quot;cl901&quot;</span><span class="p">,</span><span class="n">value</span><span class="o">=</span><span class="s2">&quot;coorong&quot;</span><span class="p">)</span></span>
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>   field                                     category
+0  cl901  The Coorong, Lake Alexandrina &amp; Lake Albert
+</pre></div>
+</div>
+<p>We can filter all occurrences for exact matches with this value, “The Coorong, Lake Alexandrina &amp; Lake Albert”. Our galah query can be built
+as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">avocets</span> <span class="o">=</span> <span class="n">galah</span><span class="o">.</span><span class="n">atlas_occurrences</span><span class="p">(</span></span>
+<span class="prompt1"><span class="o">...</span>   <span class="n">taxa</span> <span class="o">=</span> <span class="s2">&quot;Recurvirostra novaehollandiae&quot;</span><span class="p">,</span></span>
+<span class="prompt1"><span class="o">...</span>   <span class="n">filters</span> <span class="o">=</span> <span class="s2">&quot;cl901=The Coorong, Lake Alexandrina &amp; Lake Albert&quot;</span></span>
+<span class="prompt1"><span class="o">...</span> <span class="p">)</span></span>
+<span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">avocets</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span></span>
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>   decimalLatitude  decimalLongitude             eventDate                 scientificName                                                             taxonConceptID                              recordID                          dataResourceName occurrenceStatus
+0       -36.525833        139.823608  2012-07-29T00:00:00Z  Recurvirostra novaehollandiae  https://biodiversity.org.au/afd/taxa/c69e7308-527a-429d-a80d-143bd20b5100  838c1162-6c3e-4b5f-84d3-3639556f1acf               BirdLife Australia, Birdata          PRESENT
+1       -36.521950        139.827200                   NaN  Recurvirostra novaehollandiae  https://biodiversity.org.au/afd/taxa/c69e7308-527a-429d-a80d-143bd20b5100  e02745af-44d4-4ad8-9816-7aaaaa318a82  Australian Waterbird Surveys (1983-2018)          PRESENT
+2       -36.521950        139.827200  2010-10-21T00:00:00Z  Recurvirostra novaehollandiae  https://biodiversity.org.au/afd/taxa/c69e7308-527a-429d-a80d-143bd20b5100  8fdebcda-de5e-4c2c-94dc-a9fb25cd6817  Australian Waterbird Surveys (1983-2018)          PRESENT
+3       -36.521950        139.827200                   NaN  Recurvirostra novaehollandiae  https://biodiversity.org.au/afd/taxa/c69e7308-527a-429d-a80d-143bd20b5100  3e4d190c-7032-48ba-885e-ebf513fe5af0  Australian Waterbird Surveys (1983-2018)          PRESENT
+4       -36.518368        139.824353  1997-01-01T00:00:00Z  Recurvirostra novaehollandiae  https://biodiversity.org.au/afd/taxa/c69e7308-527a-429d-a80d-143bd20b5100  447135d5-7ccf-4dd5-9ca5-e6bb1e238823                          NSW BioNet Atlas          PRESENT
+</pre></div>
+</div>
+</section>
+<section id="shapes-and-regions">
+<h2>Shapes and Regions<a class="headerlink" href="#shapes-and-regions" title="Link to this heading">#</a></h2>
+<p>While server-side spatial information is useful, there are likely to be cases where the shapefile or region
+you wish to query will not be pre-loaded as a contextual layer in the ALA. In this case, shapefiles can be
+introduced to the filtering process using the <code class="docutils literal notranslate"><span class="pre">{shapely}</span></code> package and the <code class="docutils literal notranslate"><span class="pre">polygon</span></code> or <code class="docutils literal notranslate"><span class="pre">bbox</span></code> arguments in
+<code class="docutils literal notranslate"><span class="pre">atlas_counts</span></code>, <code class="docutils literal notranslate"><span class="pre">atlas_occurrences</span></code>, <code class="docutils literal notranslate"><span class="pre">atlas_species</span></code> or <code class="docutils literal notranslate"><span class="pre">atlas_media</span></code>.  Shapefiles can be provided as a
+<code class="docutils literal notranslate"><span class="pre">shapely</span></code> object, the string denoting the polygon itself, or in the base of <code class="docutils literal notranslate"><span class="pre">bbox</span></code>, a dictionary
+specifying <code class="docutils literal notranslate"><span class="pre">xmin</span></code>, <code class="docutils literal notranslate"><span class="pre">xmax</span></code>, <code class="docutils literal notranslate"><span class="pre">ymin</span></code>, and <code class="docutils literal notranslate"><span class="pre">ymax</span></code>.  For instance, we might interested in species occurrences in
+King George Square, Brisbane. We can take the <code class="docutils literal notranslate"><span class="pre">MULTIPOLYGON</span></code> object for the square (as sourced from the Brisbane City
+Council) and transform it into a <code class="docutils literal notranslate"><span class="pre">{shapely}</span></code> object.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">shapely.wkt</span></span>
+<span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">king_george_square</span> <span class="o">=</span> <span class="n">shapely</span><span class="o">.</span><span class="n">wkt</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="s2">&quot;MULTIPOLYGON(((153.0243 -27.46886, 153.0242 -27.46896, 153.0236 -27.46837, 153.0239 -27.46814, 153.0239 -27.46813, 153.0242 -27.46789, 153.0244 -27.46805, 153.0245 -27.46821, 153.0246 -27.46828, 153.0247 -27.46835, 153.0248 -27.46848, 153.0246 -27.4686, 153.0246 -27.46862, 153.0245 -27.46871, 153.0243 -27.46886)))&quot;</span><span class="p">)</span></span>
+</pre></div></div><p>We can provide this <code class="docutils literal notranslate"><span class="pre">MULTIPOLYGON</span></code> as the argument <code class="docutils literal notranslate"><span class="pre">polygon</span></code> in <code class="docutils literal notranslate"><span class="pre">atlas_occurrences</span></code> to assess which species
+have been recorded in King George Square.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">species_king_george_square</span> <span class="o">=</span> <span class="n">galah</span><span class="o">.</span><span class="n">atlas_occurrences</span><span class="p">(</span></span>
+<span class="prompt1"><span class="o">...</span>   <span class="n">polygon</span><span class="o">=</span><span class="n">king_george_square</span><span class="p">,</span></span>
+<span class="prompt1"><span class="o">...</span>   <span class="n">fields</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;decimalLatitude&quot;</span><span class="p">,</span> <span class="s2">&quot;decimalLongitude&quot;</span><span class="p">,</span> <span class="s2">&quot;eventDate&quot;</span><span class="p">,</span> <span class="s2">&quot;scientificName&quot;</span><span class="p">,</span> <span class="s2">&quot;vernacularName&quot;</span><span class="p">]</span></span>
+<span class="prompt1"><span class="o">...</span> <span class="p">)</span></span>
+<span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">species_king_george_square</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span></span>
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>   decimalLatitude  decimalLongitude             eventDate         scientificName         vernacularName
+0       -27.468625        153.024333  2006-03-29T23:32:00Z  Threskiornis moluccus      Black-necked Ibis
+1       -27.468510        153.023821  2023-04-08T07:49:00Z     Entomyzon cyanotis  Blue-faced Honeyeater
+2       -27.468418        153.024140  2022-08-30T01:29:00Z  Threskiornis moluccus      Black-necked Ibis
+3       -27.468326        153.024077  2022-07-24T14:43:00Z  Threskiornis moluccus      Black-necked Ibis
+</pre></div>
+</div>
+<p>This argument can be provided as its string; however, we show you the above to give you an idea of what
+<code class="docutils literal notranslate"><span class="pre">galah-python</span></code> does when you provide it a string.</p>
+<p>There is a third argument of <code class="docutils literal notranslate"><span class="pre">atlas_counts</span></code>, <code class="docutils literal notranslate"><span class="pre">atlas_occurrences</span></code>, <code class="docutils literal notranslate"><span class="pre">atlas_species</span></code> or <code class="docutils literal notranslate"><span class="pre">atlas_media</span></code>
+called <code class="docutils literal notranslate"><span class="pre">simplify_polygon</span></code>, which defaults to <code class="docutils literal notranslate"><span class="pre">False</span></code>. By setting the <code class="docutils literal notranslate"><span class="pre">simplify_polygon</span></code> argument
+to <code class="docutils literal notranslate"><span class="pre">True</span></code>, the provided <code class="docutils literal notranslate"><span class="pre">POLYGON</span></code> or <code class="docutils literal notranslate"><span class="pre">MULTIPOLYGON</span></code> will be converted into the smallest bounding box
+(rectangle) that contains the <code class="docutils literal notranslate"><span class="pre">POLYGON</span></code>. In this case, records will be included that may not exactly lie
+inside the provided shape.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">species_king_george_square</span> <span class="o">=</span> <span class="n">galah</span><span class="o">.</span><span class="n">atlas_occurrences</span><span class="p">(</span></span>
+<span class="prompt1"><span class="o">...</span>   <span class="n">polygon</span><span class="o">=</span><span class="n">king_george_sq</span><span class="p">,</span></span>
+<span class="prompt1"><span class="o">...</span>   <span class="n">simplify_polygon</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span></span>
+<span class="prompt1"><span class="o">...</span>   <span class="n">fields</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;decimalLatitude&quot;</span><span class="p">,</span> <span class="s2">&quot;decimalLongitude&quot;</span><span class="p">,</span> <span class="s2">&quot;eventDate&quot;</span><span class="p">,</span> <span class="s2">&quot;scientificName&quot;</span><span class="p">,</span> <span class="s2">&quot;vernacularName&quot;</span><span class="p">]</span></span>
+<span class="prompt1"><span class="o">...</span> <span class="p">)</span></span>
+<span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">species_king_george_square</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span></span>
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>   decimalLatitude  decimalLongitude             eventDate         scientificName         vernacularName
+0       -27.468817        153.023616  2019-04-21T04:40:00Z  Threskiornis moluccus      Black-necked Ibis
+1       -27.468816        153.023613  2005-08-28T12:18:00Z  Threskiornis moluccus      Black-necked Ibis
+2       -27.468625        153.024333  2006-03-29T23:32:00Z  Threskiornis moluccus      Black-necked Ibis
+3       -27.468510        153.023821  2023-04-08T07:49:00Z     Entomyzon cyanotis  Blue-faced Honeyeater
+4       -27.468418        153.024140  2022-08-30T01:29:00Z  Threskiornis moluccus      Black-necked Ibis
+5       -27.468326        153.024077  2022-07-24T14:43:00Z  Threskiornis moluccus      Black-necked Ibis
+6       -27.468056        153.023889                   NaN   Syntrichia laevipila                    NaN
+</pre></div>
+</div>
+</section>
+<section id="large-shapefiles">
+<h2>Large shapefiles<a class="headerlink" href="#large-shapefiles" title="Link to this heading">#</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">simplify_polygon</span></code> argument with option <code class="docutils literal notranslate"><span class="pre">polygon</span></code> is provided because objects with a large amount of
+vertices will take a long time to filter on the ALA’s end. In the event you have a large shapefile, using
+<code class="docutils literal notranslate"><span class="pre">simplify_polygon=True</span></code> will at least enable an initial reduction of the time it takes for the data to be
+downloaded, before finer filtering to the actual shapefile will obtain the desired set of occurrences.</p>
+<p>Alternatively, one can also perform the “bbox” reduction before passing the shape to <code class="docutils literal notranslate"><span class="pre">atlas_counts</span></code>,
+<code class="docutils literal notranslate"><span class="pre">atlas_occurrences</span></code>, <code class="docutils literal notranslate"><span class="pre">atlas_species</span></code> or <code class="docutils literal notranslate"><span class="pre">atlas_media</span></code> by using <code class="docutils literal notranslate"><span class="pre">{geopandas}</span></code> and the <code class="docutils literal notranslate"><span class="pre">unary_union</span></code>
+function of the <code class="docutils literal notranslate"><span class="pre">{shapely}</span></code> package.</p>
+<p>A common situation for this to occur is when a shapefile with multiple shapes is provided, where we are
+interested in grouping our results by each shape. Here is a mock workflow using a subset of <a class="reference external" href="https://www.data.brisbane.qld.gov.au/data/dataset/park-locations">a shapefile of
+all 2,184 Brisbane parks</a>.</p>
+<p>Let’s say we are interested in knowing which parks in the Brisbane postcode 4075 have the most occurrences
+of the Scaly-Breasted Lorikeet, Trichoglossus chlorolepidotus, since 2020. We can download the entire
+shapefile from the above link, and perform our filtering and summarising as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="c1"># first, get all parts within the Brisbane postcode 4075</span></span>
+<span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">geopandas</span> <span class="k">as</span> <span class="nn">gpd</span></span>
+<span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">parks</span> <span class="o">=</span> <span class="n">gpd</span><span class="o">.</span><span class="n">read_file</span><span class="p">(</span><span class="s2">&quot;Park___Locations.shp&quot;</span><span class="p">)</span></span>
+<span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">parks</span><span class="o">.</span><span class="n">columns</span></span>
+<span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">brisbane_parks</span> <span class="o">=</span> <span class="n">parks</span><span class="p">[</span><span class="n">parks</span><span class="p">[</span><span class="s2">&quot;POST_CODE&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;4075&#39;</span><span class="p">]</span></span>
+<span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">brisbane_parks</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span></span>
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>   OBJECTID  ...                                           geometry
+0        64  ...  POLYGON ((152.99236 -27.53098, 152.99118 -27.5...
+1        65  ...  POLYGON ((152.99137 -27.53090, 152.99130 -27.5...
+2       102  ...  POLYGON ((152.98534 -27.57025, 152.98534 -27.5...
+3       115  ...  POLYGON ((152.98702 -27.57090, 152.98723 -27.5...
+4       116  ...  POLYGON ((152.98525 -27.57294, 152.98513 -27.5...
+5       147  ...  POLYGON ((152.98423 -27.57400, 152.98429 -27.5...
+6       166  ...  POLYGON ((152.96348 -27.55583, 152.96348 -27.5...
+7       188  ...  POLYGON ((152.98312 -27.56635, 152.98302 -27.5...
+8       401  ...  POLYGON ((152.98792 -27.52198, 152.98800 -27.5...
+9       402  ...  POLYGON ((152.98165 -27.51611, 152.98159 -27.5...
+
+[10 rows x 13 columns]
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="c1"># second, get a shape of all the Brisbane parks and draw a bounding box around it</span></span>
+<span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">shapely</span></span>
+<span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">shapely.ops</span> <span class="kn">import</span> <span class="n">unary_union</span></span>
+<span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">brisbane_parks_all</span> <span class="o">=</span> <span class="n">gpd</span><span class="o">.</span><span class="n">GeoSeries</span><span class="p">(</span><span class="n">unary_union</span><span class="p">(</span><span class="n">brisbane_parks</span><span class="p">[</span><span class="s2">&quot;geometry&quot;</span><span class="p">]))</span></span>
+<span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">brisbane_parks_bbox</span> <span class="o">=</span> <span class="n">brisbane_parks_all</span><span class="o">.</span><span class="n">bounds</span></span>
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>         minx       miny        maxx       maxy
+0  152.963302 -27.577386  152.996692 -27.516073
+</pre></div>
+</div>
+<p>To visualise</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">plot_brisbane_parks_bbox</span> <span class="o">=</span> <span class="n">shapely</span><span class="o">.</span><span class="n">box</span><span class="p">(</span><span class="n">xmin</span><span class="o">=</span><span class="n">brisbane_parks_bbox</span><span class="p">[</span><span class="s2">&quot;minx&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span></span>
+<span class="prompt1"><span class="o">...</span>                                <span class="n">xmax</span><span class="o">=</span><span class="n">brisbane_parks_bbox</span><span class="p">[</span><span class="s2">&quot;maxx&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span></span>
+<span class="prompt1"><span class="o">...</span>                                <span class="n">ymin</span><span class="o">=</span><span class="n">brisbane_parks_bbox</span><span class="p">[</span><span class="s2">&quot;miny&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span></span>
+<span class="prompt1"><span class="o">...</span>                                <span class="n">ymax</span><span class="o">=</span><span class="n">brisbane_parks_bbox</span><span class="p">[</span><span class="s2">&quot;maxy&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span></span>
+<span class="prompt1"><span class="o">...</span>                                <span class="p">)</span></span>
+<span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">brisbane_parks_all</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">edgecolor</span> <span class="o">=</span> <span class="s2">&quot;#5A5A5A&quot;</span><span class="p">,</span> <span class="n">linewidth</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">facecolor</span> <span class="o">=</span> <span class="s2">&quot;white&quot;</span><span class="p">,</span> <span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">10</span><span class="p">))</span></span>
+<span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="o">*</span><span class="n">plot_brisbane_parks_bbox</span><span class="o">.</span><span class="n">exterior</span><span class="o">.</span><span class="n">xy</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">)</span></span>
+<span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Latitude&quot;</span><span class="p">,</span><span class="n">size</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span></span>
+<span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Longitude&quot;</span><span class="p">,</span><span class="n">size</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span></span>
+</pre></div></div><figure class="align-default" id="id2">
+<img alt="bbox brisbane" src="galah_user_guide/brisbane_parks_and_bbox.png" />
+<figcaption>
+<p><span class="caption-text">The bounding box around brisbane parks</span><a class="headerlink" href="#id2" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="c1"># third, find all occurrences of Trichoglossus chlorolepidotus in the bounding box in 2022</span></span>
+<span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">galah</span></span>
+<span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">galah_config</span><span class="p">(</span><span class="n">email</span><span class="o">=</span><span class="s2">&quot;your-email-here&quot;</span><span class="p">)</span></span>
+<span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">lorikeet_brisbane</span> <span class="o">=</span> <span class="n">galah</span><span class="o">.</span><span class="n">atlas_occurrences</span><span class="p">(</span></span>
+<span class="prompt1"><span class="o">...</span>     <span class="n">taxa</span><span class="o">=</span><span class="s2">&quot;Trichoglossus chlorolepidotus&quot;</span><span class="p">,</span></span>
+<span class="prompt1"><span class="o">...</span>     <span class="n">filters</span><span class="o">=</span><span class="s2">&quot;year=2022&quot;</span><span class="p">,</span></span>
+<span class="prompt1"><span class="o">...</span>     <span class="n">bbox</span><span class="o">=</span><span class="n">brisbane_parks_bbox</span></span>
+<span class="prompt1"><span class="o">...</span> <span class="p">)</span></span>
+<span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">lorikeet_brisbane</span></span>
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>      decimalLatitude  decimalLongitude  ... dataResourceName occurrenceStatus
+0          -27.576858        152.970235  ...  eBird Australia          PRESENT
+1          -27.576303        152.981694  ...  eBird Australia          PRESENT
+2          -27.574852        152.992831  ...  eBird Australia          PRESENT
+3          -27.574169        152.995529  ...  eBird Australia          PRESENT
+4          -27.574145        152.977711  ...  eBird Australia          PRESENT
+...               ...               ...  ...              ...              ...
+1845       -27.517616        152.985081  ...  eBird Australia          PRESENT
+1846       -27.517616        152.985081  ...  eBird Australia          PRESENT
+1847       -27.517616        152.985081  ...  eBird Australia          PRESENT
+1848       -27.517616        152.985081  ...  eBird Australia          PRESENT
+1849       -27.517616        152.985081  ...  eBird Australia          PRESENT
+
+[1850 rows x 8 columns]
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">brisbane_parks_all</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">edgecolor</span> <span class="o">=</span> <span class="s2">&quot;#5A5A5A&quot;</span><span class="p">,</span> <span class="n">linewidth</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">facecolor</span> <span class="o">=</span> <span class="s2">&quot;white&quot;</span><span class="p">,</span> <span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">10</span><span class="p">))</span></span>
+<span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="o">*</span><span class="n">plot_brisbane_parks_bbox</span><span class="o">.</span><span class="n">exterior</span><span class="o">.</span><span class="n">xy</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">)</span></span>
+<span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Latitude&quot;</span><span class="p">,</span><span class="n">size</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span></span>
+<span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Longitude&quot;</span><span class="p">,</span><span class="n">size</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span></span>
+<span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">lorikeet_brisbane</span><span class="p">[</span><span class="s2">&quot;decimalLongitude&quot;</span><span class="p">],</span><span class="n">lorikeet_brisbane</span><span class="p">[</span><span class="s2">&quot;decimalLatitude&quot;</span><span class="p">],</span><span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="s2">&quot;orange&quot;</span><span class="p">)</span></span>
+</pre></div></div><figure class="align-default" id="id3">
+<img alt="loorikeet brisbane" src="galah_user_guide/lorikeets_on_map_shapefile.png" />
+<figcaption>
+<p><span class="caption-text">Lorikeet occurrences in the boudning box around brisbane parks</span><a class="headerlink" href="#id3" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="c1"># Filter records down to only those in the shapefile polygons</span></span>
+<span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">brisbane_parks</span><span class="p">[</span><span class="s2">&quot;count&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="mi">0</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">brisbane_parks</span><span class="p">))])</span></span>
+<span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">park</span> <span class="ow">in</span> <span class="n">brisbane_parks</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span></span>
+<span class="prompt1"><span class="o">...</span>     <span class="n">points</span> <span class="o">=</span> <span class="p">[(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span><span class="n">y</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">lorikeet_brisbane</span><span class="p">[</span><span class="s2">&quot;decimalLongitude&quot;</span><span class="p">],</span> <span class="n">lorikeet_brisbane</span><span class="p">[</span><span class="s2">&quot;decimalLatitude&quot;</span><span class="p">])</span> <span class="k">if</span> <span class="n">shapely</span><span class="o">.</span><span class="n">contains_xy</span><span class="p">(</span><span class="n">park</span><span class="p">[</span><span class="s2">&quot;geometry&quot;</span><span class="p">],</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">)]</span></span>
+<span class="prompt1"><span class="o">...</span>     <span class="n">brisbane_parks</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="s2">&quot;count&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">points</span><span class="p">)</span></span>
+<span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">brisbane_parks_counts</span> <span class="o">=</span> <span class="n">brisbane_parks</span><span class="p">[[</span><span class="s2">&quot;PARK_NAME&quot;</span><span class="p">,</span><span class="s2">&quot;count&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s2">&quot;count&quot;</span><span class="p">,</span><span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></span>
+<span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">brisbane_parks_counts</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span></span>
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>                        PARK_NAME  count
+0              SHERWOOD ARBORETUM    276
+1                NYUNDARE-BA PARK    271
+2                   FAULKNER PARK     51
+3         STRICKLAND TERRACE PARK     33
+4  GRACEVILLE RIVERSIDE PARKLANDS     32
+5              FORT ROAD BUSHLAND     31
+6               BENARRAWA RESERVE     19
+7                  NOSWORTHY PARK     16
+8           HORACE WINDOW RESERVE      9
+9          GRACEVILLE AVENUE PARK      6
+</pre></div>
+</div>
+<p>Some shapefiles cover large geographic areas with the caveat that even the bounding box doesn’t restrict the
+number of records to a value that can be downloaded easily. In this case, we recommend more nuances and detailed
+methods that can be performed using looping techniques. One of our ALA Labs blog posts, Hex maps for species
+occurrence data, has been written detailing how to approach larger problems such as this.</p>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="Taxonomic_Filtering.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Taxonomic Filtering</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="Temporal_Filtering.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Temporal filtering</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#contextual-and-spatial-layers">Contextual and spatial layers</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#shapes-and-regions">Shapes and Regions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#large-shapefiles">Large shapefiles</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+  <p class="copyright">
+    
+      © Copyright Atlas of Living Australia.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.5.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item"><p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.13.3.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

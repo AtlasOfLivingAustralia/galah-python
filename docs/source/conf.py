@@ -64,8 +64,8 @@ html_theme_options = {
 	"github_url": "https://github.com/AtlasOfLivingAustralia/galah_python",
 	"secondary_sidebar_items": ["page-toc"],
     "logo": {
-		"image_light": "logo.png",
-        "image_dark": "logo.png", 
+		"image_light": "_static/logo/logo.png", # didn't have dir before
+        "image_dark": "_static/logo/logo.png", 
 	},
 }
 
@@ -80,7 +80,7 @@ html_sidebars = {
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
 
-html_static_path = ['_static']
+html_static_path = ['_static'] # added source/
 
 html_logo = "_static/logo/logo.png"
 
