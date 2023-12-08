@@ -76,7 +76,7 @@ def search_taxa(taxa=None,
     .. prompt:: python
 
         import galah
-        galah.search_taxa(scientific_name=scientific_ name={"family": ["pardalotidae","maluridae"],"scientificName": ["pardolatus striatus","malurus cyaneus"]})
+        galah.search_taxa(scientific_name={"family": ["pardalotidae","maluridae"],"scientificName": ["pardolatus striatus","malurus cyaneus"]})
 
     .. program-output:: python -c "import galah; import pandas as pd;pd.set_option('display.max_columns', None);print(galah.search_taxa(scientific_name={\\\"family\\\": [\\\"pardalotidae\\\",\\\"maluridae\\\"],\\\"scientificName\\\": [\\\"pardolatus striatus\\\",\\\"malurus cyaneus\\\"]}))"
     """
@@ -252,6 +252,12 @@ def search_taxa(taxa=None,
                 # get the response
                 response = requests.request(method,URL,headers=headers)
                 response_json = response.json()
+
+                if atlas in ["Australia","ALA"] and not response_json["success"]:
+                    if "homonym" in response_json["issues"]:
+                        print("Warning: Search returned multiple taxa due to a homonym issue.")
+                        print("Please use the `scientific_name` argument to clarify taxa.")
+                        return pd.DataFrame({"search_term": taxa, "issues": response_json["issues"]})
 
                 # Check for the Swedish atlas
                 if atlas in ["Sweden"]: 

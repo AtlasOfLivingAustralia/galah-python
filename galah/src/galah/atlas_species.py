@@ -9,6 +9,7 @@ from .common_functions import add_filters,add_to_payload_ALA
 from .show_all import show_all
 
 def atlas_species(taxa=None,
+                  scientific_name=None,
                   rank="species",
                   filters=None,
                   verbose=False,
@@ -98,7 +99,8 @@ def atlas_species(taxa=None,
     if atlas in ["Australia","ALA"]:
         
         # create payload and add buffer to polygon if user specifies it
-        payload = add_to_payload_ALA(payload=payload,atlas=atlas,taxa=taxa,filters=filters,polygon=polygon,bbox=bbox,simplify_polygon=simplify_polygon)
+        payload = add_to_payload_ALA(payload=payload,atlas=atlas,taxa=taxa,filters=filters,polygon=polygon,
+                                     bbox=bbox,simplify_polygon=simplify_polygon,scientific_name=scientific_name)
 
         # create the query id
         qid_URL, method2 = get_api_url(column1="api_name",column1value="occurrences_qid")

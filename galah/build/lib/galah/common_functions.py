@@ -128,41 +128,65 @@ def get_response_show_all(column1=None,
     return response
 
 def generate_list_taxonConceptIDs(taxa=None,
+                                  scientific_name=None,
                                   atlas=None):
     '''Function for getting more than one taxonConceptIDs'''
 
-    if taxa is None:
-        raise ValueError("Please provide a taxa for this information")
+    if taxa is None and scientific_name is None:
+        raise ValueError("Please provide either a taxa or scientific_name for this information")
     
     if atlas is None:
         raise ValueError("Please provide an atlas to this function")
 
     # change taxa into list for easier looping and check if type of variable is correct
-    if type(taxa) is str:
-        taxa = [taxa]
-    elif type(taxa) is list:
-        pass
+    if scientific_name is not None:
+
+        # check for correct dictionary
+        lens = [None for i in range(len(scientific_name))]
+        for i,key in enumerate(scientific_name):
+            lens[i] = len(scientific_name[key])
+        if len(set(lens)) > 1:
+            print(scientific_name)
+            raise ValueError("Please provide a correctly formatted dictionary with scientific_name - you are missing one or more taxonomic keys.")
+        keys = scientific_name.keys()
+        for i in range(lens[0]):
+            tempdf = search_taxa(scientific_name=dict({key: [scientific_name[key][i]] for key in keys}))
+            if tempdf.empty:
+                print("No taxon matches were found for {} in the selected atlas ({})".format(scientific_name, atlas))
+                if len(scientific_name) == 1:
+                    return None
+                continue
+    
     else:
-        raise TypeError("The taxa argument can only be a string or a list."
-                    "\nExample: atlas.counts(\"Vulpes vulpes\")"
-                    "\n         atlas.counts[\"Osphranter rufus\",\"Vulpes vulpes\",\"Macropus giganteus\",\"Phascolarctos cinereus\"])")
 
-    # get the number of records associated with each taxa
-    for name in taxa:
+        if type(taxa) is str:
+            taxa = [taxa]
+        elif type(taxa) is list:
+            pass
+        else:
+            raise TypeError("The taxa argument can only be a string or a list."
+                        "\nExample: atlas.counts(\"Vulpes vulpes\")"
+                        "\n         atlas.counts[\"Osphranter rufus\",\"Vulpes vulpes\",\"Macropus giganteus\",\"Phascolarctos cinereus\"])")
 
-        # create temporary dataframe for taxon id
-        tempdf = search_taxa(name)
-        
-        # check if dataframe is empty - if so, return None; else, continue
-        if tempdf.empty:
-            print("No taxon matches were found for {} in the selected atlas ({})".format(name, atlas))
-            if len(taxa) == 1:
-                return None
-            continue
+        # get the number of records associated with each taxa
+        for name in taxa:
+
+            # create temporary dataframe for taxon id
+            tempdf = search_taxa(name)
+            
+            # check if dataframe is empty - if so, return None; else, continue
+            if tempdf.empty:
+                print("No taxon matches were found for {} in the selected atlas ({})".format(name, atlas))
+                if len(taxa) == 1:
+                    return None
+                continue
 
     # get the taxonConceptID for taxa while checking for extant atlas
     if atlas in atlases:
-        taxonConceptID = list(search_taxa(taxa=taxa)[ATLAS_KEYWORDS[atlas]])
+        if scientific_name is not None:
+            taxonConceptID = list(search_taxa(scientific_name=scientific_name)[ATLAS_KEYWORDS[atlas]])
+        else:
+            taxonConceptID = list(search_taxa(taxa=taxa)[ATLAS_KEYWORDS[atlas]])
     else:
         raise ValueError("Atlas {} is not taken into account".format(atlas))
 
@@ -185,6 +209,7 @@ def generate_list_taxonConceptIDs(taxa=None,
 def add_to_payload_ALA(payload=None,
                        atlas=None,
                        taxa=None,
+                       scientific_name=None,
                        filters=None,
                        polygon=None,
                        bbox=None,
@@ -200,6 +225,13 @@ def add_to_payload_ALA(payload=None,
 
     if taxa is not None:
         taxa_list = generate_list_taxonConceptIDs(taxa=taxa,atlas=atlas)
+        if "fq" not in payload:
+            payload["fq"] = [" OR ".join("lsid:{}".format(id) for id in taxa_list)]
+        else:
+            payload["fq"].append(" OR ".join("lsid:{}".format(id) for id in taxa_list))
+
+    if scientific_name is not None:
+        taxa_list = generate_list_taxonConceptIDs(scientific_name=scientific_name,atlas=atlas)
         if "fq" not in payload:
             payload["fq"] = [" OR ".join("lsid:{}".format(id) for id in taxa_list)]
         else:

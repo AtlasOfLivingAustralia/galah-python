@@ -9,6 +9,7 @@ from .common_functions import add_filters,add_to_payload_ALA,generate_list_taxon
 from .common_dictionaries import COUNTS_NAMES
 
 def atlas_counts(taxa=None,
+                 scientific_name=None,
                  filters=None,
                  group_by=None,
                  total_group_by=False,
@@ -17,7 +18,7 @@ def atlas_counts(taxa=None,
                  verbose=False,
                  polygon=None,
                  bbox=None,
-                 simplify_polygon=False
+                 simplify_polygon=False,
                  ):
     """
     Prior to downloading data, it is often valuable to have some estimate of how many records are available, both for deciding
@@ -133,7 +134,8 @@ def atlas_counts(taxa=None,
             baseURL += "?disableAllQualityfilters=true&"
 
         # create payload
-        payload = add_to_payload_ALA(payload=payload,atlas=atlas,taxa=taxa,filters=filters,polygon=polygon,bbox=bbox)
+        payload = add_to_payload_ALA(payload=payload,atlas=atlas,taxa=taxa,filters=filters,
+                                     polygon=polygon,bbox=bbox,scientific_name=scientific_name)
         
         # check for group by
         if group_by is not None:

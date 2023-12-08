@@ -16,6 +16,7 @@ from .show_all import show_all
 # then, hits different API and gets metadata of media
 # next step is collect_media hits all URLs and drops it into my machine
 def atlas_media(taxa=None,
+                scientific_name=None,
                 filters=None,
                 fields=None,
                 verbose=False,
@@ -102,7 +103,8 @@ def atlas_media(taxa=None,
     # get occurrence data from atlas_occurrences
     dataFrame = atlas_occurrences(taxa=taxa,filters=filters,fields=fields,assertions=assertions,
                                   use_data_profile=use_data_profile,polygon=polygon,bbox=bbox,
-                                  simplify_polygon=simplify_polygon,verbose=verbose)
+                                  simplify_polygon=simplify_polygon,verbose=verbose,
+                                  scientific_name=scientific_name)
     if dataFrame.empty:
         raise ValueError("There are no occurrences or media associated with your query.  Please try your query on atlas_counts before trying it again on atlas_media.")
 

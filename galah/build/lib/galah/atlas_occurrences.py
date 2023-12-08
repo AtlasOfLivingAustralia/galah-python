@@ -20,6 +20,7 @@ from .common_functions import add_filters,add_predicates,add_to_payload_ALA
 from .show_all import show_all
 
 def atlas_occurrences(taxa=None,
+                      scientific_name=None,
                       filters=None,
                       test=False,
                       verbose=False,
@@ -215,7 +216,8 @@ def atlas_occurrences(taxa=None,
             filters=assertions
 
         # create payload
-        payload = add_to_payload_ALA(payload=payload,atlas=atlas,taxa=taxa,filters=filters,polygon=polygon,bbox=bbox,simplify_polygon=simplify_polygon)
+        payload = add_to_payload_ALA(payload=payload,atlas=atlas,taxa=taxa,filters=filters,polygon=polygon,
+                                     bbox=bbox,simplify_polygon=simplify_polygon,scientific_name=scientific_name)
         
         # create the query id
         qid_URL, method2 = get_api_url(column1="api_name",column1value="occurrences_qid")
