@@ -169,15 +169,13 @@ To visualise
     ...                                ymin=brisbane_parks_bbox["miny"][0],
     ...                                ymax=brisbane_parks_bbox["maxy"][0]
     ...                                )
-    >>> brisbane_parks_all.plot(edgecolor = "#5A5A5A", linewidth = 1, facecolor = "white", figsize = (5,10))
+    >>> brisbane_parks_all.plot(edgecolor = "#5A5A5A", linewidth = 1, facecolor = "white", figsize = (7,10))
     >>> plt.plot(*plot_brisbane_parks_bbox.exterior.xy,color="red")
-    >>> plt.ylabel("Latitude",size=16)
+    >>> plt.ylabel("Latitude",size=16,x=.45,y=0.5)
     >>> plt.xlabel("Longitude",size=16)
 
-.. figure:: brisbane_parks_and_bbox.png
-   :alt: bbox brisbane
-
-   The bounding box around brisbane parks
+.. image:: brisbane_parks_and_bbox.png
+    :scale: 30%
 
 .. prompt:: python
 
@@ -195,16 +193,16 @@ To visualise
 
 .. prompt:: python
 
-    >>> brisbane_parks_all.plot(edgecolor = "#5A5A5A", linewidth = 1, facecolor = "white", figsize = (5,10))
+    >>> brisbane_parks_all.plot(edgecolor = "#5A5A5A", linewidth = 1, facecolor = "white", figsize = (7,10))
     >>> plt.plot(*plot_brisbane_parks_bbox.exterior.xy,color="red")
-    >>> plt.ylabel("Latitude",size=16)
+    >>> plt.ylabel("Latitude",size=16,x=.45,y=0.5)
     >>> plt.xlabel("Longitude",size=16)
-    >>> plt.scatter(lorikeet_brisbane["decimalLongitude"],lorikeet_brisbane["decimalLatitude"],alpha=0.5,color="orange")
+    >>> plt.scatter(lorikeet_brisbane["decimalLongitude"],lorikeet_brisbane["decimalLatitude"],alpha=0.5,color="orange",label="Lorikeet occurrences")
+    >>> plt.legend(loc=(0.5,0.96))
 
-.. figure:: lorikeets_on_map_shapefile.png
-   :alt: loorikeet brisbane
+.. image:: lorikeets_on_map_shapefile.png
+    :scale: 30%
 
-   Lorikeet occurrences in the boudning box around brisbane parks
 
 .. prompt:: python
 

@@ -26,9 +26,9 @@ plot_brisbane_parks_bbox = shapely.box(xmin=brisbane_parks_bbox["minx"][0],
                                        ymin=brisbane_parks_bbox["miny"][0],
                                        ymax=brisbane_parks_bbox["maxy"][0]
                                        )
-brisbane_parks_all.plot(edgecolor = "#5A5A5A", linewidth = 1, facecolor = "white", figsize = (5,10))
+brisbane_parks_all.plot(edgecolor = "#5A5A5A", linewidth = 1, facecolor = "white", figsize = (7,10))
 plt.plot(*plot_brisbane_parks_bbox.exterior.xy,color="red")
-plt.ylabel("Latitude",size=16)
+plt.ylabel("Latitude",size=16,x=.45,y=0.5)
 plt.xlabel("Longitude",size=16)
 plt.savefig("galah_user_guide/brisbane_parks_and_bbox.png",dpi=300)
 #-------------------------------------------------------------------------------------------------------
@@ -47,11 +47,12 @@ lorikeet_brisbane = galah.atlas_occurrences(
 )
 
 # plots
-brisbane_parks_all.plot(edgecolor = "#5A5A5A", linewidth = 1, facecolor = "white", figsize = (5,10))
+brisbane_parks_all.plot(edgecolor = "#5A5A5A", linewidth = 1, facecolor = "white", figsize = (7,10))
 plt.plot(*plot_brisbane_parks_bbox.exterior.xy,color="red")
-plt.ylabel("Latitude",size=16)
+plt.ylabel("Latitude",size=16,x=.45,y=0.5)
 plt.xlabel("Longitude",size=16)
-plt.scatter(lorikeet_brisbane["decimalLongitude"],lorikeet_brisbane["decimalLatitude"],alpha=0.5,color="orange")
+plt.scatter(lorikeet_brisbane["decimalLongitude"],lorikeet_brisbane["decimalLatitude"],alpha=0.5,color="orange",label="Lorikeet occurrences")
+plt.legend(loc=(0.5,0.96))
 plt.savefig("galah_user_guide/lorikeets_on_map_shapefile.png",dpi=300)
 
 # stop at this point

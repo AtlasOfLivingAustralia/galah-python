@@ -408,6 +408,7 @@ argument.  It can also return the total number of groups by using the <cite>tota
 <li><p><strong>use_data_profile</strong> (<em>string</em>) – A profile name. Should be a string - the name or abbreviation of a data quality profile to apply to the query. Valid values can be seen using <code class="docutils literal notranslate"><span class="pre">galah.show_all(profiles=True)</span></code></p></li>
 <li><p><strong>polygon</strong> (<em>shapely Polygon</em>) – A polygon object denoting a geographical region.  Defaults to <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
 <li><p><strong>bbox</strong> (<em>dict</em><em> or </em><em>shapely Polygon</em>) – A polygon or dictionary object denoting four points, which are the corners of a geographical region.  Defaults to <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
+<li><p><strong>simplify_polygon</strong> (<em>logical</em>) – When using the <code class="docutils literal notranslate"><span class="pre">polygon</span></code> argument of <code class="docutils literal notranslate"><span class="pre">galah.atlas_counts()</span></code>, specifies whether or not to draw a bounding box around the polygon and use this instead.  Defaults to <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
@@ -473,6 +474,7 @@ Default is set to <code class="docutils literal notranslate"><span class="pre">&
 <li><p><strong>use_data_profile</strong> (<em>logical</em>) – if <code class="docutils literal notranslate"><span class="pre">True</span></code>, uses data profile set in <code class="docutils literal notranslate"><span class="pre">galah_config()</span></code>. Valid values can be seen using <code class="docutils literal notranslate"><span class="pre">galah.show_all(profiles=True)</span></code>. Default is <code class="docutils literal notranslate"><span class="pre">False</span></code></p></li>
 <li><p><strong>polygon</strong> (<em>shapely Polygon</em>) – A polygon shape denoting a geographical region.  Defaults to <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
 <li><p><strong>bbox</strong> (<em>dict</em><em> or </em><em>shapely Polygon</em>) – A polygon or dictionary type denoting four points, which are the corners of a geographical region.  Defaults to <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
+<li><p><strong>simplify_polygon</strong> (<em>logical</em>) – When using the <code class="docutils literal notranslate"><span class="pre">polygon</span></code> argument of <code class="docutils literal notranslate"><span class="pre">galah.atlas_counts()</span></code>, specifies whether or not to draw a bounding box around the polygon and use this instead.  Defaults to <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
 <li><p><strong>collect</strong> (<em>logical</em>) – if <code class="docutils literal notranslate"><span class="pre">True</span></code>, downloads full-sized images and media files returned to a local directory.</p></li>
 <li><p><strong>path</strong> (<em>string</em>) – path to directory where downloaded media will be stored.  Defaults to current directory.</p></li>
 </ul>
@@ -600,6 +602,7 @@ Default is set to <code class="docutils literal notranslate"><span class="pre">&
 <li><p><strong>status_accepted</strong> (<em>logical</em>) – Denotes whether or not you want only accepted taxonomic ranks for GBIF.  Default to <code class="docutils literal notranslate"><span class="pre">True</span></code>.  For species lists, refer to <code class="docutils literal notranslate"><span class="pre">atlas_species</span></code></p></li>
 <li><p><strong>polygon</strong> (<em>shapely Polygon</em>) – A polygon shape denoting a geographical region.  Defaults to <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
 <li><p><strong>bbox</strong> (<em>dict</em><em> or </em><em>shapely Polygon</em>) – A polygon or dictionary type denoting four points, which are the corners of a geographical region.  Defaults to <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
+<li><p><strong>simplify_polygon</strong> (<em>logical</em>) – When using the <code class="docutils literal notranslate"><span class="pre">polygon</span></code> argument of <code class="docutils literal notranslate"><span class="pre">galah.atlas_counts()</span></code>, specifies whether or not to draw a bounding box around the polygon and use this instead.  Defaults to <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
@@ -704,6 +707,7 @@ This function returns a <code class="docutils literal notranslate"><span class="
 <li><p><strong>status_accepted</strong> (<em>logical</em>) – If <code class="docutils literal notranslate"><span class="pre">True</span></code>, galah gives you only the accepted taxonomic ranks. Default is <code class="docutils literal notranslate"><span class="pre">False</span></code>.  <a href="#id1"><span class="problematic" id="id2">**</span></a>FOR GBIF ONLY</p></li>
 <li><p><strong>polygon</strong> (<em>shapely Polygon</em>) – A polygon shape denoting a geographical region.  Defaults to <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
 <li><p><strong>bbox</strong> (<em>dict</em><em> or </em><em>shapely Polygon</em>) – A polygon or dictionary type denoting four points, which are the corners of a geographical region.  Defaults to <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
+<li><p><strong>simplify_polygon</strong> (<em>logical</em>) – When using the <code class="docutils literal notranslate"><span class="pre">polygon</span></code> argument of <code class="docutils literal notranslate"><span class="pre">galah.atlas_counts()</span></code>, specifies whether or not to draw a bounding box around the polygon and use this instead.  Defaults to <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
@@ -1051,11 +1055,11 @@ displaying all valid options for the information specified.</p>
 3                                                    12   
 4                                 1962 Range Extensions   
 ...                                                 ...   
-3903  Zooplankton abundance in the Kerguelen Axis re...   
-3904  Zooplankton Abundance_Umbrella net_sea ice zon...   
-3905  Zooplankton samples from Heron net trawls alon...   
-3906  Zooplankton sampling in the coastal waters of ...   
-3907                         Zoos Victoria Moth Tracker   
+3930  Zooplankton abundance in the Kerguelen Axis re...   
+3931  Zooplankton Abundance_Umbrella net_sea ice zon...   
+3932  Zooplankton samples from Heron net trawls alon...   
+3933  Zooplankton sampling in the coastal waters of ...   
+3934                         Zoos Victoria Moth Tracker   
 
                                                     uri      uid  
 0     https://collections.ala.org.au/ws/dataResource...  dr23929  
@@ -1064,13 +1068,13 @@ displaying all valid options for the information specified.</p>
 3     https://collections.ala.org.au/ws/dataResource...  dr23457  
 4     https://collections.ala.org.au/ws/dataResource...  dr24114  
 ...                                                 ...      ...  
-3903  https://collections.ala.org.au/ws/dataResource...  dr16244  
-3904  https://collections.ala.org.au/ws/dataResource...  dr16265  
-3905  https://collections.ala.org.au/ws/dataResource...  dr23120  
-3906  https://collections.ala.org.au/ws/dataResource...  dr15943  
-3907  https://collections.ala.org.au/ws/dataResource...  dr22371  
+3930  https://collections.ala.org.au/ws/dataResource...  dr16244  
+3931  https://collections.ala.org.au/ws/dataResource...  dr16265  
+3932  https://collections.ala.org.au/ws/dataResource...  dr23120  
+3933  https://collections.ala.org.au/ws/dataResource...  dr15943  
+3934  https://collections.ala.org.au/ws/dataResource...  dr22371  
 
-[3908 rows x 3 columns]
+[3935 rows x 3 columns]
 </pre></div>
 </div>
 </dd></dl>
