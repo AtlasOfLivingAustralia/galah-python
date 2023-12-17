@@ -137,7 +137,8 @@ def atlas_counts(taxa=None,
 
         # create payload
         payload = add_to_payload_ALA(payload=payload,atlas=atlas,taxa=taxa,filters=filters,
-                                     polygon=polygon,bbox=bbox,scientific_name=scientific_name)
+                                     polygon=polygon,bbox=bbox,scientific_name=scientific_name,
+                                     simplify_polygon=simplify_polygon)
         
         # check for group by
         if group_by is not None:
