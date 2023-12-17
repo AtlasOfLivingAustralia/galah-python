@@ -10,7 +10,7 @@ os.system("pip install packaging")
 
 setup(
     #name='galah',
-    version='0.6.0',
+    version='0.8.0',
     license='MPL-2.0',
     author='Amanda Buyan',
     author_email='amanda.buyan@csiro.au',
@@ -36,11 +36,12 @@ setup(
         'pytest',
         'unittest2py3k',
         'shapely',
-        #'TIME-python',
+        'geopandas'
     ],
 
 
     # ], #,'PyJWT','python-jwt'
+    #'TIME-python',
     include_package_data = True,
     package_data = {
     # If any package contains *.ini files or *.csv files, include them

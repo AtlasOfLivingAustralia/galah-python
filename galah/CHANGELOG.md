@@ -1,3 +1,33 @@
+## 0.8.0 (2023-12-18)
+
+### Feat
+
+- **added-ability-to-simplify-polygons-by-drawing-bounding-box-around-polygon**: added ability to simplify polygons by drawing bounding box around polygon
+- **adding-ability-to-buffer-regions,-as-well-as-choose-your-coordinate-reference-system**: adding ability to buffer regions, as well as choose your coordinate reference system
+- **Added-ability-for-users-to-add-a-buffer-region-around-a-shape-file-for-atlas_counts,-atlas_species-and-atlas_occurrences**: Added ability for users to add a buffer region around a shape file for atlas_counts, atlas_species and atlas_occurrences
+
+### Fix
+
+- **fixed-the-ability-to-get-warned-about-homonyms-and-search-for-the-correct-name**: fixed the ability to get warned about homonyms and search for the correct name
+- **fixed-a-bug-in-galah_group_by-for-expand=True-option**: fixed a bug in galah_group_by for expand=True option
+- **fixed-a-bug-in-galah_group_by-where-the-data-quality-filter-wasn't-working**: fixed a bug in galah_group_by where the data quality filter wasn't working
+- **changed-default-fields-to-only-8-but-kept-option-for-having-all-of-them**: changed default fields to only 8 but kept option for having all of them
+- **fixed-a-bug-where-the-wrong-URL-was-being-given-for-an-expand=True-option-for-the-ALA**: fixed a bug where the wrong URL was being given for an expand=True option for the ALA
+- **remove-unnecessary-keys**: remove unnecessary keys
+- **Fixed-a-bug-in-galah_group_by-whereby-data-quality-filter-wasn't-added-correctly**: fixed a bug in galah_group_by whereby data quality filter wasn't added correctly
+- **Fixed-galah_filter-to-have-quotes-around-the-filters-so-they-are-recognized-correctly**: Fixed galah_filter to have quotes around the filters so they are recognized correctly
+
+### Refactor
+
+- **Refactored-atlas_media-to-return-correct-metadata-and-be-faster**: Refactored atlas_media to return correct metadata and be faster
+- **adding-build-files-and-api-tracker**: adding build files and api tracker
+
+## 0.7.0 (2023-10-12)
+
+### Feat
+
+- **added-ability-in-galah_group_by-to-expand-number-of-groups-to-three**: added ability in galah_group_by to expand number of groups to three
+
 ## 0.6.0 (2023-10-04)
 
 ### Feat

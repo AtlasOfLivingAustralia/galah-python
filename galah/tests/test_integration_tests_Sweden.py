@@ -1,5 +1,5 @@
 import galah
-'''
+
 def test_show_all_assertions_sweden():
     galah.galah_config(atlas="Sweden")
     output = galah.show_all(assertions=True)
@@ -46,7 +46,7 @@ def test_search_taxa_sweden():
     galah.galah_config(atlas="Sweden")
     output = galah.search_taxa("Alces alces")
     assert output['guid'][0] != None
-    
+'''
 # test atlas_counts() can call search_taxa() function with single taxa
 def test_atlas_counts_sweden():
     galah.galah_config(atlas="Sweden")

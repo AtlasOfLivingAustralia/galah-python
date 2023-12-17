@@ -1,5 +1,5 @@
 # all available atlases
-atlases = ["Australia","Austria","Brazil","France","Global","GBIF","Spain"]
+atlases = ["Australia","Austria","Brazil","France","Global","GBIF","Spain","Sweden"]
 
 # common names for each atlas
 ATLAS_COMMON_NAMES = {
@@ -31,10 +31,11 @@ ATLAS_KEYWORDS = {
     "Guatemala": "guid", # was guid
     "Portugal": "usageKey",
     "Spain": "taxonConceptID",
-    "Sweden": "guid", # was guid
+    "Sweden": "id", # was guid
     "United Kingdom": "guid",
 }
 
+# error messages to tell the user where to register for the living atlases
 ATLAS_OCCURRENCES_ERROR_MESSAGES = {
     "Australia": "go to https://auth.ala.org.au/cas/login to register.",
     "Austria": "go to https://auth.biodiversityatlas.at/cas/login to register.",
@@ -45,6 +46,7 @@ ATLAS_OCCURRENCES_ERROR_MESSAGES = {
     "Spain": "go to https://auth.gbif.es/cas/login?lang=en to register."
 }
 
+# specifying what each atlas' status is
 ATLAS_OCCURRENCES_DOWNLOAD_ARGUMENTS = {
     "Australia": {"finished_status": "finished","zipURL_arg": "downloadUrl","separator": ","},
     "Austria": {"finished_status": "finished","zipURL_arg": "downloadUrl","separator": ","},
@@ -82,7 +84,9 @@ ATLAS_SPECIES_FIELDS = {
     "Spain": {"kingdom": "kingdomID", "phylum": "phylumID", 
                   "class": "classID", "order": "orderID", "family": "familyID", 
                   "genus": "genusID", "species": "speciesID", "subspecies":"subspeciesID"},
-    "Sweden": {},
+    "Sweden": {"kingdom": "kingdom_id", "phylum": "phylum_id","class": "class_id", 
+               "order": "order_id", "family": "family_id","genus": "genus_id", 
+               "species": "species_id", "subspecies": "subspecies_id"},
     "United Kingdom": {}
 }
 
@@ -124,6 +128,7 @@ COUNTS_NAMES = {
     "United Kingdom": "totalRecords",
 }
 
+# definitions to change algebraic symbols to English predicates for GBIF
 GBIF_PREDICATE_DEFINITIONS = {
     '=':'equals',
     '==':'equals',
@@ -162,6 +167,7 @@ TAXONCONCEPT_NAMES = {
     "United Kingdom": "",
 }
 
+# denotes keys where the results are
 SEARCH_TAXA_ENTRIES = {
     "Austria": ['searchResults','results'],
     "Brazil": ['searchResults','results'],
@@ -170,6 +176,7 @@ SEARCH_TAXA_ENTRIES = {
     "Sweden": ['searchResults','results']
 }
 
+# fields to return for search_taxa
 SEARCH_TAXA_FIELDS = {
     "Australia": ['scientificName', 'scientificNameAuthorship', 'taxonConceptID','rank','match_type','kingdom', 
                   'phylum', 'class', 'order', 'family', 'genus', 'species', 'issues', 'vernacularName'],

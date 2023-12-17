@@ -1,6 +1,5 @@
 import requests,urllib.parse,io
 import pandas as pd
-
 from .search_taxa import search_taxa
 from .get_api_url import get_api_url,readConfig
 from .atlas_occurrences import atlas_occurrences
@@ -9,15 +8,18 @@ from .common_dictionaries import ATLAS_KEYWORDS,ATLAS_SPECIES_FIELDS,atlases
 from .common_functions import add_filters,add_to_payload_ALA
 from .show_all import show_all
 
-# this function looks for all species with the associated name
 def atlas_species(taxa=None,
+                  scientific_name=None,
                   rank="species",
                   filters=None,
                   verbose=False,
                   status_accepted=True,
                   use_data_profile=False,
+                  counts=False,
                   polygon=None,
-                  bbox=None):
+                  bbox=None,
+                  simplify_polygon=False
+                  ):
     """
     While there are reasons why users may need to check every record meeting their search criteria (i.e. using ``galah.atlas_occurrences()``), 
     a common use case is to simply identify which species occur in a specified region, time period, or taxonomic group. 
@@ -39,7 +41,8 @@ def atlas_species(taxa=None,
             A polygon shape denoting a geographical region.  Defaults to ``None``.
         bbox : dict or shapely Polygon
             A polygon or dictionary type denoting four points, which are the corners of a geographical region.  Defaults to ``None``.
-
+        simplify_polygon : logical
+            When using the ``polygon`` argument of ``galah.atlas_counts()``, specifies whether or not to draw a bounding box around the polygon and use this instead.  Defaults to ``False``.
 
     Returns
     -------
@@ -61,8 +64,10 @@ def atlas_species(taxa=None,
     # get atlas
     atlas = configs['galahSettings']['atlas'] 
 
+    # specify headers for API call
     headers = {}
 
+    # create payload variable so it is available for some atlases
     payload = {}
 
     #if atlas in ["Australia","ALA"]:
@@ -95,7 +100,9 @@ def atlas_species(taxa=None,
 
     if atlas in ["Australia","ALA"]:
         
-        payload = add_to_payload_ALA(payload=payload,atlas=atlas,taxa=taxa,filters=filters,polygon=polygon,bbox=bbox)
+        # create payload and add buffer to polygon if user specifies it
+        payload = add_to_payload_ALA(payload=payload,atlas=atlas,taxa=taxa,filters=filters,polygon=polygon,
+                                     bbox=bbox,simplify_polygon=simplify_polygon,scientific_name=scientific_name)
 
         # create the query id
         qid_URL, method2 = get_api_url(column1="api_name",column1value="occurrences_qid")
@@ -106,8 +113,12 @@ def atlas_species(taxa=None,
             data_profile_list = list(show_all(profiles=True)['shortName'])
             baseURL = apply_data_profile(baseURL=baseURL,use_data_profile=use_data_profile,data_profile_list=data_profile_list)
             URL = baseURL + "fq=%28qid%3A" + qid.text + "%29&facets={}&lookup=True".format(rankID)
+            if counts:
+                URL += "&count=true"
         else:
             URL = baseURL + "?fq=%28qid%3A" + qid.text + "%29&facets={}&lookup=True".format(rankID)
+            if counts:
+                URL += "&count=true"
 
         if verbose:
             print()

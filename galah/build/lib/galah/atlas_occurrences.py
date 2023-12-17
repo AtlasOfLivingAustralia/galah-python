@@ -18,9 +18,9 @@ from .common_dictionaries import ATLAS_KEYWORDS,ATLAS_SELECTIONS, atlases, ATLAS
 from .common_dictionaries import ATLAS_OCCURRENCES_DOWNLOAD_ARGUMENTS
 from .common_functions import add_filters,add_predicates,add_to_payload_ALA
 from .show_all import show_all
-from .generate_jwt_token import generate_token_config,get_jwt_token
 
 def atlas_occurrences(taxa=None,
+                      scientific_name=None,
                       filters=None,
                       test=False,
                       verbose=False,
@@ -30,7 +30,8 @@ def atlas_occurrences(taxa=None,
                       species_list=False,
                       status_accepted=True,
                       polygon=None,
-                      bbox=None
+                      bbox=None,
+                      simplify_polygon=False
                       ):
     """
     The most common form of data stored by living atlases are observations of individual life forms, known as 'occurrences'. 
@@ -75,7 +76,9 @@ def atlas_occurrences(taxa=None,
             A polygon shape denoting a geographical region.  Defaults to ``None``.
         bbox : dict or shapely Polygon
             A polygon or dictionary type denoting four points, which are the corners of a geographical region.  Defaults to ``None``.
-            
+        simplify_polygon : logical
+            When using the ``polygon`` argument of ``galah.atlas_counts()``, specifies whether or not to draw a bounding box around the polygon and use this instead.  Defaults to ``False``.
+
     Returns
     -------
         An object of class ``pandas.DataFrame``.
@@ -112,7 +115,7 @@ def atlas_occurrences(taxa=None,
     atlas = configs['galahSettings']['atlas']
 
     # check for email
-    if configs["galahSettings"]["email"] is None:
+    if configs["galahSettings"]["email"] is None or configs["galahSettings"]["email"] is "email@example.com":
         raise ValueError("Please provide an email for querying")
 
     headers = {}
@@ -184,13 +187,13 @@ def atlas_occurrences(taxa=None,
         headers = {}
 
     # goes to the 'fields' argument in occurrence download (csv list, commas between)
-    if fields is not None and atlas not in ["Global","GBIF"]:
+    if atlas in ["Australia","ALA"]:
+        pass
+    elif fields is not None and atlas not in ["Global","GBIF","Australia","ALA"]:
         if fields != "basic":
             baseURL += galah_select(select=fields,atlas=atlas)[:-3] + "&"
         else:
             baseURL += galah_select(select=ATLAS_SELECTIONS[atlas],atlas=atlas)[:-3] + "&"
-    elif atlas in ["Australia"]:
-        pass
     elif atlas in ["Austria","Brazil","France","Spain"]:
         baseURL += galah_select(select=ATLAS_SELECTIONS[atlas],atlas=atlas)[:-3] + "&"
     elif fields is not None and atlas in ["Global","GBIF"]:
@@ -215,7 +218,8 @@ def atlas_occurrences(taxa=None,
             filters=assertions
 
         # create payload
-        payload = add_to_payload_ALA(payload=payload,atlas=atlas,taxa=taxa,filters=filters,polygon=polygon,bbox=bbox)
+        payload = add_to_payload_ALA(payload=payload,atlas=atlas,taxa=taxa,filters=filters,polygon=polygon,
+                                     bbox=bbox,simplify_polygon=simplify_polygon,scientific_name=scientific_name)
         
         # create the query id
         qid_URL, method2 = get_api_url(column1="api_name",column1value="occurrences_qid")
@@ -227,7 +231,13 @@ def atlas_occurrences(taxa=None,
             baseURL = apply_data_profile(baseURL=baseURL,data_profile_list=data_profile_list)   
 
         # Add qa=None to not get any assertions 
-        URL = baseURL + "fq=%28qid%3A" + qid.text + "%29&qa=none&flimit=-1"
+        if fields is None:
+            selected_fields = galah_select(select="basic",atlas=atlas)
+            URL = baseURL + "fq=%28qid%3A" + qid.text + "%29&" + selected_fields + "&qa=none&flimit=-1"
+        elif fields == "all":
+            URL = baseURL + "fq=%28qid%3A" + qid.text + "%29&qa=none&flimit=-1"
+        else:
+            URL = baseURL + "fq=%28qid%3A" + qid.text + "%29&" + galah_select(select=fields,atlas=atlas) + "&qa=none&flimit=-1"
 
         if verbose:
             print()
@@ -241,7 +251,7 @@ def atlas_occurrences(taxa=None,
             print()
 
         # get data
-        response = requests.request(method,URL,headers=headers)      
+        response = requests.request(method,URL,headers=headers)   
 
     else:
 
@@ -307,7 +317,7 @@ def atlas_occurrences(taxa=None,
                 raise ValueError("Assertions needs to be a string or a list of strings, i.e. identificationIncorrect == TRUE")
         
         if polygon is not None or bbox is not None:
-            URL += "&" + galah_geolocate(polygon=polygon,bbox=bbox)
+            URL += "&" + galah_geolocate(polygon=polygon,bbox=bbox,simplify_polygon=simplify_polygon)
 
         # raise error if user hasn't specified any type of filters
         if taxa is None and filters is None and assertions is None:

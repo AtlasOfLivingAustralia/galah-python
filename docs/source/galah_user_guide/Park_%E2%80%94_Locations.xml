@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?><MD_Metadata xmlns:gts="http://www.isotc211.org/2005/gts" xmlns:gco="http://www.isotc211.org/2005/gco" xmlns:xalan="http://xml.apache.org/xalan" xmlns:srv="http://www.isotc211.org/2005/srv" xmlns:gmx="http://www.isotc211.org/2005/gmx" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:gml="http://www.opengis.net/gml" xmlns="http://www.isotc211.org/2005/gmd">
+    <fileIdentifier>
+        <gco:CharacterString>1690424898111r7036858918909581</gco:CharacterString>
+    </fileIdentifier>
+    <characterSet>
+        <MD_CharacterSetCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_CharacterSetCode" codeListValue="utf8" codeSpace="ISOTC211/19115">utf8</MD_CharacterSetCode>
+    </characterSet>
+    <hierarchyLevel>
+        <MD_ScopeCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_ScopeCode" codeListValue="dataset" codeSpace="ISOTC211/19115">dataset</MD_ScopeCode>
+    </hierarchyLevel>
+    <hierarchyLevelName>
+        <gco:CharacterString>dataset</gco:CharacterString>
+    </hierarchyLevelName>
+    <contact>
+        <CI_ResponsibleParty>
+            <role>
+                <CI_RoleCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_RoleCode" codeListValue="pointOfContact" codeSpace="ISOTC211/19115">pointOfContact</CI_RoleCode>
+            </role>
+        </CI_ResponsibleParty>
+    </contact>
+    <dateStamp>
+        <gco:Date>2023-07-27</gco:Date>
+    </dateStamp>
+    <metadataStandardName>
+        <gco:CharacterString>ISO 19139 Geographic Information - Metadata - Implementation Specification</gco:CharacterString>
+    </metadataStandardName>
+    <metadataStandardVersion>
+        <gco:CharacterString>2007</gco:CharacterString>
+    </metadataStandardVersion>
+    <identificationInfo>
+        <MD_DataIdentification>
+            <citation>
+                <CI_Citation>
+                    <title>
+                        <gco:CharacterString>Park — Locations</gco:CharacterString>
+                    </title>
+                    <date>
+                        <CI_Date>
+                            <date>
+                                <gco:Date>2023-07-20</gco:Date>
+                            </date>
+                            <dateType>
+                                <CI_DateTypeCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_DateTypeCode" codeListValue="revision" codeSpace="ISOTC211/19115">revision</CI_DateTypeCode>
+                            </dateType>
+                        </CI_Date>
+                    </date>
+                    <editionDate>
+                        <gco:Date>2023-07-20</gco:Date>
+                    </editionDate>
+                </CI_Citation>
+            </citation>
+            <abstract>
+                <gco:CharacterString>Brisbane City Council maintains more than 2180 parks across Brisbane, with more created all the time. Our parks range in size from small pocket parks to large district parks, two botanic gardens and many bushland reserves.Park locations identifies Brisbane City Council Parks within the Brisbane area. These parks are acquired through an acquisition process, either through resumptions, direct purchase, condition of subdivision approval, donated assets or as a reserve with Council as Trustee.More information about parks can be found on the Brisbane City Council website or by phoning Council’s Contact Centre on (07) 3403 8888.</gco:CharacterString>
+            </abstract>
+            <purpose>
+                <gco:CharacterString>Park locations identifies Brisbane City Council Parks within the Brisbane area</gco:CharacterString>
+            </purpose>
+            <credit>
+                <gco:CharacterString>© Brisbane City Council 2023</gco:CharacterString>
+            </credit>
+            <resourceMaintenance>
+                <MD_MaintenanceInformation>
+                    <maintenanceAndUpdateFrequency>
+                        <MD_MaintenanceFrequencyCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_MaintenanceFrequencyCode" codeListValue="biannually" codeSpace="ISOTC211/19115">biannually</MD_MaintenanceFrequencyCode>
+                    </maintenanceAndUpdateFrequency>
+                    <dateOfNextUpdate>
+                        <gco:Date>2024-01-20</gco:Date>
+                    </dateOfNextUpdate>
+                </MD_MaintenanceInformation>
+            </resourceMaintenance>
+            <descriptiveKeywords>
+                <MD_Keywords>
+                    <keyword>
+                        <gco:CharacterString>Assets</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>Environment</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>Parks</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>Recreation</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>ArcGIS</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>green space</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>open space</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>park_number</gco:CharacterString>
+                    </keyword>
+                    <keyword>
+                        <gco:CharacterString>reserve</gco:CharacterString>
+                    </keyword>
+                </MD_Keywords>
+            </descriptiveKeywords>
+            <resourceConstraints>
+                <MD_Constraints>
+                    <useLimitation>
+                        <gco:CharacterString>This material is licensed under a Creative Commons - Attribution 4.0 licence.</gco:CharacterString>
+                    </useLimitation>
+                </MD_Constraints>
+            </resourceConstraints>
+            <language gco:nilReason="missing"/>
+            <characterSet>
+                <MD_CharacterSetCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_CharacterSetCode" codeListValue="utf8" codeSpace="ISOTC211/19115">utf8</MD_CharacterSetCode>
+            </characterSet>
+        </MD_DataIdentification>
+    </identificationInfo>
+</MD_Metadata>

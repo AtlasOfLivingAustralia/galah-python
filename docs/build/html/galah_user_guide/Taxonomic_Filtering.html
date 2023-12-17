@@ -1,0 +1,712 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Taxonomic Filtering &#8212; Galah 0.7.0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/extra.css?v=bc76f7e5" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/extra.css?v=bc76f7e5" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script src="../_static/documentation_options.js?v=b9678aa1"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/design-tabs.js?v=36754332"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'galah_user_guide/Taxonomic_Filtering';</script>
+    <link rel="icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Spatial filtering" href="Spatial_Filtering.html" />
+    <link rel="prev" title="Advanced" href="Advanced.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  <div class="navbar-header-items__start">
+    
+      <div class="navbar-item">
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+    
+  </div>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../getting_started/index.html">
+                        Getting Started
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="index.html">
+                        Galah User Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../apidocs/galah.html">
+                        API Docs
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../authors/index.html">
+                        Authors
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../cheatsheet/index.html">
+                        Cheat Sheet
+                      </a>
+                    </li>
+                
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+        </div>
+      
+      
+        <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/AtlasOfLivingAustralia/galah_python" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-square-github"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+    </div>
+  
+
+  
+    <label class="sidebar-toggle secondary-toggle" for="__secondary">
+      <span class="fa-solid fa-outdent"></span>
+    </label>
+  
+</div>
+
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../getting_started/index.html">
+                        Getting Started
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="index.html">
+                        Galah User Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../apidocs/galah.html">
+                        API Docs
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../authors/index.html">
+                        Authors
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../cheatsheet/index.html">
+                        Cheat Sheet
+                      </a>
+                    </li>
+                
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/AtlasOfLivingAustralia/galah_python" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-square-github"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item"><nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="Getting_Started.html">Getting Started</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="Choosing_Atlas.html">Choosing an Atlas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Download_Data.html">Download Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Look_Up_Info.html">Look Up Information</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Narrow_Results.html">Narrow Results</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="Advanced.html">Advanced</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Taxonomic Filtering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Spatial_Filtering.html">Spatial filtering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Temporal_Filtering.html">Temporal filtering</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumbs">
+  <ul class="bd-breadcrumbs" role="navigation" aria-label="Breadcrumb">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="index.html" class="nav-link">Galah User Guide</a></li>
+    
+    
+    <li class="breadcrumb-item"><a href="Advanced.html" class="nav-link">Advanced</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">Taxonomic Filtering</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="taxonomic-filtering">
+<span id="id1"></span><h1>Taxonomic Filtering<a class="headerlink" href="#taxonomic-filtering" title="Link to this heading">#</a></h1>
+<p><em>Callum Waite, Shandiya Balasubramaniam</em></p>
+<p>Taxonomic complexity can confound the process of searching, filtering, and downloading records using galah, but there are a few
+ways to ensure records are not missed by using <code class="docutils literal notranslate"><span class="pre">[functions]</span></code> in <code class="docutils literal notranslate"><span class="pre">galah</span></code>.  Let’s start by configuring <code class="docutils literal notranslate"><span class="pre">galah</span></code> to the ALA.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><style type="text/css">
+span.prompt1:before {
+  content: " ";
+}
+</style><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">galah</span></span>
+<span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">galah_config</span><span class="p">(</span><span class="n">atlas</span><span class="o">=</span><span class="s2">&quot;Australia&quot;</span><span class="p">,</span><span class="n">email</span><span class="o">=</span><span class="s2">&quot;your-email-here&quot;</span><span class="p">)</span></span>
+</pre></div></div><section id="search-taxa">
+<h2><code class="docutils literal notranslate"><span class="pre">search_taxa()</span></code><a class="headerlink" href="#search-taxa" title="Link to this heading">#</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">search_taxa()</span></code> enables users to look up taxonomic names before downloading data, which allows for
+disambiguating homonyms and checking that the search term matches the taxon name in the ALA . <code class="docutils literal notranslate"><span class="pre">search_taxa()</span></code>
+returns the scientific name, authorship, rank, and full classification for the taxon matched to the provided
+search term.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">search_taxa</span><span class="p">(</span><span class="n">taxa</span><span class="o">=</span><span class="s2">&quot;Petroica boodang&quot;</span><span class="p">)</span></span>
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>                scientificName scientificNameAuthorship                                                             taxonConceptID     rank   kingdom    phylum          order       family     genus           species vernacularName   issues
+0  Petroica (Petroica) boodang           (Lesson, 1838)  https://biodiversity.org.au/afd/taxa/a3e5376b-f9e6-4bdf-adae-1e7add9f5c29  species  Animalia  Chordata  Passeriformes  Petroicidae  Petroica  Petroica boodang  Scarlet Robin  noIssue
+</pre></div>
+</div>
+<p>It can also return taxonomic information for multiple species, including synonyms and Indigneous names.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="c1"># Muscicapa chrysoptera is a synonym for the Flame Robin, Petroica phoenicea</span></span>
+<span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="c1"># Guniibuu is the Yuwaalaraay Indigenous name for the Red-Capped Robin, Petroica goodenovii</span></span>
+<span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">search_taxa</span><span class="p">(</span><span class="n">taxa</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Muscicapa chrysoptera&quot;</span><span class="p">,</span> <span class="s2">&quot;Guniibuu&quot;</span><span class="p">])</span></span>
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>                   scientificName    scientificNameAuthorship                                                             taxonConceptID     rank   kingdom    phylum          order       family     genus              species    vernacularName   issues
+0   Petroica (Littlera) phoenicea                 Gould, 1837  https://biodiversity.org.au/afd/taxa/fe74e658-4848-437a-a23d-f1001a198552  species  Animalia  Chordata  Passeriformes  Petroicidae  Petroica   Petroica phoenicea       Flame Robin  noIssue
+1  Petroica (Petroica) goodenovii  (Vigors &amp; Horsfield, 1827)  https://biodiversity.org.au/afd/taxa/10dbd908-00f3-4ec2-9a9c-a2fd4782eaf1  species  Animalia  Chordata  Passeriformes  Petroicidae  Petroica  Petroica goodenovii  Red-capped Robin  noIssue
+</pre></div>
+</div>
+<p>Where homonyms exist, <code class="docutils literal notranslate"><span class="pre">search_taxa()</span></code> will prompt users to clarify the search term by providing one or more taxonomic
+ranks using the <code class="docutils literal notranslate"><span class="pre">search_taxa()</span></code> argument <code class="docutils literal notranslate"><span class="pre">scientific_name</span></code>. This example differentiates among the genus Morganella
+in three kingdoms:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">search_taxa</span><span class="p">(</span><span class="n">taxa</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Morganella&quot;</span><span class="p">])</span></span>
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Warning: Search returned multiple taxa due to a homonym issue.
+Please use the `scientific_name` argument to clarify taxa.
+  search_term   issues
+0  Morganella  homonym
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">search_taxa</span><span class="p">(</span><span class="n">scientific_name</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;kingdom&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;Fungi&quot;</span><span class="p">],</span><span class="s2">&quot;scientificName&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;Morganella&quot;</span><span class="p">]})</span></span>
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>  scientificName scientificNameAuthorship                                      taxonConceptID   rank kingdom         phylum       order       family       genus   issues
+0     Morganella                   Zeller  https://id.biodiversity.org.au/node/fungi/60091999  genus   Fungi  Basidiomycota  Agaricales  Agaricaceae  Morganella  noIssue
+</pre></div>
+</div>
+<p>This disambiguation of the Morganella taxa can then be used by <code class="docutils literal notranslate"><span class="pre">atlas_counts</span></code>, <code class="docutils literal notranslate"><span class="pre">atlas_occurrences</span></code>,
+<code class="docutils literal notranslate"><span class="pre">atlas_species</span></code> or <code class="docutils literal notranslate"><span class="pre">atlas_media</span></code> by providing the keyword <code class="docutils literal notranslate"><span class="pre">scientific_name</span></code> to any of these functions.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">atlas_counts</span><span class="p">(</span><span class="n">scientific_name</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;kingdom&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;Fungi&quot;</span><span class="p">],</span><span class="s2">&quot;scientificName&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;Morganella&quot;</span><span class="p">]})</span></span>
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>   totalRecords
+0           155
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">atlas_occurrences</span><span class="p">(</span><span class="n">scientific_name</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;kingdom&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;Fungi&quot;</span><span class="p">],</span><span class="s2">&quot;scientificName&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;Morganella&quot;</span><span class="p">]})</span></span>
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>     decimalLatitude  decimalLongitude             eventDate           scientificName                                      taxonConceptID                              recordID                                                      dataResourceName occurrenceStatus
+0         -47.000000        168.200000  2002-04-30T00:00:00Z      Morganella compacta                                       NZOR-6-128055  461f0148-7549-4a81-9495-46704b26924b                                         New Zealand Virtual Herbarium          PRESENT
+1         -46.874868        168.124626  1983-02-13T00:00:00Z      Morganella compacta                                       NZOR-6-128055  569d52b1-2481-43c3-8450-154fd5a52df1                                         New Zealand Virtual Herbarium          PRESENT
+2         -46.862750        168.116743  1985-04-23T00:00:00Z      Morganella compacta                                       NZOR-6-128055  5e633f17-193b-48d6-a0d9-ecd8251cc755                                         New Zealand Virtual Herbarium          PRESENT
+3         -46.554626        169.479023  1990-05-24T00:00:00Z      Morganella compacta                                       NZOR-6-128055  a2b24275-5c64-4a52-bbab-1fc2d72e142d                                         New Zealand Virtual Herbarium          PRESENT
+4         -46.054081        170.192709  1967-12-17T00:00:00Z      Morganella compacta                                       NZOR-6-128055  144f29e2-f06c-46b1-8792-eda5b38548f1                                         New Zealand Virtual Herbarium          PRESENT
+..               ...               ...                   ...                      ...                                                 ...                                   ...                                                                   ...              ...
+150       -26.779400        152.880300  2009-02-19T00:00:00Z  Morganella purpurascens  https://id.biodiversity.org.au/node/fungi/60092001  092b6f3e-ef27-4cbf-bb28-b172c1b200c5                         National Herbarium of Victoria (MEL) AVH data          PRESENT
+151       -26.777741        152.880254  2012-02-15T00:00:00Z  Morganella purpurascens  https://id.biodiversity.org.au/node/fungi/60092001  8b7a0609-2c0b-42fc-9676-ba7ef9a73a5e                                                             BowerBird          PRESENT
+152              NaN               NaN  1964-11-21T00:00:00Z  Morganella purpurascens  https://id.biodiversity.org.au/node/fungi/60092001  4c74c65a-d9b8-4e81-9101-a283eec56e5a                         National Herbarium of Victoria (MEL) AVH data          PRESENT
+153       -26.405958        153.026140  2018-03-16T01:01:09Z  Morganella purpurascens  https://id.biodiversity.org.au/node/fungi/60092001  fc2816fd-4b65-4af1-b0a2-1b086c26d97f                                     ALA species sightings and OzAtlas          PRESENT
+154        -8.916667        148.150000  1953-07-15T00:00:00Z  Morganella purpurascens  https://id.biodiversity.org.au/node/fungi/60092001  633433fe-a3b4-4b4f-af12-36b54c1fd9ff  Centre for Australian National Biodiversity Research (CANB) AVH data          PRESENT
+
+[155 rows x 8 columns]
+</pre></div>
+</div>
+</section>
+<section id="filters">
+<h2><code class="docutils literal notranslate"><span class="pre">filters=</span></code><a class="headerlink" href="#filters" title="Link to this heading">#</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">filters=</span></code> subsets records by searching for exact matches to an expression, and may also be used for taxonomic
+filtering.  for example, if we want to search for multiple species of robins in Australia, we can do this for
+single or multiple species.  We can also group the multiple species by their species names so we can compare the
+number of records for each robin.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">atlas_counts</span><span class="p">(</span><span class="n">taxa</span><span class="o">=</span><span class="s2">&quot;Petroica boodang&quot;</span><span class="p">)</span></span>
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>   totalRecords
+0        118998
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">aus_petroica</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Petroica boodang&quot;</span><span class="p">,</span> <span class="s2">&quot;Petroica goodenovii&quot;</span><span class="p">,</span></span>
+<span class="prompt1"><span class="o">...</span>                 <span class="s2">&quot;Petroica phoenicea&quot;</span><span class="p">,</span> <span class="s2">&quot;Petroica rosea&quot;</span><span class="p">,</span></span>
+<span class="prompt1"><span class="o">...</span>                 <span class="s2">&quot;Petroica rodinogaster&quot;</span><span class="p">,</span> <span class="s2">&quot;Petroica multicolor&quot;</span><span class="p">]</span></span>
+<span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">atlas_counts</span><span class="p">(</span></span>
+<span class="prompt1"><span class="o">...</span>     <span class="n">taxa</span><span class="o">=</span><span class="n">aus_petroica</span><span class="p">,</span></span>
+<span class="prompt1"><span class="o">...</span>     <span class="n">group_by</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;species&quot;</span><span class="p">,</span><span class="s2">&quot;vernacularName&quot;</span><span class="p">]</span></span>
+<span class="prompt1"><span class="o">...</span> <span class="p">)</span></span>
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>                 species        vernacularName   count
+0       Petroica boodang         Scarlet Robin  118822
+1    Petroica goodenovii      Red-capped Robin  110138
+2    Petroica multicolor  Norfolk Island Robin    6694
+3     Petroica phoenicea           Flame Robin   81321
+4  Petroica rodinogaster            Pink Robin   13380
+5         Petroica rosea            Rose Robin   52328
+</pre></div>
+</div>
+<p>This can be useful in searching for paraphyletic or polyphyletic groups.  For example, to get counts of non-chordates:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">non_chordates</span> <span class="o">=</span> <span class="n">galah</span><span class="o">.</span><span class="n">atlas_counts</span><span class="p">(</span></span>
+<span class="prompt1"><span class="o">...</span>     <span class="n">filters</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;kingdom=Animalia&quot;</span><span class="p">,</span><span class="s2">&quot;phylum!=Chordata&quot;</span><span class="p">],</span></span>
+<span class="prompt1"><span class="o">...</span>     <span class="n">group_by</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;phylum&quot;</span><span class="p">],</span></span>
+<span class="prompt1"><span class="o">...</span>     <span class="n">expand</span><span class="o">=</span><span class="kc">False</span></span>
+<span class="prompt1"><span class="o">...</span> <span class="p">)</span></span>
+<span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">non_chordates</span><span class="o">.</span><span class="n">head</span><span class="p">()</span></span>
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>           phylum    count
+0  Acanthocephala      398
+1        Annelida   313898
+2      Arthropoda  8223999
+3     Brachiopoda     2125
+4         Bryozoa    24037
+</pre></div>
+</div>
+</section>
+<section id="filters-search-taxa-and-taxonomic-ranks">
+<h2><code class="docutils literal notranslate"><span class="pre">filters=</span></code>, <code class="docutils literal notranslate"><span class="pre">search_taxa()</span></code>, and taxonomic ranks<a class="headerlink" href="#filters-search-taxa-and-taxonomic-ranks" title="Link to this heading">#</a></h2>
+<p>Deciding between using <code class="docutils literal notranslate"><span class="pre">filters=</span></code> and <code class="docutils literal notranslate"><span class="pre">search_taxa()</span></code> in a query comes down to how a record has been classified,
+and whether or not you have the correct unique name and classification of the taxa of interest.</p>
+<p>The ALA has fields for the primary taxonomic ranks (kingdom, phylum, class, order, family, genus, species) and some
+secondary ranks (e.g. subfamily, subgenus), all of which may be used with <code class="docutils literal notranslate"><span class="pre">filters=</span></code> and <code class="docutils literal notranslate"><span class="pre">search_taxa()</span></code>.
+Additionally, there is a field named <code class="docutils literal notranslate"><span class="pre">scientificName</span></code>, which refers to the lowest taxonomic rank to which a record
+has been identified e.g.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span></span>
+<span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">pitta_ranks</span> <span class="o">=</span> <span class="n">galah</span><span class="o">.</span><span class="n">atlas_counts</span><span class="p">(</span></span>
+<span class="prompt1"><span class="o">...</span>     <span class="n">taxa</span><span class="o">=</span><span class="s2">&quot;Pitta&quot;</span><span class="p">,</span></span>
+<span class="prompt1"><span class="o">...</span>     <span class="n">group_by</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;scientificName&quot;</span><span class="p">,</span><span class="s2">&quot;taxonRank&quot;</span><span class="p">]</span></span>
+<span class="prompt1"><span class="o">...</span> <span class="p">)</span></span>
+<span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">pitta_ranks</span> <span class="o">=</span> <span class="n">pitta_ranks</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">pitta_ranks</span><span class="p">[</span><span class="s2">&quot;scientificName&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">notnull</span><span class="p">()]</span></span>
+<span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">pitta_ranks</span></span>
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>                                 scientificName   taxonRank  count
+0                                         Pitta       genus     73
+1                          Pitta (Erythropitta)    subgenus    724
+2            Pitta (Erythropitta) erythrogaster     species    190
+3   Pitta (Erythropitta) erythrogaster digglesi  subspecies     21
+4                            Pitta (Pitta) iris     species   5716
+5                       Pitta (Pitta) iris iris  subspecies     76
+6              Pitta (Pitta) iris johnstoneiana  subspecies     27
+7                      Pitta (Pitta) versicolor     species  26023
+8           Pitta (Pitta) versicolor intermedia  subspecies     42
+9            Pitta (Pitta) versicolor simillima  subspecies     36
+10          Pitta (Pitta) versicolor versicolor  subspecies    303
+</pre></div>
+</div>
+<p>If, for instance, you have the correct species or subspecies name, then searching for matches against the species
+and subspecies fields, respectively, will provide more precise results. This is because the field <code class="docutils literal notranslate"><span class="pre">scientificName</span></code>
+may include subgenera. If you’ve used <code class="docutils literal notranslate"><span class="pre">search_taxa()</span></code> to get the ALA-matched name of a taxon and only want records
+identified to a particular level of classification, searching for matches against <code class="docutils literal notranslate"><span class="pre">scientificName</span></code> is recommended.</p>
+<p>Paraphyletic or polyphyletic groups may contain taxa identified to different taxonomic levels. In this case, it is
+simpler to use <code class="docutils literal notranslate"><span class="pre">search_taxa()</span></code>. In the example below, <code class="docutils literal notranslate"><span class="pre">search_taxa()</span></code> matches terms to one genus, three species,
+and two subspecies. This can then be used in <code class="docutils literal notranslate"><span class="pre">atlas_counts()</span></code> to get counts for each scientific name.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">tas_endemic</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Sarcophilus&quot;</span><span class="p">,</span> <span class="c1"># Tasmanian Devil</span></span>
+<span class="prompt1"><span class="o">...</span>                 <span class="s2">&quot;Bettongia gaimardi&quot;</span><span class="p">,</span> <span class="c1"># Tasmanian Bettong</span></span>
+<span class="prompt1"><span class="o">...</span>                 <span class="s2">&quot;Melanodryas vittata&quot;</span><span class="p">,</span> <span class="c1"># Dusky Robin</span></span>
+<span class="prompt1"><span class="o">...</span>                 <span class="s2">&quot;Platycercus caledonicus&quot;</span><span class="p">,</span><span class="c1"># Green Rosella</span></span>
+<span class="prompt1"><span class="o">...</span>                 <span class="s2">&quot;Aquila audax fleayi&quot;</span><span class="p">,</span> <span class="c1"># Tasmanian Wedge-Tailed Eagle</span></span>
+<span class="prompt1"><span class="o">...</span>                 <span class="s2">&quot;Tyto novaehollandiae castanops&quot;</span> <span class="c1"># Tasmanian Masked Owl</span></span>
+<span class="prompt1"><span class="o">...</span>               <span class="p">]</span></span>
+<span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">search_taxa</span><span class="p">(</span><span class="n">taxa</span><span class="o">=</span><span class="n">tas_endemic</span><span class="p">)</span></span>
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>                          scientificName scientificNameAuthorship                                                             taxonConceptID        rank   kingdom    phylum            order        family        genus   issues                  species     vernacularName
+0                            Sarcophilus             Cuvier, 1837  https://biodiversity.org.au/afd/taxa/06455b77-7d50-4ec7-9122-8ab48cfb0c1c       genus  Animalia  Chordata   Dasyuromorphia    Dasyuridae  Sarcophilus  noIssue                      NaN                NaN
+1                     Bettongia gaimardi        (Desmarest, 1822)  https://biodiversity.org.au/afd/taxa/19c9bfdf-0fbd-4b1b-a7c4-64498290d059     species  Animalia  Chordata    Diprotodontia    Potoroidae    Bettongia  noIssue       Bettongia gaimardi  Tasmanian Bettong
+2      Melanodryas (Amaurodryas) vittata   (Quoy &amp; Gaimard, 1830)  https://biodiversity.org.au/afd/taxa/0f04889f-5489-4369-a545-8a041fba9f6d     species  Animalia  Chordata    Passeriformes   Petroicidae  Melanodryas  noIssue      Melanodryas vittata        Dusky Robin
+3  Platycercus (Platycercus) caledonicus           (Gmelin, 1788)  https://biodiversity.org.au/afd/taxa/c6e478fe-f199-463f-8576-a77108fd73e2     species  Animalia  Chordata   Psittaciformes   Psittacidae  Platycercus  noIssue  Platycercus caledonicus      Green Rosella
+4         Aquila (Uroaetus) audax fleayi    Condon &amp; Amadon, 1954  https://biodiversity.org.au/afd/taxa/ac93f7f0-0686-4589-801a-5832378cb7c1  subspecies  Animalia  Chordata  Accipitriformes  Accipitridae       Aquila  noIssue             Aquila audax                NaN
+5         Tyto novaehollandiae castanops            (Gould, 1837)  https://biodiversity.org.au/afd/taxa/2c30d58b-572b-4dab-8644-b222c28eb0ec  subspecies  Animalia  Chordata     Strigiformes     Tytonidae         Tyto  noIssue     Tyto novaehollandiae                NaN
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">atlas_counts</span><span class="p">(</span></span>
+<span class="prompt1"><span class="o">...</span>     <span class="n">taxa</span><span class="o">=</span><span class="n">tas_endemic</span><span class="p">,</span></span>
+<span class="prompt1"><span class="o">...</span>     <span class="n">group_by</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;scientificName&quot;</span><span class="p">],</span></span>
+<span class="prompt1"><span class="o">...</span>     <span class="n">expand</span><span class="o">=</span><span class="kc">False</span></span>
+<span class="prompt1"><span class="o">...</span> <span class="p">)</span></span>
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>                                       scientificName  count
+0                      Aquila (Uroaetus) audax fleayi   4909
+1                                  Bettongia gaimardi   1174
+2                        Bettongia gaimardi cuniculus     41
+3                         Bettongia gaimardi gaimardi      9
+4                   Melanodryas (Amaurodryas) vittata  14111
+5             Melanodryas (Amaurodryas) vittata kingi     15
+6           Melanodryas (Amaurodryas) vittata vittata     36
+7               Platycercus (Platycercus) caledonicus  43344
+8       Platycercus (Platycercus) caledonicus brownii     24
+9   Platycercus (Platycercus) caledonicus caledonicus     33
+10                                        Sarcophilus      3
+11                               Sarcophilus harrisii  36240
+12                     Tyto novaehollandiae castanops     62
+</pre></div>
+</div>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="Advanced.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Advanced</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="Spatial_Filtering.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Spatial filtering</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#search-taxa"><code class="docutils literal notranslate"><span class="pre">search_taxa()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#filters"><code class="docutils literal notranslate"><span class="pre">filters=</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#filters-search-taxa-and-taxonomic-ranks"><code class="docutils literal notranslate"><span class="pre">filters=</span></code>, <code class="docutils literal notranslate"><span class="pre">search_taxa()</span></code>, and taxonomic ranks</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+  <p class="copyright">
+    
+      © Copyright Atlas of Living Australia.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.5.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item"><p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.13.3.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

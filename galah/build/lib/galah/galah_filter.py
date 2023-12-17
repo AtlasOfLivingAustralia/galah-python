@@ -125,11 +125,12 @@ def galah_filter(f,
                     if arrayChar:
                         temp_array = parts[1][1:-1].split(",")
                         for value in temp_array:
-                            returnString += "{}:{} OR ".format(parts[0], value)
+                            # added quotes here
+                            returnString += "{}:\"{}\" OR ".format(parts[0], value)
                         returnString = returnString[:-4]
                         return returnString
                     else:
-                        return "{}:{}".format(parts[0],parts[1])
+                        return "{}:\"{}\"".format(parts[0],parts[1])
         
             elif specialChar == '>':
                 return "{}:[{} TO *] AND -({}:{})".format(parts[0], parts[1], parts[0], parts[1])
