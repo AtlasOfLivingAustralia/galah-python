@@ -20,7 +20,7 @@ Ultimately, there are two ways users can filter temporal queries:
 
 All temporal filtering is conducted using the ``filters`` argument in ``atlas_counts()``, 
 ``atlas_media()``, ``atlas_occurrences()`` and ``atlas_species()``. All temporal fields described 
-below can be queried for exact matches (``==``), greater/less than (``>``, ``<``) or greater/less than or 
+below can be queried for exact matches (``=``), greater/less than (``>``, ``<``) or greater/less than or 
 equal to (``<=``, ``>=``). Queries for multiple fields or multiple queries of the same field can be 
 combined in the one ``filters`` call in order to obtain filters on time windows.
 
@@ -28,12 +28,11 @@ Year, Month and Day
 --------------------
 
 The ALA contains in-built year, month and day fields for every record. These are queried as 
-numeric fields (i.e. July = 7) and can be used for quick data exploration and filtering. When 
-the date limits of a desired query can be easily defined by year, month and/or day deliminations, 
-these fields are most useful.
+numeric fields (i.e. July = 7) and can be used for quick data exploration and filtering. These 
+fields are most useful when the date limits of a query can be easily defined by year, month 
+and/or day.
 
-We can, for instance, use the year and month fields to group the 2022 amphibian records in the 
-ALA by month (noting that months are labelled by a number).
+For instance, we can get monthly counts of amphibians from 2021 using the year and month fields.
 
 .. prompt:: python
 
@@ -55,7 +54,7 @@ The other important fact about these fields when queried in ``filters`` is their
 they cannot be used to query complex windows between two dates because the day and month filters 
 are applied universally.
 
-For instance, consider the native perennial Australian wildflower Chamaescilla corymbosa, whose 
+For instance, consider the native perennial Australian wildflower *Chamaescilla corymbosa*, whose 
 known growth and flowering times are from August–October. We might be interested in the number 
 of records for this species in the first week of spring (i.e. September) in each of the last 10 
 years. The following query does not provide all results between 1/9/2013 and 7/9/2023. Rather, 

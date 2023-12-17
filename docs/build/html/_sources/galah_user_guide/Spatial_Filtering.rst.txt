@@ -3,7 +3,7 @@
 Spatial filtering
 =================
 
-Adapted from `the Temporal Filtering galah-R article <galah.ala.org.au/R/articles/spatial_filtering.html>`_.
+Adapted from `the Spatial Filtering galah-R article <galah.ala.org.au/R/articles/spatial_filtering.html>`_.
 
 *Callum Waite, Shandiya Balasubramaniam, Amanda Buyan*
 
@@ -136,7 +136,7 @@ interested in grouping our results by each shape. Here is a mock workflow using 
 all 2,184 Brisbane parks <https://www.data.brisbane.qld.gov.au/data/dataset/park-locations>`_.
 
 Let’s say we are interested in knowing which parks in the Brisbane postcode 4075 have the most occurrences 
-of the Scaly-Breasted Lorikeet, Trichoglossus chlorolepidotus, since 2020. We can download the entire 
+of the Scaly-Breasted Lorikeet, *Trichoglossus chlorolepidotus*, since 2020. We can download the entire 
 shapefile from the above link, and perform our filtering and summarising as follows:
 
 .. prompt:: python

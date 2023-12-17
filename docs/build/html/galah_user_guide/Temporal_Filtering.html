@@ -429,17 +429,16 @@ Ultimately, there are two ways users can filter temporal queries:</p>
 </ul>
 <p>All temporal filtering is conducted using the <code class="docutils literal notranslate"><span class="pre">filters</span></code> argument in <code class="docutils literal notranslate"><span class="pre">atlas_counts()</span></code>,
 <code class="docutils literal notranslate"><span class="pre">atlas_media()</span></code>, <code class="docutils literal notranslate"><span class="pre">atlas_occurrences()</span></code> and <code class="docutils literal notranslate"><span class="pre">atlas_species()</span></code>. All temporal fields described
-below can be queried for exact matches (<code class="docutils literal notranslate"><span class="pre">==</span></code>), greater/less than (<code class="docutils literal notranslate"><span class="pre">&gt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;</span></code>) or greater/less than or
+below can be queried for exact matches (<code class="docutils literal notranslate"><span class="pre">=</span></code>), greater/less than (<code class="docutils literal notranslate"><span class="pre">&gt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;</span></code>) or greater/less than or
 equal to (<code class="docutils literal notranslate"><span class="pre">&lt;=</span></code>, <code class="docutils literal notranslate"><span class="pre">&gt;=</span></code>). Queries for multiple fields or multiple queries of the same field can be
 combined in the one <code class="docutils literal notranslate"><span class="pre">filters</span></code> call in order to obtain filters on time windows.</p>
 <section id="year-month-and-day">
 <h2>Year, Month and Day<a class="headerlink" href="#year-month-and-day" title="Link to this heading">#</a></h2>
 <p>The ALA contains in-built year, month and day fields for every record. These are queried as
-numeric fields (i.e. July = 7) and can be used for quick data exploration and filtering. When
-the date limits of a desired query can be easily defined by year, month and/or day deliminations,
-these fields are most useful.</p>
-<p>We can, for instance, use the year and month fields to group the 2022 amphibian records in the
-ALA by month (noting that months are labelled by a number).</p>
+numeric fields (i.e. July = 7) and can be used for quick data exploration and filtering. These
+fields are most useful when the date limits of a query can be easily defined by year, month
+and/or day.</p>
+<p>For instance, we can get monthly counts of amphibians from 2021 using the year and month fields.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><style type="text/css">
 span.prompt1:before {
   content: " ";
@@ -458,7 +457,7 @@ span.prompt1:before {
 3       4  10005
 4       5   8083
 5       6   9217
-6       7  12302
+6       7  12301
 7       8  26252
 8       9  42206
 9      10  52816
@@ -472,7 +471,7 @@ they can be queried as either numeric or character values within <code class="do
 <p>The other important fact about these fields when queried in <code class="docutils literal notranslate"><span class="pre">filters</span></code> is their independence;
 they cannot be used to query complex windows between two dates because the day and month filters
 are applied universally.</p>
-<p>For instance, consider the native perennial Australian wildflower Chamaescilla corymbosa, whose
+<p>For instance, consider the native perennial Australian wildflower <em>Chamaescilla corymbosa</em>, whose
 known growth and flowering times are from August–October. We might be interested in the number
 of records for this species in the first week of spring (i.e. September) in each of the last 10
 years. The following query does not provide all results between 1/9/2013 and 7/9/2023. Rather,
@@ -489,17 +488,18 @@ it will only return results that fall within all 3 windows at once.</p>
 <span class="prompt1"><span class="o">...</span>     <span class="n">group_by</span><span class="o">=</span><span class="s2">&quot;year&quot;</span><span class="p">,</span></span>
 <span class="prompt1"><span class="o">...</span>     <span class="n">expand</span><span class="o">=</span><span class="kc">False</span></span>
 <span class="prompt1"><span class="o">...</span> <span class="p">)</span></span>
-</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>   year  count
-0  2013      8
-1  2014     13
-2  2015      8
-3  2016      7
-4  2018      9
-5  2019      5
-6  2020     20
-7  2021     36
-8  2022     25
-9  2023     52
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>    year  count
+0   2013      8
+1   2014     13
+2   2015      8
+3   2016      7
+4   2017      1
+5   2018      9
+6   2019      5
+7   2020     20
+8   2021     36
+9   2022     25
+10  2023     52
 </pre></div>
 </div>
 </section>
@@ -528,7 +528,7 @@ was removed from the Australian threatened species list on 26/02/2022.</p>
 <span class="prompt1"><span class="o">...</span>     <span class="n">filters</span><span class="o">=</span><span class="s2">&quot;eventDate&gt;=2022-02-26T00:00:00Z&quot;</span></span>
 <span class="prompt1"><span class="o">...</span> <span class="p">)</span></span>
 </pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>   totalRecords
-0           543
+0           542
 </pre></div>
 </div>
 <p>It can be unintuitive to provide dates in this format. Luckily, it is straightforward to convert

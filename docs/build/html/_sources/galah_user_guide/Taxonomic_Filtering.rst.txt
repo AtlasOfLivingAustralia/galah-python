@@ -3,7 +3,7 @@
 Taxonomic Filtering
 ===================
 
-*Callum Waite, Shandiya Balasubramanium*
+*Callum Waite, Shandiya Balasubramaniam*
 
 Taxonomic complexity can confound the process of searching, filtering, and downloading records using galah, but there are a few 
 ways to ensure records are not missed by using ``[functions]`` in ``galah``.  Let's start by configuring ``galah`` to the ALA.

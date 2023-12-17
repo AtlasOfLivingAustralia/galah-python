@@ -415,7 +415,7 @@ document.write(`
                   
   <section id="spatial-filtering">
 <span id="id1"></span><h1>Spatial filtering<a class="headerlink" href="#spatial-filtering" title="Link to this heading">#</a></h1>
-<p>Adapted from <a class="reference external" href="galah.ala.org.au/R/articles/spatial_filtering.html">the Temporal Filtering galah-R article</a>.</p>
+<p>Adapted from <a class="reference external" href="galah.ala.org.au/R/articles/spatial_filtering.html">the Spatial Filtering galah-R article</a>.</p>
 <p><em>Callum Waite, Shandiya Balasubramaniam, Amanda Buyan</em></p>
 <p>Biodiversity queries to the ALA usually require some spatial filtering. Let’s see how spatial data
 are stored in the ALA and a few different methods to spatially filter data with <code class="docutils literal notranslate"><span class="pre">{galah}</span></code>, <code class="docutils literal notranslate"><span class="pre">{shapely}</span></code>
@@ -496,9 +496,10 @@ have been recorded in King George Square.</p>
 <span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">species_king_george_square</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span></span>
 </pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>   decimalLatitude  decimalLongitude             eventDate         scientificName         vernacularName
 0       -27.468625        153.024333  2006-03-29T23:32:00Z  Threskiornis moluccus      Black-necked Ibis
-1       -27.468510        153.023821  2023-04-08T07:49:00Z     Entomyzon cyanotis  Blue-faced Honeyeater
-2       -27.468418        153.024140  2022-08-30T01:29:00Z  Threskiornis moluccus      Black-necked Ibis
-3       -27.468326        153.024077  2022-07-24T14:43:00Z  Threskiornis moluccus      Black-necked Ibis
+1       -27.468611        153.024444  2023-12-01T23:12:02Z            Cosmophasis                    NaN
+2       -27.468510        153.023821  2023-04-08T07:49:00Z     Entomyzon cyanotis  Blue-faced Honeyeater
+3       -27.468418        153.024140  2022-08-30T01:29:00Z  Threskiornis moluccus      Black-necked Ibis
+4       -27.468326        153.024077  2022-07-24T14:43:00Z  Threskiornis moluccus      Black-necked Ibis
 </pre></div>
 </div>
 <p>This argument can be provided as its string; however, we show you the above to give you an idea of what
@@ -518,10 +519,11 @@ inside the provided shape.</p>
 0       -27.468817        153.023616  2019-04-21T04:40:00Z  Threskiornis moluccus      Black-necked Ibis
 1       -27.468816        153.023613  2005-08-28T12:18:00Z  Threskiornis moluccus      Black-necked Ibis
 2       -27.468625        153.024333  2006-03-29T23:32:00Z  Threskiornis moluccus      Black-necked Ibis
-3       -27.468510        153.023821  2023-04-08T07:49:00Z     Entomyzon cyanotis  Blue-faced Honeyeater
-4       -27.468418        153.024140  2022-08-30T01:29:00Z  Threskiornis moluccus      Black-necked Ibis
-5       -27.468326        153.024077  2022-07-24T14:43:00Z  Threskiornis moluccus      Black-necked Ibis
-6       -27.468056        153.023889                   NaN   Syntrichia laevipila                    NaN
+3       -27.468611        153.024444  2023-12-01T23:12:02Z            Cosmophasis                    NaN
+4       -27.468510        153.023821  2023-04-08T07:49:00Z     Entomyzon cyanotis  Blue-faced Honeyeater
+5       -27.468418        153.024140  2022-08-30T01:29:00Z  Threskiornis moluccus      Black-necked Ibis
+6       -27.468326        153.024077  2022-07-24T14:43:00Z  Threskiornis moluccus      Black-necked Ibis
+7       -27.468056        153.023889                   NaN   Syntrichia laevipila                    NaN
 </pre></div>
 </div>
 </section>
@@ -538,7 +540,7 @@ function of the <code class="docutils literal notranslate"><span class="pre">{sh
 interested in grouping our results by each shape. Here is a mock workflow using a subset of <a class="reference external" href="https://www.data.brisbane.qld.gov.au/data/dataset/park-locations">a shapefile of
 all 2,184 Brisbane parks</a>.</p>
 <p>Let’s say we are interested in knowing which parks in the Brisbane postcode 4075 have the most occurrences
-of the Scaly-Breasted Lorikeet, Trichoglossus chlorolepidotus, since 2020. We can download the entire
+of the Scaly-Breasted Lorikeet, <em>Trichoglossus chlorolepidotus</em>, since 2020. We can download the entire
 shapefile from the above link, and perform our filtering and summarising as follows:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="c1"># first, get all parts within the Brisbane postcode 4075</span></span>
 <span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">geopandas</span> <span class="k">as</span> <span class="nn">gpd</span></span>
@@ -597,13 +599,13 @@ shapefile from the above link, and perform our filtering and summarising as foll
 3          -27.574169        152.995529  ...  eBird Australia          PRESENT
 4          -27.574145        152.977711  ...  eBird Australia          PRESENT
 ...               ...               ...  ...              ...              ...
-1845       -27.517616        152.985081  ...  eBird Australia          PRESENT
-1846       -27.517616        152.985081  ...  eBird Australia          PRESENT
 1847       -27.517616        152.985081  ...  eBird Australia          PRESENT
 1848       -27.517616        152.985081  ...  eBird Australia          PRESENT
 1849       -27.517616        152.985081  ...  eBird Australia          PRESENT
+1850       -27.517616        152.985081  ...  eBird Australia          PRESENT
+1851       -27.517616        152.985081  ...  eBird Australia          PRESENT
 
-[1850 rows x 8 columns]
+[1852 rows x 8 columns]
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">brisbane_parks_all</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">edgecolor</span> <span class="o">=</span> <span class="s2">&quot;#5A5A5A&quot;</span><span class="p">,</span> <span class="n">linewidth</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">facecolor</span> <span class="o">=</span> <span class="s2">&quot;white&quot;</span><span class="p">,</span> <span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">7</span><span class="p">,</span><span class="mi">10</span><span class="p">))</span></span>
