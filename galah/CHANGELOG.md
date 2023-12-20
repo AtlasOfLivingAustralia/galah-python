@@ -1,3 +1,9 @@
+## 0.8.1 (2023-12-20)
+
+### Fix
+
+- **removed-a-check-that-was-impeding-galah_geolocate**: removed a check that was impeding galah_geolocate
+
 ## 0.8.0 (2023-12-18)
 
 ### Feat
