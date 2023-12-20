@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>API Docs &#8212; Galah 0.7.0 documentation</title>
+    <title>API Docs &#8212; Galah 0.8.0 documentation</title>
   
   
   
@@ -37,7 +37,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
 
-    <script src="../_static/documentation_options.js?v=b9678aa1"></script>
+    <script src="../_static/documentation_options.js?v=cce5339e"></script>
     <script src="../_static/doctools.js?v=888ff710"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/design-tabs.js?v=36754332"></script>
@@ -423,16 +423,16 @@ span.prompt1:before {
 }
 </style><span class="prompt1"><span class="n">galah</span><span class="o">.</span><span class="n">atlas_counts</span><span class="p">()</span></span>
 </pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>   totalRecords
-0     132342396
+0     132396926
 </pre></div>
 </div>
 <p>Return records from 2020 onwards, grouped by year</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="n">galah</span><span class="o">.</span><span class="n">atlas_counts</span><span class="p">(</span><span class="n">filters</span><span class="o">=</span><span class="s2">&quot;year&gt;2019&quot;</span><span class="p">,</span><span class="n">group_by</span><span class="o">=</span><span class="s2">&quot;year&quot;</span><span class="p">,</span><span class="n">expand</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></span>
 </pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>   year    count
-0  2020  7124140
-1  2021  8254306
-2  2022  8409790
-3  2023  3446001
+0  2020  7124862
+1  2021  8255051
+2  2022  8411624
+3  2023  3487048
 </pre></div>
 </div>
 </dd></dl>
@@ -621,11 +621,11 @@ Default is set to <code class="docutils literal notranslate"><span class="pre">&
 3          -39.026141        146.332604  2023-07-16T00:00:00Z  Vulpes vulpes   
 4          -39.021544        146.443742  2023-03-14T04:40:48Z  Vulpes vulpes   
 ...               ...               ...                   ...            ...   
-4996        38.900000        -77.000000  2023-11-04T01:55:00Z  Vulpes vulpes   
-4997        39.300000        -75.400000  2023-11-02T04:54:00Z  Vulpes vulpes   
-4998        40.000000        -81.500000  2023-07-14T11:15:00Z  Vulpes vulpes   
-4999        43.600000        145.300000  2023-08-09T10:50:47Z  Vulpes vulpes   
-5000        51.100000         -0.500000  2023-03-17T12:04:54Z  Vulpes vulpes   
+5053        38.900000        -77.000000  2023-11-04T01:55:00Z  Vulpes vulpes   
+5054        39.300000        -75.400000  2023-11-02T04:54:00Z  Vulpes vulpes   
+5055        40.000000        -81.500000  2023-07-14T11:15:00Z  Vulpes vulpes   
+5056        43.600000        145.300000  2023-08-09T10:50:47Z  Vulpes vulpes   
+5057        51.100000         -0.500000  2023-03-17T12:04:54Z  Vulpes vulpes   
 
                                          taxonConceptID  \
 0     https://biodiversity.org.au/afd/taxa/2869ce8a-...   
@@ -634,11 +634,11 @@ Default is set to <code class="docutils literal notranslate"><span class="pre">&
 3     https://biodiversity.org.au/afd/taxa/2869ce8a-...   
 4     https://biodiversity.org.au/afd/taxa/2869ce8a-...   
 ...                                                 ...   
-4996  https://biodiversity.org.au/afd/taxa/2869ce8a-...   
-4997  https://biodiversity.org.au/afd/taxa/2869ce8a-...   
-4998  https://biodiversity.org.au/afd/taxa/2869ce8a-...   
-4999  https://biodiversity.org.au/afd/taxa/2869ce8a-...   
-5000  https://biodiversity.org.au/afd/taxa/2869ce8a-...   
+5053  https://biodiversity.org.au/afd/taxa/2869ce8a-...   
+5054  https://biodiversity.org.au/afd/taxa/2869ce8a-...   
+5055  https://biodiversity.org.au/afd/taxa/2869ce8a-...   
+5056  https://biodiversity.org.au/afd/taxa/2869ce8a-...   
+5057  https://biodiversity.org.au/afd/taxa/2869ce8a-...   
 
                                   recordID             dataResourceName  \
 0     572341b6-94ca-4d96-bf4f-889cbd5e26f0                    FeralScan   
@@ -647,11 +647,11 @@ Default is set to <code class="docutils literal notranslate"><span class="pre">&
 3     147fbb76-92b6-460c-bb12-4f9fc5f353b0                    FeralScan   
 4     e82ec752-fbcc-40e4-97e4-41adbfdee088        iNaturalist Australia   
 ...                                    ...                          ...   
-4996  493a16e9-5107-4656-a390-e27126a3ea42  Earth Guardians Weekly Feed   
-4997  531ca541-8c12-4bdd-834d-31980cd127ab  Earth Guardians Weekly Feed   
-4998  4065886d-ce29-48d2-b8b3-9bc4195ba8b3  Earth Guardians Weekly Feed   
-4999  47b6921d-3891-4e52-b1aa-9fbd57e76823  Earth Guardians Weekly Feed   
-5000  65fc1040-5675-4f6c-8c92-40f8de159bed  Earth Guardians Weekly Feed   
+5053  493a16e9-5107-4656-a390-e27126a3ea42  Earth Guardians Weekly Feed   
+5054  531ca541-8c12-4bdd-834d-31980cd127ab  Earth Guardians Weekly Feed   
+5055  4065886d-ce29-48d2-b8b3-9bc4195ba8b3  Earth Guardians Weekly Feed   
+5056  47b6921d-3891-4e52-b1aa-9fbd57e76823  Earth Guardians Weekly Feed   
+5057  65fc1040-5675-4f6c-8c92-40f8de159bed  Earth Guardians Weekly Feed   
 
      occurrenceStatus  
 0             PRESENT  
@@ -660,13 +660,13 @@ Default is set to <code class="docutils literal notranslate"><span class="pre">&
 3             PRESENT  
 4             PRESENT  
 ...               ...  
-4996          PRESENT  
-4997          PRESENT  
-4998          PRESENT  
-4999          PRESENT  
-5000          PRESENT  
+5053          PRESENT  
+5054          PRESENT  
+5055          PRESENT  
+5056          PRESENT  
+5057          PRESENT  
 
-[5001 rows x 8 columns]
+[5058 rows x 8 columns]
 </pre></div>
 </div>
 <p>Download records of Vulpes vulpes in 2023, returning only <code class="docutils literal notranslate"><span class="pre">eventDate</span></code> field</p>
@@ -680,13 +680,13 @@ Default is set to <code class="docutils literal notranslate"><span class="pre">&
 3     2023-01-01T00:00:00Z
 4     2023-01-01T00:00:00Z
 ...                    ...
-4996  2023-12-11T00:00:00Z
-4997  2023-12-11T00:00:00Z
-4998  2023-12-11T00:00:00Z
-4999  2023-12-11T00:00:00Z
-5000  2023-12-11T00:00:00Z
+5053  2023-12-17T00:00:00Z
+5054  2023-12-17T00:00:00Z
+5055  2023-12-17T00:00:00Z
+5056  2023-12-18T00:00:00Z
+5057  2023-12-18T00:00:00Z
 
-[5001 rows x 1 columns]
+[5058 rows x 1 columns]
 </pre></div>
 </div>
 </dd></dl>
@@ -1050,31 +1050,31 @@ displaying all valid options for the information specified.</p>
 <span class="prompt1"><span class="n">galah</span><span class="o">.</span><span class="n">show_all</span><span class="p">(</span><span class="n">datasets</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></span>
 </pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>                                                   name  \
 0      ALA Taxonomy List for Species Missing from Co...   
-1     10 year trend of levels of organochlorine poll...   
-2                                                    12   
-3                                                    12   
-4                                 1962 Range Extensions   
+1                                        &quot;A&quot; Flora EPBC   
+2                                   &quot;H to O&quot; flora EPBC   
+3                                   &quot;P to Z&quot; flora EPBC   
+4     10 year trend of levels of organochlorine poll...   
 ...                                                 ...   
-3950  Zooplankton abundance in the Kerguelen Axis re...   
-3951  Zooplankton Abundance_Umbrella net_sea ice zon...   
-3952  Zooplankton samples from Heron net trawls alon...   
-3953  Zooplankton sampling in the coastal waters of ...   
-3954                         Zoos Victoria Moth Tracker   
+3966  Zooplankton abundance in the Kerguelen Axis re...   
+3967  Zooplankton Abundance_Umbrella net_sea ice zon...   
+3968  Zooplankton samples from Heron net trawls alon...   
+3969  Zooplankton sampling in the coastal waters of ...   
+3970                         Zoos Victoria Moth Tracker   
 
                                                     uri      uid  
 0     https://collections.ala.org.au/ws/dataResource...  dr23929  
-1     https://collections.ala.org.au/ws/dataResource...  dr16247  
-2     https://collections.ala.org.au/ws/dataResource...  dr23456  
-3     https://collections.ala.org.au/ws/dataResource...  dr23457  
-4     https://collections.ala.org.au/ws/dataResource...  dr24114  
+1     https://collections.ala.org.au/ws/dataResource...  dr24170  
+2     https://collections.ala.org.au/ws/dataResource...  dr24172  
+3     https://collections.ala.org.au/ws/dataResource...  dr24173  
+4     https://collections.ala.org.au/ws/dataResource...  dr16247  
 ...                                                 ...      ...  
-3950  https://collections.ala.org.au/ws/dataResource...  dr16244  
-3951  https://collections.ala.org.au/ws/dataResource...  dr16265  
-3952  https://collections.ala.org.au/ws/dataResource...  dr23120  
-3953  https://collections.ala.org.au/ws/dataResource...  dr15943  
-3954  https://collections.ala.org.au/ws/dataResource...  dr22371  
+3966  https://collections.ala.org.au/ws/dataResource...  dr16244  
+3967  https://collections.ala.org.au/ws/dataResource...  dr16265  
+3968  https://collections.ala.org.au/ws/dataResource...  dr23120  
+3969  https://collections.ala.org.au/ws/dataResource...  dr15943  
+3970  https://collections.ala.org.au/ws/dataResource...  dr22371  
 
-[3955 rows x 3 columns]
+[3971 rows x 3 columns]
 </pre></div>
 </div>
 </dd></dl>
