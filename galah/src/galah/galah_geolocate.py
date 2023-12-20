@@ -47,13 +47,6 @@ def galah_geolocate(polygon=None,
 
         if polygon is not None:
 
-            test_polygon = list(polygon.geoms)
-            vertices=0   
-            for p in test_polygon:
-                vertices+=len(p.exterior.coords.xy)
-            if vertices>500 and not simplify_polygon:
-                raise ValueError("The ALA cannot take a shape file with more than 500 vertices.  Your shape is {}.  Consider using simplify_polygon to initially get your occurrenes".format(vertices))
-
             if type(polygon) is str:
                 if "POLYGON" not in polygon and "MULTIPOLYGON" not in polygon:
                     if "shp" not in polygon:
