@@ -112,7 +112,7 @@ def test_atlas_counts_filters_groupby_expand_australia():
     filtered_counts = galah.atlas_counts(filters=f,group_by=groups)
     assert filtered_counts.shape[0] > 0
     assert filtered_counts.shape[1] > 0
-#'''
+
 # testing filtering works when no taxa are entered
 def test_atlas_counts_filters_groupby_australia():
     galah.galah_config(atlas="Australia")
@@ -421,7 +421,6 @@ def test_galah_group_by_filter_australia():
     output = galah.galah_group_by(URL="https://biocache-ws.ala.org.au/ws/occurrences/search?disableAllQualityfilters=true&",method="GET",group_by=group_by1, filters=filters1,expand=False,payload=payload)
     assert output.shape[1] > 1
 
-#'''
 # test galah_group_by with two filters (galah_filter()) and one group
 def test_galah_group_by_filters_australia():
     galah.galah_config(atlas="Australia")
@@ -468,7 +467,7 @@ def test_galah_group_by_multiple_groups_multiple_filters_expand_true_australia()
     filters2 = ["year>2018","basisOfRecord=HUMAN_OBSERVATION"]
     output = galah.galah_group_by(URL="https://biocache-ws.ala.org.au/ws/occurrences/search?disableAllQualityfilters=true&",method="GET",group_by=group_by2, filters=filters2,payload=payload)
     assert output.shape[1] > 1
-#'''
+
 # search_all() - assertions using "AMBIGUOUS_COLLECTION"
 def test_search_all_assertions_australia():
     galah.galah_config(atlas="Australia")
@@ -704,57 +703,25 @@ def test_atlas_counts_geolocate_polygon():
     counts = galah.atlas_counts(polygon=test_shape)
     assert counts["totalRecords"][0] > 0
 
-'''
-# galah_geolocate integration tests here
-def test_atlas_counts_geolocate_polygon_buffer20km():
-    test_shape = shapely.box(143,-29,148,-28)
-    counts_raw = galah.atlas_counts(polygon=test_shape)
-    counts_buffer = galah.atlas_counts(polygon=test_shape,buffer=20)
-    assert counts_buffer["totalRecords"][0] > counts_raw["totalRecords"][0]
-
 # galah_geolocate integration tests here
 def test_atlas_counts_geolocate_bbox():
     test_shape = shapely.box(143,-29,148,-28)
     counts = galah.atlas_counts(bbox=test_shape)
     assert counts["totalRecords"][0] > 0
 
-# galah_geolocate integration tests here
-def test_atlas_counts_geolocate_bbox_buffer20km():
-    test_shape = shapely.box(143,-29,148,-28)
-    counts_raw = galah.atlas_counts(bbox=test_shape)
-    counts_buffer = galah.atlas_counts(bbox=test_shape,buffer=20)
-    assert counts_buffer["totalRecords"][0] > counts_raw["totalRecords"][0]
-
 def test_atlas_counts_geolocate_bbox_dict():
     counts = galah.atlas_counts(bbox={"xmin": 143,"ymin": -29,"xmax": 148,"ymax": -28})
     assert counts["totalRecords"][0] > 0
-
-def test_atlas_counts_geolocate_bbox_dict_buffer20km():
-    counts_raw = galah.atlas_counts(bbox={"xmin": 143,"ymin": -29,"xmax": 148,"ymax": -28})
-    counts_buffer = galah.atlas_counts(bbox={"xmin": 143,"ymin": -29,"xmax": 148,"ymax": -28},buffer=20)
-    assert counts_buffer["totalRecords"][0] > counts_raw["totalRecords"][0]
 
 def test_atlas_counts_geolocate_polygon_taxa():
     test_shape = shapely.box(143,-29,148,-28)
     counts = galah.atlas_counts(taxa="reptilia",polygon=test_shape)
     assert counts["totalRecords"][0] > 0
 
-def test_atlas_counts_geolocate_polygon_taxa_buffer20km():
-    test_shape = shapely.box(143,-29,148,-28)
-    counts_raw = galah.atlas_counts(taxa="reptilia",polygon=test_shape)
-    counts_buffer = galah.atlas_counts(taxa="reptilia",polygon=test_shape,buffer=20)
-    assert counts_buffer["totalRecords"][0] > counts_raw["totalRecords"][0]
-
 def test_atlas_counts_geolocate_bbox_taxa():
     test_shape = shapely.box(143,-29,148,-28)
     counts = galah.atlas_counts(taxa="reptilia",bbox=test_shape)
     assert counts["totalRecords"][0] > 0
-
-def test_atlas_counts_geolocate_bbox_taxa_buffer20km():
-    test_shape = shapely.box(143,-29,148,-28)
-    counts_raw = galah.atlas_counts(taxa="reptilia",bbox=test_shape)
-    counts_buffer = galah.atlas_counts(taxa="reptilia",bbox=test_shape,buffer=20)
-    assert counts_buffer["totalRecords"][0] > counts_raw["totalRecords"][0]
 
 # galah_geolocate integration tests here
 def test_atlas_occurrences_geolocate_polygon():
@@ -764,38 +731,16 @@ def test_atlas_occurrences_geolocate_polygon():
     assert occurrences.shape[0] > 0
 
 # galah_geolocate integration tests here
-def test_atlas_occurrences_geolocate_polygon_buffer20km():
-    galah.galah_config(atlas="Australia",email="ala4r@ala.org.au")
-    test_shape = shapely.box(143,-29,148,-28)
-    occurrences_raw = galah.atlas_occurrences(polygon=test_shape)
-    occurrences_buffer = galah.atlas_occurrences(polygon=test_shape,buffer=20)
-    assert occurrences_buffer.shape[0] > occurrences_raw.shape[0]
-
-# galah_geolocate integration tests here
 def test_atlas_occurrences_geolocate_bbox():
     galah.galah_config(atlas="Australia",email="ala4r@ala.org.au")
     test_shape = shapely.box(143,-29,148,-28)
     occurrences = galah.atlas_occurrences(bbox=test_shape)
     assert occurrences.shape[0] > 0
 
-# galah_geolocate integration tests here
-def test_atlas_occurrences_geolocate_bbox_buffer20km():
-    galah.galah_config(atlas="Australia",email="ala4r@ala.org.au")
-    test_shape = shapely.box(143,-29,148,-28)
-    occurrences_raw = galah.atlas_occurrences(bbox=test_shape)
-    occurrences_buffer = galah.atlas_occurrences(bbox=test_shape,buffer=20)
-    assert occurrences_buffer.shape[0] > occurrences_raw.shape[0]
-
 def test_atlas_occurrences_geolocate_bbox_dict():
     galah.galah_config(atlas="Australia",email="ala4r@ala.org.au")
     occurrences = galah.atlas_occurrences(bbox={"xmin": 143,"ymin": -29,"xmax": 148,"ymax": -28})
     assert occurrences.shape[0] > 0
-
-def test_atlas_occurrences_geolocate_bbox_dict_buffer20km():
-    galah.galah_config(atlas="Australia",email="ala4r@ala.org.au")
-    occurrences_raw = galah.atlas_occurrences(bbox={"xmin": 143,"ymin": -29,"xmax": 148,"ymax": -28})
-    occurrences_buffer = galah.atlas_occurrences(bbox={"xmin": 143,"ymin": -29,"xmax": 148,"ymax": -28},buffer=20)
-    assert occurrences_buffer.shape[0] > occurrences_raw.shape[0]
 
 def test_atlas_occurrences_geolocate_polygon_taxa():
     galah.galah_config(atlas="Australia",email="ala4r@ala.org.au")
@@ -803,26 +748,12 @@ def test_atlas_occurrences_geolocate_polygon_taxa():
     occurrences = galah.atlas_occurrences(taxa="reptilia",polygon=test_shape)
     assert occurrences.shape[0] > 0
 
-def test_atlas_occurrences_geolocate_polygon_taxa_buffer20km():
-    galah.galah_config(atlas="Australia",email="ala4r@ala.org.au")
-    test_shape = shapely.box(143,-29,148,-28)
-    occurrences_raw = galah.atlas_occurrences(taxa="reptilia",polygon=test_shape)
-    occurrences_buffer = galah.atlas_occurrences(taxa="reptilia",polygon=test_shape,buffer=20)
-    assert occurrences_buffer.shape[0] > occurrences_raw.shape[0]
-
 def test_atlas_occurrences_geolocate_bbox_taxa():
     galah.galah_config(atlas="Australia",email="ala4r@ala.org.au")
     test_shape = shapely.box(143,-29,148,-28)
     occurrences = galah.atlas_occurrences(taxa="reptilia",bbox=test_shape)
     assert occurrences.shape[0] > 0
 
-def test_atlas_occurrences_geolocate_bbox_taxa_buffer20km():
-    galah.galah_config(atlas="Australia",email="ala4r@ala.org.au")
-    test_shape = shapely.box(143,-29,148,-28)
-    occurrences_raw = galah.atlas_occurrences(taxa="reptilia",bbox=test_shape)
-    occurrences_buffer = galah.atlas_occurrences(taxa="reptilia",bbox=test_shape,buffer=20)
-    assert occurrences_buffer.shape[0] > occurrences_raw.shape[0]
-'''
 #test if it can get a taxa and return output
 def test_atlas_media_taxa_australia():
     galah.galah_config(atlas="Australia",email="ala4r@ala.org.au")

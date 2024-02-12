@@ -104,8 +104,6 @@ def galah_filter(f,
             else:
                 raise ValueError("The symbol {} is not currently available in galah for atlas {}.".format(specialChar,atlas))
 
-            
-
             return returnString
 
         elif atlas in ["Australia","ALA"]:

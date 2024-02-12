@@ -383,6 +383,9 @@ def show_all(assertions=False,
             
         # get all the lists from 
         df = pd.DataFrame.from_dict(response.json()['lists'])
+
+        if 'dataResourceUid' in df:
+            df = df.rename(columns={'dataResourceUid': 'species_list_uid'})
         
         # append data frame to return_array
         return_array.append(df)
