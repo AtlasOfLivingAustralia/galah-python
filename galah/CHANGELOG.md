@@ -1,3 +1,9 @@
+## 0.8.2 (2024-02-13)
+
+### Fix
+
+- **show_all.py**: changed name of list id from dataResourceUid to species_list_uid
+
 ## 0.8.1 (2023-12-20)
 
 ### Fix
