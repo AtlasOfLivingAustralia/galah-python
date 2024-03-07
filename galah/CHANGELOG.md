@@ -48,6 +48,8 @@
 
 ## 0.6.0 (2023-10-04)
 
+## 1.0.0 (2023-10-04)
+
 ### Feat
 
 - **adding-new-APIs-and-fixing-a-lot-of-bugs**: adding new apis, fixing lots of bugs, testing out post query
