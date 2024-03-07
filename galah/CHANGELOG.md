@@ -1,3 +1,9 @@
+## 0.8.3 (2024-03-08)
+
+### Fix
+
+- **galah_select.py**: fixed galah_select to have the correct string representation of fields
+
 ## 0.8.2 (2024-02-13)
 
 ### Fix
