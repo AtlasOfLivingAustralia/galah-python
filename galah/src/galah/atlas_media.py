@@ -214,8 +214,10 @@ def atlas_media(taxa=None,
         if not media_array.empty:
 
             # filter by NaNs
-            filtered_media_array = media_array.loc[media_array[media].notnull(), ['decimalLatitude', 'decimalLongitude', 'eventDate', 'scientificName', 'recordID',
-                           'dataResourceName', 'occurrenceStatus', 'multimedia', 'images','videos','sounds']]
+            filtered_media_array = media_array.loc[media_array[media].notnull(), ['decimalLatitude', 'decimalLongitude', 'eventDate', 
+                                                                                  'scientificName', 'recordID','dataResourceName', 
+                                                                                  'occurrenceStatus', 'multimedia', 'images','videos',
+                                                                                  'sounds']]
             
             # put the longest strings (so the duplicates) at the end
             filtered_media_array = filtered_media_array.sort_values(by=media,key=lambda x: x.str.len())
@@ -242,6 +244,7 @@ def atlas_media(taxa=None,
             # insert the duplicate rows into the array (need to ensure that, in the case they aren't sequential, to take that into consideration)
             new_filtered_media_array = pd.concat([filtered_media_array.head(top_index),pd.DataFrame(duplicate_dict)]).reset_index(drop=True)
             response = requests.request(method,basemediaURL,data=json.dumps({"imageIds": new_filtered_media_array[media].to_list()}))
+            
             # get metadata here
             response_json = response.json()
             media_metadata = {
