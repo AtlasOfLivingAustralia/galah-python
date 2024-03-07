@@ -26,16 +26,15 @@ def galah_select(select=None,atlas=None):
             select=[select]
         for selection in select:
             if selection == "basic":
-                for s in ["decimalLatitude","decimalLongitude","eventDate","scientificName","taxonConceptID","recordID","dataResourceName","occurrenceStatus"]:
-                    tempstring+="{}%2C".format(s)
+                tempstring += "%2C".join(["decimalLatitude","decimalLongitude","eventDate","scientificName","taxonConceptID","recordID","dataResourceName","occurrenceStatus"]) + "%2C"
             elif selection == "event":
-                for s in ["eventRemarks","eventTime","eventID","eventDate","samplingEffort","samplingProtocol"]:
-                    tempstring+="{}%2C".format(s)
+                tempstring += "%2C".join(["eventRemarks","eventTime","eventID","eventDate","samplingEffort","samplingProtocol"]) + "%2C"
             elif selection == "media":
-                for s in ["multimedia","multimediaLicence","images","videos","sounds"]:
-                    tempstring+="{}%2C".format(s)
+                tempstring += "%2C".join(["multimedia","multimediaLicence","images","videos","sounds"]) + "%2C"
             else:
                 tempstring+="{}%2C".format(selection)
+        if tempstring[-3:] == "%2C":
+            tempstring = tempstring[:-3]
         return tempstring
 
     # else, throw an error

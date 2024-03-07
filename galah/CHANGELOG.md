@@ -1,3 +1,9 @@
+## 0.8.3 (2024-03-08)
+
+### Fix
+
+- **galah_select.py**: fixed galah_select to have the correct string representation of fields
+
 ## 0.8.2 (2024-02-13)
 
 ### Fix
@@ -41,6 +47,8 @@
 - **added-ability-in-galah_group_by-to-expand-number-of-groups-to-three**: added ability in galah_group_by to expand number of groups to three
 
 ## 0.6.0 (2023-10-04)
+
+## 1.0.0 (2023-10-04)
 
 ### Feat
 

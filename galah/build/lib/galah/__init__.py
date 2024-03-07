@@ -33,7 +33,7 @@ from .generate_jwt_token import generate_token_config
 #-------------------------------------------------------
 # version
 #-------------------------------------------------------
-__version__ = "0.8.1"
+__version__ = "0.8.2"
 
 # get all functions to display
 __all__=["atlas_counts","atlas_media","atlas_occurrences","atlas_species","galah_config","search_all","search_taxa",
