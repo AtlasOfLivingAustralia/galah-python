@@ -7,6 +7,9 @@ from .apply_data_profile import apply_data_profile
 from .common_dictionaries import ATLAS_KEYWORDS,ATLAS_SPECIES_FIELDS,atlases
 from .common_functions import add_filters,add_to_payload_ALA
 from .show_all import show_all
+from .version import __version__
+
+import json
 
 def atlas_species(taxa=None,
                   scientific_name=None,
@@ -64,16 +67,11 @@ def atlas_species(taxa=None,
     # get atlas
     atlas = configs['galahSettings']['atlas'] 
 
-    # specify headers for API call
-    headers = {}
+    # get headers
+    headers = {"User-Agent": "galah-python/{}".format(__version__)}
 
     # create payload variable so it is available for some atlases
     payload = {}
-
-    #if atlas in ["Australia","ALA"]:
-    #    headers = {"x-api-key": configs["galahSettings"]["ALA_API_key"]}
-    #else:
-    #    headers = {}
 
     # first, check if the user has specified a taxa and if it is of the right variable type
     if type(taxa) is not str and type(taxa) is not list and taxa is not None:
@@ -106,7 +104,7 @@ def atlas_species(taxa=None,
 
         # create the query id
         qid_URL, method2 = get_api_url(column1="api_name",column1value="occurrences_qid")
-        qid = requests.request(method2,qid_URL,data=payload)
+        qid = requests.request(method2,qid_URL,data=payload,headers=headers)
         
         # create the URL to grab the species ID and lists
         if use_data_profile:
@@ -121,6 +119,8 @@ def atlas_species(taxa=None,
                 URL += "&count=true"
 
         if verbose:
+            print()
+            print("headers: {}".format(headers))
             print()
             print("payload for queryID: {}".format(payload))
             print("queryID URL: {}".format(qid_URL))

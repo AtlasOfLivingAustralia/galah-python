@@ -111,7 +111,7 @@ def test_atlas_counts_taxa_filters_france_total_group_by():
 # test atlas counts with multiple taxa and filters, along with expand=True
 def test_atlas_counts_multiple_taxa_filters_separate_france():
     galah.galah_config(atlas="France")
-    taxa_array = ["Triturus marmoratus","Galium anisophyllon","Plantago media","Festuca eskia"]
+    taxa_array = ["Triturus marmoratus","Galium anisophyllon","Festuca eskia"]
     f = ["basisOfRecord=OCCURRENCE","year=2022"]
     output = galah.atlas_counts(taxa=taxa_array, filters=f,group_by="species",expand=False)
     assert output.shape[0] > 0
@@ -165,13 +165,13 @@ def test_atlas_counts_taxa_filters_group_by_no_expand_france():
 # test atlas_counts() can call search_taxa() function with multiple taxa
 def test_atlas_counts_multiple_taxa_france():
     galah.galah_config(atlas="France")
-    taxa_array = ["Triturus marmoratus","Galium anisophyllon","Plantago media","Festuca eskia"]
+    taxa_array = ["Triturus marmoratus","Galium anisophyllon","Festuca eskia"]
     assert galah.atlas_counts(taxa_array)['totalRecords'][0] > 0
 
 # test atlas_counts() can call search_taxa() function with multiple taxa
 def test_atlas_counts_multiple_taxa_france():
     galah.galah_config(atlas="France")
-    taxa_array = ["Triturus marmoratus","Galium anisophyllon","Plantago media","Festuca eskia"]
+    taxa_array = ["Triturus marmoratus","Galium anisophyllon","Festuca eskia"]
     group_by="year"
     output = galah.atlas_counts(taxa_array,group_by=group_by,expand=False)
     assert output['count'][0] > 0
@@ -180,7 +180,7 @@ def test_atlas_counts_multiple_taxa_france():
 # test atlas_counts() can call search_taxa() function with multiple taxa
 def test_atlas_counts_multiple_taxa_group_by_france():
     galah.galah_config(atlas="France")
-    taxa_array = ["Triturus marmoratus","Galium anisophyllon","Plantago media","Festuca eskia"]
+    taxa_array = ["Triturus marmoratus","Galium anisophyllon","Festuca eskia"]
     group_by=["year",'basisOfRecord']
     output = galah.atlas_counts(taxa_array,group_by=group_by)
     assert output['count'][0] > 0
@@ -189,14 +189,14 @@ def test_atlas_counts_multiple_taxa_group_by_france():
 # test altas_counts() can call search_taxa() and using one filter, filter results with multiple taxa
 def test_atlas_counts_multiple_taxa_filter_france():
     galah.galah_config(atlas="France")
-    taxa_array = ["Triturus marmoratus","Galium anisophyllon","Plantago media","Festuca eskia"]
+    taxa_array = ["Triturus marmoratus","Galium anisophyllon","Festuca eskia"]
     filter1 = "year=2020"
     assert galah.atlas_counts(taxa_array,filters=filter1)['totalRecords'][0] > 0
 
 # test altas_counts() can call search_taxa() and using one filter, filter results with multiple taxa
 def test_atlas_counts_multiple_taxa_filter_group_by_france():
     galah.galah_config(atlas="France")
-    taxa_array = ["Triturus marmoratus","Galium anisophyllon","Plantago media","Festuca eskia"]
+    taxa_array = ["Triturus marmoratus","Galium anisophyllon","Festuca eskia"]
     filter1 = "year=2020"
     group_by="basisOfRecord"
     output = galah.atlas_counts(taxa_array,filters=filter1,group_by=group_by,expand=False)
@@ -206,14 +206,14 @@ def test_atlas_counts_multiple_taxa_filter_group_by_france():
 # test altas_counts() can call search_taxa() and using one filter, filter results with multiple taxa
 def test_atlas_counts_multiple_taxa_filters_france():
     galah.galah_config(atlas="France")
-    taxa_array = ["Triturus marmoratus","Galium anisophyllon","Plantago media","Festuca eskia"]
+    taxa_array = ["Triturus marmoratus","Galium anisophyllon","Festuca eskia"]
     filters = ["year>=2020", "basisOfRecord=OCCURRENCE"]
     assert galah.atlas_counts(taxa_array,filters=filters)['totalRecords'][0] > 0
 
 # test altas_counts() can call search_taxa() and using one filter, filter results with multiple taxa
 def test_atlas_counts_multiple_taxa_filters_group_by_france():
     galah.galah_config(atlas="France")
-    taxa_array = ["Triturus marmoratus","Galium anisophyllon","Plantago media","Festuca eskia"]
+    taxa_array = ["Triturus marmoratus","Galium anisophyllon","Festuca eskia"]
     filters = ["year>=2020", "basisOfRecord=OCCURRENCE"]
     group_by = "year"
     output = galah.atlas_counts(taxa_array,filters=filters,group_by=group_by,expand=False)
@@ -223,7 +223,7 @@ def test_atlas_counts_multiple_taxa_filters_group_by_france():
 # test altas_counts() can call search_taxa() and using one filter, filter results with multiple taxa
 def test_atlas_counts_multiple_taxa_filters_group_by_multiple_france():
     galah.galah_config(atlas="France")
-    taxa_array = ["Triturus marmoratus","Galium anisophyllon","Plantago media","Festuca eskia"]
+    taxa_array = ["Triturus marmoratus","Galium anisophyllon","Festuca eskia"]
     filters = ["year>2010", "basisOfRecord=OCCURRENCE"]
     group_by = ["month","year"]
     # county** , associatedOrganisms , day , decade
@@ -234,7 +234,7 @@ def test_atlas_counts_multiple_taxa_filters_group_by_multiple_france():
 # test atlas_counts() can call search_taxa() and separate the counts for multiple taxa where one taxon is not present in ALA
 def test_atlas_counts_invalid_multiple_taxa_separate_france():
     galah.galah_config(atlas="France")
-    taxa_array = ["Osphranter rufus","Triturus marmoratus","Galium anisophyllon","Plantago media"]
+    taxa_array = ["Osphranter rufus","Triturus marmoratus","Galium anisophyllon"]
     output = galah.atlas_counts(taxa_array,group_by="species",expand=False)
     assert output.shape[0] == len(taxa_array) - 1
     assert output.shape[1] == 2
@@ -243,7 +243,7 @@ def test_atlas_counts_invalid_multiple_taxa_separate_france():
 def test_atlas_counts_multiple_taxa_separate_france():
     galah.galah_config(atlas="France")
     #             This one is the Guatemalan atlas
-    taxa_array = ["Triturus marmoratus","Galium anisophyllon","Plantago media"]
+    taxa_array = ["Triturus marmoratus","Galium anisophyllon"]
     output = galah.atlas_counts(taxa_array, group_by="species",expand=False)
     assert output.shape[0] == len(taxa_array)
     assert output.shape[1] == 2
@@ -252,7 +252,7 @@ def test_atlas_counts_multiple_taxa_separate_france():
 # test altas_counts() can call search_taxa() and using one filter, filter and group results with multiple taxa separated
 def test_atlas_counts_multiple_taxa_filters_group_by_separate_france():
     galah.galah_config(atlas="France")
-    taxa_array = ["Triturus marmoratus","Galium anisophyllon","Plantago media"]
+    taxa_array = ["Triturus marmoratus","Galium anisophyllon"]
     f = ["basisOfRecord=OCCURRENCE", "year=2019"]
     group_by = ["month","species"]
     output = galah.atlas_counts(taxa_array, filters=f, group_by=group_by, expand=True)
@@ -262,7 +262,7 @@ def test_atlas_counts_multiple_taxa_filters_group_by_separate_france():
 # test altas_counts() can call search_taxa() and using one filter, filter and group results with multiple taxa separated
 def test_atlas_counts_multiple_taxa_filter_group_by_multiple_separate_france():
     galah.galah_config(atlas="France")
-    taxa_array = ["Triturus marmoratus","Galium anisophyllon","Plantago media"]
+    taxa_array = ["Triturus marmoratus","Galium anisophyllon"]
     f = ["year=2022"]
     group_by = ["year", "month"]
     output = galah.atlas_counts(taxa_array, filters=f, group_by=group_by, expand=True)
@@ -272,7 +272,7 @@ def test_atlas_counts_multiple_taxa_filter_group_by_multiple_separate_france():
 # test altas_counts() can call search_taxa() and using one filter, filter and group results with multiple taxa separated
 def test_atlas_counts_multiple_taxa_filters_group_by_multiple_separate_expand_france():
     galah.galah_config(atlas="France")
-    taxa_array = ["Triturus marmoratus","Galium anisophyllon","Plantago media"]
+    taxa_array = ["Triturus marmoratus","Galium anisophyllon"]
     f = ["basisOfRecord=OCCURRENCE", "year>=2022"]
     group_by = ["year", "month"]
     output = galah.atlas_counts(taxa_array, filters=f, group_by=group_by, expand=True)

@@ -147,6 +147,7 @@ def galah_filter(f,
 
             # not equal to
             elif specialChar == '!=' or specialChar == '=!':
+                print("here")
                 return "-{}:{}".format(parts[0], parts[1])
                 
             # else, there is either an error in the filters or a missing case
