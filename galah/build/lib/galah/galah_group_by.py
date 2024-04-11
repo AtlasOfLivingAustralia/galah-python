@@ -151,6 +151,11 @@ def galah_group_by(URL=None,
             results_array = response_json 
             field_name = 'fieldResult' 
             facet_name = 'fq'
+        # elif atlas in ["Guatemala"]:
+        #     print(len(response_json))
+        #     print(response_json)
+        #     import sys
+        #     sys.exit()
         else:
             length = len(response_json['facetResults'])
             results_array = response_json['facetResults']

@@ -24,7 +24,7 @@ setup(
     long_description_content_type='text/markdown',
     packages=find_packages('src'),
     package_dir={'':'src'},
-    url='galah.ala.org.au/Python',
+    url='https://galah.ala.org.au/Python/',
     keywords='galah',
     #'tempfile'
     install_requires=[

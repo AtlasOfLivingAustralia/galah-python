@@ -88,16 +88,16 @@ def atlas_counts(taxa=None,
 
     # raise error if argument is wrong type and/or the atlas doesn't have a quality profile but the user has specified one
     if use_data_profile and atlas not in ["Australia","ALA"]:
-                raise ValueError("True and False are the only values accepted for data_profile, and the only atlas using a data \n"
-                                "quality profile is Australia.  Your atlas and data profile is \n"
-                                "set in your config file.  To set your default filter, find out what profiles are on offer:\n"
-                                "profiles = galah.show_all(profiles=True)\n\n"
-                                "and then type\n\n"
-                                "profiles['shortName']\n\n"
-                                "to get the names of the data quality profiles you can use.  To set a data profile, type\n" 
-                                "galah.galah_config(data_profile=\"NAME FROM SHORTNAME HERE\")"
-                                "If you don't want to use a data quality profile, set it to None by typing the following:\n\n"
-                                "galah.galah_config(data_profile=\"None\")")
+        raise ValueError("True and False are the only values accepted for data_profile, and the only atlas using a data \n"
+                        "quality profile is Australia.  Your atlas and data profile is \n"
+                        "set in your config file.  To set your default filter, find out what profiles are on offer:\n"
+                        "profiles = galah.show_all(profiles=True)\n\n"
+                        "and then type\n\n"
+                        "profiles['shortName']\n\n"
+                        "to get the names of the data quality profiles you can use.  To set a data profile, type\n" 
+                        "galah.galah_config(data_profile=\"NAME FROM SHORTNAME HERE\")"
+                        "If you don't want to use a data quality profile, set it to None by typing the following:\n\n"
+                        "galah.galah_config(data_profile=\"None\")")
     
     # check for Brazilian atlas
     elif group_by is not None and atlas in ["Brazil"]:
@@ -173,7 +173,6 @@ def atlas_counts(taxa=None,
             print()
 
         # get data
-        print(requests.__version__)
         response = requests.request(method,URL,headers=headers)
 
         # check for daily maximum
@@ -191,7 +190,7 @@ def atlas_counts(taxa=None,
         # if there is no taxa, assume you will get the total number of records in the ALA
         if taxa is not None:
 
-            URL += generate_list_taxonConceptIDs(taxa=taxa,atlas=atlas)
+            URL += generate_list_taxonConceptIDs(taxa=taxa,atlas=atlas,verbose=verbose)
 
         # check if user wants to gropu counts
         if group_by is not None:
@@ -248,7 +247,6 @@ def atlas_counts(taxa=None,
             print()
 
         # get data
-        print(requests.__version__)
         response = requests.request(method,URL,headers=headers)
 
         # check for daily maximum

@@ -116,7 +116,7 @@ def atlas_occurrences(taxa=None,
     atlas = configs['galahSettings']['atlas']
 
     # check for email
-    if configs["galahSettings"]["email"] is None or configs["galahSettings"]["email"] is "email@example.com":
+    if configs["galahSettings"]["email"] is None or configs["galahSettings"]["email"] == "email@example.com":
         raise ValueError("Please provide an email for querying")
 
     # initialise headers
@@ -171,7 +171,7 @@ def atlas_occurrences(taxa=None,
                          )
     else:
         # check for these atlases first
-        if atlas in ["Australia","Austria","Brazil","France","Spain"]:
+        if atlas in ["Australia","Austria","Brazil","France","Guatemala","Spain","Sweden"]: # added Guatemala
             baseURL, method = get_api_url(column1='called_by', column1value='atlas_occurrences',column2='api_name', 
                                           column2value='records_occurrences',add_email=True)
         elif atlas in ["Global","GBIF"]:
@@ -188,7 +188,9 @@ def atlas_occurrences(taxa=None,
             baseURL += galah_select(select=fields,atlas=atlas) + "&"
         else:
             baseURL += galah_select(select=ATLAS_SELECTIONS[atlas],atlas=atlas) + "&"
-    elif atlas in ["Austria","Brazil","France","Spain"]:
+    elif fields is None and atlas in ["Sweden"]:
+        baseURL += galah_select(select=ATLAS_SELECTIONS[atlas],atlas=atlas) + "&"
+    elif atlas in ["Austria","Brazil","France","Spain","Guatemala"]:
         baseURL += galah_select(select=ATLAS_SELECTIONS[atlas],atlas=atlas) + "&"
     elif fields is not None and atlas in ["Global","GBIF"]:
         print("GBIF, unfortunately, does not support choosing your desired data fields before download.  You will have to download them and then get categories you want.")
@@ -381,11 +383,6 @@ def atlas_occurrences(taxa=None,
     if response.status_code == 429:
         raise ValueError("You have reached the maximum number of daily queries for the ALA.")
     
-    # # if we get an error, raise one
-    # if atlas not in ["GBIF","Global"]:
-    #     if response.status_code == 403:
-    #         raise ValueError(response.json()["error"])
-
     # this may take a while - occasionally check if status has changed
     if atlas in ["Global","GBIF"]:
 

@@ -141,7 +141,8 @@ def get_response_show_all(column1=None,
 
 def generate_list_taxonConceptIDs(taxa=None,
                                   scientific_name=None,
-                                  atlas=None):
+                                  atlas=None,
+                                  verbose=None):
     '''Function for getting more than one taxonConceptIDs'''
 
     if taxa is None and scientific_name is None:
@@ -177,14 +178,14 @@ def generate_list_taxonConceptIDs(taxa=None,
             pass
         else:
             raise TypeError("The taxa argument can only be a string or a list."
-                        "\nExample: atlas.counts(\"Vulpes vulpes\")"
-                        "\n         atlas.counts[\"Osphranter rufus\",\"Vulpes vulpes\",\"Macropus giganteus\",\"Phascolarctos cinereus\"])")
+                        "\nExample: galah.atlas_counts(\"Vulpes vulpes\")"
+                        "\n         galah.atlas_counts[\"Osphranter rufus\",\"Vulpes vulpes\",\"Macropus giganteus\",\"Phascolarctos cinereus\"])")
 
         # get the number of records associated with each taxa
         for name in taxa:
 
             # create temporary dataframe for taxon id
-            tempdf = search_taxa(name)
+            tempdf = search_taxa(taxa=name,verbose=verbose)
             
             # check if dataframe is empty - if so, return None; else, continue
             if tempdf.empty:
