@@ -2,13 +2,13 @@
 <!DOCTYPE html>
 
 
-<html lang="en" >
+<html lang="en" data-content_root="../" >
 
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>API Docs &#8212; Galah 0.8.1 documentation</title>
+    <title>API Docs &#8212; Galah 0.8.3 documentation</title>
   
   
   
@@ -18,15 +18,15 @@
   </script>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
-<link href="../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
-<link href="../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link href="../_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
 
   
-  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+  <link href="../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="../_static/css/extra.css?v=bc76f7e5" />
@@ -34,10 +34,11 @@
     <link rel="stylesheet" type="text/css" href="../_static/css/extra.css?v=bc76f7e5" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
-<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
+  <script src="../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
 
-    <script src="../_static/documentation_options.js?v=65a547f8"></script>
+    <script src="../_static/documentation_options.js?v=7f96dc5e"></script>
     <script src="../_static/doctools.js?v=888ff710"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/design-tabs.js?v=36754332"></script>
@@ -56,7 +57,15 @@
 
   
   
-  <a class="skip-link" href="#main-content">Skip to main content</a>
+  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
   
   <input type="checkbox"
           class="sidebar-toggle"
@@ -91,15 +100,17 @@
 </form></div>
   </div>
   
-    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    <header class="bd-header navbar navbar-expand-lg bd-navbar">
 <div class="bd-header__inner bd-page-width">
   <label class="sidebar-toggle primary-toggle" for="__primary">
     <span class="fa-solid fa-bars"></span>
   </label>
   
-  <div class="navbar-header-items__start">
+  
+  <div class="col-lg-3 navbar-header-items__start">
     
       <div class="navbar-item">
+
   
 
 <a class="navbar-brand logo" href="../index.html">
@@ -107,31 +118,26 @@
   
   
   
+  
     
     
       
     
     
-    <img src="../_static/logo.png" class="logo__image only-light" alt="Logo image"/>
-    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Galah 0.8.3 documentation - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Galah 0.8.3 documentation - Home"/>`);</script>
   
   
 </a></div>
     
   </div>
   
-  
   <div class="col-lg-9 navbar-header-items">
     
     <div class="me-auto navbar-header-items__center">
       
-        <div class="navbar-item"><nav class="navbar-nav">
-  <p class="sidebar-header-items__title"
-     role="heading"
-     aria-level="1"
-     aria-label="Site Navigation">
-    Site Navigation
-  </p>
+        <div class="navbar-item">
+<nav class="navbar-nav">
   <ul class="bd-navbar-elements navbar-nav">
     
                     <li class="nav-item">
@@ -178,23 +184,27 @@
       
         <div class="navbar-item navbar-persistent--container">
           
-<script>
-document.write(`
-  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass"></i>
-  </button>
-`);
-</script>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
         </div>
       
       
         <div class="navbar-item">
+
 <script>
 document.write(`
-  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
-    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
-    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
   </button>
 `);
 </script></div>
@@ -210,8 +220,8 @@ document.write(`
           
           
           
-          <a href="https://github.com/AtlasOfLivingAustralia/galah_python" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-square-github"></i></span>
-            <label class="sr-only">GitHub</label></a>
+          <a href="https://github.com/AtlasOfLivingAustralia/galah_python" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i></span>
+            <span class="sr-only">GitHub</span></a>
         </li>
 </ul></div>
       
@@ -221,29 +231,35 @@ document.write(`
   
   
     <div class="navbar-persistent--mobile">
-<script>
-document.write(`
-  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass"></i>
-  </button>
-`);
-</script>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
     </div>
   
 
   
-    <label class="sidebar-toggle secondary-toggle" for="__secondary">
+    <label class="sidebar-toggle secondary-toggle" for="__secondary" tabindex="0">
       <span class="fa-solid fa-outdent"></span>
     </label>
   
 </div>
 
-    </nav>
+    </header>
   
+
   <div class="bd-container">
     <div class="bd-container__inner bd-page-width">
       
-      <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
         
 
   
@@ -252,13 +268,8 @@ document.write(`
     
       <div class="sidebar-header-items__center">
         
-          <div class="navbar-item"><nav class="navbar-nav">
-  <p class="sidebar-header-items__title"
-     role="heading"
-     aria-level="1"
-     aria-label="Site Navigation">
-    Site Navigation
-  </p>
+          <div class="navbar-item">
+<nav class="navbar-nav">
   <ul class="bd-navbar-elements navbar-nav">
     
                     <li class="nav-item">
@@ -305,12 +316,13 @@ document.write(`
       <div class="sidebar-header-items__end">
         
           <div class="navbar-item">
+
 <script>
 document.write(`
-  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
-    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
-    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
   </button>
 `);
 </script></div>
@@ -326,14 +338,23 @@ document.write(`
           
           
           
-          <a href="https://github.com/AtlasOfLivingAustralia/galah_python" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-square-github"></i></span>
-            <label class="sr-only">GitHub</label></a>
+          <a href="https://github.com/AtlasOfLivingAustralia/galah_python" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i></span>
+            <span class="sr-only">GitHub</span></a>
         </li>
 </ul></div>
         
       </div>
     
   </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"></div>
+</nav></div>
+    </div>
   
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
@@ -359,8 +380,8 @@ document.write(`
 
 
 
-<nav aria-label="Breadcrumbs">
-  <ul class="bd-breadcrumbs" role="navigation" aria-label="Breadcrumb">
+<nav aria-label="Breadcrumb">
+  <ul class="bd-breadcrumbs">
     
     <li class="breadcrumb-item breadcrumb-home">
       <a href="../index.html" class="nav-link" aria-label="Home">
@@ -382,7 +403,7 @@ document.write(`
               
                 
 <div id="searchbox"></div>
-                <article class="bd-article" role="main">
+                <article class="bd-article">
                   
   <section id="module-galah">
 <span id="api-docs"></span><h1>API Docs<a class="headerlink" href="#module-galah" title="Link to this heading">#</a></h1>
@@ -423,16 +444,17 @@ span.prompt1:before {
 }
 </style><span class="prompt1"><span class="n">galah</span><span class="o">.</span><span class="n">atlas_counts</span><span class="p">()</span></span>
 </pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>   totalRecords
-0     132396926
+0     133620113
 </pre></div>
 </div>
 <p>Return records from 2020 onwards, grouped by year</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="n">galah</span><span class="o">.</span><span class="n">atlas_counts</span><span class="p">(</span><span class="n">filters</span><span class="o">=</span><span class="s2">&quot;year&gt;2019&quot;</span><span class="p">,</span><span class="n">group_by</span><span class="o">=</span><span class="s2">&quot;year&quot;</span><span class="p">,</span><span class="n">expand</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></span>
 </pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>   year    count
-0  2020  7124862
-1  2021  8255051
-2  2022  8411624
-3  2023  3487048
+0  2020  7156697
+1  2021  8288673
+2  2022  8479723
+3  2023  3771579
+4  2024   540931
 </pre></div>
 </div>
 </dd></dl>
@@ -621,11 +643,11 @@ Default is set to <code class="docutils literal notranslate"><span class="pre">&
 3          -39.026141        146.332604  2023-07-16T00:00:00Z  Vulpes vulpes   
 4          -39.021544        146.443742  2023-03-14T04:40:48Z  Vulpes vulpes   
 ...               ...               ...                   ...            ...   
-5053        38.900000        -77.000000  2023-11-04T01:55:00Z  Vulpes vulpes   
-5054        39.300000        -75.400000  2023-11-02T04:54:00Z  Vulpes vulpes   
-5055        40.000000        -81.500000  2023-07-14T11:15:00Z  Vulpes vulpes   
-5056        43.600000        145.300000  2023-08-09T10:50:47Z  Vulpes vulpes   
-5057        51.100000         -0.500000  2023-03-17T12:04:54Z  Vulpes vulpes   
+5591        39.300000        -75.400000  2023-11-02T04:54:00Z  Vulpes vulpes   
+5592        40.000000        -81.500000  2023-07-14T11:15:00Z  Vulpes vulpes   
+5593        42.100000        -71.600000  2023-12-18T13:33:00Z  Vulpes vulpes   
+5594        43.600000        145.300000  2023-08-09T10:50:47Z  Vulpes vulpes   
+5595        51.100000         -0.500000  2023-03-17T12:04:54Z  Vulpes vulpes   
 
                                          taxonConceptID  \
 0     https://biodiversity.org.au/afd/taxa/2869ce8a-...   
@@ -634,11 +656,11 @@ Default is set to <code class="docutils literal notranslate"><span class="pre">&
 3     https://biodiversity.org.au/afd/taxa/2869ce8a-...   
 4     https://biodiversity.org.au/afd/taxa/2869ce8a-...   
 ...                                                 ...   
-5053  https://biodiversity.org.au/afd/taxa/2869ce8a-...   
-5054  https://biodiversity.org.au/afd/taxa/2869ce8a-...   
-5055  https://biodiversity.org.au/afd/taxa/2869ce8a-...   
-5056  https://biodiversity.org.au/afd/taxa/2869ce8a-...   
-5057  https://biodiversity.org.au/afd/taxa/2869ce8a-...   
+5591  https://biodiversity.org.au/afd/taxa/2869ce8a-...   
+5592  https://biodiversity.org.au/afd/taxa/2869ce8a-...   
+5593  https://biodiversity.org.au/afd/taxa/2869ce8a-...   
+5594  https://biodiversity.org.au/afd/taxa/2869ce8a-...   
+5595  https://biodiversity.org.au/afd/taxa/2869ce8a-...   
 
                                   recordID             dataResourceName  \
 0     572341b6-94ca-4d96-bf4f-889cbd5e26f0                    FeralScan   
@@ -647,11 +669,11 @@ Default is set to <code class="docutils literal notranslate"><span class="pre">&
 3     147fbb76-92b6-460c-bb12-4f9fc5f353b0                    FeralScan   
 4     e82ec752-fbcc-40e4-97e4-41adbfdee088        iNaturalist Australia   
 ...                                    ...                          ...   
-5053  493a16e9-5107-4656-a390-e27126a3ea42  Earth Guardians Weekly Feed   
-5054  531ca541-8c12-4bdd-834d-31980cd127ab  Earth Guardians Weekly Feed   
-5055  4065886d-ce29-48d2-b8b3-9bc4195ba8b3  Earth Guardians Weekly Feed   
-5056  47b6921d-3891-4e52-b1aa-9fbd57e76823  Earth Guardians Weekly Feed   
-5057  65fc1040-5675-4f6c-8c92-40f8de159bed  Earth Guardians Weekly Feed   
+5591  531ca541-8c12-4bdd-834d-31980cd127ab  Earth Guardians Weekly Feed   
+5592  4065886d-ce29-48d2-b8b3-9bc4195ba8b3  Earth Guardians Weekly Feed   
+5593  d35e6a68-ca70-42d2-beae-e6747d1138cf  Earth Guardians Weekly Feed   
+5594  47b6921d-3891-4e52-b1aa-9fbd57e76823  Earth Guardians Weekly Feed   
+5595  65fc1040-5675-4f6c-8c92-40f8de159bed  Earth Guardians Weekly Feed   
 
      occurrenceStatus  
 0             PRESENT  
@@ -660,13 +682,13 @@ Default is set to <code class="docutils literal notranslate"><span class="pre">&
 3             PRESENT  
 4             PRESENT  
 ...               ...  
-5053          PRESENT  
-5054          PRESENT  
-5055          PRESENT  
-5056          PRESENT  
-5057          PRESENT  
+5591          PRESENT  
+5592          PRESENT  
+5593          PRESENT  
+5594          PRESENT  
+5595          PRESENT  
 
-[5058 rows x 8 columns]
+[5596 rows x 8 columns]
 </pre></div>
 </div>
 <p>Download records of Vulpes vulpes in 2023, returning only <code class="docutils literal notranslate"><span class="pre">eventDate</span></code> field</p>
@@ -680,13 +702,13 @@ Default is set to <code class="docutils literal notranslate"><span class="pre">&
 3     2023-01-01T00:00:00Z
 4     2023-01-01T00:00:00Z
 ...                    ...
-5053  2023-12-17T00:00:00Z
-5054  2023-12-17T00:00:00Z
-5055  2023-12-17T00:00:00Z
-5056  2023-12-18T00:00:00Z
-5057  2023-12-18T00:00:00Z
+5591  2023-12-31T00:00:00Z
+5592  2023-12-31T00:00:00Z
+5593  2023-12-31T00:00:00Z
+5594  2023-12-31T03:01:00Z
+5595  2023-12-31T05:56:00Z
 
-[5058 rows x 1 columns]
+[5596 rows x 1 columns]
 </pre></div>
 </div>
 </dd></dl>
@@ -717,12 +739,12 @@ This function returns a <code class="docutils literal notranslate"><span class="
 <p class="rubric">Examples</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="n">galah</span><span class="o">.</span><span class="n">atlas_species</span><span class="p">(</span><span class="n">taxa</span><span class="o">=</span><span class="s2">&quot;Heleioporus&quot;</span><span class="p">)</span></span>
 </pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>                                             Species  \
-0  https://biodiversity.org.au/afd/taxa/cf991494-...   
-1  https://biodiversity.org.au/afd/taxa/20119b25-...   
-2  https://biodiversity.org.au/afd/taxa/c1d18a1e-...   
-3  https://biodiversity.org.au/afd/taxa/0efbf288-...   
-4  https://biodiversity.org.au/afd/taxa/c527388c-...   
-5  https://biodiversity.org.au/afd/taxa/16fcc761-...   
+0  https://biodiversity.org.au/afd/taxa/8bbafeb6-...   
+1  https://biodiversity.org.au/afd/taxa/894e0593-...   
+2  https://biodiversity.org.au/afd/taxa/7683b712-...   
+3  https://biodiversity.org.au/afd/taxa/dfae4fa3-...   
+4  https://biodiversity.org.au/afd/taxa/c77dbdfb-...   
+5  https://biodiversity.org.au/afd/taxa/d147024b-...   
 
                 Species Name Scientific Name Authorship Taxon Rank   Kingdom  \
 0          Heleioporus eyrei               (Gray, 1845)    species  Animalia   
@@ -745,7 +767,7 @@ This function returns a <code class="docutils literal notranslate"><span class="
 1  Giant Burrowing Frog  
 2  Western Spotted Frog  
 3             Sand Frog  
-4    Western Marsh Frog  
+4          Hooting Frog  
 5           Plains Frog
 </pre></div>
 </div>
@@ -845,7 +867,7 @@ types of information.</p>
 
                                               api_url  \
 0        https://collections.ala.org.au/ws/collection   
-1     https://bie-ws.ala.org.au/ws/childConcepts/{id}   
+1   https://api.ala.org.au/species/childConcepts/{id}   
 2                https://spatial.ala.org.au/ws/layers   
 3   https://biocache-ws.ala.org.au/ws/occurrences/...   
 4   https://biocache-ws.ala.org.au/ws/webportal/pa...   
@@ -854,8 +876,8 @@ types of information.</p>
 7   https://biocache-ws.ala.org.au/ws/occurrence/f...   
 8   https://biocache-ws.ala.org.au/ws/occurrences/...   
 9   https://biocache-ws.ala.org.au/ws/assertions/c...   
-10  https://namematching-ws.ala.org.au/api/search?...   
-11  https://namematching-ws.ala.org.au/api/searchB...   
+10  https://api.ala.org.au/namematching/api/search...   
+11  https://api.ala.org.au/namematching/api/search...   
 12   https://bie-ws.ala.org.au/ws/species/lookup/bulk   
 13  https://namematching-ws.ala.org.au/api/getByTa...   
 14  https://api.ala.org.au/logger/service/logger/r...   
@@ -946,8 +968,8 @@ clades) prior to downloading data.</p>
        phylum     order     family       genus              species  \
 0  Charophyta  Myrtales  Myrtaceae  Eucalyptus  Eucalyptus blakelyi   
 
-      vernacularName   issues  
-0  Blakely&#39;s Red Gum  noIssue
+         vernacularName   issues  
+0  White-budded Red-gum  noIssue
 </pre></div>
 </div>
 <p>Search taxonomic levels by using the key word “specificEpithet”</p>
@@ -975,7 +997,7 @@ clades) prior to downloading data.</p>
 
                                       taxonConceptID     rank   kingdom  \
 0  https://biodiversity.org.au/afd/taxa/e3103245-...  species  Animalia   
-0  https://biodiversity.org.au/afd/taxa/760401df-...  species  Animalia   
+0  https://biodiversity.org.au/afd/taxa/ae56080e-...  species  Animalia   
 
      phylum          order        family       genus              species  \
 0  Chordata  Passeriformes  Pardalotidae  Pardalotus  Pardalotus striatus   
@@ -1055,11 +1077,11 @@ displaying all valid options for the information specified.</p>
 3                                   &quot;P to Z&quot; flora EPBC   
 4     10 year trend of levels of organochlorine poll...   
 ...                                                 ...   
-3966  Zooplankton abundance in the Kerguelen Axis re...   
-3967  Zooplankton Abundance_Umbrella net_sea ice zon...   
-3968  Zooplankton samples from Heron net trawls alon...   
-3969  Zooplankton sampling in the coastal waters of ...   
-3970                         Zoos Victoria Moth Tracker   
+5923  Zooplankton abundance in the Kerguelen Axis re...   
+5924  Zooplankton Abundance_Umbrella net_sea ice zon...   
+5925  Zooplankton samples from Heron net trawls alon...   
+5926  Zooplankton sampling in the coastal waters of ...   
+5927                         Zoos Victoria Moth Tracker   
 
                                                     uri      uid  
 0     https://collections.ala.org.au/ws/dataResource...  dr23929  
@@ -1068,13 +1090,13 @@ displaying all valid options for the information specified.</p>
 3     https://collections.ala.org.au/ws/dataResource...  dr24173  
 4     https://collections.ala.org.au/ws/dataResource...  dr16247  
 ...                                                 ...      ...  
-3966  https://collections.ala.org.au/ws/dataResource...  dr16244  
-3967  https://collections.ala.org.au/ws/dataResource...  dr16265  
-3968  https://collections.ala.org.au/ws/dataResource...  dr23120  
-3969  https://collections.ala.org.au/ws/dataResource...  dr15943  
-3970  https://collections.ala.org.au/ws/dataResource...  dr22371  
+5923  https://collections.ala.org.au/ws/dataResource...  dr16244  
+5924  https://collections.ala.org.au/ws/dataResource...  dr16265  
+5925  https://collections.ala.org.au/ws/dataResource...  dr23120  
+5926  https://collections.ala.org.au/ws/dataResource...  dr15943  
+5927  https://collections.ala.org.au/ws/dataResource...  dr22371  
 
-[3971 rows x 3 columns]
+[5928 rows x 3 columns]
 </pre></div>
 </div>
 </dd></dl>
@@ -1119,11 +1141,10 @@ more about the information of interest. <code class="docutils literal notranslat
               
               
               
-                <footer class="bd-footer-article">
+              
+              
+                <footer class="prev-next-footer">
                   
-<div class="footer-article-items footer-article__inner">
-  
-    <div class="footer-article-item"><!-- Previous / next buttons -->
 <div class="prev-next-area">
     <a class="left-prev"
        href="../galah_user_guide/Temporal_Filtering.html"
@@ -1143,10 +1164,7 @@ more about the information of interest. <code class="docutils literal notranslat
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
-</div></div>
-  
 </div>
-
                 </footer>
               
             </div>
@@ -1155,11 +1173,14 @@ more about the information of interest. <code class="docutils literal notranslat
               
                 <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
+
   <div class="sidebar-secondary-item">
-  <div class="page-toc tocsection onthispage">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
     <i class="fa-solid fa-list"></i> On this page
   </div>
-  <nav class="bd-toc-nav page-toc">
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#galah.atlas_counts"><code class="docutils literal notranslate"><span class="pre">atlas_counts()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#galah.atlas_media"><code class="docutils literal notranslate"><span class="pre">atlas_media()</span></code></a></li>
@@ -1187,8 +1208,8 @@ more about the information of interest. <code class="docutils literal notranslat
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
-<script src="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+  <script src="../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae"></script>
 
   <footer class="bd-footer">
 <div class="bd-footer__inner bd-page-width">
@@ -1196,6 +1217,7 @@ more about the information of interest. <code class="docutils literal notranslat
     <div class="footer-items__start">
       
         <div class="footer-item">
+
   <p class="copyright">
     
       © Copyright Atlas of Living Australia.
@@ -1205,8 +1227,9 @@ more about the information of interest. <code class="docutils literal notranslat
 </div>
       
         <div class="footer-item">
+
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.5.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
     <br/>
   </p>
 </div>
@@ -1214,10 +1237,12 @@ more about the information of interest. <code class="docutils literal notranslat
     </div>
   
   
+  
     <div class="footer-items__end">
       
-        <div class="footer-item"><p class="theme-version">
-  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.13.3.
+        <div class="footer-item">
+<p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.15.2.
 </p></div>
       
     </div>

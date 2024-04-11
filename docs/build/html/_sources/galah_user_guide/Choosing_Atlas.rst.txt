@@ -15,7 +15,9 @@ At present, galah supports the following functions and atlases:
     * Brazil
     * France
     * GBIF
+    * Guatemala
     * Spain
+    * Sweden
 
 Set Organisation
 ----------------

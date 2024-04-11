@@ -2,13 +2,13 @@
 <!DOCTYPE html>
 
 
-<html lang="en" >
+<html lang="en" data-content_root="../" >
 
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Download Data &#8212; Galah 0.8.1 documentation</title>
+    <title>Download Data &#8212; Galah 0.8.3 documentation</title>
   
   
   
@@ -18,15 +18,15 @@
   </script>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
-<link href="../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
-<link href="../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link href="../_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
 
   
-  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+  <link href="../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="../_static/css/extra.css?v=bc76f7e5" />
@@ -34,10 +34,11 @@
     <link rel="stylesheet" type="text/css" href="../_static/css/extra.css?v=bc76f7e5" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
-<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
+  <script src="../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
 
-    <script src="../_static/documentation_options.js?v=65a547f8"></script>
+    <script src="../_static/documentation_options.js?v=7f96dc5e"></script>
     <script src="../_static/doctools.js?v=888ff710"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/design-tabs.js?v=36754332"></script>
@@ -56,7 +57,15 @@
 
   
   
-  <a class="skip-link" href="#main-content">Skip to main content</a>
+  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
   
   <input type="checkbox"
           class="sidebar-toggle"
@@ -91,15 +100,17 @@
 </form></div>
   </div>
   
-    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    <header class="bd-header navbar navbar-expand-lg bd-navbar">
 <div class="bd-header__inner bd-page-width">
   <label class="sidebar-toggle primary-toggle" for="__primary">
     <span class="fa-solid fa-bars"></span>
   </label>
   
-  <div class="navbar-header-items__start">
+  
+  <div class="col-lg-3 navbar-header-items__start">
     
       <div class="navbar-item">
+
   
 
 <a class="navbar-brand logo" href="../index.html">
@@ -107,31 +118,26 @@
   
   
   
+  
     
     
       
     
     
-    <img src="../_static/logo.png" class="logo__image only-light" alt="Logo image"/>
-    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Galah 0.8.3 documentation - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Galah 0.8.3 documentation - Home"/>`);</script>
   
   
 </a></div>
     
   </div>
   
-  
   <div class="col-lg-9 navbar-header-items">
     
     <div class="me-auto navbar-header-items__center">
       
-        <div class="navbar-item"><nav class="navbar-nav">
-  <p class="sidebar-header-items__title"
-     role="heading"
-     aria-level="1"
-     aria-label="Site Navigation">
-    Site Navigation
-  </p>
+        <div class="navbar-item">
+<nav class="navbar-nav">
   <ul class="bd-navbar-elements navbar-nav">
     
                     <li class="nav-item">
@@ -178,23 +184,27 @@
       
         <div class="navbar-item navbar-persistent--container">
           
-<script>
-document.write(`
-  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass"></i>
-  </button>
-`);
-</script>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
         </div>
       
       
         <div class="navbar-item">
+
 <script>
 document.write(`
-  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
-    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
-    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
   </button>
 `);
 </script></div>
@@ -210,8 +220,8 @@ document.write(`
           
           
           
-          <a href="https://github.com/AtlasOfLivingAustralia/galah_python" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-square-github"></i></span>
-            <label class="sr-only">GitHub</label></a>
+          <a href="https://github.com/AtlasOfLivingAustralia/galah_python" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i></span>
+            <span class="sr-only">GitHub</span></a>
         </li>
 </ul></div>
       
@@ -221,27 +231,33 @@ document.write(`
   
   
     <div class="navbar-persistent--mobile">
-<script>
-document.write(`
-  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass"></i>
-  </button>
-`);
-</script>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
     </div>
   
 
   
-    <label class="sidebar-toggle secondary-toggle" for="__secondary">
+    <label class="sidebar-toggle secondary-toggle" for="__secondary" tabindex="0">
       <span class="fa-solid fa-outdent"></span>
     </label>
   
 </div>
 
-    </nav>
+    </header>
   
+
   <div class="bd-container">
     <div class="bd-container__inner bd-page-width">
+      
+      
       
       <div class="bd-sidebar-primary bd-sidebar">
         
@@ -252,13 +268,8 @@ document.write(`
     
       <div class="sidebar-header-items__center">
         
-          <div class="navbar-item"><nav class="navbar-nav">
-  <p class="sidebar-header-items__title"
-     role="heading"
-     aria-level="1"
-     aria-label="Site Navigation">
-    Site Navigation
-  </p>
+          <div class="navbar-item">
+<nav class="navbar-nav">
   <ul class="bd-navbar-elements navbar-nav">
     
                     <li class="nav-item">
@@ -305,12 +316,13 @@ document.write(`
       <div class="sidebar-header-items__end">
         
           <div class="navbar-item">
+
 <script>
 document.write(`
-  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
-    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
-    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
   </button>
 `);
 </script></div>
@@ -326,8 +338,8 @@ document.write(`
           
           
           
-          <a href="https://github.com/AtlasOfLivingAustralia/galah_python" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-square-github"></i></span>
-            <label class="sr-only">GitHub</label></a>
+          <a href="https://github.com/AtlasOfLivingAustralia/galah_python" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i></span>
+            <span class="sr-only">GitHub</span></a>
         </li>
 </ul></div>
         
@@ -336,7 +348,8 @@ document.write(`
   </div>
   
     <div class="sidebar-primary-items__start sidebar-primary__section">
-        <div class="sidebar-primary-item"><nav class="bd-docs-nav bd-links"
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
      aria-label="Section Navigation">
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
   <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
@@ -382,8 +395,8 @@ document.write(`
 
 
 
-<nav aria-label="Breadcrumbs">
-  <ul class="bd-breadcrumbs" role="navigation" aria-label="Breadcrumb">
+<nav aria-label="Breadcrumb">
+  <ul class="bd-breadcrumbs">
     
     <li class="breadcrumb-item breadcrumb-home">
       <a href="../index.html" class="nav-link" aria-label="Home">
@@ -411,7 +424,7 @@ document.write(`
               
                 
 <div id="searchbox"></div>
-                <article class="bd-article" role="main">
+                <article class="bd-article">
                   
   <section id="download-data">
 <span id="id1"></span><h1>Download Data<a class="headerlink" href="#download-data" title="Link to this heading">#</a></h1>
@@ -434,24 +447,25 @@ span.prompt1:before {
 </style><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">galah_config</span><span class="p">(</span><span class="n">atlas</span><span class="o">=</span><span class="s2">&quot;Australia&quot;</span><span class="p">)</span></span>
 <span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">atlas_counts</span><span class="p">()</span></span>
 </pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>   totalRecords
-0     132396926
+0     133620113
 </pre></div>
 </div>
 <p>In addition to <code class="docutils literal notranslate"><span class="pre">filters</span></code> arguments, <code class="docutils literal notranslate"><span class="pre">galah.atlas_counts()</span></code> has an optional <code class="docutils literal notranslate"><span class="pre">group_by</span></code> argument, which provides counts grouped
 by the requested field.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">atlas_counts</span><span class="p">(</span><span class="n">group_by</span><span class="o">=</span><span class="s2">&quot;kingdom&quot;</span><span class="p">)</span></span>
-</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>      kingdom      count
-0    Animalia  101472211
-1     Archaea       4119
-2    Bacteria     113127
-3   Chromista    1022880
-4   Eukaryota       8826
-5       Fungi    2296609
-6     Plantae   26157140
-7    Protista     353316
-8    Protozoa       4769
-9      Viroid        103
-10      Virus       2308
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>          kingdom      count
+0        Animalia  102150407
+1         Archaea       4119
+2        Bacteria     113089
+3    Bamfordvirae        205
+4       Chromista    1049592
+5           Fungi    2343762
+6   Orthornavirae        153
+7         Plantae   26455372
+8        Protista     311457
+9    Shotokuvirae         39
+10         Viroid        104
+11          Virus       2319
 </pre></div>
 </div>
 </section>
@@ -462,49 +476,50 @@ or taxonomic group. <code class="docutils literal notranslate"><span class="pre"
 unique identifiers in a dataframe. It differs in not being able to return information on taxonomic levels other
 than the species; but also in being more flexible by supporting filtering:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">atlas_species</span><span class="p">(</span><span class="n">taxa</span><span class="o">=</span><span class="s2">&quot;Rodentia&quot;</span><span class="p">,</span><span class="n">filters</span><span class="o">=</span><span class="s2">&quot;stateProvince=Northern Territory&quot;</span><span class="p">)</span></span>
-</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>                                                                      Species                 Species Name   Scientific Name Authorship Taxon Rank   Kingdom    Phylum     Class     Order   Family         Genus             Vernacular Name
-0   https://biodiversity.org.au/afd/taxa/de366bd1-f4d4-4904-a1a9-11a452ec812c        Pseudomys delicatulus                (Gould, 1842)    species  Animalia  Chordata  Mammalia  Rodentia  Muridae     Pseudomys              Delicate Mouse
-1   https://biodiversity.org.au/afd/taxa/f38bcd7e-ae6a-4734-bd64-06995bc230eb         Mesembriomys gouldii            (J.E. Gray, 1843)    species  Animalia  Chordata  Mammalia  Rodentia  Muridae  Mesembriomys       Black-footed Tree-rat
-2   https://biodiversity.org.au/afd/taxa/46611113-a1e3-45b1-b58c-7aef088a9da7              Zyzomys argurus               (Thomas, 1889)    species  Animalia  Chordata  Mammalia  Rodentia  Muridae       Zyzomys             Common Rock-rat
-3   https://biodiversity.org.au/afd/taxa/5d73fc2f-3caa-4b44-aa40-3711e8304f80  Pseudomys hermannsburgensis                (Waite, 1896)    species  Animalia  Chordata  Mammalia  Rodentia  Muridae     Pseudomys          Sandy Inland Mouse
-4   https://biodiversity.org.au/afd/taxa/89dfa41e-2c5a-44d1-80bf-8d4cd3c73089              Melomys burtoni               (Ramsay, 1887)    species  Animalia  Chordata  Mammalia  Rodentia  Muridae       Melomys           Grassland Melomys
-5   https://biodiversity.org.au/afd/taxa/49001532-929e-4b78-97d3-c885e97d671b               Notomys alexis                 Thomas, 1922    species  Animalia  Chordata  Mammalia  Rodentia  Muridae       Notomys      Spinifex Hopping-mouse
-6   https://biodiversity.org.au/afd/taxa/107696b5-063c-4c09-a015-6edfdb6f4d52                 Mus musculus               Linnaeus, 1758    species  Animalia  Chordata  Mammalia  Rodentia  Muridae           Mus                 House Mouse
-7   https://biodiversity.org.au/afd/taxa/f2453962-1dcf-49f4-944a-dbad66765ca7       Conilurus penicillatus                (Gould, 1842)    species  Animalia  Chordata  Mammalia  Rodentia  Muridae     Conilurus     Brush-tailed Rabbit-rat
-8   https://biodiversity.org.au/afd/taxa/ee8f37fd-7222-411a-bb00-c121dd894db1               Rattus tunneyi               (Thomas, 1904)    species  Animalia  Chordata  Mammalia  Rodentia  Muridae        Rattus              Pale Field-rat
-9   https://biodiversity.org.au/afd/taxa/178a17ff-2135-48e8-856b-39f546f02092                Rattus rattus             (Linnaeus, 1758)    species  Animalia  Chordata  Mammalia  Rodentia  Muridae        Rattus                   Black Rat
-10  https://biodiversity.org.au/afd/taxa/bc623514-ce79-4ba8-bb9c-41cb5767dcc1         Rattus villosissimus                (Waite, 1898)    species  Animalia  Chordata  Mammalia  Rodentia  Muridae        Rattus             Long-haired Rat
-11  https://biodiversity.org.au/afd/taxa/63adcf86-8158-462f-a6f6-6e37456360e2           Pseudomys desertor              Troughton, 1932    species  Animalia  Chordata  Mammalia  Rodentia  Muridae     Pseudomys                Desert Mouse
-12  https://biodiversity.org.au/afd/taxa/2d870345-42d8-45df-b0ee-29f520809b12              Pseudomys nanus                (Gould, 1858)    species  Animalia  Chordata  Mammalia  Rodentia  Muridae     Pseudomys      Western Chestnut Mouse
-13  https://biodiversity.org.au/afd/taxa/a16db23d-322a-4d15-9200-f28fa8ab9c89              Rattus colletti               (Thomas, 1904)    species  Animalia  Chordata  Mammalia  Rodentia  Muridae        Rattus                   Dusky Rat
-14  https://biodiversity.org.au/afd/taxa/3f638397-38b9-4bca-85f1-0c98430fdef4                Zyzomys maini              Kitchener, 1989    species  Animalia  Chordata  Mammalia  Rodentia  Muridae       Zyzomys             Arnhem Rock-rat
-15  https://biodiversity.org.au/afd/taxa/54aa72cc-525b-4134-bf48-d9de4d905fa5            Zyzomys palatalis              Kitchener, 1989    species  Animalia  Chordata  Mammalia  Rodentia  Muridae       Zyzomys       Carpentarian Rock-rat
-16  https://biodiversity.org.au/afd/taxa/642a7a82-363b-4775-b165-1d93e0ef2d9b      Leggadina lakedownensis                  Watts, 1976    species  Animalia  Chordata  Mammalia  Rodentia  Muridae     Leggadina                   Kerakenga
-17  https://biodiversity.org.au/afd/taxa/87497f45-a52b-4ee2-9472-8566cfdce22a          Pseudomys australis              J.E. Gray, 1832    species  Animalia  Chordata  Mammalia  Rodentia  Muridae     Pseudomys                  Plains Rat
-18  https://biodiversity.org.au/afd/taxa/9baa55f2-69c1-486c-91f7-f96e58b7c945        Hydromys chrysogaster               Geoffroy, 1804    species  Animalia  Chordata  Mammalia  Rodentia  Muridae      Hydromys                      Rakali
-19  https://biodiversity.org.au/afd/taxa/33ab483d-5bec-45a4-857a-f0a1bbd36bfe         Zyzomys pedunculatus                (Waite, 1896)    species  Animalia  Chordata  Mammalia  Rodentia  Muridae       Zyzomys            Central Rock-rat
-20  https://biodiversity.org.au/afd/taxa/9e4c1a0a-057b-414c-848e-0659b0181d46           Leggadina forresti               (Thomas, 1906)    species  Animalia  Chordata  Mammalia  Rodentia  Muridae     Leggadina             Forrest&#39;s Mouse
-21  https://biodiversity.org.au/afd/taxa/cf17f3c1-672d-4be3-be00-a1d6f332678e           Pseudomys johnsoni              Kitchener, 1985    species  Animalia  Chordata  Mammalia  Rodentia  Muridae     Pseudomys  Central Pebble-mound Mouse
-22  https://biodiversity.org.au/afd/taxa/acc6935d-b55f-43b6-b51c-64c89957277e            Pseudomys calabyi  Kitchener &amp; Humphreys, 1987    species  Animalia  Chordata  Mammalia  Rodentia  Muridae     Pseudomys   Kakadu Pebble-mound Mouse
-23  https://biodiversity.org.au/afd/taxa/6ac36ddd-54f5-4ab4-9ad4-1a5405307c26               Notomys aquilo                 Thomas, 1921    species  Animalia  Chordata  Mammalia  Rodentia  Muridae       Notomys      Northern Hopping-mouse
-24  https://biodiversity.org.au/afd/taxa/b90c3bf4-a12a-4123-9ae6-d798cb716380        Notomys longicaudatus                (Gould, 1844)    species  Animalia  Chordata  Mammalia  Rodentia  Muridae       Notomys   Long-tailed Hopping-mouse
-25  https://biodiversity.org.au/afd/taxa/5ac0db97-0266-442f-86b3-f21c3f98f58a          Leporillus apicalis                (Gould, 1853)    species  Animalia  Chordata  Mammalia  Rodentia  Muridae    Leporillus       Lesser Stick-nest Rat
-26  https://biodiversity.org.au/afd/taxa/a84b9233-458d-41ca-ace8-b77fbe9753ef               Notomys amplus               Brazenor, 1936    species  Animalia  Chordata  Mammalia  Rodentia  Muridae       Notomys  Short-tailed Hopping-mouse
-27  https://biodiversity.org.au/afd/taxa/1b91de2d-8394-4dd0-b3f0-48ca06fea2d6             Notomys cervinus                (Gould, 1853)    species  Animalia  Chordata  Mammalia  Rodentia  Muridae       Notomys          Fawn Hopping-mouse
-28  https://biodiversity.org.au/afd/taxa/5eff1656-0bd8-481a-8dbb-b10968c0fbf9              Rattus sordidus                (Gould, 1858)    species  Animalia  Chordata  Mammalia  Rodentia  Muridae        Rattus               Canefield Rat
-29  https://biodiversity.org.au/afd/taxa/dbb2125e-bf71-4388-b129-562e4d7a8eb4               Notomys fuscus                (Jones, 1925)    species  Animalia  Chordata  Mammalia  Rodentia  Muridae       Notomys         Dusky Hopping-mouse
-30  https://biodiversity.org.au/afd/taxa/9cfd14c5-9ead-491a-ae5a-5141f5253401              Xeromys myoides                 Thomas, 1889    species  Animalia  Chordata  Mammalia  Rodentia  Muridae       Xeromys                 Water Mouse
-31  https://biodiversity.org.au/afd/taxa/8884b130-b6cb-4b2e-87ed-98367734f02d        Mesembriomys macrurus               (Peters, 1876)    species  Animalia  Chordata  Mammalia  Rodentia  Muridae  Mesembriomys      Golden-backed Tree-rat
-32  https://biodiversity.org.au/afd/taxa/c0f62baa-5df3-4383-a96b-16162e72d1a1            Rattus norvegicus           (Berkenhout, 1769)    species  Animalia  Chordata  Mammalia  Rodentia  Muridae        Rattus                   Brown Rat
-33  https://biodiversity.org.au/afd/taxa/e570a40a-15fb-40d4-9429-c2a9417249b3           Notomys mitchellii               (Ogilby, 1838)    species  Animalia  Chordata  Mammalia  Rodentia  Muridae       Notomys    Mitchell&#39;s Hopping-mouse
-34  https://biodiversity.org.au/afd/taxa/8ca9a58d-df94-4706-99a2-bf18279734ac           Melomys cervinipes                (Gould, 1852)    species  Animalia  Chordata  Mammalia  Rodentia  Muridae       Melomys         Fawn-footed Melomys
-35  https://biodiversity.org.au/afd/taxa/427dae95-2031-4c6f-aea6-311d269f7309              Rattus leucopus            (J.E. Gray, 1867)    species  Animalia  Chordata  Mammalia  Rodentia  Muridae        Rattus               Cape York Rat
-36  https://biodiversity.org.au/afd/taxa/edcf01fa-7b87-4bfe-b8ae-8b1a4b08f777             Pseudomys fieldi                (Waite, 1896)    species  Animalia  Chordata  Mammalia  Rodentia  Muridae     Pseudomys             Shark Bay Mouse
-37  https://biodiversity.org.au/afd/taxa/037a578c-4009-476a-8816-95f16867ae6f            Zyzomys woodwardi               (Thomas, 1909)    species  Animalia  Chordata  Mammalia  Rodentia  Muridae       Zyzomys          Kimberley Rock-rat
-38  https://biodiversity.org.au/afd/taxa/9299c88b-7f51-421e-bfe0-06121ba5f21c       Pseudomys occidentalis                   Tate, 1951    species  Animalia  Chordata  Mammalia  Rodentia  Muridae     Pseudomys               Western Mouse
-39  https://biodiversity.org.au/afd/taxa/12dfa510-d908-467e-8a53-ab94eace6535    Pseudomys gracilicaudatus                (Gould, 1845)    species  Animalia  Chordata  Mammalia  Rodentia  Muridae     Pseudomys      Eastern Chestnut Mouse
-40  https://biodiversity.org.au/afd/taxa/88caff5d-1b7a-4d1d-93a0-cd4e4ec1148c        Uromys caudimaculatus               (Krefft, 1867)    species  Animalia  Chordata  Mammalia  Rodentia  Muridae        Uromys         White-tailed Uromys
-41  https://biodiversity.org.au/afd/taxa/a2923e80-ee6c-49a2-b923-8e4905f4d174             Rattus lutreolus            (J.E. Gray, 1841)    species  Animalia  Chordata  Mammalia  Rodentia  Muridae        Rattus                   Swamp Rat
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>                                                                      Species                 Species Name   Scientific Name Authorship Taxon Rank   Kingdom    Phylum     Class     Order    Family         Genus              Vernacular Name
+0   https://biodiversity.org.au/afd/taxa/a6a91fbd-77f4-4440-ba66-7d043f27a297        Pseudomys delicatulus                (Gould, 1842)    species  Animalia  Chordata  Mammalia  Rodentia   Muridae     Pseudomys               Delicate Mouse
+1   https://biodiversity.org.au/afd/taxa/d3d03db1-3305-4f09-9f3f-64d8c512ee8c         Mesembriomys gouldii            (J.E. Gray, 1843)    species  Animalia  Chordata  Mammalia  Rodentia   Muridae  Mesembriomys        Black-footed Tree-rat
+2   https://biodiversity.org.au/afd/taxa/936ee591-1e1a-4f9e-934e-4bc174c54414              Zyzomys argurus               (Thomas, 1889)    species  Animalia  Chordata  Mammalia  Rodentia   Muridae       Zyzomys              Common Rock-rat
+3   https://biodiversity.org.au/afd/taxa/635a8ab7-774e-4676-9e75-8dc31333cab1  Pseudomys hermannsburgensis                (Waite, 1896)    species  Animalia  Chordata  Mammalia  Rodentia   Muridae     Pseudomys           Sandy Inland Mouse
+4   https://biodiversity.org.au/afd/taxa/20ca6a48-09d2-4f05-ba8e-bbae4fa40175              Melomys burtoni               (Ramsay, 1887)    species  Animalia  Chordata  Mammalia  Rodentia   Muridae       Melomys            Grassland Melomys
+5   https://biodiversity.org.au/afd/taxa/53115180-4024-4d50-baf7-edc4556b89f7               Notomys alexis                 Thomas, 1922    species  Animalia  Chordata  Mammalia  Rodentia   Muridae       Notomys       Spinifex Hopping-mouse
+6   https://biodiversity.org.au/afd/taxa/952ae705-57e2-43d1-9a06-b35498202469                 Mus musculus               Linnaeus, 1758    species  Animalia  Chordata  Mammalia  Rodentia   Muridae           Mus                  House Mouse
+7   https://biodiversity.org.au/afd/taxa/6a01d711-2ac6-4928-bab4-a1de1a58e995       Conilurus penicillatus                (Gould, 1842)    species  Animalia  Chordata  Mammalia  Rodentia   Muridae     Conilurus        Brush-tailed Tree-rat
+8   https://biodiversity.org.au/afd/taxa/ffcb9f84-c70f-4bc3-af9d-4f37a5a07e3f               Rattus tunneyi               (Thomas, 1904)    species  Animalia  Chordata  Mammalia  Rodentia   Muridae        Rattus               Pale Field-rat
+9   https://biodiversity.org.au/afd/taxa/c1817333-9c62-4a05-af03-fe5fb9c9a0ce                Rattus rattus             (Linnaeus, 1758)    species  Animalia  Chordata  Mammalia  Rodentia   Muridae        Rattus                    Black Rat
+10  https://biodiversity.org.au/afd/taxa/cbaf1515-df15-49ec-be06-36058183644b         Rattus villosissimus                (Waite, 1898)    species  Animalia  Chordata  Mammalia  Rodentia   Muridae        Rattus              Long-haired Rat
+11  https://biodiversity.org.au/afd/taxa/1c2e0a49-5530-48a2-83f3-2d853c89ab03           Pseudomys desertor              Troughton, 1932    species  Animalia  Chordata  Mammalia  Rodentia   Muridae     Pseudomys                 Desert Mouse
+12  https://biodiversity.org.au/afd/taxa/eb140ad3-776d-4294-bd33-6464097bfff3              Pseudomys nanus                (Gould, 1858)    species  Animalia  Chordata  Mammalia  Rodentia   Muridae     Pseudomys       Western Chestnut Mouse
+13  https://biodiversity.org.au/afd/taxa/da75e4fd-b02b-4f5c-9f7c-e835633b18a2              Rattus colletti               (Thomas, 1904)    species  Animalia  Chordata  Mammalia  Rodentia   Muridae        Rattus                    Dusky Rat
+14  https://biodiversity.org.au/afd/taxa/d02be481-91a1-4b33-a7a5-0e73f995c71c                Zyzomys maini              Kitchener, 1989    species  Animalia  Chordata  Mammalia  Rodentia   Muridae       Zyzomys         Arnhem Land Rock-rat
+15  https://biodiversity.org.au/afd/taxa/25ad81dd-0bd0-4fe5-94d7-1ec605bbf8b0            Zyzomys palatalis              Kitchener, 1989    species  Animalia  Chordata  Mammalia  Rodentia   Muridae       Zyzomys        Carpentarian Rock-rat
+16  https://biodiversity.org.au/afd/taxa/5e54144e-c15e-4906-a20c-ab076696c35c      Leggadina lakedownensis                  Watts, 1976    species  Animalia  Chordata  Mammalia  Rodentia   Muridae     Leggadina         Lakeland Downs Mouse
+17  https://biodiversity.org.au/afd/taxa/298a7b7a-96c0-4b48-8746-ea9ad8590fe5          Pseudomys australis              J.E. Gray, 1832    species  Animalia  Chordata  Mammalia  Rodentia   Muridae     Pseudomys                   Plains Rat
+18  https://biodiversity.org.au/afd/taxa/2843e4d8-931a-41f0-875e-f6756f44088f        Hydromys chrysogaster               Geoffroy, 1804    species  Animalia  Chordata  Mammalia  Rodentia   Muridae      Hydromys                    Water-rat
+19  https://biodiversity.org.au/afd/taxa/dd6aca04-8169-46e4-955b-06cbe831efdf         Zyzomys pedunculatus                (Waite, 1896)    species  Animalia  Chordata  Mammalia  Rodentia   Muridae       Zyzomys             Central Rock-rat
+20  https://biodiversity.org.au/afd/taxa/e56ebe66-5dbd-4b63-b8fc-95b67ac9411a           Leggadina forresti               (Thomas, 1906)    species  Animalia  Chordata  Mammalia  Rodentia   Muridae     Leggadina              Forrest&#39;s Mouse
+21  https://biodiversity.org.au/afd/taxa/43ef1334-3aba-483f-ba1f-c0407e3cc847           Pseudomys johnsoni              Kitchener, 1985    species  Animalia  Chordata  Mammalia  Rodentia   Muridae     Pseudomys   Central Pebble-mound Mouse
+22  https://biodiversity.org.au/afd/taxa/39ea6204-ab1b-469e-b107-b64d24c4903f            Pseudomys calabyi  Kitchener &amp; Humphreys, 1987    species  Animalia  Chordata  Mammalia  Rodentia   Muridae     Pseudomys    Kakadu Pebble-mound Mouse
+23  https://biodiversity.org.au/afd/taxa/ac8c37b1-2543-4bc2-b55d-b97cbbefefbf               Notomys aquilo                 Thomas, 1921    species  Animalia  Chordata  Mammalia  Rodentia   Muridae       Notomys       Northern Hopping-mouse
+24  https://biodiversity.org.au/afd/taxa/327e0ec3-8efa-43c5-9bc9-867d3082ed88        Notomys longicaudatus                (Gould, 1844)    species  Animalia  Chordata  Mammalia  Rodentia   Muridae       Notomys    Long-tailed Hopping-mouse
+25  https://biodiversity.org.au/afd/taxa/61403a2b-8537-46e1-91cf-672d02be62b3          Leporillus apicalis                (Gould, 1853)    species  Animalia  Chordata  Mammalia  Rodentia   Muridae    Leporillus        Lesser Stick-nest Rat
+26  https://biodiversity.org.au/afd/taxa/3a840ca2-936e-4075-a622-f0d628bace31               Notomys amplus               Brazenor, 1936    species  Animalia  Chordata  Mammalia  Rodentia   Muridae       Notomys   Short-tailed Hopping-mouse
+27  https://biodiversity.org.au/afd/taxa/1745e7b1-6f91-47a9-baf4-c56f0643cb05             Notomys cervinus                (Gould, 1853)    species  Animalia  Chordata  Mammalia  Rodentia   Muridae       Notomys           Fawn Hopping-mouse
+28  https://biodiversity.org.au/afd/taxa/958ed049-9bca-4c65-a720-9e16e1b7434c              Rattus sordidus                (Gould, 1858)    species  Animalia  Chordata  Mammalia  Rodentia   Muridae        Rattus                Canefield Rat
+29  https://biodiversity.org.au/afd/taxa/e169b779-e4e4-411f-95e0-b21d4b4c6060               Notomys fuscus                (Jones, 1925)    species  Animalia  Chordata  Mammalia  Rodentia   Muridae       Notomys          Dusky Hopping-mouse
+30  https://biodiversity.org.au/afd/taxa/0553a58d-450b-455a-8844-62d5e5d14774              Xeromys myoides                 Thomas, 1889    species  Animalia  Chordata  Mammalia  Rodentia   Muridae       Xeromys              False Water-rat
+31  https://biodiversity.org.au/afd/taxa/15e09f34-5033-424e-a37c-d6bb55f30b26            Rattus norvegicus           (Berkenhout, 1769)    species  Animalia  Chordata  Mammalia  Rodentia   Muridae        Rattus                    Brown Rat
+32  https://biodiversity.org.au/afd/taxa/1d179abb-b688-4242-989f-9a1a6d90f0b4        Mesembriomys macrurus               (Peters, 1876)    species  Animalia  Chordata  Mammalia  Rodentia   Muridae  Mesembriomys       Golden-backed Tree-rat
+33  https://biodiversity.org.au/afd/taxa/54222852-0af1-4e1f-b45b-175ed441d015           Notomys mitchellii               (Ogilby, 1838)    species  Animalia  Chordata  Mammalia  Rodentia   Muridae       Notomys     Mitchell&#39;s Hopping-mouse
+34  https://biodiversity.org.au/afd/taxa/d9528b07-2a62-4120-b946-edab67821b44           Melomys cervinipes                (Gould, 1852)    species  Animalia  Chordata  Mammalia  Rodentia   Muridae       Melomys          Fawn-footed Melomys
+35  https://biodiversity.org.au/afd/taxa/288dcc0f-822d-43e4-b31d-82edd9b11f00            Pseudomys gouldii           (Waterhouse, 1839)    species  Animalia  Chordata  Mammalia  Rodentia   Muridae     Pseudomys  Shark Bay Mouse (djoongari)
+36  https://biodiversity.org.au/afd/taxa/3ca6b7e9-9862-48ac-b457-0e705dda1c75              Rattus leucopus            (J.E. Gray, 1867)    species  Animalia  Chordata  Mammalia  Rodentia   Muridae        Rattus                Cape York Rat
+37  https://biodiversity.org.au/afd/taxa/dcf73c10-5e05-4b59-9d4e-2682ef369e5e            Zyzomys woodwardi               (Thomas, 1909)    species  Animalia  Chordata  Mammalia  Rodentia   Muridae       Zyzomys           Kimberley Rock-rat
+38                                                            ALA_DR24112_241              Cavia porcellus                          NaN    species  Animalia  Chordata  Mammalia  Rodentia  Caviidae         Cavia                      Animals
+39  https://biodiversity.org.au/afd/taxa/6983ebaa-1c9d-4b4d-a0fa-8c673d0248ef       Pseudomys occidentalis                   Tate, 1951    species  Animalia  Chordata  Mammalia  Rodentia   Muridae     Pseudomys                Western Mouse
+40  https://biodiversity.org.au/afd/taxa/2910ea05-7539-434c-bcc8-ca48d038b82b             Rattus lutreolus            (J.E. Gray, 1841)    species  Animalia  Chordata  Mammalia  Rodentia   Muridae        Rattus                    Swamp Rat
+41  https://biodiversity.org.au/afd/taxa/9a9f3fa9-ca3b-4a15-b25b-d291c9f504b5        Uromys caudimaculatus               (Krefft, 1867)    species  Animalia  Chordata  Mammalia  Rodentia   Muridae        Uromys       Giant White-tailed Rat
+42  https://biodiversity.org.au/afd/taxa/9f22993a-86b0-4003-9df4-4565d66de008    Pseudomys gracilicaudatus                (Gould, 1845)    species  Animalia  Chordata  Mammalia  Rodentia   Muridae     Pseudomys       Eastern Chestnut Mouse
 </pre></div>
 </div>
 </section>
@@ -516,19 +531,19 @@ associated with an active account on your chosen atlas. See more information in 
 </pre></div></div><p>After specifying your email, you can download occurrence records of, for example, Eolophus roseicapilla:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">atlas_occurrences</span><span class="p">(</span><span class="n">taxa</span><span class="o">=</span><span class="s2">&quot;Eolophus roseicapilla&quot;</span><span class="p">,</span><span class="n">filters</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;stateProvince=Australian Capital Territory&quot;</span><span class="p">,</span><span class="s2">&quot;year&gt;=2010&quot;</span><span class="p">],</span><span class="n">fields</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;institutionID&quot;</span><span class="p">,</span><span class="s2">&quot;basic&quot;</span><span class="p">])</span></span>
 </pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>      institutionID  decimalLatitude  decimalLongitude             eventDate         scientificName                                                             taxonConceptID                              recordID                   dataResourceName occurrenceStatus
-0               NaN       -35.262050        149.068500  2014-01-01T00:00:00Z  Eolophus roseicapilla  https://biodiversity.org.au/afd/taxa/9b4ad548-8bb3-486a-ab0a-905506c463ea  01281bad-0c62-4eea-94cd-e49f432e0338                    eBird Australia          PRESENT
-1               NaN       -35.334440        149.163860  2018-05-05T07:00:00Z  Eolophus roseicapilla  https://biodiversity.org.au/afd/taxa/9b4ad548-8bb3-486a-ab0a-905506c463ea  2388082e-6f15-4c2c-b4a5-74b2a9f00d0e                    eBird Australia          PRESENT
-2               NaN       -35.317036        149.079250  2021-11-30T14:36:00Z  Eolophus roseicapilla  https://biodiversity.org.au/afd/taxa/9b4ad548-8bb3-486a-ab0a-905506c463ea  91aef7be-874b-4299-8314-990a4f57d982                    eBird Australia          PRESENT
-3               NaN       -35.247303        148.958434  2020-08-30T09:24:00Z  Eolophus roseicapilla  https://biodiversity.org.au/afd/taxa/9b4ad548-8bb3-486a-ab0a-905506c463ea  80bd6980-a843-454d-828f-512c88497863                    eBird Australia          PRESENT
-4               NaN       -35.398128        149.117480  2014-12-21T17:50:00Z  Eolophus roseicapilla  https://biodiversity.org.au/afd/taxa/9b4ad548-8bb3-486a-ab0a-905506c463ea  777ed579-fb95-4f52-9542-d99d7574e512                    eBird Australia          PRESENT
+0               NaN       -35.232280        149.156280  2021-02-18T18:02:00Z  Eolophus roseicapilla  https://biodiversity.org.au/afd/taxa/9b4ad548-8bb3-486a-ab0a-905506c463ea  7cf7130d-1812-459b-9251-f4478075387f                    eBird Australia          PRESENT
+1               NaN       -35.160920        149.107570  2022-03-19T06:57:00Z  Eolophus roseicapilla  https://biodiversity.org.au/afd/taxa/9b4ad548-8bb3-486a-ab0a-905506c463ea  bbd8621b-ad09-4b88-a7b6-7c28de76b580                    eBird Australia          PRESENT
+2               NaN       -35.227600        149.143790  2015-10-29T15:33:00Z  Eolophus roseicapilla  https://biodiversity.org.au/afd/taxa/9b4ad548-8bb3-486a-ab0a-905506c463ea  98f928b4-e375-4a44-8854-a6313337fd7f                    eBird Australia          PRESENT
+3               NaN       -35.280710        149.148940  2021-01-07T15:30:00Z  Eolophus roseicapilla  https://biodiversity.org.au/afd/taxa/9b4ad548-8bb3-486a-ab0a-905506c463ea  eea0d468-18d2-498d-8f65-695b2416f0fc                    eBird Australia          PRESENT
+4               NaN       -35.340917        149.028600  2012-10-02T00:00:00Z  Eolophus roseicapilla  https://biodiversity.org.au/afd/taxa/9b4ad548-8bb3-486a-ab0a-905506c463ea  e0959b51-5bb3-4e1c-a421-6444b91f3e96                Garden Bird Surveys          PRESENT
 ...             ...              ...               ...                   ...                    ...                                                                        ...                                   ...                                ...              ...
-86444           NaN       -35.452210        149.107350  2022-08-07T11:34:00Z  Eolophus roseicapilla  https://biodiversity.org.au/afd/taxa/9b4ad548-8bb3-486a-ab0a-905506c463ea  d6d91baa-b5ff-4db6-8635-ccb0111028be                    eBird Australia          PRESENT
-86445           NaN       -35.452210        149.107350  2021-07-10T08:19:00Z  Eolophus roseicapilla  https://biodiversity.org.au/afd/taxa/9b4ad548-8bb3-486a-ab0a-905506c463ea  62e00fc3-31bf-4bda-ad76-a9d74764b5fd                    eBird Australia          PRESENT
-86446        in1033       -35.226993        149.020481  2017-06-25T14:00:00Z  Eolophus roseicapilla  https://biodiversity.org.au/afd/taxa/9b4ad548-8bb3-486a-ab0a-905506c463ea  32735c4a-bb78-4ffe-b7c1-7a7b7cc599ce  ALA species sightings and OzAtlas          PRESENT
-86447        in1033       -35.276619        149.112914  2017-07-25T21:34:37Z  Eolophus roseicapilla  https://biodiversity.org.au/afd/taxa/9b4ad548-8bb3-486a-ab0a-905506c463ea  150d3252-111e-41ec-ab32-7f0567ac0330  ALA species sightings and OzAtlas          PRESENT
-86448        in1033       -35.160122        149.140961  2018-07-05T06:30:46Z  Eolophus roseicapilla  https://biodiversity.org.au/afd/taxa/9b4ad548-8bb3-486a-ab0a-905506c463ea  59d49f01-33d2-46e2-92cb-f4c5f9ecd4fa  ALA species sightings and OzAtlas          PRESENT
+86514           NaN       -35.228062        149.071945  2013-01-07T00:00:00Z  Eolophus roseicapilla  https://biodiversity.org.au/afd/taxa/9b4ad548-8bb3-486a-ab0a-905506c463ea  8b762308-cc9c-453a-aaab-a73ca3accfbf        BirdLife Australia, Birdata          PRESENT
+86515           NaN       -35.154449        149.161964  2022-10-03T16:43:00Z  Eolophus roseicapilla  https://biodiversity.org.au/afd/taxa/9b4ad548-8bb3-486a-ab0a-905506c463ea  c634eee5-9cbc-4e86-926f-cb4db5434767                    eBird Australia          PRESENT
+86516        in1033       -35.226993        149.020481  2017-06-25T14:00:00Z  Eolophus roseicapilla  https://biodiversity.org.au/afd/taxa/9b4ad548-8bb3-486a-ab0a-905506c463ea  32735c4a-bb78-4ffe-b7c1-7a7b7cc599ce  ALA species sightings and OzAtlas          PRESENT
+86517        in1033       -35.276619        149.112914  2017-07-25T21:34:37Z  Eolophus roseicapilla  https://biodiversity.org.au/afd/taxa/9b4ad548-8bb3-486a-ab0a-905506c463ea  150d3252-111e-41ec-ab32-7f0567ac0330  ALA species sightings and OzAtlas          PRESENT
+86518        in1033       -35.160122        149.140961  2018-07-05T06:30:46Z  Eolophus roseicapilla  https://biodiversity.org.au/afd/taxa/9b4ad548-8bb3-486a-ab0a-905506c463ea  59d49f01-33d2-46e2-92cb-f4c5f9ecd4fa  ALA species sightings and OzAtlas          PRESENT
 
-[86449 rows x 9 columns]
+[86519 rows x 9 columns]
 </pre></div>
 </div>
 </section>
@@ -541,17 +556,17 @@ filters as the other data download functions.</p>
 </pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>     decimalLatitude  decimalLongitude             eventDate         scientificName                              recordID       dataResourceName occurrenceStatus multimedia                                images  videos  sounds           creator                                         license    mimetype  width  height                                                                               imageUrl
 0         -35.166122        149.166048  2020-11-07T01:29:00Z  Eolophus roseicapilla  c91faaef-1df3-41e6-a12e-c0dcd13e47b0  iNaturalist Australia          PRESENT      Image  9889254d-2a57-41dc-bc85-def7b8d3f0e0     NaN     NaN  David Cunningham  http://creativecommons.org/licenses/by-nd/4.0/  image/jpeg   1947    1947  https://images.ala.org.au/store/0/e/0/f/9889254d-2a57-41dc-bc85-def7b8d3f0e0/original
 1         -35.278123        149.177378  2020-10-10T00:55:00Z  Eolophus roseicapilla  5006c14b-00e7-4967-9091-2b413b1d7d63  iNaturalist Australia          PRESENT      Image  d668e506-0f3b-4d70-98d9-e35034c260b4     NaN     NaN           deborod  http://creativecommons.org/licenses/by-nc/4.0/  image/jpeg   1800    1200  https://images.ala.org.au/store/4/b/0/6/d668e506-0f3b-4d70-98d9-e35034c260b4/original
-2         -35.328299        149.101087  2020-04-02T06:06:00Z  Eolophus roseicapilla  14e3c386-a204-4221-88fe-2a71c3335fd8             NatureMapr          PRESENT      Image  5f4b7510-6c44-4e97-ad37-38177d85c75e     NaN     NaN              None                                            None  image/jpeg    800     600  https://images.ala.org.au/store/e/5/7/c/5f4b7510-6c44-4e97-ad37-38177d85c75e/original
+2         -35.327922        149.102528  2020-08-30T07:08:00Z  Eolophus roseicapilla  89b44608-edbc-450e-aea5-c68b2b84a804             NatureMapr          PRESENT      Image  4fcf0397-8dc2-4647-b53c-48582c458852     NaN     NaN              None                                            None  image/jpeg    800    1199  https://images.ala.org.au/store/2/5/8/8/4fcf0397-8dc2-4647-b53c-48582c458852/original
 3         -35.276720        149.178877  2020-10-12T21:21:00Z  Eolophus roseicapilla  3e1dd883-f0c3-4d58-bc7a-7af5a7b97887             NatureMapr          PRESENT      Image  266513f2-6d22-488b-847f-45fceb838393     NaN     NaN              None                                            None  image/jpeg    800     600  https://images.ala.org.au/store/3/9/3/8/266513f2-6d22-488b-847f-45fceb838393/original
-4         -35.328845        149.191573  2020-08-13T00:02:00Z  Eolophus roseicapilla  2b25fff2-cb89-45da-a860-e07436974280  iNaturalist Australia          PRESENT      Image  a9084ee7-5ad7-478c-b4cb-634b087629b6     NaN     NaN  David Cunningham  http://creativecommons.org/licenses/by-nd/4.0/  image/jpeg   2048    2048  https://images.ala.org.au/store/6/b/9/2/a9084ee7-5ad7-478c-b4cb-634b087629b6/original
+4         -35.328299        149.101087  2020-04-02T06:06:00Z  Eolophus roseicapilla  14e3c386-a204-4221-88fe-2a71c3335fd8             NatureMapr          PRESENT      Image  5f4b7510-6c44-4e97-ad37-38177d85c75e     NaN     NaN              None                                            None  image/jpeg    800     600  https://images.ala.org.au/store/e/5/7/c/5f4b7510-6c44-4e97-ad37-38177d85c75e/original
 ..               ...               ...                   ...                    ...                                   ...                    ...              ...        ...                                   ...     ...     ...               ...                                             ...         ...    ...     ...                                                                                    ...
-341       -35.408187        149.131098  2020-01-17T07:09:00Z  Eolophus roseicapilla  2a78518b-7c0f-485b-be6b-61cc877cfd41  iNaturalist Australia          PRESENT      Image  016246bf-9e7e-4318-8753-6ddda30f1d40     NaN     NaN           deborod  http://creativecommons.org/licenses/by-nc/4.0/  image/jpeg   1800    1200  https://images.ala.org.au/store/0/4/d/1/016246bf-9e7e-4318-8753-6ddda30f1d40/original
-342       -35.408187        149.131098  2020-01-17T07:09:00Z  Eolophus roseicapilla  2a78518b-7c0f-485b-be6b-61cc877cfd41  iNaturalist Australia          PRESENT      Image  3e1598ee-a859-4c63-ac32-9437eabe8a4c     NaN     NaN           deborod  http://creativecommons.org/licenses/by-nc/4.0/  image/jpeg   1800    1200  https://images.ala.org.au/store/c/4/a/8/3e1598ee-a859-4c63-ac32-9437eabe8a4c/original
-343       -35.408187        149.131098  2020-01-17T07:09:00Z  Eolophus roseicapilla  2a78518b-7c0f-485b-be6b-61cc877cfd41  iNaturalist Australia          PRESENT      Image  78b0b7f0-b2a4-4646-b59b-4a6d1a91a6f4     NaN     NaN           deborod  http://creativecommons.org/licenses/by-nc/4.0/  image/jpeg   1800    1200  https://images.ala.org.au/store/4/f/6/a/78b0b7f0-b2a4-4646-b59b-4a6d1a91a6f4/original
-344       -35.408187        149.131098  2020-01-17T07:09:00Z  Eolophus roseicapilla  2a78518b-7c0f-485b-be6b-61cc877cfd41  iNaturalist Australia          PRESENT      Image  79e5ad3d-dfad-44f7-83ba-b576a91742b7     NaN     NaN           deborod  http://creativecommons.org/licenses/by-nc/4.0/  image/jpeg   1800    1200  https://images.ala.org.au/store/7/b/2/4/79e5ad3d-dfad-44f7-83ba-b576a91742b7/original
-345       -35.408187        149.131098  2020-01-17T07:09:00Z  Eolophus roseicapilla  2a78518b-7c0f-485b-be6b-61cc877cfd41  iNaturalist Australia          PRESENT      Image  f7fbae15-aa1a-4010-9f11-88232588e59b     NaN     NaN           deborod  http://creativecommons.org/licenses/by-nc/4.0/  image/jpeg   1800    1200  https://images.ala.org.au/store/b/9/5/e/f7fbae15-aa1a-4010-9f11-88232588e59b/original
+327       -35.408187        149.131098  2020-01-17T07:09:00Z  Eolophus roseicapilla  2a78518b-7c0f-485b-be6b-61cc877cfd41  iNaturalist Australia          PRESENT      Image  016246bf-9e7e-4318-8753-6ddda30f1d40     NaN     NaN           deborod  http://creativecommons.org/licenses/by-nc/4.0/  image/jpeg   1800    1200  https://images.ala.org.au/store/0/4/d/1/016246bf-9e7e-4318-8753-6ddda30f1d40/original
+328       -35.408187        149.131098  2020-01-17T07:09:00Z  Eolophus roseicapilla  2a78518b-7c0f-485b-be6b-61cc877cfd41  iNaturalist Australia          PRESENT      Image  3e1598ee-a859-4c63-ac32-9437eabe8a4c     NaN     NaN           deborod  http://creativecommons.org/licenses/by-nc/4.0/  image/jpeg   1800    1200  https://images.ala.org.au/store/c/4/a/8/3e1598ee-a859-4c63-ac32-9437eabe8a4c/original
+329       -35.408187        149.131098  2020-01-17T07:09:00Z  Eolophus roseicapilla  2a78518b-7c0f-485b-be6b-61cc877cfd41  iNaturalist Australia          PRESENT      Image  78b0b7f0-b2a4-4646-b59b-4a6d1a91a6f4     NaN     NaN           deborod  http://creativecommons.org/licenses/by-nc/4.0/  image/jpeg   1800    1200  https://images.ala.org.au/store/4/f/6/a/78b0b7f0-b2a4-4646-b59b-4a6d1a91a6f4/original
+330       -35.408187        149.131098  2020-01-17T07:09:00Z  Eolophus roseicapilla  2a78518b-7c0f-485b-be6b-61cc877cfd41  iNaturalist Australia          PRESENT      Image  79e5ad3d-dfad-44f7-83ba-b576a91742b7     NaN     NaN           deborod  http://creativecommons.org/licenses/by-nc/4.0/  image/jpeg   1800    1200  https://images.ala.org.au/store/7/b/2/4/79e5ad3d-dfad-44f7-83ba-b576a91742b7/original
+331       -35.408187        149.131098  2020-01-17T07:09:00Z  Eolophus roseicapilla  2a78518b-7c0f-485b-be6b-61cc877cfd41  iNaturalist Australia          PRESENT      Image  f7fbae15-aa1a-4010-9f11-88232588e59b     NaN     NaN           deborod  http://creativecommons.org/licenses/by-nc/4.0/  image/jpeg   1800    1200  https://images.ala.org.au/store/b/9/5/e/f7fbae15-aa1a-4010-9f11-88232588e59b/original
 
-[346 rows x 17 columns]
+[332 rows x 17 columns]
 </pre></div>
 </div>
 <p>To actually download the media files to your computer, add the argument <code class="docutils literal notranslate"><span class="pre">collect</span></code>.  By default, it downloads the data to your
@@ -583,11 +598,10 @@ can be obtained by setting the <code class="docutils literal notranslate"><span 
               
               
               
-                <footer class="bd-footer-article">
+              
+              
+                <footer class="prev-next-footer">
                   
-<div class="footer-article-items footer-article__inner">
-  
-    <div class="footer-article-item"><!-- Previous / next buttons -->
 <div class="prev-next-area">
     <a class="left-prev"
        href="Choosing_Atlas.html"
@@ -607,10 +621,7 @@ can be obtained by setting the <code class="docutils literal notranslate"><span 
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
-</div></div>
-  
 </div>
-
                 </footer>
               
             </div>
@@ -619,11 +630,14 @@ can be obtained by setting the <code class="docutils literal notranslate"><span 
               
                 <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
+
   <div class="sidebar-secondary-item">
-  <div class="page-toc tocsection onthispage">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
     <i class="fa-solid fa-list"></i> On this page
   </div>
-  <nav class="bd-toc-nav page-toc">
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#record-counts">Record counts</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#species-lists">Species lists</a></li>
@@ -647,8 +661,8 @@ can be obtained by setting the <code class="docutils literal notranslate"><span 
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
-<script src="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+  <script src="../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae"></script>
 
   <footer class="bd-footer">
 <div class="bd-footer__inner bd-page-width">
@@ -656,6 +670,7 @@ can be obtained by setting the <code class="docutils literal notranslate"><span 
     <div class="footer-items__start">
       
         <div class="footer-item">
+
   <p class="copyright">
     
       © Copyright Atlas of Living Australia.
@@ -665,8 +680,9 @@ can be obtained by setting the <code class="docutils literal notranslate"><span 
 </div>
       
         <div class="footer-item">
+
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.5.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
     <br/>
   </p>
 </div>
@@ -674,10 +690,12 @@ can be obtained by setting the <code class="docutils literal notranslate"><span 
     </div>
   
   
+  
     <div class="footer-items__end">
       
-        <div class="footer-item"><p class="theme-version">
-  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.13.3.
+        <div class="footer-item">
+<p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.15.2.
 </p></div>
       
     </div>
