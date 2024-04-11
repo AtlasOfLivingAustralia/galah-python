@@ -1,3 +1,9 @@
+## 0.9.0 (2024-04-11)
+
+### Feat
+
+- **added-guatemalan-and-swedish-atlases**: added guatemalan and swedish atlases
+
 ## 0.8.3 (2024-03-08)
 
 ### Fix

@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "galah"
-version = "0.8.3"
+version = "0.9.0"
 description = "A package for getting biodiversity data out of living atlases"
 authors = ["Amanda Buyan <amanda.buyan@gmail.com>","Amanda Buyan <amanda.buyan@csiro.au>","Martin Westgate <martin.westgate@csiro.au>"]
 readme = "README.md"
