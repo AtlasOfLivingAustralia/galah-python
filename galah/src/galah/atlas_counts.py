@@ -7,6 +7,9 @@ from .galah_geolocate import galah_geolocate
 from .show_all import show_all
 from .common_functions import add_filters,add_to_payload_ALA,generate_list_taxonConceptIDs
 from .common_dictionaries import COUNTS_NAMES
+from .version import __version__
+
+import json
 
 def atlas_counts(taxa=None,
                  scientific_name=None,
@@ -85,16 +88,16 @@ def atlas_counts(taxa=None,
 
     # raise error if argument is wrong type and/or the atlas doesn't have a quality profile but the user has specified one
     if use_data_profile and atlas not in ["Australia","ALA"]:
-                raise ValueError("True and False are the only values accepted for data_profile, and the only atlas using a data \n"
-                                "quality profile is Australia.  Your atlas and data profile is \n"
-                                "set in your config file.  To set your default filter, find out what profiles are on offer:\n"
-                                "profiles = galah.show_all(profiles=True)\n\n"
-                                "and then type\n\n"
-                                "profiles['shortName']\n\n"
-                                "to get the names of the data quality profiles you can use.  To set a data profile, type\n" 
-                                "galah.galah_config(data_profile=\"NAME FROM SHORTNAME HERE\")"
-                                "If you don't want to use a data quality profile, set it to None by typing the following:\n\n"
-                                "galah.galah_config(data_profile=\"None\")")
+        raise ValueError("True and False are the only values accepted for data_profile, and the only atlas using a data \n"
+                        "quality profile is Australia.  Your atlas and data profile is \n"
+                        "set in your config file.  To set your default filter, find out what profiles are on offer:\n"
+                        "profiles = galah.show_all(profiles=True)\n\n"
+                        "and then type\n\n"
+                        "profiles['shortName']\n\n"
+                        "to get the names of the data quality profiles you can use.  To set a data profile, type\n" 
+                        "galah.galah_config(data_profile=\"NAME FROM SHORTNAME HERE\")"
+                        "If you don't want to use a data quality profile, set it to None by typing the following:\n\n"
+                        "galah.galah_config(data_profile=\"None\")")
     
     # check for Brazilian atlas
     elif group_by is not None and atlas in ["Brazil"]:
@@ -108,14 +111,8 @@ def atlas_counts(taxa=None,
     # add a question mark at the end of the URL to separate between endpoint and queries
     URL = baseURL + "?"
 
-    # create headers
-    headers = {}
-
-    #future code for API keys
-    #if atlas in ["Australia","ALA"]:
-    #    headers = {"x-api-key": configs["galahSettings"]["ALA_API_key"]}
-    #else:
-    #    headers = {}
+    # get headers
+    headers = {"User-Agent": "galah-python/{}".format(__version__)}
 
     # create payload (for ALA)
     payload = {}
@@ -157,12 +154,14 @@ def atlas_counts(taxa=None,
             qid_URL += "?disableAllQualityfilters=true&"
 
         # cache the user's query and get a query ID
-        qid = requests.request(method2,qid_URL,data=payload)
+        qid = requests.request(method2,qid_URL,data=payload,headers=headers)
         
         # create the URL to grab your queryID and counts
         URL = baseURL + "fq=%28qid%3A" + qid.text + "%29&flimit=-1&pageSize=0"
 
         if verbose:
+            print()
+            print("headers: {}".format(headers))
             print()
             print("payload for queryID: {}".format(payload))
             print("queryID URL: {}".format(qid_URL))
@@ -175,7 +174,7 @@ def atlas_counts(taxa=None,
 
         # get data
         response = requests.request(method,URL,headers=headers)
-        
+
         # check for daily maximum
         if response.status_code == 429:
             raise ValueError("You have reached the maximum number of daily queries for the ALA.")
@@ -191,7 +190,7 @@ def atlas_counts(taxa=None,
         # if there is no taxa, assume you will get the total number of records in the ALA
         if taxa is not None:
 
-            URL += generate_list_taxonConceptIDs(taxa=taxa,atlas=atlas)
+            URL += generate_list_taxonConceptIDs(taxa=taxa,atlas=atlas,verbose=verbose)
 
         # check if user wants to gropu counts
         if group_by is not None:
@@ -242,6 +241,7 @@ def atlas_counts(taxa=None,
         # check to see if the user wants the querying URL
         if verbose:
             print()
+            print("headers: {}".format(headers))
             print("URL for querying: {}".format(URL))
             print("Method: {}".format(method))
             print()

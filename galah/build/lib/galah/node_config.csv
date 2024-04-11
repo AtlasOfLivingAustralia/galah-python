@@ -62,18 +62,6 @@ Brazil,spatial,spatial_layers,https://portal-espacial.sibbr.gov.br/spatial-hub/l
 Brazil,species,names_search_single,https://bie-webservice.sibbr.gov.br/bie-index/search?q={name}&pageSize=5,search_taxa,TRUE,GET
 Brazil,species,species_children,https://bie-webservice.sibbr.gov.br/bie-index/childConcepts/,atlas_taxonomy,TRUE,GET
 Brazil,species,species_lookup,https://bie-webservice.sibbr.gov.br/bie-index/species,atlas_taxonomy,TRUE,GET
-Canada,collections,collections_collections,http://collections.canadensys.net/ws/collection,show_all-collections,TRUE,GET
-Canada,collections,collections_datasets,http://collections.canadensys.net/ws/dataResource,show_all-datasets,TRUE,GET
-Canada,collections,collections_providers,http://collections.canadensys.net/ws/dataProvider,show_all-providers,TRUE,GET
-Canada,logger,logger_reasons,http://logger.canadensys.net/service/logger/reasons,show_all-reasons,TRUE,GET
-Canada,records,records_assertions,http://explorer-ws.canadensys.net/assertions/codes,show_all-assertions,TRUE,GET
-Canada,records,records_counts,http://explorer-ws.canadensys.net/occurrences/search,atlas_counts,TRUE,GET
-Canada,records,records_facets,http://explorer-ws.canadensys.net/occurrence/facets,"atlas_counts, show_values-fields",TRUE,GET
-Canada,records,records_fields,http://explorer-ws.canadensys.net/index/fields,show_all-fields,TRUE,GET
-Canada,records,records_occurrences,http://explorer-ws.canadensys.net/occurrences/offline/download,atlas_occurrences,TRUE,GET
-Canada,records,records_query,http://explorer-ws.canadensys.net/webportal/params,atlas_occurrences,TRUE,GET
-Canada,records,records_species,http://explorer-ws.canadensys.net/occurrences/facets/download,atlas_species,TRUE,GET
-Canada,species,names_search_single,https://api.gbif.org/v1/species/match?verbose=FALSE&name={name},search_taxa,TRUE,GET
 Estonia,collections,collections_collections,https://elurikkus.ee/collectory/ws/collection,show_all-collections,TRUE,GET
 Estonia,collections,collections_datasets,https://elurikkus.ee/collectory/ws/dataResource,show_all-datasets,TRUE,GET
 Estonia,collections,collections_providers,https://elurikkus.ee/collectory/ws/dataProvider,show_all-providers,TRUE,GET

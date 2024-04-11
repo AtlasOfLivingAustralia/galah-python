@@ -4,6 +4,7 @@ import urllib
 
 from .get_api_url import get_api_url,readConfig
 from .common_dictionaries import SEARCH_TAXA_ENTRIES,SEARCH_TAXA_FIELDS,TAXONCONCEPT_NAMES,VERNACULAR_NAMES,atlases
+from .version import __version__
 
 # testing
 import json
@@ -84,13 +85,7 @@ def search_taxa(taxa=None,
     # get configuration
     configs = readConfig()
 
-    headers = {}
-
-    # get headers for ALA
-    #if configs['galahSettings']['atlas'] == "Australia":
-    #    headers = {"x-api-key": configs["galahSettings"]["ALA_API_key"]}
-    #else:
-    #    headers = {}
+    headers = {"User-Agent": "galah-python/{}".format(__version__)}
 
     # get atlas
     atlas = configs['galahSettings']['atlas']
@@ -235,7 +230,7 @@ def search_taxa(taxa=None,
         else:
         
             for name in taxa:
-
+                
                 # get base URL for querying
                 baseURL, method = get_api_url(column1='called_by',column1value='search_taxa',column2='api_name',column2value='names_search_single')
 
@@ -250,7 +245,7 @@ def search_taxa(taxa=None,
                     print("\nURL being queried:\n\n{}\n".format(URL))
             
                 # get the response
-                response = requests.request(method,URL,headers=headers)
+                response = requests.request(method=method,url=URL,headers=headers)
                 response_json = response.json()
 
                 if atlas in ["Australia","ALA"] and not response_json["success"]:
@@ -259,19 +254,8 @@ def search_taxa(taxa=None,
                         print("Please use the `scientific_name` argument to clarify taxa.")
                         return pd.DataFrame({"search_term": taxa, "issues": response_json["issues"]})
 
-                # Check for the Swedish atlas
-                if atlas in ["Sweden"]: 
-                    raw_data = [] 
-                    if SEARCH_TAXA_ENTRIES[atlas][0] in response_json:
-                        for item in response_json[SEARCH_TAXA_ENTRIES[atlas][0]][SEARCH_TAXA_ENTRIES[atlas][1]]:
-                            if name.lower() in item['scientificName'].lower():
-                                raw_data = item
-                                break
-                    if raw_data is None:
-                        continue
-
                 # check for Austrian, Brazilian, French or Guatemalan atlas
-                elif atlas in ["Austria","Brazil","France", "Guatemala"]:
+                elif atlas in ["Austria","Brazil","France", "Guatemala","United Kingdom","UK"]: # try UK here
                     raw_data = None
                     if SEARCH_TAXA_ENTRIES[atlas][0] in response_json:
                         for item in response_json[SEARCH_TAXA_ENTRIES[atlas][0]][SEARCH_TAXA_ENTRIES[atlas][1]]:
@@ -282,7 +266,7 @@ def search_taxa(taxa=None,
                         continue
                 
                 # check for Australian, Global, or Spanish atlas
-                elif atlas in ["Australia","Global","GBIF","Spain"]:
+                elif atlas in ["Australia","Global","GBIF","Spain","Sweden"]: # try Sweden here
                     raw_data = response_json
                     if atlas in ["Global","GBIF"]:
                         response_vernacular = requests.get("https://api.gbif.org/v1/species/{}/vernacularNames".format(raw_data[TAXONCONCEPT_NAMES[atlas]["guid"]]))

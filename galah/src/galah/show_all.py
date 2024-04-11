@@ -4,6 +4,7 @@ import pandas as pd
 from .get_api_url import readConfig
 from .common_dictionaries import atlases as ATLASES
 from .common_functions import get_response_show_all
+from .version import __version__
 
 '''
 function is meant to show all values for possible query fields - they are defined as a boolean variable so you can see
@@ -75,12 +76,7 @@ def show_all(assertions=False,
 
     atlas = configs['galahSettings']['atlas']
 
-    headers = {}
-
-    #if atlas in ["Australia","ALA"]:
-    #    headers = {"x-api-key": configs["galahSettings"]["ALA_API_key"]}
-    #else:
-    #    headers = {}
+    headers = {"User-Agent": "galah-python/{}".format(__version__)}
 
     # set up the option for getting back multiple values
     return_array=[]
@@ -274,10 +270,10 @@ def show_all(assertions=False,
             if atlas in ["Australia","Spain"]:
 
                 # build layer id from this
-                spatial_values["type"].replace("Contextual","cl",inplace=True)
-                spatial_values["type"].replace("Environmental","el",inplace=True)
+                spatial_values.loc[spatial_values["type"] == "Contextual","type"] = "cl"
+                spatial_values.loc[spatial_values["type"] == "Environmental","type"] = "el"
                 spatial_layers["id"] =  spatial_values["type"].astype(str) + spatial_values["id"].astype(str)
-
+                
                 # build descriptions from these
                 spatial_layers["description"] = spatial_values['displayname'] + " " + spatial_values['description']
                 spatial_layers["type"] = "layers"

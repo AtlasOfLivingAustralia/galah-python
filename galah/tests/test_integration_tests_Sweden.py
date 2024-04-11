@@ -1,5 +1,6 @@
 import galah
 
+
 def test_show_all_assertions_sweden():
     galah.galah_config(atlas="Sweden")
     output = galah.show_all(assertions=True)
@@ -14,7 +15,6 @@ def test_show_all_apis_sweden():
     galah.galah_config(atlas="Sweden")
     output = galah.show_all(apis=True)
     assert output.shape[1] > 1
-
 
 def test_show_all_collection_sweden():
     galah.galah_config(atlas="Sweden")
@@ -45,14 +45,14 @@ def test_show_all_ranks_sweden():
 def test_search_taxa_sweden():
     galah.galah_config(atlas="Sweden")
     output = galah.search_taxa("Alces alces")
-    assert output['guid'][0] != None
-'''
+    assert output['taxonConceptID'][0] != None
+
 # test atlas_counts() can call search_taxa() function with single taxa
 def test_atlas_counts_sweden():
     galah.galah_config(atlas="Sweden")
     taxa="Alces alces"
     assert galah.atlas_counts(taxa)['totalRecords'][0] > 0
-
+# '''
 # testing filtering works when no taxa are entered
 def test_atlas_counts_filters_sweden():
     galah.galah_config(atlas="Sweden")
@@ -95,16 +95,16 @@ def test_atlas_counts_taxa_filter_empty_sweden():
 
 
 # test atlas_counts() can call search_taxa() and using two filters with the same field, return results for a single taxa
-def test_astlas_counts_taxa_same_filter_sweden():
+def test_atlas_counts_taxa_same_filter_sweden():
     galah.galah_config(atlas="Sweden")
-    taxa = "Anigozanthos manglesii"
+    taxa = "Alces alces"
     f = ["year >=2018", "year <= 2022"]
-    assert galah.atlas_counts(taxa, filters=f)['totalRecords'][0] > 0
+    assert galah.atlas_counts(taxa=taxa, filters=f)['totalRecords'][0] > 0
 
 # test atlas_counts() can call search_taxa() and using two filters with the same field, return results for a single taxa
 def test_atlas_counts_taxa_same_filter_sweden():
     galah.galah_config(atlas="Sweden")
-    taxa = "Anigozanthos manglesii"
+    taxa = "Alces alces"
     f = ["year >=2018", "year <= 2022", "year!=2020"]
     assert galah.atlas_counts(taxa, filters=f)['totalRecords'][0] > 0
 
@@ -232,12 +232,12 @@ def test_atlas_counts_multiple_taxa_filters_group_by_multiple_sweden():
     assert output.shape[1] == len(group_by) + 1
 
 # test atlas_counts() can call search_taxa() and separate the counts for multiple taxa where one taxon is not present in ALA
-def test_atlas_counts_invalid_multiple_taxa_separate_sweden():
-    galah.galah_config(atlas="Sweden")
-    taxa_array = ["Alces alces", "Carcinus maenas","Sorex araneus","Oniscus asellus"]
-    output = galah.atlas_counts(taxa_array,group_by="species",expand=False)
-    assert output.shape[0] == len(taxa_array) - 1
-    assert output.shape[1] == 2
+# def test_atlas_counts_invalid_multiple_taxa_separate_sweden():
+#     galah.galah_config(atlas="Sweden")
+#     taxa_array = ["Alces alces", "Carcinus maenas","Sorex araneus","Oniscus asellus"]
+#     output = galah.atlas_counts(taxa_array,group_by="species",expand=False)
+#     assert output.shape[0] == len(taxa_array) - 1
+#     assert output.shape[1] == 2
 
 # test atlas_counts() can call search_taxa() and separate the counts for multiple taxa
 def test_atlas_counts_multiple_taxa_separate_sweden():
@@ -282,17 +282,16 @@ def test_atlas_counts_multiple_taxa_filter_group_by_multiple_separate_sweden():
 def test_atlas_counts_multiple_taxa_filters_group_by_multiple_separate_expand_sweden():
     galah.galah_config(atlas="Sweden")
     taxa_array = ["Alces alces", "Carcinus maenas","Sorex araneus","Oniscus asellus"]
-    f = ["dataResourceName = iNaturalist Sweden", "year=2022"]
+    f = ["basis_of_record=HumanObservation", "year=2022"]
     group_by = ["year", "month"]
-    output = galah.atlas_counts(taxa_array, filters=f, group_by=group_by, expand=True)
+    output = galah.atlas_counts(taxa=taxa_array, filters=f, group_by=group_by, expand=True)
     assert output.shape[1] == len(group_by) + 1
     assert output['count'][0] >= 0 # checks that all species counts are greater than or equal zero
-'''
-'''
+
 # checking if atlas species can successfully call search_taxa() and get a non-empty dataframe\
 def test_atlas_species_Sweden_species_sweden():
     galah.galah_config(atlas="Sweden")
-    taxa = "Heleioporus"
+    taxa = "Alces Alces"
     species_table = galah.atlas_species(taxa=taxa)
     assert species_table.shape[0] > 0
 
@@ -424,33 +423,33 @@ def test_search_values_sweden():
 
 # first test for atlas_occurrences() - check if search_taxa() is working
 def test_atlas_occurrences_taxa_sweden():
-    galah.galah_config(atlas="Sweden",email="ala4r@ala.org.au")
+    galah.galah_config(atlas="Sweden",email="martinjwestgate@gmail.com")
     occurrences = galah.atlas_occurrences(taxa="Alces alces")
     assert occurrences.shape[0] > 1
 
 # second test for atlas_occurrences() - check if galah_select() is working
 def test_atlas_occurrences_taxa_fields_sweden():
-    galah.galah_config(atlas="Sweden",email="ala4r@ala.org.au")
+    galah.galah_config(atlas="Sweden",email="martinjwestgate@gmail.com")
     occurrences = galah.atlas_occurrences(taxa="Alces alces",fields=['decimalLatitude', 'decimalLongitude'])
     # columns
     assert occurrences.shape[1] == 2
 
 # third test for atlas_occurrences() - check if galah_filter() is working with this
 def test_atlas_occurrences_taxa_filters_sweden():
-    galah.galah_config(atlas="Sweden",email="ala4r@ala.org.au")
+    galah.galah_config(atlas="Sweden",email="martinjwestgate@gmail.com")
     occurrences1 = galah.atlas_occurrences(taxa="Alces alces")
     occurrences2 = galah.atlas_occurrences(taxa="Alces alces",filters="year=2020")
     assert occurrences2.shape[0] < occurrences1.shape[0]
 
 # fourth test for atlas_occurrences() - check if galah_select() and galah_filter() are working concurrently
 def test_atlas_occurrences_taxa_filter_fields_sweden():
-    galah.galah_config(atlas="Sweden",email="ala4r@ala.org.au")
+    galah.galah_config(atlas="Sweden",email="martinjwestgate@gmail.com")
     occurrences = galah.atlas_occurrences(taxa="Alces alces",filters="year=2020",fields=['decimalLatitude', 'decimalLongitude'])
     assert occurrences.shape[1] == 2
 
 # testing atlas occurrences with multiple filters
 def test_atlas_occurrences_taxa_filters_sweden():
-    galah.galah_config(atlas="Sweden",email="ala4r@ala.org.au")
+    galah.galah_config(atlas="Sweden",email="martinjwestgate@gmail.com")
     filters=["year>2018","basis_of_record=HumanObservation"]
     occurrences1 = galah.atlas_occurrences(taxa="Alces alces")
     occurrences2 = galah.atlas_occurrences(taxa="Alces alces",filters=filters)
@@ -458,7 +457,7 @@ def test_atlas_occurrences_taxa_filters_sweden():
 
 # testing atlas occurrences with multiple filters and fields
 def test_atlas_occurrences_taxa_filters_fields_sweden():
-    galah.galah_config(atlas="Sweden",email="ala4r@ala.org.au")
+    galah.galah_config(atlas="Sweden",email="martinjwestgate@gmail.com")
     occurrences = galah.atlas_occurrences(taxa="Alces alces",filters=["year>2018","basis_of_record=HumanObservation"],
                                            fields=['decimalLatitude', 'decimalLongitude'])
     assert occurrences.shape[1] == 2

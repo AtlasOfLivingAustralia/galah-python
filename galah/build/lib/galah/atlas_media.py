@@ -1,7 +1,6 @@
 import requests,os
 import pandas as pd
 import json
-import urllib.request
 
 from .atlas_occurrences import atlas_occurrences
 from .get_api_url import get_api_url
@@ -9,6 +8,7 @@ from .get_api_url import readConfig
 from .apply_data_profile import apply_data_profile
 from .atlas_occurrences import atlas_occurrences
 from .show_all import show_all
+from .version import __version__
 
 # this function parses everything to atlas_occurrences first, and it adds something to the galah_filter argument to say
 # that the multimedia field is not empty
@@ -95,8 +95,8 @@ def atlas_media(taxa=None,
     # get atlas
     atlas = configs['galahSettings']['atlas']
 
-    # get headers for some APIs
-    headers = {}
+    # get headers
+    headers = {"User-Agent": "galah-python/{}".format(__version__)}
 
     # check for fields
     if fields is None:
@@ -109,11 +109,6 @@ def atlas_media(taxa=None,
                                   scientific_name=scientific_name)
     if dataFrame.empty:
         raise ValueError("There are no occurrences or media associated with your query.  Please try your query on atlas_counts before trying it again on atlas_media.")
-
-    #if atlas in ["Australia","ALA"]:
-    #    headers = {"x-api-key": configs["galahSettings"]["ALA_API_key"]}
-    #else:
-    #    headers = {}
 
     # create the output data frame
     if atlas == "Australia":
@@ -243,7 +238,7 @@ def atlas_media(taxa=None,
 
             # insert the duplicate rows into the array (need to ensure that, in the case they aren't sequential, to take that into consideration)
             new_filtered_media_array = pd.concat([filtered_media_array.head(top_index),pd.DataFrame(duplicate_dict)]).reset_index(drop=True)
-            response = requests.request(method,basemediaURL,data=json.dumps({"imageIds": new_filtered_media_array[media].to_list()}))
+            response = requests.request(method,basemediaURL,data=json.dumps({"imageIds": new_filtered_media_array[media].to_list()}),headers=headers)
             
             # get metadata here
             response_json = response.json()
@@ -295,7 +290,7 @@ def atlas_media(taxa=None,
                     ext = image["mimetype"].split("/")[1]
                     #if ext == "jpeg":
                     #    ext = "jpg"
-                    data = requests.get("{}.{}".format(image["imageUrl"],ext)).content
+                    data = requests.get("{}.{}".format(image["imageUrl"],ext),headers=headers).content
                     f = open("{}/image-{}.{}".format(path,image["images"],ext),'wb')
                     f.write(data) 
                     f.close() 

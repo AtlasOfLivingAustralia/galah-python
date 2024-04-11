@@ -28,6 +28,7 @@ src/galah/search_taxa.py
 src/galah/search_values.py
 src/galah/show_all.py
 src/galah/show_values.py
+src/galah/version.py
 src/galah_python.egg-info/PKG-INFO
 src/galah_python.egg-info/SOURCES.txt
 src/galah_python.egg-info/dependency_links.txt

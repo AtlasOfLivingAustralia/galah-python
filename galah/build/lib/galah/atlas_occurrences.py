@@ -18,6 +18,7 @@ from .common_dictionaries import ATLAS_KEYWORDS,ATLAS_SELECTIONS, atlases, ATLAS
 from .common_dictionaries import ATLAS_OCCURRENCES_DOWNLOAD_ARGUMENTS
 from .common_functions import add_filters,add_predicates,add_to_payload_ALA
 from .show_all import show_all
+from .version import __version__
 
 def atlas_occurrences(taxa=None,
                       scientific_name=None,
@@ -118,15 +119,21 @@ def atlas_occurrences(taxa=None,
     if configs["galahSettings"]["email"] is None or configs["galahSettings"]["email"] is "email@example.com":
         raise ValueError("Please provide an email for querying")
 
-    headers = {}
+    # initialise headers
+    if atlas in ["GBIF","Global"]:
+        headers = {
+            "User-Agent": "galah-python/{}".format(__version__),
+            "X-USER-AGENT": "galah-python/{}".format(__version__),
+            "Content-type": "application/json",
+            "Accept": "application/json",
+        }
+    else:
+        # get headers
+        headers = {"User-Agent": "galah-python {}".format(__version__)}
 
+
+    # initialise payload
     payload = {}
-
-    # add API key for ALA
-    #if atlas in ["Australia","ALA"]:
-    #    headers = {"x-api-key": configs["galahSettings"]["ALA_API_key"]}
-    #else:
-    #    headers = {}
 
     # create authentication key
     if atlas in ["Global","GBIF"]:
@@ -173,29 +180,16 @@ def atlas_occurrences(taxa=None,
         else:
             raise ValueError("Atlas {} not taken into account".format(atlas))       
 
-    # Ensure headers are taken care of
-    #if atlas in ["Australia","ALA"]:
-    #    headers = {"x-api-key": configs["galahSettings"]["ALA_API_key"]}
-    if atlas in ["GBIF","Global"]:
-        headers = {
-            "User-Agent": "galah-python v0.5.0", #.format(VERSION HERE)
-            "X-USER-AGENT": "galah-python v0.5.0",
-            "Content-type": "application/json",
-            "Accept": "application/json",
-        }
-    else:
-        headers = {}
-
     # goes to the 'fields' argument in occurrence download (csv list, commas between)
     if atlas in ["Australia","ALA"]:
         pass
     elif fields is not None and atlas not in ["Global","GBIF","Australia","ALA"]:
         if fields != "basic":
-            baseURL += galah_select(select=fields,atlas=atlas)[:-3] + "&"
+            baseURL += galah_select(select=fields,atlas=atlas) + "&"
         else:
-            baseURL += galah_select(select=ATLAS_SELECTIONS[atlas],atlas=atlas)[:-3] + "&"
+            baseURL += galah_select(select=ATLAS_SELECTIONS[atlas],atlas=atlas) + "&"
     elif atlas in ["Austria","Brazil","France","Spain"]:
-        baseURL += galah_select(select=ATLAS_SELECTIONS[atlas],atlas=atlas)[:-3] + "&"
+        baseURL += galah_select(select=ATLAS_SELECTIONS[atlas],atlas=atlas) + "&"
     elif fields is not None and atlas in ["Global","GBIF"]:
         print("GBIF, unfortunately, does not support choosing your desired data fields before download.  You will have to download them and then get categories you want.")
     elif atlas in ["Global","GBIF"]:
@@ -223,7 +217,7 @@ def atlas_occurrences(taxa=None,
         
         # create the query id
         qid_URL, method2 = get_api_url(column1="api_name",column1value="occurrences_qid")
-        qid = requests.request(method2,qid_URL,data=payload)
+        qid = requests.request(method2,qid_URL,data=payload,headers=headers)
         
         # create the URL to grab your queryID and counts
         if use_data_profile:
@@ -241,6 +235,7 @@ def atlas_occurrences(taxa=None,
 
         if verbose:
             print()
+            print("headers: {}".format(headers))
             print("payload for queryID: {}".format(payload))
             print("queryID URL: {}".format(qid_URL))
             print("method: {}".format(method2))
@@ -353,6 +348,7 @@ def atlas_occurrences(taxa=None,
             # check to see if user wants the query URL
             if verbose:
                 print("URL for querying:\n\n{}\n".format(URL))
+                print("headers: {}\n".format(headers))
                 print("payload: \n\n{}\n".format(payload))
 
             # check counts

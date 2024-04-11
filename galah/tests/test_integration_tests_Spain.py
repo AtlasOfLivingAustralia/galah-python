@@ -292,7 +292,7 @@ def test_atlas_species_Spain_species_spain():
 # checking if atlas species can successfully call search_taxa() and get a non-empty dataframe\
 def test_atlas_species_Spain_species_rank_subspecies_spain():
     galah.galah_config(atlas="Spain")
-    taxa = "Crotalus"
+    taxa = "Viperidae"
     species_table = galah.atlas_species(taxa=taxa,rank="subspecies")
     assert species_table.shape[0] > 0
 

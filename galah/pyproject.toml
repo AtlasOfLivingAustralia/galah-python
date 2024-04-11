@@ -1,58 +1,41 @@
-[build-system]
-requires = ["setuptools","poetry-core>=1.0.0"]
-build-backend = "setuptools.build_meta"
-
 [tool.poetry]
 name = "galah"
-package = "galah"
-version = "0.8.3" 
-description = "Get counts and information on species from many different atlases"
-authors = [
-    "Amanda Buyan <amanda.buyan@csiro.au>", 
-    "Martin Westgate <martin.westgate@csiro.au>",
-    "Atlas of Living Australia <support@ala.org.au>"
-]
-license = "MPL-2.0"
+version = "0.8.3"
+description = "A package for getting biodiversity data out of living atlases"
+authors = ["Amanda Buyan <amanda.buyan@gmail.com>","Amanda Buyan <amanda.buyan@csiro.au>","Martin Westgate <martin.westgate@csiro.au>"]
 readme = "README.md"
-homepage = "https://galah.ala.org.au/Python/"
-repository = "https://github.com/AtlasOfLivingAustralia/galah-python"
+license = "GNU General Public License v3.0"
 
 [tool.poetry.dependencies]
-python = "^3.9"
+python = "^3.11"
 shutils = "^0.1.0"
 bytesbufio = "^1.0.3"
 glob2 = "^0.7"
-configparser = "^5.3.0"
-requests = "^2.28.2"
-urllib3 = "^1.26.14"
-time-python = "^0.0.16"
+configparser = "^6.0.1"
+requests = "^2.31.0"
+urllib3 = "^2.2.1"
+time-python = "^0.0.17"
 zip-files = "^0.4.1"
-pandas = "^2.0.0" 
-numpy = "^1.24.1"
-unittest2py3k = "^0.5.0"
-setuptools = "^65.5.1"
-shapely = "^2.0.0"
-pytest = "^7.2.1"
+pandas = "^2.2.1"
+numpy = "^1.26.4"
+unittest2py3k = "^0.5.1"
+setuptools = "^69.2.0"
+shapely = "^2.0.3"
+pytest = "^8.1.1"
 
-[tool.poetry.dev-dependencies]
 
-[tool.poetry.group.dev.dependencies]
-pytest = "^7.2.1"
-unittest2py3k = "^0.5.0"
-
-[tool.pytest.ini_options]
-minversion = "6.0"
-addopts = "-ra -q"
-testpaths = [
-    "tests",
-]
 
 [tool.commitizen]
 name = "cz_conventional_commits"
+version_provider = "poetry"
 update_changelog_on_bump = true
-version = "0.8.3"
+major_version_zero = true
 version_files = [
     "pyproject.toml:version",
-    "src/galah/__init__.py:version",
+    "src/galah/version.py:__version__",
     "setup.py:version"
 ]
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

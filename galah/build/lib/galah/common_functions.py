@@ -8,6 +8,7 @@ from .search_taxa import search_taxa
 from .galah_geolocate import galah_geolocate
 from .common_dictionaries import atlases, ATLAS_KEYWORDS
 from shapely import Polygon,MultiPolygon
+from .version import __version__
 
 def add_predicates(predicates=None,
                    filters=None):
@@ -42,6 +43,7 @@ def add_filters(URL=None,
         if any("!=" in f for f in filters):
             raise ValueError("!= cannot be used with GBIF atlas.  Run separate queries.")
         else:
+            ### TODO: check that this is correct
             for f in filters:
                 URL += "&{}".format(galah_filter(f,ifgroupBy=ifGroupBy))
 
@@ -56,10 +58,10 @@ def add_filters(URL=None,
 
         # loop over filters
         for f in filters:
-            URL += galah_filter(f,ifgroupBy=ifGroupBy) + "AND" 
-                    
+            URL += galah_filter(f,ifgroupBy=ifGroupBy) + "%20AND%20"
+        
         # remove last AND and add a closing parenthesis
-        URL = URL[:-len("AND")] + "%29"
+        URL = URL[:-len("%20AND%20")] + "%29"
         
     return URL
 
@@ -70,17 +72,23 @@ def put_entries_in_grouped_dict(entry=None,
     '''Creating dictionaries for galah_group_by'''
 
     if expand:
+
         if len(entry['fq'].split(':')) > 2:
             name_and_values = entry['fq'].split(':')
             name = name_and_values[0]
             value = ":".join(name_and_values[1:])
         else:
             name,value=entry['fq'].split(':')
+
         value = value.replace('"', '')
         if value.isdigit():
             value = int(value)
-        dict_values[name].append(value)
-        dict_values['count'].append(int(entry['count']))
+        
+        # check that this is correct
+        if name in dict_values:
+            dict_values[name].append(value)
+            dict_values['count'].append(int(entry['count']))
+
         for key in dict_values:
             if (key != name) and (key != 'count'):
                 while (len(dict_values[key]) < len(dict_values['count'])):
@@ -96,8 +104,10 @@ def put_entries_in_grouped_dict(entry=None,
         value=value.replace('"','')
         if value.isdigit():
             value = int(value)
-        dict_values[name].append(value)
-        dict_values['count'].append(int(entry['count']))
+        # check that this is correct
+        if name in dict_values:
+            dict_values[name].append(value)
+            dict_values['count'].append(int(entry['count']))
         for entry in dict_values:
             if (entry != name) and (entry != 'count'):
                 dict_values[entry].append("-")
@@ -113,6 +123,8 @@ def get_response_show_all(column1=None,
                       max_entries=-1,
                       offset=None):
     '''Function for getting responses for all of the show_all functions'''
+    # get headers
+    headers = {"User-Agent": "galah-python {}".format(__version__)}
 
     # get data and check for 
     URL,method = get_api_url(column1=column1,column1value=column1value,column2=column2,column2value=column2value)

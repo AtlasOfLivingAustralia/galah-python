@@ -6,6 +6,7 @@ import itertools
 from .get_api_url import readConfig
 from .common_functions import add_filters
 from .common_functions import get_api_url,put_entries_in_grouped_dict,add_to_payload_ALA
+from .version import __version__
 
 def galah_group_by(URL=None,
                    method=None,
@@ -30,14 +31,8 @@ def galah_group_by(URL=None,
     atlas = configs['galahSettings']['atlas']
 
     # get headers
-    headers = {}
-    #if atlas in ["Australia","ALA"]:
-    #    headers = {"x-api-key": configs["galahSettings"]["ALA_API_key"]}
-    #else:
-    #    headers = {}
-
-    # if atlas in ["Australia","ALA"]:
-
+    headers = {"User-Agent": "galah-python {}".format(__version__)}
+    
     # check to see if the expand option is true
     if expand:
 
@@ -88,7 +83,7 @@ def galah_group_by(URL=None,
 
             # get response from your query, which will include all available fields
             qid_URL, method2 = get_api_url(column1="api_name",column1value="occurrences_qid")
-            qid = requests.request(method2,qid_URL,data=payload)
+            qid = requests.request(method2,qid_URL,data=payload,headers=headers)
             facets = "".join("&facets={}".format(g) for g in group_by)
             if startingURL[-1] == "&":
                 URL = startingURL + "fq=%28qid%3A" + qid.text + "%29" + facets + "&flimit=-1&pageSize=0"
@@ -97,6 +92,8 @@ def galah_group_by(URL=None,
 
             # check to see if the user wants the URL for querying
             if verbose:
+                print()
+                print("headers: {}".format(headers))
                 print()
                 print("payload for queryID: {}".format(payload))
                 print("queryID URL: {}".format(qid_URL))
@@ -127,6 +124,8 @@ def galah_group_by(URL=None,
             
             # check to see if the user wants the URL for querying
             if verbose:
+                print()
+                print("headers: {}".format(headers))
                 print()
                 print("URL for querying: {}".format(startingURL))
                 print("Method: {}".format(method))
@@ -166,7 +165,16 @@ def galah_group_by(URL=None,
         if expand:
 
             # was 1,len(group_by)
-            for i in range(0,len(group_by)-1):
+            ### TRY THIS
+            if atlas not in ["Global","GBIF"]:
+                start = 0
+                end = len(group_by) - 1
+            else:
+                start = 1
+                end = len(group_by)
+            
+            # now do loop
+            for i in range(start,end):
                 temp_array=[]
                 for entry in results_array[i][field_name]:
                     temp_array.append(entry[facet_name])
@@ -176,40 +184,46 @@ def galah_group_by(URL=None,
 
             # loop over facets array
             # was combined_facets_array
-            for i,f in enumerate(combined_facets_array):
+            for f in combined_facets_array:
 
                 # check for GBIF atlas
                 if atlas in ["Global","GBIF"]:
 
-                    # loop over all specified facets
+                    inc = 0
+
                     for facet in f:
 
-                        tempURL = URL + "&{}={}".format(group_by[i+1],urllib.parse.quote(facet)) + "&facet=" + group_by[i] + "&flimit=-1&pageSize=0"
+                        # was i+1
+                        tempURL = URL + "&{}={}".format(group_by[start+inc],urllib.parse.quote(facet)) + "&facet=" + group_by[start-1+inc] + "&flimit=-1&pageSize=0"
+                    
                         # check if user is grouping by scientific name
                         # i + 1
-                        if group_by[i+1] == "scientificName":
-                            tempURL = URL + "&{}={}".format(group_by[i+1],"%20".join(facet.split(" ")[0:2])) + "&facet=" + group_by[i] + "&flimit=-1&pageSize=0"
+                        if group_by[start+inc] == "scientificName":
+                            tempURL = URL + "&{}={}".format(group_by[start+inc],"%20".join(facet.split(" ")[0:2])) + "&facet=" + group_by[start-1+inc] + "&flimit=-1&pageSize=0"
                         else:
-                            tempURL = URL + "&{}={}".format(group_by[i+1],"%20".join(facet.split(" "))) + "&facet=" + group_by[i] + "&flimit=-1&pageSize=0"
-            
-                        if verbose:
-                            print()
-                            print("URL for querying: {}".format(tempURL))
-                            print("Method: {}".format(method))
-                            print()
+                            tempURL = URL + "&{}={}".format(group_by[start+inc],"%20".join(facet.split(" "))) + "&facet=" + group_by[start-1+inc] + "&flimit=-1&pageSize=0"
+        
+                        inc += 1
 
-                        # get the data
-                        response=requests.request(method,tempURL,headers=headers)
-                        response_json = response.json()
-                        
-                        # put data in dict
-                        for entry in response_json['facets'][0]['counts']:
-                            dict_values[group_by[i]].append(entry['name'])
-                            dict_values['count'].append(int(entry['count']))
-                            dict_values[group_by[i+1]].append(facet)
-                            for key in dict_values:
-                                if (key != group_by[i+1]) and (key != group_by[i]) and (key != 'count'):
-                                    dict_values[key].append("-")
+                    if verbose:
+                        print()
+                        print("URL for querying: {}".format(tempURL))
+                        print("Method: {}".format(method))
+                        print()
+
+                    # get the data
+                    response=requests.request(method,tempURL,headers=headers)
+                    response_json = response.json()
+                    
+                    # put data in dict
+                    #### TODO: check if this is correct
+                    for entry in response_json['facets'][0]['counts']:
+                        dict_values[group_by[start-1]].append(entry['name'])
+                        dict_values['count'].append(int(entry['count']))
+                        dict_values[group_by[start]].append(facet)
+                        for key in dict_values:
+                            if (key != group_by[start]) and (key != group_by[start-1]) and (key != 'count'):
+                                dict_values[key].append("-")
                 
                 # do this loop for all other atlases 
                 else:
@@ -228,7 +242,7 @@ def galah_group_by(URL=None,
                         
                         # create payload and get qid
                         qid_URL, method2 = get_api_url(column1="api_name",column1value="occurrences_qid")
-                        qid = requests.request(method2,qid_URL,data=payload)
+                        qid = requests.request(method2,qid_URL,data=payload,headers=headers)
                         if startingURL[-1] == "&":
                             tempURL = startingURL + "fq=%28qid%3A" + qid.text + "%29" 
                         else:
@@ -246,16 +260,19 @@ def galah_group_by(URL=None,
                         
                     else:
 
-                        # split each facet to make it human readable
-                        name,value = facet.split(':')
-                        value = value.replace('"', '')
-                        if name in group_by:
-                            tempURL = URL + "%20AND%20%28{}%3A%22{}%22%29".format(name,value)
-                        else:
-                            continue
-                        for group in group_by:
-                            if (group != name) and ("facets={}".format(group) not in URL):
-                                tempURL += "&facets={}".format(group)
+                        for facet in f:
+                        
+                            # split each facet to make it human readable
+                            name,value = facet.split(':')
+                            value = value.replace('"', '')
+                            if name in group_by:
+                                tempURL = URL + "%20AND%20%28{}%3A%22{}%22%29".format(name,value)
+                            else:
+                                tempURL = URL
+                                # continue
+                            for group in group_by:
+                                if (group != name) and ("facets={}".format(group) not in URL):
+                                    tempURL += "&facets={}".format(group)
 
                     # finalise the URL for querying
                     tempURL += "&flimit=-1&pageSize=0"
@@ -292,7 +309,10 @@ def galah_group_by(URL=None,
 
                     # put data in table (and check if user wants Brazil, because that is an exception)
                     if atlas in ["Brazil"]:
-                        results_array = response_json[0]['fieldResult']
+                        if len(group_by) <= 2:
+                            results_array = response_json[0]['fieldResult']
+                        else:
+                            results_array = response_json[1]['fieldResult']
                     else:
                         results_array = response_json['facetResults'][0]['fieldResult']
 
@@ -300,9 +320,10 @@ def galah_group_by(URL=None,
                     for entry in results_array:
 
                         if entry['fq'].split(":")[0] in group_by:
-                        
+
                             # add facet value to dictionary for expand
                             for facet in f:
+
                                 if len(facet.split(':')) > 2:
                                     name_and_values = facet.split(':')
                                     name = name_and_values[0]
@@ -310,11 +331,13 @@ def galah_group_by(URL=None,
                                 else:
                                     name,value=facet.split(':')
                                 value = value.replace('"','')
-                                # trying this
-                                if name in group_by:
+                                # trying this - potentially remove it
+                                if name in group_by and name not in entry['fq'].split(':'):
                                     dict_values[name].append(value)
-                            dict_values = put_entries_in_grouped_dict(entry=entry,dict_values=dict_values,expand=expand)
-            
+
+                        # potentially tab again
+                        dict_values = put_entries_in_grouped_dict(entry=entry,dict_values=dict_values,expand=expand)
+
             # format table
             counts = pd.DataFrame(dict_values).reset_index(drop=True)
             counts.sort_values(by=group_by)

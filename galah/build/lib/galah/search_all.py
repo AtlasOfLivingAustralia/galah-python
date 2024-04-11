@@ -242,7 +242,7 @@ def search_all(assertions=None,
     # search options for licences
     if licences is not None:
 
-        # call show_all to get all the possible values
+        # call show_all to get all the possible values``
         dataFrame = show_all(licences=True)
 
         # check to see if user wants default column name

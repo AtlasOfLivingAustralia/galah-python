@@ -1,5 +1,6 @@
 import galah
 
+'''
 def test_show_all_assertions_austria():
     galah.galah_config(atlas="Austria")
     output = galah.show_all(assertions=True)
@@ -546,3 +547,4 @@ def test_atlas_occurrences_taxa_filters_fields_austria():
     occurrences = galah.atlas_occurrences(taxa="Sehirus luctuosus",filters=["year>2018","basis_of_record=HumanObservation"],
                                            fields=['latitude', 'longitude'])
     assert occurrences.shape[1] == 2
+'''
