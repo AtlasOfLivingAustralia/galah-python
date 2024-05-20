@@ -121,13 +121,19 @@ def get_response_show_all(column1=None,
                       atlas=None,
                       headers={},
                       max_entries=-1,
-                      offset=None):
+                      offset=None,
+                      verbose=False):
+    
     '''Function for getting responses for all of the show_all functions'''
     # get headers
     headers = {"User-Agent": "galah-python {}".format(__version__)}
 
     # get data and check for 
     URL,method = get_api_url(column1=column1,column1value=column1value,column2=column2,column2value=column2value)
+    if verbose:
+        print("URL for querying:\n\n{}".format(URL))
+        print("Method: {}".format(method))
+        print()
     if max_entries is not None and offset is not None:
         URL += "?max={}&offset={}".format(max_entries,offset)
     response = requests.request(method,URL,headers=headers)

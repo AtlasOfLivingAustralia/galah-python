@@ -44,9 +44,6 @@ setup(
         'geopandas'
     ],
 
-
-    # ], #,'PyJWT','python-jwt'
-    #'TIME-python',
     include_package_data = True,
     package_data = {
     # If any package contains *.ini files or *.csv files, include them

@@ -22,6 +22,7 @@ def show_all(assertions=False,
              providers=False,
              ranks=False,
              reasons=False,
+             verbose=False
              ):
     """
     The living atlases store a huge amount of information, above and beyond the occurrence records that are their main output. 
@@ -94,7 +95,7 @@ def show_all(assertions=False,
             return_array.append(json)
             returned = True
         elif atlas in ATLASES:
-            response = get_response_show_all(column1='called_by',column1value='show_all-assertions',atlas=atlas,headers=headers)
+            response = get_response_show_all(column1='called_by',column1value='show_all-assertions',atlas=atlas,headers=headers,verbose=verbose)
         else:
             raise ValueError("Atlas {} not taken into account in galah for assertions.".format(atlas))
 
@@ -181,7 +182,7 @@ def show_all(assertions=False,
         if atlas in ["Global","GBIF"]:
             raise ValueError("{} atlas does not have a list of collections".format(atlas))
         elif atlas in ATLASES:
-            response = get_response_show_all(column1='called_by',column1value='show_all-collections',atlas=atlas,headers=headers)
+            response = get_response_show_all(column1='called_by',column1value='show_all-collections',atlas=atlas,headers=headers,verbose=verbose)
         else:
             raise ValueError("Atlas {} not taken into account in galah for collections.".format(atlas))
         
@@ -201,10 +202,10 @@ def show_all(assertions=False,
     if type(datasets) is bool and datasets:
 
         if atlas in ["Global","GBIF"]:
-            response = get_response_show_all(column1='called_by',column1value='show_all-datasets',atlas=atlas,headers=headers)
+            response = get_response_show_all(column1='called_by',column1value='show_all-datasets',atlas=atlas,headers=headers,verbose=verbose)
             datasets_list = pd.DataFrame.from_dict(response.json()['results'])
         elif atlas in ATLASES:
-            response = get_response_show_all(column1='called_by',column1value='show_all-datasets',atlas=atlas,headers=headers)
+            response = get_response_show_all(column1='called_by',column1value='show_all-datasets',atlas=atlas,headers=headers,verbose=verbose)
             datasets_list = pd.DataFrame.from_dict(response.json())
         else:
             raise ValueError("Atlas {} not taken into account in galah for datasets.".format(atlas))
@@ -228,7 +229,7 @@ def show_all(assertions=False,
         if atlas not in ["Global","GBIF"]:
             
             # get data from API
-            response = get_response_show_all(column1='called_by',column1value='show_all-fields',column2='api_name',column2value='records_fields',atlas=atlas,headers=headers)
+            response = get_response_show_all(column1='called_by',column1value='show_all-fields',column2='api_name',column2value='records_fields',atlas=atlas,headers=headers,verbose=verbose)
 
             # get fields values in a table
             fields_values = pd.DataFrame.from_dict(response.json())
@@ -260,7 +261,7 @@ def show_all(assertions=False,
         if atlas in ["Australia","Spain"]:
             
             # get data from API
-            response = get_response_show_all(column1='called_by',column1value='show_all-fields',column2='api_name',column2value='spatial_layers',atlas=atlas,headers=headers)
+            response = get_response_show_all(column1='called_by',column1value='show_all-fields',column2='api_name',column2value='spatial_layers',atlas=atlas,headers=headers,verbose=verbose)
             
             # process data
             spatial_values = pd.DataFrame.from_dict(response.json())
@@ -343,7 +344,7 @@ def show_all(assertions=False,
         # otherwise, do default call
         else:
 
-            response = get_response_show_all(column1='called_by',column1value='show_all-licences',atlas=atlas,headers=headers)
+            response = get_response_show_all(column1='called_by',column1value='show_all-licences',atlas=atlas,headers=headers,verbose=verbose)
             
         # check to see if this URL is not working
         if response.status_code == 404:
@@ -373,7 +374,7 @@ def show_all(assertions=False,
         
         # then, look for lists and set offsets
         if atlas in ATLASES:
-            response = get_response_show_all(column1='called_by',column1value='show_all-lists',atlas=atlas,headers=headers,max_entries=-1,offset=0)
+            response = get_response_show_all(column1='called_by',column1value='show_all-lists',atlas=atlas,headers=headers,max_entries=-1,offset=0,verbose=verbose)
         else:
             raise ValueError("Atlas {} not taken into account for lists.".format(atlas))
             
@@ -402,7 +403,7 @@ def show_all(assertions=False,
         if atlas in ["Australia","Spain"]:
 
             # get data
-            response = get_response_show_all(column1='called_by',column1value='show_all-profiles',atlas=atlas,headers=headers)
+            response = get_response_show_all(column1='called_by',column1value='show_all-profiles',atlas=atlas,headers=headers,verbose=verbose)
 
             # create dataframe
             df = pd.DataFrame.from_dict(response.json())
@@ -437,7 +438,7 @@ def show_all(assertions=False,
         elif atlas in ATLASES:
 
             # get data
-            response = get_response_show_all(column1='called_by',column1value='show_all-providers',atlas=atlas,headers=headers)
+            response = get_response_show_all(column1='called_by',column1value='show_all-providers',atlas=atlas,headers=headers,verbose=verbose)
             
             # make data frame
             if atlas in ["Global","GBIF"]:
@@ -512,7 +513,7 @@ def show_all(assertions=False,
         elif atlas in ATLASES:
 
             # get data
-            response = get_response_show_all(column1='called_by',column1value='show_all-reasons',atlas=atlas,headers=headers)
+            response = get_response_show_all(column1='called_by',column1value='show_all-reasons',atlas=atlas,headers=headers,verbose=verbose)
             
         # else, do default call
         else:
