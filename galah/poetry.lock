@@ -196,7 +196,7 @@ files = [
 h5py = ">=2.8.0"
 nibabel = ">=3.0.0"
 scipy = ">=1.1"
-tqdm = ">=4.30.0"
+tqdm = ">=4.66.3"
 
 [package.extras]
 all = ["boto3", "coverage", "coveralls", "cvxpy", "cython", "fury (>=0.8.0)", "h5py", "h5py (<3.0.0)", "matplotlib", "nibabel (>=3.0.0)", "numpy", "pandas", "pytest", "scikit-image", "scikit-learn", "scipy", "statsmodels", "tables", "tensorflowtensorflow-addons"]
