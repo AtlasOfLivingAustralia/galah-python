@@ -53,6 +53,6 @@ update_changelog_on_bump = true
 version = "0.9.1"
 version_files = [
     "pyproject.toml:version",
-    "src/galah/__init__.py:version",
+    "src/galah/version.py:version",
     "setup.py:version"
 ]

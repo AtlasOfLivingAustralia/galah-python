@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Spatial filtering &#8212; Galah 0.8.3 documentation</title>
+    <title>Spatial filtering &#8212; Galah 0.9.1 documentation</title>
   
   
   
@@ -38,7 +38,7 @@
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
   <script src="../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
 
-    <script src="../_static/documentation_options.js?v=7f96dc5e"></script>
+    <script src="../_static/documentation_options.js?v=9dc39874"></script>
     <script src="../_static/doctools.js?v=888ff710"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/design-tabs.js?v=36754332"></script>
@@ -124,8 +124,8 @@
       
     
     
-    <img src="../_static/logo.png" class="logo__image only-light" alt="Galah 0.8.3 documentation - Home"/>
-    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Galah 0.8.3 documentation - Home"/>`);</script>
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Galah 0.9.1 documentation - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Galah 0.9.1 documentation - Home"/>`);</script>
   
   
 </a></div>
@@ -481,9 +481,9 @@ as follows:</p>
 <span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">avocets</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span></span>
 </pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>   decimalLatitude  decimalLongitude             eventDate                 scientificName                                                             taxonConceptID                              recordID                          dataResourceName occurrenceStatus
 0       -36.525833        139.823608  2012-07-29T00:00:00Z  Recurvirostra novaehollandiae  https://biodiversity.org.au/afd/taxa/c69e7308-527a-429d-a80d-143bd20b5100  838c1162-6c3e-4b5f-84d3-3639556f1acf               BirdLife Australia, Birdata          PRESENT
-1       -36.521950        139.827200                   NaN  Recurvirostra novaehollandiae  https://biodiversity.org.au/afd/taxa/c69e7308-527a-429d-a80d-143bd20b5100  e02745af-44d4-4ad8-9816-7aaaaa318a82  Australian Waterbird Surveys (1983-2018)          PRESENT
+1       -36.521950        139.827200                   NaN  Recurvirostra novaehollandiae  https://biodiversity.org.au/afd/taxa/c69e7308-527a-429d-a80d-143bd20b5100  3e4d190c-7032-48ba-885e-ebf513fe5af0  Australian Waterbird Surveys (1983-2018)          PRESENT
 2       -36.521950        139.827200  2010-10-21T00:00:00Z  Recurvirostra novaehollandiae  https://biodiversity.org.au/afd/taxa/c69e7308-527a-429d-a80d-143bd20b5100  8fdebcda-de5e-4c2c-94dc-a9fb25cd6817  Australian Waterbird Surveys (1983-2018)          PRESENT
-3       -36.521950        139.827200                   NaN  Recurvirostra novaehollandiae  https://biodiversity.org.au/afd/taxa/c69e7308-527a-429d-a80d-143bd20b5100  3e4d190c-7032-48ba-885e-ebf513fe5af0  Australian Waterbird Surveys (1983-2018)          PRESENT
+3       -36.521950        139.827200                   NaN  Recurvirostra novaehollandiae  https://biodiversity.org.au/afd/taxa/c69e7308-527a-429d-a80d-143bd20b5100  e02745af-44d4-4ad8-9816-7aaaaa318a82  Australian Waterbird Surveys (1983-2018)          PRESENT
 4       -36.518368        139.824353  1997-01-01T00:00:00Z  Recurvirostra novaehollandiae  https://biodiversity.org.au/afd/taxa/c69e7308-527a-429d-a80d-143bd20b5100  447135d5-7ccf-4dd5-9ca5-e6bb1e238823                          NSW BioNet Atlas          PRESENT
 </pre></div>
 </div>
@@ -514,6 +514,7 @@ have been recorded in King George Square.</p>
 3       -27.468510        153.023821  2023-04-08T07:49:00Z     Entomyzon cyanotis  Blue-faced Honeyeater
 4       -27.468418        153.024140  2022-08-30T01:29:00Z  Threskiornis moluccus  Australian White Ibis
 5       -27.468326        153.024077  2022-07-24T14:43:00Z  Threskiornis moluccus  Australian White Ibis
+6       -27.468155        153.024011  2024-04-26T02:07:00Z  Threskiornis moluccus  Australian White Ibis
 </pre></div>
 </div>
 <p>This argument can be provided as its string; however, we show you the above to give you an idea of what
@@ -539,7 +540,7 @@ inside the provided shape.</p>
 6       -27.468510        153.023821  2023-04-08T07:49:00Z              Entomyzon cyanotis  Blue-faced Honeyeater
 7       -27.468418        153.024140  2022-08-30T01:29:00Z           Threskiornis moluccus  Australian White Ibis
 8       -27.468326        153.024077  2022-07-24T14:43:00Z           Threskiornis moluccus  Australian White Ibis
-9       -27.468056        153.023889                   NaN            Syntrichia laevipila             Screw Moss
+9       -27.468155        153.024011  2024-04-26T02:07:00Z           Threskiornis moluccus  Australian White Ibis
 </pre></div>
 </div>
 </section>

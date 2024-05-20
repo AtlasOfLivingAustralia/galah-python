@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Taxonomic Filtering &#8212; Galah 0.8.3 documentation</title>
+    <title>Taxonomic Filtering &#8212; Galah 0.9.1 documentation</title>
   
   
   
@@ -38,7 +38,7 @@
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
   <script src="../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
 
-    <script src="../_static/documentation_options.js?v=7f96dc5e"></script>
+    <script src="../_static/documentation_options.js?v=9dc39874"></script>
     <script src="../_static/doctools.js?v=888ff710"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/design-tabs.js?v=36754332"></script>
@@ -124,8 +124,8 @@
       
     
     
-    <img src="../_static/logo.png" class="logo__image only-light" alt="Galah 0.8.3 documentation - Home"/>
-    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Galah 0.8.3 documentation - Home"/>`);</script>
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Galah 0.9.1 documentation - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Galah 0.9.1 documentation - Home"/>`);</script>
   
   
 </a></div>
@@ -505,7 +505,7 @@ single or multiple species.  We can also group the multiple species by their spe
 number of records for each robin.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">atlas_counts</span><span class="p">(</span><span class="n">taxa</span><span class="o">=</span><span class="s2">&quot;Petroica boodang&quot;</span><span class="p">)</span></span>
 </pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>   totalRecords
-0        119420
+0        119717
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">aus_petroica</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Petroica boodang&quot;</span><span class="p">,</span> <span class="s2">&quot;Petroica goodenovii&quot;</span><span class="p">,</span></span>
@@ -516,17 +516,17 @@ number of records for each robin.</p>
 <span class="prompt1"><span class="o">...</span>     <span class="n">group_by</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;species&quot;</span><span class="p">,</span><span class="s2">&quot;vernacularName&quot;</span><span class="p">]</span></span>
 <span class="prompt1"><span class="o">...</span> <span class="p">)</span></span>
 </pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>                  species               vernacularName   count
-0        Petroica boodang        Eastern Scarlet Robin    3496
-1        Petroica boodang                Scarlet Robin  115738
-2        Petroica boodang  South-western Scarlet Robin     160
+0        Petroica boodang        Eastern Scarlet Robin    3501
+1        Petroica boodang                Scarlet Robin  116029
+2        Petroica boodang  South-western Scarlet Robin     161
 3        Petroica boodang      Tasmanian Scarlet Robin      26
-4     Petroica goodenovii             Red-capped Robin  110285
-5     Petroica multicolor                Pacific Robin    6699
-6      Petroica phoenicea                  Flame Robin   81573
+4     Petroica goodenovii             Red-capped Robin  110379
+5     Petroica multicolor                Pacific Robin    6700
+6      Petroica phoenicea                  Flame Robin   81940
 7   Petroica rodinogaster          Mainland Pink Robin      60
-8   Petroica rodinogaster                   Pink Robin   13417
+8   Petroica rodinogaster                   Pink Robin   13501
 9   Petroica rodinogaster         Tasmanian Pink Robin      14
-10         Petroica rosea                   Rose Robin   52415
+10         Petroica rosea                   Rose Robin   52614
 </pre></div>
 </div>
 <p>This can be useful in searching for paraphyletic or polyphyletic groups.  For example, to get counts of non-chordates:</p>
@@ -538,11 +538,11 @@ number of records for each robin.</p>
 <span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">non_chordates</span><span class="o">.</span><span class="n">head</span><span class="p">()</span></span>
 </pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>here
            phylum    count
-0  Acanthocephala      398
-1        Annelida   316621
-2      Arthropoda  8568339
-3     Brachiopoda     2157
-4         Bryozoa    24682
+0  Acanthocephala      399
+1        Annelida   317030
+2      Arthropoda  8659300
+3     Brachiopoda     2169
+4         Bryozoa    24728
 </pre></div>
 </div>
 </section>
@@ -566,10 +566,10 @@ has been identified e.g.</p>
 1                          Pitta (Erythropitta)    subgenus    728
 2            Pitta (Erythropitta) erythrogaster     species    190
 3   Pitta (Erythropitta) erythrogaster digglesi  subspecies     21
-4                            Pitta (Pitta) iris     species   5722
+4                            Pitta (Pitta) iris     species   5726
 5                       Pitta (Pitta) iris iris  subspecies     76
 6              Pitta (Pitta) iris johnstoneiana  subspecies     27
-7                      Pitta (Pitta) versicolor     species  26086
+7                      Pitta (Pitta) versicolor     species  26106
 8           Pitta (Pitta) versicolor intermedia  subspecies     42
 9            Pitta (Pitta) versicolor simillima  subspecies     38
 10          Pitta (Pitta) versicolor versicolor  subspecies    310
@@ -605,18 +605,18 @@ and two subspecies. This can then be used in <code class="docutils literal notra
 <span class="prompt1"><span class="o">...</span>     <span class="n">expand</span><span class="o">=</span><span class="kc">False</span></span>
 <span class="prompt1"><span class="o">...</span> <span class="p">)</span></span>
 </pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>                                       scientificName  count
-0                      Aquila (Uroaetus) audax fleayi   4935
-1                                  Bettongia gaimardi   1941
+0                      Aquila (Uroaetus) audax fleayi   4950
+1                                  Bettongia gaimardi   1944
 2                        Bettongia gaimardi cuniculus     41
 3                         Bettongia gaimardi gaimardi      9
-4                   Melanodryas (Amaurodryas) vittata  14131
+4                   Melanodryas (Amaurodryas) vittata  14139
 5             Melanodryas (Amaurodryas) vittata kingi     15
 6           Melanodryas (Amaurodryas) vittata vittata     39
-7               Platycercus (Platycercus) caledonicus  43463
+7               Platycercus (Platycercus) caledonicus  43488
 8       Platycercus (Platycercus) caledonicus brownii     24
 9   Platycercus (Platycercus) caledonicus caledonicus     33
 10                                        Sarcophilus      3
-11                               Sarcophilus harrisii  36302
+11                               Sarcophilus harrisii  36310
 12                     Tyto novaehollandiae castanops     63
 </pre></div>
 </div>
