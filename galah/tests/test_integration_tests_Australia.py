@@ -754,6 +754,16 @@ def test_atlas_occurrences_geolocate_bbox_taxa():
     occurrences = galah.atlas_occurrences(taxa="reptilia",bbox=test_shape)
     assert occurrences.shape[0] > 0
 
+def test_atlas_occurrences_mint_doi():
+    galah.galah_config(atlas="Australia",email="ala4r@ala.org.au")
+    occurrences = galah.atlas_occurrences(taxa="Vulpes vulpes",mint_doi=True)
+    assert occurrences.shape[0] > 0
+
+def test_atlas_occurrences_doi():
+    galah.galah_config(atlas="Australia",email="ala4r@ala.org.au")
+    occurrences = galah.atlas_occurrences(doi="https://doi.org/10.26197/ala.e413b946-8959-41f8-9ae9-897d86029844")
+    assert occurrences.shape[0] > 0
+
 #test if it can get a taxa and return output
 def test_atlas_media_taxa_australia():
     galah.galah_config(atlas="Australia",email="ala4r@ala.org.au")
