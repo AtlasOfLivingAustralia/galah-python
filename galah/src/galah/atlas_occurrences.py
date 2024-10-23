@@ -263,6 +263,7 @@ def atlas_occurrences(taxa=None,
                 else:
                     URL = baseURL + "fq=%28qid%3A" + qid.text + "%29&qa=none&flimit=-1"
             else:
+                # print("am I here?")
                 if mint_doi:
                     URL = baseURL + "fq=%28qid%3A" + qid.text + "%29&" + galah_select(select=fields,atlas=atlas) + "&qa=none&flimit=-1&mintDoi=TRUE"
                 else:

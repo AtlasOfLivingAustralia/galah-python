@@ -228,3 +228,15 @@ VERNACULAR_NAMES = {
     "Sweden": ["commonName","commonName"],
     "United Kingdom": "",
 }
+
+MM_EXTENSIONS = {
+    "image/jpeg": "jpg",
+    "image/png": "png",
+    "audio/mpeg": "mpg",
+    "audio/x-wav": "wav",
+    "audio/mp4": "mp4",
+    "image/gif": "gif",
+    "video/3gpp": "3gp",
+    "video/quicktime": "mov",
+    "audio/vnd.wave": "wav" 
+}

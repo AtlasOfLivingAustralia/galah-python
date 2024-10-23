@@ -41,7 +41,8 @@ setup(
         'pytest',
         'unittest2py3k',
         'shapely',
-        'geopandas'
+        'geopandas',
+        'tqdm'
     ],
 
     include_package_data = True,

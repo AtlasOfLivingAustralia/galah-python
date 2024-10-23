@@ -2,11 +2,12 @@ import requests
 import urllib
 import geopandas as gpd
 import shapely
+import shutil
 from .galah_filter import galah_filter
 from .get_api_url import get_api_url
 from .search_taxa import search_taxa
 from .galah_geolocate import galah_geolocate
-from .common_dictionaries import atlases, ATLAS_KEYWORDS
+from .common_dictionaries import atlases, ATLAS_KEYWORDS, MM_EXTENSIONS
 from shapely import Polygon,MultiPolygon
 from .version import __version__
 
@@ -348,3 +349,28 @@ def add_buffer(polygon=None,
         
         # return the polygon
         return bbox_buffer[0]
+    
+def write_image_to_file(image=None,
+                        headers=None,
+                        path=None,
+                        thumbnail=False):
+
+    # set extension variable
+    ext = ""
+
+    # replace extensions in mimetype with actual filenames
+    if image["mimetype"] in MM_EXTENSIONS:
+        ext = MM_EXTENSIONS[image["mimetype"]]
+    else:
+        raise ValueError("Extension {} is not in our list of extensions.".format(image["mimetype"]))
+
+    # check if they want the thumbnail vs. original 
+    if thumbnail:
+        data = requests.get(image["imageUrl"].replace('original','thumbnail'),headers=headers,stream=True)
+    else:
+        data = requests.get(image["imageUrl"],headers=headers,stream=True)
+
+    # write image to file
+    with open("{}/{}.{}".format(path,image["images"],ext),'wb') as f:
+        data.raw.decode_content = True
+        shutil.copyfileobj(data.raw,f)

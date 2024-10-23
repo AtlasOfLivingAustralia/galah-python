@@ -12,3 +12,4 @@ pytest
 unittest2py3k
 shapely
 geopandas
+tqdm

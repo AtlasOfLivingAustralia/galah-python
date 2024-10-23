@@ -22,5 +22,6 @@ Requires-Dist: pytest
 Requires-Dist: unittest2py3k
 Requires-Dist: shapely
 Requires-Dist: geopandas
+Requires-Dist: tqdm
 
 Get counts and information on species from many different atlases

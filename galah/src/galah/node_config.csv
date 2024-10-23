@@ -7,6 +7,7 @@ Australia,data-quality,profiles_lookup,https://data-quality-service.ala.org.au/a
 Australia,doi,doi_download,https://api.ala.org.au/doi/api/doi/{doi_string}/download,doi_download,TRUE,GET
 Australia,images,image_licences,https://images.ala.org.au/ws/licence,show_all-licences,TRUE,GET
 Australia,images,image_metadata,https://api.ala.org.au/images/ws/getImageInfoForIdList,media_metadata,TRUE,POST
+Australia,images,image_download,https://api.ala.org.au/images/ws/image/{id}/original,media_download,TRUE,GET
 Australia,lists,lists_all,https://lists.ala.org.au/ws/speciesList,show_all-lists,TRUE,GET
 Australia,lists,lists_lookup,https://lists.ala.org.au/ws/speciesListItems/{list_id},show_values-lists,TRUE,GET
 Australia,logger,logger_reasons,https://api.ala.org.au/logger/service/logger/reasons,show_all-reasons,TRUE,GET

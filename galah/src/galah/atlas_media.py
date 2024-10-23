@@ -1,6 +1,7 @@
 import requests,os
 import pandas as pd
 import json
+from tqdm import tqdm
 
 from .atlas_occurrences import atlas_occurrences
 from .get_api_url import get_api_url
@@ -8,6 +9,7 @@ from .get_api_url import readConfig
 from .apply_data_profile import apply_data_profile
 from .atlas_occurrences import atlas_occurrences
 from .show_all import show_all
+from .common_functions import write_image_to_file
 from .version import __version__
 
 # this function parses everything to atlas_occurrences first, and it adds something to the galah_filter argument to say
@@ -28,6 +30,8 @@ def atlas_media(taxa=None,
                 simplify_polygon=False,
                 collect=False,
                 path=None,
+                thumbnail=False,
+                progress_bar=True
                 ):
     """
     In addition to text data describing individual occurrences and their attributes, ALA stores images, sounds and videos 
@@ -72,6 +76,10 @@ def atlas_media(taxa=None,
             if ``True``, downloads full-sized images and media files returned to a local directory.
         path : string
             path to directory where downloaded media will be stored.  Defaults to current directory.
+        thumbnail : logical
+            if ``True``, downloads thumbnail images rather than the full image. Defaults to ``False``.
+        progress_bar : logical
+            if ``True``, shows a progress bar while images are downloading.  Defaults to ``True``.
 
     Returns
     -------
@@ -168,7 +176,7 @@ def atlas_media(taxa=None,
         else:
             raise ValueError("multimedia argument should either be a string or a list, i.e. multimedia=\"images\"")
     else:
-        if atlas == "Australia":
+        if atlas == "Australia" and multimedia is None:
             multimedia=['images','videos','sounds']
         elif atlas == "Austria":
             multimedia = ['multimedia']
@@ -272,29 +280,26 @@ def atlas_media(taxa=None,
                 else:
                     if not os.path.exists(path):
                         os.mkdir(path)
-                '''
-                # This statement requests the resource at 
-                # the given link, extracts its contents 
-                # and saves it in a variable 
-                data = requests.get(url).content 
+
+                # loop over images - have progress bar if user wants it
+                if progress_bar:
+
+                    for i,image in tqdm(media_metadata_df.iterrows(),total=media_metadata_df.shape[0]):
+
+                        write_image_to_file(image=image,headers=headers,path=path,thumbnail=thumbnail)
                 
-                # Opening a new file named img with extension .jpg 
-                # This file would store the data of the image file 
-                f = open('img.jpg','wb') 
-                
-                # Storing the image data inside the data variable to the file 
-                f.write(data) 
-                f.close() 
-                '''
-                for i,image in media_metadata_df.iterrows():
-                    ext = image["mimetype"].split("/")[1]
-                    #if ext == "jpeg":
-                    #    ext = "jpg"
-                    data = requests.get("{}.{}".format(image["imageUrl"],ext),headers=headers).content
-                    f = open("{}/image-{}.{}".format(path,image["images"],ext),'wb')
-                    f.write(data) 
-                    f.close() 
+                else:
+
+                    for i,image in media_metadata_df.iterrows():
+
+                        write_image_to_file(image=image,headers=headers,path=path,thumbnail=thumbnail)
+
+                # Let user know where media has been written to
                 print("Media written to {}".format(path))
+
+                # return pandas dataframe with metadata
                 return media_metadata_df
             else:
+
+                # return pandas dataframe with metadata
                 return media_metadata_df
