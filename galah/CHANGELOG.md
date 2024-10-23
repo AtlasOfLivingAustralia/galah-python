@@ -1,3 +1,17 @@
+## 0.10.0 (2024-10-23)
+
+### Feat
+
+- **added-ability-to-mint-a-DOI**: added ability to mint a doi
+
+### Fix
+
+- **fixed-atlas_media-so-it-correctly-downloads-images**: fixed atlas_media so it correctly downloads images
+- **corrected-typo-in-poetry.lock**: corrected typo in poetry file
+- **updated-poetry-file-again**: updated poetry file again to fix security issue
+- **changed-version-of-idna-in-poetry.lock**: changed version of idna
+- **fixing-documentation-and-updating-show_all-functions**: fixing documentation and updating show_all functions
+
 ## 0.9.1 (2024-05-20)
 
 ### Perf
