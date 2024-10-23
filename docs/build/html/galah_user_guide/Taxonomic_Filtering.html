@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Taxonomic Filtering &#8212; Galah 0.9.1 documentation</title>
+    <title>Taxonomic Filtering &#8212; Galah 0.10.0 documentation</title>
   
   
   
@@ -38,7 +38,7 @@
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
   <script src="../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
 
-    <script src="../_static/documentation_options.js?v=9dc39874"></script>
+    <script src="../_static/documentation_options.js?v=82662543"></script>
     <script src="../_static/doctools.js?v=888ff710"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/design-tabs.js?v=36754332"></script>
@@ -124,8 +124,8 @@
       
     
     
-    <img src="../_static/logo.png" class="logo__image only-light" alt="Galah 0.9.1 documentation - Home"/>
-    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Galah 0.9.1 documentation - Home"/>`);</script>
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Galah 0.10.0 documentation - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Galah 0.10.0 documentation - Home"/>`);</script>
   
   
 </a></div>
@@ -476,24 +476,24 @@ Please use the `scientific_name` argument to clarify taxa.
 <code class="docutils literal notranslate"><span class="pre">atlas_species</span></code> or <code class="docutils literal notranslate"><span class="pre">atlas_media</span></code> by providing the keyword <code class="docutils literal notranslate"><span class="pre">scientific_name</span></code> to any of these functions.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">atlas_counts</span><span class="p">(</span><span class="n">scientific_name</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;kingdom&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;Fungi&quot;</span><span class="p">],</span><span class="s2">&quot;scientificName&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;Morganella&quot;</span><span class="p">]})</span></span>
 </pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>   totalRecords
-0           156
+0           160
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">atlas_occurrences</span><span class="p">(</span><span class="n">scientific_name</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;kingdom&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;Fungi&quot;</span><span class="p">],</span><span class="s2">&quot;scientificName&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;Morganella&quot;</span><span class="p">]})</span></span>
 </pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>     decimalLatitude  decimalLongitude             eventDate           scientificName                                      taxonConceptID                              recordID                                                      dataResourceName occurrenceStatus
-0         -47.000000        168.200000  2002-04-30T00:00:00Z      Morganella compacta                                       NZOR-6-128055  461f0148-7549-4a81-9495-46704b26924b                                         New Zealand Virtual Herbarium          PRESENT
-1         -46.874868        168.124626  1983-02-13T00:00:00Z      Morganella compacta                                       NZOR-6-128055  569d52b1-2481-43c3-8450-154fd5a52df1                                         New Zealand Virtual Herbarium          PRESENT
-2         -46.862750        168.116743  1985-04-23T00:00:00Z      Morganella compacta                                       NZOR-6-128055  5e633f17-193b-48d6-a0d9-ecd8251cc755                                         New Zealand Virtual Herbarium          PRESENT
-3         -46.554626        169.479023  1990-05-24T00:00:00Z      Morganella compacta                                       NZOR-6-128055  a2b24275-5c64-4a52-bbab-1fc2d72e142d                                         New Zealand Virtual Herbarium          PRESENT
-4         -46.054081        170.192709  1967-12-17T00:00:00Z      Morganella compacta                                       NZOR-6-128055  144f29e2-f06c-46b1-8792-eda5b38548f1                                         New Zealand Virtual Herbarium          PRESENT
+0         -47.000000        168.200000  2002-04-30T00:00:00Z      Morganella compacta                                       NZOR-6-128055  f2d0672f-0f8d-467f-a70d-af0ad257743a                       New Zealand Fungal and Plant Disease Collection          PRESENT
+1         -46.936200        168.126000  2021-04-15T00:00:00Z      Morganella compacta                                       NZOR-6-128055  450d6089-a004-4a4b-b281-50f60e7596bf                       New Zealand Fungal and Plant Disease Collection          PRESENT
+2         -46.874875        168.124660  1983-02-13T00:00:00Z      Morganella compacta                                       NZOR-6-128055  eaae280b-c1de-463a-8cc6-3ee72cc00e83                       New Zealand Fungal and Plant Disease Collection          PRESENT
+3         -46.862757        168.116777  1985-04-23T00:00:00Z      Morganella compacta                                       NZOR-6-128055  a08519f3-221b-4006-9803-98d8eeb771a8                       New Zealand Fungal and Plant Disease Collection          PRESENT
+4         -46.554617        169.479051  1990-05-24T00:00:00Z      Morganella compacta                                       NZOR-6-128055  4b2011f7-ef20-428d-af8f-dc17c9656df6                       New Zealand Fungal and Plant Disease Collection          PRESENT
 ..               ...               ...                   ...                      ...                                                 ...                                   ...                                                                   ...              ...
-151       -26.779400        152.880300  2009-02-19T00:00:00Z  Morganella purpurascens  https://id.biodiversity.org.au/node/fungi/60092001  092b6f3e-ef27-4cbf-bb28-b172c1b200c5                         National Herbarium of Victoria (MEL) AVH data          PRESENT
-152       -26.777741        152.880254  2012-02-15T00:00:00Z  Morganella purpurascens  https://id.biodiversity.org.au/node/fungi/60092001  8b7a0609-2c0b-42fc-9676-ba7ef9a73a5e                                                             BowerBird          PRESENT
-153              NaN               NaN  1964-11-21T00:00:00Z  Morganella purpurascens  https://id.biodiversity.org.au/node/fungi/60092001  4c74c65a-d9b8-4e81-9101-a283eec56e5a                         National Herbarium of Victoria (MEL) AVH data          PRESENT
-154       -26.405958        153.026140  2018-03-16T01:01:09Z  Morganella purpurascens  https://id.biodiversity.org.au/node/fungi/60092001  fc2816fd-4b65-4af1-b0a2-1b086c26d97f                                     ALA species sightings and OzAtlas          PRESENT
-155        -8.916667        148.150000  1953-07-15T00:00:00Z  Morganella purpurascens  https://id.biodiversity.org.au/node/fungi/60092001  633433fe-a3b4-4b4f-af12-36b54c1fd9ff  Centre for Australian National Biodiversity Research (CANB) AVH data          PRESENT
+155       -26.779400        152.880300  2009-02-19T00:00:00Z  Morganella purpurascens  https://id.biodiversity.org.au/node/fungi/60092001  092b6f3e-ef27-4cbf-bb28-b172c1b200c5                         National Herbarium of Victoria (MEL) AVH data          PRESENT
+156       -26.777741        152.880254  2012-02-15T00:00:00Z  Morganella purpurascens  https://id.biodiversity.org.au/node/fungi/60092001  8b7a0609-2c0b-42fc-9676-ba7ef9a73a5e                                                             BowerBird          PRESENT
+157              NaN               NaN  1964-11-21T00:00:00Z  Morganella purpurascens  https://id.biodiversity.org.au/node/fungi/60092001  4c74c65a-d9b8-4e81-9101-a283eec56e5a                         National Herbarium of Victoria (MEL) AVH data          PRESENT
+158       -26.405958        153.026140  2018-03-16T01:01:09Z  Morganella purpurascens  https://id.biodiversity.org.au/node/fungi/60092001  fc2816fd-4b65-4af1-b0a2-1b086c26d97f                                     ALA species sightings and OzAtlas          PRESENT
+159        -8.916667        148.150000  1953-07-15T00:00:00Z  Morganella purpurascens  https://id.biodiversity.org.au/node/fungi/60092001  633433fe-a3b4-4b4f-af12-36b54c1fd9ff  Centre for Australian National Biodiversity Research (CANB) AVH data          PRESENT
 
-[156 rows x 8 columns]
+[160 rows x 8 columns]
 </pre></div>
 </div>
 </section>
@@ -505,7 +505,7 @@ single or multiple species.  We can also group the multiple species by their spe
 number of records for each robin.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">atlas_counts</span><span class="p">(</span><span class="n">taxa</span><span class="o">=</span><span class="s2">&quot;Petroica boodang&quot;</span><span class="p">)</span></span>
 </pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>   totalRecords
-0        119717
+0        132920
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">aus_petroica</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Petroica boodang&quot;</span><span class="p">,</span> <span class="s2">&quot;Petroica goodenovii&quot;</span><span class="p">,</span></span>
@@ -516,17 +516,17 @@ number of records for each robin.</p>
 <span class="prompt1"><span class="o">...</span>     <span class="n">group_by</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;species&quot;</span><span class="p">,</span><span class="s2">&quot;vernacularName&quot;</span><span class="p">]</span></span>
 <span class="prompt1"><span class="o">...</span> <span class="p">)</span></span>
 </pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>                  species               vernacularName   count
-0        Petroica boodang        Eastern Scarlet Robin    3501
-1        Petroica boodang                Scarlet Robin  116029
-2        Petroica boodang  South-western Scarlet Robin     161
-3        Petroica boodang      Tasmanian Scarlet Robin      26
-4     Petroica goodenovii             Red-capped Robin  110379
-5     Petroica multicolor                Pacific Robin    6700
-6      Petroica phoenicea                  Flame Robin   81940
+0        Petroica boodang        Eastern Scarlet Robin    3593
+1        Petroica boodang                Scarlet Robin  129112
+2        Petroica boodang  South-western Scarlet Robin     166
+3        Petroica boodang      Tasmanian Scarlet Robin      49
+4     Petroica goodenovii             Red-capped Robin  119863
+5     Petroica multicolor                Pacific Robin    6703
+6      Petroica phoenicea                  Flame Robin   88405
 7   Petroica rodinogaster          Mainland Pink Robin      60
-8   Petroica rodinogaster                   Pink Robin   13501
-9   Petroica rodinogaster         Tasmanian Pink Robin      14
-10         Petroica rosea                   Rose Robin   52614
+8   Petroica rodinogaster                   Pink Robin   15629
+9   Petroica rodinogaster         Tasmanian Pink Robin      21
+10         Petroica rosea                   Rose Robin   60078
 </pre></div>
 </div>
 <p>This can be useful in searching for paraphyletic or polyphyletic groups.  For example, to get counts of non-chordates:</p>
@@ -538,11 +538,11 @@ number of records for each robin.</p>
 <span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">non_chordates</span><span class="o">.</span><span class="n">head</span><span class="p">()</span></span>
 </pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>here
            phylum    count
-0  Acanthocephala      399
-1        Annelida   317030
-2      Arthropoda  8659300
-3     Brachiopoda     2169
-4         Bryozoa    24728
+0  Acanthocephala      403
+1        Annelida   320633
+2      Arthropoda  8970751
+3     Brachiopoda     2181
+4         Bryozoa    25617
 </pre></div>
 </div>
 </section>
@@ -562,17 +562,17 @@ has been identified e.g.</p>
 <span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">pitta_ranks</span> <span class="o">=</span> <span class="n">pitta_ranks</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">pitta_ranks</span><span class="p">[</span><span class="s2">&quot;scientificName&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">notnull</span><span class="p">()]</span></span>
 <span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">pitta_ranks</span></span>
 </pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>                                 scientificName   taxonRank  count
-0                                         Pitta       genus     76
-1                          Pitta (Erythropitta)    subgenus    728
-2            Pitta (Erythropitta) erythrogaster     species    190
-3   Pitta (Erythropitta) erythrogaster digglesi  subspecies     21
-4                            Pitta (Pitta) iris     species   5726
-5                       Pitta (Pitta) iris iris  subspecies     76
+0                                         Pitta       genus     68
+1                          Pitta (Erythropitta)    subgenus    883
+2            Pitta (Erythropitta) erythrogaster     species    181
+3   Pitta (Erythropitta) erythrogaster digglesi  subspecies      6
+4                            Pitta (Pitta) iris     species   6548
+5                       Pitta (Pitta) iris iris  subspecies     83
 6              Pitta (Pitta) iris johnstoneiana  subspecies     27
-7                      Pitta (Pitta) versicolor     species  26106
+7                      Pitta (Pitta) versicolor     species  30024
 8           Pitta (Pitta) versicolor intermedia  subspecies     42
 9            Pitta (Pitta) versicolor simillima  subspecies     38
-10          Pitta (Pitta) versicolor versicolor  subspecies    310
+10          Pitta (Pitta) versicolor versicolor  subspecies    311
 </pre></div>
 </div>
 <p>If, for instance, you have the correct species or subspecies name, then searching for matches against the species
@@ -605,19 +605,19 @@ and two subspecies. This can then be used in <code class="docutils literal notra
 <span class="prompt1"><span class="o">...</span>     <span class="n">expand</span><span class="o">=</span><span class="kc">False</span></span>
 <span class="prompt1"><span class="o">...</span> <span class="p">)</span></span>
 </pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>                                       scientificName  count
-0                      Aquila (Uroaetus) audax fleayi   4950
-1                                  Bettongia gaimardi   1944
+0                      Aquila (Uroaetus) audax fleayi   5026
+1                                  Bettongia gaimardi   1960
 2                        Bettongia gaimardi cuniculus     41
 3                         Bettongia gaimardi gaimardi      9
-4                   Melanodryas (Amaurodryas) vittata  14139
-5             Melanodryas (Amaurodryas) vittata kingi     15
-6           Melanodryas (Amaurodryas) vittata vittata     39
-7               Platycercus (Platycercus) caledonicus  43488
+4                   Melanodryas (Amaurodryas) vittata  15709
+5             Melanodryas (Amaurodryas) vittata kingi     16
+6           Melanodryas (Amaurodryas) vittata vittata     45
+7               Platycercus (Platycercus) caledonicus  51142
 8       Platycercus (Platycercus) caledonicus brownii     24
 9   Platycercus (Platycercus) caledonicus caledonicus     33
 10                                        Sarcophilus      3
-11                               Sarcophilus harrisii  36310
-12                     Tyto novaehollandiae castanops     63
+11                               Sarcophilus harrisii  36355
+12                     Tyto novaehollandiae castanops     67
 </pre></div>
 </div>
 </section>

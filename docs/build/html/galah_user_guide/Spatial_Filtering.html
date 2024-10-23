@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Spatial filtering &#8212; Galah 0.9.1 documentation</title>
+    <title>Spatial filtering &#8212; Galah 0.10.0 documentation</title>
   
   
   
@@ -38,7 +38,7 @@
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
   <script src="../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
 
-    <script src="../_static/documentation_options.js?v=9dc39874"></script>
+    <script src="../_static/documentation_options.js?v=82662543"></script>
     <script src="../_static/doctools.js?v=888ff710"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/design-tabs.js?v=36754332"></script>
@@ -124,8 +124,8 @@
       
     
     
-    <img src="../_static/logo.png" class="logo__image only-light" alt="Galah 0.9.1 documentation - Home"/>
-    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Galah 0.9.1 documentation - Home"/>`);</script>
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Galah 0.10.0 documentation - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Galah 0.10.0 documentation - Home"/>`);</script>
   
   
 </a></div>
@@ -461,8 +461,9 @@ span.prompt1:before {
 </style><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">galah</span></span>
 <span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">galah_config</span><span class="p">(</span><span class="n">email</span><span class="o">=</span><span class="s2">&quot;your-email-here&quot;</span><span class="p">)</span></span>
 <span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">search_all</span><span class="p">(</span><span class="n">fields</span><span class="o">=</span><span class="s2">&quot;wetlands&quot;</span><span class="p">)</span></span>
-</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>      id                                                                                                            description    type link
-0  cl901  Directory of Important Wetlands Directory of Important Wetlands Spatial Database including Wetlands Type and Criteria  layers
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>        id                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           description    type link
+0    cl901                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 Directory of Important Wetlands Directory of Important Wetlands Spatial Database including Wetlands Type and Criteria  layers     
+1  cl11192  Ramsar Wetlands of Australia 2024 National dataset of Australia&#39;s Ramsar Wetlands.\r\n\r\nThe Convention on Wetlands of International Importance (the Ramsar Convention) was signed in Ramsar, Iran on 2 February 1971. The Ramsar Convention aims to halt the worldwide loss of wetlands and to conserve, through wise use and management, those that remain. The Convention encourages member countries to nominate sites containing representative, rare or unique wetlands, or that are important for conserving biological diversity, to the List of Wetlands of International Importance (Ramsar sites). Australia was one of the first countries to become a Contracting Party to the Convention and designated the world&#39;s first Ramsar site, Cobourg Peninsula, in 1974.\r\n\r\nThis project was initiated by the Wetlands Section of the Australian Government Department of Climate Change, Energy, the Environment and Water. Spatial data was sourced from the relevant State and Territory agencies and compiled into a single national coverage.\r\n\r\nIn WGS84 CRS.  layers
 </pre></div>
 </div>
 <p>Our search identifies that layer <code class="docutils literal notranslate"><span class="pre">cl901</span></code> seems to match what we are looking for. We can then either view all
@@ -507,14 +508,18 @@ have been recorded in King George Square.</p>
 <span class="prompt1"><span class="o">...</span>   <span class="n">fields</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;decimalLatitude&quot;</span><span class="p">,</span> <span class="s2">&quot;decimalLongitude&quot;</span><span class="p">,</span> <span class="s2">&quot;eventDate&quot;</span><span class="p">,</span> <span class="s2">&quot;scientificName&quot;</span><span class="p">,</span> <span class="s2">&quot;vernacularName&quot;</span><span class="p">]</span></span>
 <span class="prompt1"><span class="o">...</span> <span class="p">)</span></span>
 <span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">species_king_george_square</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span></span>
-</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>   decimalLatitude  decimalLongitude             eventDate         scientificName         vernacularName
-0       -27.468625        153.024333  2006-03-29T23:32:00Z  Threskiornis moluccus  Australian White Ibis
-1       -27.468611        153.024444  2023-12-01T23:12:02Z    Cosmophasis baehrae                    NaN
-2       -27.468546        153.023911  2024-02-03T10:45:00Z            Mediastinia                    NaN
-3       -27.468510        153.023821  2023-04-08T07:49:00Z     Entomyzon cyanotis  Blue-faced Honeyeater
-4       -27.468418        153.024140  2022-08-30T01:29:00Z  Threskiornis moluccus  Australian White Ibis
-5       -27.468326        153.024077  2022-07-24T14:43:00Z  Threskiornis moluccus  Australian White Ibis
-6       -27.468155        153.024011  2024-04-26T02:07:00Z  Threskiornis moluccus  Australian White Ibis
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>    decimalLatitude  decimalLongitude             eventDate         scientificName         vernacularName
+0        -27.468625        153.024333  2006-03-30T09:32:00Z  Threskiornis moluccus  Australian White Ibis
+1        -27.468611        153.024444  2023-12-02T09:12:02Z    Cosmophasis baehrae                    NaN
+2        -27.468546        153.023911  2024-02-03T20:45:00Z            Mediastinia                    NaN
+3        -27.468510        153.023821  2023-04-08T17:49:00Z     Entomyzon cyanotis  Blue-faced Honeyeater
+4        -27.468418        153.024140  2022-08-30T11:29:00Z  Threskiornis moluccus  Australian White Ibis
+5        -27.468364        153.024121  2024-08-28T10:31:54Z               Vitellus                    NaN
+6        -27.468326        153.024077  2022-07-24T14:43:00Z  Threskiornis moluccus  Australian White Ibis
+7        -27.468308        153.024097  2024-10-13T14:34:00Z  Threskiornis moluccus  Australian White Ibis
+8        -27.468295        153.023967  2024-10-13T14:35:00Z     Gymnorhina tibicen      Australian Magpie
+9        -27.468167        153.024047  2024-07-23T10:00:53Z  Threskiornis moluccus  Australian White Ibis
+10       -27.468155        153.024011  2024-04-26T12:07:00Z  Threskiornis moluccus  Australian White Ibis
 </pre></div>
 </div>
 <p>This argument can be provided as its string; however, we show you the above to give you an idea of what
@@ -530,17 +535,17 @@ inside the provided shape.</p>
 <span class="prompt1"><span class="o">...</span>   <span class="n">fields</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;decimalLatitude&quot;</span><span class="p">,</span> <span class="s2">&quot;decimalLongitude&quot;</span><span class="p">,</span> <span class="s2">&quot;eventDate&quot;</span><span class="p">,</span> <span class="s2">&quot;scientificName&quot;</span><span class="p">,</span> <span class="s2">&quot;vernacularName&quot;</span><span class="p">]</span></span>
 <span class="prompt1"><span class="o">...</span> <span class="p">)</span></span>
 <span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">species_king_george_square</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span></span>
-</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>   decimalLatitude  decimalLongitude             eventDate                  scientificName         vernacularName
-0       -27.468889        153.024444  2015-10-09T00:00:00Z  Burhinus (Burhinus) grallarius      Bush Stone-curlew
-1       -27.468817        153.023616  2019-04-21T04:40:00Z           Threskiornis moluccus  Australian White Ibis
-2       -27.468816        153.023613  2005-08-28T12:18:00Z           Threskiornis moluccus  Australian White Ibis
-3       -27.468625        153.024333  2006-03-29T23:32:00Z           Threskiornis moluccus  Australian White Ibis
-4       -27.468611        153.024444  2023-12-01T23:12:02Z             Cosmophasis baehrae                    NaN
-5       -27.468546        153.023911  2024-02-03T10:45:00Z                     Mediastinia                    NaN
-6       -27.468510        153.023821  2023-04-08T07:49:00Z              Entomyzon cyanotis  Blue-faced Honeyeater
-7       -27.468418        153.024140  2022-08-30T01:29:00Z           Threskiornis moluccus  Australian White Ibis
-8       -27.468326        153.024077  2022-07-24T14:43:00Z           Threskiornis moluccus  Australian White Ibis
-9       -27.468155        153.024011  2024-04-26T02:07:00Z           Threskiornis moluccus  Australian White Ibis
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>   decimalLatitude  decimalLongitude             eventDate                             scientificName         vernacularName
+0       -27.468889        153.024444  2015-10-09T00:00:00Z             Burhinus (Burhinus) grallarius      Bush Stone-curlew
+1       -27.468817        153.023616  2019-04-21T14:40:00Z                      Threskiornis moluccus  Australian White Ibis
+2       -27.468816        153.023613  2005-08-28T12:18:00Z                      Threskiornis moluccus  Australian White Ibis
+3       -27.468680        153.023828  2024-07-15T15:00:18Z                      Pseudanapaea denotata                    NaN
+4       -27.468680        153.023828  2024-01-13T15:07:42Z                      Tenodera australasiae    Purplewinged Mantid
+5       -27.468680        153.023828  2024-01-13T15:04:53Z                  Pristhesancus plagipennis             Bee-killer
+6       -27.468680        153.023828  2024-01-13T15:06:26Z  Toxorhynchites (Toxorhynchites) speciosus                    NaN
+7       -27.468680        153.023828  2024-01-13T12:20:00Z                                  Xixuthrus                    NaN
+8       -27.468680        153.023828  2024-07-15T12:12:27Z                    Columba (Columba) livia              Rock Dove
+9       -27.468680        153.023828  2024-01-13T15:07:42Z              Lyramorpha (Lyramorpha) rosea       Litchi Stink Bug
 </pre></div>
 </div>
 </section>
@@ -609,20 +614,20 @@ shapefile from the above link, and perform our filtering and summarising as foll
 <span class="prompt1"><span class="o">...</span>     <span class="n">bbox</span><span class="o">=</span><span class="n">brisbane_parks_bbox</span></span>
 <span class="prompt1"><span class="o">...</span> <span class="p">)</span></span>
 <span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">lorikeet_brisbane</span></span>
-</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>      decimalLatitude  decimalLongitude  ... dataResourceName occurrenceStatus
-0          -27.576858        152.970235  ...  eBird Australia          PRESENT
-1          -27.576303        152.981694  ...  eBird Australia          PRESENT
-2          -27.574852        152.992831  ...  eBird Australia          PRESENT
-3          -27.574169        152.995529  ...  eBird Australia          PRESENT
-4          -27.574145        152.977711  ...  eBird Australia          PRESENT
-...               ...               ...  ...              ...              ...
-1860       -27.517616        152.985081  ...  eBird Australia          PRESENT
-1861       -27.517616        152.985081  ...  eBird Australia          PRESENT
-1862       -27.517616        152.985081  ...  eBird Australia          PRESENT
-1863       -27.517616        152.985081  ...  eBird Australia          PRESENT
-1864       -27.517616        152.985081  ...  eBird Australia          PRESENT
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>      decimalLatitude  decimalLongitude  ...       dataResourceName occurrenceStatus
+0          -27.576858        152.970235  ...        eBird Australia          PRESENT
+1          -27.576303        152.981694  ...        eBird Australia          PRESENT
+2          -27.575771        152.989980  ...  iNaturalist Australia          PRESENT
+3          -27.574852        152.992831  ...        eBird Australia          PRESENT
+4          -27.574169        152.995529  ...        eBird Australia          PRESENT
+...               ...               ...  ...                    ...              ...
+2780       -27.517759        152.985278  ...        eBird Australia          PRESENT
+2781       -27.517759        152.985278  ...        eBird Australia          PRESENT
+2782       -27.517759        152.985278  ...        eBird Australia          PRESENT
+2783       -27.517759        152.985278  ...        eBird Australia          PRESENT
+2784       -27.517759        152.985278  ...        eBird Australia          PRESENT
 
-[1865 rows x 8 columns]
+[2785 rows x 8 columns]
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">brisbane_parks_all</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">edgecolor</span> <span class="o">=</span> <span class="s2">&quot;#5A5A5A&quot;</span><span class="p">,</span> <span class="n">linewidth</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">facecolor</span> <span class="o">=</span> <span class="s2">&quot;white&quot;</span><span class="p">,</span> <span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">7</span><span class="p">,</span><span class="mi">10</span><span class="p">))</span></span>
@@ -640,16 +645,16 @@ shapefile from the above link, and perform our filtering and summarising as foll
 <span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">brisbane_parks_counts</span> <span class="o">=</span> <span class="n">brisbane_parks</span><span class="p">[[</span><span class="s2">&quot;PARK_NAME&quot;</span><span class="p">,</span><span class="s2">&quot;count&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s2">&quot;count&quot;</span><span class="p">,</span><span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></span>
 <span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">brisbane_parks_counts</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span></span>
 </pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>                        PARK_NAME  count
-0              SHERWOOD ARBORETUM    276
-1                NYUNDARE-BA PARK    271
-2                   FAULKNER PARK     51
-3         STRICKLAND TERRACE PARK     33
-4  GRACEVILLE RIVERSIDE PARKLANDS     32
-5              FORT ROAD BUSHLAND     31
-6               BENARRAWA RESERVE     19
-7                  NOSWORTHY PARK     16
-8           HORACE WINDOW RESERVE      9
-9          GRACEVILLE AVENUE PARK      6
+0                NYUNDARE-BA PARK    552
+1              SHERWOOD ARBORETUM    472
+2                   FAULKNER PARK     64
+3              FORT ROAD BUSHLAND     46
+4         STRICKLAND TERRACE PARK     44
+5               BENARRAWA RESERVE     34
+6  GRACEVILLE RIVERSIDE PARKLANDS     33
+7                  NOSWORTHY PARK     17
+8           HORACE WINDOW RESERVE     14
+9          GRACEVILLE AVENUE PARK      7
 </pre></div>
 </div>
 <p>Some shapefiles cover large geographic areas with the caveat that even the bounding box doesn’t restrict the

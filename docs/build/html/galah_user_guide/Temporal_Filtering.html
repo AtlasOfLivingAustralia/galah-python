@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Temporal filtering &#8212; Galah 0.9.1 documentation</title>
+    <title>Temporal filtering &#8212; Galah 0.10.0 documentation</title>
   
   
   
@@ -38,7 +38,7 @@
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
   <script src="../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
 
-    <script src="../_static/documentation_options.js?v=9dc39874"></script>
+    <script src="../_static/documentation_options.js?v=82662543"></script>
     <script src="../_static/doctools.js?v=888ff710"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/design-tabs.js?v=36754332"></script>
@@ -124,8 +124,8 @@
       
     
     
-    <img src="../_static/logo.png" class="logo__image only-light" alt="Galah 0.9.1 documentation - Home"/>
-    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Galah 0.9.1 documentation - Home"/>`);</script>
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Galah 0.10.0 documentation - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Galah 0.10.0 documentation - Home"/>`);</script>
   
   
 </a></div>
@@ -464,18 +464,18 @@ span.prompt1:before {
 <span class="prompt1"><span class="o">...</span>     <span class="n">expand</span><span class="o">=</span><span class="kc">False</span></span>
 <span class="prompt1"><span class="o">...</span> <span class="p">)</span></span>
 </pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>    month  count
-0       1  33130
-1       2  23924
-2       3  25643
-3       4  10147
-4       5   8114
-5       6   9259
-6       7  12410
-7       8  26529
-8       9  42346
-9      10  54593
-10     11  23577
-11     12   4176
+0       1  22346
+1       2  16549
+2       3  17964
+3       4   7769
+4       5   5995
+5       6   6961
+6       7   8945
+7       8  18758
+8       9  27616
+9      10  38208
+10     11  83806
+11     12  36578
 </pre></div>
 </div>
 <p>It is also important to observe that the outputted month column is of type character even though
@@ -511,8 +511,8 @@ it will only return results that fall within all 3 windows at once.</p>
 6   2019      6
 7   2020     20
 8   2021     36
-9   2022     25
-10  2023     52
+9   2022     26
+10  2023     54
 </pre></div>
 </div>
 </section>
@@ -541,7 +541,7 @@ was removed from the Australian threatened species list on 26/02/2022.</p>
 <span class="prompt1"><span class="o">...</span>     <span class="n">filters</span><span class="o">=</span><span class="s2">&quot;eventDate&gt;=2022-02-26T00:00:00Z&quot;</span></span>
 <span class="prompt1"><span class="o">...</span> <span class="p">)</span></span>
 </pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>   totalRecords
-0           706
+0          1193
 </pre></div>
 </div>
 <p>It can be unintuitive to provide dates in this format. Luckily, it is straightforward to convert
@@ -576,7 +576,7 @@ ALA by the following week:</p>
 <span class="prompt1"><span class="o">...</span>     <span class="p">]</span></span>
 <span class="prompt1"><span class="o">...</span> <span class="p">)</span></span>
 </pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>   totalRecords
-0           401
+0           407
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="c1"># Records of Cactua galerita uploaded in Jan 1-14</span></span>
@@ -589,7 +589,7 @@ ALA by the following week:</p>
 <span class="prompt1"><span class="o">...</span>     <span class="p">]</span></span>
 <span class="prompt1"><span class="o">...</span> <span class="p">)</span></span>
 </pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>   totalRecords
-0             6
+0             5
 </pre></div>
 </div>
 <p>Note that no lower bound is required for <code class="docutils literal notranslate"><span class="pre">firstLoadedDate</span></code> because <code class="docutils literal notranslate"><span class="pre">eventDate</span></code> imposes that by proxy

@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Choosing an Atlas &#8212; Galah 0.9.1 documentation</title>
+    <title>Choosing an Atlas &#8212; Galah 0.10.0 documentation</title>
   
   
   
@@ -38,7 +38,7 @@
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
   <script src="../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
 
-    <script src="../_static/documentation_options.js?v=9dc39874"></script>
+    <script src="../_static/documentation_options.js?v=82662543"></script>
     <script src="../_static/doctools.js?v=888ff710"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/design-tabs.js?v=36754332"></script>
@@ -124,8 +124,8 @@
       
     
     
-    <img src="../_static/logo.png" class="logo__image only-light" alt="Galah 0.9.1 documentation - Home"/>
-    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Galah 0.9.1 documentation - Home"/>`);</script>
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Galah 0.10.0 documentation - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Galah 0.10.0 documentation - Home"/>`);</script>
   
   
 </a></div>
@@ -472,13 +472,13 @@ Available information may vary for each Living Atlas.</p>
 3                                                                                                                   &quot;P to Z&quot; flora EPBC  https://collections.ala.org.au/ws/dataResource/dr24173  dr24173
 4                                                                                                                     00 ACT Weeds TEST  https://collections.ala.org.au/ws/dataResource/dr26439  dr26439
 ...                                                                                                                                 ...                                                     ...      ...
-6405                                                                            Zooplankton abundance in the Kerguelen Axis region 2016  https://collections.ala.org.au/ws/dataResource/dr16244  dr16244
-6406                                                                            Zooplankton Abundance_Umbrella net_sea ice zone 2007/12  https://collections.ala.org.au/ws/dataResource/dr16265  dr16265
-6407  Zooplankton samples from Heron net trawls along the 110E meridian, eastern Indian Ocean, RV Investigator voyage IN2019_V03 (2019)  https://collections.ala.org.au/ws/dataResource/dr23120  dr23120
-6408                                        Zooplankton sampling in the coastal waters of south eastern Tasmania, Australia (2009-2015)  https://collections.ala.org.au/ws/dataResource/dr15943  dr15943
-6409                                                                                                         Zoos Victoria Moth Tracker  https://collections.ala.org.au/ws/dataResource/dr22371  dr22371
+8499  Zooplankton samples from Heron net trawls along the 110E meridian, eastern Indian Ocean, RV Investigator voyage IN2019_V03 (2019)  https://collections.ala.org.au/ws/dataResource/dr23120  dr23120
+8500                                        Zooplankton sampling in the coastal waters of south eastern Tasmania, Australia (2009-2015)  https://collections.ala.org.au/ws/dataResource/dr15943  dr15943
+8501                                                                                                         Zoos Victoria Moth Tracker  https://collections.ala.org.au/ws/dataResource/dr22371  dr22371
+8502                                                                                                            Zosteria fulvipubescens  https://collections.ala.org.au/ws/dataResource/dr27880  dr27880
+8503                                                                                                            Zosteria fulvipubescens  https://collections.ala.org.au/ws/dataResource/dr27881  dr27881
 
-[6410 rows x 3 columns]
+[8504 rows x 3 columns]
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">show_all</span><span class="p">(</span><span class="n">fields</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></span>
@@ -489,13 +489,13 @@ Available information may vary for each Living Atlas.</p>
 3       abcdTypeStatus                   ABCD field in use by herbaria  field  NaN
 4    acceptedNameUsage  http://rs.tdwg.org/dwc/terms/acceptedNameUsage  field  NaN
 ..                 ...                                             ...    ...  ...
-755  multimediaLicence                              Media filter field  media     
-756             images                              Media filter field  media     
-757             videos                              Media filter field  media     
-758             sounds                              Media filter field  media     
-759                qid                Reference to pre-generated query  other     
+841  multimediaLicence                              Media filter field  media     
+842             images                              Media filter field  media     
+843             videos                              Media filter field  media     
+844             sounds                              Media filter field  media     
+845                qid                Reference to pre-generated query  other     
 
-[760 rows x 4 columns]
+[846 rows x 4 columns]
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">search_all</span><span class="p">(</span><span class="n">datasets</span><span class="o">=</span><span class="s2">&quot;year&quot;</span><span class="p">)</span></span>
@@ -534,25 +534,25 @@ Index: []
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">atlas_counts</span><span class="p">(</span><span class="n">taxa</span><span class="o">=</span><span class="s2">&quot;Vulpes vulpes&quot;</span><span class="p">,</span> <span class="n">filters</span><span class="o">=</span><span class="s2">&quot;year&gt;2010&quot;</span><span class="p">)</span></span>
 </pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>   totalRecords
-0        100347
+0         99304
 </pre></div>
 </div>
 <p>Download species occurrence records from other atlases with <code class="docutils literal notranslate"><span class="pre">galah.atlas_occurrences()</span></code></p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">atlas_occurrences</span><span class="p">(</span><span class="n">taxa</span><span class="o">=</span><span class="s2">&quot;Vulpes vulpes&quot;</span><span class="p">,</span> <span class="n">filters</span><span class="o">=</span><span class="s2">&quot;year&gt;2010&quot;</span><span class="p">,</span> <span class="n">fields</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;taxon_name&quot;</span><span class="p">,</span> <span class="s2">&quot;year&quot;</span><span class="p">])</span></span>
-</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>              scientificName  year
-0              Vulpes vulpes  2012
-1              Vulpes vulpes  2016
-2              Vulpes vulpes  2019
-3              Vulpes vulpes  2017
-4              Vulpes vulpes  2016
-...                      ...   ...
-100342         Vulpes vulpes  2017
-100343         Vulpes vulpes  2017
-100344  Vulpes vulpes vulpes  2018
-100345  Vulpes vulpes vulpes  2019
-100346  Vulpes vulpes vulpes  2019
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>             scientificName  year
+0             Vulpes vulpes  2014
+1             Vulpes vulpes  2021
+2             Vulpes vulpes  2023
+3             Vulpes vulpes  2013
+4             Vulpes vulpes  2011
+...                     ...   ...
+99299         Vulpes vulpes  2017
+99300         Vulpes vulpes  2011
+99301  Vulpes vulpes vulpes  2018
+99302  Vulpes vulpes vulpes  2019
+99303  Vulpes vulpes vulpes  2019
 
-[100347 rows x 2 columns]
+[99304 rows x 2 columns]
 </pre></div>
 </div>
 </section>
@@ -571,12 +571,12 @@ return the total number of species records in each Living Atlas in one table.</p
 <span class="prompt1"><span class="o">&gt;&gt;&gt;</span>     <span class="n">counts_dict</span><span class="p">[</span><span class="s2">&quot;Total Records&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">galah</span><span class="o">.</span><span class="n">atlas_counts</span><span class="p">()[</span><span class="s2">&quot;totalRecords&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span></span>
 <span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">counts_dict</span><span class="p">)</span></span>
 </pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>       Atlas  Total Records
-0  Australia      134343442
-1     Brazil       28462435
-2       GBIF     2972298622
+0  Australia      145842108
+1     Brazil       36491553
+2       GBIF     3050174917
 3  Guatemala        4225159
-4      Spain       57342600
-5     Sweden      129295052
+4      Spain       59648453
+5     Sweden      138368256
 </pre></div>
 </div>
 </section>
