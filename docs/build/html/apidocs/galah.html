@@ -444,17 +444,17 @@ span.prompt1:before {
 }
 </style><span class="prompt1"><span class="n">galah</span><span class="o">.</span><span class="n">atlas_counts</span><span class="p">()</span></span>
 </pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>   totalRecords
-0     145842108
+0     146269834
 </pre></div>
 </div>
 <p>Return records from 2020 onwards, grouped by year</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="n">galah</span><span class="o">.</span><span class="n">atlas_counts</span><span class="p">(</span><span class="n">filters</span><span class="o">=</span><span class="s2">&quot;year&gt;2019&quot;</span><span class="p">,</span><span class="n">group_by</span><span class="o">=</span><span class="s2">&quot;year&quot;</span><span class="p">,</span><span class="n">expand</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></span>
 </pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>   year     count
-0  2020   7174382
-1  2021   8461097
-2  2022   9002856
-3  2023  10304719
-4  2024   4996855
+0  2020   7181574
+1  2021   8465311
+2  2022   9013024
+3  2023  10318046
+4  2024   5292506
 </pre></div>
 </div>
 </dd></dl>
@@ -645,11 +645,11 @@ Default is set to <code class="docutils literal notranslate"><span class="pre">&
 3          -39.026141        146.332604  2023-07-16T00:00:00Z  Vulpes vulpes   
 4          -39.021544        146.443742  2023-03-14T15:40:48Z  Vulpes vulpes   
 ...               ...               ...                   ...            ...   
-5963        39.300000        -75.400000  2023-11-02T04:54:00Z  Vulpes vulpes   
-5964        40.000000        -81.500000  2023-07-14T11:15:00Z  Vulpes vulpes   
-5965        42.100000        -71.600000  2023-12-18T13:33:00Z  Vulpes vulpes   
-5966        43.600000        145.300000  2023-08-09T10:50:47Z  Vulpes vulpes   
-5967        51.100000         -0.500000  2023-03-17T12:04:54Z  Vulpes vulpes   
+5985        39.300000        -75.400000  2023-11-02T04:54:00Z  Vulpes vulpes   
+5986        40.000000        -81.500000  2023-07-14T11:15:00Z  Vulpes vulpes   
+5987        42.100000        -71.600000  2023-12-18T13:33:00Z  Vulpes vulpes   
+5988        43.600000        145.300000  2023-08-09T10:50:47Z  Vulpes vulpes   
+5989        51.100000         -0.500000  2023-03-17T12:04:54Z  Vulpes vulpes   
 
                                          taxonConceptID  \
 0     https://biodiversity.org.au/afd/taxa/2869ce8a-...   
@@ -658,11 +658,11 @@ Default is set to <code class="docutils literal notranslate"><span class="pre">&
 3     https://biodiversity.org.au/afd/taxa/2869ce8a-...   
 4     https://biodiversity.org.au/afd/taxa/2869ce8a-...   
 ...                                                 ...   
-5963  https://biodiversity.org.au/afd/taxa/2869ce8a-...   
-5964  https://biodiversity.org.au/afd/taxa/2869ce8a-...   
-5965  https://biodiversity.org.au/afd/taxa/2869ce8a-...   
-5966  https://biodiversity.org.au/afd/taxa/2869ce8a-...   
-5967  https://biodiversity.org.au/afd/taxa/2869ce8a-...   
+5985  https://biodiversity.org.au/afd/taxa/2869ce8a-...   
+5986  https://biodiversity.org.au/afd/taxa/2869ce8a-...   
+5987  https://biodiversity.org.au/afd/taxa/2869ce8a-...   
+5988  https://biodiversity.org.au/afd/taxa/2869ce8a-...   
+5989  https://biodiversity.org.au/afd/taxa/2869ce8a-...   
 
                                   recordID             dataResourceName  \
 0     572341b6-94ca-4d96-bf4f-889cbd5e26f0                    FeralScan   
@@ -671,11 +671,11 @@ Default is set to <code class="docutils literal notranslate"><span class="pre">&
 3     147fbb76-92b6-460c-bb12-4f9fc5f353b0                    FeralScan   
 4     e82ec752-fbcc-40e4-97e4-41adbfdee088        iNaturalist Australia   
 ...                                    ...                          ...   
-5963  531ca541-8c12-4bdd-834d-31980cd127ab  Earth Guardians Weekly Feed   
-5964  4065886d-ce29-48d2-b8b3-9bc4195ba8b3  Earth Guardians Weekly Feed   
-5965  d35e6a68-ca70-42d2-beae-e6747d1138cf  Earth Guardians Weekly Feed   
-5966  47b6921d-3891-4e52-b1aa-9fbd57e76823  Earth Guardians Weekly Feed   
-5967  65fc1040-5675-4f6c-8c92-40f8de159bed  Earth Guardians Weekly Feed   
+5985  531ca541-8c12-4bdd-834d-31980cd127ab  Earth Guardians Weekly Feed   
+5986  4065886d-ce29-48d2-b8b3-9bc4195ba8b3  Earth Guardians Weekly Feed   
+5987  d35e6a68-ca70-42d2-beae-e6747d1138cf  Earth Guardians Weekly Feed   
+5988  47b6921d-3891-4e52-b1aa-9fbd57e76823  Earth Guardians Weekly Feed   
+5989  65fc1040-5675-4f6c-8c92-40f8de159bed  Earth Guardians Weekly Feed   
 
      occurrenceStatus  
 0             PRESENT  
@@ -684,13 +684,13 @@ Default is set to <code class="docutils literal notranslate"><span class="pre">&
 3             PRESENT  
 4             PRESENT  
 ...               ...  
-5963          PRESENT  
-5964          PRESENT  
-5965          PRESENT  
-5966          PRESENT  
-5967          PRESENT  
+5985          PRESENT  
+5986          PRESENT  
+5987          PRESENT  
+5988          PRESENT  
+5989          PRESENT  
 
-[5968 rows x 8 columns]
+[5990 rows x 8 columns]
 </pre></div>
 </div>
 <p>Download records of Vulpes vulpes in 2023, returning only <code class="docutils literal notranslate"><span class="pre">eventDate</span></code> field</p>
@@ -704,13 +704,13 @@ Default is set to <code class="docutils literal notranslate"><span class="pre">&
 3     2023-01-01T00:00:00Z
 4     2023-01-01T00:00:00Z
 ...                    ...
-5963  2023-12-31T00:00:00Z
-5964  2023-12-31T00:00:00Z
-5965  2023-12-31T00:00:00Z
-5966  2023-12-31T14:01:00Z
-5967  2023-12-31T16:56:00Z
+5985  2023-12-31T00:00:00Z
+5986  2023-12-31T00:00:00Z
+5987  2023-12-31T00:00:00Z
+5988  2023-12-31T14:01:00Z
+5989  2023-12-31T16:56:00Z
 
-[5968 rows x 1 columns]
+[5990 rows x 1 columns]
 </pre></div>
 </div>
 </dd></dl>
@@ -1082,11 +1082,11 @@ displaying all valid options for the information specified.</p>
 3                                   &quot;P to Z&quot; flora EPBC   
 4                                     00 ACT Weeds TEST   
 ...                                                 ...   
-8499  Zooplankton samples from Heron net trawls alon...   
-8500  Zooplankton sampling in the coastal waters of ...   
-8501                         Zoos Victoria Moth Tracker   
-8502                            Zosteria fulvipubescens   
-8503                            Zosteria fulvipubescens   
+9029  Zooplankton samples from Heron net trawls alon...   
+9030  Zooplankton sampling in the coastal waters of ...   
+9031                         Zoos Victoria Moth Tracker   
+9032                            Zosteria fulvipubescens   
+9033                            Zosteria fulvipubescens   
 
                                                     uri      uid  
 0     https://collections.ala.org.au/ws/dataResource...  dr23929  
@@ -1095,13 +1095,13 @@ displaying all valid options for the information specified.</p>
 3     https://collections.ala.org.au/ws/dataResource...  dr24173  
 4     https://collections.ala.org.au/ws/dataResource...  dr26439  
 ...                                                 ...      ...  
-8499  https://collections.ala.org.au/ws/dataResource...  dr23120  
-8500  https://collections.ala.org.au/ws/dataResource...  dr15943  
-8501  https://collections.ala.org.au/ws/dataResource...  dr22371  
-8502  https://collections.ala.org.au/ws/dataResource...  dr27880  
-8503  https://collections.ala.org.au/ws/dataResource...  dr27881  
+9029  https://collections.ala.org.au/ws/dataResource...  dr23120  
+9030  https://collections.ala.org.au/ws/dataResource...  dr15943  
+9031  https://collections.ala.org.au/ws/dataResource...  dr22371  
+9032  https://collections.ala.org.au/ws/dataResource...  dr27880  
+9033  https://collections.ala.org.au/ws/dataResource...  dr27881  
 
-[8504 rows x 3 columns]
+[9034 rows x 3 columns]
 </pre></div>
 </div>
 </dd></dl>
@@ -1133,7 +1133,8 @@ more about the information of interest. <code class="docutils literal notranslat
 4  basisOfRecord          OBSERVATION
 5  basisOfRecord      MATERIAL_SAMPLE
 6  basisOfRecord      LIVING_SPECIMEN
-7  basisOfRecord      FOSSIL_SPECIMEN
+7  basisOfRecord    MATERIAL_CITATION
+8  basisOfRecord      FOSSIL_SPECIMEN
 </pre></div>
 </div>
 </dd></dl>
