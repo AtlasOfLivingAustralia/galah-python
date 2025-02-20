@@ -94,7 +94,7 @@ def test_search_taxa_australia_scientific_name():
 def test_atlas_counts_australia():
     galah.galah_config(atlas="Australia")
     taxa="Vulpes vulpes"
-    assert galah.atlas_counts(taxa)['totalRecords'][0] > 0
+    assert galah.atlas_counts(taxa=taxa)['totalRecords'][0] > 0
 
 # testing filtering works when no taxa are entered
 def test_atlas_counts_filters_australia():
@@ -802,4 +802,39 @@ def test_atlas_media_filters_multimedia_collect_path_australia():
     multimedia_output = galah.atlas_media(taxa="Ornithorhynchus anatinus",multimedia=multimedia,filters=filters,collect=True,path=path)
     files = os.listdir(path)
     assert len(files) > 0
+
+def test_atlas_counts_no_valid_taxa():
+    galah.galah_config(atlas="Australia",email="ala4r@ala.org.au")
+    species = 'Macronycteris commersoni'
+    counts = galah.atlas_counts(taxa=species,filters=["cl22=Tasmania"]) 
+    assert counts == None
+
+def test_atlas_occurrences_no_valid_taxa():
+    galah.galah_config(atlas="Australia",email="ala4r@ala.org.au")
+    species = 'Macronycteris commersoni'
+    occurrences = galah.atlas_occurrences(taxa=species,filters=["cl22=Tasmania"],fields=["scientificName","decimalLatitude","decimalLongitude"])
+    assert occurrences == None
+
+def test_atlas_counts_galah_config_custom_file():
+    galah.galah_config(atlas="Australia",email="ala4r@ala.org.au",config_file='./temp_config_atlas_counts.ini')
+    counts = galah.atlas_counts(config_file='./temp_config_atlas_counts.ini')
+    assert counts['totalRecords'][0] > 0
+
+def test_atlas_occurrences_galah_config_custom_file():
+    galah.galah_config(atlas="Australia",email="ala4r@ala.org.au",config_file='./temp_config_atlas_occurrences.ini')
+    occurrences = galah.atlas_occurrences(taxa="Vulpes vulpes",config_file='./temp_config_atlas_occurrences.ini')
+    assert occurrences.shape[0] > 0
+
+def test_atlas_media_galah_config_custom_file():
+    galah.galah_config(atlas="Australia",email="ala4r@ala.org.au",config_file='./temp_config_atlas_media.ini')
+    filters = ["year=2020","decimalLongitude>153.0"]
+    output = galah.atlas_media(taxa="Ornithorhynchus anatinus",filters=filters,config_file='./temp_config_atlas_media.ini')
+    assert output.shape[0] > 0
+
+def test_atlas_species_Australia_species_australia_galah_config_custom_file():
+    galah.galah_config(atlas="Australia",email="ala4r@ala.org.au",config_file='./temp_config_atlas_species.ini')
+    galah.galah_config(atlas="Australia")
+    taxa = "Heleioporus"
+    species_table = galah.atlas_species(taxa=taxa,config_file='./temp_config_atlas_species.ini')
+    assert species_table.shape[0] > 0
 #'''

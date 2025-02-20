@@ -1,4 +1,4 @@
-Metadata-Version: 2.1
+Metadata-Version: 2.2
 Name: galah-python
 Version: 0.10.0
 Summary: Get counts and information on species from many different atlases
@@ -23,5 +23,14 @@ Requires-Dist: unittest2py3k
 Requires-Dist: shapely
 Requires-Dist: geopandas
 Requires-Dist: tqdm
+Dynamic: author
+Dynamic: author-email
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: keywords
+Dynamic: license
+Dynamic: requires-dist
+Dynamic: summary
 
 Get counts and information on species from many different atlases

@@ -18,7 +18,7 @@ def test_show_all_apis_france():
 def test_show_all_collection_france():
     galah.galah_config(atlas="France")
     output = galah.show_all(collection=True)
-    assert output.shape[1] > 1
+    assert output.shape[0] > 1
 
 def test_show_all_datasets_france():
     galah.galah_config(atlas="France")
@@ -351,14 +351,14 @@ def test_search_all_apis_column_name_france():
 def test_search_all_collection_france():
     galah.galah_config(atlas="France")
     total_show_all = galah.show_all(collection=True)
-    total_search_all = galah.search_all(collection="Agricultural")
+    total_search_all = galah.search_all(collection="NATURELLE")
     assert total_search_all.shape[0] < total_show_all.shape[0]
     
 # search_all() - collection using "Agricultural" and column name "uid"
 def test_search_all_collection_column_name_france():
     galah.galah_config(atlas="France")
     total_show_all = galah.show_all(collection=True)
-    total_search_all = galah.search_all(collection="85",column_name="uid")
+    total_search_all = galah.search_all(collection="France",column_name="producers")
     assert total_search_all.shape[0] < total_show_all.shape[0]
 
 # search_all() - datasets using "Projet"
@@ -372,7 +372,7 @@ def test_search_all_datasets_france():
 def test_search_all_datasets_column_name_france():
     galah.galah_config(atlas="France")
     total_show_all = galah.show_all(datasets=True)
-    total_search_all = galah.search_all(datasets="4047",column_name="uid")
+    total_search_all = galah.search_all(datasets="3527",column_name="id")
     assert total_search_all.shape[0] < total_show_all.shape[0]
 
 # search_all() - fields using "accepted"

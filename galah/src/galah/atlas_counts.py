@@ -1,3 +1,4 @@
+import urllib.parse
 import requests
 import pandas as pd
 from .galah_group_by import galah_group_by
@@ -22,6 +23,7 @@ def atlas_counts(taxa=None,
                  polygon=None,
                  bbox=None,
                  simplify_polygon=False,
+                 config_file=None
                  ):
     """
     Prior to downloading data, it is often valuable to have some estimate of how many records are available, both for deciding
@@ -81,7 +83,7 @@ def atlas_counts(taxa=None,
     """
 
     # get configs
-    configs = readConfig()
+    configs = readConfig(config_file=config_file)
 
     # get atlas
     atlas = configs['galahSettings']['atlas']
@@ -110,13 +112,13 @@ def atlas_counts(taxa=None,
 
     # add a question mark at the end of the URL to separate between endpoint and queries
     URL = baseURL + "?"
-
+    
     # get headers
     headers = {"User-Agent": "galah-python/{}".format(__version__)}
 
     # create payload (for ALA)
     payload = {}
-
+    '''
     # check for Australian atlas
     if atlas in ["Australia","ALA"]:
 
@@ -137,6 +139,10 @@ def atlas_counts(taxa=None,
                                      polygon=polygon,bbox=bbox,scientific_name=scientific_name,
                                      simplify_polygon=simplify_polygon)
         
+        # try this for payload
+        if payload is None:
+            return None
+
         # check for group by
         if group_by is not None:
 
@@ -155,6 +161,7 @@ def atlas_counts(taxa=None,
 
         # cache the user's query and get a query ID
         qid = requests.request(method2,qid_URL,data=payload,headers=headers)
+        print(qid)
         
         # create the URL to grab your queryID and counts
         URL = baseURL + "fq=%28qid%3A" + qid.text + "%29&flimit=-1&pageSize=0"
@@ -186,75 +193,78 @@ def atlas_counts(taxa=None,
         return pd.DataFrame({'totalRecords': [response_json[COUNTS_NAMES[atlas]]]})
 
     else:
+    '''
+    # if there is no taxa, assume you will get the total number of records in the ALA
+    if taxa is not None:
 
-        # if there is no taxa, assume you will get the total number of records in the ALA
-        if taxa is not None:
+        taxonConceptID = generate_list_taxonConceptIDs(taxa=taxa,atlas=atlas,verbose=verbose)
+        if taxonConceptID is None:
+            return None
+        URL += taxonConceptID
 
-            URL += generate_list_taxonConceptIDs(taxa=taxa,atlas=atlas,verbose=verbose)
+    # check if user wants to gropu counts
+    if group_by is not None:
 
-        # check if user wants to gropu counts
-        if group_by is not None:
+        # check for GBIF first
+        if configs["galahSettings"]['atlas'] not in ["Global","GBIF"]:
 
-            # check for GBIF first
-            if configs["galahSettings"]['atlas'] not in ["Global","GBIF"]:
-
-                # add a separator if the user has taxa specified
-                if taxa is not None and filters is not None:
-                    URL += "%20AND%20"
-                
-                # return grouped data frame
-                return galah_group_by(URL=URL, method=method, group_by=group_by, filters=filters, expand=expand, verbose=verbose, total_group_by=total_group_by)
+            # add a separator if the user has taxa specified
+            if taxa is not None and filters is not None:
+                URL += "%20AND%20"
             
-            # else, if not GBIF, just run group_by
+            # return grouped data frame
+            return galah_group_by(URL=URL, method=method, group_by=group_by, filters=filters, expand=expand, verbose=verbose, total_group_by=total_group_by)
+        
+        # else, if not GBIF, just run group_by
+        else:
+
+            # return grouped data frame
+            return galah_group_by(URL=URL, method=method, group_by=group_by, filters=filters, expand=expand, verbose=verbose, total_group_by=total_group_by)
+
+    # check if filters are specified
+    if filters is not None:
+
+        # check the type of variable filters is
+        if type(filters) is list or type(filters) is str:
+            
+            # add a separator if the user has taxa specified
+            if taxa is not None:
+                URL += "%20AND%20"
+                URL = add_filters(URL=URL,atlas=atlas,filters=filters)
+
+            # then, add filters
             else:
-
-                # return grouped data frame
-                return galah_group_by(URL=URL, method=method, group_by=group_by, filters=filters, expand=expand, verbose=verbose, total_group_by=total_group_by)
-
-        # check if filters are specified
-        if filters is not None:
-
-            # check the type of variable filters is
-            if type(filters) is list or type(filters) is str:
+                URL = add_filters(URL=URL,atlas=atlas,filters=filters)
                 
-                # add a separator if the user has taxa specified
-                if taxa is not None:
-                    URL += "%20AND%20"
-                    URL = add_filters(URL=URL,atlas=atlas,filters=filters)
+        # else, make sure that the filters is in the following format
+        else:
+            raise TypeError(
+                "filters should only be a list, and are in the following format:\n\nfilters=[\'year:2020\']")
 
-                # then, add filters
-                else:
-                    URL = add_filters(URL=URL,atlas=atlas,filters=filters)
-                    
-            # else, make sure that the filters is in the following format
-            else:
-                raise TypeError(
-                    "filters should only be a list, and are in the following format:\n\nfilters=[\'year:2020\']")
+    # testing for galah_geolocate - implemented in next version
+    if polygon is not None or bbox is not None:
+        URL += "&wkt=" + urllib.parse.quote(str(galah_geolocate(polygon=polygon,bbox=bbox,simplify_polygon=simplify_polygon)))
+    
+    # use this to get only the data we need
+    URL += "&pageSize=0"
 
-        # testing for galah_geolocate - implemented in next version
-        if polygon is not None or bbox is not None:
-            URL += "&" + galah_geolocate(polygon=polygon,bbox=bbox,simplify_polygon=simplify_polygon)
-        
-        # use this to get only the data we need
-        URL += "&pageSize=0"
+    # check to see if the user wants the querying URL
+    if verbose:
+        print()
+        print("headers: {}".format(headers))
+        print("URL for querying: {}".format(URL))
+        print("Method: {}".format(method))
+        print()
 
-        # check to see if the user wants the querying URL
-        if verbose:
-            print()
-            print("headers: {}".format(headers))
-            print("URL for querying: {}".format(URL))
-            print("Method: {}".format(method))
-            print()
+    # get data
+    response = requests.request(method,URL,headers=headers)
 
-        # get data
-        response = requests.request(method,URL,headers=headers)
-
-        # check for daily maximum
-        if response.status_code == 429:
-            raise ValueError("You have reached the maximum number of daily queries for the ALA.")
-        
-        # get data from response
-        response_json = response.json()
-        
-        # return dataFrame with total number of records
-        return pd.DataFrame({'totalRecords': [response_json[COUNTS_NAMES[atlas]]]})
+    # check for daily maximum
+    if response.status_code == 429:
+        raise ValueError("You have reached the maximum number of daily queries for the ALA.")
+    
+    # get data from response
+    response_json = response.json()
+    
+    # return dataFrame with total number of records
+    return pd.DataFrame({'totalRecords': [response_json[COUNTS_NAMES[atlas]]]})

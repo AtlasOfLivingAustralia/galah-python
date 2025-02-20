@@ -187,7 +187,10 @@ def show_all(assertions=False,
             raise ValueError("Atlas {} not taken into account in galah for collections.".format(atlas))
         
         # append data frame to return_array
-        return_array.append(pd.DataFrame.from_dict(response.json()))
+        if atlas in ["France"]:
+            return_array.append(pd.DataFrame.from_dict(response.json()['_embedded']))
+        else:
+            return_array.append(pd.DataFrame.from_dict(response.json()))
 
     # user doesn't want collections
     elif not collection:
@@ -206,7 +209,10 @@ def show_all(assertions=False,
             datasets_list = pd.DataFrame.from_dict(response.json()['results'])
         elif atlas in ATLASES:
             response = get_response_show_all(column1='called_by',column1value='show_all-datasets',atlas=atlas,headers=headers,verbose=verbose)
-            datasets_list = pd.DataFrame.from_dict(response.json())
+            if atlas in ["France"]:
+                datasets_list = pd.DataFrame.from_dict(response.json()['_embedded']['datasets'])
+            else:
+                datasets_list = pd.DataFrame.from_dict(response.json())
         else:
             raise ValueError("Atlas {} not taken into account in galah for datasets.".format(atlas))
 
@@ -230,12 +236,19 @@ def show_all(assertions=False,
             
             # get data from API
             response = get_response_show_all(column1='called_by',column1value='show_all-fields',column2='api_name',column2value='records_fields',atlas=atlas,headers=headers,verbose=verbose)
+            
+            if atlas in ["Portugal"]:
+                df = pd.DataFrame()
+                for i,item in enumerate(response.json()):
+                    df = pd.concat([df,pd.DataFrame(item,index=[i])])
+                return df
 
             # get fields values in a table
             fields_values = pd.DataFrame.from_dict(response.json())
-
+            
             # remove anything with "Contextual" or "Environmental" from the options for Australian atlas
             if atlas in ["Australia","Brazil","Spain"]:
+                
                 fields_values = fields_values[~fields_values["classs"].astype(str).str.contains("Contextual|Environmental")]
 
             # select only the columns titled 'name', 'info', (and) 'infoUrl'
@@ -262,11 +275,10 @@ def show_all(assertions=False,
             
             # get data from API
             response = get_response_show_all(column1='called_by',column1value='show_all-fields',column2='api_name',column2value='spatial_layers',atlas=atlas,headers=headers,verbose=verbose)
-            
             # process data
             spatial_values = pd.DataFrame.from_dict(response.json())
             spatial_layers = pd.DataFrame()
-
+            
             # select only the columns titled 'name', 'info', (and) 'infoUrl'
             if atlas in ["Australia","Spain"]:
 
@@ -276,7 +288,10 @@ def show_all(assertions=False,
                 spatial_layers["id"] =  spatial_values["type"].astype(str) + spatial_values["id"].astype(str)
                 
                 # build descriptions from these
-                spatial_layers["description"] = spatial_values['displayname'] + " " + spatial_values['description']
+                if atlas in ["Australia"]:
+                    spatial_layers["description"] = spatial_values['name'] + " " + spatial_values['desc'] # changed from displayname and description
+                else:
+                    spatial_layers["description"] = spatial_values['displayname'] + " " + spatial_values['description']
                 spatial_layers["type"] = "layers"
                 spatial_layers["link"] = ""
 

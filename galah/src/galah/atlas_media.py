@@ -31,7 +31,8 @@ def atlas_media(taxa=None,
                 collect=False,
                 path=None,
                 thumbnail=False,
-                progress_bar=True
+                progress_bar=True,
+                config_file=None
                 ):
     """
     In addition to text data describing individual occurrences and their attributes, ALA stores images, sounds and videos 
@@ -98,7 +99,7 @@ def atlas_media(taxa=None,
     """
 
     # get configs
-    configs = readConfig()
+    configs = readConfig(config_file=config_file)
 
     # get atlas
     atlas = configs['galahSettings']['atlas']

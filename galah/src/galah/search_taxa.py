@@ -264,9 +264,9 @@ def search_taxa(taxa=None,
                                 break
                     if raw_data is None:
                         continue
-                
+
                 # check for Australian, Global, or Spanish atlas
-                elif atlas in ["Australia","Global","GBIF","Spain","Sweden"]: # try Sweden here
+                elif atlas in ["Australia","Global","GBIF","Portugal","Spain","Sweden"]:
                     raw_data = response_json
                     if atlas in ["Global","GBIF"]:
                         response_vernacular = requests.get("https://api.gbif.org/v1/species/{}/vernacularNames".format(raw_data[TAXONCONCEPT_NAMES[atlas]["guid"]]))

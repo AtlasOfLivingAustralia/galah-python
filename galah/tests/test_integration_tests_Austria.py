@@ -1,6 +1,6 @@
 import galah
 
-'''
+#'''
 def test_show_all_assertions_austria():
     galah.galah_config(atlas="Austria")
     output = galah.show_all(assertions=True)
@@ -356,8 +356,8 @@ def test_atlas_species_Austria_family_austria():
     species_table = galah.atlas_species(taxa=taxa,rank="genus")
     assert species_table.shape[0] > 0
 
-def test_atlas_species_Australia_filter_notaxa():
-    galah.galah_config(atlas="Australia")
+def test_atlas_species_Austria_filter_notaxa():
+    galah.galah_config(atlas="Austria")
     filtered_species_table = galah.atlas_species(filters=["year=2022","basis_of_record=HumanObservation"])
     assert filtered_species_table.shape[0] > 0
 
@@ -509,33 +509,33 @@ def test_search_values_austria():
 
 # first test for atlas_occurrences() - check if search_taxa() is working
 def test_atlas_occurrences_taxa_austria():
-    galah.galah_config(atlas="Austria",email="ala4r@ala.org.au")
+    galah.galah_config(atlas="Austria",email="ala4r@ala.org.au",reason=10)
     occurrences = galah.atlas_occurrences(taxa="Sehirus luctuosus")
     assert occurrences.shape[0] > 1
 
 # second test for atlas_occurrences() - check if galah_select() is working
 def test_atlas_occurrences_taxa_fields_austria():
-    galah.galah_config(atlas="Austria",email="ala4r@ala.org.au")
+    galah.galah_config(atlas="Austria",email="ala4r@ala.org.au",reason=10)
     occurrences = galah.atlas_occurrences(taxa="Sehirus luctuosus",fields=['latitude', 'longitude'])
     # columns
     assert occurrences.shape[1] == 2
 
 # third test for atlas_occurrences() - check if galah_filter() is working with this
 def test_atlas_occurrences_taxa_filters_austria():
-    galah.galah_config(atlas="Austria",email="ala4r@ala.org.au")
+    galah.galah_config(atlas="Austria",email="ala4r@ala.org.au",reason=10)
     occurrences1 = galah.atlas_occurrences(taxa="Sehirus luctuosus")
     occurrences2 = galah.atlas_occurrences(taxa="Sehirus luctuosus",filters="year=2020")
     assert occurrences2.shape[0] < occurrences1.shape[0]
 
 # fourth test for atlas_occurrences() - check if galah_select() and galah_filter() are working concurrently
 def test_atlas_occurrences_taxa_filter_fields_austria():
-    galah.galah_config(atlas="Austria",email="ala4r@ala.org.au")
+    galah.galah_config(atlas="Austria",email="ala4r@ala.org.au",reason=10)
     occurrences = galah.atlas_occurrences(taxa="Sehirus luctuosus",filters="year=2020",fields=['latitude', 'longitude'])
     assert occurrences.shape[1] == 2
 
 # testing atlas occurrences with multiple filters
 def test_atlas_occurrences_taxa_filters_austria():
-    galah.galah_config(atlas="Austria",email="ala4r@ala.org.au")
+    galah.galah_config(atlas="Austria",email="ala4r@ala.org.au",reason=10)
     filters=["year>2018","basis_of_record=HumanObservation"]
     occurrences1 = galah.atlas_occurrences(taxa="Sehirus luctuosus")
     occurrences2 = galah.atlas_occurrences(taxa="Sehirus luctuosus",filters=filters)
@@ -543,8 +543,8 @@ def test_atlas_occurrences_taxa_filters_austria():
 
 # testing atlas occurrences with multiple filters and fields
 def test_atlas_occurrences_taxa_filters_fields_austria():
-    galah.galah_config(atlas="Austria",email="ala4r@ala.org.au")
+    galah.galah_config(atlas="Austria",email="ala4r@ala.org.au",reason=10)
     occurrences = galah.atlas_occurrences(taxa="Sehirus luctuosus",filters=["year>2018","basis_of_record=HumanObservation"],
                                            fields=['latitude', 'longitude'])
     assert occurrences.shape[1] == 2
-'''
+#'''

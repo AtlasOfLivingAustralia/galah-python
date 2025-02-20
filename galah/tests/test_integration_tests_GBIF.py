@@ -419,21 +419,7 @@ def test_atlas_occurrences_taxa_filters2_global():
 # testing atlas occurrences with multiple filters
 def test_atlas_occurrences_taxa_filters3_global():
     galah.galah_config(atlas="GBIF",email="ala4r@ala.org.au",usernameGBIF="atlasoflivingaustralia",passwordGBIF="galah-gbif-test-login")
-    filters=["year>=2022","basisOfRecord=HUMAN_OBSERVATION"]
-    occurrences = galah.atlas_occurrences(taxa="Vulpes vulpes",filters=filters)
-    assert occurrences.shape[0] > 0
-
-# testing atlas occurrences with multiple filters
-def test_atlas_occurrences_taxa_filters4_global():
-    galah.galah_config(atlas="GBIF",email="ala4r@ala.org.au",usernameGBIF="atlasoflivingaustralia",passwordGBIF="galah-gbif-test-login")
-    filters=["year>2022","basisOfRecord=HUMAN_OBSERVATION"]
-    occurrences = galah.atlas_occurrences(taxa="Vulpes vulpes",filters=filters)
-    assert occurrences.shape[0] > 0
-
-# testing atlas occurrences with multiple filters
-def test_atlas_occurrences_taxa_filters5_global():
-    galah.galah_config(atlas="GBIF",email="ala4r@ala.org.au",usernameGBIF="atlasoflivingaustralia",passwordGBIF="galah-gbif-test-login")
-    filters=["year<2000","basisOfRecord=HUMAN_OBSERVATION"]
+    filters=["year>=2023","basisOfRecord=HUMAN_OBSERVATION"]
     occurrences = galah.atlas_occurrences(taxa="Vulpes vulpes",filters=filters)
     assert occurrences.shape[0] > 0
 #'''

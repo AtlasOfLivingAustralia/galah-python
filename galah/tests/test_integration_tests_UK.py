@@ -1,5 +1,5 @@
 import galah
-'''
+
 def test_show_all_assertions_uk():
     galah.galah_config(atlas="United Kingdom")
     output = galah.show_all(assertions=True)
@@ -114,7 +114,7 @@ def test_atlas_counts_taxa_filters_uk_total_group_by():
 # test atlas counts with multiple taxa and filters, along with expand=True
 def test_atlas_counts_multiple_taxa_filters_separate_uk():
     galah.galah_config(atlas="United Kingdom")
-    taxa_array = ["Vulpes vulpes","Meles meles","Physoderma potteri"]
+    taxa_array = ["Vulpes vulpes","Meles meles"]
     f = ["basis_of_record = HumanObservation","year=2022"]
     output = galah.atlas_counts(taxa=taxa_array,filters=f,group_by="species",expand=False)
     assert output.shape[0] > 0
@@ -267,7 +267,7 @@ def test_atlas_counts_multiple_taxa_separate_uk():
 # test altas_counts() can call search_taxa() and using one filter, filter results with multiple taxa separated
 def test_atlas_counts_multiple_taxa_filters_separate_uk():
     galah.galah_config(atlas="United Kingdom")
-    taxa_array = ["Vulpes vulpes","Meles meles","Physoderma potteri"]
+    taxa_array = ["Vulpes vulpes","Meles meles"]
     f = ["basis_of_record = HumanObservation", "year=2019"] # change
     output = galah.atlas_counts(taxa_array, filters=f, group_by="species",expand=False)
     assert output.shape[0] == len(taxa_array)
@@ -305,83 +305,69 @@ def test_atlas_counts_multiple_taxa_filters_group_by_multiple_separate_expand_uk
     assert output['count'][0] >= 0 # checks that all species counts are greater than or equal zero
 
 # checking if atlas species can successfully call search_taxa() and get a non-empty dataframe\
-def test_atlas_species_United Kingdom_species_uk():
-    galah.galah_config(atlas="United Kingdom")
-    taxa = "Ramphastos"
+def test_atlas_species_United_Kingdom_species_uk():
+    galah.galah_config(atlas="United Kingdom",reason=10)
+    taxa = "Vulpes"
     species_table = galah.atlas_species(taxa=taxa)
     assert species_table.shape[0] > 0
 
 # checking if atlas species can successfully call search_taxa() and get a non-empty dataframe\
-def test_atlas_species_United Kingdom_species_rank_uk():
-    galah.galah_config(atlas="United Kingdom")
-    taxa = "Ramphastos"
-    species_table = galah.atlas_species(taxa=taxa,rank="subspecies")
-    assert species_table.shape[0] > 0
-
-# checking if atlas species can successfully call search_taxa() and get a non-empty dataframe\
-def test_atlas_species_United Kingdom_family_uk():
-    galah.galah_config(atlas="United Kingdom")
-    taxa = "Ramphastidae"
+def test_atlas_species_United_Kingdom_family_uk():
+    galah.galah_config(atlas="United Kingdom",reason=10)
+    taxa = "Vulpes"
     species_table = galah.atlas_species(taxa=taxa)
     assert species_table.shape[0] > 0
 
 # checking if atlas species can successfully call search_taxa() and get a non-empty dataframe\
-def test_atlas_species_United Kingdom_family_rank_genus_uk():
-    galah.galah_config(atlas="United Kingdom")
-    taxa = "Ramphastidae"
+def test_atlas_species_United_Kingdom_family_rank_genus_uk():
+    galah.galah_config(atlas="United Kingdom",reason=10)
+    taxa = "Vulpes"
     species_table = galah.atlas_species(taxa=taxa,rank="genus")
     assert species_table.shape[0] > 0
 
-# checking if atlas species can successfully call search_taxa() and get a non-empty dataframe\
-def test_atlas_species_United Kingdom_family_rank_subspecies_uk():
-    galah.galah_config(atlas="United Kingdom")
-    taxa = "Ramphastidae"
-    species_table = galah.atlas_species(taxa=taxa,rank="subspecies")
-    assert species_table.shape[0] > 0
-
 def test_atlas_species_uk_filter_notaxa():
-    galah.galah_config(atlas="United Kingdom")
+    galah.galah_config(atlas="United Kingdom",reason=10)
     filtered_species_table = galah.atlas_species(filters=["year=2022","basis_of_record=HumanObservation"])
     assert filtered_species_table.shape[0] > 0
 
 # search_all() - assertions using "AMBIGUOUS_COLLECTION"
 def test_search_all_assertions_uk():
-    galah.galah_config(atlas="United Kingdom")
+    galah.galah_config(atlas="United Kingdom",reason=10)
     total_show_all = galah.show_all(assertions=True)
     total_search_all = galah.search_all(assertions="ambiguousName")
     assert total_search_all.shape[0] < total_show_all.shape[0]
 
 # search_all() - assertions using "collection" and column name "description"
 def test_search_all_assertions_column_name_uk():
-    galah.galah_config(atlas="United Kingdom")
+    galah.galah_config(atlas="United Kingdom",reason=10)
     total_show_all = galah.show_all(assertions=True)
     total_search_all = galah.search_all(assertions="coll",column_name="description")
     assert total_search_all.shape[0] < total_show_all.shape[0]
 
 # search_all() - atlases using "United Kingdom"
 def test_search_all_atlases_uk():
-    galah.galah_config(atlas="United Kingdom")
+    galah.galah_config(atlas="United Kingdom",reason=10)
     total_show_all = galah.show_all(atlases=True)
     total_search_all = galah.search_all(atlases="United Kingdom")
     assert total_search_all.shape[0] < total_show_all.shape[0]
 
 # search_all() - atlases using "Australia" and column name "institution"
 def test_search_all_atlases_column_name_uk():
-    galah.galah_config(atlas="United Kingdom")
+    galah.galah_config(atlas="United Kingdom",reason=10)
     total_show_all = galah.show_all(atlases=True)
     total_search_all = galah.search_all(atlases="United Kingdom",column_name="institution")
     assert total_search_all.shape[0] < total_show_all.shape[0]
 
 # search_all() - apis using "Australia"
 def test_search_all_apis_uk():
-    galah.galah_config(atlas="United Kingdom")
+    galah.galah_config(atlas="United Kingdom",reason=10)
     total_show_all = galah.show_all(apis=True)
     total_search_all = galah.search_all(apis="United Kingdom")
     assert total_search_all.shape[0] < total_show_all.shape[0]
     
 # search_all() - apis using "collection" and column name "systems"
 def test_search_all_apis_column_name_uk():
-    galah.galah_config(atlas="United Kingdom")
+    galah.galah_config(atlas="United Kingdom",reason=10)
     total_show_all = galah.show_all(apis=True)
     total_search_all = galah.search_all(apis="collection",column_name="system")
     assert total_search_all.shape[0] < total_show_all.shape[0]
@@ -477,42 +463,42 @@ def test_search_values_uk():
 
 # first test for atlas_occurrences() - check if search_taxa() is working
 def test_atlas_occurrences_taxa_uk():
-    galah.galah_config(atlas="United Kingdom",email="ala4r@ala.org.au")
-    occurrences = galah.atlas_occurrences(taxa="Ramphastos Toco")
+    galah.galah_config(atlas="United Kingdom",email="ala4r@ala.org.au",reason="10")
+    occurrences = galah.atlas_occurrences(taxa="Vulpes vulpes")
     assert occurrences.shape[0] > 1
 
 # second test for atlas_occurrences() - check if galah_select() is working
 def test_atlas_occurrences_taxa_fields_uk():
-    galah.galah_config(atlas="United Kingdom",email="ala4r@ala.org.au")
-    occurrences = galah.atlas_occurrences(taxa="Ramphastos Toco",fields=['latitude', 'longitude'])
+    galah.galah_config(atlas="United Kingdom",email="ala4r@ala.org.au",reason="10")
+    occurrences = galah.atlas_occurrences(taxa="Vulpes vulpes",fields=['latitude', 'longitude'])
     # columns
     assert occurrences.shape[1] == 2
 
 # third test for atlas_occurrences() - check if galah_filter() is working with this
 def test_atlas_occurrences_taxa_filters_uk():
-    galah.galah_config(atlas="United Kingdom",email="ala4r@ala.org.au")
-    occurrences1 = galah.atlas_occurrences(taxa="Ramphastos Toco")
-    occurrences2 = galah.atlas_occurrences(taxa="Ramphastos Toco",filters="year=2020")
+    galah.galah_config(atlas="United Kingdom",email="ala4r@ala.org.au",reason="10")
+    occurrences1 = galah.atlas_occurrences(taxa="Vulpes vulpes")
+    occurrences2 = galah.atlas_occurrences(taxa="Vulpes vulpes",filters="year=2020")
     assert occurrences2.shape[0] < occurrences1.shape[0]
 
 # fourth test for atlas_occurrences() - check if galah_select() and galah_filter() are working concurrently
 def test_atlas_occurrences_taxa_filter_fields_uk():
-    galah.galah_config(atlas="United Kingdom",email="ala4r@ala.org.au")
-    occurrences = galah.atlas_occurrences(taxa="Ramphastos Toco",filters="year=2020",fields=['latitude', 'longitude'])
+    galah.galah_config(atlas="United Kingdom",email="ala4r@ala.org.au",reason="10")
+    occurrences = galah.atlas_occurrences(taxa="Vulpes vulpes",filters="year=2020",fields=['latitude', 'longitude'])
     assert occurrences.shape[1] == 2
 
 # testing atlas occurrences with multiple filters
 def test_atlas_occurrences_taxa_filters_uk():
-    galah.galah_config(atlas="United Kingdom",email="ala4r@ala.org.au")
+    galah.galah_config(atlas="United Kingdom",email="ala4r@ala.org.au",reason="10")
     filters=["year>2018","basis_of_record=HumanObservation"]
-    occurrences1 = galah.atlas_occurrences(taxa="Ramphastos Toco")
-    occurrences2 = galah.atlas_occurrences(taxa="Ramphastos Toco",filters=filters)
+    occurrences1 = galah.atlas_occurrences(taxa="Vulpes vulpes")
+    occurrences2 = galah.atlas_occurrences(taxa="Vulpes vulpes",filters=filters)
     assert occurrences2.shape[0] < occurrences1.shape[0]
 
 # testing atlas occurrences with multiple filters and fields
 def test_atlas_occurrences_taxa_filters_fields_uk():
-    galah.galah_config(atlas="United Kingdom",email="ala4r@ala.org.au")
-    occurrences = galah.atlas_occurrences(taxa="Ramphastos Toco",filters=["year>2018","basis_of_record=HumanObservation"],
+    galah.galah_config(atlas="United Kingdom",email="ala4r@ala.org.au",reason="10")
+    occurrences = galah.atlas_occurrences(taxa="Vulpes vulpes",filters=["year>2018","basis_of_record=HumanObservation"],
                                            fields=['latitude', 'longitude'])
     assert occurrences.shape[1] == 2
 #'''

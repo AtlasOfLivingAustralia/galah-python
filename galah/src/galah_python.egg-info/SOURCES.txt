@@ -57,6 +57,7 @@ src/galah/generate_jwt_token.py
 src/galah/get_api_url.py
 src/galah/node_config.csv
 src/galah/node_config_0.1.0.csv
+src/galah/node_config_R.csv
 src/galah/node_config_dest.csv
 src/galah/node_config_dev.csv
 src/galah/node_config_full.csv
@@ -104,16 +105,6 @@ src/galah_python.egg-info/SOURCES.txt
 src/galah_python.egg-info/dependency_links.txt
 src/galah_python.egg-info/requires.txt
 src/galah_python.egg-info/top_level.txt
-test/image-09efd0a0-aa51-4d00-80f9-4e78e19aa89e.jpeg
-test/image-14374712-1c37-4e2d-af28-4572f64e7d3a.jpeg
-test/image-1aad7125-c6c0-4557-b9a2-112c03ac6709.jpeg
-test/image-393df479-5fbb-464e-82ed-4d6fd19dd863.jpeg
-test/image-40aadbde-3918-4bba-9dc9-13fa1da3809b.jpeg
-test/image-66904cee-f8ca-4e3a-b7d5-d738f4bd0978.jpeg
-test/image-7424399a-f327-4ea1-9ffa-aa7a2b69f82b.jpeg
-test/image-792a93d4-6436-4222-9a00-00cda0ec1f14.jpeg
-test/image-cee7bb9f-6b2e-4c47-8ba8-c9a3bdf92fa0.jpeg
-test/image-dfdbd258-d90a-484b-af19-2070705f166c.jpeg
 tests/test_integration_tests.py
 tests/test_integration_tests_Australia.py
 tests/test_integration_tests_Austria.py
@@ -121,6 +112,7 @@ tests/test_integration_tests_Brazil.py
 tests/test_integration_tests_France.py
 tests/test_integration_tests_GBIF.py
 tests/test_integration_tests_Guatemala.py
+tests/test_integration_tests_Portugal.py
 tests/test_integration_tests_Spain.py
 tests/test_integration_tests_Sweden.py
 tests/test_integration_tests_UK.py

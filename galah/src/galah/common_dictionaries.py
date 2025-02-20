@@ -1,5 +1,5 @@
 # all available atlases
-atlases = ["Australia","Austria","Brazil","France","Global","GBIF","Guatemala","Spain","Sweden"] #,"United Kingdom"]
+atlases = ["Australia","Austria","Brazil","France","Global","GBIF","Guatemala","Portugal","Spain","Sweden","United Kingdom"]
 
 # common names for each atlas
 ATLAS_COMMON_NAMES = {
@@ -55,8 +55,10 @@ ATLAS_OCCURRENCES_DOWNLOAD_ARGUMENTS = {
     "GBIF": {"finished_status": "SUCCEEDED","zipURL_arg": "downloadLink","separator": "\t"},
     "Global": {"finished_status": "SUCCEEDED","zipURL_arg": "downloadLink","separator": "\t"},
     "Guatemala": {"finished_status": "finished","zipURL_arg": "downloadUrl","separator": ","},
+    "Portugal": {"finished_status": "finished","zipURL_arg": "downloadUrl","separator": ","},
     "Spain": {"finished_status": "finished","zipURL_arg": "downloadUrl","separator": ","},
-    "Sweden": {"finished_status": "finished","zipURL_arg": "downloadUrl","separator": ","}
+    "Sweden": {"finished_status": "finished","zipURL_arg": "downloadUrl","separator": ","},
+    "United Kingdom": {"finished_status": "finished","zipURL_arg": "downloadUrl","separator": ","}
 }
 
 # expanding species fields
@@ -70,8 +72,6 @@ ATLAS_SPECIES_FIELDS = {
     "Brazil": {"kingdom": "kingdom_guid", "phylum": "phylum_guid","class": "class_guid", 
                "order": "order_guid", "family": "family_guid","genus": "genus_guid", 
                "species": "species_guid", "subspecies": "subspecies_guid"},
-    "Canada": {},
-    "Estonia": {},
     "France": {"kingdom": "kingdomID", "phylum": "phylumID", "class": "classID", 
                   "order": "orderID", "family": "familyID","genus": "genusID", 
                   "species": "speciesID", "subspecies": "subspeciesID"},
@@ -84,14 +84,18 @@ ATLAS_SPECIES_FIELDS = {
     "Guatemala": {"kingdom": "kingdom_guid", "phylum": "phylum_guid","class": "class_guid", 
                   "order": "order_guid", "family": "family_guid","genus": "genus_guid", 
                   "species": "species_guid", "subspecies": "subspecies_guid"},
-    "Portugal": {},
+    "Portugal": {"kingdom": "kingdom", "phylum": "phylum", "class": "class", 
+                 "order": "order", "family": "family","genus": "genus", 
+                 "species": "species", "subspecies": "subspecies"},
     "Spain": {"kingdom": "kingdomID", "phylum": "phylumID", 
                   "class": "classID", "order": "orderID", "family": "familyID", 
                   "genus": "genusID", "species": "speciesID", "subspecies":"subspeciesID"},
     "Sweden": {"kingdom": "kingdom_id", "phylum": "phylum_id","class": "class_id", 
                "order": "order_id", "family": "family_id","genus": "genus", 
                "species": "species", "subspecies": "subspecies"},
-    "United Kingdom": {}
+    "United Kingdom": {"kingdom": "kingdom", "phylum": "phylum", "class": "class", 
+                       "order": "order", "family": "family","genus": "genus", 
+                       "species": "species", "subspecies": "subspecies"}
 }
 
 # default selections for occurrence data
@@ -101,8 +105,6 @@ ATLAS_SELECTIONS = {
                 "taxon_concept_lsid","occurrence_id","data_resource_uid","occurrence_status"],
     "Brazil": ["latitude","longitude","occurrence_date","taxon_name","common_name",
                 "taxon_concept_lsid","occurrence_id","data_resource_uid","occurrence_status"],
-    "Canada": [],
-    "Estonia": [],
     "France": ["latitude","longitude","occurrence_date","taxon_name","common_name",
                 "taxon_concept_lsid","occurrence_id","data_resource_uid","occurrence_status"],
     "Global": ["decimalLatitude", "decimalLongitude", "eventDate", "scientificName", "taxonConceptID", "recordID", "dataResourceName", "occurrenceStatus"],
@@ -113,7 +115,8 @@ ATLAS_SELECTIONS = {
     "Spain": ["latitude","longitude","occurrence_date","taxon_name","common_name",
                 "taxon_concept_lsid","occurrence_id","data_resource_uid","occurrence_status"],
     "Sweden": "basic",
-    "United Kingdom": [],
+    "United Kingdom": ["latitude","longitude","occurrence_date","taxon_name","common_name",
+                       "taxon_concept_lsid","occurrence_id","data_resource_uid","occurrence_status"],
 }
 
 # name of number of counts for atlas_counts
@@ -191,8 +194,6 @@ SEARCH_TAXA_FIELDS = {
                   'phylum', 'class', 'order', 'family', 'genus', 'species', 'issues', 'commonName'],
     "Brazil": ['scientificName', 'scientificNameAuthorship', 'guid','rank','match_type','kingdom', 
                   'phylum', 'class', 'order', 'family', 'genus', 'species', 'issues', 'commonName'], 
-    "Canada": "",
-    "Estonia": "",
     "France": ['scientificName', 'authority', 'id','rankName','match_type','kingdomName', 'phylumName', 
                'className', 'orderName', 'familyName', 'genusName', 'species', 'issues', 'englishVernacularName'],
     "GBIF": ['scientificName', 'scientificNameAuthorship', 'usageKey','rank','match_type','kingdom', 
@@ -202,7 +203,8 @@ SEARCH_TAXA_FIELDS = {
     # was guid
     "Guatemala": ['scientificName', 'scientificNameAuthorship', 'guid','rank','match_type','kingdom', 
                   'phylum', 'class', 'order', 'family', 'genus', 'species', 'issues', 'commonName'],
-    "Portugal": "",
+    "Portugal": ['scientificName', 'scientificNameAuthorship', 'usageKey','rank','match_type','kingdom', 
+                  'phylum', 'class', 'order', 'family', 'genus', 'species', 'issues', 'vernacularName'],
     "Spain": ['scientificName', 'scientificNameAuthorship', 'taxonConceptID','rank','match_type','kingdom', 
                   'phylum', 'class', 'order', 'family', 'genus', 'species', 'issues', 'vernacularName'],
     "Sweden": ['scientificName', 'scientificNameAuthorship', 'taxonConceptID','rank','match_type','kingdom', 
@@ -216,17 +218,14 @@ VERNACULAR_NAMES = {
     "Australia": ["commonNames","nameString"],
     "Austria": ["commonNames","commonName"], # try this
     "Brazil": ["commonNames","nameString"], 
-    "Canada": "",
-    "Estonia": "",
-    # not sure about this
     "France": ["commonNames","englishVernacularName"],
     "GBIF": ["vernacularName","vernacularName"],
     "Global": ["vernacularName","vernacularName"],
     "Guatemala": ["commonName","commonName"],
-    "Portugal": "",
+    "Portugal": ["commonName","commonName"],
     "Spain": ["commonNames","nameString"],
     "Sweden": ["commonName","commonName"],
-    "United Kingdom": "",
+    "United Kingdom": ["commonName","commonName"],
 }
 
 MM_EXTENSIONS = {
