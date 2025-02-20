@@ -195,9 +195,8 @@ def atlas_counts(taxa=None,
     else:
     '''
     # if there is no taxa, assume you will get the total number of records in the ALA
-    if taxa is not None:
-
-        taxonConceptID = generate_list_taxonConceptIDs(taxa=taxa,atlas=atlas,verbose=verbose)
+    if taxa is not None or scientific_name is not None:
+        taxonConceptID = generate_list_taxonConceptIDs(taxa=taxa,atlas=atlas,verbose=verbose,scientific_name=scientific_name)
         if taxonConceptID is None:
             return None
         URL += taxonConceptID

@@ -304,10 +304,10 @@ def atlas_occurrences(taxa=None,
             URL = baseURL
 
         # check if taxa is specified
-        if taxa is not None:
-
+        if taxa is not None or scientific_name is not None:
+            
             # check variable type
-            if type(taxa) == list or type(taxa) is str:
+            if type(taxa) == list or type(taxa) is str or scientific_name is not None:
 
                 # make taxa a list for easier looping
                 if type(taxa) is str:
@@ -316,14 +316,14 @@ def atlas_occurrences(taxa=None,
                 # get the taxonConceptID for taxa - first check for extant atlas
                 if atlas in atlases:
 
-                    taxonConceptID = generate_list_taxonConceptIDs(taxa=taxa,atlas=atlas,verbose=verbose)
+                    taxonConceptID = generate_list_taxonConceptIDs(taxa=taxa,atlas=atlas,verbose=verbose,scientific_name=scientific_name)
                     if taxonConceptID is None:
                         return None
                     if URL[-1] != "&":
                         URL += "?" + taxonConceptID
                     else:
                         URL += taxonConceptID
-                    
+
                 else:
                     raise ValueError("Atlas {} is not taken into account".format(atlas))
 
@@ -372,7 +372,7 @@ def atlas_occurrences(taxa=None,
             URL += "&wkt=" + urllib.parse.quote(str(galah_geolocate(polygon=polygon,bbox=bbox,simplify_polygon=simplify_polygon)))
 
         # raise error if user hasn't specified any type of filters
-        var_list = [taxa,filters,assertions,polygon,bbox]
+        var_list = [taxa,filters,assertions,polygon,bbox,scientific_name]
         if all(v is None for v in var_list):
             raise Exception('You cannot get all records for the {} atlas.  Please specify at least one taxa and/or filters to get occurrence records associated with the taxa.'.format(atlas))
         

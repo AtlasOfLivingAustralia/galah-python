@@ -166,7 +166,6 @@ def generate_list_taxonConceptIDs(taxa=None,
         for i,key in enumerate(scientific_name):
             lens[i] = len(scientific_name[key])
         if len(set(lens)) > 1:
-            print(scientific_name)
             raise ValueError("Please provide a correctly formatted dictionary with scientific_name - you are missing one or more taxonomic keys.")
         keys = scientific_name.keys()
         for i in range(lens[0]):

@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Download Data &#8212; Galah 0.10.0 documentation</title>
+    <title>Download Data &#8212; Galah 0.11.0 documentation</title>
   
   
   
@@ -38,7 +38,7 @@
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
   <script src="../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
 
-    <script src="../_static/documentation_options.js?v=82662543"></script>
+    <script src="../_static/documentation_options.js?v=f3b36f1a"></script>
     <script src="../_static/doctools.js?v=888ff710"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/design-tabs.js?v=36754332"></script>
@@ -124,8 +124,8 @@
       
     
     
-    <img src="../_static/logo.png" class="logo__image only-light" alt="Galah 0.10.0 documentation - Home"/>
-    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Galah 0.10.0 documentation - Home"/>`);</script>
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Galah 0.11.0 documentation - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Galah 0.11.0 documentation - Home"/>`);</script>
   
   
 </a></div>
@@ -447,25 +447,30 @@ span.prompt1:before {
 </style><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">galah_config</span><span class="p">(</span><span class="n">atlas</span><span class="o">=</span><span class="s2">&quot;Australia&quot;</span><span class="p">)</span></span>
 <span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">atlas_counts</span><span class="p">()</span></span>
 </pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>   totalRecords
-0     146269834
+0     150121628
 </pre></div>
 </div>
 <p>In addition to <code class="docutils literal notranslate"><span class="pre">filters</span></code> arguments, <code class="docutils literal notranslate"><span class="pre">galah.atlas_counts()</span></code> has an optional <code class="docutils literal notranslate"><span class="pre">group_by</span></code> argument, which provides counts grouped
 by the requested field.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">atlas_counts</span><span class="p">(</span><span class="n">group_by</span><span class="o">=</span><span class="s2">&quot;kingdom&quot;</span><span class="p">)</span></span>
-</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>          kingdom      count
-0        Animalia  113454737
-1         Archaea       4120
-2        Bacteria     113489
-3    Bamfordvirae        210
-4       Chromista    1057265
-5           Fungi    2450422
-6   Orthornavirae        138
-7         Plantae   27608036
-8        Protista     316586
-9    Shotokuvirae         41
-10         Viroid        104
-11          Virus       2382
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>           kingdom      count
+0         Animalia  115517889
+1          Archaea      11076
+2         Bacteria     452205
+3     Bamfordvirae        523
+4        Chromista    1094004
+5            Fungi    2693611
+6    Helvetiavirae          1
+7   Heunggongvirae        509
+8        Loebvirae          3
+9    Orthornavirae       6668
+10    Pararnavirae        308
+11         Plantae   28689529
+12        Protista     367436
+13    Shotokuvirae       1114
+14      Trapavirae          3
+15          Viroid        143
+16           Virus       4266
 </pre></div>
 </div>
 </section>
@@ -485,8 +490,8 @@ than the species; but also in being more flexible by supporting filtering:</p>
 5   https://biodiversity.org.au/afd/taxa/53115180-4024-4d50-baf7-edc4556b89f7               Notomys alexis                 Thomas, 1922    species  Animalia  Chordata  Mammalia  Rodentia   Muridae       Notomys       Spinifex Hopping-mouse
 6   https://biodiversity.org.au/afd/taxa/952ae705-57e2-43d1-9a06-b35498202469                 Mus musculus               Linnaeus, 1758    species  Animalia  Chordata  Mammalia  Rodentia   Muridae           Mus                  House Mouse
 7   https://biodiversity.org.au/afd/taxa/6a01d711-2ac6-4928-bab4-a1de1a58e995       Conilurus penicillatus                (Gould, 1842)    species  Animalia  Chordata  Mammalia  Rodentia   Muridae     Conilurus        Brush-tailed Tree-rat
-8   https://biodiversity.org.au/afd/taxa/ffcb9f84-c70f-4bc3-af9d-4f37a5a07e3f               Rattus tunneyi               (Thomas, 1904)    species  Animalia  Chordata  Mammalia  Rodentia   Muridae        Rattus               Pale Field-rat
-9   https://biodiversity.org.au/afd/taxa/c1817333-9c62-4a05-af03-fe5fb9c9a0ce                Rattus rattus             (Linnaeus, 1758)    species  Animalia  Chordata  Mammalia  Rodentia   Muridae        Rattus                    Black Rat
+8   https://biodiversity.org.au/afd/taxa/c1817333-9c62-4a05-af03-fe5fb9c9a0ce                Rattus rattus             (Linnaeus, 1758)    species  Animalia  Chordata  Mammalia  Rodentia   Muridae        Rattus                    Black Rat
+9   https://biodiversity.org.au/afd/taxa/ffcb9f84-c70f-4bc3-af9d-4f37a5a07e3f               Rattus tunneyi               (Thomas, 1904)    species  Animalia  Chordata  Mammalia  Rodentia   Muridae        Rattus               Pale Field-rat
 10  https://biodiversity.org.au/afd/taxa/cbaf1515-df15-49ec-be06-36058183644b         Rattus villosissimus                (Waite, 1898)    species  Animalia  Chordata  Mammalia  Rodentia   Muridae        Rattus              Long-haired Rat
 11  https://biodiversity.org.au/afd/taxa/1c2e0a49-5530-48a2-83f3-2d853c89ab03           Pseudomys desertor              Troughton, 1932    species  Animalia  Chordata  Mammalia  Rodentia   Muridae     Pseudomys                 Desert Mouse
 12  https://biodiversity.org.au/afd/taxa/eb140ad3-776d-4294-bd33-6464097bfff3              Pseudomys nanus                (Gould, 1858)    species  Animalia  Chordata  Mammalia  Rodentia   Muridae     Pseudomys       Western Chestnut Mouse
@@ -494,27 +499,27 @@ than the species; but also in being more flexible by supporting filtering:</p>
 14  https://biodiversity.org.au/afd/taxa/d02be481-91a1-4b33-a7a5-0e73f995c71c                Zyzomys maini              Kitchener, 1989    species  Animalia  Chordata  Mammalia  Rodentia   Muridae       Zyzomys         Arnhem Land Rock-rat
 15  https://biodiversity.org.au/afd/taxa/25ad81dd-0bd0-4fe5-94d7-1ec605bbf8b0            Zyzomys palatalis              Kitchener, 1989    species  Animalia  Chordata  Mammalia  Rodentia   Muridae       Zyzomys        Carpentarian Rock-rat
 16  https://biodiversity.org.au/afd/taxa/5e54144e-c15e-4906-a20c-ab076696c35c      Leggadina lakedownensis                  Watts, 1976    species  Animalia  Chordata  Mammalia  Rodentia   Muridae     Leggadina         Lakeland Downs Mouse
-17  https://biodiversity.org.au/afd/taxa/298a7b7a-96c0-4b48-8746-ea9ad8590fe5          Pseudomys australis              J.E. Gray, 1832    species  Animalia  Chordata  Mammalia  Rodentia   Muridae     Pseudomys                   Plains Rat
-18  https://biodiversity.org.au/afd/taxa/2843e4d8-931a-41f0-875e-f6756f44088f        Hydromys chrysogaster               Geoffroy, 1804    species  Animalia  Chordata  Mammalia  Rodentia   Muridae      Hydromys                    Water-rat
+17  https://biodiversity.org.au/afd/taxa/2843e4d8-931a-41f0-875e-f6756f44088f        Hydromys chrysogaster               Geoffroy, 1804    species  Animalia  Chordata  Mammalia  Rodentia   Muridae      Hydromys                    Water-rat
+18  https://biodiversity.org.au/afd/taxa/298a7b7a-96c0-4b48-8746-ea9ad8590fe5          Pseudomys australis              J.E. Gray, 1832    species  Animalia  Chordata  Mammalia  Rodentia   Muridae     Pseudomys                   Plains Rat
 19  https://biodiversity.org.au/afd/taxa/dd6aca04-8169-46e4-955b-06cbe831efdf         Zyzomys pedunculatus                (Waite, 1896)    species  Animalia  Chordata  Mammalia  Rodentia   Muridae       Zyzomys             Central Rock-rat
 20  https://biodiversity.org.au/afd/taxa/e56ebe66-5dbd-4b63-b8fc-95b67ac9411a           Leggadina forresti               (Thomas, 1906)    species  Animalia  Chordata  Mammalia  Rodentia   Muridae     Leggadina              Forrest&#39;s Mouse
-21  https://biodiversity.org.au/afd/taxa/43ef1334-3aba-483f-ba1f-c0407e3cc847           Pseudomys johnsoni              Kitchener, 1985    species  Animalia  Chordata  Mammalia  Rodentia   Muridae     Pseudomys   Central Pebble-mound Mouse
-22  https://biodiversity.org.au/afd/taxa/39ea6204-ab1b-469e-b107-b64d24c4903f            Pseudomys calabyi  Kitchener &amp; Humphreys, 1987    species  Animalia  Chordata  Mammalia  Rodentia   Muridae     Pseudomys    Kakadu Pebble-mound Mouse
-23  https://biodiversity.org.au/afd/taxa/ac8c37b1-2543-4bc2-b55d-b97cbbefefbf               Notomys aquilo                 Thomas, 1921    species  Animalia  Chordata  Mammalia  Rodentia   Muridae       Notomys       Northern Hopping-mouse
+21  https://biodiversity.org.au/afd/taxa/ac8c37b1-2543-4bc2-b55d-b97cbbefefbf               Notomys aquilo                 Thomas, 1921    species  Animalia  Chordata  Mammalia  Rodentia   Muridae       Notomys       Northern Hopping-mouse
+22  https://biodiversity.org.au/afd/taxa/43ef1334-3aba-483f-ba1f-c0407e3cc847           Pseudomys johnsoni              Kitchener, 1985    species  Animalia  Chordata  Mammalia  Rodentia   Muridae     Pseudomys   Central Pebble-mound Mouse
+23  https://biodiversity.org.au/afd/taxa/39ea6204-ab1b-469e-b107-b64d24c4903f            Pseudomys calabyi  Kitchener &amp; Humphreys, 1987    species  Animalia  Chordata  Mammalia  Rodentia   Muridae     Pseudomys    Kakadu Pebble-mound Mouse
 24  https://biodiversity.org.au/afd/taxa/327e0ec3-8efa-43c5-9bc9-867d3082ed88        Notomys longicaudatus                (Gould, 1844)    species  Animalia  Chordata  Mammalia  Rodentia   Muridae       Notomys    Long-tailed Hopping-mouse
 25  https://biodiversity.org.au/afd/taxa/61403a2b-8537-46e1-91cf-672d02be62b3          Leporillus apicalis                (Gould, 1853)    species  Animalia  Chordata  Mammalia  Rodentia   Muridae    Leporillus        Lesser Stick-nest Rat
 26  https://biodiversity.org.au/afd/taxa/3a840ca2-936e-4075-a622-f0d628bace31               Notomys amplus               Brazenor, 1936    species  Animalia  Chordata  Mammalia  Rodentia   Muridae       Notomys   Short-tailed Hopping-mouse
 27  https://biodiversity.org.au/afd/taxa/1745e7b1-6f91-47a9-baf4-c56f0643cb05             Notomys cervinus                (Gould, 1853)    species  Animalia  Chordata  Mammalia  Rodentia   Muridae       Notomys           Fawn Hopping-mouse
-28  https://biodiversity.org.au/afd/taxa/958ed049-9bca-4c65-a720-9e16e1b7434c              Rattus sordidus                (Gould, 1858)    species  Animalia  Chordata  Mammalia  Rodentia   Muridae        Rattus                Canefield Rat
-29  https://biodiversity.org.au/afd/taxa/e169b779-e4e4-411f-95e0-b21d4b4c6060               Notomys fuscus                (Jones, 1925)    species  Animalia  Chordata  Mammalia  Rodentia   Muridae       Notomys          Dusky Hopping-mouse
+28  https://biodiversity.org.au/afd/taxa/54222852-0af1-4e1f-b45b-175ed441d015           Notomys mitchellii               (Ogilby, 1838)    species  Animalia  Chordata  Mammalia  Rodentia   Muridae       Notomys     Mitchell&#39;s Hopping-mouse
+29  https://biodiversity.org.au/afd/taxa/958ed049-9bca-4c65-a720-9e16e1b7434c              Rattus sordidus                (Gould, 1858)    species  Animalia  Chordata  Mammalia  Rodentia   Muridae        Rattus                Canefield Rat
 30  https://biodiversity.org.au/afd/taxa/0553a58d-450b-455a-8844-62d5e5d14774              Xeromys myoides                 Thomas, 1889    species  Animalia  Chordata  Mammalia  Rodentia   Muridae       Xeromys              False Water-rat
-31  https://biodiversity.org.au/afd/taxa/15e09f34-5033-424e-a37c-d6bb55f30b26            Rattus norvegicus           (Berkenhout, 1769)    species  Animalia  Chordata  Mammalia  Rodentia   Muridae        Rattus                    Brown Rat
-32  https://biodiversity.org.au/afd/taxa/1d179abb-b688-4242-989f-9a1a6d90f0b4        Mesembriomys macrurus               (Peters, 1876)    species  Animalia  Chordata  Mammalia  Rodentia   Muridae  Mesembriomys       Golden-backed Tree-rat
-33  https://biodiversity.org.au/afd/taxa/54222852-0af1-4e1f-b45b-175ed441d015           Notomys mitchellii               (Ogilby, 1838)    species  Animalia  Chordata  Mammalia  Rodentia   Muridae       Notomys     Mitchell&#39;s Hopping-mouse
+31  https://biodiversity.org.au/afd/taxa/e169b779-e4e4-411f-95e0-b21d4b4c6060               Notomys fuscus                (Jones, 1925)    species  Animalia  Chordata  Mammalia  Rodentia   Muridae       Notomys          Dusky Hopping-mouse
+32  https://biodiversity.org.au/afd/taxa/15e09f34-5033-424e-a37c-d6bb55f30b26            Rattus norvegicus           (Berkenhout, 1769)    species  Animalia  Chordata  Mammalia  Rodentia   Muridae        Rattus                    Brown Rat
+33  https://biodiversity.org.au/afd/taxa/1d179abb-b688-4242-989f-9a1a6d90f0b4        Mesembriomys macrurus               (Peters, 1876)    species  Animalia  Chordata  Mammalia  Rodentia   Muridae  Mesembriomys       Golden-backed Tree-rat
 34  https://biodiversity.org.au/afd/taxa/d9528b07-2a62-4120-b946-edab67821b44           Melomys cervinipes                (Gould, 1852)    species  Animalia  Chordata  Mammalia  Rodentia   Muridae       Melomys          Fawn-footed Melomys
-35  https://biodiversity.org.au/afd/taxa/288dcc0f-822d-43e4-b31d-82edd9b11f00            Pseudomys gouldii           (Waterhouse, 1839)    species  Animalia  Chordata  Mammalia  Rodentia   Muridae     Pseudomys  Shark Bay Mouse (djoongari)
-36  https://biodiversity.org.au/afd/taxa/3ca6b7e9-9862-48ac-b457-0e705dda1c75              Rattus leucopus            (J.E. Gray, 1867)    species  Animalia  Chordata  Mammalia  Rodentia   Muridae        Rattus                Cape York Rat
-37  https://biodiversity.org.au/afd/taxa/dcf73c10-5e05-4b59-9d4e-2682ef369e5e            Zyzomys woodwardi               (Thomas, 1909)    species  Animalia  Chordata  Mammalia  Rodentia   Muridae       Zyzomys           Kimberley Rock-rat
+35  https://biodiversity.org.au/afd/taxa/dcf73c10-5e05-4b59-9d4e-2682ef369e5e            Zyzomys woodwardi               (Thomas, 1909)    species  Animalia  Chordata  Mammalia  Rodentia   Muridae       Zyzomys           Kimberley Rock-rat
+36  https://biodiversity.org.au/afd/taxa/288dcc0f-822d-43e4-b31d-82edd9b11f00            Pseudomys gouldii           (Waterhouse, 1839)    species  Animalia  Chordata  Mammalia  Rodentia   Muridae     Pseudomys  Shark Bay Mouse (djoongari)
+37  https://biodiversity.org.au/afd/taxa/3ca6b7e9-9862-48ac-b457-0e705dda1c75              Rattus leucopus            (J.E. Gray, 1867)    species  Animalia  Chordata  Mammalia  Rodentia   Muridae        Rattus                Cape York Rat
 38                                                            ALA_DR24112_241              Cavia porcellus                          NaN    species  Animalia  Chordata  Mammalia  Rodentia  Caviidae         Cavia                      Animals
 39  https://biodiversity.org.au/afd/taxa/6983ebaa-1c9d-4b4d-a0fa-8c673d0248ef       Pseudomys occidentalis                   Tate, 1951    species  Animalia  Chordata  Mammalia  Rodentia   Muridae     Pseudomys                Western Mouse
 40  https://biodiversity.org.au/afd/taxa/9a9f3fa9-ca3b-4a15-b25b-d291c9f504b5        Uromys caudimaculatus               (Krefft, 1867)    species  Animalia  Chordata  Mammalia  Rodentia   Muridae        Uromys       Giant White-tailed Rat
@@ -530,19 +535,19 @@ associated with an active account on your chosen atlas. See more information in 
 </pre></div></div><p>After specifying your email, you can download occurrence records of, for example, Eolophus roseicapilla:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">atlas_occurrences</span><span class="p">(</span><span class="n">taxa</span><span class="o">=</span><span class="s2">&quot;Eolophus roseicapilla&quot;</span><span class="p">,</span><span class="n">filters</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;stateProvince=Australian Capital Territory&quot;</span><span class="p">,</span><span class="s2">&quot;year&gt;=2010&quot;</span><span class="p">],</span><span class="n">fields</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;institutionID&quot;</span><span class="p">,</span><span class="s2">&quot;basic&quot;</span><span class="p">])</span></span>
 </pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>      institutionID  decimalLatitude  decimalLongitude             eventDate         scientificName                                                             taxonConceptID                              recordID                   dataResourceName occurrenceStatus
-0               NaN       -35.277220        149.175440  2018-11-16T07:16:00Z  Eolophus roseicapilla  https://biodiversity.org.au/afd/taxa/9b4ad548-8bb3-486a-ab0a-905506c463ea  856297c2-0fd8-47bf-b960-4c7a4351613c                    eBird Australia          PRESENT
-1               NaN       -35.305354        149.030440  2019-09-22T06:34:00Z  Eolophus roseicapilla  https://biodiversity.org.au/afd/taxa/9b4ad548-8bb3-486a-ab0a-905506c463ea  cc44f32a-7b89-422f-a2a7-c760ddfc02a6                    eBird Australia          PRESENT
-2               NaN       -35.340917        149.028600  2012-06-04T00:00:00Z  Eolophus roseicapilla  https://biodiversity.org.au/afd/taxa/9b4ad548-8bb3-486a-ab0a-905506c463ea  8f09779e-f551-403f-9b53-6f7b56906370                Garden Bird Surveys          PRESENT
-3               NaN       -35.277220        149.175440  2022-11-15T07:30:00Z  Eolophus roseicapilla  https://biodiversity.org.au/afd/taxa/9b4ad548-8bb3-486a-ab0a-905506c463ea  e7588928-d18a-48b8-afc2-0a4b37890b51                    eBird Australia          PRESENT
-4               NaN       -35.268327        149.062500  2018-10-27T07:30:00Z  Eolophus roseicapilla  https://biodiversity.org.au/afd/taxa/9b4ad548-8bb3-486a-ab0a-905506c463ea  8a45afe5-e99b-47c6-bab7-d773f2b16a33                    eBird Australia          PRESENT
+0               NaN       -35.251300        148.950690  2019-10-28T07:52:00Z  Eolophus roseicapilla  https://biodiversity.org.au/afd/taxa/9b4ad548-8bb3-486a-ab0a-905506c463ea  96ce9ca0-fa93-402a-a893-3bd54bca9ec3                    eBird Australia          PRESENT
+1               NaN       -35.260075        149.152295  2010-04-09T00:00:00Z  Eolophus roseicapilla  https://biodiversity.org.au/afd/taxa/9b4ad548-8bb3-486a-ab0a-905506c463ea  b02e0218-a86a-4942-b1fc-cbd49979486e                Garden Bird Surveys          PRESENT
+2               NaN       -35.296457        148.991982  2022-01-08T10:24:00Z  Eolophus roseicapilla  https://biodiversity.org.au/afd/taxa/9b4ad548-8bb3-486a-ab0a-905506c463ea  7eb745dd-998e-410a-b254-192306b287b0                    eBird Australia          PRESENT
+3               NaN       -35.250000        149.083330  2013-04-03T00:00:00Z  Eolophus roseicapilla  https://biodiversity.org.au/afd/taxa/9b4ad548-8bb3-486a-ab0a-905506c463ea  63425f0e-bd7c-45d1-847d-10212b80ed9c                    eBird Australia          PRESENT
+4               NaN       -35.261190        149.083714  2010-11-13T00:00:00Z  Eolophus roseicapilla  https://biodiversity.org.au/afd/taxa/9b4ad548-8bb3-486a-ab0a-905506c463ea  bf71b672-3e29-4f40-851e-8d0c9ad95b74                Garden Bird Surveys          PRESENT
 ...             ...              ...               ...                   ...                    ...                                                                        ...                                   ...                                ...              ...
-96275           NaN       -35.326697        149.123731  2020-10-16T00:00:00Z  Eolophus roseicapilla  https://biodiversity.org.au/afd/taxa/9b4ad548-8bb3-486a-ab0a-905506c463ea  7da2d084-3114-47e8-8149-5d414e2eb89c                Garden Bird Surveys          PRESENT
-96276           NaN       -35.261305        149.150786  2019-10-16T08:33:00Z  Eolophus roseicapilla  https://biodiversity.org.au/afd/taxa/9b4ad548-8bb3-486a-ab0a-905506c463ea  430f6cae-9f48-47f1-ba76-03e3179ac767                    eBird Australia          PRESENT
-96277        in1033       -35.226993        149.020481  2017-06-25T14:00:00Z  Eolophus roseicapilla  https://biodiversity.org.au/afd/taxa/9b4ad548-8bb3-486a-ab0a-905506c463ea  32735c4a-bb78-4ffe-b7c1-7a7b7cc599ce  ALA species sightings and OzAtlas          PRESENT
-96278        in1033       -35.276619        149.112914  2017-07-25T21:34:37Z  Eolophus roseicapilla  https://biodiversity.org.au/afd/taxa/9b4ad548-8bb3-486a-ab0a-905506c463ea  150d3252-111e-41ec-ab32-7f0567ac0330  ALA species sightings and OzAtlas          PRESENT
-96279        in1033       -35.160122        149.140961  2018-07-05T06:30:46Z  Eolophus roseicapilla  https://biodiversity.org.au/afd/taxa/9b4ad548-8bb3-486a-ab0a-905506c463ea  59d49f01-33d2-46e2-92cb-f4c5f9ecd4fa  ALA species sightings and OzAtlas          PRESENT
+96326           NaN       -35.282035        149.128761  2015-11-17T17:20:00Z  Eolophus roseicapilla  https://biodiversity.org.au/afd/taxa/9b4ad548-8bb3-486a-ab0a-905506c463ea  0dd130b3-e827-469d-b60d-fe86da6d9ab1                    eBird Australia          PRESENT
+96327           NaN       -35.273127        149.124246  2019-04-27T16:16:00Z  Eolophus roseicapilla  https://biodiversity.org.au/afd/taxa/9b4ad548-8bb3-486a-ab0a-905506c463ea  2c105fe8-3259-450b-9948-ecc685b0bee7                    eBird Australia          PRESENT
+96328        in1033       -35.226993        149.020481  2017-06-25T14:00:00Z  Eolophus roseicapilla  https://biodiversity.org.au/afd/taxa/9b4ad548-8bb3-486a-ab0a-905506c463ea  32735c4a-bb78-4ffe-b7c1-7a7b7cc599ce  ALA species sightings and OzAtlas          PRESENT
+96329        in1033       -35.160122        149.140961  2018-07-05T06:30:46Z  Eolophus roseicapilla  https://biodiversity.org.au/afd/taxa/9b4ad548-8bb3-486a-ab0a-905506c463ea  59d49f01-33d2-46e2-92cb-f4c5f9ecd4fa  ALA species sightings and OzAtlas          PRESENT
+96330        in1033       -35.276619        149.112914  2017-07-25T21:34:37Z  Eolophus roseicapilla  https://biodiversity.org.au/afd/taxa/9b4ad548-8bb3-486a-ab0a-905506c463ea  150d3252-111e-41ec-ab32-7f0567ac0330  ALA species sightings and OzAtlas          PRESENT
 
-[96280 rows x 9 columns]
+[96331 rows x 9 columns]
 </pre></div>
 </div>
 </section>

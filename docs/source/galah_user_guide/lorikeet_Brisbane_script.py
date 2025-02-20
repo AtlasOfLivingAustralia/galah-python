@@ -7,6 +7,7 @@ import matplotlib.pyplot as plt
 import sys
 
 when_to_stop = sys.argv[1]
+galah.galah_config(atlas="Australia",email="amanda.buyan@csiro.au")
 
 # first, get all parts within the Brisbane postcode 4075
 parks = gpd.read_file('galah_user_guide/Park___Locations.shp') 
@@ -39,7 +40,7 @@ if when_to_stop == "Second":
 
 # third, find all occurrences of Trichoglossus chlorolepidotus in the bounding box in 2022
 import galah
-galah.galah_config(email="amanda.buyan@csiro.au")
+galah.galah_config(atlas="Australia",email="amanda.buyan@csiro.au")
 lorikeet_brisbane = galah.atlas_occurrences(
      taxa="Trichoglossus chlorolepidotus",
      filters="year>=2020",
