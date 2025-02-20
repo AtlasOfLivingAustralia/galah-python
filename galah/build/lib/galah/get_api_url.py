@@ -2,9 +2,12 @@ import configparser,os,urllib
 import pandas as pd
 from .galah_config import galah_config
 
-def readConfig():
+def readConfig(config_file=None):
     configFile=configparser.ConfigParser()
-    inifile = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'config.ini')
+    if config_file is None:
+        inifile = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'config.ini')
+    else:
+        inifile = config_file
     configFile.read(inifile)
     return configFile
 

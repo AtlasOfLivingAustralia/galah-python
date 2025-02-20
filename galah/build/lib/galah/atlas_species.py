@@ -6,6 +6,7 @@ from .atlas_occurrences import atlas_occurrences
 from .apply_data_profile import apply_data_profile
 from .common_dictionaries import ATLAS_KEYWORDS,ATLAS_SPECIES_FIELDS,atlases
 from .common_functions import add_filters,add_to_payload_ALA
+from .galah_geolocate import galah_geolocate
 from .show_all import show_all
 from .version import __version__
 
@@ -21,7 +22,8 @@ def atlas_species(taxa=None,
                   counts=False,
                   polygon=None,
                   bbox=None,
-                  simplify_polygon=False
+                  simplify_polygon=False,
+                  config_file=None
                   ):
     """
     While there are reasons why users may need to check every record meeting their search criteria (i.e. using ``galah.atlas_occurrences()``), 
@@ -62,7 +64,7 @@ def atlas_species(taxa=None,
     """
 
     # get configs
-    configs = readConfig()
+    configs = readConfig(config_file=config_file)
 
     # get atlas
     atlas = configs['galahSettings']['atlas'] 
@@ -96,6 +98,7 @@ def atlas_species(taxa=None,
     if atlas in ["Sweden"]:
         print("There have been some issues getting taxonomy from the Swedish atlas, as they don't store names of taxon higher than species.")
 
+    '''
     if atlas in ["Australia","ALA"]:
         
         # create payload and add buffer to polygon if user specifies it
@@ -140,9 +143,9 @@ def atlas_species(taxa=None,
         
         # return data as pandas dataframe
         return pd.read_csv(io.StringIO(response.text))
-
+    '''
     # get the taxonConceptID for taxa
-    elif atlas in ["Austria","Brazil","France","Guatemala","Spain","Sweden"]:
+    if atlas in ["Australia","Austria","Brazil","France","Guatemala","Portugal","Spain","Sweden","United Kingdom"]:
 
         # if there is no taxa, just add question mark
         if taxa is None:
@@ -188,6 +191,10 @@ def atlas_species(taxa=None,
             # add facets into URL
             URL += "&facets={}".format(rankID)
 
+        if polygon is not None or bbox is not None:
+
+            URL += "&wkt=" + urllib.parse.quote(str(galah_geolocate(polygon=polygon,bbox=bbox,simplify_polygon=simplify_polygon)))
+
         # set lookup=True to get all species data
         URL += "&lookup=True"
 
@@ -197,11 +204,14 @@ def atlas_species(taxa=None,
 
         # get response from url
         response = requests.request(method,URL,headers=headers)
-
+        
         # check response first to see if user has hit maximum number of queries
         if response.status_code == 429:
             raise ValueError("You have reached the maximum number of daily queries for the ALA.")
         
+        if atlas in ["United Kingdom"]:
+            return pd.DataFrame(response.json()[0]['fieldResult'])
+
         # return data as pandas dataframe
         return pd.read_csv(io.StringIO(response.text))
         

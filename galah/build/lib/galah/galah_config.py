@@ -21,6 +21,7 @@ def galah_config(email=None,
                  reason = None,
                  usernameGBIF = None,
                  passwordGBIF = None,
+                 config_file=None
                 ):
     """
     The galah package supports large data downloads, and also interfaces with the ALA which requires that users of some 
@@ -64,8 +65,23 @@ def galah_config(email=None,
     configParser = configparser.ConfigParser()
 
     # read the config file
-    inifile = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'config.ini')
+    if config_file is None:
+        inifile = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'config.ini')
+    else:
+        inifile = config_file
     configParser.read(inifile)
+
+    if len(configParser.sections()) == 0:
+        configParser["galahSettings"] = {
+            "email": "None",
+            "email_notify": "False",
+            "atlas": "Australia",
+            "data_profile": "None",
+            "ranks": "all",
+            "reason": "4",
+            "usernameGBIF": "None",
+            "passwordGBIF": "None"
+        }
 
     # check to see if there are any arguments to update
     if email is None and email_notify is None and atlas is None and data_profile is None and ranks is None and reason is None:
@@ -74,39 +90,22 @@ def galah_config(email=None,
         settings_dict = {"Configuration": [], "Value": []}
         for entry in configParser["galahSettings"]:
             settings_dict["Configuration"].append(entry)
-            settings_dict["Value"].append(configParser["galahSettings"][entry])
+            settings_dict["Value"].append(str(configParser["galahSettings"][entry]))
         
         # return options
         return pd.DataFrame.from_dict(settings_dict)
     
     else:
         
+        list_of_terms = ["email","email_notify","atlas","data_profile","ranks","reason","usernameGBIF","passwordGBIF"]
+        list_of_vars = [email,email_notify,atlas,data_profile,ranks,reason,usernameGBIF,passwordGBIF]
+
         # update the field to change
-        if email is not None:
-            configParser["galahSettings"]["email"] = email
-        if email_notify is not None:
-            configParser["galahSettings"]["email_notify"] = email_notify
-        if atlas is not None:
-            configParser["galahSettings"]["atlas"] = atlas
-        if data_profile is not None:
-            configParser["galahSettings"]["data_profile"] = data_profile
-        if ranks is not None:
-            configParser["galahSettings"]["ranks"] = ranks
-        if reason is not None:
-            configParser["galahSettings"]["reason"] = reason
-        if usernameGBIF is not None:
-            configParser["galahSettings"]["usernameGBIF"] = usernameGBIF
-        if passwordGBIF is not None:
-            configParser["galahSettings"]["passwordGBIF"] = passwordGBIF
-        '''
-        if ALA_API_key is not None:
-            configParser["galahSettings"]["ALA_API_key"] = ALA_API_key
-        if clientID is not None:
-            configParser["galahSettings"]["clientID"] = clientID
-        if clientSecretID is not None:
-            configParser["galahSettings"]["clientSecretID"] = clientSecretID
-        '''
+        for name,item in zip(list_of_terms,list_of_vars):
+            if item is not None:
+                configParser["galahSettings"][name] = str(item)
 
         # write to file
         with open(inifile,"w") as fileObject:
             configParser.write(fileObject)
+        fileObject.close()

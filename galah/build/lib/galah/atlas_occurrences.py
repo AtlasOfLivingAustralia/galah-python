@@ -16,7 +16,7 @@ from .apply_data_profile import apply_data_profile
 from .galah_geolocate import galah_geolocate
 from .common_dictionaries import ATLAS_KEYWORDS,ATLAS_SELECTIONS, atlases, ATLAS_OCCURRENCES_ERROR_MESSAGES
 from .common_dictionaries import ATLAS_OCCURRENCES_DOWNLOAD_ARGUMENTS
-from .common_functions import add_filters,add_predicates,add_to_payload_ALA
+from .common_functions import add_filters,add_predicates,generate_list_taxonConceptIDs
 from .show_all import show_all
 from .version import __version__
 
@@ -34,7 +34,8 @@ def atlas_occurrences(taxa=None,
                       bbox=None,
                       simplify_polygon=False,
                       mint_doi=False,
-                      doi=None
+                      doi=None,
+                      config_file=None
                       ):
     """
     The most common form of data stored by living atlases are observations of individual life forms, known as 'occurrences'. 
@@ -112,7 +113,7 @@ def atlas_occurrences(taxa=None,
     """
 
     # get configs
-    configs = readConfig()
+    configs = readConfig(config_file=config_file)
 
     # get atlas
     atlas = configs['galahSettings']['atlas']
@@ -195,26 +196,28 @@ def atlas_occurrences(taxa=None,
                             )
         else:
             # check for these atlases first
-            if atlas in ["Australia","Austria","Brazil","France","Guatemala","Spain","Sweden"]: # added Guatemala
+            if atlas in ["Australia","Austria","Brazil","France","Guatemala","Portugal","Spain","Sweden","United Kingdom"]: # added Guatemala
                 baseURL, method = get_api_url(column1='called_by', column1value='atlas_occurrences',column2='api_name', 
                                             column2value='records_occurrences',add_email=True)
             elif atlas in ["Global","GBIF"]:
                 URL,method = get_api_url(column1='called_by',column1value='atlas_occurrences',
                                         column2='api_name',column2value='records',add_email=False)
+            elif atlas in ["Portugal"]:
+                raise ValueError("We currently cannot get occurrences from the {} atlas.".format(atlas))
             else:
                 raise ValueError("Atlas {} not taken into account".format(atlas))       
 
         # goes to the 'fields' argument in occurrence download (csv list, commas between)
-        if atlas in ["Australia","ALA"]:
-            pass
-        elif fields is not None and atlas not in ["Global","GBIF","Australia","ALA"]:
+        # if atlas in ["Australia","ALA"]:
+        #     pass
+        if fields is not None and atlas not in ["Global","GBIF"]:
             if fields != "basic":
                 baseURL += galah_select(select=fields,atlas=atlas) + "&"
             else:
                 baseURL += galah_select(select=ATLAS_SELECTIONS[atlas],atlas=atlas) + "&"
         elif fields is None and atlas in ["Sweden"]:
             baseURL += galah_select(select=ATLAS_SELECTIONS[atlas],atlas=atlas) + "&"
-        elif atlas in ["Austria","Brazil","France","Spain","Guatemala"]:
+        elif fields is None and atlas in ["Australia","Austria","Brazil","France","Guatemala","Portugal","Spain","United Kingdom","UK"]:
             baseURL += galah_select(select=ATLAS_SELECTIONS[atlas],atlas=atlas) + "&"
         elif fields is not None and atlas in ["Global","GBIF"]:
             print("GBIF, unfortunately, does not support choosing your desired data fields before download.  You will have to download them and then get categories you want.")
@@ -226,6 +229,7 @@ def atlas_occurrences(taxa=None,
         # GBIF takes predicates - initialise variable in case GBIF is their desired atlas
         predicates = []
 
+        '''
         if atlas in ["Australia","ALA"]:
             
             # check for assertions and lump them with filters, as filters takes care of these
@@ -241,6 +245,10 @@ def atlas_occurrences(taxa=None,
             payload = add_to_payload_ALA(payload=payload,atlas=atlas,taxa=taxa,filters=filters,polygon=polygon,
                                         bbox=bbox,simplify_polygon=simplify_polygon,scientific_name=scientific_name)
             
+            # try this for payload
+            if payload is None:
+                return None
+
             # create the query id
             qid_URL, method2 = get_api_url(column1="api_name",column1value="occurrences_qid")
             qid = requests.request(method2,qid_URL,data=payload,headers=headers)
@@ -285,126 +293,147 @@ def atlas_occurrences(taxa=None,
             response = requests.request(method,URL,headers=headers)   
 
         else:
+        '''
+        # create the URL to grab your queryID and counts
+        if use_data_profile:
+            data_profile_list = list(show_all(profiles=True)['shortName'])
+            baseURL = apply_data_profile(baseURL=baseURL,data_profile_list=data_profile_list)  
 
-            # check if taxa is specified
-            if taxa is not None:
+        # assign this for posterity
+        if atlas not in ["Global","GBIF"]:
+            URL = baseURL
 
-                # check variable type
-                if type(taxa) == list or type(taxa) is str:
+        # check if taxa is specified
+        if taxa is not None:
 
-                    # make taxa a list for easier looping
-                    if type(taxa) is str:
-                        taxa=[taxa]
+            # check variable type
+            if type(taxa) == list or type(taxa) is str:
 
-                    # get the taxonConceptID for taxa - first check for extant atlas
-                    if atlas in atlases:
-                        taxonConceptID = list(search_taxa(taxa)[ATLAS_KEYWORDS[atlas]])
+                # make taxa a list for easier looping
+                if type(taxa) is str:
+                    taxa=[taxa]
+
+                # get the taxonConceptID for taxa - first check for extant atlas
+                if atlas in atlases:
+
+                    taxonConceptID = generate_list_taxonConceptIDs(taxa=taxa,atlas=atlas,verbose=verbose)
+                    if taxonConceptID is None:
+                        return None
+                    if URL[-1] != "&":
+                        URL += "?" + taxonConceptID
                     else:
-                        raise ValueError("Atlas {} is not taken into account".format(atlas))
-
-                    # generate the desired URL and get a response from the API - add taxonConceptIDs to the URL
-                    if atlas in ["Global","GBIF"]:
-                        for tid in taxonConceptID:
-                            predicates.append({"type":"equals","key":"TAXON_KEY","value":str(tid)})
-                    else:
-                        # remove & before fq
-                        URL = baseURL + "fq=%28lsid%3A" + "%20OR%20lsid%3A".join(
-                            urllib.parse.quote(str(tid)) for tid in taxonConceptID) + "%29"
+                        URL += taxonConceptID
                     
-                # else, the user needs to specify the taxa in the correct format
                 else:
-                    raise TypeError("The taxa argument can only be a string or a list."
-                                "\nExample: taxa.taxa(\"Vulpes vulpes\")"
-                                "\n         taxa.taxa([\"Osphranter rufus\",\"Vulpes vulpes\",\"Macropus giganteus\",\"Phascolarctos cinereus\"])")
-            
-            if filters is not None:
+                    raise ValueError("Atlas {} is not taken into account".format(atlas))
 
-                if type(filters) is str or type(filters) is list:
-                    if atlas in ["Global","GBIF"] and ("!=" in filters or "=!" in filters):
-                        raise ValueError("The current iteration of GBIF and galah does not support != as an option.")
-                    elif atlas in ["Global","GBIF"]:
-                        predicates = add_predicates(predicates=predicates,filters=filters)
-                    else:
-                        if taxa is not None:
-                            URL += "%20AND%20"
-                        URL = add_filters(URL=URL,atlas=atlas,filters=filters)
-                else:
-                    raise ValueError("The filters argument needs to be either a string or a list")
-
-            # take care of assertions
-            if assertions is not None:
-
-                # check type
-                if type(assertions) is list or type(assertions) is str:
-                    if type(assertions) is str:
-                        assertions=[assertions]
-                    if atlas in ["Global","GBIF"]:
-                        predicates = add_predicates(predicates=predicates,filters=filters)
-                    else:
-                        for a in assertions:
-                            URL += galah_filter(a) + "%20AND%20"
-                            URL = URL[:-len("%20AND%20")] + "%29&qa=none&"
-                else:
-                    raise ValueError("Assertions needs to be a string or a list of strings, i.e. identificationIncorrect == TRUE")
-            
-            if polygon is not None or bbox is not None:
-                URL += "&" + galah_geolocate(polygon=polygon,bbox=bbox,simplify_polygon=simplify_polygon)
-
-            # raise error if user hasn't specified any type of filters
-            if taxa is None and filters is None and assertions is None:
-                raise Exception('You cannot get all records for the {} atlas.  Please specify at least one taxa and/or filters to get occurrence records associated with the taxa.'.format(atlas))
-            
-            # add final part of URL
-            if atlas not in ["Global","GBIF"]:
-                URL += "&qa=none&"
-
-            # download the file after you get the URL
-            if atlas in ["Global","GBIF"]:
-
-                # check if user wants species list
-                if species_list:
-                    format="SPECIES_LIST"
-                    if status_accepted:
-                        predicates.append({"type": "equals","key":"TAXONOMIC_STATUS","value":"ACCEPTED"})
-                else:
-                    format="SIMPLE_CSV"
-
-                # create payload
-                payload = json.dumps({
-                    "creator": configs['galahSettings']['usernameGBIF'], # username
-                    "notificationAddresses": [configs['galahSettings']['email']], # change from hard-coded
-                    "sendNotification": "false",
-                    "format": format,
-                    "predicate": {
-                        "type": "and",
-                        "predicates": predicates
-                    }
-                })
-
-                # check to see if user wants the query URL
-                if verbose:
-                    print("URL for querying:\n\n{}\n".format(URL))
-                    print("headers: {}\n".format(headers))
-                    print("payload: \n\n{}\n".format(payload))
-
-                # check counts
-                counts = atlas_counts(taxa,filters=filters)
-                if not species_list:
-                    print("total records for occurrences: {}\n".format(counts['totalRecords'][0]))
-                    if int(counts['totalRecords'][0]) > 101000:
-                        raise ValueError("Your data request of {} is too large. \nThe maximum number of requests is 101,000.\nPlease filter your data and use atlas_counts() to get the counts to a reasonable number.".format(counts['totalRecords'][0]))
+                # generate the desired URL and get a response from the API - add taxonConceptIDs to the URL
+                # if atlas in ["Global","GBIF"]:
+                #     print(taxonConceptID)
+                #     print(type(taxonConceptID))
+                #     import sys
+                #     sys.exit()
+                #     for tid in taxonConceptID:
+                #         predicates.append({"type":"equals","key":"TAXON_KEY","value":str(tid)})
                 
-                # get response
-                response = requests.request(method,URL,headers=headers,auth=authentication,data=payload)
-                
-            # else, get response from other APIs
+            # else, the user needs to specify the taxa in the correct format
             else:
+                raise TypeError("The taxa argument can only be a string or a list."
+                            "\nExample: taxa.taxa(\"Vulpes vulpes\")"
+                            "\n         taxa.taxa([\"Osphranter rufus\",\"Vulpes vulpes\",\"Macropus giganteus\",\"Phascolarctos cinereus\"])")
+        
+        if filters is not None:
 
-                # check to see if user wants the query URL
-                if verbose:
-                    print("\nURL being queried:\n\n{}\n".format(URL))
+            if type(filters) is str or type(filters) is list:
+                if atlas in ["Global","GBIF"] and ("!=" in filters or "=!" in filters):
+                    raise ValueError("The current iteration of GBIF and galah does not support != as an option.")
+                elif atlas in ["Global","GBIF"]:
+                    predicates = add_predicates(predicates=predicates,filters=filters)
+                else:
+                    if taxa is not None:
+                        URL += "%20AND%20"
+                    URL = add_filters(URL=URL,atlas=atlas,filters=filters)
+            else:
+                raise ValueError("The filters argument needs to be either a string or a list")
 
-                response = requests.request(method,URL,headers=headers)
+        # take care of assertions
+        if assertions is not None:
+
+            # check type
+            if type(assertions) is list or type(assertions) is str:
+                if type(assertions) is str:
+                    assertions=[assertions]
+                if atlas in ["Global","GBIF"]:
+                    predicates = add_predicates(predicates=predicates,filters=filters)
+                else:
+                    for a in assertions:
+                        URL += galah_filter(a) + "%20AND%20"
+                        URL = URL[:-len("%20AND%20")] + "%29&qa=none&"
+            else:
+                raise ValueError("Assertions needs to be a string or a list of strings, i.e. identificationIncorrect == TRUE")
+        
+        if polygon is not None or bbox is not None:
+            URL += "&wkt=" + urllib.parse.quote(str(galah_geolocate(polygon=polygon,bbox=bbox,simplify_polygon=simplify_polygon)))
+
+        # raise error if user hasn't specified any type of filters
+        var_list = [taxa,filters,assertions,polygon,bbox]
+        if all(v is None for v in var_list):
+            raise Exception('You cannot get all records for the {} atlas.  Please specify at least one taxa and/or filters to get occurrence records associated with the taxa.'.format(atlas))
+        
+        if mint_doi:
+            URL += "&mintDoi=TRUE&"
+
+        # add final part of URL
+        if atlas not in ["Global","GBIF"]:
+            URL += "&qa=none&"
+
+        # download the file after you get the URL
+        if atlas in ["Global","GBIF"]:
+
+            # check if user wants species list
+            if species_list:
+                format="SPECIES_LIST"
+                if status_accepted:
+                    predicates.append({"type": "equals","key":"TAXONOMIC_STATUS","value":"ACCEPTED"})
+            else:
+                format="SIMPLE_CSV"
+
+            # create payload
+            payload = json.dumps({
+                "creator": configs['galahSettings']['usernameGBIF'], # username
+                "notificationAddresses": [configs['galahSettings']['email']], # change from hard-coded
+                "sendNotification": "false",
+                "format": format,
+                "predicate": {
+                    "type": "and",
+                    "predicates": predicates
+                }
+            })
+
+            # check to see if user wants the query URL
+            if verbose:
+                print("URL for querying:\n\n{}\n".format(URL))
+                print("headers: {}\n".format(headers))
+                print("payload: \n\n{}\n".format(payload))
+
+            # check counts
+            counts = atlas_counts(taxa,filters=filters)
+            if not species_list:
+                print("total records for occurrences: {}\n".format(counts['totalRecords'][0]))
+                if int(counts['totalRecords'][0]) > 101000:
+                    raise ValueError("Your data request of {} is too large. \nThe maximum number of requests is 101,000.\nPlease filter your data and use atlas_counts() to get the counts to a reasonable number.".format(counts['totalRecords'][0]))
+            
+            # get response
+            response = requests.request(method,URL,headers=headers,auth=authentication,data=payload)
+            
+        # else, get response from other APIs
+        else:
+
+            # check to see if user wants the query URL
+            if verbose:
+                print("\nURL being queried:\n\n{}\n".format(URL))
+
+            response = requests.request(method,URL,headers=headers)
 
         # query the api
         if response.status_code == 403:
@@ -426,10 +455,15 @@ def atlas_occurrences(taxa=None,
             # make the download url
             statusURL = URL.replace("request",job_number)
 
+        # Austria returns zipfile from URL; have to return it straight away
+        elif atlas in ["Austria","United Kingdom","UK"]:
+            return pd.read_csv(zipfile.ZipFile(io.BytesIO(response.content))
+                               .open('data.csv'),sep=ATLAS_OCCURRENCES_DOWNLOAD_ARGUMENTS[atlas]["separator"],
+                               low_memory=False)
+        
         else:
-
             statusURL = response.json()['statusUrl']
-
+            
     # check status of download
     response_download = requests.get(statusURL,headers=headers,auth=authentication)
     while response_download.json()["status"] != ATLAS_OCCURRENCES_DOWNLOAD_ARGUMENTS[atlas]["finished_status"]:

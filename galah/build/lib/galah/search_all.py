@@ -165,7 +165,10 @@ def search_all(assertions=None,
         
         # check to see if user wants default column name
         if column_name is None:
-            column_name = 'name'
+            if atlas in ["France"]:
+                column_name = 'producers'
+            else:
+                column_name = 'name'
         
         # throw ValueError if column_name variable is not a string
         elif type(column_name) is not str:
@@ -174,7 +177,7 @@ def search_all(assertions=None,
         # check to see if the user input the correct variable type; else, throw value error
         if type(collection) is str:
             return_dataFrame = dataFrame.loc[dataFrame[column_name].astype(str).str.contains(collection, case=False, na=False)]
-            return_array.append(return_dataFrame.sort_values('name', key=lambda x: x.str.len()).reset_index(drop=True))
+            return_array.append(return_dataFrame.sort_values(column_name, key=lambda x: x.str.len()).reset_index(drop=True))
         
         # else, throw error because this only takes strings for now
         else:
@@ -188,7 +191,7 @@ def search_all(assertions=None,
         dataFrame = show_all(datasets=True)
 
         # check for the correct column name
-        if column_name is None and atlas in ["Australia","Austria","Brazil","France","Guatemala","Spain","Sweden"]:
+        if column_name is None and atlas in ["Australia","Austria","Brazil","France","Guatemala","Portugal","Spain","Sweden","United Kingdom","UK"]:
             column_name = 'name'   
         elif column_name is None:
             column_name = 'description'
@@ -219,6 +222,8 @@ def search_all(assertions=None,
         # check to see if user wants default column name
         if column_name is None and atlas in ["Global","GBIF"]:
             column_name = 'Description'
+        elif column_name is None and atlas in ["Portugal"]:
+            column_name = 'name'
         elif column_name is None:
             column_name = 'description'
 
@@ -232,7 +237,7 @@ def search_all(assertions=None,
             if  atlas in ["Global","GBIF"]:
                 return_array.append(return_dataFrame.sort_values('Parameter', key=lambda x: x.str.len()).reset_index(drop=True))
             else:
-                return_array.append(return_dataFrame.sort_values('id', key=lambda x: x.str.len()).reset_index(drop=True))
+                return_array.append(return_dataFrame.sort_values(column_name, key=lambda x: x.str.len()).reset_index(drop=True))
         
         # else, throw error because this only takes strings for now
         else:

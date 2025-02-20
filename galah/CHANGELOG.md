@@ -1,3 +1,9 @@
+## 0.11.0 (2025-02-20)
+
+### Feat
+
+- **all-package-update**: updated APIs for most atlases; added option for custom config file; fixed occurrences for most atlases
+
 ## 0.10.0 (2024-10-23)
 
 ### Feat

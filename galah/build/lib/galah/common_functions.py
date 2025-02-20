@@ -151,7 +151,7 @@ def generate_list_taxonConceptIDs(taxa=None,
                                   atlas=None,
                                   verbose=None):
     '''Function for getting more than one taxonConceptIDs'''
-
+    
     if taxa is None and scientific_name is None:
         raise ValueError("Please provide either a taxa or scientific_name for this information")
     
@@ -214,12 +214,16 @@ def generate_list_taxonConceptIDs(taxa=None,
     if atlas in ["Global","GBIF"]:
 
         # add using taxonKey
+        #return taxonConceptID
         return "".join(["taxonKey={}&".format(urllib.parse.quote(str(tid))) for tid in taxonConceptID])
+    
     
     # for Australia
     elif atlas in ["Australia","ALA"]:
 
-        return taxonConceptID
+        # try adding %22
+        return "fq=%28lsid%3A%22" + "%22%20OR%20lsid%3A%22".join(
+                urllib.parse.quote(str(tid)) for tid in taxonConceptID) + "%29"
     
     else:
 
@@ -245,6 +249,10 @@ def add_to_payload_ALA(payload=None,
 
     if taxa is not None:
         taxa_list = generate_list_taxonConceptIDs(taxa=taxa,atlas=atlas)
+        if taxa_list is None:
+            print("None of the taxa specified were found.  Use search_taxa to refine your search.")
+            return None
+
         if "fq" not in payload:
             payload["fq"] = [" OR ".join("lsid:{}".format(id) for id in taxa_list)]
         else:

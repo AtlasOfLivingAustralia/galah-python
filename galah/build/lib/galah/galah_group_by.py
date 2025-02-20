@@ -52,9 +52,9 @@ def galah_group_by(URL=None,
         # check type of filter
         if type(filters) == str or type(filters) == list:
 
-            if atlas not in ["Australia","ALA"]:
+            # if atlas not in ["Australia","ALA"]:
 
-                URL = add_filters(URL=URL,atlas=atlas,filters=filters,ifGroupBy=ifGroupBy)
+            URL = add_filters(URL=URL,atlas=atlas,filters=filters,ifGroupBy=ifGroupBy)
 
         # else, raise a TypeError because this variable needs to be either a string or a list
         else:
@@ -76,6 +76,7 @@ def galah_group_by(URL=None,
         # create a base URL
         startingURL = URL
 
+        '''
         if atlas in ["Australia","ALA"]:
             # try startingURL2
             #startingURL2,method = get_api_url(column1='called_by',column1value='atlas_counts',column2="api_name",
@@ -109,32 +110,33 @@ def galah_group_by(URL=None,
             facets_array=[]
         
         else:
+        '''
 
-            # loop over group_by
-            for g in group_by:
+        # loop over group_by
+        for g in group_by:
 
-                # ensure each group is given its own facet
-                if atlas in ["Global","GBIF"]:
-                    startingURL += "&facet={}".format(g)
-                else:
-                    startingURL += "&facets={}".format(g)
+            # ensure each group is given its own facet
+            if atlas in ["Global","GBIF"]:
+                startingURL += "&facet={}".format(g)
+            else:
+                startingURL += "&facets={}".format(g)
 
-            # round out the URL
-            startingURL += "&flimit=-1&pageSize=0"
-            
-            # check to see if the user wants the URL for querying
-            if verbose:
-                print()
-                print("headers: {}".format(headers))
-                print()
-                print("URL for querying: {}".format(startingURL))
-                print("Method: {}".format(method))
-                print()
+        # round out the URL
+        startingURL += "&flimit=-1&pageSize=0"
+        
+        # check to see if the user wants the URL for querying
+        if verbose:
+            print()
+            print("headers: {}".format(headers))
+            print()
+            print("URL for querying: {}".format(startingURL))
+            print("Method: {}".format(method))
+            print()
 
-            # get response from your query, which will include all available fields
-            response = requests.request(method,startingURL,headers=headers)
-            response_json = response.json()
-            facets_array=[]
+        # get response from your query, which will include all available fields
+        response = requests.request(method,startingURL,headers=headers)
+        response_json = response.json()
+        facets_array=[]
 
         # set some common variables
         if atlas in ["Global","GBIF"]:
@@ -151,11 +153,6 @@ def galah_group_by(URL=None,
             results_array = response_json 
             field_name = 'fieldResult' 
             facet_name = 'fq'
-        # elif atlas in ["Guatemala"]:
-        #     print(len(response_json))
-        #     print(response_json)
-        #     import sys
-        #     sys.exit()
         else:
             length = len(response_json['facetResults'])
             results_array = response_json['facetResults']
@@ -233,6 +230,7 @@ def galah_group_by(URL=None,
                 # do this loop for all other atlases 
                 else:
 
+                    '''
                     # loop over each facet
                     #for facet in f:
                     if atlas in ["Australia","ALA"]:
@@ -264,26 +262,27 @@ def galah_group_by(URL=None,
                         tempURL += "&facets={}".format(group_by[-1])
                         
                     else:
-
-                        for facet in f:
-                        
-                            # split each facet to make it human readable
-                            name,value = facet.split(':')
-                            value = value.replace('"', '')
-                            if name in group_by:
-                                tempURL = URL + "%20AND%20%28{}%3A%22{}%22%29".format(name,value)
-                            else:
-                                tempURL = URL
-                                # continue
-                            for group in group_by:
-                                if (group != name) and ("facets={}".format(group) not in URL):
-                                    tempURL += "&facets={}".format(group)
+                    '''
+                    for facet in f:
+                    
+                        # split each facet to make it human readable
+                        name,value = facet.split(':')
+                        value = value.replace('"', '')
+                        if name in group_by:
+                            tempURL = URL + "%20AND%20%28{}%3A%22{}%22%29".format(name,value)
+                        else:
+                            tempURL = URL
+                            # continue
+                        for group in group_by:
+                            if (group != name) and ("facets={}".format(group) not in URL):
+                                tempURL += "&facets={}".format(group)
 
                     # finalise the URL for querying
                     tempURL += "&flimit=-1&pageSize=0"
 
                     # check to see if the user wants the URL for querying
                     if verbose:
+                        '''
                         if atlas in ["Australia","ALA"]:
                             print()
                             print("payload for queryID: {}".format(payload_for_querying))
@@ -295,14 +294,16 @@ def galah_group_by(URL=None,
                             print("method: {}".format(method))
                             print()
                         else:
-                            print()
-                            print("URL for querying: {}".format(tempURL))
-                            print("Method: {}".format(method))
-                            print()
+                        '''
+                        print()
+                        print("URL for querying: {}".format(tempURL))
+                        print("Method: {}".format(method))
+                        print()
 
                     # get data
                     response=requests.request(method,tempURL,headers=headers)
                     response_json = response.json()
+                    print(response_json)
 
                     # if there is no data available, move onto next variable
                     if atlas not in ["Brazil"]:
