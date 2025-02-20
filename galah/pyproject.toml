@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [tool.poetry]
 name = "galah"
 package = "galah"
-version = "0.11.0" 
+version = "0.11.1" 
 description = "Get counts and information on species from many different atlases"
 authors = [
     "Amanda Buyan <amanda.buyan@csiro.au>", 
@@ -50,7 +50,7 @@ testpaths = [
 [tool.commitizen]
 name = "cz_conventional_commits"
 update_changelog_on_bump = true
-version = "0.11.0"
+version = "0.11.1"
 version_files = [
     "pyproject.toml:version",
     "src/galah/version.py:version",

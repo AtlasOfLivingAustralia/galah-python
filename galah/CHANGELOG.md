@@ -1,3 +1,9 @@
+## 0.11.1 (2025-02-21)
+
+### Fix
+
+- **fixes-to-code-on-website**: fixed bugs found in the code on the galah website
+
 ## 0.11.0 (2025-02-20)
 
 ### Feat
