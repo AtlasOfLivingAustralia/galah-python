@@ -285,7 +285,7 @@ def show_all(assertions=False,
                 # build layer id from this
                 spatial_values.loc[spatial_values["type"] == "Contextual","type"] = "cl"
                 spatial_values.loc[spatial_values["type"] == "Environmental","type"] = "el"
-                spatial_layers["id"] =  spatial_values["type"].astype(str) + spatial_values["id"].astype(str)
+                spatial_layers["id"] =  spatial_values["id"].astype(str).copy()
                 
                 # build descriptions from these
                 if atlas in ["Australia"]:

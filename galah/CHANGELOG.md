@@ -1,3 +1,9 @@
+## 0.11.2 (2025-03-04)
+
+### Fix
+
+- **fixing-up-some-elusive-bugs-and-documentation**: fixing up some elusive bugs and documentation
+
 ## 0.11.1 (2025-02-21)
 
 ### Fix

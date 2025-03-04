@@ -119,7 +119,7 @@ def atlas_occurrences(taxa=None,
     atlas = configs['galahSettings']['atlas']
 
     # check for email
-    if configs["galahSettings"]["email"] is None or configs["galahSettings"]["email"] == "email@example.com":
+    if configs["galahSettings"]["email"] in [None,"",configs["galahSettings"]["email"] == "email@example.com"]:
         raise ValueError("Please provide an email for querying")
 
     # initialise headers
