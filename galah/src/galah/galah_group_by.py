@@ -303,8 +303,7 @@ def galah_group_by(URL=None,
                     # get data
                     response=requests.request(method,tempURL,headers=headers)
                     response_json = response.json()
-                    print(response_json)
-
+                    
                     # if there is no data available, move onto next variable
                     if atlas not in ["Brazil"]:
                         if response_json is None or not response_json['facetResults']:

@@ -22,7 +22,7 @@ def atlas_species(taxa=None,
                   counts=False,
                   polygon=None,
                   bbox=None,
-                  simplify_polygon=False,
+                  simplify_polygon=True,
                   config_file=None
                   ):
     """
@@ -194,6 +194,9 @@ def atlas_species(taxa=None,
         if polygon is not None or bbox is not None:
 
             URL += "&wkt=" + urllib.parse.quote(str(galah_geolocate(polygon=polygon,bbox=bbox,simplify_polygon=simplify_polygon)))
+
+        if counts:
+            URL += "&count=true"
 
         # set lookup=True to get all species data
         URL += "&lookup=True"
