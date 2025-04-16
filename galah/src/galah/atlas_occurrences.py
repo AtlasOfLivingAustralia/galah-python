@@ -387,8 +387,9 @@ def atlas_occurrences(taxa=None,
             URL += "&mintDoi=TRUE&"
 
         # add final part of URL
-        if "assertions" in fields:
-            URL += "&qa=includeall"
+        if fields is not None:
+            if "assertions" in fields:
+                URL += "&qa=includeall"
         elif atlas not in ["Global","GBIF"]:
             URL += "&qa=none&"
 
