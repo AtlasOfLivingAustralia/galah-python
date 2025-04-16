@@ -1,3 +1,9 @@
+## 0.11.3 (2025-04-16)
+
+### Fix
+
+- **atlas_occurrences.py**: added ability to download all assertions in your occurrences
+
 ## 0.11.2 (2025-03-04)
 
 ### Fix
