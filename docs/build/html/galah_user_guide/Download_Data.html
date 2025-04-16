@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Download Data &#8212; Galah 0.11.2 documentation</title>
+    <title>Download Data &#8212; Galah 0.11.3 documentation</title>
   
   
   
@@ -38,7 +38,7 @@
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
   <script src="../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
 
-    <script src="../_static/documentation_options.js?v=60336169"></script>
+    <script src="../_static/documentation_options.js?v=c44be570"></script>
     <script src="../_static/doctools.js?v=888ff710"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/design-tabs.js?v=36754332"></script>
@@ -124,8 +124,8 @@
       
     
     
-    <img src="../_static/logo.png" class="logo__image only-light" alt="Galah 0.11.2 documentation - Home"/>
-    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Galah 0.11.2 documentation - Home"/>`);</script>
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Galah 0.11.3 documentation - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Galah 0.11.3 documentation - Home"/>`);</script>
   
   
 </a></div>
@@ -447,30 +447,30 @@ span.prompt1:before {
 </style><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">galah_config</span><span class="p">(</span><span class="n">atlas</span><span class="o">=</span><span class="s2">&quot;Australia&quot;</span><span class="p">)</span></span>
 <span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">atlas_counts</span><span class="p">()</span></span>
 </pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>   totalRecords
-0     150408171
+0     150349915
 </pre></div>
 </div>
 <p>In addition to <code class="docutils literal notranslate"><span class="pre">filters</span></code> arguments, <code class="docutils literal notranslate"><span class="pre">galah.atlas_counts()</span></code> has an optional <code class="docutils literal notranslate"><span class="pre">group_by</span></code> argument, which provides counts grouped
 by the requested field.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">atlas_counts</span><span class="p">(</span><span class="n">group_by</span><span class="o">=</span><span class="s2">&quot;kingdom&quot;</span><span class="p">)</span></span>
 </pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>           kingdom      count
-0         Animalia  115668792
-1          Archaea      14938
-2         Bacteria     461579
-3     Bamfordvirae        523
-4        Chromista    1095924
-5            Fungi    2713603
+0         Animalia  115267430
+1          Archaea      14989
+2         Bacteria     463591
+3     Bamfordvirae        526
+4        Chromista    1101637
+5            Fungi    2745670
 6    Helvetiavirae          1
 7   Heunggongvirae        509
 8        Loebvirae          3
-9    Orthornavirae       6677
+9    Orthornavirae       6680
 10    Pararnavirae        308
-11         Plantae   28775249
-12        Protista     375725
+11         Plantae   29060762
+12        Protista     390672
 13    Shotokuvirae       1114
 14      Trapavirae          3
 15          Viroid        143
-16           Virus       4269
+16           Virus       4273
 </pre></div>
 </div>
 </section>
@@ -515,8 +515,8 @@ than the species; but also in being more flexible by supporting filtering:</p>
 30  https://biodiversity.org.au/afd/taxa/0553a58d-450b-455a-8844-62d5e5d14774              Xeromys myoides                 Thomas, 1889    species  Animalia  Chordata  Mammalia  Rodentia   Muridae       Xeromys              False Water-rat
 31  https://biodiversity.org.au/afd/taxa/e169b779-e4e4-411f-95e0-b21d4b4c6060               Notomys fuscus                (Jones, 1925)    species  Animalia  Chordata  Mammalia  Rodentia   Muridae       Notomys          Dusky Hopping-mouse
 32  https://biodiversity.org.au/afd/taxa/9f22993a-86b0-4003-9df4-4565d66de008    Pseudomys gracilicaudatus                (Gould, 1845)    species  Animalia  Chordata  Mammalia  Rodentia   Muridae     Pseudomys       Eastern Chestnut Mouse
-33  https://biodiversity.org.au/afd/taxa/15e09f34-5033-424e-a37c-d6bb55f30b26            Rattus norvegicus           (Berkenhout, 1769)    species  Animalia  Chordata  Mammalia  Rodentia   Muridae        Rattus                    Brown Rat
-34  https://biodiversity.org.au/afd/taxa/1d179abb-b688-4242-989f-9a1a6d90f0b4        Mesembriomys macrurus               (Peters, 1876)    species  Animalia  Chordata  Mammalia  Rodentia   Muridae  Mesembriomys       Golden-backed Tree-rat
+33  https://biodiversity.org.au/afd/taxa/1d179abb-b688-4242-989f-9a1a6d90f0b4        Mesembriomys macrurus               (Peters, 1876)    species  Animalia  Chordata  Mammalia  Rodentia   Muridae  Mesembriomys       Golden-backed Tree-rat
+34  https://biodiversity.org.au/afd/taxa/15e09f34-5033-424e-a37c-d6bb55f30b26            Rattus norvegicus           (Berkenhout, 1769)    species  Animalia  Chordata  Mammalia  Rodentia   Muridae        Rattus                    Brown Rat
 35  https://biodiversity.org.au/afd/taxa/d9528b07-2a62-4120-b946-edab67821b44           Melomys cervinipes                (Gould, 1852)    species  Animalia  Chordata  Mammalia  Rodentia   Muridae       Melomys          Fawn-footed Melomys
 36  https://biodiversity.org.au/afd/taxa/dcf73c10-5e05-4b59-9d4e-2682ef369e5e            Zyzomys woodwardi               (Thomas, 1909)    species  Animalia  Chordata  Mammalia  Rodentia   Muridae       Zyzomys           Kimberley Rock-rat
 37  https://biodiversity.org.au/afd/taxa/288dcc0f-822d-43e4-b31d-82edd9b11f00            Pseudomys gouldii           (Waterhouse, 1839)    species  Animalia  Chordata  Mammalia  Rodentia   Muridae     Pseudomys  Shark Bay Mouse (djoongari)
@@ -534,20 +534,20 @@ associated with an active account on your chosen atlas. See more information in 
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah_config</span><span class="p">(</span><span class="n">email</span> <span class="o">=</span> <span class="s2">&quot;your_email@email.com&quot;</span><span class="p">,</span> <span class="n">atlas</span> <span class="o">=</span> <span class="s2">&quot;Australia&quot;</span><span class="p">)</span></span>
 </pre></div></div><p>After specifying your email, you can download occurrence records of, for example, Eolophus roseicapilla:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">atlas_occurrences</span><span class="p">(</span><span class="n">taxa</span><span class="o">=</span><span class="s2">&quot;Eolophus roseicapilla&quot;</span><span class="p">,</span><span class="n">filters</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;stateProvince=Australian Capital Territory&quot;</span><span class="p">,</span><span class="s2">&quot;year&gt;=2010&quot;</span><span class="p">],</span><span class="n">fields</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;institutionID&quot;</span><span class="p">,</span><span class="s2">&quot;basic&quot;</span><span class="p">])</span></span>
-</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>      institutionID  decimalLatitude  decimalLongitude             eventDate         scientificName                                                             taxonConceptID                              recordID                   dataResourceName occurrenceStatus
-0               NaN       -35.422050        149.080340  2021-10-21T12:15:00Z  Eolophus roseicapilla  https://biodiversity.org.au/afd/taxa/9b4ad548-8bb3-486a-ab0a-905506c463ea  3a0c7ffd-0c5c-46c1-a72f-427a923ec7f6                    eBird Australia          PRESENT
-1               NaN       -35.240477        149.046570  2015-02-05T00:00:00Z  Eolophus roseicapilla  https://biodiversity.org.au/afd/taxa/9b4ad548-8bb3-486a-ab0a-905506c463ea  369aa946-9243-4ca5-9b19-4dcc32533b74                Garden Bird Surveys          PRESENT
-2               NaN       -35.262050        149.068500  2015-06-11T11:05:00Z  Eolophus roseicapilla  https://biodiversity.org.au/afd/taxa/9b4ad548-8bb3-486a-ab0a-905506c463ea  7156aac3-14c0-46da-87ca-d184f63d9790                    eBird Australia          PRESENT
-3               NaN       -35.240477        149.046570  2018-01-22T00:00:00Z  Eolophus roseicapilla  https://biodiversity.org.au/afd/taxa/9b4ad548-8bb3-486a-ab0a-905506c463ea  6c017e6c-44f9-4d04-be21-87ce7763a4d9                Garden Bird Surveys          PRESENT
-4               NaN       -35.260075        149.152295  2016-08-28T00:00:00Z  Eolophus roseicapilla  https://biodiversity.org.au/afd/taxa/9b4ad548-8bb3-486a-ab0a-905506c463ea  32884ce5-8b82-4322-a140-aecd5174f542                Garden Bird Surveys          PRESENT
-...             ...              ...               ...                   ...                    ...                                                                        ...                                   ...                                ...              ...
-96334           NaN       -35.263909        149.073218  2012-01-01T00:00:00Z  Eolophus roseicapilla  https://biodiversity.org.au/afd/taxa/9b4ad548-8bb3-486a-ab0a-905506c463ea  68ae1284-0f7e-422b-a706-db5c4433f163                Garden Bird Surveys          PRESENT
-96335           NaN       -35.326697        149.123731  2017-01-22T00:00:00Z  Eolophus roseicapilla  https://biodiversity.org.au/afd/taxa/9b4ad548-8bb3-486a-ab0a-905506c463ea  2e6c1bd4-867e-48c9-a980-784c975bad3c                Garden Bird Surveys          PRESENT
-96336        in1033       -35.226993        149.020481  2017-06-25T14:00:00Z  Eolophus roseicapilla  https://biodiversity.org.au/afd/taxa/9b4ad548-8bb3-486a-ab0a-905506c463ea  32735c4a-bb78-4ffe-b7c1-7a7b7cc599ce  ALA species sightings and OzAtlas          PRESENT
-96337        in1033       -35.276619        149.112914  2017-07-25T21:34:37Z  Eolophus roseicapilla  https://biodiversity.org.au/afd/taxa/9b4ad548-8bb3-486a-ab0a-905506c463ea  150d3252-111e-41ec-ab32-7f0567ac0330  ALA species sightings and OzAtlas          PRESENT
-96338        in1033       -35.160122        149.140961  2018-07-05T06:30:46Z  Eolophus roseicapilla  https://biodiversity.org.au/afd/taxa/9b4ad548-8bb3-486a-ab0a-905506c463ea  59d49f01-33d2-46e2-92cb-f4c5f9ecd4fa  ALA species sightings and OzAtlas          PRESENT
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>      institutionID  decimalLatitude  decimalLongitude             eventDate         scientificName                                                             taxonConceptID                              recordID                   dataResourceName occurrenceStatus  BASIS_OF_RECORD_INVALID  CONTINENT_COORDINATE_MISMATCH  COORDINATE_PRECISION_INVALID  COORDINATE_ROUNDED  COORDINATE_UNCERTAINTY_METERS_INVALID  COUNTRY_DERIVED_FROM_COORDINATES  FIRST_OF_MONTH  FIRST_OF_YEAR  GEODETIC_DATUM_ASSUMED_WGS84  GEODETIC_DATUM_INVALID  ID_PRE_OCCURRENCE  INDIVIDUAL_COUNT_INVALID  MISSING_GEODETICDATUM  MISSING_GEOREFERENCEDBY  MISSING_GEOREFERENCEPROTOCOL  MISSING_GEOREFERENCESOURCES  MISSING_GEOREFERENCEVERIFICATIONSTATUS  MISSING_GEOREFERENCE_DATE  MISSING_TAXONRANK  MODIFIED_DATE_INVALID  MULTIMEDIA_DATE_INVALID  OCCURRENCE_STATUS_INFERRED_FROM_INDIVIDUAL_COUNT  RECORDED_DATE_INVALID  STATE_COORDINATE_MISMATCH  TAXON_MATCH_FUZZY
+0               NaN       -35.262050        149.068500  2016-12-05T18:10:00Z  Eolophus roseicapilla  https://biodiversity.org.au/afd/taxa/9b4ad548-8bb3-486a-ab0a-905506c463ea  98fc7e11-9064-4c0f-8bad-53485c421f88                    eBird Australia          PRESENT                    False                          False                         False               False                                   True                             False           False          False                          True                   False              False                     False                   True                     True                          True                         True                                    True                       True               True                  False                    False                                              True                  False                      False              False
+1               NaN       -35.326399        149.067593  2020-11-11T17:17:00Z  Eolophus roseicapilla  https://biodiversity.org.au/afd/taxa/9b4ad548-8bb3-486a-ab0a-905506c463ea  40104e2d-2e95-4889-8bc5-76248457a82c                    eBird Australia          PRESENT                    False                          False                         False                True                                   True                             False           False          False                          True                   False              False                     False                   True                     True                          True                         True                                    True                       True               True                  False                    False                                              True                  False                      False              False
+2               NaN       -35.262050        149.068500  2015-12-07T16:30:00Z  Eolophus roseicapilla  https://biodiversity.org.au/afd/taxa/9b4ad548-8bb3-486a-ab0a-905506c463ea  ec682a25-dfbd-48b9-8a51-53356e52f1ff                    eBird Australia          PRESENT                    False                          False                         False               False                                   True                             False           False          False                          True                   False              False                     False                   True                     True                          True                         True                                    True                       True               True                  False                    False                                              True                  False                      False              False
+3               NaN       -35.317036        149.079250  2019-06-13T16:13:00Z  Eolophus roseicapilla  https://biodiversity.org.au/afd/taxa/9b4ad548-8bb3-486a-ab0a-905506c463ea  3ec71547-adda-4207-9386-c03ec6eb22bf                    eBird Australia          PRESENT                    False                          False                         False                True                                   True                             False           False          False                          True                   False              False                     False                   True                     True                          True                         True                                    True                       True               True                  False                    False                                              True                  False                      False              False
+4               NaN       -35.335215        149.049740  2015-07-17T00:00:00Z  Eolophus roseicapilla  https://biodiversity.org.au/afd/taxa/9b4ad548-8bb3-486a-ab0a-905506c463ea  cc91ef46-3bda-4920-8b36-61c24a293f9c                Garden Bird Surveys          PRESENT                    False                          False                         False               False                                  False                             False           False          False                         False                   False              False                      True                  False                    False                         False                        False                                    True                       True              False                  False                    False                                             False                  False                      False              False
+...             ...              ...               ...                   ...                    ...                                                                        ...                                   ...                                ...              ...                      ...                            ...                           ...                 ...                                    ...                               ...             ...            ...                           ...                     ...                ...                       ...                    ...                      ...                           ...                          ...                                     ...                        ...                ...                    ...                      ...                                               ...                    ...                        ...                ...
+96396           NaN       -35.329288        149.139065  2011-12-18T00:00:00Z  Eolophus roseicapilla  https://biodiversity.org.au/afd/taxa/9b4ad548-8bb3-486a-ab0a-905506c463ea  8d3a8ae4-4b4c-48f0-b352-331531a97203                Garden Bird Surveys          PRESENT                    False                          False                         False               False                                  False                             False           False          False                         False                   False              False                      True                  False                    False                         False                        False                                    True                       True              False                  False                    False                                             False                  False                      False              False
+96397           NaN       -35.313411        149.162326  2020-09-11T12:21:00Z  Eolophus roseicapilla  https://biodiversity.org.au/afd/taxa/9b4ad548-8bb3-486a-ab0a-905506c463ea  cb1c17d2-93e0-4ad8-8700-461d699aec66                    eBird Australia          PRESENT                    False                          False                         False               False                                   True                             False           False          False                          True                   False              False                     False                   True                     True                          True                         True                                    True                       True               True                  False                    False                                              True                  False                      False              False
+96398        in1033       -35.226993        149.020481  2017-06-25T14:00:00Z  Eolophus roseicapilla  https://biodiversity.org.au/afd/taxa/9b4ad548-8bb3-486a-ab0a-905506c463ea  32735c4a-bb78-4ffe-b7c1-7a7b7cc599ce  ALA species sightings and OzAtlas          PRESENT                    False                          False                         False                True                                   True                              True           False          False                          True                   False              False                      True                   True                     True                          True                         True                                    True                       True               True                  False                    False                                             False                  False                      False               True
+96399        in1033       -35.276619        149.112914  2017-07-25T21:34:37Z  Eolophus roseicapilla  https://biodiversity.org.au/afd/taxa/9b4ad548-8bb3-486a-ab0a-905506c463ea  150d3252-111e-41ec-ab32-7f0567ac0330  ALA species sightings and OzAtlas          PRESENT                    False                          False                         False                True                                   True                              True           False          False                          True                   False              False                      True                   True                     True                          True                         True                                    True                       True               True                  False                    False                                             False                  False                      False               True
+96400        in1033       -35.160122        149.140961  2018-07-05T06:30:46Z  Eolophus roseicapilla  https://biodiversity.org.au/afd/taxa/9b4ad548-8bb3-486a-ab0a-905506c463ea  59d49f01-33d2-46e2-92cb-f4c5f9ecd4fa  ALA species sightings and OzAtlas          PRESENT                    False                          False                         False                True                                   True                              True           False          False                          True                   False              False                      True                   True                     True                          True                         True                                    True                       True               True                  False                    False                                             False                  False                      False               True
 
-[96339 rows x 9 columns]
+[96401 rows x 34 columns]
 </pre></div>
 </div>
 </section>

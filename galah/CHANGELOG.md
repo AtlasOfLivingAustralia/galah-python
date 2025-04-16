@@ -1,3 +1,9 @@
+## 0.11.4 (2025-04-16)
+
+### Fix
+
+- **atlas_occurrences.py**: updated for getting all assertions so no NoneType error
+
 ## 0.11.3 (2025-04-16)
 
 ### Fix

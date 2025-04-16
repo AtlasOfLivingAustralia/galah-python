@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Tutorial &#8212; Galah 0.11.2 documentation</title>
+    <title>Tutorial &#8212; Galah 0.11.3 documentation</title>
   
   
   
@@ -38,7 +38,7 @@
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
   <script src="../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
 
-    <script src="../_static/documentation_options.js?v=60336169"></script>
+    <script src="../_static/documentation_options.js?v=c44be570"></script>
     <script src="../_static/doctools.js?v=888ff710"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/design-tabs.js?v=36754332"></script>
@@ -124,8 +124,8 @@
       
     
     
-    <img src="../_static/logo.png" class="logo__image only-light" alt="Galah 0.11.2 documentation - Home"/>
-    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Galah 0.11.2 documentation - Home"/>`);</script>
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Galah 0.11.3 documentation - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Galah 0.11.3 documentation - Home"/>`);</script>
   
   
 </a></div>
@@ -511,20 +511,20 @@ To do this, we will take the query from above and change the function name from 
 <p>If you are only interested in the scientific name, as well as latitude and longitude, use the <code class="docutils literal notranslate"><span class="pre">fields</span></code> option as follows:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">import galah</span>
 <span class="prompt1">galah.atlas_occurrences(taxa=&quot;Vulpes vulpes&quot;,filters=&quot;year&gt;=2020&quot;,fields=[&quot;scientificName&quot;,&quot;decimalLatitude&quot;,&quot;decimalLongitude&quot;])</span>
-</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>      scientificName  decimalLatitude  decimalLongitude
-0      Vulpes vulpes       -37.188300        146.630948
-1      Vulpes vulpes       -33.789190        150.988896
-2      Vulpes vulpes       -30.367310        152.303180
-3      Vulpes vulpes       -34.616240        150.673405
-4      Vulpes vulpes       -37.920154        145.204206
-...              ...              ...               ...
-36769  Vulpes vulpes       -34.840196        138.876037
-36770  Vulpes vulpes       -34.176213        142.493598
-36771  Vulpes vulpes       -30.523865        149.194296
-36772  Vulpes vulpes       -33.652318        151.284332
-36773  Vulpes vulpes       -33.638978        150.302957
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>      scientificName  decimalLatitude  decimalLongitude  BASIS_OF_RECORD_INVALID  CONTINENT_COORDINATE_MISMATCH  COORDINATE_ROUNDED  COORDINATE_UNCERTAINTY_METERS_INVALID  COUNTRY_DERIVED_FROM_COORDINATES  FIRST_OF_MONTH  FIRST_OF_YEAR  GEODETIC_DATUM_ASSUMED_WGS84  ID_PRE_OCCURRENCE  INDIVIDUAL_COUNT_INVALID  MISSING_GEODETICDATUM  MISSING_GEOREFERENCEDBY  MISSING_GEOREFERENCEPROTOCOL  MISSING_GEOREFERENCESOURCES  MISSING_GEOREFERENCEVERIFICATIONSTATUS  MISSING_GEOREFERENCE_DATE  MISSING_TAXONRANK  MODIFIED_DATE_INVALID  OCCURRENCE_STATUS_INFERRED_FROM_INDIVIDUAL_COUNT  RECORDED_DATE_INVALID  STATE_COORDINATE_MISMATCH  TAXON_MATCH_HIGHERRANK
+0      Vulpes vulpes       -37.676100        146.216000                    False                          False               False                                  False                             False           False          False                         False              False                     False                  False                    False                          True                        False                                    True                      False              False                  False                                             False                   True                      False                   False
+1      Vulpes vulpes       -33.340083        151.415916                     True                          False                True                                   True                              True           False          False                          True              False                     False                   True                     True                          True                         True                                    True                       True               True                  False                                             False                  False                      False                   False
+2      Vulpes vulpes       -35.887480        147.883100                    False                          False                True                                  False                             False           False          False                         False              False                     False                  False                     True                         False                         True                                    True                       True              False                  False                                             False                  False                      False                   False
+3      Vulpes vulpes       -34.982570        150.588993                    False                          False                True                                  False                             False           False          False                         False              False                     False                  False                     True                          True                         True                                    True                       True              False                  False                                             False                  False                      False                   False
+4      Vulpes vulpes       -34.262574        150.228290                    False                          False                True                                  False                             False           False          False                         False              False                     False                  False                     True                         False                         True                                    True                       True              False                  False                                             False                  False                      False                   False
+...              ...              ...               ...                      ...                            ...                 ...                                    ...                               ...             ...            ...                           ...                ...                       ...                    ...                      ...                           ...                          ...                                     ...                        ...                ...                    ...                                               ...                    ...                        ...                     ...
+39547  Vulpes vulpes       -31.922498        116.082276                     True                          False                True                                   True                              True           False          False                          True              False                     False                   True                     True                          True                         True                                    True                       True               True                  False                                             False                  False                      False                   False
+39548  Vulpes vulpes       -33.833912        151.234419                     True                          False               False                                   True                              True            True          False                          True              False                     False                   True                     True                          True                         True                                    True                       True               True                  False                                             False                  False                      False                   False
+39549  Vulpes vulpes       -33.866105        151.138201                     True                          False               False                                   True                              True           False          False                          True              False                     False                   True                     True                          True                         True                                    True                       True               True                  False                                             False                  False                      False                   False
+39550  Vulpes vulpes       -37.811627        145.147883                     True                          False                True                                   True                              True           False          False                          True              False                     False                   True                     True                          True                         True                                    True                       True               True                  False                                             False                  False                      False                   False
+39551  Vulpes vulpes       -37.777272        145.287015                     True                          False               False                                   True                              True           False          False                          True              False                     False                   True                     True                          True                         True                                    True                       True               True                  False                                             False                  False                      False                   False
 
-[36774 rows x 3 columns]
+[39552 rows x 25 columns]
 </pre></div>
 </div>
 <p>Check out other vignettes and the API docs for more information on how to use each of these functions, as well as to

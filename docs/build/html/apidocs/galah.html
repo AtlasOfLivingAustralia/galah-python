@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>API Docs &#8212; Galah 0.11.2 documentation</title>
+    <title>API Docs &#8212; Galah 0.11.3 documentation</title>
   
   
   
@@ -38,7 +38,7 @@
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
   <script src="../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
 
-    <script src="../_static/documentation_options.js?v=60336169"></script>
+    <script src="../_static/documentation_options.js?v=c44be570"></script>
     <script src="../_static/doctools.js?v=888ff710"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/design-tabs.js?v=36754332"></script>
@@ -124,8 +124,8 @@
       
     
     
-    <img src="../_static/logo.png" class="logo__image only-light" alt="Galah 0.11.2 documentation - Home"/>
-    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Galah 0.11.2 documentation - Home"/>`);</script>
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Galah 0.11.3 documentation - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Galah 0.11.3 documentation - Home"/>`);</script>
   
   
 </a></div>
@@ -444,18 +444,18 @@ span.prompt1:before {
 }
 </style><span class="prompt1"><span class="n">galah</span><span class="o">.</span><span class="n">atlas_counts</span><span class="p">()</span></span>
 </pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>   totalRecords
-0     150408171
+0     150349915
 </pre></div>
 </div>
 <p>Return records from 2020 onwards, grouped by year</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="n">galah</span><span class="o">.</span><span class="n">atlas_counts</span><span class="p">(</span><span class="n">filters</span><span class="o">=</span><span class="s2">&quot;year&gt;2019&quot;</span><span class="p">,</span><span class="n">group_by</span><span class="o">=</span><span class="s2">&quot;year&quot;</span><span class="p">,</span><span class="n">expand</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></span>
 </pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>   year     count
-0  2020   7211580
-1  2021   8514744
-2  2022   9131848
-3  2023  10500053
-4  2024   5770957
-5  2025    336156
+0  2020   7239046
+1  2021   8553407
+2  2022   9160517
+3  2023  10545301
+4  2024   5822841
+5  2025    628854
 </pre></div>
 </div>
 </dd></dl>
@@ -619,6 +619,12 @@ Default is set to <code class="docutils literal notranslate"><span class="pre">&
 <li><p>multimedia, multimediaLicence, images, videos, sounds</p></li>
 </ul>
 </div></blockquote>
+<p>Using <code class="docutils literal notranslate"><span class="pre">fields=&quot;assertions</span></code> returns:</p>
+<blockquote>
+<div><ul>
+<li><p>all available assertions from the ALA</p></li>
+</ul>
+</div></blockquote>
 <p>See <code class="docutils literal notranslate"><span class="pre">galah.show_all()</span></code> and <code class="docutils literal notranslate"><span class="pre">galah.search_all()</span></code> to see all valid fields.</p>
 </p></li>
 <li><p><strong>assertions</strong> (<em>string / list</em>) – Using “assertions” returns all quality assertion-related columns. These columns are data quality checks run by each living atlas. The list of assertions is shown by <code class="docutils literal notranslate"><span class="pre">galah.show_all(assertions=True)</span></code>.</p></li>
@@ -646,11 +652,11 @@ Default is set to <code class="docutils literal notranslate"><span class="pre">&
 3          -39.026141        146.332604  2023-07-16T00:00:00Z  Vulpes vulpes   
 4          -39.021544        146.443742  2023-03-14T15:40:48Z  Vulpes vulpes   
 ...               ...               ...                   ...            ...   
-7214        39.300000        -75.400000  2023-11-02T04:54:00Z  Vulpes vulpes   
-7215        40.000000        -81.500000  2023-07-14T11:15:00Z  Vulpes vulpes   
-7216        42.100000        -71.600000  2023-12-18T13:33:00Z  Vulpes vulpes   
-7217        43.600000        145.300000  2023-08-09T10:50:47Z  Vulpes vulpes   
-7218        51.100000         -0.500000  2023-03-17T12:04:54Z  Vulpes vulpes   
+8161        39.300000        -75.400000  2023-11-02T04:54:00Z  Vulpes vulpes   
+8162        40.000000        -81.500000  2023-07-14T11:15:00Z  Vulpes vulpes   
+8163        42.100000        -71.600000  2023-12-18T13:33:00Z  Vulpes vulpes   
+8164        43.600000        145.300000  2023-08-09T10:50:47Z  Vulpes vulpes   
+8165        51.100000         -0.500000  2023-03-17T12:04:54Z  Vulpes vulpes   
 
                                          taxonConceptID  \
 0     https://biodiversity.org.au/afd/taxa/2869ce8a-...   
@@ -659,11 +665,11 @@ Default is set to <code class="docutils literal notranslate"><span class="pre">&
 3     https://biodiversity.org.au/afd/taxa/2869ce8a-...   
 4     https://biodiversity.org.au/afd/taxa/2869ce8a-...   
 ...                                                 ...   
-7214  https://biodiversity.org.au/afd/taxa/2869ce8a-...   
-7215  https://biodiversity.org.au/afd/taxa/2869ce8a-...   
-7216  https://biodiversity.org.au/afd/taxa/2869ce8a-...   
-7217  https://biodiversity.org.au/afd/taxa/2869ce8a-...   
-7218  https://biodiversity.org.au/afd/taxa/2869ce8a-...   
+8161  https://biodiversity.org.au/afd/taxa/2869ce8a-...   
+8162  https://biodiversity.org.au/afd/taxa/2869ce8a-...   
+8163  https://biodiversity.org.au/afd/taxa/2869ce8a-...   
+8164  https://biodiversity.org.au/afd/taxa/2869ce8a-...   
+8165  https://biodiversity.org.au/afd/taxa/2869ce8a-...   
 
                                   recordID             dataResourceName  \
 0     572341b6-94ca-4d96-bf4f-889cbd5e26f0                    FeralScan   
@@ -672,11 +678,11 @@ Default is set to <code class="docutils literal notranslate"><span class="pre">&
 3     147fbb76-92b6-460c-bb12-4f9fc5f353b0                    FeralScan   
 4     e82ec752-fbcc-40e4-97e4-41adbfdee088        iNaturalist Australia   
 ...                                    ...                          ...   
-7214  531ca541-8c12-4bdd-834d-31980cd127ab  Earth Guardians Weekly Feed   
-7215  4065886d-ce29-48d2-b8b3-9bc4195ba8b3  Earth Guardians Weekly Feed   
-7216  d35e6a68-ca70-42d2-beae-e6747d1138cf  Earth Guardians Weekly Feed   
-7217  47b6921d-3891-4e52-b1aa-9fbd57e76823  Earth Guardians Weekly Feed   
-7218  65fc1040-5675-4f6c-8c92-40f8de159bed  Earth Guardians Weekly Feed   
+8161  531ca541-8c12-4bdd-834d-31980cd127ab  Earth Guardians Weekly Feed   
+8162  4065886d-ce29-48d2-b8b3-9bc4195ba8b3  Earth Guardians Weekly Feed   
+8163  d35e6a68-ca70-42d2-beae-e6747d1138cf  Earth Guardians Weekly Feed   
+8164  47b6921d-3891-4e52-b1aa-9fbd57e76823  Earth Guardians Weekly Feed   
+8165  65fc1040-5675-4f6c-8c92-40f8de159bed  Earth Guardians Weekly Feed   
 
      occurrenceStatus  
 0             PRESENT  
@@ -685,33 +691,137 @@ Default is set to <code class="docutils literal notranslate"><span class="pre">&
 3             PRESENT  
 4             PRESENT  
 ...               ...  
-7214          PRESENT  
-7215          PRESENT  
-7216          PRESENT  
-7217          PRESENT  
-7218          PRESENT  
+8161          PRESENT  
+8162          PRESENT  
+8163          PRESENT  
+8164          PRESENT  
+8165          PRESENT  
 
-[7219 rows x 8 columns]
+[8166 rows x 8 columns]
 </pre></div>
 </div>
 <p>Download records of Vulpes vulpes in 2023, returning only <code class="docutils literal notranslate"><span class="pre">eventDate</span></code> field</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="kn">import</span> <span class="nn">galah</span></span>
 <span class="prompt1"><span class="n">galah</span><span class="o">.</span><span class="n">galah_config</span><span class="p">(</span><span class="n">atlas</span><span class="o">=</span><span class="s2">&quot;Australia&quot;</span><span class="p">,</span><span class="n">email</span><span class="o">=</span><span class="s2">&quot;your-email@example.com&quot;</span><span class="p">)</span></span>
 <span class="prompt1"><span class="n">galah</span><span class="o">.</span><span class="n">atlas_occurrences</span><span class="p">(</span><span class="n">taxa</span><span class="o">=</span><span class="s2">&quot;Vulpes vulpes&quot;</span><span class="p">,</span><span class="n">filters</span><span class="o">=</span><span class="s2">&quot;year=2023&quot;</span><span class="p">,</span><span class="n">fields</span><span class="o">=</span><span class="s2">&quot;eventDate&quot;</span><span class="p">)</span></span>
-</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>                 eventDate
-0     2023-01-01T00:00:00Z
-1     2023-01-01T00:00:00Z
-2     2023-01-01T00:00:00Z
-3     2023-01-01T00:00:00Z
-4     2023-01-01T00:00:00Z
-...                    ...
-7214  2023-12-31T00:00:00Z
-7215  2023-12-31T00:00:00Z
-7216  2023-12-31T00:00:00Z
-7217  2023-12-31T14:01:00Z
-7218  2023-12-31T16:56:00Z
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>                 eventDate  BASIS_OF_RECORD_INVALID  COORDINATE_ROUNDED  \
+0     2023-01-01T00:00:00Z                    False               False   
+1     2023-01-01T00:00:00Z                     True               False   
+2     2023-01-01T00:00:00Z                     True               False   
+3     2023-01-01T00:00:00Z                    False               False   
+4     2023-01-01T00:00:00Z                    False               False   
+...                    ...                      ...                 ...   
+8161  2023-12-31T00:00:00Z                    False                True   
+8162  2023-12-31T00:00:00Z                     True                True   
+8163  2023-12-31T00:00:00Z                     True                True   
+8164  2023-12-31T14:01:00Z                    False                True   
+8165  2023-12-31T16:56:00Z                    False                True   
 
-[7219 rows x 1 columns]
+      COORDINATE_UNCERTAINTY_METERS_INVALID  COUNTRY_DERIVED_FROM_COORDINATES  \
+0                                     False                             False   
+1                                      True                              True   
+2                                      True                              True   
+3                                     False                             False   
+4                                     False                             False   
+...                                     ...                               ...   
+8161                                  False                             False   
+8162                                   True                              True   
+8163                                   True                              True   
+8164                                  False                             False   
+8165                                  False                             False   
+
+      FIRST_OF_MONTH  FIRST_OF_YEAR  GEODETIC_DATUM_ASSUMED_WGS84  \
+0               True           True                         False   
+1               True           True                          True   
+2               True           True                          True   
+3               True           True                         False   
+4               True           True                         False   
+...              ...            ...                           ...   
+8161           False          False                         False   
+8162           False          False                          True   
+8163           False          False                          True   
+8164           False          False                         False   
+8165           False          False                         False   
+
+      ID_PRE_OCCURRENCE  INDIVIDUAL_COUNT_INVALID  MISSING_GEODETICDATUM  \
+0                 False                     False                  False   
+1                 False                     False                   True   
+2                 False                     False                   True   
+3                 False                     False                  False   
+4                 False                     False                  False   
+...                 ...                       ...                    ...   
+8161              False                     False                  False   
+8162              False                     False                   True   
+8163              False                     False                   True   
+8164              False                     False                  False   
+8165              False                     False                  False   
+
+      MISSING_GEOREFERENCEDBY  MISSING_GEOREFERENCEPROTOCOL  \
+0                        True                         False   
+1                        True                          True   
+2                        True                          True   
+3                        True                         False   
+4                       False                          True   
+...                       ...                           ...   
+8161                     True                         False   
+8162                     True                          True   
+8163                     True                          True   
+8164                     True                          True   
+8165                     True                          True   
+
+      MISSING_GEOREFERENCESOURCES  MISSING_GEOREFERENCEVERIFICATIONSTATUS  \
+0                            True                                    True   
+1                            True                                    True   
+2                            True                                    True   
+3                            True                                    True   
+4                           False                                    True   
+...                           ...                                     ...   
+8161                         True                                    True   
+8162                         True                                    True   
+8163                         True                                    True   
+8164                         True                                    True   
+8165                         True                                    True   
+
+      MISSING_GEOREFERENCE_DATE  MISSING_TAXONRANK  \
+0                          True              False   
+1                          True               True   
+2                          True               True   
+3                          True              False   
+4                         False              False   
+...                         ...                ...   
+8161                       True              False   
+8162                       True               True   
+8163                       True               True   
+8164                       True              False   
+8165                       True              False   
+
+      OCCURRENCE_STATUS_INFERRED_FROM_INDIVIDUAL_COUNT  RECORDED_DATE_INVALID  \
+0                                                False                  False   
+1                                                False                  False   
+2                                                False                  False   
+3                                                False                  False   
+4                                                False                   True   
+...                                                ...                    ...   
+8161                                             False                  False   
+8162                                             False                  False   
+8163                                             False                  False   
+8164                                             False                  False   
+8165                                             False                  False   
+
+      STATE_COORDINATE_MISMATCH  TAXON_MATCH_HIGHERRANK  
+0                         False                   False  
+1                         False                   False  
+2                         False                   False  
+3                         False                   False  
+4                         False                   False  
+...                         ...                     ...  
+8161                      False                   False  
+8162                      False                   False  
+8163                      False                   False  
+8164                      False                   False  
+8165                      False                   False  
+
+[8166 rows x 21 columns]
 </pre></div>
 </div>
 </dd></dl>
@@ -1080,26 +1190,26 @@ displaying all valid options for the information specified.</p>
 3                                    &quot;P to Z&quot; flora EPBC   
 4      (Appendix 2) Stratigraphic distribution of key...   
 ...                                                  ...   
-10225  Zooplankton samples from Heron net trawls alon...   
-10226  Zooplankton sampling in the coastal waters of ...   
-10227                         Zoos Victoria Moth Tracker   
-10228                            Zosteria fulvipubescens   
-10229                            Zosteria fulvipubescens   
+10663  Zooplankton samples from Heron net trawls alon...   
+10664  Zooplankton sampling in the coastal waters of ...   
+10665                         Zoos Victoria Moth Tracker   
+10666                            Zosteria fulvipubescens   
+10667                            Zosteria fulvipubescens   
 
                                                      uri      uid  
 0      https://collections.ala.org.au/ws/dataResource...  dr23929  
 1      https://collections.ala.org.au/ws/dataResource...  dr24170  
 2      https://collections.ala.org.au/ws/dataResource...  dr24172  
 3      https://collections.ala.org.au/ws/dataResource...  dr24173  
-4      https://collections.ala.org.au/ws/dataResource...  dr30390  
+4      https://collections.ala.org.au/ws/dataResource...  dr30595  
 ...                                                  ...      ...  
-10225  https://collections.ala.org.au/ws/dataResource...  dr23120  
-10226  https://collections.ala.org.au/ws/dataResource...  dr15943  
-10227  https://collections.ala.org.au/ws/dataResource...  dr22371  
-10228  https://collections.ala.org.au/ws/dataResource...  dr27880  
-10229  https://collections.ala.org.au/ws/dataResource...  dr27881  
+10663  https://collections.ala.org.au/ws/dataResource...  dr23120  
+10664  https://collections.ala.org.au/ws/dataResource...  dr15943  
+10665  https://collections.ala.org.au/ws/dataResource...  dr22371  
+10666  https://collections.ala.org.au/ws/dataResource...  dr27880  
+10667  https://collections.ala.org.au/ws/dataResource...  dr27881  
 
-[10230 rows x 3 columns]
+[10668 rows x 3 columns]
 </pre></div>
 </div>
 </dd></dl>
