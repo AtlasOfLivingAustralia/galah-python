@@ -67,6 +67,10 @@ def atlas_occurrences(taxa=None,
 
                 - multimedia, multimediaLicence, images, videos, sounds
 
+            Using ``fields="assertions`` returns:
+
+                - all available assertions from the ALA
+
             See ``galah.show_all()`` and ``galah.search_all()`` to see all valid fields.
         assertions : string / list
             Using "assertions" returns all quality assertion-related columns. These columns are data quality checks run by each living atlas. The list of assertions is shown by ``galah.show_all(assertions=True)``.
@@ -294,6 +298,7 @@ def atlas_occurrences(taxa=None,
 
         else:
         '''
+
         # create the URL to grab your queryID and counts
         if use_data_profile:
             data_profile_list = list(show_all(profiles=True)['shortName'])
@@ -357,8 +362,10 @@ def atlas_occurrences(taxa=None,
 
             # check type
             if type(assertions) is list or type(assertions) is str:
+                
                 if type(assertions) is str:
                     assertions=[assertions]
+                
                 if atlas in ["Global","GBIF"]:
                     predicates = add_predicates(predicates=predicates,filters=filters)
                 else:
@@ -380,7 +387,9 @@ def atlas_occurrences(taxa=None,
             URL += "&mintDoi=TRUE&"
 
         # add final part of URL
-        if atlas not in ["Global","GBIF"]:
+        if "assertions" in fields:
+            URL += "&qa=includeall"
+        elif atlas not in ["Global","GBIF"]:
             URL += "&qa=none&"
 
         # download the file after you get the URL
