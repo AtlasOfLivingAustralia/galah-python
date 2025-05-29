@@ -17,12 +17,11 @@ def atlas_counts(taxa=None,
                  filters=None,
                  group_by=None,
                  total_group_by=False,
-                 expand=True,
                  use_data_profile=False,
                  verbose=False,
                  polygon=None,
                  bbox=None,
-                 simplify_polygon=False,
+                 simplify_polygon=True,
                  config_file=None
                  ):
     """
@@ -45,8 +44,6 @@ def atlas_counts(taxa=None,
             zero or more individual column names (i.e. fields) to include. See ``galah.show_all()`` and ``galah.search_all()`` to see valid fields.
         total_group_by : logical
             If ``True``, galah gives total number of groups in data. Defaults to ``False``.
-        expand : logical
-            When using the ``group_by`` argument of ``galah.atlas_counts()``, controls whether counts for each row value are combined or calculated separately. Defaults to ``True``.
         verbose : logical
             If ``True``, galah gives more information like progress bars. Defaults to ``False``.
         use_data_profile : string
@@ -56,7 +53,9 @@ def atlas_counts(taxa=None,
         bbox : dict or shapely Polygon
             A polygon or dictionary object denoting four points, which are the corners of a geographical region.  Defaults to ``None``.
         simplify_polygon : logical
-            When using the ``polygon`` argument of ``galah.atlas_counts()``, specifies whether or not to draw a bounding box around the polygon and use this instead.  Defaults to ``False``.
+            When using the ``polygon`` argument of ``galah.atlas_counts()``, specifies whether or not to simplify the polygon and use this instead.  Defaults to ``True``.
+        config_file : string
+            If you want to specify your own config file, put the path and name of the file here.  This is applicable when you are running on a server and each user has different configurations.  Defaults to ``None``.
                     
     Returns
     -------
@@ -76,9 +75,9 @@ def atlas_counts(taxa=None,
 
         .. prompt:: python
 
-            galah.atlas_counts(filters="year>2019",group_by="year",expand=False)
+            galah.atlas_counts(filters="year>2019",group_by="year")
 
-        .. program-output:: python -c "import galah; print(galah.atlas_counts(filters=\\\"year>2019\\\",group_by=\\\"year\\\",expand=False))"
+        .. program-output:: python -c "import galah; print(galah.atlas_counts(filters=\\\"year>2019\\\",group_by=\\\"year\\\"))"
         
     """
 
@@ -118,82 +117,7 @@ def atlas_counts(taxa=None,
 
     # create payload (for ALA)
     payload = {}
-    '''
-    # check for Australian atlas
-    if atlas in ["Australia","ALA"]:
 
-        # check for data profile first
-        if use_data_profile:
-
-            # add data quality profile directly to URL
-            data_profile_list = list(show_all(profiles=True)['shortName'])
-            baseURL = apply_data_profile(baseURL=baseURL,data_profile_list=data_profile_list)
-
-        # else, disable all quality filters
-        else:
-
-            baseURL += "?disableAllQualityfilters=true&"
-
-        # create payload
-        payload = add_to_payload_ALA(payload=payload,atlas=atlas,taxa=taxa,filters=filters,
-                                     polygon=polygon,bbox=bbox,scientific_name=scientific_name,
-                                     simplify_polygon=simplify_polygon)
-        
-        # try this for payload
-        if payload is None:
-            return None
-
-        # check for group by
-        if group_by is not None:
-
-            # get grouped table
-            return galah_group_by(URL=baseURL,method=method,group_by=group_by, filters=filters, expand=expand, verbose=verbose, total_group_by=total_group_by,payload=payload)
-
-        # create the query id
-        qid_URL, method2 = get_api_url(column1="api_name",column1value="occurrences_qid")
-        
-        # add options for data quality profiles
-        if use_data_profile:
-            data_profile_list = list(show_all(profiles=True)['shortName'])
-            qid_URL = apply_data_profile(baseURL=qid_URL,data_profile_list=data_profile_list)
-        else:
-            qid_URL += "?disableAllQualityfilters=true&"
-
-        # cache the user's query and get a query ID
-        qid = requests.request(method2,qid_URL,data=payload,headers=headers)
-        print(qid)
-        
-        # create the URL to grab your queryID and counts
-        URL = baseURL + "fq=%28qid%3A" + qid.text + "%29&flimit=-1&pageSize=0"
-
-        if verbose:
-            print()
-            print("headers: {}".format(headers))
-            print()
-            print("payload for queryID: {}".format(payload))
-            print("queryID URL: {}".format(qid_URL))
-            print("method: {}".format(method2))
-            print()
-            print("qid for query: {}".format(qid.text))
-            print("URL for result:{}".format(URL))
-            print("method: {}".format(method))
-            print()
-
-        # get data
-        response = requests.request(method,URL,headers=headers)
-
-        # check for daily maximum
-        if response.status_code == 429:
-            raise ValueError("You have reached the maximum number of daily queries for the ALA.")
-        
-        # get data from response
-        response_json = response.json()
-        
-        # return dataFrame with total number of records
-        return pd.DataFrame({'totalRecords': [response_json[COUNTS_NAMES[atlas]]]})
-
-    else:
-    '''
     # if there is no taxa, assume you will get the total number of records in the ALA
     if taxa is not None or scientific_name is not None:
         taxonConceptID = generate_list_taxonConceptIDs(taxa=taxa,atlas=atlas,verbose=verbose,scientific_name=scientific_name)
@@ -212,13 +136,13 @@ def atlas_counts(taxa=None,
                 URL += "%20AND%20"
             
             # return grouped data frame
-            return galah_group_by(URL=URL, method=method, group_by=group_by, filters=filters, expand=expand, verbose=verbose, total_group_by=total_group_by)
+            return galah_group_by(URL=URL, method=method, group_by=group_by, filters=filters, verbose=verbose, total_group_by=total_group_by)
         
         # else, if not GBIF, just run group_by
         else:
 
             # return grouped data frame
-            return galah_group_by(URL=URL, method=method, group_by=group_by, filters=filters, expand=expand, verbose=verbose, total_group_by=total_group_by)
+            return galah_group_by(URL=URL, method=method, group_by=group_by, filters=filters, verbose=verbose, total_group_by=total_group_by)
 
     # check if filters are specified
     if filters is not None:
@@ -267,3 +191,80 @@ def atlas_counts(taxa=None,
     
     # return dataFrame with total number of records
     return pd.DataFrame({'totalRecords': [response_json[COUNTS_NAMES[atlas]]]})
+
+    '''
+    # check for Australian atlas
+    if atlas in ["Australia","ALA"]:
+
+        # check for data profile first
+        if use_data_profile:
+
+            # add data quality profile directly to URL
+            data_profile_list = list(show_all(profiles=True)['shortName'])
+            baseURL = apply_data_profile(baseURL=baseURL,data_profile_list=data_profile_list)
+
+        # else, disable all quality filters
+        else:
+
+            baseURL += "?disableAllQualityfilters=true&"
+
+        # create payload
+        payload = add_to_payload_ALA(payload=payload,atlas=atlas,taxa=taxa,filters=filters,
+                                     polygon=polygon,bbox=bbox,scientific_name=scientific_name,
+                                     simplify_polygon=simplify_polygon)
+        
+        # try this for payload
+        if payload is None:
+            return None
+
+        # check for group by
+        if group_by is not None:
+
+            # get grouped table
+            return galah_group_by(URL=baseURL,method=method,group_by=group_by, filters=filters, verbose=verbose, total_group_by=total_group_by,payload=payload)
+
+        # create the query id
+        qid_URL, method2 = get_api_url(column1="api_name",column1value="occurrences_qid")
+        
+        # add options for data quality profiles
+        if use_data_profile:
+            data_profile_list = list(show_all(profiles=True)['shortName'])
+            qid_URL = apply_data_profile(baseURL=qid_URL,data_profile_list=data_profile_list)
+        else:
+            qid_URL += "?disableAllQualityfilters=true&"
+
+        # cache the user's query and get a query ID
+        qid = requests.request(method2,qid_URL,data=payload,headers=headers)
+        print(qid)
+        
+        # create the URL to grab your queryID and counts
+        URL = baseURL + "fq=%28qid%3A" + qid.text + "%29&flimit=-1&pageSize=0"
+
+        if verbose:
+            print()
+            print("headers: {}".format(headers))
+            print()
+            print("payload for queryID: {}".format(payload))
+            print("queryID URL: {}".format(qid_URL))
+            print("method: {}".format(method2))
+            print()
+            print("qid for query: {}".format(qid.text))
+            print("URL for result:{}".format(URL))
+            print("method: {}".format(method))
+            print()
+
+        # get data
+        response = requests.request(method,URL,headers=headers)
+
+        # check for daily maximum
+        if response.status_code == 429:
+            raise ValueError("You have reached the maximum number of daily queries for the ALA.")
+        
+        # get data from response
+        response_json = response.json()
+        
+        # return dataFrame with total number of records
+        return pd.DataFrame({'totalRecords': [response_json[COUNTS_NAMES[atlas]]]})
+
+    else:
+    '''

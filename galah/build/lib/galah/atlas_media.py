@@ -81,6 +81,8 @@ def atlas_media(taxa=None,
             if ``True``, downloads thumbnail images rather than the full image. Defaults to ``False``.
         progress_bar : logical
             if ``True``, shows a progress bar while images are downloading.  Defaults to ``True``.
+        config_file : string
+            If you want to specify your own config file, put the path and name of the file here.  This is applicable when you are running on a server and each user has different configurations.  Defaults to ``None``.
 
     Returns
     -------

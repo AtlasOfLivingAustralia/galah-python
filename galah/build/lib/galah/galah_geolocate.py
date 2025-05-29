@@ -54,13 +54,11 @@ def galah_geolocate(polygon=None,
                     else:
                         print("Amanda write this loop")
                 if simplify_polygon:
-                    polygon_shape = shapely.box(polygon.bounds)
-                    return str(shapely.box(xmin=polygon_shape.bounds[0],xmax=polygon_shape.bounds[2],
-                                          ymin=polygon_shape.bounds[1],ymax=polygon_shape.bounds[3]))
+                    return str(shapely.simplify(polygon,tolerance=0.05))
                 return shapely.wkt.loads(polygon)
             elif type(polygon) is Polygon or MultiPolygon:
                 if simplify_polygon:
-                    return str(shapely.box(xmin=polygon.bounds[0],xmax=polygon.bounds[2],ymin=polygon.bounds[1],ymax=polygon.bounds[3]))
+                    return str(shapely.simplify(polygon,tolerance=0.05))
                 return str(polygon)
             else:
                 print(polygon)

@@ -1,3 +1,9 @@
+## 0.12.0 (2025-05-29)
+
+### Feat
+
+- **removed-expand-option-and-added-lists**: removed the expand option, as we will give automatic expanded options for two or more group_by options in atlas_counts; also added the ability to download an authoritative list and include a species' status on it in show_values and search_values
+
 ## 0.11.4 (2025-04-16)
 
 ### Fix

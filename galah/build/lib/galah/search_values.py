@@ -3,6 +3,8 @@ from .get_api_url import readConfig
 
 def search_values(field=None,
                   value=None,
+                  lists=False,
+                  include_statuses=False,
                   column_name=None):
     """
     Users may wish to see the specific values within a chosen field, profile or list to narrow queries or understand 
@@ -15,6 +17,10 @@ def search_values(field=None,
             A string to specify what type of parameters should be searched. 
         value : string
             A string specifying a search term. Not case sensitive. 
+        lists : logical
+            This lets ``show_values()`` know if you want to look up fields, or if you want to look up species in lists.  Default is False.
+        include_statuses : logical
+            For threatened and sensitive lists, this argument will give you the option of downloading species statuses.  Default is False.
         verbose : logical
             This option is available for users who want to know what URLs this function is using to get the value. Default to False.
 
@@ -39,7 +45,7 @@ def search_values(field=None,
         raise TypeError("show_values() only takes a single string as the field argument, i.e. field=\"basisOfRecord\"")
     
     # get initial data frame
-    dataFrame = show_values(field=field)
+    dataFrame = show_values(field=field,lists=lists,include_statuses=include_statuses)
     
     # check for column name to search by
     if column_name is None:

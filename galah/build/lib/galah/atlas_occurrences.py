@@ -32,7 +32,7 @@ def atlas_occurrences(taxa=None,
                       status_accepted=True,
                       polygon=None,
                       bbox=None,
-                      simplify_polygon=False,
+                      simplify_polygon=True,
                       mint_doi=False,
                       doi=None,
                       config_file=None
@@ -85,8 +85,10 @@ def atlas_occurrences(taxa=None,
         bbox : dict or shapely Polygon
             A polygon or dictionary type denoting four points, which are the corners of a geographical region.  Defaults to ``None``.
         simplify_polygon : logical
-            When using the ``polygon`` argument of ``galah.atlas_counts()``, specifies whether or not to draw a bounding box around the polygon and use this instead.  Defaults to ``False``.
-
+            When using the ``polygon`` argument of ``galah.atlas_counts()``, specifies whether or not to draw a bounding box around the polygon and use this instead.  Defaults to ``True``.
+        config_file : string
+            If you want to specify your own config file, put the path and name of the file here.  This is applicable when you are running on a server and each user has different configurations.  Defaults to ``None``.
+            
     Returns
     -------
         An object of class ``pandas.DataFrame``.
@@ -211,98 +213,8 @@ def atlas_occurrences(taxa=None,
             else:
                 raise ValueError("Atlas {} not taken into account".format(atlas))       
 
-        # goes to the 'fields' argument in occurrence download (csv list, commas between)
-        # if atlas in ["Australia","ALA"]:
-        #     pass
-        if fields is not None and atlas not in ["Global","GBIF"]:
-            if fields != "basic":
-                baseURL += galah_select(select=fields,atlas=atlas) + "&"
-            else:
-                baseURL += galah_select(select=ATLAS_SELECTIONS[atlas],atlas=atlas) + "&"
-        elif fields is None and atlas in ["Sweden"]:
-            baseURL += galah_select(select=ATLAS_SELECTIONS[atlas],atlas=atlas) + "&"
-        elif fields is None and atlas in ["Australia","Austria","Brazil","France","Guatemala","Portugal","Spain","United Kingdom","UK"]:
-            baseURL += galah_select(select=ATLAS_SELECTIONS[atlas],atlas=atlas) + "&"
-        elif fields is not None and atlas in ["Global","GBIF"]:
-            print("GBIF, unfortunately, does not support choosing your desired data fields before download.  You will have to download them and then get categories you want.")
-        elif atlas in ["Global","GBIF"]:
-            pass
-        else:
-            raise ValueError("We currently cannot get occurrences from the {} atlas.".format(atlas))
-
         # GBIF takes predicates - initialise variable in case GBIF is their desired atlas
         predicates = []
-
-        '''
-        if atlas in ["Australia","ALA"]:
-            
-            # check for assertions and lump them with filters, as filters takes care of these
-            if filters is not None and assertions is not None:
-                if type(assertions) is list:
-                    filters += assertions
-                else:
-                    filters.append(assertions)
-            elif filters is None and assertions is not None:
-                filters=assertions
-
-            # create payload
-            payload = add_to_payload_ALA(payload=payload,atlas=atlas,taxa=taxa,filters=filters,polygon=polygon,
-                                        bbox=bbox,simplify_polygon=simplify_polygon,scientific_name=scientific_name)
-            
-            # try this for payload
-            if payload is None:
-                return None
-
-            # create the query id
-            qid_URL, method2 = get_api_url(column1="api_name",column1value="occurrences_qid")
-            qid = requests.request(method2,qid_URL,data=payload,headers=headers)
-            
-            # create the URL to grab your queryID and counts
-            if use_data_profile:
-                data_profile_list = list(show_all(profiles=True)['shortName'])
-                baseURL = apply_data_profile(baseURL=baseURL,data_profile_list=data_profile_list)   
-
-            # Add qa=None to not get any assertions 
-            if fields is None:
-                selected_fields = galah_select(select="basic",atlas=atlas)
-                if mint_doi: 
-                    URL = baseURL + "fq=%28qid%3A" + qid.text + "%29&" + selected_fields + "&qa=none&flimit=-1&mintDoi=TRUE"
-                else:
-                    URL = baseURL + "fq=%28qid%3A" + qid.text + "%29&" + selected_fields + "&qa=none&flimit=-1"
-            elif fields == "all":
-                if mint_doi:
-                    URL = baseURL + "fq=%28qid%3A" + qid.text + "%29&qa=none&flimit=-1&mintDoi=TRUE"
-                else:
-                    URL = baseURL + "fq=%28qid%3A" + qid.text + "%29&qa=none&flimit=-1"
-            else:
-                # print("am I here?")
-                if mint_doi:
-                    URL = baseURL + "fq=%28qid%3A" + qid.text + "%29&" + galah_select(select=fields,atlas=atlas) + "&qa=none&flimit=-1&mintDoi=TRUE"
-                else:
-                    URL = baseURL + "fq=%28qid%3A" + qid.text + "%29&" + galah_select(select=fields,atlas=atlas) + "&qa=none&flimit=-1"
-
-            if verbose:
-                print()
-                print("headers: {}".format(headers))
-                print("payload for queryID: {}".format(payload))
-                print("queryID URL: {}".format(qid_URL))
-                print("method: {}".format(method2))
-                print()
-                print("qid for query: {}".format(qid.text))
-                print("URL for result:{}".format(URL))
-                print("method: {}".format(method))
-                print()
-
-            # get data
-            response = requests.request(method,URL,headers=headers)   
-
-        else:
-        '''
-
-        # create the URL to grab your queryID and counts
-        if use_data_profile:
-            data_profile_list = list(show_all(profiles=True)['shortName'])
-            baseURL = apply_data_profile(baseURL=baseURL,data_profile_list=data_profile_list)  
 
         # assign this for posterity
         if atlas not in ["Global","GBIF"]:
@@ -331,18 +243,13 @@ def atlas_occurrences(taxa=None,
 
                 else:
                     raise ValueError("Atlas {} is not taken into account".format(atlas))
-
-                # generate the desired URL and get a response from the API - add taxonConceptIDs to the URL
-                # if atlas in ["Global","GBIF"]:
-                #     for tid in taxonConceptID:
-                #         predicates.append({"type":"equals","key":"TAXON_KEY","value":str(tid)})
                 
             # else, the user needs to specify the taxa in the correct format
             else:
                 raise TypeError("The taxa argument can only be a string or a list."
                             "\nExample: taxa.taxa(\"Vulpes vulpes\")"
                             "\n         taxa.taxa([\"Osphranter rufus\",\"Vulpes vulpes\",\"Macropus giganteus\",\"Phascolarctos cinereus\"])")
-        
+
         if filters is not None:
 
             if type(filters) is str or type(filters) is list:
@@ -371,7 +278,7 @@ def atlas_occurrences(taxa=None,
                 else:
                     for a in assertions:
                         URL += galah_filter(a) + "%20AND%20"
-                        URL = URL[:-len("%20AND%20")] + "%29&qa=none&"
+                        URL = URL[:-len("%20AND%20")] + "%29&"
             else:
                 raise ValueError("Assertions needs to be a string or a list of strings, i.e. identificationIncorrect == TRUE")
         
@@ -382,7 +289,26 @@ def atlas_occurrences(taxa=None,
         var_list = [taxa,filters,assertions,polygon,bbox,scientific_name]
         if all(v is None for v in var_list):
             raise Exception('You cannot get all records for the {} atlas.  Please specify at least one taxa and/or filters to get occurrence records associated with the taxa.'.format(atlas))
-        
+
+        # goes to the 'fields' argument in occurrence download (csv list, commas between)
+        # if atlas in ["Australia","ALA"]:
+        #     pass
+        if fields is not None and atlas not in ["Global","GBIF"]:
+            if fields != "basic":
+                URL += "&" + galah_select(select=fields,atlas=atlas) + "&"
+            else:
+                URL += "&" + galah_select(select=ATLAS_SELECTIONS[atlas],atlas=atlas) + "&"
+        elif fields is None and atlas in ["Sweden"]:
+            URL += "&" + galah_select(select=ATLAS_SELECTIONS[atlas],atlas=atlas) + "&"
+        elif fields is None and atlas in ["Australia","Austria","Brazil","France","Guatemala","Portugal","Spain","United Kingdom","UK"]:
+            URL += "&" + galah_select(select=ATLAS_SELECTIONS[atlas],atlas=atlas) + "&"
+        elif fields is not None and atlas in ["Global","GBIF"]:
+            print("GBIF, unfortunately, does not support choosing your desired data fields before download.  You will have to download them and then get categories you want.")
+        elif atlas in ["Global","GBIF"]:
+            pass
+        else:
+            raise ValueError("We currently cannot get occurrences from the {} atlas.".format(atlas))
+
         if mint_doi:
             URL += "&mintDoi=TRUE&"
 
@@ -390,8 +316,15 @@ def atlas_occurrences(taxa=None,
         if fields is not None:
             if "assertions" in fields:
                 URL += "&qa=includeall"
+            else:
+                URL += "&qa=none&"
         elif atlas not in ["Global","GBIF"]:
             URL += "&qa=none&"
+
+        # create the URL to grab your queryID and counts
+        if use_data_profile:
+            data_profile_list = list(show_all(profiles=True)['shortName'])
+            URL = apply_data_profile(baseURL=URL,data_profile_list=data_profile_list)  
 
         # download the file after you get the URL
         if atlas in ["Global","GBIF"]:
@@ -500,3 +433,69 @@ def atlas_occurrences(taxa=None,
     return pd.read_csv(zipfile.ZipFile(io.BytesIO(data.content))
                         .open(filename),sep=ATLAS_OCCURRENCES_DOWNLOAD_ARGUMENTS[atlas]["separator"],
                         low_memory=False)
+
+'''
+if atlas in ["Australia","ALA"]:
+    
+    # check for assertions and lump them with filters, as filters takes care of these
+    if filters is not None and assertions is not None:
+        if type(assertions) is list:
+            filters += assertions
+        else:
+            filters.append(assertions)
+    elif filters is None and assertions is not None:
+        filters=assertions
+
+    # create payload
+    payload = add_to_payload_ALA(payload=payload,atlas=atlas,taxa=taxa,filters=filters,polygon=polygon,
+                                bbox=bbox,simplify_polygon=simplify_polygon,scientific_name=scientific_name)
+    
+    # try this for payload
+    if payload is None:
+        return None
+
+    # create the query id
+    qid_URL, method2 = get_api_url(column1="api_name",column1value="occurrences_qid")
+    qid = requests.request(method2,qid_URL,data=payload,headers=headers)
+    
+    # create the URL to grab your queryID and counts
+    if use_data_profile:
+        data_profile_list = list(show_all(profiles=True)['shortName'])
+        baseURL = apply_data_profile(baseURL=baseURL,data_profile_list=data_profile_list)   
+
+    # Add qa=None to not get any assertions 
+    if fields is None:
+        selected_fields = galah_select(select="basic",atlas=atlas)
+        if mint_doi: 
+            URL = baseURL + "fq=%28qid%3A" + qid.text + "%29&" + selected_fields + "&qa=none&flimit=-1&mintDoi=TRUE"
+        else:
+            URL = baseURL + "fq=%28qid%3A" + qid.text + "%29&" + selected_fields + "&qa=none&flimit=-1"
+    elif fields == "all":
+        if mint_doi:
+            URL = baseURL + "fq=%28qid%3A" + qid.text + "%29&qa=none&flimit=-1&mintDoi=TRUE"
+        else:
+            URL = baseURL + "fq=%28qid%3A" + qid.text + "%29&qa=none&flimit=-1"
+    else:
+        # print("am I here?")
+        if mint_doi:
+            URL = baseURL + "fq=%28qid%3A" + qid.text + "%29&" + galah_select(select=fields,atlas=atlas) + "&qa=none&flimit=-1&mintDoi=TRUE"
+        else:
+            URL = baseURL + "fq=%28qid%3A" + qid.text + "%29&" + galah_select(select=fields,atlas=atlas) + "&qa=none&flimit=-1"
+
+    if verbose:
+        print()
+        print("headers: {}".format(headers))
+        print("payload for queryID: {}".format(payload))
+        print("queryID URL: {}".format(qid_URL))
+        print("method: {}".format(method2))
+        print()
+        print("qid for query: {}".format(qid.text))
+        print("URL for result:{}".format(URL))
+        print("method: {}".format(method))
+        print()
+
+    # get data
+    response = requests.request(method,URL,headers=headers)   
+
+else:
+'''
