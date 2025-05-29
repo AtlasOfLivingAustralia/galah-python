@@ -2,9 +2,12 @@ import requests
 import pandas as pd
 
 from .get_api_url import get_api_url,readConfig
+from .common_functions import kvp_to_columns
 
 # comment on what this function does later
 def show_values(field=None,
+                lists=False,
+                include_statuses=False,
                 verbose=False):
     """
     Users may wish to see the specific values within a chosen field, profile or list to narrow queries or understand 
@@ -14,6 +17,10 @@ def show_values(field=None,
     ----------
         field : string
             A string to specify what type of parameters should be shown.  
+        lists : logical
+            This lets ``show_values()`` know if you want to look up fields, or if you want to look up species in lists.  Default is False.
+        include_statuses : logical
+            For threatened and sensitive lists, this argument will give you the option of downloading species statuses.  Default is False.
         verbose : logical
             This option is available for users who want to know what URLs this function is using to get the value.  Default is False.
 
@@ -56,23 +63,15 @@ def show_values(field=None,
     if atlas in ["Global","GBIF"]:
         baseURL,method = get_api_url(column1='api_name',column1value='records_counts')
         URL = baseURL + "?facet=" + field + "&flimit=-1"
-        '''
-        url,chosen_title,column_titles
-
-        # get parameters from website
-        response = requests.get(url)
-        soup = BeautifulSoup(response.text,'html.parser')
-
-        # find the title of table and get title
-        table_titles = soup.select('h3')
-        for i,title in enumerate(table_titles):
-            if title.text == chosen_title:
-                index=i
-        table_to_parse = soup.find_all('table')[index]
-        '''
     else:
-        baseURL,method = get_api_url(column1='api_name',column1value='records_facets')
-        URL = baseURL + "?facets=" + field + "&flimit=-1"
+        if lists:
+            baseURL,method = get_api_url(column1='called_by',column1value='show_values-lists')
+            URL = baseURL.replace('{list_id}',field) + "?max=-1"
+            if include_statuses:
+                URL += "&includeKVP=TRUE"
+        else:
+            baseURL,method = get_api_url(column1='api_name',column1value='records_facets')
+            URL = baseURL + "?facets=" + field + "&flimit=-1"
 
     # check to see if the user wants the URL for querying
     if verbose:
@@ -94,26 +93,38 @@ def show_values(field=None,
     
     # otherwise, assume it is other atlases
     else:
-        result = response_json[0]['fieldResult']
-        for i,entry in enumerate(result):
-            # check if last character is a full stop
-            if entry['i18nCode'][-1] == ".":
-                # check to see if the length is more than 2
-                if len(entry['i18nCode'].split('.')) > 2:
+        if lists:
+            if include_statuses:
+                dataFrame = pd.DataFrame()
+                for i in response_json:
+                    kvp_values = i['kvpValues']
+                    flattened_values = kvp_to_columns(kvp_values)
+                    i.update(flattened_values)
+                    del(i['kvpValues'])
+                    dataFrame = pd.concat([dataFrame,pd.DataFrame(i,index=[0])])
+                return dataFrame.reset_index(drop=True)
+            return pd.DataFrame(response_json)
+        else:
+            result = response_json[0]['fieldResult']
+            for i,entry in enumerate(result):
+                # check if last character is a full stop
+                if entry['i18nCode'][-1] == ".":
+                    # check to see if the length is more than 2
+                    if len(entry['i18nCode'].split('.')) > 2:
+                        temparray = entry['i18nCode'].split('.')
+                        name = " ".join(temparray[1:])
+                        tempdf = pd.DataFrame([[temparray[0],name]],columns=['field','category'])
+                    else:
+                        tempdf = pd.DataFrame([entry['i18nCode'][0:-1].split('.')], columns=['field', 'category'])
+                    dataFrame = pd.concat([dataFrame, tempdf], ignore_index=True)
+                elif len(entry['i18nCode'].split('.')) > 2:
                     temparray = entry['i18nCode'].split('.')
                     name = " ".join(temparray[1:])
                     tempdf = pd.DataFrame([[temparray[0],name]],columns=['field','category'])
+                    dataFrame = pd.concat([dataFrame,tempdf],ignore_index=True)
                 else:
-                    tempdf = pd.DataFrame([entry['i18nCode'][0:-1].split('.')], columns=['field', 'category'])
-                dataFrame = pd.concat([dataFrame, tempdf], ignore_index=True)
-            elif len(entry['i18nCode'].split('.')) > 2:
-                temparray = entry['i18nCode'].split('.')
-                name = " ".join(temparray[1:])
-                tempdf = pd.DataFrame([[temparray[0],name]],columns=['field','category'])
-                dataFrame = pd.concat([dataFrame,tempdf],ignore_index=True)
-            else:
-                tempdf = pd.DataFrame([entry['i18nCode'].split('.')],columns=['field','category'])
-                dataFrame = pd.concat([dataFrame,tempdf],ignore_index=True)
+                    tempdf = pd.DataFrame([entry['i18nCode'].split('.')],columns=['field','category'])
+                    dataFrame = pd.concat([dataFrame,tempdf],ignore_index=True)
 
     # return dataFrame
     return dataFrame

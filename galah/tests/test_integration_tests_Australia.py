@@ -118,7 +118,7 @@ def test_atlas_counts_filters_groupby_australia():
     galah.galah_config(atlas="Australia")
     f = "year=2022"
     groups = ["month","basisOfRecord"]
-    filtered_counts = galah.atlas_counts(filters="year=2022",group_by=groups,expand=False)
+    filtered_counts = galah.atlas_counts(filters="year=2022",group_by=groups)
     assert filtered_counts.shape[0] > 0
     assert filtered_counts.shape[1] > 0
 
@@ -159,12 +159,12 @@ def test_atlas_counts_taxa_filter_data_quality_australia():
     quality = galah.atlas_counts(taxa,filters=filter1,use_data_profile=True)
     assert no_quality['totalRecords'][0] >= quality['totalRecords'][0]
 
-# test atlas counts with multiple taxa and filters, along with expand=True
+# test atlas counts with multiple taxa and filters
 def test_atlas_counts_multiple_taxa_filters_separate_australia():
     galah.galah_config(atlas="Australia")
     taxa_array = ["Swainsona formosa", "Crocodylus johnstoni", "Platalea (Platalea) regia", "Notamacropus agilis"]
     f = ["dataResourceName = iNaturalist Australia","year=2022"]
-    output = galah.atlas_counts(taxa=taxa_array, filters=f,group_by="species",expand=False)
+    output = galah.atlas_counts(taxa=taxa_array, filters=f,group_by="species")
     assert output.shape[0] == len(taxa_array)
     assert output.shape[1] == 2
     assert (output['count'] >= 0).all() # checks that all species counts are greater than or equal zero
@@ -174,16 +174,16 @@ def test_atlas_counts_taxa_group_australia():
     galah.galah_config(atlas="Australia")
     taxa = "Vulpes vulpes"
     group_by = "year"
-    output = galah.atlas_counts(taxa,group_by=group_by,expand=False)
+    output = galah.atlas_counts(taxa,group_by=group_by)
     assert output.shape[0] > 0
     assert output.shape[1] == 2
 
-# group counts by multiple groups (expand=False in this one)
+# group counts by multiple groups
 def test_atlas_counts_taxa_groups_australia():
     galah.galah_config(atlas="Australia")
     taxa = "Vulpes vulpes"
     group_by = ["year","basisOfRecord"]
-    output = galah.atlas_counts(taxa,group_by=group_by,expand=False)
+    output = galah.atlas_counts(taxa,group_by=group_by)
     assert output.shape[0] > 0
     assert output.shape[1] == len(group_by) + 1
 
@@ -210,7 +210,7 @@ def test_atlas_counts_taxa_filters_group_by_no_expand_australia():
     taxa = "Vulpes vulpes"
     filters=["year=2020","basisOfRecord=HUMAN_OBSERVATION"]
     group_by="basisOfRecord"
-    output = galah.atlas_counts(taxa,filters=filters,group_by=group_by,expand=False)
+    output = galah.atlas_counts(taxa,filters=filters,group_by=group_by)
     # test single taxa is working (search_taxa(), galah_filter() x 2)
     assert output['count'][0] > 0
     assert output.shape[1] == 2
@@ -218,7 +218,7 @@ def test_atlas_counts_taxa_filters_group_by_no_expand_australia():
 # test altas_counts() with total_group_by
 def test_atlas_counts_taxa_filters_australia_total_group_by():
     galah.galah_config(atlas="Australia")
-    output = galah.atlas_counts(taxa="reptilia",filters="year=2020",group_by="species",expand=False,total_group_by=True)
+    output = galah.atlas_counts(taxa="reptilia",filters="year=2020",group_by="species",total_group_by=True)
     assert output.shape[0] == 1
     assert output['count'][0] > 0
 
@@ -233,7 +233,7 @@ def test_atlas_counts_multiple_taxa_australia():
     galah.galah_config(atlas="Australia")
     taxa_array = ["Osphranter rufus", "Vulpes vulpes", "Macropus giganteus", "Phascolarctos cinereus"]
     group_by="year"
-    output = galah.atlas_counts(taxa_array,group_by=group_by,expand=False)
+    output = galah.atlas_counts(taxa_array,group_by=group_by)
     assert output['count'][0] > 0
     assert output.shape[1] == 2
 
@@ -259,7 +259,7 @@ def test_atlas_counts_multiple_taxa_filter_group_by_australia():
     taxa_array = ["Osphranter rufus", "Vulpes vulpes", "Macropus giganteus", "Phascolarctos cinereus"]
     filter1 = "year=2020"
     group_by="basisOfRecord"
-    output = galah.atlas_counts(taxa_array,filters=filter1,group_by=group_by,expand=False)
+    output = galah.atlas_counts(taxa_array,filters=filter1,group_by=group_by)
     assert output['count'][0] > 0
     assert output.shape[1] == 2
 
@@ -276,7 +276,7 @@ def test_atlas_counts_multiple_taxa_filters_group_by_australia():
     taxa_array = ["Osphranter rufus", "Vulpes vulpes", "Macropus giganteus", "Phascolarctos cinereus"]
     filters = ["year=2020", "basisOfRecord=HUMAN_OBSERVATION"]
     group_by = "year"
-    output = galah.atlas_counts(taxa_array,filters=filters,group_by=group_by,expand=False)
+    output = galah.atlas_counts(taxa_array,filters=filters,group_by=group_by)
     assert output['count'][0] > 0
     assert output.shape[1] == 2
 
@@ -295,7 +295,7 @@ def test_atlas_counts_multiple_taxa_filters_group_by_multiple_australia():
 def test_atlas_counts_invalid_multiple_taxa_separate_australia():
     galah.galah_config(atlas="Australia")
     taxa_array = ["Dasyurus hallucatus", "Ailuropoda melanoleuca", "Centrostephanus rodgersii"]
-    output = galah.atlas_counts(taxa_array,group_by="species",expand=False)
+    output = galah.atlas_counts(taxa_array,group_by="species")
     assert output.shape[0] == len(taxa_array) - 1
     assert output.shape[1] == 2
 
@@ -303,7 +303,7 @@ def test_atlas_counts_invalid_multiple_taxa_separate_australia():
 def test_atlas_counts_multiple_taxa_separate_australia():
     galah.galah_config(atlas="Australia")
     taxa_array = ["Dasyurus hallucatus", "Rhincodon typus", "Ceyx azureus", "Ornithorhynchus anatinus"]
-    output = galah.atlas_counts(taxa_array, group_by="species",expand=False)
+    output = galah.atlas_counts(taxa_array, group_by="species")
     assert output.shape[0] == len(taxa_array)
     assert output.shape[1] == 2
     assert (output['count'] >= 0).all() # checks that all species counts are greater than or equal to zero
@@ -314,7 +314,7 @@ def test_atlas_counts_multiple_taxa_filters_group_by_separate_australia():
     taxa_array = ["Swainsona formosa", "Crocodylus johnstoni", "Platalea (Platalea) regia", "Xeromys myoides"]
     f = ["dataResourceName = iNaturalist Australia", "year=2019"]
     group_by = ["month","species"]
-    output = galah.atlas_counts(taxa_array, filters=f, group_by=group_by, expand=True)
+    output = galah.atlas_counts(taxa_array, filters=f, group_by=group_by)
     assert output.shape[1] == len(group_by) + 1
     assert (output['count'] > 0).all() # checks that all species counts are greater than zero
 
@@ -324,7 +324,7 @@ def test_atlas_counts_multiple_taxa_filter_group_by_multiple_separate_australia(
     taxa_array = ["Swainsona formosa", "Crocodylus johnstoni", "Platalea (Platalea) regia", "Xeromys myoides"]
     f = ["dataResourceName = iNaturalist Australia"]
     group_by = ["year", "month"]
-    output = galah.atlas_counts(taxa_array, filters=f, group_by=group_by, expand=True)
+    output = galah.atlas_counts(taxa_array, filters=f, group_by=group_by)
     assert output.shape[1] == len(group_by) + 1
     assert (output['count'] > 0).all() # checks that all species counts are greater than zero
 
@@ -334,7 +334,7 @@ def test_atlas_counts_multiple_taxa_filters_group_by_multiple_separate_expand_au
     taxa_array = ["Swainsona formosa", "Crocodylus johnstoni", "Platalea (Platalea) regia", "Xeromys myoides"]
     f = ["dataResourceName = iNaturalist Australia", "year=2022"]
     group_by = ["year", "month"]
-    output = galah.atlas_counts(taxa_array, filters=f, group_by=group_by, expand=True)
+    output = galah.atlas_counts(taxa_array, filters=f, group_by=group_by)
     assert output.shape[1] == len(group_by) + 1
     assert output['count'][0] >= 0 # checks that all species counts are greater than or equal zero
 
@@ -418,7 +418,7 @@ def test_galah_group_by_filter_australia():
     payload = {"fq": ["lsid:https://biodiversity.org.au/afd/taxa/2869ce8a-8212-46c2-8327-dfb7fabb8296"]}
     group_by1 = ["year"]
     filters1 = "year>2010"
-    output = galah.galah_group_by(URL="https://biocache-ws.ala.org.au/ws/occurrences/search?disableAllQualityfilters=true&",method="GET",group_by=group_by1, filters=filters1,expand=False,payload=payload)
+    output = galah.galah_group_by(URL="https://biocache-ws.ala.org.au/ws/occurrences/search?disableAllQualityfilters=true&",method="GET",group_by=group_by1, filters=filters1,payload=payload)
     assert output.shape[1] > 1
 
 # test galah_group_by with two filters (galah_filter()) and one group
@@ -427,7 +427,7 @@ def test_galah_group_by_filters_australia():
     payload = {"fq": ["lsid:https://biodiversity.org.au/afd/taxa/2869ce8a-8212-46c2-8327-dfb7fabb8296"]}
     group_by1 = ["year"]
     filters2 = ["year>2018","basisOfRecord=HUMAN_OBSERVATION"]
-    output = galah.galah_group_by(URL="https://biocache-ws.ala.org.au/ws/occurrences/search?disableAllQualityfilters=true&",method="GET",group_by=group_by1, filters=filters2,expand=False,payload=payload)
+    output = galah.galah_group_by(URL="https://biocache-ws.ala.org.au/ws/occurrences/search?disableAllQualityfilters=true&",method="GET",group_by=group_by1, filters=filters2,payload=payload)
     assert output.shape[1] > 1
 
 # test galah_group_by with one filter (galah_filter()) and two group_by
@@ -437,7 +437,7 @@ def test_galah_group_by_multiple_groups_australia():
     payload = {"fq": ["lsid:https://biodiversity.org.au/afd/taxa/2869ce8a-8212-46c2-8327-dfb7fabb8296"]}
     group_by2 = ["year","basisOfRecord"]
     filters1 = "year>2010"
-    output = galah.galah_group_by(URL="https://biocache-ws.ala.org.au/ws/occurrences/search?disableAllQualityfilters=true&",method="GET",group_by=group_by2,filters=filters1,expand=False,payload=payload)
+    output = galah.galah_group_by(URL="https://biocache-ws.ala.org.au/ws/occurrences/search?disableAllQualityfilters=true&",method="GET",group_by=group_by2,filters=filters1,payload=payload)
     assert output.shape[1] > 1
 
 # test galah_group_by with one filter (galah_filter()) and two group_by, with expand = True
@@ -456,7 +456,7 @@ def test_galah_group_by_multiple_groups_multiple_filters_expand_false_australia(
     payload = {"fq": ["lsid:https://biodiversity.org.au/afd/taxa/2869ce8a-8212-46c2-8327-dfb7fabb8296"]}
     group_by2 = ["year","basisOfRecord"]
     filters2 = ["year>2018","basisOfRecord=HUMAN_OBSERVATION"]
-    output = galah.galah_group_by(URL="https://biocache-ws.ala.org.au/ws/occurrences/search?disableAllQualityfilters=true&",method="GET",group_by=group_by2, filters=filters2,expand=False,payload=payload)
+    output = galah.galah_group_by(URL="https://biocache-ws.ala.org.au/ws/occurrences/search?disableAllQualityfilters=true&",method="GET",group_by=group_by2, filters=filters2,payload=payload)
     assert output.shape[1] > 1
 
 # test galah_group_by with two filters (galah_filter()) and two group_by, with expand = True

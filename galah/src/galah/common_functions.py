@@ -381,3 +381,12 @@ def write_image_to_file(image=None,
     with open("{}/{}.{}".format(path,image["images"],ext),'wb') as f:
         data.raw.decode_content = True
         shutil.copyfileobj(data.raw,f)
+
+def kvp_to_columns(kvp_values):
+    '''
+    All data is in the KVP for lists.  Make sure the KVP data is in a pandas dataframe by itself.
+    '''
+    return_dict={}
+    for entry in kvp_values:
+        return_dict[entry['key']] = entry['value']
+    return return_dict

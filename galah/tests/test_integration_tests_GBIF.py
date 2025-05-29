@@ -70,7 +70,7 @@ def test_atlas_counts_filters_groupby_global():
     galah.galah_config(atlas="GBIF")
     f = "year=2022"
     groups = ["month","basisOfRecord"]
-    filtered_counts = galah.atlas_counts(filters="year=2022",group_by=groups,expand=False)
+    filtered_counts = galah.atlas_counts(filters="year=2022",group_by=groups)
     assert filtered_counts.shape[0] > 0
     assert filtered_counts.shape[1] > 0
 
@@ -108,7 +108,7 @@ def test_atlas_counts_taxa_same_filter_global2_global():
 # test altas_counts() with total_group_by
 def test_atlas_counts_taxa_filters_global_total_group_by():
     galah.galah_config(atlas="GBIF")
-    output = galah.atlas_counts(taxa="Triturus",filters="year=2020",group_by="scientificName",expand=False,total_group_by=True)
+    output = galah.atlas_counts(taxa="Triturus",filters="year=2020",group_by="scientificName",total_group_by=True)
     assert output.shape[0] == 1
     assert output['count'][0] > 0
 
@@ -117,7 +117,7 @@ def test_atlas_counts_multiple_taxa_filters_separate_global():
     galah.galah_config(atlas="GBIF")
     taxa_array = ["Swainsona formosa", "Crocodylus johnstoni", "Platalea (Platalea) regia", "Notamacropus agilis"]
     f = ["dataResourceName = iNaturalist Global","year=2022"]
-    output = galah.atlas_counts(taxa=taxa_array, filters=f,group_by="scientificName",expand=False)
+    output = galah.atlas_counts(taxa=taxa_array, filters=f,group_by="scientificName")
     assert output.shape[0] > 0
 
 # test if you can group counts by a single group_by
@@ -125,7 +125,7 @@ def test_atlas_counts_taxa_group_global():
     galah.galah_config(atlas="GBIF")
     taxa = "Vulpes vulpes"
     group_by = "year"
-    output = galah.atlas_counts(taxa,group_by=group_by,expand=False)
+    output = galah.atlas_counts(taxa,group_by=group_by)
     assert output.shape[0] > 0
     assert output.shape[1] == 2
 
@@ -134,7 +134,7 @@ def test_atlas_counts_taxa_groups_global():
     galah.galah_config(atlas="GBIF")
     taxa = "Vulpes vulpes"
     group_by = ["year","basisOfRecord"]
-    output = galah.atlas_counts(taxa,group_by=group_by,expand=False)
+    output = galah.atlas_counts(taxa,group_by=group_by)
     assert output.shape[0] > 0
     assert output.shape[1] == len(group_by) + 1
 
@@ -161,7 +161,7 @@ def test_atlas_counts_taxa_filters_group_by_no_expand_global():
     taxa = "Vulpes vulpes"
     filters=["year=2020","basisOfRecord=HUMAN_OBSERVATION"]
     group_by="basisOfRecord"
-    output = galah.atlas_counts(taxa,filters=filters,group_by=group_by,expand=False)
+    output = galah.atlas_counts(taxa,filters=filters,group_by=group_by)
     # test single taxa is working (search_taxa(), galah_filter() x 2)
     assert output['count'][0] > 0
     assert output.shape[1] == 2
@@ -177,7 +177,7 @@ def test_atlas_counts_multiple_taxa_global():
     galah.galah_config(atlas="GBIF")
     taxa_array = ["Osphranter rufus", "Vulpes vulpes", "Macropus giganteus", "Phascolarctos cinereus"]
     group_by="year"
-    output = galah.atlas_counts(taxa_array,group_by=group_by,expand=False)
+    output = galah.atlas_counts(taxa_array,group_by=group_by)
     assert output['count'][0] > 0
     assert output.shape[1] == 2
 
@@ -203,7 +203,7 @@ def test_atlas_counts_multiple_taxa_filter_group_by_global():
     taxa_array = ["Osphranter rufus", "Vulpes vulpes", "Macropus giganteus", "Phascolarctos cinereus"]
     filter1 = "year=2020"
     group_by="basisOfRecord"
-    output = galah.atlas_counts(taxa_array,filters=filter1,group_by=group_by,expand=False)
+    output = galah.atlas_counts(taxa_array,filters=filter1,group_by=group_by)
     assert output['count'][0] > 0
     assert output.shape[1] == 2
 
@@ -220,7 +220,7 @@ def test_atlas_counts_multiple_taxa_filters_group_by_global():
     taxa_array = ["Osphranter rufus", "Vulpes vulpes", "Macropus giganteus", "Phascolarctos cinereus"]
     filters = ["year=2020", "basisOfRecord=HUMAN_OBSERVATION"]
     group_by = "year"
-    output = galah.atlas_counts(taxa_array,filters=filters,group_by=group_by,expand=False)
+    output = galah.atlas_counts(taxa_array,filters=filters,group_by=group_by)
     assert output['count'][0] > 0
     assert output.shape[1] == 2
 
@@ -239,7 +239,7 @@ def test_atlas_counts_multiple_taxa_filters_group_by_multiple_global():
 def test_atlas_counts_multiple_taxa_separate_global():
     galah.galah_config(atlas="GBIF")
     taxa_array = ["Dasyurus hallucatus", "Rhincodon typus", "Ceyx azureus", "Ornithorhynchus anatinus"]
-    output = galah.atlas_counts(taxa_array, group_by="scientificName",expand=False)
+    output = galah.atlas_counts(taxa_array, group_by="scientificName")
     assert output.shape[0] >= len(taxa_array)
     assert output.shape[1] == 2
     assert (output['count'] >= 0).all() # checks that all species counts are greater than or equal to zero
@@ -250,7 +250,7 @@ def test_atlas_counts_multiple_taxa_filters_group_by_separate_global():
     taxa_array = ["Swainsona formosa", "Crocodylus johnstoni", "Platalea (Platalea) regia", "Xeromys myoides"]
     f = ["basisOfRecord=HUMAN_OBSERVATION", "year>=2010"]
     group_by = ["month","scientificName"]
-    output = galah.atlas_counts(taxa_array, filters=f, group_by=group_by, expand=True)
+    output = galah.atlas_counts(taxa_array, filters=f, group_by=group_by)
     assert output.shape[1] >= len(group_by) + 1
     assert (output['count'] > 0).all() # checks that all species counts are greater than zero
 
@@ -260,7 +260,7 @@ def test_atlas_counts_multiple_taxa_filter_group_by_multiple_separate_global():
     taxa_array = ["Swainsona formosa", "Crocodylus johnstoni", "Platalea (Platalea) regia", "Xeromys myoides"]
     f = ["dataResourceName = iNaturalist Global"]
     group_by = ["year", "month"]
-    output = galah.atlas_counts(taxa_array, filters=f, group_by=group_by, expand=True)
+    output = galah.atlas_counts(taxa_array, filters=f, group_by=group_by)
     assert output.shape[1] >= len(group_by) + 1
     assert (output['count'] > 0).all() # checks that all species counts are greater than zero
 
@@ -270,7 +270,7 @@ def test_atlas_counts_multiple_taxa_filters_group_by_multiple_separate_expand_gl
     taxa_array = ["Swainsona formosa", "Crocodylus johnstoni", "Platalea (Platalea) regia", "Xeromys myoides"]
     f = ["dataResourceName = iNaturalist Global", "year=2022"]
     group_by = ["year", "month"]
-    output = galah.atlas_counts(taxa_array, filters=f, group_by=group_by, expand=True)
+    output = galah.atlas_counts(taxa_array, filters=f, group_by=group_by)
     assert output.shape[1] == len(group_by) + 1
     assert output['count'][0] >= 0 # checks that all species counts are greater than or equal zero
 

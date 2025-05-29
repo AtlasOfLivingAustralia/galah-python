@@ -48,7 +48,9 @@ def atlas_species(taxa=None,
             A polygon or dictionary type denoting four points, which are the corners of a geographical region.  Defaults to ``None``.
         simplify_polygon : logical
             When using the ``polygon`` argument of ``galah.atlas_counts()``, specifies whether or not to draw a bounding box around the polygon and use this instead.  Defaults to ``False``.
-
+        config_file : string
+            If you want to specify your own config file, put the path and name of the file here.  This is applicable when you are running on a server and each user has different configurations.  Defaults to ``None``.
+            
     Returns
     -------
         An object of class ``pandas.DataFrame``.
