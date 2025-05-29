@@ -84,9 +84,9 @@ be useful for paraphyletic concepts such as invertebrates:
 
     >>> animalia_id = galah.search_taxa(taxa="Animalia")["taxonConceptID"][0]
     >>> chordata_id = galah.search_taxa(taxa="Chordata")["taxonConceptID"][0]
-    >>> galah.atlas_counts(filters=["taxonConceptID={}".format(animalia_id),"taxonConceptID!={}".format(chordata_id)],group_by="class",expand=False)
+    >>> galah.atlas_counts(filters=["taxonConceptID={}".format(animalia_id),"taxonConceptID!={}".format(chordata_id)],group_by="class")
 
-.. program-output:: python3 -c "import galah;import pandas as pd;pd.set_option('display.max_columns', None);pd.set_option('display.expand_frame_repr', False);pd.set_option('max_colwidth', None);animalia_id = galah.search_taxa(taxa=\"Animalia\")[\"taxonConceptID\"][0];chordata_id = galah.search_taxa(taxa=\"Chordata\")[\"taxonConceptID\"][0];print(galah.atlas_counts(filters=[\"taxonConceptID={}\".format(animalia_id),\"taxonConceptID!={}\".format(chordata_id)],group_by=\"class\",expand=False))"
+.. program-output:: python3 -c "import galah;import pandas as pd;pd.set_option('display.max_columns', None);pd.set_option('display.expand_frame_repr', False);pd.set_option('max_colwidth', None);animalia_id = galah.search_taxa(taxa=\"Animalia\")[\"taxonConceptID\"][0];chordata_id = galah.search_taxa(taxa=\"Chordata\")[\"taxonConceptID\"][0];print(galah.atlas_counts(filters=[\"taxonConceptID={}\".format(animalia_id),\"taxonConceptID!={}\".format(chordata_id)],group_by=\"class\"))"
 
 use_data_profile
 ----------------

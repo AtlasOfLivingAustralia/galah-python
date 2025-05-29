@@ -83,9 +83,9 @@ tell ``galah`` to group your results by year, to get yearly counts.
 
 .. prompt:: python
 
-    >>> galah.atlas_counts(filters="year>=2020",group_by="year",expand=False)
+    >>> galah.atlas_counts(filters="year>=2020",group_by="year")
 
-.. program-output:: python -c "import pandas as pd;pd.set_option('display.max_columns', None);pd.set_option('display.expand_frame_repr', False);pd.set_option('max_colwidth', None);import galah;galah.atlas_counts(filters=\"year>=2020\",group_by=\"year\",expand=False)"
+.. program-output:: python -c "import pandas as pd;pd.set_option('display.max_columns', None);pd.set_option('display.expand_frame_repr', False);pd.set_option('max_colwidth', None);import galah;galah.atlas_counts(filters=\"year>=2020\",group_by=\"year\")"
 
 To narrow down your search by a specific species, you can use the ``search_taxa()`` function to check whether or not the
 taxonomic information for the species you are wanting to search.  For this example, lLet's choose the taxa *Vulpes vulpes*, 
@@ -112,9 +112,9 @@ were seen each year from 2020 onwards.
 .. prompt::
 
     >>> import galah
-    >>> galah.atlas_counts(taxa="Vulpes vulpes",filters="year>=2020",group_by="year",expand=False)
+    >>> galah.atlas_counts(taxa="Vulpes vulpes",filters="year>=2020",group_by="year")
 
-.. program-output:: python -c "import pandas as pd;pd.set_option('display.max_columns', None);pd.set_option('display.expand_frame_repr', False);pd.set_option('max_colwidth', None);import galah;galah.atlas_counts(taxa=\"Vulpes vulpes\",filters=\"year>=2020\",group_by=\"year\",expand=False)"
+.. program-output:: python -c "import pandas as pd;pd.set_option('display.max_columns', None);pd.set_option('display.expand_frame_repr', False);pd.set_option('max_colwidth', None);import galah;galah.atlas_counts(taxa=\"Vulpes vulpes\",filters=\"year>=2020\",group_by=\"year\")"
 
 
 Downloading records

@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Spatial filtering &#8212; Galah 0.11.4 documentation</title>
+    <title>Spatial filtering &#8212; Galah 0.12.0 documentation</title>
   
   
   
@@ -38,7 +38,7 @@
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
   <script src="../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
 
-    <script src="../_static/documentation_options.js?v=0fc275bd"></script>
+    <script src="../_static/documentation_options.js?v=61ccb1f1"></script>
     <script src="../_static/doctools.js?v=888ff710"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/design-tabs.js?v=36754332"></script>
@@ -124,8 +124,8 @@
       
     
     
-    <img src="../_static/logo.png" class="logo__image only-light" alt="Galah 0.11.4 documentation - Home"/>
-    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Galah 0.11.4 documentation - Home"/>`);</script>
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Galah 0.12.0 documentation - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Galah 0.12.0 documentation - Home"/>`);</script>
   
   
 </a></div>
@@ -512,19 +512,21 @@ have been recorded in King George Square.</p>
 <span class="prompt1"><span class="o">...</span>   <span class="n">fields</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;decimalLatitude&quot;</span><span class="p">,</span> <span class="s2">&quot;decimalLongitude&quot;</span><span class="p">,</span> <span class="s2">&quot;eventDate&quot;</span><span class="p">,</span> <span class="s2">&quot;scientificName&quot;</span><span class="p">,</span> <span class="s2">&quot;vernacularName&quot;</span><span class="p">]</span></span>
 <span class="prompt1"><span class="o">...</span> <span class="p">)</span></span>
 <span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">species_king_george_square</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span></span>
-</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>    decimalLatitude  decimalLongitude             eventDate         scientificName         vernacularName  COORDINATE_ROUNDED  COORDINATE_UNCERTAINTY_METERS_INVALID  GEODETIC_DATUM_ASSUMED_WGS84  ID_PRE_OCCURRENCE  MISSING_GEODETICDATUM  MISSING_GEOREFERENCEDBY  MISSING_GEOREFERENCEPROTOCOL  MISSING_GEOREFERENCESOURCES  MISSING_GEOREFERENCEVERIFICATIONSTATUS  MISSING_GEOREFERENCE_DATE  MISSING_TAXONRANK  OCCURRENCE_STATUS_INFERRED_FROM_INDIVIDUAL_COUNT  TAXON_MATCH_FUZZY
-0        -27.468625        153.024333  2006-03-30T09:32:00Z  Threskiornis moluccus  Australian White Ibis                True                                  False                         False              False                  False                     True                          True                         True                                    True                       True              False                                             False               True
-1        -27.468611        153.024444  2023-12-02T09:12:02Z    Cosmophasis baehrae                    NaN                True                                   True                         False              False                  False                     True                          True                         True                                    True                       True              False                                             False              False
-2        -27.468546        153.023911  2024-02-03T20:45:00Z            Mediastinia                    NaN                True                                  False                         False              False                  False                     True                          True                         True                                    True                       True              False                                             False              False
-3        -27.468510        153.023821  2023-04-08T17:49:00Z     Entomyzon cyanotis  Blue-faced Honeyeater                True                                  False                         False               True                  False                     True                          True                         True                                    True                       True              False                                             False              False
-4        -27.468418        153.024140  2022-08-30T11:29:00Z  Threskiornis moluccus  Australian White Ibis                True                                  False                         False              False                  False                     True                          True                         True                                    True                       True              False                                             False               True
-5        -27.468364        153.024121  2024-08-28T10:31:54Z               Vitellus                    NaN                True                                  False                         False              False                  False                     True                          True                         True                                    True                       True              False                                             False              False
-6        -27.468326        153.024077  2022-07-24T14:43:00Z  Threskiornis moluccus  Australian White Ibis                True                                   True                          True              False                   True                     True                          True                         True                                    True                       True               True                                              True               True
-7        -27.468308        153.024097  2024-10-13T14:34:00Z  Threskiornis moluccus  Australian White Ibis                True                                  False                         False               True                  False                     True                          True                         True                                    True                       True              False                                             False               True
-8        -27.468295        153.023967  2024-10-13T14:35:00Z     Gymnorhina tibicen      Australian Magpie                True                                  False                         False               True                  False                     True                          True                         True                                    True                       True              False                                             False              False
-9        -27.468294        153.023907  2024-11-11T13:56:00Z  Threskiornis moluccus  Australian White Ibis                True                                  False                         False              False                  False                     True                          True                         True                                    True                       True              False                                             False               True
-10       -27.468167        153.024047  2024-07-23T10:00:53Z  Threskiornis moluccus  Australian White Ibis                True                                  False                         False               True                  False                     True                          True                         True                                    True                       True              False                                             False               True
-11       -27.468155        153.024011  2024-04-26T12:07:00Z  Threskiornis moluccus  Australian White Ibis                True                                  False                         False              False                  False                     True                          True                         True                                    True                       True              False                                             False               True
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>    decimalLatitude  decimalLongitude             eventDate                     scientificName         vernacularName
+0        -27.468625        153.024333  2006-03-30T09:32:00Z              Threskiornis moluccus  Australian White Ibis
+1        -27.468611        153.024444  2023-12-02T09:12:02Z                Cosmophasis baehrae                    NaN
+2        -27.468546        153.023911  2024-02-03T20:45:00Z                        Mediastinia                    NaN
+3        -27.468529        153.023898  2025-03-19T07:01:00Z  Manorina (Myzantha) melanocephala            Noisy Miner
+4        -27.468510        153.023821  2023-04-08T17:49:00Z                 Entomyzon cyanotis  Blue-faced Honeyeater
+5        -27.468418        153.024140  2022-08-30T11:29:00Z              Threskiornis moluccus  Australian White Ibis
+6        -27.468364        153.024121  2024-08-28T10:31:54Z                           Vitellus                    NaN
+7        -27.468326        153.024077  2022-07-24T14:43:00Z              Threskiornis moluccus  Australian White Ibis
+8        -27.468308        153.024097  2024-10-13T14:34:00Z              Threskiornis moluccus  Australian White Ibis
+9        -27.468295        153.023967  2024-10-13T14:35:00Z                 Gymnorhina tibicen      Australian Magpie
+10       -27.468294        153.023907  2024-11-11T13:56:00Z              Threskiornis moluccus  Australian White Ibis
+11       -27.468262        153.023941  2025-03-19T06:55:00Z              Intellagama lesueurii   Eastern Water Dragon
+12       -27.468167        153.024047  2024-07-23T10:00:53Z              Threskiornis moluccus  Australian White Ibis
+13       -27.468155        153.024011  2024-04-26T12:07:00Z              Threskiornis moluccus  Australian White Ibis
 </pre></div>
 </div>
 <p>This argument can be provided as its string; however, we show you the above to give you an idea of what
@@ -540,17 +542,17 @@ inside the provided shape.</p>
 <span class="prompt1"><span class="o">...</span>   <span class="n">fields</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;decimalLatitude&quot;</span><span class="p">,</span> <span class="s2">&quot;decimalLongitude&quot;</span><span class="p">,</span> <span class="s2">&quot;eventDate&quot;</span><span class="p">,</span> <span class="s2">&quot;scientificName&quot;</span><span class="p">,</span> <span class="s2">&quot;vernacularName&quot;</span><span class="p">]</span></span>
 <span class="prompt1"><span class="o">...</span> <span class="p">)</span></span>
 <span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">species_king_george_square</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span></span>
-</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>   decimalLatitude  decimalLongitude             eventDate                             scientificName         vernacularName  CONTINENT_COORDINATE_MISMATCH  COORDINATE_ROUNDED  COORDINATE_UNCERTAINTY_METERS_INVALID  GEODETIC_DATUM_ASSUMED_WGS84  GEOREFERENCE_POST_OCCURRENCE  ID_PRE_OCCURRENCE  MISSING_GEODETICDATUM  MISSING_GEOREFERENCEDBY  MISSING_GEOREFERENCEPROTOCOL  MISSING_GEOREFERENCESOURCES  MISSING_GEOREFERENCEVERIFICATIONSTATUS  MISSING_GEOREFERENCE_DATE  MISSING_TAXONRANK  OCCURRENCE_STATUS_INFERRED_FROM_INDIVIDUAL_COUNT  TAXON_MATCH_FUZZY  TAXON_MATCH_HIGHERRANK  TAXON_PARENT_CHILD_SYNONYM
-0       -27.468889        153.024444  2015-10-09T00:00:00Z             Burhinus (Burhinus) grallarius      Bush Stone-curlew                          False               False                                  False                          True                         False              False                   True                     True                          True                         True                                    True                       True              False                                             False              False                   False                       False
-1       -27.468817        153.023616  2019-04-21T14:40:00Z                      Threskiornis moluccus  Australian White Ibis                          False                True                                  False                         False                         False              False                  False                     True                          True                         True                                    True                       True              False                                             False               True                   False                       False
-2       -27.468816        153.023613  2005-08-28T12:18:00Z                      Threskiornis moluccus  Australian White Ibis                          False                True                                   True                          True                         False              False                   True                     True                          True                         True                                    True                       True               True                                              True               True                   False                       False
-3       -27.468680        153.023828  2024-07-15T15:00:18Z                      Pseudanapaea denotata                    NaN                          False                True                                  False                         False                         False              False                  False                     True                          True                         True                                    True                       True              False                                             False              False                   False                       False
-4       -27.468680        153.023828  2024-01-13T15:07:42Z                      Tenodera australasiae    Purplewinged Mantid                          False                True                                  False                         False                         False              False                  False                     True                          True                         True                                    True                       True              False                                             False              False                   False                       False
-5       -27.468680        153.023828  2024-07-15T12:12:27Z                    Columba (Columba) livia              Rock Dove                          False                True                                  False                         False                         False               True                  False                     True                          True                         True                                    True                       True              False                                             False              False                    True                       False
-6       -27.468680        153.023828  2024-01-13T15:06:26Z  Toxorhynchites (Toxorhynchites) speciosus                    NaN                          False                True                                  False                         False                         False              False                  False                     True                          True                         True                                    True                       True              False                                             False              False                   False                       False
-7       -27.468680        153.023828  2024-01-13T15:04:53Z                  Pristhesancus plagipennis             Bee-killer                          False                True                                  False                         False                         False              False                  False                     True                          True                         True                                    True                       True              False                                             False              False                   False                       False
-8       -27.468680        153.023828  2024-01-13T15:07:42Z              Lyramorpha (Lyramorpha) rosea       Litchi Stink Bug                          False                True                                  False                         False                         False              False                  False                     True                          True                         True                                    True                       True              False                                             False              False                   False                        True
-9       -27.468680        153.023828  2024-01-13T15:07:40Z                        Panesthia australis              Cockroach                          False                True                                  False                         False                         False              False                  False                     True                          True                         True                                    True                       True              False                                             False              False                   False                       False
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>   decimalLatitude  decimalLongitude             eventDate                     scientificName         vernacularName
+0       -27.468625        153.024333  2006-03-30T09:32:00Z              Threskiornis moluccus  Australian White Ibis
+1       -27.468611        153.024444  2023-12-02T09:12:02Z                Cosmophasis baehrae                    NaN
+2       -27.468546        153.023911  2024-02-03T20:45:00Z                        Mediastinia                    NaN
+3       -27.468529        153.023898  2025-03-19T07:01:00Z  Manorina (Myzantha) melanocephala            Noisy Miner
+4       -27.468510        153.023821  2023-04-08T17:49:00Z                 Entomyzon cyanotis  Blue-faced Honeyeater
+5       -27.468418        153.024140  2022-08-30T11:29:00Z              Threskiornis moluccus  Australian White Ibis
+6       -27.468364        153.024121  2024-08-28T10:31:54Z                           Vitellus                    NaN
+7       -27.468326        153.024077  2022-07-24T14:43:00Z              Threskiornis moluccus  Australian White Ibis
+8       -27.468308        153.024097  2024-10-13T14:34:00Z              Threskiornis moluccus  Australian White Ibis
+9       -27.468295        153.023967  2024-10-13T14:35:00Z                 Gymnorhina tibicen      Australian Magpie
 </pre></div>
 </div>
 </section>
@@ -626,13 +628,13 @@ shapefile from the above link, and perform our filtering and summarising as foll
 3          -27.574852        152.992831  ...        eBird Australia          PRESENT
 4          -27.574169        152.995529  ...        eBird Australia          PRESENT
 ...               ...               ...  ...                    ...              ...
-2785       -27.517759        152.985278  ...        eBird Australia          PRESENT
 2786       -27.517759        152.985278  ...        eBird Australia          PRESENT
 2787       -27.517759        152.985278  ...        eBird Australia          PRESENT
 2788       -27.517759        152.985278  ...        eBird Australia          PRESENT
 2789       -27.517759        152.985278  ...        eBird Australia          PRESENT
+2790       -27.517759        152.985278  ...        eBird Australia          PRESENT
 
-[2790 rows x 8 columns]
+[2791 rows x 8 columns]
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">brisbane_parks_all</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">edgecolor</span> <span class="o">=</span> <span class="s2">&quot;#5A5A5A&quot;</span><span class="p">,</span> <span class="n">linewidth</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">facecolor</span> <span class="o">=</span> <span class="s2">&quot;white&quot;</span><span class="p">,</span> <span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">7</span><span class="p">,</span><span class="mi">10</span><span class="p">))</span></span>

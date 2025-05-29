@@ -104,7 +104,7 @@ This can be useful in searching for paraphyletic or polyphyletic groups.  For ex
     ... )
     >>> non_chordates.head()
     
-.. program-output:: python3 -c "import galah;import pandas as pd;pd.set_option('display.max_columns', None);pd.set_option('display.expand_frame_repr', False);pd.set_option('max_colwidth', None);galah.galah_config(atlas=\"Australia\");print(galah.atlas_counts(filters=[\"kingdom=Animalia\",\"phylum!=Chordata\"],group_by=[\"phylum\"],expand=False).head())"
+.. program-output:: python3 -c "import galah;import pandas as pd;pd.set_option('display.max_columns', None);pd.set_option('display.expand_frame_repr', False);pd.set_option('max_colwidth', None);galah.galah_config(atlas=\"Australia\");print(galah.atlas_counts(filters=[\"kingdom=Animalia\",\"phylum!=Chordata\"],group_by=[\"phylum\"]).head())"
 
 ``filters=``, ``search_taxa()``, and taxonomic ranks
 ------------------------------------------------------
@@ -159,4 +159,4 @@ and two subspecies. This can then be used in ``atlas_counts()`` to get counts fo
     ...     expand=False
     ... )
 
-.. program-output:: python3 -c "import galah;import pandas as pd;pd.set_option('display.max_columns', None);pd.set_option('display.expand_frame_repr', False);pd.set_option('max_colwidth', None);galah.galah_config(atlas=\"Australia\");tas_endemic = [\"Sarcophilus\",\"Bettongia gaimardi\",\"Melanodryas vittata\",\"Platycercus caledonicus\",\"Aquila audax fleayi\",\"Tyto novaehollandiae castanops\"];print(galah.atlas_counts(taxa=tas_endemic,group_by=[\"scientificName\"],expand=False))"
+.. program-output:: python3 -c "import galah;import pandas as pd;pd.set_option('display.max_columns', None);pd.set_option('display.expand_frame_repr', False);pd.set_option('max_colwidth', None);galah.galah_config(atlas=\"Australia\");tas_endemic = [\"Sarcophilus\",\"Bettongia gaimardi\",\"Melanodryas vittata\",\"Platycercus caledonicus\",\"Aquila audax fleayi\",\"Tyto novaehollandiae castanops\"];print(galah.atlas_counts(taxa=tas_endemic,group_by=[\"scientificName\"]))"

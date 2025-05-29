@@ -29,7 +29,7 @@ by the requested field.
 
     >>> galah.atlas_counts(group_by="kingdom")
 
-.. program-output:: python -c "import galah;galah.galah_config(atlas=\"Australia\");import pandas as pd;pd.set_option('display.max_columns', None);pd.set_option('display.expand_frame_repr', False);pd.set_option('max_colwidth', None);print(galah.atlas_counts(group_by=\"kingdom\",expand=False))"
+.. program-output:: python -c "import galah;galah.galah_config(atlas=\"Australia\");import pandas as pd;pd.set_option('display.max_columns', None);pd.set_option('display.expand_frame_repr', False);pd.set_option('max_colwidth', None);print(galah.atlas_counts(group_by=\"kingdom\"))"
 
 Species lists
 -------------

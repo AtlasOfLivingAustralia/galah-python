@@ -44,7 +44,7 @@ For instance, we can get monthly counts of amphibians from 2021 using the year a
     ...     expand=False
     ... )
 
-.. program-output:: python -c "import galah;import pandas as pd;pd.set_option('display.max_columns', None);pd.set_option('display.expand_frame_repr', False);pd.set_option('max_colwidth', None);galah.galah_config(atlas=\"Australia\");print(galah.atlas_counts(taxa='Amphibia',filters='year=2021',group_by='month',expand=False))"
+.. program-output:: python -c "import galah;import pandas as pd;pd.set_option('display.max_columns', None);pd.set_option('display.expand_frame_repr', False);pd.set_option('max_colwidth', None);galah.galah_config(atlas=\"Australia\");print(galah.atlas_counts(taxa='Amphibia',filters='year=2021',group_by='month'))"
 
 It is also important to observe that the outputted month column is of type character even though 
 the values are numeric. This is the case for each of the year, month and day fields. However, 
@@ -75,7 +75,7 @@ it will only return results that fall within all 3 windows at once.
     ...     expand=False
     ... )
 
-.. program-output:: python -c "import galah;import pandas as pd;pd.set_option('display.max_columns', None);pd.set_option('display.expand_frame_repr', False);pd.set_option('max_colwidth', None);galah.galah_config(atlas=\"Australia\");print(galah.atlas_counts(taxa='Chamaescilla corymbosa',filters=['year>=2013','year<=2023','month=9','day>=1','day<=7'],group_by='year',expand=False))"
+.. program-output:: python -c "import galah;import pandas as pd;pd.set_option('display.max_columns', None);pd.set_option('display.expand_frame_repr', False);pd.set_option('max_colwidth', None);galah.galah_config(atlas=\"Australia\");print(galah.atlas_counts(taxa='Chamaescilla corymbosa',filters=['year>=2013','year<=2023','month=9','day>=1','day<=7'],group_by='year'))"
 
 Occurrence dates
 --------------------
