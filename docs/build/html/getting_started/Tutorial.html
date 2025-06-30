@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Tutorial &#8212; Galah 0.12.0 documentation</title>
+    <title>Tutorial &#8212; Galah 0.12.1 documentation</title>
   
   
   
@@ -28,7 +28,7 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../_static/css/extra.css?v=bc76f7e5" />
     <link rel="stylesheet" type="text/css" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
     <link rel="stylesheet" type="text/css" href="../_static/css/extra.css?v=bc76f7e5" />
@@ -38,7 +38,7 @@
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
   <script src="../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
 
-    <script src="../_static/documentation_options.js?v=61ccb1f1"></script>
+    <script src="../_static/documentation_options.js?v=c5b435e8"></script>
     <script src="../_static/doctools.js?v=888ff710"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/design-tabs.js?v=36754332"></script>
@@ -124,8 +124,8 @@
       
     
     
-    <img src="../_static/logo.png" class="logo__image only-light" alt="Galah 0.12.0 documentation - Home"/>
-    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Galah 0.12.0 documentation - Home"/>`);</script>
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Galah 0.12.1 documentation - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Galah 0.12.1 documentation - Home"/>`);</script>
   
   
 </a></div>
@@ -433,7 +433,7 @@ has on offer, run the command</p>
 span.prompt1:before {
   content: " ";
 }
-</style><span class="prompt1"><span class="o">&gt;&gt;</span> <span class="kn">import</span> <span class="nn">galah</span></span>
+</style><span class="prompt1"><span class="o">&gt;&gt;</span> <span class="kn">import</span><span class="w"> </span><span class="nn">galah</span></span>
 <span class="prompt1"><span class="o">&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">show_all</span><span class="p">(</span><span class="n">atlases</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></span>
 </pre></div></div><p>and a list like this will appear:</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>
@@ -512,19 +512,19 @@ To do this, we will take the query from above and change the function name from 
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">import galah</span>
 <span class="prompt1">galah.atlas_occurrences(taxa=&quot;Vulpes vulpes&quot;,filters=&quot;year&gt;=2020&quot;,fields=[&quot;scientificName&quot;,&quot;decimalLatitude&quot;,&quot;decimalLongitude&quot;])</span>
 </pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>      scientificName  decimalLatitude  decimalLongitude
-0      Vulpes vulpes       -38.674830        143.130047
-1      Vulpes vulpes       -36.727730        146.803440
-2      Vulpes vulpes       -29.829410        151.133730
-3      Vulpes vulpes       -34.071526        149.691770
-4      Vulpes vulpes       -37.295200        143.436000
+0      Vulpes vulpes       -36.965550        148.297730
+1      Vulpes vulpes       -30.853644        118.209424
+2      Vulpes vulpes       -32.942314        115.848913
+3      Vulpes vulpes       -23.833179        151.239068
+4      Vulpes vulpes       -33.394140        137.289710
 ...              ...              ...               ...
-40739  Vulpes vulpes       -34.667983        150.710761
-40740  Vulpes vulpes       -33.864557        151.135425
-40741  Vulpes vulpes       -34.667983        150.710761
-40742  Vulpes vulpes       -37.867287        145.068255
-40743  Vulpes vulpes       -31.499639        115.601592
+41543  Vulpes vulpes       -29.884739        152.918694
+41544  Vulpes vulpes       -30.574234        149.130333
+41545  Vulpes vulpes       -34.191368        142.567815
+41546  Vulpes vulpes       -30.496339        152.978836
+41547  Vulpes vulpes       -36.102401        142.510374
 
-[40744 rows x 3 columns]
+[41548 rows x 3 columns]
 </pre></div>
 </div>
 <p>Check out other vignettes and the API docs for more information on how to use each of these functions, as well as to

@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Spatial filtering &#8212; Galah 0.12.0 documentation</title>
+    <title>Spatial filtering &#8212; Galah 0.12.1 documentation</title>
   
   
   
@@ -28,7 +28,7 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../_static/css/extra.css?v=bc76f7e5" />
     <link rel="stylesheet" type="text/css" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
     <link rel="stylesheet" type="text/css" href="../_static/css/extra.css?v=bc76f7e5" />
@@ -38,7 +38,7 @@
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
   <script src="../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
 
-    <script src="../_static/documentation_options.js?v=61ccb1f1"></script>
+    <script src="../_static/documentation_options.js?v=c5b435e8"></script>
     <script src="../_static/doctools.js?v=888ff710"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/design-tabs.js?v=36754332"></script>
@@ -124,8 +124,8 @@
       
     
     
-    <img src="../_static/logo.png" class="logo__image only-light" alt="Galah 0.12.0 documentation - Home"/>
-    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Galah 0.12.0 documentation - Home"/>`);</script>
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Galah 0.12.1 documentation - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Galah 0.12.1 documentation - Home"/>`);</script>
   
   
 </a></div>
@@ -458,7 +458,7 @@ wetlands.</p>
 span.prompt1:before {
   content: " ";
 }
-</style><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">galah</span></span>
+</style><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span><span class="w"> </span><span class="nn">galah</span></span>
 <span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">galah_config</span><span class="p">(</span><span class="n">email</span><span class="o">=</span><span class="s2">&quot;your-email-here&quot;</span><span class="p">)</span></span>
 <span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">search_all</span><span class="p">(</span><span class="n">fields</span><span class="o">=</span><span class="s2">&quot;wetlands&quot;</span><span class="p">)</span></span>
 </pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>        id                                                                                              description    type link
@@ -486,9 +486,9 @@ as follows:</p>
 <span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">avocets</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span></span>
 </pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>   decimalLatitude  decimalLongitude             eventDate                 scientificName                                                             taxonConceptID                              recordID                          dataResourceName occurrenceStatus
 0       -36.525833        139.823608  2012-07-29T00:00:00Z  Recurvirostra novaehollandiae  https://biodiversity.org.au/afd/taxa/c69e7308-527a-429d-a80d-143bd20b5100  838c1162-6c3e-4b5f-84d3-3639556f1acf               BirdLife Australia, Birdata          PRESENT
-1       -36.521950        139.827200  2023-10-17T00:00:00Z  Recurvirostra novaehollandiae  https://biodiversity.org.au/afd/taxa/c69e7308-527a-429d-a80d-143bd20b5100  c91d351f-06d7-4a0a-95a5-6d77e0921923                                  SA Fauna          PRESENT
+1       -36.521950        139.827200                   NaN  Recurvirostra novaehollandiae  https://biodiversity.org.au/afd/taxa/c69e7308-527a-429d-a80d-143bd20b5100  e02745af-44d4-4ad8-9816-7aaaaa318a82  Australian Waterbird Surveys (1983-2018)          PRESENT
 2       -36.521950        139.827200  2010-10-21T00:00:00Z  Recurvirostra novaehollandiae  https://biodiversity.org.au/afd/taxa/c69e7308-527a-429d-a80d-143bd20b5100  8fdebcda-de5e-4c2c-94dc-a9fb25cd6817  Australian Waterbird Surveys (1983-2018)          PRESENT
-3       -36.521950        139.827200                   NaN  Recurvirostra novaehollandiae  https://biodiversity.org.au/afd/taxa/c69e7308-527a-429d-a80d-143bd20b5100  e02745af-44d4-4ad8-9816-7aaaaa318a82  Australian Waterbird Surveys (1983-2018)          PRESENT
+3       -36.521950        139.827200  2023-10-17T00:00:00Z  Recurvirostra novaehollandiae  https://biodiversity.org.au/afd/taxa/c69e7308-527a-429d-a80d-143bd20b5100  c91d351f-06d7-4a0a-95a5-6d77e0921923                                  SA Fauna          PRESENT
 4       -36.521950        139.827200                   NaN  Recurvirostra novaehollandiae  https://biodiversity.org.au/afd/taxa/c69e7308-527a-429d-a80d-143bd20b5100  3e4d190c-7032-48ba-885e-ebf513fe5af0  Australian Waterbird Surveys (1983-2018)          PRESENT
 </pre></div>
 </div>
@@ -503,7 +503,7 @@ introduced to the filtering process using the <code class="docutils literal notr
 specifying <code class="docutils literal notranslate"><span class="pre">xmin</span></code>, <code class="docutils literal notranslate"><span class="pre">xmax</span></code>, <code class="docutils literal notranslate"><span class="pre">ymin</span></code>, and <code class="docutils literal notranslate"><span class="pre">ymax</span></code>.  For instance, we might interested in species occurrences in
 King George Square, Brisbane. We can take the <code class="docutils literal notranslate"><span class="pre">MULTIPOLYGON</span></code> object for the square (as sourced from the Brisbane City
 Council) and transform it into a <code class="docutils literal notranslate"><span class="pre">{shapely}</span></code> object.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">shapely.wkt</span></span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span><span class="w"> </span><span class="nn">shapely.wkt</span></span>
 <span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">king_george_square</span> <span class="o">=</span> <span class="n">shapely</span><span class="o">.</span><span class="n">wkt</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="s2">&quot;MULTIPOLYGON(((153.0243 -27.46886, 153.0242 -27.46896, 153.0236 -27.46837, 153.0239 -27.46814, 153.0239 -27.46813, 153.0242 -27.46789, 153.0244 -27.46805, 153.0245 -27.46821, 153.0246 -27.46828, 153.0247 -27.46835, 153.0248 -27.46848, 153.0246 -27.4686, 153.0246 -27.46862, 153.0245 -27.46871, 153.0243 -27.46886)))&quot;</span><span class="p">)</span></span>
 </pre></div></div><p>We can provide this <code class="docutils literal notranslate"><span class="pre">MULTIPOLYGON</span></code> as the argument <code class="docutils literal notranslate"><span class="pre">polygon</span></code> in <code class="docutils literal notranslate"><span class="pre">atlas_occurrences</span></code> to assess which species
 have been recorded in King George Square.</p>
@@ -516,17 +516,19 @@ have been recorded in King George Square.</p>
 0        -27.468625        153.024333  2006-03-30T09:32:00Z              Threskiornis moluccus  Australian White Ibis
 1        -27.468611        153.024444  2023-12-02T09:12:02Z                Cosmophasis baehrae                    NaN
 2        -27.468546        153.023911  2024-02-03T20:45:00Z                        Mediastinia                    NaN
-3        -27.468529        153.023898  2025-03-19T07:01:00Z  Manorina (Myzantha) melanocephala            Noisy Miner
-4        -27.468510        153.023821  2023-04-08T17:49:00Z                 Entomyzon cyanotis  Blue-faced Honeyeater
-5        -27.468418        153.024140  2022-08-30T11:29:00Z              Threskiornis moluccus  Australian White Ibis
-6        -27.468364        153.024121  2024-08-28T10:31:54Z                           Vitellus                    NaN
-7        -27.468326        153.024077  2022-07-24T14:43:00Z              Threskiornis moluccus  Australian White Ibis
-8        -27.468308        153.024097  2024-10-13T14:34:00Z              Threskiornis moluccus  Australian White Ibis
-9        -27.468295        153.023967  2024-10-13T14:35:00Z                 Gymnorhina tibicen      Australian Magpie
-10       -27.468294        153.023907  2024-11-11T13:56:00Z              Threskiornis moluccus  Australian White Ibis
-11       -27.468262        153.023941  2025-03-19T06:55:00Z              Intellagama lesueurii   Eastern Water Dragon
-12       -27.468167        153.024047  2024-07-23T10:00:53Z              Threskiornis moluccus  Australian White Ibis
-13       -27.468155        153.024011  2024-04-26T12:07:00Z              Threskiornis moluccus  Australian White Ibis
+3        -27.468536        153.024300  2025-05-31T08:08:00Z                 Achyra affinitalis             Grass Moth
+4        -27.468529        153.023898  2025-03-19T07:01:00Z  Manorina (Myzantha) melanocephala            Noisy Miner
+5        -27.468510        153.023821  2023-04-08T17:49:00Z                 Entomyzon cyanotis  Blue-faced Honeyeater
+6        -27.468419        153.023700  2025-05-31T08:08:00Z                 Achyra affinitalis             Grass Moth
+7        -27.468418        153.024140  2022-08-30T11:29:00Z              Threskiornis moluccus  Australian White Ibis
+8        -27.468364        153.024121  2024-08-28T10:31:54Z                           Vitellus                    NaN
+9        -27.468326        153.024077  2022-07-24T14:43:00Z              Threskiornis moluccus  Australian White Ibis
+10       -27.468308        153.024097  2024-10-13T14:34:00Z              Threskiornis moluccus  Australian White Ibis
+11       -27.468295        153.023967  2024-10-13T14:35:00Z                 Gymnorhina tibicen      Australian Magpie
+12       -27.468294        153.023907  2024-11-11T13:56:00Z              Threskiornis moluccus  Australian White Ibis
+13       -27.468262        153.023941  2025-03-19T06:55:00Z              Intellagama lesueurii   Eastern Water Dragon
+14       -27.468167        153.024047  2024-07-23T10:00:53Z              Threskiornis moluccus  Australian White Ibis
+15       -27.468155        153.024011  2024-04-26T12:07:00Z              Threskiornis moluccus  Australian White Ibis
 </pre></div>
 </div>
 <p>This argument can be provided as its string; however, we show you the above to give you an idea of what
@@ -546,13 +548,13 @@ inside the provided shape.</p>
 0       -27.468625        153.024333  2006-03-30T09:32:00Z              Threskiornis moluccus  Australian White Ibis
 1       -27.468611        153.024444  2023-12-02T09:12:02Z                Cosmophasis baehrae                    NaN
 2       -27.468546        153.023911  2024-02-03T20:45:00Z                        Mediastinia                    NaN
-3       -27.468529        153.023898  2025-03-19T07:01:00Z  Manorina (Myzantha) melanocephala            Noisy Miner
-4       -27.468510        153.023821  2023-04-08T17:49:00Z                 Entomyzon cyanotis  Blue-faced Honeyeater
-5       -27.468418        153.024140  2022-08-30T11:29:00Z              Threskiornis moluccus  Australian White Ibis
-6       -27.468364        153.024121  2024-08-28T10:31:54Z                           Vitellus                    NaN
-7       -27.468326        153.024077  2022-07-24T14:43:00Z              Threskiornis moluccus  Australian White Ibis
-8       -27.468308        153.024097  2024-10-13T14:34:00Z              Threskiornis moluccus  Australian White Ibis
-9       -27.468295        153.023967  2024-10-13T14:35:00Z                 Gymnorhina tibicen      Australian Magpie
+3       -27.468536        153.024300  2025-05-31T08:08:00Z                 Achyra affinitalis             Grass Moth
+4       -27.468529        153.023898  2025-03-19T07:01:00Z  Manorina (Myzantha) melanocephala            Noisy Miner
+5       -27.468510        153.023821  2023-04-08T17:49:00Z                 Entomyzon cyanotis  Blue-faced Honeyeater
+6       -27.468419        153.023700  2025-05-31T08:08:00Z                 Achyra affinitalis             Grass Moth
+7       -27.468418        153.024140  2022-08-30T11:29:00Z              Threskiornis moluccus  Australian White Ibis
+8       -27.468364        153.024121  2024-08-28T10:31:54Z                           Vitellus                    NaN
+9       -27.468326        153.024077  2022-07-24T14:43:00Z              Threskiornis moluccus  Australian White Ibis
 </pre></div>
 </div>
 </section>
@@ -572,7 +574,7 @@ all 2,184 Brisbane parks</a>.</p>
 of the Scaly-Breasted Lorikeet, <em>Trichoglossus chlorolepidotus</em>, since 2020. We can download the entire
 shapefile from the above link, and perform our filtering and summarising as follows:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="c1"># first, get all parts within the Brisbane postcode 4075</span></span>
-<span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">geopandas</span> <span class="k">as</span> <span class="nn">gpd</span></span>
+<span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span><span class="w"> </span><span class="nn">geopandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">gpd</span></span>
 <span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">parks</span> <span class="o">=</span> <span class="n">gpd</span><span class="o">.</span><span class="n">read_file</span><span class="p">(</span><span class="s2">&quot;Park___Locations.shp&quot;</span><span class="p">)</span></span>
 <span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">parks</span><span class="o">.</span><span class="n">columns</span></span>
 <span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">brisbane_parks</span> <span class="o">=</span> <span class="n">parks</span><span class="p">[</span><span class="n">parks</span><span class="p">[</span><span class="s2">&quot;POST_CODE&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;4075&#39;</span><span class="p">]</span></span>
@@ -593,8 +595,8 @@ shapefile from the above link, and perform our filtering and summarising as foll
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="c1"># second, get a shape of all the Brisbane parks and draw a bounding box around it</span></span>
-<span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">shapely</span></span>
-<span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">shapely.ops</span> <span class="kn">import</span> <span class="n">unary_union</span></span>
+<span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span><span class="w"> </span><span class="nn">shapely</span></span>
+<span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span><span class="w"> </span><span class="nn">shapely.ops</span><span class="w"> </span><span class="kn">import</span> <span class="n">unary_union</span></span>
 <span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">brisbane_parks_all</span> <span class="o">=</span> <span class="n">gpd</span><span class="o">.</span><span class="n">GeoSeries</span><span class="p">(</span><span class="n">unary_union</span><span class="p">(</span><span class="n">brisbane_parks</span><span class="p">[</span><span class="s2">&quot;geometry&quot;</span><span class="p">]))</span></span>
 <span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">brisbane_parks_bbox</span> <span class="o">=</span> <span class="n">brisbane_parks_all</span><span class="o">.</span><span class="n">bounds</span></span>
 </pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>         minx       miny        maxx       maxy
@@ -613,7 +615,7 @@ shapefile from the above link, and perform our filtering and summarising as foll
 <span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Longitude&quot;</span><span class="p">,</span><span class="n">size</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span></span>
 </pre></div></div><a class="reference internal image-reference" href="../_images/brisbane_parks_and_bbox.png"><img alt="../_images/brisbane_parks_and_bbox.png" src="../_images/brisbane_parks_and_bbox.png" style="width: 630.0px; height: 900.0px;" /></a>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="c1"># third, find all occurrences of Trichoglossus chlorolepidotus in the bounding box in 2022</span></span>
-<span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">galah</span></span>
+<span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span><span class="w"> </span><span class="nn">galah</span></span>
 <span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">galah_config</span><span class="p">(</span><span class="n">email</span><span class="o">=</span><span class="s2">&quot;your-email-here&quot;</span><span class="p">)</span></span>
 <span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">lorikeet_brisbane</span> <span class="o">=</span> <span class="n">galah</span><span class="o">.</span><span class="n">atlas_occurrences</span><span class="p">(</span></span>
 <span class="prompt1"><span class="o">...</span>     <span class="n">taxa</span><span class="o">=</span><span class="s2">&quot;Trichoglossus chlorolepidotus&quot;</span><span class="p">,</span></span>

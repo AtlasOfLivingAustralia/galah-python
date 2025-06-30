@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Narrow Results &#8212; Galah 0.12.0 documentation</title>
+    <title>Narrow Results &#8212; Galah 0.12.1 documentation</title>
   
   
   
@@ -28,7 +28,7 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../_static/css/extra.css?v=bc76f7e5" />
     <link rel="stylesheet" type="text/css" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
     <link rel="stylesheet" type="text/css" href="../_static/css/extra.css?v=bc76f7e5" />
@@ -38,7 +38,7 @@
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
   <script src="../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
 
-    <script src="../_static/documentation_options.js?v=61ccb1f1"></script>
+    <script src="../_static/documentation_options.js?v=c5b435e8"></script>
     <script src="../_static/doctools.js?v=888ff710"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/design-tabs.js?v=36754332"></script>
@@ -124,8 +124,8 @@
       
     
     
-    <img src="../_static/logo.png" class="logo__image only-light" alt="Galah 0.12.0 documentation - Home"/>
-    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Galah 0.12.0 documentation - Home"/>`);</script>
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Galah 0.12.1 documentation - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Galah 0.12.1 documentation - Home"/>`);</script>
   
   
 </a></div>
@@ -451,7 +451,7 @@ to using this taxonomic information to download data with galah.</p>
 span.prompt1:before {
   content: " ";
 }
-</style><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">galah</span></span>
+</style><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span><span class="w"> </span><span class="nn">galah</span></span>
 <span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">search_taxa</span><span class="p">(</span><span class="n">taxa</span><span class="o">=</span><span class="s2">&quot;Reptilia&quot;</span><span class="p">)</span></span>
 </pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>  scientificName                                                             taxonConceptID   rank   kingdom    phylum   issues
 0       REPTILIA  https://biodiversity.org.au/afd/taxa/682e1228-5b3c-45ff-833b-550efd40c399  class  Animalia  Chordata  noIssue
@@ -461,7 +461,7 @@ span.prompt1:before {
 results of our queries:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">atlas_counts</span><span class="p">(</span><span class="n">taxa</span><span class="o">=</span><span class="s2">&quot;Reptilia&quot;</span><span class="p">)</span></span>
 </pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>   totalRecords
-0       1953865
+0       1958153
 </pre></div>
 </div>
 <p>If you’re using an international atlas, <code class="docutils literal notranslate"><span class="pre">galah.search_taxa()</span></code> will automatically switch to using the local name-matching
@@ -469,7 +469,7 @@ service. We have the Brazilian atlas as an example here:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">galah_config</span><span class="p">(</span><span class="n">atlas</span><span class="o">=</span><span class="s2">&quot;Brazil&quot;</span><span class="p">)</span></span>
 <span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">atlas_counts</span><span class="p">(</span><span class="n">taxa</span><span class="o">=</span><span class="s2">&quot;Ramphastos&quot;</span><span class="p">)</span></span>
 </pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>   totalRecords
-0        151955
+0        152047
 </pre></div>
 </div>
 </section>
@@ -479,13 +479,13 @@ service. We have the Brazilian atlas as an example here:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="c1"># Get total record count since 2000</span></span>
 <span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">atlas_counts</span><span class="p">(</span><span class="n">filters</span><span class="o">=</span><span class="s2">&quot;year&gt;2000&quot;</span><span class="p">)</span></span>
 </pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>   totalRecords
-0     108350761
+0     108677239
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="c1"># Get total record count for iNaturalist in 2021</span></span>
 <span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">atlas_counts</span><span class="p">(</span><span class="n">filters</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;dataResourceName=iNaturalist Australia&quot;</span><span class="p">,</span><span class="s2">&quot;year=2021&quot;</span><span class="p">])</span></span>
 </pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>   totalRecords
-0       1035823
+0       1037033
 </pre></div>
 </div>
 <p>To find available fields and corresponding valid values, use the field lookup functions
@@ -498,16 +498,16 @@ be useful for paraphyletic concepts such as invertebrates:</p>
 <span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">atlas_counts</span><span class="p">(</span><span class="n">filters</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;taxonConceptID=</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">animalia_id</span><span class="p">),</span><span class="s2">&quot;taxonConceptID!=</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">chordata_id</span><span class="p">)],</span><span class="n">group_by</span><span class="o">=</span><span class="s2">&quot;class&quot;</span><span class="p">)</span></span>
 </pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>                  class   count
 0                Acoela     143
-1              Anthozoa  314421
+1              Anthozoa  315889
 2           Aplacophora     646
-3             Arachnida  961821
+3             Arachnida  967403
 4   Archiacanthocephala      52
 ..                  ...     ...
 65            Staurozoa     113
-66         Stenolaemata    2489
-67             Symphyla     716
-68          Tentaculata     809
-69            Trematoda   35624
+66         Stenolaemata    2507
+67             Symphyla     713
+68          Tentaculata     816
+69            Trematoda   35630
 
 [70 rows x 2 columns]
 </pre></div>
@@ -520,7 +520,7 @@ Profiles are groups of data quality filters.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="n">galah</span><span class="o">.</span><span class="n">galah_config</span><span class="p">(</span><span class="n">data_profile</span><span class="o">=</span><span class="s2">&quot;ALA&quot;</span><span class="p">)</span></span>
 <span class="prompt1"><span class="n">galah</span><span class="o">.</span><span class="n">atlas_counts</span><span class="p">(</span><span class="nb">filter</span><span class="o">=</span><span class="s2">&quot;year&gt;2000&quot;</span><span class="p">,</span><span class="n">use_data_profile</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></span>
 </pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>   totalRecords
-0     108350761
+0     108677239
 </pre></div>
 </div>
 <p>To see a full list of data quality profiles, use <code class="docutils literal notranslate"><span class="pre">galah.show_all(profiles=True)</span></code>.</p>
