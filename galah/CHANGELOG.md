@@ -1,3 +1,9 @@
+## 0.12.1 (2025-06-30)
+
+### Fix
+
+- **show_values.py-and-search_values.py**: renamed include_states to all_fields
+
 ## 0.12.0 (2025-05-29)
 
 ### Feat
