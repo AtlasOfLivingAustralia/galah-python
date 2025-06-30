@@ -7,7 +7,7 @@ from .common_functions import kvp_to_columns
 # comment on what this function does later
 def show_values(field=None,
                 lists=False,
-                include_statuses=False,
+                all_fields=False,
                 verbose=False):
     """
     Users may wish to see the specific values within a chosen field, profile or list to narrow queries or understand 
@@ -19,7 +19,7 @@ def show_values(field=None,
             A string to specify what type of parameters should be shown.  
         lists : logical
             This lets ``show_values()`` know if you want to look up fields, or if you want to look up species in lists.  Default is False.
-        include_statuses : logical
+        all_fields : logical
             For threatened and sensitive lists, this argument will give you the option of downloading species statuses.  Default is False.
         verbose : logical
             This option is available for users who want to know what URLs this function is using to get the value.  Default is False.
@@ -67,7 +67,7 @@ def show_values(field=None,
         if lists:
             baseURL,method = get_api_url(column1='called_by',column1value='show_values-lists')
             URL = baseURL.replace('{list_id}',field) + "?max=-1"
-            if include_statuses:
+            if all_fields:
                 URL += "&includeKVP=TRUE"
         else:
             baseURL,method = get_api_url(column1='api_name',column1value='records_facets')
@@ -94,7 +94,7 @@ def show_values(field=None,
     # otherwise, assume it is other atlases
     else:
         if lists:
-            if include_statuses:
+            if all_fields:
                 dataFrame = pd.DataFrame()
                 for i in response_json:
                     kvp_values = i['kvpValues']
