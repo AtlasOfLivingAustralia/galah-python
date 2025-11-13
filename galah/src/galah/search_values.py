@@ -1,22 +1,18 @@
 from .show_values import show_values
-from .get_api_url import readConfig
 
-def search_values(field=None,
-                  value=None,
-                  lists=False,
-                  all_fields=False,
-                  column_name=None):
+
+def search_values(field=None, value=None, lists=False, all_fields=False, column_name=None):
     """
-    Users may wish to see the specific values within a chosen field, profile or list to narrow queries or understand 
-    more about the information of interest. ``search_values()`` allows users for search for specific values within 
+    Users may wish to see the specific values within a chosen field, profile or list to narrow queries or understand
+    more about the information of interest. ``search_values()`` allows users for search for specific values within
     a specified field.
 
     Parameters
     ----------
         field : string
-            A string to specify what type of parameters should be searched. 
+            A string to specify what type of parameters should be searched.
         value : string
-            A string specifying a search term. Not case sensitive. 
+            A string specifying a search term. Not case sensitive.
         lists : logical
             This lets ``show_values()`` know if you want to look up fields, or if you want to look up species in lists.  Default is False.
         all_fields : logical
@@ -40,13 +36,13 @@ def search_values(field=None,
     """
 
     if value is None:
-        raise ValueError("Please specify the field you want to see query-able values for, i.e. field=\"basisOfRecord\"")
+        raise ValueError('Please specify the field you want to see query-able values for, i.e. field="basisOfRecord"')
     elif type(value) is not str:
-        raise TypeError("show_values() only takes a single string as the field argument, i.e. field=\"basisOfRecord\"")
-    
+        raise TypeError('show_values() only takes a single string as the field argument, i.e. field="basisOfRecord"')
+
     # get initial data frame
-    dataFrame = show_values(field=field,lists=lists,all_fields=all_fields)
-    
+    dataFrame = show_values(field=field, lists=lists, all_fields=all_fields)
+
     # check for column name to search by
     if column_name is None:
         column_name = dataFrame.columns[-1]
@@ -54,10 +50,15 @@ def search_values(field=None,
     # throw ValueError if column_name variable is not a string
     elif type(column_name) is not str:
         raise ValueError("Only strings are a valid query for the column_name variable")
-    
+
     # check to see if the user input the correct variable type; else, throw value error
     if type(value) is str:
-        return dataFrame.loc[dataFrame[column_name].astype(str).str.contains(value,case=False, na=False)].sort_values(column_name,key=lambda x: x.str.len()).reset_index(drop=True)
+        return (
+            dataFrame.loc[dataFrame[column_name].astype(str).str.contains(value, case=False, na=False)]
+            .sort_values(column_name, key=lambda x: x.str.len())
+            .reset_index(drop=True)
+        )
     else:
         raise ValueError(
-            "You can only pass one string to your search parameter = run show_all(assertions=True) to get strings to pass")
+            "You can only pass one string to your search parameter = run show_all(assertions=True) to get strings to pass"
+        )

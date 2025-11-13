@@ -1,28 +1,35 @@
-from .show_all import show_all
 from .get_api_url import readConfig
+from .show_all import show_all_assertions, show_all_apis, show_all_atlases, show_all_collections
+from .show_all import show_all_datasets, show_all_fields, show_all_licences, show_all_lists, show_all_profiles
+from .show_all import show_all_providers, show_all_ranks, show_all_reasons
+from .version import __version__
 
-'''
+"""
 function is meant to search all values for possible query fields - they are defined as None so you can narrow down the
 large list of all the potential variables to add to your atlas query.  Choosing which column you query is also an option
-'''
-def search_all(assertions=None,
-               atlases=None,
-               apis=None,
-               collection=None,
-               datasets=None,
-               fields=None,
-               licences=None,
-               lists=None,
-               profiles=None,
-               providers=None,
-               ranks=None,
-               reasons=None,
-               column_name=None
-               ):
+"""
+
+
+def search_all(
+    assertions=None,
+    atlases=None,
+    apis=None,
+    collection=None,
+    datasets=None,
+    fields=None,
+    licences=None,
+    lists=None,
+    profiles=None,
+    providers=None,
+    ranks=None,
+    reasons=None,
+    column_name=None,
+    verbose=False,
+):
     """
-    The living atlases store a huge amount of information, above and beyond the occurrence records that are their main output. 
-    In galah, one way that users can investigate this information is by searching for a specific option or category for the 
-    type of information they are interested in.  ``search_all()`` is a helper function that can do searches within multiple 
+    The living atlases store a huge amount of information, above and beyond the occurrence records that are their main output.
+    In galah, one way that users can investigate this information is by searching for a specific option or category for the
+    type of information they are interested in.  ``search_all()`` is a helper function that can do searches within multiple
     types of information.
 
     Parameters
@@ -70,7 +77,7 @@ def search_all(assertions=None,
     """
 
     # set up the option for getting back multiple values
-    return_array=[]
+    return_array = []
 
     # configs
     configs = readConfig()
@@ -78,324 +85,153 @@ def search_all(assertions=None,
     # get atlas
     atlas = configs["galahSettings"]["atlas"]
 
-    # search options for assertions
-    if assertions is not None:
+    headers = {"User-Agent": "galah-python/{}".format(__version__)}
 
-        # call show_all to get all the possible values
-        dataFrame = show_all(assertions=True)
+    # check for column_name variable not being a string
+    if not isinstance(column_name, str):
+        raise ValueError("Only strings are a valid query for the column_name variable")
 
-        # check for default sort column name
-        if atlas in ["Global","GBIF"]:
-            sort_name = "ID"
-        else:
-            sort_name = "name"
+    options = {
+        # name:  [var, show_all function, check_sort_name, check_column_name ,column_name]
+        "assertions": [assertions, show_all_assertions, check_column_name_assertions, "description"],
+        "atlases": [atlases, show_all_atlases, check_column_name_apis_atlases, "description"],
+        "apis": [apis, show_all_apis, check_column_name_apis_atlases, "description"],
+        "collection": [collection, show_all_collections, check_column_name_collection, "description"],
+        "datasets": [datasets, show_all_datasets, check_column_name_datasets, "description"],
+        "fields": [fields, show_all_fields, check_column_name_fields, "description"],
+        "licences": [licences, show_all_licences, check_column_name_licences, "description"],
+        "lists": [lists, show_all_lists, check_column_name_lists, "description"],
+        "profiles": [profiles, show_all_profiles, check_column_name_profiles, "description"],
+        "providers": [providers, show_all_providers, check_column_name_providers, "description"],
+        "ranks": [ranks, show_all_ranks, check_column_name_ranks, "description"],
+        "reason": [reasons, show_all_reasons, check_column_name_reasons, "description"],
+    }
 
-        # check if column_name is None; if it is, set it to default
-        if column_name is None and atlas in ["Global","GBIF"]:
-            column_name = 'Description'
-        elif column_name is None:
-            column_name = 'description'
+    for o in options:
+        if options[o][0] is not None:
+            if not isinstance(options[o][0], str):
+                raise ValueError(
+                    "You can only pass one string to your search parameter = run show_all(assertions=True) to get strings to pass"
+                )
 
-        # throw ValueError if column_name variable is not a string
-        elif type(column_name) is not str:
-            raise ValueError("Only strings are a valid query for the column_name variable")
-        
-        # check to see if the user input the correct variable type; else, throw value error
-        if type(assertions) is str:
-            return_dataFrame = dataFrame.loc[dataFrame[column_name].astype(str).str.contains(assertions, case=False, na=False)]
-            return_array.append(return_dataFrame.sort_values(sort_name, key=lambda x: x.str.len()).reset_index(drop=True))
-        
-        # else, throw error because this only takes strings for now
-        else:
-            raise ValueError("You can only pass one string to your search parameter = run show_all(assertions=True) to get strings to pass")
+            # get initial dataframe
+            dataFrame = options[o][1](atlas=atlas, headers=headers, verbose=verbose)
 
-    # search options for atlases
-    if atlases is not None:
+            # first, check column name, and then check sorting name
+            options[o][3] = options[o][2](atlas=atlas, column_name=column_name)
 
-        # call show_all to get all the possible values
-        dataFrame = show_all(atlases=True)
-
-        # check to see if user wants default column name
-        if column_name is None:
-            column_name='atlas'
-
-        # throw ValueError if column_name variable is not a string
-        elif type(column_name) is not str:
-            raise ValueError("Only strings are a valid query for the column_name variable")
-        
-        # check to see if the user input the correct variable type; else, throw value error
-        if type(atlases) is str:
-            return_dataFrame = dataFrame.loc[dataFrame[column_name].astype(str).str.contains(atlases, case=False, na=False)]
-            return_array.append(return_dataFrame.sort_values('atlas', key=lambda x: x.str.len()).reset_index(drop=True))
-        
-        # else, throw error because this only takes strings for now
-        else:
-            raise ValueError(
-                "You can only pass one string to your search parameter = run show_all(atlases=True) to get strings to pass")
-
-    # search options for apis
-    if apis is not None:
-        
-        # call show_all to get all the possible values
-        dataFrame = show_all(apis=True)
-        
-        # check to see if user wants default column name
-        if column_name is None:
-            column_name='atlas'
-        
-        # throw ValueError if column_name variable is not a string
-        elif type(column_name) is not str:
-            raise ValueError("Only strings are a valid query for the column_name variable")
-        
-        # check to see if the user input the correct variable type; else, throw value error
-        if type(apis) is str:
-            return_dataFrame = dataFrame.loc[dataFrame[column_name].astype(str).str.contains(apis, case=False, na=False)]
-            return_array.append(return_dataFrame.sort_values('atlas', key=lambda x: x.str.len()).reset_index(drop=True))
-        
-        # else, throw error because this only takes strings for now
-        else:
-            raise ValueError(
-                "You can only pass one string to your search parameter = run show_all(apis=True) to get strings to pass")
-
-    # search options for collection
-    if collection is not None:
-        
-        # call show_all to get all the possible values
-        dataFrame = show_all(collection=True)
-        
-        # check to see if user wants default column name
-        if column_name is None:
-            if atlas in ["France"]:
-                column_name = 'producers'
-            else:
-                column_name = 'name'
-        
-        # throw ValueError if column_name variable is not a string
-        elif type(column_name) is not str:
-            raise ValueError("Only strings are a valid query for the column_name variable")
-        
-        # check to see if the user input the correct variable type; else, throw value error
-        if type(collection) is str:
-            return_dataFrame = dataFrame.loc[dataFrame[column_name].astype(str).str.contains(collection, case=False, na=False)]
-            return_array.append(return_dataFrame.sort_values(column_name, key=lambda x: x.str.len()).reset_index(drop=True))
-        
-        # else, throw error because this only takes strings for now
-        else:
-            raise ValueError(
-                "You can only pass one string to your search parameter = run show_all(apis=True) to get strings to pass")
-
-    # search options for datasets
-    if datasets is not None:
-
-        # call show_all to get all the possible values
-        dataFrame = show_all(datasets=True)
-
-        # check for the correct column name
-        if column_name is None and atlas in ["Australia","Austria","Brazil","France","Guatemala","Portugal","Spain","Sweden","United Kingdom","UK"]:
-            column_name = 'name'   
-        elif column_name is None:
-            column_name = 'description'
-
-        # throw ValueError if column_name variable is not a string
-        elif type(column_name) is not str:
-            raise ValueError("Only strings are a valid query for the column_name variable")
-        
-        # check to see if the user input the correct variable type
-        if type(datasets) is str:
-            return_dataFrame = dataFrame.loc[dataFrame[column_name].astype(str).str.contains(datasets, case=False, na=False)]
-            if atlas not in ["Global","GBIF"]:
-                return_array.append(return_dataFrame.sort_values('name', key=lambda x: x.str.len()).reset_index(drop=True))
-            else:
-                return_array.append(return_dataFrame.sort_values('title', key=lambda x: x.str.len()).reset_index(drop=True))
-        
-        # else, throw error because this only takes strings for now
-        else:
-            raise ValueError(
-                "You can only pass one string to your search parameter = run show_all(datasets=True) to get strings to pass")
-
-    # search options for fields
-    if fields is not None:
-
-        # call show_all to get all the possible values
-        dataFrame = show_all(fields=True)
-
-        # check to see if user wants default column name
-        if column_name is None and atlas in ["Global","GBIF"]:
-            column_name = 'Description'
-        elif column_name is None and atlas in ["Portugal"]:
-            column_name = 'name'
-        elif column_name is None:
-            column_name = 'description'
-
-        # throw ValueError if column_name variable is not a string
-        elif type(column_name) is not str:
-            raise ValueError("Only strings are a valid query for the column_name variable")
-        
-        # check to see if the user input the correct variable type
-        if type(fields) is str:
-            return_dataFrame = dataFrame.loc[dataFrame[column_name].astype(str).str.contains(fields, case=False, na=False)]
-            if  atlas in ["Global","GBIF"]:
-                return_array.append(return_dataFrame.sort_values('Parameter', key=lambda x: x.str.len()).reset_index(drop=True))
-            else:
-                return_array.append(return_dataFrame.sort_values(column_name, key=lambda x: x.str.len()).reset_index(drop=True))
-        
-        # else, throw error because this only takes strings for now
-        else:
-            raise ValueError(
-                "You can only pass one string to your search parameter = run show_all(fields=True) to get strings to pass")
-    
-    # search options for licences
-    if licences is not None:
-
-        # call show_all to get all the possible values``
-        dataFrame = show_all(licences=True)
-
-        # check to see if user wants default column name
-        if column_name is None:
-            column_name = 'name'
-
-        # throw ValueError if column_name variable is not a string
-        elif type(column_name) is not str:
-            raise ValueError("Only strings are a valid query for the column_name variable")
-        
-        # check to see if the user input the correct variable type; else, throw value error
-        if type(licences) is str:
-            return_dataFrame = dataFrame.loc[dataFrame[column_name].astype(str).str.contains(licences, case=False, na=False)]
-            return_array.append(return_dataFrame.sort_values('id', key=lambda x: x.astype(str).str.len()).reset_index(drop=True))
-        
-        # check to see if the user input the correct variable type
-        else:
-            raise ValueError(
-                "You can only pass one string to your search parameter = run show_all(licences=True) to get strings to pass")
-
-    # search options for lists
-    if lists is not None:
-
-        # call show_all to get all the possible values
-        dataFrame = show_all(lists=True)
-
-        # check to see if user wants default column name
-        if column_name is None:
-            column_name = 'listName'
-
-        # throw ValueError if column_name variable is not a string
-        elif type(column_name) is not str:
-            raise ValueError("Only strings are a valid query for the column_name variable")
-        
-        # check to see if the user input the correct variable type; else, throw value error
-        if type(lists) is str:
-            return_dataFrame = dataFrame.loc[dataFrame[column_name].astype(str).str.contains(lists, case=False, na=False)]
-            return_array.append(return_dataFrame.sort_values('listName', key=lambda x: x.str.len()).reset_index(drop=True))
-        
-        # check to see if the user input the correct variable type
-        else:
-            raise ValueError(
-                "You can only pass one string to your search parameter = run show_all(lists=True) to get strings to pass")
-
-    # search options for profiles
-    if profiles is not None:
-
-        # call show_all to get all the possible values
-        dataFrame = show_all(profiles=True)
-
-        # check to see if user wants default column name
-        if column_name is None and atlas in ["Global","GBIF"]:
-            column_name = 'Description'
-        elif column_name is None:
-            column_name = 'description'
-
-        # throw ValueError if column_name variable is not a string
-        elif type(column_name) is not str:
-            raise ValueError("Only strings are a valid query for the column_name variable")
-        
-        # check to see if the user input the correct variable type; else, throw value error
-        if type(profiles) is str:
-            return_dataFrame = dataFrame.loc[dataFrame[column_name].astype(str).str.contains(profiles, case=False, na=False)]
-            return_array.append(return_dataFrame.sort_values('id', key=lambda x: x.astype(str).str.len()).reset_index(drop=True))
-       
-        # check to see if the user input the correct variable type
-        else:
-            raise ValueError(
-                "You can only pass one string to your search parameter = run show_all(profiles=True) to get strings to pass")
-
-    # search options for providers
-    if providers is not None:
-
-        # call show_all to get all the possible values
-        dataFrame = show_all(providers=True)
-
-        # check to see if user wants default column name
-        if column_name is None and atlas in ["Global","GBIF"]:
-            column_name = 'title'
-        elif column_name is None:
-            column_name = 'name'
-
-        # throw ValueError if column_name variable is not a string
-        elif type(column_name) is not str:
-            raise ValueError("Only strings are a valid query for the column_name variable")
-        
-        # check to see if the user input the correct variable type; else, throw value error
-        if type(providers) is str:
-            return_dataFrame = dataFrame.loc[dataFrame[column_name].astype(str).str.contains(providers, case=False, na=False)]
-            if atlas in ["Global","GBIF"]:
-                return_array.append(return_dataFrame.sort_values('title', key=lambda x: x.str.len()).reset_index(drop=True))
-            else:
-                return_array.append(return_dataFrame.sort_values('name', key=lambda x: x.str.len()).reset_index(drop=True))
-        
-        # check to see if the user input the correct variable type
-        else:
-            raise ValueError(
-                "You can only pass one string to your search parameter = run show_all(providers=True) to get strings to pass")
-
-    # search options for ranks
-    if ranks is not None:
-
-        # call show_all to get all the possible values
-        dataFrame = show_all(ranks=True)
-
-        # check to see if user wants default column name
-        if column_name is None:
-            column_name = 'name'
-
-        # throw ValueError if column_name variable is not a string
-        elif type(column_name) is not str:
-            raise ValueError("Only strings are a valid query for the column_name variable")
-        
-        # check to see if the user input the correct variable type; else, throw value error
-        if type(ranks) is str:
-            return_dataFrame = dataFrame.loc[dataFrame[column_name].astype(str).str.contains(ranks, case=False, na=False)]
-            return_array.append(return_dataFrame.sort_values('id', key=lambda x: x.astype(str).str.len()).reset_index(drop=True))
-        
-        # check to see if the user input the correct variable type
-        else:
-            raise ValueError(
-                "You can only pass one string to your search parameter = run show_all(ranks=True) to get strings to pass")
-
-    # search options for reasons
-    if reasons is not None:
-
-        # call show_all to get all the possible values
-        dataFrame = show_all(reasons=True)
-        
-        # check to see if user wants default column name
-        if column_name is None:
-            column_name = 'name'
-        
-        # throw ValueError if column_name variable is not a string
-        elif type(column_name) is not str:
-            raise ValueError("Only strings are a valid query for the column_name variable")
-        
-        # check to see if the user input the correct variable type; else, throw value error
-        if type(reasons) is str:
-            return_dataFrame = dataFrame.loc[dataFrame[column_name].astype(str).str.contains(reasons, case=False, na=False)]
-            return_array.append(return_dataFrame.sort_values('id', key=lambda x: x.astype(str).str.len()).reset_index(drop=True))
-        
-        # check to see if the user input the correct variable type
-        else:
-            raise ValueError(
-                "You can only pass one string to your search parameter = run show_all(reasons=True) to get strings to pass")
+        return_dataFrame = dataFrame.loc[
+            dataFrame[options[o][2]].astype(str).str.contains(options[o][0], case=False, na=False)
+        ]
+        return_array.append(
+            return_dataFrame.sort_values(options[o][3], key=lambda x: x.str.len()).reset_index(drop=True)
+        )
 
     # return a single data frame if only one query was flagged; otherwise, return array
     if len(return_array) == 1:
         return return_array[0]
     return return_array
+
+
+"""
+Checking all column name functions
+"""
+
+
+def check_column_name_assertions(atlas=None, column_name=None):
+    # check if column_name is None; if it is, set it to default
+    if column_name is None and atlas in ["Global", "GBIF"]:
+        return "Description"
+    elif column_name is None:
+        return "description"
+    return column_name
+
+
+def check_column_name_apis_atlases(atlas=None, column_name=None):
+    # check if column_name is None; if it is, set it to default
+    if column_name is None:
+        return "atlas"
+    return column_name
+
+
+def check_column_name_collection(atlas=None, column_name=None):
+    # check to see if user wants default column name
+    if column_name is None:
+        if atlas in ["France"]:
+            return "producers"
+        else:
+            return "name"
+    return column_name
+
+
+def check_column_name_datasets(atlas=None, column_name=None):
+    if column_name is None and atlas in [
+        "Australia",
+        "Austria",
+        "Brazil",
+        "France",
+        "Guatemala",
+        "Portugal",
+        "Spain",
+        "Sweden",
+        "United Kingdom",
+        "UK",
+    ]:
+        return "name"
+    elif column_name is None:
+        return "description"
+    return column_name
+
+
+def check_column_name_fields(atlas=None, column_name=None):
+    if column_name is None and atlas in ["Global", "GBIF"]:
+        return "Description"
+    elif column_name is None and atlas in ["Portugal"]:
+        return "name"
+    elif column_name is None:
+        return "description"
+    return column_name
+
+
+def check_column_name_licences(atlas=None, column_name=None):
+    # check if column_name is None; if it is, set it to default
+    if column_name is None:
+        return "name"
+    return column_name
+
+
+def check_column_name_lists(atlas=None, column_name=None):
+    # check if column_name is None; if it is, set it to default
+    if column_name is None:
+        return "listName"
+    return column_name
+
+
+def check_column_name_profiles(atlas=None, column_name=None):
+    # check if column_name is None; if it is, set it to default
+    if column_name is None and atlas in ["Global", "GBIF"]:
+        return "Description"
+    elif column_name is None:
+        return "description"
+    return column_name
+
+
+def check_column_name_providers(atlas=None, column_name=None):
+    # check if column_name is None; if it is, set it to default
+    if column_name is None and atlas in ["Global", "GBIF"]:
+        return "title"
+    elif column_name is None:
+        return "name"
+    return column_name
+
+
+def check_column_name_ranks(atlas=None, column_name=None):
+    if column_name is None:
+        return "name"
+    return column_name
+
+
+def check_column_name_reasons(atlas=None, column_name=None):
+    if column_name is None:
+        return "name"
+    return column_name
