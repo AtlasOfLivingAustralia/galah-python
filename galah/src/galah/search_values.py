@@ -30,15 +30,15 @@ def search_values(field=None, value=None, lists=False, all_fields=False, column_
     .. prompt:: python
 
         import galah
-        galah.search_values(field="basisOfRecord",value="OBS")
+        galah.search_values(field='basisOfRecord',value='OBS')
 
-    .. program-output:: python -c "import galah; print(galah.search_values(field=\\\"basisOfRecord\\\",value=\\\"OBS\\\"))"
+    .. program-output:: python -c 'import galah; print(galah.search_values(field=\\\'basisOfRecord\\\',value=\\\'OBS\\\'))'
     """
 
     if value is None:
-        raise ValueError('Please specify the field you want to see query-able values for, i.e. field="basisOfRecord"')
+        raise ValueError("Please specify the field you want to see query-able values for, i.e. field='basisOfRecord'")
     elif type(value) is not str:
-        raise TypeError('show_values() only takes a single string as the field argument, i.e. field="basisOfRecord"')
+        raise TypeError("show_values() only takes a single string as the field argument, i.e. field='basisOfRecord'")
 
     # get initial data frame
     dataFrame = show_values(field=field, lists=lists, all_fields=all_fields)

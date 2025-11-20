@@ -1,40 +1,39 @@
-import requests
-import pandas as pd
 import urllib
 
-from .get_api_url import get_api_url,readConfig
-from .common_dictionaries import SEARCH_TAXA_ENTRIES,SEARCH_TAXA_FIELDS,TAXONCONCEPT_NAMES,VERNACULAR_NAMES,atlases
+import pandas as pd
+import requests
+
+from .common_dictionaries import SEARCH_TAXA_ENTRIES, SEARCH_TAXA_FIELDS, TAXONCONCEPT_NAMES, VERNACULAR_NAMES
+from .common_functions import check_atlas_in_atlases, check_taxa_type, get_api_url, print_if_verbose
+from .galah_config import readConfig
 from .version import __version__
 
-# testing
-import json
 
-# debugging
-import sys
-
-def search_taxa(taxa=None,
-                identifiers=None,
-                specific_epithet=None,
-                scientific_name=None,
-                verbose=False):
+def search_taxa(
+    taxa=None,
+    identifiers=None,
+    specific_epithet=None,
+    scientific_name=None,
+    verbose=False,
+):
     """
-    Look up taxonomic names before downloading data from the ALA, using ``atlas_occurrences()``, ``atlas_species()`` or 
-    ``atlas_counts()``. Taxon information returned by ``search_taxa()`` may be passed to the ``taxa`` argument of ``atlas`` 
-    functions. 
-    
-    ``search_taxa()`` allows users to disambiguate homonyms (i.e. where the same name refers to taxa in different 
+    Look up taxonomic names before downloading data from the ALA, using ``atlas_occurrences()``, ``atlas_species()`` or
+    ``atlas_counts()``. Taxon information returned by ``search_taxa()`` may be passed to the ``taxa`` argument of ``atlas``
+    functions.
+
+    ``search_taxa()`` allows users to disambiguate homonyms (i.e. where the same name refers to taxa in different
     clades) prior to downloading data.
 
     Parameters
     ----------
         taxa : string
-            one or more scientific names to search.  
+            one or more scientific names to search.
         identifiers : string / list
-            one or more taxonomic identifiers (such as guid or taxonConceptID) to search.  
+            one or more taxonomic identifiers (such as guid or taxonConceptID) to search.
         specific_epithet : list
             search taxonomic levels by using the argument "specificEpithet".
         scientific_name : dictionary
-            search taxonomic levels by using the argument "scientificName".   
+            search taxonomic levels by using the argument "scientificName".
         verbose : logical
             If ``True``, galah gives more information like URLs of your queries. Defaults to ``False``
 
@@ -71,7 +70,7 @@ def search_taxa(taxa=None,
         galah.search_taxa(specific_epithet=["class=aves","family=pardalotidae","genus=pardalotus","specificEpithet=punctatus"])
 
     .. program-output:: python -c "import galah; import pandas as pd;pd.set_option('display.max_columns', None);print(galah.search_taxa(specific_epithet=[\\\"class=aves\\\",\\\"family=pardalotidae\\\",\\\"genus=pardalotus\\\",\\\"specificEpithet=punctatus\\\"]))"
-    
+
     Search taxonomic levels by using the key word "scientificName"
 
     .. prompt:: python
@@ -85,231 +84,319 @@ def search_taxa(taxa=None,
     # get configuration
     configs = readConfig()
 
+    # set header
     headers = {"User-Agent": "galah-python/{}".format(__version__)}
 
     # get atlas
-    atlas = configs['galahSettings']['atlas']
+    atlas = configs["galahSettings"]["atlas"]
+
+    # make a list of all arguments for checking
+    all_args = [identifiers, specific_epithet, scientific_name, taxa]
+
+    # ensure each argument has their specific cases for querying
+    all_args_specifics = {
+        0: {
+            "identifiers": identifiers,
+            "column1": "called_by",
+            "column1value": "search_identifiers",
+            "column2": "api_name",
+            "column2value": "names_lookup",
+        },  # identifiers
+        1: {
+            "specific_epithet": specific_epithet,
+            "column1": "called_by",
+            "column1value": "search_taxa",
+            "column2": "api_name",
+            "column2value": "names_search_epithet",
+        },  # specific_epithet
+        2: {
+            "scientific_name": scientific_name,
+            "column1": "called_by",
+            "column1value": "search_taxa",
+            "column2": "api_name",
+            "column2value": "names_search_epithet",
+        },  # scientific_name
+    }
 
     # check for identifiers or specific epithets
-    if identifiers is not None or specific_epithet is not None:
+    if any(x is not None for x in [identifiers, specific_epithet, scientific_name]) and atlas not in [
+        "Australia",
+        "ALA",
+    ]:
+        raise ValueError("identifiers and specific_epithet are only available for the Australian atlas.")
 
-        # first, check if the atlas is Australian; if not, functionality not supported (yet?)
-        if atlas in ["Australia","ALA"]:
+    # check to see if all args are None
+    if all(x is None for x in all_args):
+        raise ValueError(
+            "You need to specify one of the following:\n\ntaxa\nidentifiers\nspecific_epithet\nscientific_name\n"
+        )
 
-            # check for specific epithet
-            if specific_epithet is not None:
+    # do some sort of switch statement to
+    index = [i for i, x in enumerate(all_args) if x is not None][0]
 
-                # if keyword is not correct, raise error
-                if not any("specificEpithet" in se for se in specific_epithet):
-                    raise ValueError("you need to include a search term titled \"specificEpithet\"")
-                
-                # if keyword correct, add to URL
-                else:
-                    baseURL,method = get_api_url(column1='called_by',column1value='search_taxa',column2='api_name',column2value='names_search_multiple')
-                    URL = baseURL + "?" + "&".join(specific_epithet)        
-            
-            # check for identifiers from user
-            elif identifiers is not None:
-                baseURL, method = get_api_url(column1='called_by',column1value='search_identifiers',column2='api_name',column2value='names_lookup')
-                URL = baseURL + "?taxonID=" + urllib.parse.quote(identifiers)
-                
-            # else, something wasn't put into the argyments correctly
-            else:
-                raise ValueError("Something isn't right with identifiers or specific_epithet:\nidentifiers: {}\nspecific_epithet: {}\n".format(identifiers,specific_epithet))
-        else:
-            raise ValueError("identifiers and specific_epithet are only available for the Australian atlas.")
-        
-        # check to see if the user wants the querying URL
-        if verbose:
-            print("\nURL being queried:\n\n{}\n".format(URL))
+    # get the URLs
+    check_atlas_in_atlases(atlas=atlas, func="search_taxa")
 
-        # get response from URL
-        response = requests.request(method,URL,headers=headers)
-        
-        # get response in form of json
+    # if taxa is None,
+    if taxa is None:
+
+        # check to see if arguments are correct
+        check_taxa_specifics(dict_of_specifics=all_args_specifics[index])
+
+        # get URL and method
+        URL, method = create_search_taxa_url(dict_of_specifics=all_args_specifics[index])
+
+        # check to see if the user wants the URL for querying
+        print_if_verbose(verbose=verbose, headers=headers, URL=URL, method=method)
+
+        # get the data from API
+        response = requests.request(method=method, url=URL, headers=headers)
         response_json = response.json()
 
-        # initialise data dictionary
-        data={}
+        # check for homonyms and other things
+        check_for_homonyms(atlas=atlas, response_json=response_json, taxa=taxa)
 
-        # check for relevant data in response
-        for entry in response_json:
-            if entry in SEARCH_TAXA_FIELDS[atlas]:
-                if type(response_json[entry]) is str:
-                    data[entry] = response_json[entry]
-                elif type(response_json[entry]) is list:
-                    data[entry] = ", ".join(response_json[entry])
-                else:
-                    raise ValueError("The type of variable for entry {} is {}".format(entry,type(response_json[entry])))
-        
-        # return data frame with all information
-        return pd.DataFrame(data,index=[0])
+        # check for lists
+        response_json = check_for_lists(response_json=response_json, atlas=atlas)
 
-    # check to see if scientific name was an argument
-    if scientific_name is not None:
+        # return dataframe
+        return pd.DataFrame({k: [response_json[k]] for k in SEARCH_TAXA_FIELDS[atlas]})
 
-        # check if they are in the Australian atlas
-        if atlas in ["Australia","ALA"]:
-            
-            # get base URL before adding anything onto it 
-            baseURL, method = get_api_url(column1='called_by',column1value='search_taxa',column2='api_name',column2value='names_search_multiple')
-            # check to see if the correct information and type of variables is available
-            if not any("scientificName" in sn for sn in list(scientific_name.keys())):
-                raise ValueError("you need to include a search term titled \"scientificName\"")
-            elif type(scientific_name) is not dict:
-                raise ValueError("You need to pass a dictionary value to scientific_name")
-            
-            # get length of the arrays in the dictionary
-            lens = map(len,scientific_name.values())
-            len_dict = list(set(list(lens)))
+    else:
 
-            # throw error if dictionary values are not the same length
-            if len(len_dict) != 1:
-                raise ValueError("All of your dictionary values need to be the same length")
-            
-            # initialise empty data frame 
-            df = pd.DataFrame()
+        # check taxa type and turn it into list for easy looping
+        taxa = check_taxa_type(taxa=taxa)
 
-            # loop over all entries in scientific name dictionary and concatenate them to data frame
-            for i in range(len_dict[0]):
-                URL = baseURL + "?" + "&".join(["=".join([key,urllib.parse.quote(scientific_name[key][i])]) for key in scientific_name])
-                response = requests.request(method,URL)
-                response_json = response.json()
-                data={}
-                for entry in response_json:
-                    if entry in SEARCH_TAXA_FIELDS[atlas]:
-                        if type(response_json[entry]) is str:
-                            data[entry] = response_json[entry]
-                        elif type(response_json[entry]) is list:
-                            data[entry] = ", ".join(response_json[entry])
-                        else:
-                            raise ValueError("The type of variable for entry {} is {}".format(entry,type(response_json[entry])))
-                df = pd.concat([df,pd.DataFrame(data,index=[0])])
-            
-            # return data frame
-            return df
-        
-        # else, throw error saying this is only avaiable for Australian atlas (now)
-        else:
-            raise ValueError("scientific_name is only available for the Australian atlas.")
-
-    # first, check if someone actually entered a taxa name
-    if taxa is None:
-        raise Exception("You need to specify one of the following:\n\ntaxa\nidentifiers\nspecific_epithet\nscientific_name\n")
-
-    # third, add fq=<search term> and converting it to URL
-    if type(taxa) is list or type(taxa) is str:
-
-        # convert to list for easy looping
-        if type(taxa) is str:
-            taxa=[taxa]
-
-        # create an empty dataframe
+        # initialise dataframe
         dataFrame = pd.DataFrame()
 
-        if atlas in ["Australia"] and len(taxa) > 10:
+        # loop over all taxa (as doing bulk query requires authentication)
+        for name in taxa:
 
-            baseURL, method = get_api_url(column1='called_by',column1value='atlas_species',column2='api_name',column2value='names_search_bulk_species')
-            payload = {"vernacular":"true", "names": [], "issues": "true"}
-            payload["names"] = taxa #[" OR ".join("lsid:{}".format(id) for id in taxa)]
-            species_list_test = requests.request(method,baseURL,data=json.dumps(payload))
-            #print(species_list_test.text)
-            species_list_json = species_list_test.json()
-            species_list_dataframe = pd.DataFrame(species_list_json)
-            species_list_rename = species_list_dataframe.rename(columns={
-                'identifier': 'taxonConceptID',
-                'classs': 'class',
-                'author': 'scientificNameAuthorship',
-                'acceptedConceptName': 'scientificName',
-                'name': 'species',
-                'commonName': 'vernacularName'
-            })
-            return species_list_rename[['scientificName', 'scientificNameAuthorship', 'taxonConceptID','rank','kingdom', 
-                  'phylum', 'class', 'order', 'family', 'genus', 'species','vernacularName']]
+            # get base URL for querying
+            baseURL, method = get_api_url(
+                column1="called_by",
+                column1value="search_taxa",
+                column2="api_name",
+                column2value="names_search_single",
+            )
 
-        else:
-        
-            for name in taxa:
-                
-                # get base URL for querying
-                baseURL, method = get_api_url(column1='called_by',column1value='search_taxa',column2='api_name',column2value='names_search_single')
+            # create URL, get result and concatenate result onto dataFrame
+            # make sure all the atlases are checked
+            URL = baseURL.replace("{name}", "%20".join(name.split(" ")))
 
-                # create URL, get result and concatenate result onto dataFrame
-                # make sure all the atlases are checked
-                if atlas in atlases:
-                    URL = baseURL.replace("{name}","%20".join(name.split(" ")))
-                else:
-                    raise ValueError("Atlas {} is not taken into account".format(atlas))
-                
-                if verbose:
-                    print("\nURL being queried:\n\n{}\n".format(URL))
-            
-                # get the response
-                response = requests.request(method=method,url=URL,headers=headers)
-                response_json = response.json()
+            # print URLs if things are verbose
+            print_if_verbose(verbose=verbose, headers=headers, URL=URL, method=method)
 
-                if atlas in ["Australia","ALA"] and not response_json["success"]:
-                    if "homonym" in response_json["issues"]:
-                        print("Warning: Search returned multiple taxa due to a homonym issue.")
-                        print("Please use the `scientific_name` argument to clarify taxa.")
-                        return pd.DataFrame({"search_term": taxa, "issues": response_json["issues"]})
+            # get the response
+            response = requests.request(method=method, url=URL, headers=headers)
+            response_json = response.json()
 
-                # check for Austrian, Brazilian, French or Guatemalan atlas
-                elif atlas in ["Austria","Brazil","France", "Guatemala","United Kingdom","UK"]: # try UK here
-                    raw_data = None
-                    if SEARCH_TAXA_ENTRIES[atlas][0] in response_json:
-                        for item in response_json[SEARCH_TAXA_ENTRIES[atlas][0]][SEARCH_TAXA_ENTRIES[atlas][1]]:
-                            if name.lower() == item['scientificName'].lower():
-                                raw_data = item
-                                break
-                    if raw_data is None:
-                        continue
+            # check to see if the taxa was successfully returned
+            if atlas in ["Australia", "Spain"] and not response_json["success"]:
+                continue
 
-                # check for Australian, Global, or Spanish atlas
-                elif atlas in ["Australia","Global","GBIF","Portugal","Spain","Sweden"]:
-                    raw_data = response_json
-                    if atlas in ["Global","GBIF"]:
-                        response_vernacular = requests.get("https://api.gbif.org/v1/species/{}/vernacularNames".format(raw_data[TAXONCONCEPT_NAMES[atlas]["guid"]]))
-                        array_vernacular = response_vernacular.json()['results']
-                
-                # else, throw an error saying this atlas is not taken into account
-                else:
-                    raise ValueError("The atlas {} is not taken into account".format(atlas))
+            # set default raw_data value
+            raw_data_dict = {
+                "Australia": response_json,
+                "ALA": response_json,
+                "Austria": None,
+                "Brazil": None,
+                "France": None,
+                "Guatemala": None,
+                "Global": response_json,
+                "GBIF": response_json,
+                "Portugal": response_json,
+                "Spain": response_json,
+                "Sweden": response_json,
+                "United Kingdom": None,
+                "UK": None,
+            }
 
-                # check to see if the taxa was successfully returned
-                if atlas in ["Australia","Spain"] and not response_json['success']:
-                    continue
+            # get the raw data
+            raw_data = check_raw_data(
+                raw_data=raw_data_dict[atlas], response_json=response_json, atlas=atlas, name=name
+            )
+            print(raw_data)
 
-                # process information and put it into a data frame
-                else:
+            # if raw_data is None, go to next taxa (potentially put error here)
+            if raw_data is None:
+                continue
 
-                    # initialise dictionary
-                    data={}
+            # loop over data
+            data = {k: raw_data[k] for k in SEARCH_TAXA_FIELDS[atlas]}
 
-                    # loop over data
-                    for item in raw_data: 
-                        if item in SEARCH_TAXA_FIELDS[atlas]:
-                            data[item] = raw_data[item] 
+            # check if the atlas is GBIF and get vernacular names accordingly
+            if atlas in ["Global", "GBIF", "Portugal", "Spain"]:
+                data[VERNACULAR_NAMES[atlas][1]] = get_vernacularName(raw_data=raw_data, atlas=atlas)
 
-                    # check if the atlas is GBIF and get vernacular names accordingly
-                    if atlas in ["Global","GBIF"]:
-                        vernacular_name=""
-                        for item in array_vernacular:
-                            for key in item.keys():
-                                if key in SEARCH_TAXA_FIELDS[atlas]:
-                                    vernacular_name += item[key] + ", "
-                        vernacular_name = vernacular_name[:-2]
-                        data[VERNACULAR_NAMES[atlas][1]] = vernacular_name
+            # add every taxon to dataframe
+            tempdf = pd.DataFrame(data, index=[1])
+            dataFrame = pd.concat([dataFrame, tempdf], ignore_index=True)
 
-                # add every taxon to dataframe
-                tempdf = pd.DataFrame(data,index=[1])
-                dataFrame = pd.concat([dataFrame,tempdf],ignore_index=True)
+        # return dataFrame with all data
+        return dataFrame
 
-            # return dataFrame with all data
-            return dataFrame
 
-    # else, let the user know that the taxa argument can only be a string or a list
-    else:
-        raise TypeError("The taxa argument can only be a string or a list."
-                        "\nExample: search_taxa(\"Vulpes vulpes\")"
-                        "\n         search_taxa([\"Osphranter rufus\",\"Vulpes vulpes\",\"Macropus giganteus\",\"Phascolarctos cinereus\"])")
+def create_search_taxa_url(dict_of_specifics=None):
+    """
+    Create a search_taxa URL for either identifiers, specific_epithet or scientific_name.
+
+    Parameters
+    ----------
+        dict_of_specifics : dict
+            Dictionary containing all information needed for building URLs
+
+    Returns
+    -------
+        URL: str
+            string containing URL for querying
+        method: str
+            method for querying the API URL
+    """
+
+    # if keyword correct, add to URL
+    baseURL, method = get_api_url(
+        column1=dict_of_specifics["column1"],
+        column1value=dict_of_specifics["column1value"],
+        column2=dict_of_specifics["column2"],
+        column2value=dict_of_specifics["column2value"],
+    )
+
+    # create URL based on different case
+    if "identifiers" in dict_of_specifics.keys():
+        URL = baseURL + "?taxonID=" + urllib.parse.quote(dict_of_specifics["identifiers"])
+    if "specific_epithet" in dict_of_specifics.keys():
+        URL = baseURL + "?" + "&".join(dict_of_specifics["specific_epithet"])
+    if "scientific_name" in dict_of_specifics.keys():
+        len_key = list(dict_of_specifics["scientific_name"].keys())[0]
+        len_dict = len(dict_of_specifics["scientific_name"][len_key])
+        end = ""
+        for i in range(len_dict):
+            end += (
+                "&".join(
+                    "=".join([key, urllib.parse.quote(dict_of_specifics["scientific_name"][key][i])])
+                    for key in dict_of_specifics["scientific_name"].keys()
+                )
+                + "&"
+            )
+        URL = baseURL + "?" + end
+
+    # return URL and method
+    return URL, method
+
+
+def check_taxa_specifics(dict_of_specifics=None):
+    """
+    Checking whether or not the correct terms are used in the dict_of_specifics.
+
+    Parameters
+    ----------
+        dict_of_specifics : dict
+            Dictionary containing all information needed for building URLs
+
+    Returns
+    -------
+       None
+    """
+
+    if "specific_epithet" in dict_of_specifics.keys():
+
+        # if keyword is not correct, raise error
+        if not any("specificEpithet" in se for se in dict_of_specifics["specific_epithet"]):
+            raise ValueError('you need to include a search term titled "specificEpithet"')
+
+    if "scientificName" in dict_of_specifics.keys():
+
+        # check to see if the correct information and type of variables is available
+        if not any("scientificName" in sn for sn in list(dict_of_specifics["scientific_name"].keys())):
+            raise ValueError('you need to include a search term titled "scientificName"')
+        elif type(dict_of_specifics["scientific_name"]) is not dict:
+            raise ValueError("You need to pass a dictionary value to scientific_name")
+
+        # get length of the arrays in the dictionary
+        lens = map(len, dict_of_specifics["scientific_name"].values())
+        len_dict = list(set(list(lens)))
+
+        # throw error if dictionary values are not the same length
+        if len(len_dict) != 1:
+            raise ValueError("All of your dictionary values need to be the same length")
+
+
+def get_vernacularName(raw_data=None, atlas=None):
+    """
+    Get all of the vernacular names from GBIF
+
+    Parameters
+    ----------
+        raw_data : dict
+            Raw data from the GBIF API URL
+
+    Returns
+    -------
+        vernacular_name: dict
+            Dictionary containing all the vernacular names
+    """
+    response_vernacular = requests.get(
+        "https://api.gbif.org/v1/species/{}/vernacularNames".format(raw_data[TAXONCONCEPT_NAMES[atlas]["guid"]])
+    )
+    array_vernacular = response_vernacular.json()["results"]
+    vernacular_name = ""
+    for item in array_vernacular:
+        for key in item.keys():
+            if key in VERNACULAR_NAMES[atlas][1]:
+                vernacular_name += item[key] + ", "
+    vernacular_name = vernacular_name[:-2]
+    return vernacular_name
+
+
+def check_for_homonyms(atlas=None, response_json=None, taxa=None):
+    """
+    Check for homonyms in the ALA
+
+    Parameters
+    ----------
+        atlas : dict
+            Name of atlas you are querying
+        response_json : dict
+            Dictionary containing data from the API
+        taxa : str,list
+
+
+    Returns
+    -------
+        URL: str
+            string containing URL for querying
+        method: str
+            method for querying the API URL
+    """
+    # check for homonyms
+    if atlas in ["Australia", "ALA"] and not response_json["success"]:
+        if "homonym" in response_json["issues"]:
+            print("Warning: Search returned multiple taxa due to a homonym issue.")
+            print("Please use the `scientific_name` argument to clarify taxa.")
+            return pd.DataFrame({"search_term": taxa, "issues": response_json["issues"]})
+
+
+def check_for_lists(response_json=None, atlas=None):
+
+    # check for any lists in the response_json; if so, make these lists strings
+    if any(isinstance(response_json[x], list) for x in SEARCH_TAXA_FIELDS[atlas]):
+        field = [x for x in SEARCH_TAXA_FIELDS[atlas] if isinstance(response_json[x], list)]
+        for f in field:
+            new_value = ",".join(response_json[f])
+            response_json[f] = new_value
+
+    # return the new response_json
+    return response_json
+
+
+def check_raw_data(raw_data=None, response_json=None, atlas=None, name=None):
+
+    # check to see if raw_data is None and needs to be filtered through
+    if raw_data is None:
+        if SEARCH_TAXA_ENTRIES[atlas][0] in response_json:
+            for item in response_json[SEARCH_TAXA_ENTRIES[atlas][0]][SEARCH_TAXA_ENTRIES[atlas][1]]:
+                if name.lower() == item["scientificName"].lower():
+                    return item
+    return raw_data

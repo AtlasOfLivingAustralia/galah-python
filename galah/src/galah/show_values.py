@@ -1,7 +1,7 @@
 import pandas as pd
 import requests
 
-from .common_functions import kvp_to_columns
+from .common_functions import kvp_to_columns, print_if_verbose
 from .get_api_url import get_api_url, readConfig
 
 
@@ -31,16 +31,16 @@ def show_values(field=None, lists=False, all_fields=False, verbose=False):
     .. prompt:: python
 
         import galah
-        galah.show_values(field="basisOfRecord")
+        galah.show_values(field='basisOfRecord')
 
-    .. program-output:: python -c "import galah; print(galah.show_values(field=\\\"basisOfRecord\\\"))"
+    .. program-output:: python -c "import galah; print(galah.show_values(field=\\\'basisOfRecord\\\'))"
     """
 
     # check to see if field is input correctly
     if field is None:
-        raise ValueError('Please specify the field you want to see query-able values for, i.e. field="basisOfRecord"')
+        raise ValueError("Please specify the field you want to see query-able values for, i.e. field='basisOfRecord'")
     elif type(field) is not str:
-        raise TypeError('show_values() only takes a single string as the field argument, i.e. field="basisOfRecord"')
+        raise TypeError("show_values() only takes a single string as the field argument, i.e. field='basisOfRecord'")
 
     # get configurations
     configs = readConfig()
@@ -48,13 +48,8 @@ def show_values(field=None, lists=False, all_fields=False, verbose=False):
     # get atlas
     atlas = configs["galahSettings"]["atlas"]
 
-    headers = {}
-
     # get headers
-    # if atlas in ["Australia","ALA"]:
-    #    headers = {"x-api-key": configs["galahSettings"]["ALA_API_key"]}
-    # else:
-    #    headers = {}
+    headers = {}
 
     # get base URL for querying
     if atlas in ["Global", "GBIF"]:
@@ -71,8 +66,7 @@ def show_values(field=None, lists=False, all_fields=False, verbose=False):
             URL = baseURL + "?facets=" + field + "&flimit=-1"
 
     # check to see if the user wants the URL for querying
-    if verbose:
-        print("URL for querying:\n\n{}\n".format(URL))
+    print_if_verbose(verbose=verbose, headers=headers, URL=URL, method=method)
 
     # query the API
     response = requests.request(method, URL, headers=headers)
@@ -82,8 +76,25 @@ def show_values(field=None, lists=False, all_fields=False, verbose=False):
     return process_value_results(atlas=atlas, response_json=response_json, lists=lists, all_fields=all_fields)
 
 
-def process_value_results(atlas=None, response_json=None, lists=None, all_fields=None):
+def process_value_results(atlas=None, response_json=None, lists=False, all_fields=False):
+    """
+    This function is for getting all assertions available in the chosen atlas.
 
+    Parameters
+    ----------
+        atlas : str
+            Name of the atlas you are getting information from.
+        response_json : dict
+            Response from the API in a JSON format
+        lists : logical
+            This lets ``show_values()`` know if you want to look up fields, or if you want to look up species in lists.  Default is False.
+        all_fields : logical
+            For threatened and sensitive lists, this argument will give you the option of downloading species statuses.  Default is False.
+
+    Returns
+    -------
+        An object of class ``pandas.DataFrame`` containing all data of interest.
+    """
     # create empty dataFrame to concatenate results to
     dataFrame = pd.DataFrame()
 

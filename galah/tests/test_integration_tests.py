@@ -1,10 +1,14 @@
-'''
+"""
 run pytest integration_tests_galah.py
-'''
-import pytest,os
+"""
+
+import os
+
+import pytest
+
 import galah
 
-'''
+"""
 # Austria 
 
 >>> galah.galah_config(atlas="Austria")
@@ -42,4 +46,4 @@ taxa = "Alces alces"
 
 # UK
 taxa - "Luscinia megarhynchos"
-'''
+"""

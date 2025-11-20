@@ -1,10 +1,11 @@
 import os
-import requests
 
 import pandas as pd
+import requests
 
 from .common_dictionaries import atlases as ATLASES
-from .get_api_url import get_api_url, readConfig
+from .common_functions import get_api_url, print_if_verbose
+from .galah_config import readConfig
 from .version import __version__
 
 
@@ -98,13 +99,16 @@ def show_all(
     }
 
     # check for
-    if not all(type(x is bool for x in options)):
+    if not all(type(options[x][0]) is bool for x in options):
         raise ValueError("Only True and False values are accepted in the show_all() function.")
 
     # Now, go through all options
     for o in options.keys():
         if options[o][0]:
-            return_array.append(options[o][1](atlas=atlas, assertions=assertions, headers=headers, verbose=verbose))
+            if o in ["atlases", "apis", "ranks"]:
+                return_array.append(options[o][1]())
+            else:
+                return_array.append(options[o][1](atlas=atlas, headers=headers, verbose=verbose))
 
     # if there is only a singular data frame in the return_array, return only this; otherwise, return list
     if len(return_array) == 1:
@@ -123,7 +127,34 @@ def get_response_show_all(
     offset=None,
     verbose=False,
 ):
-    """Function for getting responses for all of the show_all functions"""
+    """
+    This function is for getting the responses to all the show_all functions.
+
+    Parameters
+    ----------
+        column1 : str
+            Name of first column in the ``node_config.csv`` file
+        column1value : str
+            Value in the first column of the ``node_config.csv`` file
+        column2 : str
+            Name of second column in the ``node_config.csv`` file
+        column2value : str
+            Value in the second column of the ``node_config.csv`` file
+        atlas : str
+            Name of the atlas you are getting information from.
+        headers : dict
+            Dictionary of information to pass to the API via the headers option
+        max_entries : int
+            Maximum number of entries to get.  Default is -1 to get everything.
+        offset : str
+            Offset to get information that you want from the API
+        verbose : logical
+            If True, print all APIs that are hit to screen.  Default is False.
+
+    Returns
+    -------
+        An object of class ``requests.response`` containing all data of interest.
+    """
     # get headers
     headers = {"User-Agent": "galah-python {}".format(__version__)}
 
@@ -134,13 +165,18 @@ def get_response_show_all(
         column2=column2,
         column2value=column2value,
     )
-    if verbose:
-        print("URL for querying:\n\n{}".format(URL))
-        print("Method: {}".format(method))
-        print()
+
+    # if user wants more verbose message, print it
+    print_if_verbose(verbose=verbose, headers=headers, URL=URL, method=method)
+
+    # add max entries and offset
     if max_entries is not None and offset is not None:
         URL += "?max={}&offset={}".format(max_entries, offset)
+
+    # get the response from the URL
     response = requests.request(method, URL, headers=headers)
+
+    # check for status codes for these APIs
     if response.status_code == 403:
         raise ValueError("Provide a/an {} API key to get this information".format(atlas))
     if response.status_code == 429:
@@ -151,6 +187,22 @@ def get_response_show_all(
 
 
 def show_all_assertions(atlas=None, headers=None, verbose=None):
+    """
+    This function is for getting all assertions available in the chosen atlas.
+
+    Parameters
+    ----------
+        atlas : str
+            Name of the atlas you are getting information from.
+        headers : dict
+            Dictionary of information to pass to the API via the headers option
+        verbose : logical
+            If True, print all APIs that are hit to screen.  Default is False.
+
+    Returns
+    -------
+        An object of class ``pandas.DataFrame`` containing all data of interest.
+    """
 
     # set returned to False for GBIF
     returned = False
@@ -184,7 +236,18 @@ def show_all_assertions(atlas=None, headers=None, verbose=None):
     return df[["name", "description", "category", "type"]]
 
 
-def show_all_atlases(atlas=None, headers=None, verbose=None):
+def show_all_atlases():
+    """
+    This function is for getting all assertions available in the chosen atlas.
+
+    Parameters
+    ----------
+        None
+
+    Returns
+    -------
+        An object of class ``pandas.DataFrame`` containing all data of interest.
+    """
     # data of all the atlases galah currently supports
     data = {
         "atlas": ["Australia", "Austria", "Brazil", "France", "Global", "Spain"],
@@ -211,8 +274,18 @@ def show_all_atlases(atlas=None, headers=None, verbose=None):
     return pd.DataFrame.from_dict(data)
 
 
-def show_all_apis(atlas=None, headers=None, verbose=None):
-    # return all the possible apis you could query
+def show_all_apis():
+    """
+    This function is for getting all apis available.
+
+    Parameters
+    ----------
+        None
+
+    Returns
+    -------
+        An object of class ``pandas.DataFrame`` containing all data of interest.
+    """
 
     # append the full atlaslist to return_array
     atlasfile = os.path.join(os.path.dirname(os.path.abspath(__file__)), "node_config.csv")
@@ -220,9 +293,25 @@ def show_all_apis(atlas=None, headers=None, verbose=None):
 
 
 def show_all_collections(atlas=None, headers=None, verbose=None):
+    """
+    This function is for getting all collections available in the chosen atlas.
 
-    # first check for ALA API key
-    if atlas in ["Global", "GBIF"]:
+    Parameters
+    ----------
+        atlas : str
+            Name of the atlas you are getting information from.
+        headers : dict
+            Dictionary of information to pass to the API via the headers option
+        verbose : logical
+            If True, print all APIs that are hit to screen.  Default is False.
+
+    Returns
+    -------
+        An object of class ``pandas.DataFrame`` containing all data of interest.
+    """
+
+    # first, check for GBIF; then, the rest of the Atlases
+    if atlas in ["Global", "GBIF", "United Kingdom", "UK"]:
         raise ValueError("{} atlas does not have a list of collections".format(atlas))
     elif atlas in ATLASES:
         response = get_response_show_all(
@@ -233,9 +322,9 @@ def show_all_collections(atlas=None, headers=None, verbose=None):
             verbose=verbose,
         )
     else:
-        raise ValueError("Atlas {} not taken into account in galah for collections.".format(atlas))
+        raise ValueError("Atlas {} not taken into account in galah-python for collections.".format(atlas))
 
-    # append data frame to return_array
+    # append data frame to return_array (while checking for France)
     if atlas in ["France"]:
         return pd.DataFrame.from_dict(response.json()["_embedded"])
     else:
@@ -243,6 +332,22 @@ def show_all_collections(atlas=None, headers=None, verbose=None):
 
 
 def show_all_datasets(atlas=None, headers=None, verbose=None):
+    """
+    This function is for getting all datasets available in the chosen atlas.
+
+    Parameters
+    ----------
+        atlas : str
+            Name of the atlas you are getting information from.
+        headers : dict
+            Dictionary of information to pass to the API via the headers option
+        verbose : logical
+            If True, print all APIs that are hit to screen.  Default is False.
+
+    Returns
+    -------
+        An object of class ``pandas.DataFrame`` containing all data of interest.
+    """
 
     # check for datasets
     if atlas in ["Global", "GBIF"]:
@@ -253,7 +358,7 @@ def show_all_datasets(atlas=None, headers=None, verbose=None):
             headers=headers,
             verbose=verbose,
         )
-        datasets_list = pd.DataFrame.from_dict(response.json()["results"])
+        return pd.DataFrame.from_dict(response.json()["results"])
 
     elif atlas in ATLASES:
         response = get_response_show_all(
@@ -264,19 +369,31 @@ def show_all_datasets(atlas=None, headers=None, verbose=None):
             verbose=verbose,
         )
         if atlas in ["France"]:
-            datasets_list = pd.DataFrame.from_dict(response.json()["_embedded"]["datasets"])
+            return pd.DataFrame.from_dict(response.json()["_embedded"]["datasets"])
         else:
-            datasets_list = pd.DataFrame.from_dict(response.json())
+            return pd.DataFrame.from_dict(response.json())
 
     else:
-        raise ValueError("Atlas {} not taken into account in galah for datasets.".format(atlas))
-
-    # append data frame to return_array
-    return datasets_list
+        raise ValueError("Atlas {} not taken into account in galah-python for datasets.".format(atlas))
 
 
 def show_all_fields(atlas=None, headers=None, verbose=None):
+    """
+    This function is for getting all assertions available in the chosen atlas.
 
+    Parameters
+    ----------
+        atlas : str
+            Name of the atlas you are getting information from.
+        headers : dict
+            Dictionary of information to pass to the API via the headers option
+        verbose : logical
+            If True, print all APIs that are hit to screen.  Default is False.
+
+    Returns
+    -------
+        An object of class ``pandas.DataFrame`` containing all data of interest.
+    """
     # get all possible fields
     if atlas not in ["Global", "GBIF"]:
 
@@ -300,7 +417,7 @@ def show_all_fields(atlas=None, headers=None, verbose=None):
         # get fields values in a table
         fields_values = pd.DataFrame.from_dict(response.json())
 
-        # remove anything with "Contextual" or "Environmental" from the options for Australian atlas
+        # remove anything with 'Contextual' or 'Environmental' from the options for Australian atlas
         if atlas in ["Australia", "Brazil", "Spain"]:
 
             fields_values = fields_values[~fields_values["classs"].astype(str).str.contains("Contextual|Environmental")]
@@ -389,6 +506,22 @@ def show_all_fields(atlas=None, headers=None, verbose=None):
 
 
 def get_spatial_layers_from_fields(atlas=None, headers=None, verbose=None):
+    """
+    This function is for getting the spatial layers for the fields argument.
+
+    Parameters
+    ----------
+        atlas : str
+            Name of the atlas you are getting information from.
+        headers : dict
+            Dictionary of information to pass to the API via the headers option
+        verbose : logical
+            If True, print all APIs that are hit to screen.  Default is False.
+
+    Returns
+    -------
+        An object of class ``pandas.DataFrame`` containing all data of interest.
+    """
 
     # initialise empty dataframe
     spatial_layers = pd.DataFrame()
@@ -439,10 +572,27 @@ def get_spatial_layers_from_fields(atlas=None, headers=None, verbose=None):
         else:
             raise ValueError("Atlas {} not taken into account for fields".format(atlas))
 
+    # return the spatial layers dataframe
     return spatial_layers
 
 
 def show_all_licences(atlas=None, headers=None, verbose=None):
+    """
+    This function is for getting all licences available in the chosen atlas.
+
+    Parameters
+    ----------
+        atlas : str
+            Name of the atlas you are getting information from.
+        headers : dict
+            Dictionary of information to pass to the API via the headers option
+        verbose : logical
+            If True, print all APIs that are hit to screen.  Default is False.
+
+    Returns
+    -------
+        An object of class ``pandas.DataFrame`` containing all data of interest.
+    """
 
     # check for atlases that don't have licences
     if atlas in ["France", "Global", "GBIF"]:
@@ -452,6 +602,7 @@ def show_all_licences(atlas=None, headers=None, verbose=None):
     elif atlas in ["Austria", "Brazil"]:
         raise ValueError("{} has an API endpoint for licences, but it is empty.".format(atlas))
 
+    # check if atlas is taken into account for licences
     elif atlas not in ATLASES:
         raise ValueError("Atlas {} not taken into account for licences.".format(atlas))
 
@@ -478,6 +629,22 @@ def show_all_licences(atlas=None, headers=None, verbose=None):
 
 
 def show_all_lists(atlas=None, headers=None, verbose=None):
+    """
+    This function is for getting all lists available in the chosen atlas.
+
+    Parameters
+    ----------
+        atlas : str
+            Name of the atlas you are getting information from.
+        headers : dict
+            Dictionary of information to pass to the API via the headers option
+        verbose : logical
+            If True, print all APIs that are hit to screen.  Default is False.
+
+    Returns
+    -------
+        An object of class ``pandas.DataFrame`` containing all data of interest.
+    """
 
     # first, check for APIs that do not have lists
     if atlas in ["France", "GBIF", "Global"]:
@@ -497,9 +664,10 @@ def show_all_lists(atlas=None, headers=None, verbose=None):
     else:
         raise ValueError("Atlas {} not taken into account for lists.".format(atlas))
 
-    # get all the lists from
+    # get all the lists from the API call response
     df = pd.DataFrame.from_dict(response.json()["lists"])
 
+    # rename dataResourceUid
     if "dataResourceUid" in df:
         df = df.rename(columns={"dataResourceUid": "species_list_uid"})
 
@@ -508,8 +676,24 @@ def show_all_lists(atlas=None, headers=None, verbose=None):
 
 
 def show_all_profiles(atlas=None, headers=None, verbose=None):
+    """
+    This function is for getting all profiles available in the chosen atlas.
 
-    # check for only aPIs that have data quality profiles
+    Parameters
+    ----------
+        atlas : str
+            Name of the atlas you are getting information from.
+        headers : dict
+            Dictionary of information to pass to the API via the headers option
+        verbose : logical
+            If True, print all APIs that are hit to screen.  Default is False.
+
+    Returns
+    -------
+        An object of class ``pandas.DataFrame`` containing all data of interest.
+    """
+
+    # check for only APIs that have data quality profiles
     if atlas in ["Australia", "Spain"]:
 
         # get data
@@ -539,7 +723,22 @@ def show_all_profiles(atlas=None, headers=None, verbose=None):
 
 
 def show_all_providers(atlas=None, headers=None, verbose=None):
+    """
+    This function is for getting all data providers available in the chosen atlas.
 
+    Parameters
+    ----------
+        atlas : str
+            Name of the atlas you are getting information from.
+        headers : dict
+            Dictionary of information to pass to the API via the headers option
+        verbose : logical
+            If True, print all APIs that are hit to screen.  Default is False.
+
+    Returns
+    -------
+        An object of class ``pandas.DataFrame`` containing all data of interest.
+    """
     # raise an exception specific to France, as their providers are empty
     if atlas in ["France"]:
         raise ValueError("{} has an API endpoint for providers, but it is empty.".format(atlas))
@@ -570,8 +769,18 @@ def show_all_providers(atlas=None, headers=None, verbose=None):
     return providers_list
 
 
-def show_all_ranks(atlas=None, headers=None, verbose=None):
+def show_all_ranks():
+    """
+    This function is for getting all ranks available in the chosen atlas.
 
+    Parameters
+    ----------
+        None
+
+    Returns
+    -------
+        An object of class ``pandas.DataFrame`` containing all data of interest.
+    """
     # get configuration
     configs = readConfig()
 
@@ -747,7 +956,22 @@ def show_all_ranks(atlas=None, headers=None, verbose=None):
 
 
 def show_all_reasons(atlas=None, headers=None, verbose=None):
+    """
+    This function is for getting all reasons available in the chosen atlas.
 
+    Parameters
+    ----------
+        atlas : str
+            Name of the atlas you are getting information from.
+        headers : dict
+            Dictionary of information to pass to the API via the headers option
+        verbose : logical
+            If True, print all APIs that are hit to screen.  Default is False.
+
+    Returns
+    -------
+        An object of class ``pandas.DataFrame`` containing all data of interest.
+    """
     # check for atlases that don't have a reasons API
     if atlas in [
         "Brazil",

@@ -1,13 +1,19 @@
-from .get_api_url import readConfig
-from .show_all import show_all_assertions, show_all_apis, show_all_atlases, show_all_collections
-from .show_all import show_all_datasets, show_all_fields, show_all_licences, show_all_lists, show_all_profiles
-from .show_all import show_all_providers, show_all_ranks, show_all_reasons
+from .galah_config import readConfig
+from .show_all import (
+    show_all_apis,
+    show_all_assertions,
+    show_all_atlases,
+    show_all_collections,
+    show_all_datasets,
+    show_all_fields,
+    show_all_licences,
+    show_all_lists,
+    show_all_profiles,
+    show_all_providers,
+    show_all_ranks,
+    show_all_reasons,
+)
 from .version import __version__
-
-"""
-function is meant to search all values for possible query fields - they are defined as None so you can narrow down the
-large list of all the potential variables to add to your atlas query.  Choosing which column you query is also an option
-"""
 
 
 def search_all(
@@ -71,9 +77,9 @@ def search_all(
     .. prompt:: python
 
         import galah
-        galah.search_all(apis="Australia")
+        galah.search_all(apis='Australia')
 
-    .. program-output:: python -c "import galah; import pandas as pd;pd.set_option('display.max_columns', None);print(galah.search_all(apis=\\\"Australia\\\"))"
+    .. program-output:: python -c "import galah; import pandas as pd;pd.set_option('display.max_columns', None);print(galah.search_all(apis=\\\'Australia\\\'))"
     """
 
     # set up the option for getting back multiple values
@@ -107,7 +113,10 @@ def search_all(
         "reason": [reasons, show_all_reasons, check_column_name_reasons, "description"],
     }
 
+    # loop over all options
     for o in options:
+
+        # check to see if first argument is not None
         if options[o][0] is not None:
             if not isinstance(options[o][0], str):
                 raise ValueError(

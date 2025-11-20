@@ -1,0 +1,9 @@
+galah/tests/test/
+galah/tests/__pycache__/
+galah/src/galah/__pycache__/
+.DS_Store
+.coverage
+build/
+galah/dist/
+.idea
+docs/.DS_Store

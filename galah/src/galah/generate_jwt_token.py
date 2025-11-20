@@ -1,30 +1,38 @@
 import json
-import requests
-#import jwt
-import time
 import os
-#import python_jwt as genjwt
-#import jwcrypto.jwk as jwk
+
+# import jwt
+import time
+
+import requests
+
+# import python_jwt as genjwt
+# import jwcrypto.jwk as jwk
 
 # global to store current token info
 token_obj = {}
 
-def generate_token_config(client_id = None,
-                          client_secret = None):
+
+def generate_token_config(client_id=None, client_secret=None):
 
     # set filepath and token_url
-    filepath = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'ALA_keys.json')
+    filepath = os.path.join(os.path.dirname(os.path.abspath(__file__)), "ALA_keys.json")
     token_url = "https://auth-secure.auth.ap-southeast-2.amazoncognito.com/oauth2/token"
 
     # generate token configuration
-    token_config = {"token_url": token_url, "client_id": client_id, "client_secret": client_secret}
+    token_config = {
+        "token_url": token_url,
+        "client_id": client_id,
+        "client_secret": client_secret,
+    }
 
     # read token JSON file
     read_token_file(filepath)
 
     return token_config
 
-'''
+
+"""
 def parse_input():
 
     parser = argparse.ArgumentParser(description="This script uses (and re-generated if needed) a JSON Web Token (JWT) for requests to protected ALA services. A a JSON file containing the initially generated token, regeneration and expiry details is expected as an argument", add_help=True, allow_abbrev=True,)
@@ -38,7 +46,8 @@ def parse_input():
     args = parser.parse_args()
 
     return args.file, args.tokenUrl, args.clientId, args.clientSecret
-'''
+"""
+
 
 # read the JSON file and save to global token_obj
 def read_token_file(filepath):
@@ -50,22 +59,29 @@ def read_token_file(filepath):
         token_obj["refresh_token"] = file_obj["refresh_token"]
         token_obj["scope"] = file_obj["scope"]
 
+
 def get_jwt_token(token_config):
     print(token_config)
     print(token_obj)
     # if expired regenerate, else just return the access_token
     decoded = jwt.decode(token_obj["access_token"], options={"verify_signature": False})
     # re-generate token when expired.
-    if decoded["exp"] < int(time.time()) :
+    if decoded["exp"] < int(time.time()):
         # regenerate token and update token_obj
         print("Current token has expired. Refreshing token...")
         regenerate_token(token_config)
     return token_obj["access_token"]
 
+
 # regenerate token, return new token and update token_obj
 def regenerate_token(token_config):
     # for cognito auth system use the payload below
-    payload = {'refresh_token': token_obj["refresh_token"], 'grant_type': 'refresh_token', 'scope':token_obj["scope"], 'client_id':token_config["client_id"]}
+    payload = {
+        "refresh_token": token_obj["refresh_token"],
+        "grant_type": "refresh_token",
+        "scope": token_obj["scope"],
+        "client_id": token_config["client_id"],
+    }
 
     # for CAS auth system use the payload below
     # payload = {'refresh_token': token_obj["refresh_token"], 'grant_type': 'refresh_token', 'scope':token_obj["scope"]}
@@ -84,7 +100,8 @@ def regenerate_token(token_config):
     else:
         print("Unable to refresh access token. ", r.status_code, r.content)
 
-'''
+
+"""
 def api_example_request(token_config):
     url = "https://api.test.ala.org.au/occurrences/config"
     # get the JWT
@@ -95,4 +112,4 @@ def api_example_request(token_config):
         print(r.status_code, r.text)
     else:
         print("Error encountered during request ", r.status_code)
-'''
+"""

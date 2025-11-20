@@ -13,7 +13,8 @@ Australia,lists,lists_lookup,https://api.ala.org.au/specieslist/ws/speciesListIt
 Australia,logger,logger_reasons,https://api.ala.org.au/logger/service/logger/reasons,show_all-reasons,TRUE,GET
 Australia,name-matching,names_lookup,https://api.ala.org.au/namematching/api/getByTaxonID,search_identifiers,TRUE,GET
 Australia,species,names_search_bulk_species,https://bie.ala.org.au/ws/species/lookup/bulk,atlas_species,TRUE,POST
-Australia,name-matching,names_search_multiple,https://api.ala.org.au/namematching/api/searchByClassification,search_taxa,TRUE,GET
+Australia,name-matching,names_search_multiple,https://api.ala.org.au/namematching/api/searchAllByClassification,search_taxa,TRUE,POST
+Australia,name-matching,names_search_epithet,https://api.ala.org.au/namematching/api/searchByClassification,search_taxa,TRUE,GET
 Australia,name-matching,names_search_single,https://api.ala.org.au/namematching/api/search?q={name},search_taxa,TRUE,GET
 Australia,records,records_assertions,https://api.ala.org.au/occurrences/assertions/codes,show_all-assertions,TRUE,GET
 Australia,records,records_counts,https://api.ala.org.au/occurrences/occurrences/search,atlas_counts,TRUE,GET

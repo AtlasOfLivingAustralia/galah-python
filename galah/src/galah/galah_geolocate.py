@@ -1,25 +1,26 @@
-import urllib
+import pandas as pd
 import shapely
 import shapely.wkt
-from shapely.ops import unary_union
-import pandas as pd
-from shapely import Polygon,MultiPolygon
-from .get_api_url import readConfig
-import geopandas as gpd
+from shapely import MultiPolygon, Polygon
 
-def galah_geolocate(polygon=None,
-                    bbox=None,
-                    simplify_polygon=True):
+from .galah_config import readConfig
+
+
+def galah_geolocate(polygon=None, bbox=None, simplify_polygon=False, tolerance=0.05):
     """
-    Restrict results to those from a specified area. Areas can be specified as 
+    Restrict results to those from a specified area. Areas can be specified as
     either polygons or bounding boxes, depending on type.
-    
+
     Parameters
     ----------
         polygon : string, polygon object
             one polygon used to search (can be file name or polygon object).
         bbox : list, string
             list containing [xmin, ymin, xmax, ymax] or a polygon object.
+        simplify_polygon : logical
+            True/False flag to tell {galah-python} whether to simplify your polygon
+        tolerance : float
+            float to determine how much the polygon should be simplified.  Default is 0.05.
 
     Returns
     -------
@@ -40,54 +41,74 @@ def galah_geolocate(polygon=None,
     configs = readConfig()
 
     # get atlas
-    atlas = configs['galahSettings']['atlas']
+    atlas = configs["galahSettings"]["atlas"]
 
     # check for atlas first
-    if atlas in ["Australia","ALA"]:
+    if atlas not in ["Australia", "ALA"]:
 
-        if polygon is not None:
-
-            if type(polygon) is str:
-                if "POLYGON" not in polygon and "MULTIPOLYGON" not in polygon:
-                    if "shp" not in polygon:
-                        raise ValueError("Only a shape file or wkt should be passed to polygon")
-                    else:
-                        print("Amanda write this loop")
-                if simplify_polygon:
-                    return str(shapely.simplify(polygon,tolerance=0.05))
-                return shapely.wkt.loads(polygon)
-            elif type(polygon) is Polygon or MultiPolygon:
-                if simplify_polygon:
-                    return str(shapely.simplify(polygon,tolerance=0.05))
-                return str(polygon)
-            else:
-                print(polygon)
-                print(type(polygon))
-                raise ValueError("The only types of variables geolocate takes are str and polygons")
-
-        elif bbox is not None:
-
-            if type(bbox) is dict:
-                #xmin, ymin, xmax, ymax
-                return str(shapely.box(xmin=bbox["xmin"],xmax=bbox["xmax"],ymin=bbox["ymin"],ymax=bbox["ymax"]))
-            elif type(bbox) is Polygon or type(bbox) is MultiPolygon:
-                bounds=list(bbox.bounds)
-                new_bbox = shapely.box(bounds[0],bounds[1],bounds[2],bounds[3])
-                return str(new_bbox)
-            elif type(bbox) is pd.core.frame.DataFrame:
-                return str(shapely.box(xmin=bbox["minx"][0],xmax=bbox["maxx"][0],ymin=bbox["miny"][0],ymax=bbox["maxy"][0]))
-            else:
-                print(bbox)
-                print(type(bbox))
-                raise ValueError("The only types of variables geolocate takes for bounding box are dicts and polygons")
-            
-    else:
-
-        '''
-        # bits of code to add to URL
-        #polygon_string = ""
-        #polygon_string += "wkt={}&".format(urllib.parse.quote(str(new_geom))) # geometry
-        #polygon_string += "wkt={}&".format(urllib.parse.quote(str(p)))
-        #return polygon_string              
-        '''
         raise ValueError("Only the Australian atlas has a geolocate option for now.")
+
+    # now that we have only the australian atlas, check to see if we have a polygon
+    if polygon is not None:
+
+        if type(polygon) is str:
+            if all(x not in polygon for x in ["POLYGON", "MULTIPOLYGON", "shp"]):
+                raise ValueError("Only a shape file or wkt should be passed to polygon")
+            polygon = check_simplify_polygon(simplify_polygon=simplify_polygon, shape=polygon, tolerance=tolerance)
+            return shapely.wkt.loads(polygon)
+        elif type(polygon) is Polygon or MultiPolygon:
+            polygon = check_simplify_polygon(simplify_polygon=simplify_polygon, shape=polygon, tolerance=tolerance)
+            return str(polygon)
+        else:
+            raise ValueError("The only types of variables geolocate takes are str and polygons")
+
+    # then, check to see if user has given a bounding box
+    if bbox is not None:
+
+        if type(bbox) is dict:
+            # xmin, ymin, xmax, ymax
+            return str(
+                shapely.box(
+                    xmin=bbox["xmin"],
+                    xmax=bbox["xmax"],
+                    ymin=bbox["ymin"],
+                    ymax=bbox["ymax"],
+                )
+            )
+        elif type(bbox) is Polygon or type(bbox) is MultiPolygon:
+            bounds = list(bbox.bounds)
+            new_bbox = shapely.box(bounds[0], bounds[1], bounds[2], bounds[3])
+            return str(new_bbox)
+        elif type(bbox) is pd.core.frame.DataFrame:
+            return str(
+                shapely.box(
+                    xmin=bbox["minx"][0],
+                    xmax=bbox["maxx"][0],
+                    ymin=bbox["miny"][0],
+                    ymax=bbox["maxy"][0],
+                )
+            )
+        else:
+            raise ValueError("The only types of variables geolocate takes for bounding box are dicts and polygons")
+
+
+def check_simplify_polygon(simplify_polygon=False, shape=None, tolerance=0.05):
+    """
+    This function checks to see if the user wants to simplify their polygon (and does so if directed).
+
+    Parameters
+    ----------
+        shape : string, polygon object
+            one polygon used to search (can be file name or polygon object).
+        simplify_polygon : logical
+            True/False flag to tell {galah-python} whether to simplify your polygon
+        tolerance : float
+            float to determine how much the polygon should be simplified.  Default is 0.05.
+
+    Returns
+    -------
+        Either the simplified shape or original.
+    """
+    if simplify_polygon:
+        return str(shapely.simplify(shape, tolerance=tolerance))
+    return shape
