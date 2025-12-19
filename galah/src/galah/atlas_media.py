@@ -1,4 +1,3 @@
-import json
 import os
 import shutil
 
@@ -7,10 +6,9 @@ import requests
 from tqdm import tqdm
 
 from .atlas_occurrences import atlas_occurrences
+from .common_checks import check_atlas, check_string_list
 from .common_dictionaries import MM_EXTENSIONS
-from .common_functions import add_extras_to_URL
-from .get_api_url import get_api_url, readConfig
-from .show_all import show_all
+from .galah_config import get_api_url, readConfig
 from .version import __version__
 
 
@@ -26,7 +24,6 @@ def atlas_media(
     fields=None,
     verbose=False,
     multimedia=None,
-    assertions=None,
     use_data_profile=False,
     polygon=None,
     bbox=None,
@@ -36,6 +33,9 @@ def atlas_media(
     thumbnail=False,
     progress_bar=True,
     config_file=None,
+    mint_doi=False,
+    doi=None,
+    tolerance=0.05,
 ):
     """
     In addition to text data describing individual occurrences and their attributes, ALA stores images, sounds and videos
@@ -109,6 +109,12 @@ def atlas_media(
     # get atlas
     atlas = configs["galahSettings"]["atlas"]
 
+    # check atlas is valid
+    check_atlas(atlas=atlas, function="atlas_counts")
+
+    # check the type of filters
+    filters = check_string_list(filters, "filters")
+
     # get headers
     headers = {"User-Agent": "galah-python/{}".format(__version__)}
 
@@ -116,38 +122,44 @@ def atlas_media(
     if fields is None:
         fields = ["basic", "media"]
 
+    # get multimedia fields
+    multimedia = check_multimedia(multimedia=multimedia, atlas=atlas)
+
+    # default multimedia fields
+    mm_fields_default = [
+        "decimalLatitude",
+        "decimalLongitude",
+        "eventDate",
+        "scientificName",
+        "recordID",
+        "dataResourceName",
+        "occurrenceStatus",
+        "multimedia",
+        "images",
+        "videos",
+        "sounds",
+    ]
+
     # get occurrence data from atlas_occurrences
     dataFrame = atlas_occurrences(
         taxa=taxa,
         filters=filters,
         fields=fields,
-        assertions=assertions,
         use_data_profile=use_data_profile,
         polygon=polygon,
         bbox=bbox,
+        tolerance=tolerance,
         simplify_polygon=simplify_polygon,
         verbose=verbose,
         scientific_name=scientific_name,
+        mint_doi=mint_doi,
+        doi=doi,
     )
-    if dataFrame.empty:
-        raise ValueError(
-            "There are no occurrences or media associated with your query.  Please try your query on atlas_counts before trying it again on atlas_media."
-        )
 
-    # make an array for multimedia
-    if multimedia is not None:
-        if type(multimedia) is list or type(multimedia) is str:
-            if type(multimedia) is str:
-                multimedia = [multimedia]
-        else:
-            raise ValueError('multimedia argument should either be a string or a list, i.e. multimedia="images"')
-    else:
-        if atlas == "Australia" and multimedia is None:
-            multimedia = ["images", "videos", "sounds"]
-        elif atlas == "Austria":
-            multimedia = ["multimedia"]
-        else:
-            raise ValueError("Atlas {} is not taken into account".format(atlas))
+    # if dataFrame.empty:
+    #     raise ValueError(
+    #         "There are no occurrences or media associated with your query.  Please try your query on atlas_counts before trying it again on atlas_media."
+    #     )
 
     # loop through all possible media
     for media in multimedia:
@@ -160,29 +172,7 @@ def atlas_media(
             media_array = dataFrame[~dataFrame[media].isnull()]
 
         # get media metadata url
-        # https://images.ala.org.au/ws#/Image%20metadata/getImageInfoForIdList
-        if use_data_profile:
-            data_profile_list = list(show_all(profiles=True)["shortName"])
-            basemediaURL, method = get_api_url(column1="called_by", column1value="media_metadata")
-            basemediaURL += add_extras_to_URL(
-                add_email=False,
-                use_data_profile=use_data_profile,
-                data_profile_list=data_profile_list,
-            )
-        elif not use_data_profile:
-            basemediaURL, method = get_api_url(column1="called_by", column1value="media_metadata")
-        else:
-            raise ValueError(
-                "True and False are the only values accepted for data_profile.  Your data profile is \n"
-                "set in your config file.  To see valid data quality profiles, run:\n"
-                "profiles = galah.show_all(profiles=True)\n\n"
-                "and then type\n\n"
-                "profiles['shortName']\n\n"
-                "To set your data profile, type\n"
-                'galah.galah_config(data_profile="NAME FROM SHORTNAME HERE")'
-                "If you don't want to use a data quality profile, set it to None by typing the following:\n\n"
-                'galah.galah_config(data_profile="None")'
-            )
+        basemediaURL, method = get_api_url(column1="called_by", column1value="media_metadata", config_file=config_file)
 
         # check to see which occurrence entries have
         if not media_array.empty:
@@ -190,19 +180,7 @@ def atlas_media(
             # filter by NaNs
             filtered_media_array = media_array.loc[
                 media_array[media].notnull(),
-                [
-                    "decimalLatitude",
-                    "decimalLongitude",
-                    "eventDate",
-                    "scientificName",
-                    "recordID",
-                    "dataResourceName",
-                    "occurrenceStatus",
-                    "multimedia",
-                    "images",
-                    "videos",
-                    "sounds",
-                ],
+                mm_fields_default,
             ]
 
             # put the longest strings (so the duplicates) at the end
@@ -216,121 +194,42 @@ def atlas_media(
             top_index = duplicate_rows.index[0]
 
             # split out all the images for each occurrence
-            duplicate_dict = {
-                k: []
-                for k in [
-                    "decimalLatitude",
-                    "decimalLongitude",
-                    "eventDate",
-                    "scientificName",
-                    "recordID",
-                    "dataResourceName",
-                    "occurrenceStatus",
-                    "multimedia",
-                    "images",
-                    "videos",
-                    "sounds",
-                ]
-            }
-            for i, row in duplicate_rows.iterrows():
-                m = row[media].split(" | ")
-                for entry in m:
-                    duplicate_dict[media].append(entry)
-                    for name in [
-                        "decimalLatitude",
-                        "decimalLongitude",
-                        "eventDate",
-                        "scientificName",
-                        "recordID",
-                        "dataResourceName",
-                        "occurrenceStatus",
-                        "multimedia",
-                        "images",
-                        "videos",
-                        "sounds",
-                    ]:
-                        if name not in media:
-                            duplicate_dict[name].append(row[name])
+            duplicate_dict = {k: [] for k in mm_fields_default}
+            duplicate_dict = get_duplicate_images(
+                duplicate_rows=duplicate_rows,
+                media=media,
+                mm_fields_default=mm_fields_default,
+                duplicate_dict=duplicate_dict,
+            )
 
             # insert the duplicate rows into the array (need to ensure that, in the case they aren't sequential, to take that into consideration)
             new_filtered_media_array = pd.concat(
                 [filtered_media_array.head(top_index), pd.DataFrame(duplicate_dict)]
             ).reset_index(drop=True)
-            response = requests.request(
-                method,
-                basemediaURL,
-                data=json.dumps({"imageIds": new_filtered_media_array[media].to_list()}),
+
+            # get image metadata
+            media_metadata_df = get_image_metadata(
+                new_filtered_media_array=new_filtered_media_array,
+                media=media,
+                basemediaURL=basemediaURL,
+                method=method,
                 headers=headers,
-            )
-
-            # get metadata here
-            response_json = response.json()
-            media_metadata = {
-                "images": [],
-                "creator": [],
-                "license": [],
-                "mimetype": [],
-                "width": [],
-                "height": [],
-                "imageUrl": [],
-            }
-            keys = list(response_json["results"].keys())
-            for key in keys:
-                media_metadata["images"].append(key)
-                metadata = response_json["results"][key]
-
-                for term in [
-                    "creator",
-                    "license",
-                    "mimetype",
-                    "width",
-                    "height",
-                    "imageUrl",
-                ]:
-                    if term in metadata:
-                        media_metadata[term].append(metadata[term])
-                    else:
-                        media_metadata[term].append(None)
-            df_metadata = pd.DataFrame(media_metadata)
-            media_metadata_df = pd.merge(
-                new_filtered_media_array,
-                df_metadata,
-                left_on="images",
-                right_on="images",
-                how="left",
+                verbose=verbose,
             )
 
             # if you want to collect media, use this loop
             if collect:
-                if path is None:
-                    print("setting the path to your current directory...")
-                    path = "./"
-                else:
-                    if not os.path.exists(path):
-                        os.mkdir(path)
 
-                # loop over images - have progress bar if user wants it
-                if progress_bar:
+                download_media(
+                    progress_bar=progress_bar,
+                    media_metadata_df=media_metadata_df,
+                    headers=headers,
+                    thumbnail=thumbnail,
+                    path=path,
+                )
 
-                    for i, image in tqdm(media_metadata_df.iterrows(), total=media_metadata_df.shape[0]):
-
-                        write_image_to_file(image=image, headers=headers, path=path, thumbnail=thumbnail)
-
-                else:
-
-                    for i, image in media_metadata_df.iterrows():
-
-                        write_image_to_file(image=image, headers=headers, path=path, thumbnail=thumbnail)
-
-                # Let user know where media has been written to
-                print("Media written to {}".format(path))
-
-                # return pandas dataframe with metadata
-                return media_metadata_df
-            else:
-
-                # return pandas dataframe with metadata
-                return media_metadata_df
+            # return pandas dataframe with metadata
+            return media_metadata_df
 
 
 def write_image_to_file(image=None, headers=None, path=None, thumbnail=False):
@@ -339,10 +238,10 @@ def write_image_to_file(image=None, headers=None, path=None, thumbnail=False):
     ext = ""
 
     # replace extensions in mimetype with actual filenames
-    if image["mimetype"] in MM_EXTENSIONS:
-        ext = MM_EXTENSIONS[image["mimetype"]]
+    if image["mimeType"] in MM_EXTENSIONS:
+        ext = MM_EXTENSIONS[image["mimeType"]]
     else:
-        raise ValueError("Extension {} is not in our list of extensions.".format(image["mimetype"]))
+        raise ValueError("Extension {} is not in our list of extensions.".format(image["mimeType"]))
 
     # check if they want the thumbnail vs. original
     if thumbnail:
@@ -358,3 +257,119 @@ def write_image_to_file(image=None, headers=None, path=None, thumbnail=False):
     with open("{}/{}.{}".format(path, image["images"], ext), "wb") as f:
         data.raw.decode_content = True
         shutil.copyfileobj(data.raw, f)
+
+
+def check_multimedia(multimedia=None, atlas=None):
+    # make an array for multimedia
+    if multimedia is not None:
+        if type(multimedia) is list or type(multimedia) is str:
+            if type(multimedia) is str:
+                multimedia = [multimedia]
+        else:
+            raise ValueError('multimedia argument should either be a string or a list, i.e. multimedia="images"')
+    else:
+        if atlas == "Australia" and multimedia is None:
+            multimedia = ["images", "videos", "sounds"]
+        elif atlas == "Austria":
+            multimedia = ["multimedia"]
+        else:
+            raise ValueError("Atlas {} is not taken into account".format(atlas))
+
+    return multimedia
+
+
+def get_image_metadata(
+    new_filtered_media_array=None, media=None, basemediaURL=None, method=None, headers=None, verbose=False
+):
+
+    # first, get dictionary ready
+    media_metadata = {
+        "imageIdentifier": [],
+        "creator": [],
+        "license": [],
+        "mimeType": [],
+        "width": [],
+        "height": [],
+        "imageUrl": [],
+    }
+
+    # loop over data
+    for i, row in new_filtered_media_array.iterrows():
+
+        # replace the imageID word with actual ID
+        mediaURL = basemediaURL.replace("{imageID}", row["images"])
+
+        # uncomment for debugging purposes
+        # print_if_verbose(verbose=verbose, headers=headers, URL=mediaURL, method=method)
+
+        # send the request for image metadata
+        response = requests.request(
+            method=method,
+            url=mediaURL,
+            headers=headers,
+        )
+
+        # get metadata here
+        response_json = response.json()
+
+        if response_json["success"]:
+
+            # go through metadata
+            for key in media_metadata.keys():
+                media_metadata[key].append(response_json[key])
+
+        else:
+            for key in media_metadata.keys():
+                if key == "imageIdentifier":
+                    media_metadata[key].append(row["images"])
+                elif key == "imageUrl":
+                    media_metadata[key].append(response_json["message"])
+                else:
+                    media_metadata[key].append("")
+
+    # now get the metadata into a dataframe and merge it with the filtered array
+    df_metadata = pd.DataFrame(media_metadata)
+    df_metadata = df_metadata.rename(columns={"imageIdentifier": "images"})
+    return pd.merge(
+        new_filtered_media_array,
+        df_metadata,
+        left_on="images",
+        right_on="images",
+        how="left",
+    )
+
+
+def download_media(progress_bar=None, media_metadata_df=None, headers=None, thumbnail=None, path=None):
+
+    if path is None:
+        print("setting the path to your current directory...")
+        path = "./"
+    else:
+        if not os.path.exists(path):
+            os.mkdir(path)
+
+    # loop over images - have progress bar if user wants it
+    if progress_bar:
+
+        for i, image in tqdm(media_metadata_df.iterrows(), total=media_metadata_df.shape[0]):
+
+            write_image_to_file(image=image, headers=headers, path=path, thumbnail=thumbnail)
+
+    else:
+
+        for i, image in media_metadata_df.iterrows():
+
+            write_image_to_file(image=image, headers=headers, path=path, thumbnail=thumbnail)
+
+    # Let user know where media has been written to
+    print("Media written to {}".format(path))
+
+
+def get_duplicate_images(duplicate_rows=None, media=None, duplicate_dict=None, mm_fields_default=None):
+    for i, row in duplicate_rows.iterrows():
+        m = row[media].split(" | ")
+        for entry in m:
+            duplicate_dict[media].append(entry)
+            for name in mm_fields_default:
+                if name not in media:
+                    duplicate_dict[name].append(row[name])

@@ -1,15 +1,12 @@
-import urllib.parse
-
 import pandas as pd
 import requests
 
-from .add_to_payload_functions import generate_list_taxonConceptIDs
+from .common_add_functions import add_extras_to_URL, add_filters, add_spatial_shapes, add_taxa
+from .common_checks import check_atlas, check_string_list
 from .common_dictionaries import COUNTS_NAMES
-from .common_functions import add_extras_to_URL, print_if_verbose
-from .galah_filter import add_filters
-from .galah_geolocate import galah_geolocate
+from .common_functions import print_if_verbose
+from .galah_config import get_api_url, readConfig
 from .galah_group_by import galah_group_by
-from .get_api_url import get_api_url, readConfig
 from .show_all import show_all
 from .version import __version__
 
@@ -25,6 +22,7 @@ def atlas_counts(
     polygon=None,
     bbox=None,
     simplify_polygon=False,
+    tolerance=0.05,
     config_file=None,
 ):
     """
@@ -90,6 +88,9 @@ def atlas_counts(
     # get atlas
     atlas = configs["galahSettings"]["atlas"]
 
+    # check atlas is valid
+    check_atlas(atlas=atlas, function="atlas_counts")
+
     # raise error if argument is wrong type and/or the atlas doesn't have a quality profile but the user has specified one
     if use_data_profile and atlas not in ["Australia", "ALA"]:
         raise ValueError(
@@ -113,27 +114,26 @@ def atlas_counts(
         column2value = "records_facets"
 
     # get the baseURL and method
-    baseURL, method = get_api_url(
+    URL, method = get_api_url(
         column1="called_by",
         column1value="atlas_counts",
         column2="api_name",
         column2value=column2value,
+        config_file=config_file,
     )
 
-    # add a question mark at the end of the URL to separate between endpoint and queries
-    URL = baseURL + "?"
+    # check the type of filters
+    filters = check_string_list(filters, "filters")
 
     # get headers
     headers = {"User-Agent": "galah-python/{}".format(__version__)}
 
-    # if there is no taxa, assume you will get the total number of records in the ALA
-    if None not in (taxa, scientific_name):
-        taxonConceptID = generate_list_taxonConceptIDs(
-            taxa=taxa, atlas=atlas, verbose=verbose, scientific_name=scientific_name
-        )
-        if taxonConceptID is None:
-            return None
-        URL += taxonConceptID
+    # add taxa to URL
+    URL = add_taxa(taxa=taxa, atlas=atlas, URL=URL, scientific_name=scientific_name)
+
+    # return None if there are no valid taxa
+    if URL is None:
+        return None
 
     # check if user wants to group counts
     if group_by is not None:
@@ -141,9 +141,9 @@ def atlas_counts(
         # check for GBIF first
         if configs["galahSettings"]["atlas"] not in ["Global", "GBIF"]:
 
-            # add a separator if the user has taxa specified
-            if taxa is not None and filters is not None:
-                URL += "%20AND%20"
+            # # add a separator if the user has taxa specified
+            # if taxa is not None and filters is not None:
+            #     URL += "%20AND%20"
 
             # return grouped data frame
             return galah_group_by(
@@ -165,51 +165,28 @@ def atlas_counts(
             total_group_by=total_group_by,
         )
 
-    # check if filters are specified
-    if filters is not None:
-
-        # check the type of variable filters is
-        if isinstance(filters, (list, str)):
-
-            # add a separator if the user has taxa specified
-            if taxa is not None:
-                URL += "%20AND%20"
-
-            # add filters
-            URL = add_filters(URL=URL, atlas=atlas, filters=filters)
-
-        # else, make sure that the filters is in the following format
-        else:
-            raise TypeError("filters should only be a list, and are in the following format:\n\nfilters=['year:2020']")
-
-    # testing for galah_geolocate - implemented in next version
-    if polygon is not None or bbox is not None:
-        URL += "&wkt=" + urllib.parse.quote(
-            str(galah_geolocate(polygon=polygon, bbox=bbox, simplify_polygon=simplify_polygon))
-        )
-
-    # check if a user wants to use a data profile
-    data_profile_list = list(show_all(profiles=True)["shortName"])
-
-    # add other things to URL
-    URL += add_extras_to_URL(
-        add_email=False,
-        use_data_profile=use_data_profile,
-        data_profile_list=data_profile_list,
+    # add filters and spatial shapes
+    URL = add_filters(URL=URL, atlas=atlas, filters=filters)
+    URL = add_spatial_shapes(
+        polygon=polygon, bbox=bbox, URL=URL, simplify_polygon=simplify_polygon, tolerance=tolerance
     )
 
-    # use this to get only the data we need
-    URL += "&pageSize=0"
+    # add last things to URL
+    if atlas in ["Australia", "ALA"]:
+        URL += add_extras_to_URL(
+            add_email=False,
+            use_data_profile=use_data_profile,
+            data_profile_list=list(show_all(profiles=True)["shortName"]),
+            atlas=atlas,
+        )
+    else:
+        URL += add_extras_to_URL(add_email=False, atlas=atlas)
 
     # check to see if the user wants the querying URL
     print_if_verbose(verbose=verbose, headers=headers, URL=URL, method=method)
 
     # get data
     response = requests.request(method, URL, headers=headers)
-
-    # check for daily maximum
-    if response.status_code == 429:
-        raise ValueError("You have reached the maximum number of daily queries for the ALA.")
 
     # get data from response
     response_json = response.json()

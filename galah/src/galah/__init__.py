@@ -10,13 +10,6 @@ from .atlas_species import atlas_species
 # galah titled functions
 # -------------------------------------------------------
 from .galah_config import galah_config
-from .galah_filter import galah_filter
-from .galah_group_by import galah_group_by
-
-# -------------------------------------------------------
-# others (temp)
-# -------------------------------------------------------
-from .generate_jwt_token import generate_token_config
 
 # -------------------------------------------------------
 # search and show titled functions
@@ -31,6 +24,12 @@ from .show_values import show_values
 # version
 # -------------------------------------------------------
 from .version import __version__
+
+# -------------------------------------------------------
+# others (temp)
+# -------------------------------------------------------
+# from .generate_jwt_token import generate_token_config
+
 
 # from .galah_select import galah_select
 # from .galah_geolocate import galah_geolocate

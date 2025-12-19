@@ -6,7 +6,7 @@ from shapely import MultiPolygon, Polygon
 from .galah_config import readConfig
 
 
-def galah_geolocate(polygon=None, bbox=None, simplify_polygon=False, tolerance=0.05):
+def galah_geolocate(polygon=None, bbox=None, simplify_polygon=False, tolerance=10000):
     """
     Restrict results to those from a specified area. Areas can be specified as
     either polygons or bounding boxes, depending on type.
@@ -51,12 +51,14 @@ def galah_geolocate(polygon=None, bbox=None, simplify_polygon=False, tolerance=0
     # now that we have only the australian atlas, check to see if we have a polygon
     if polygon is not None:
 
-        if type(polygon) is str:
+        if isinstance(polygon, str):
             if all(x not in polygon for x in ["POLYGON", "MULTIPOLYGON", "shp"]):
                 raise ValueError("Only a shape file or wkt should be passed to polygon")
-            polygon = check_simplify_polygon(simplify_polygon=simplify_polygon, shape=polygon, tolerance=tolerance)
+            polygon = check_simplify_polygon(
+                simplify_polygon=simplify_polygon, shape=shapely.wkt.loads(polygon), tolerance=tolerance
+            )
             return shapely.wkt.loads(polygon)
-        elif type(polygon) is Polygon or MultiPolygon:
+        elif isinstance(polygon, (Polygon, MultiPolygon)):
             polygon = check_simplify_polygon(simplify_polygon=simplify_polygon, shape=polygon, tolerance=tolerance)
             return str(polygon)
         else:
@@ -65,7 +67,7 @@ def galah_geolocate(polygon=None, bbox=None, simplify_polygon=False, tolerance=0
     # then, check to see if user has given a bounding box
     if bbox is not None:
 
-        if type(bbox) is dict:
+        if isinstance(bbox, dict):
             # xmin, ymin, xmax, ymax
             return str(
                 shapely.box(
@@ -75,11 +77,11 @@ def galah_geolocate(polygon=None, bbox=None, simplify_polygon=False, tolerance=0
                     ymax=bbox["ymax"],
                 )
             )
-        elif type(bbox) is Polygon or type(bbox) is MultiPolygon:
+        elif isinstance(bbox, (Polygon, MultiPolygon)):
             bounds = list(bbox.bounds)
             new_bbox = shapely.box(bounds[0], bounds[1], bounds[2], bounds[3])
             return str(new_bbox)
-        elif type(bbox) is pd.core.frame.DataFrame:
+        elif isinstance(bbox, pd.core.frame.DataFrame):
             return str(
                 shapely.box(
                     xmin=bbox["minx"][0],
@@ -92,7 +94,7 @@ def galah_geolocate(polygon=None, bbox=None, simplify_polygon=False, tolerance=0
             raise ValueError("The only types of variables geolocate takes for bounding box are dicts and polygons")
 
 
-def check_simplify_polygon(simplify_polygon=False, shape=None, tolerance=0.05):
+def check_simplify_polygon(simplify_polygon=False, shape=None, tolerance=10000):
     """
     This function checks to see if the user wants to simplify their polygon (and does so if directed).
 
@@ -103,12 +105,16 @@ def check_simplify_polygon(simplify_polygon=False, shape=None, tolerance=0.05):
         simplify_polygon : logical
             True/False flag to tell {galah-python} whether to simplify your polygon
         tolerance : float
-            float to determine how much the polygon should be simplified.  Default is 0.05.
+            float to determine how much the polygon should be simplified.  Default is 0.15.
 
     Returns
     -------
         Either the simplified shape or original.
     """
     if simplify_polygon:
-        return str(shapely.simplify(shape, tolerance=tolerance))
+        print(shapely.count_coordinates(shape))
+        new_shape = shape.simplify(tolerance=tolerance)
+        print(shapely.count_coordinates(new_shape))
+        print()
+        return str(shape.simplify(tolerance=tolerance))
     return shape

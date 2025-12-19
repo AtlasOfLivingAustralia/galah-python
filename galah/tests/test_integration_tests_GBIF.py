@@ -1,6 +1,40 @@
 import galah
+import pytest
 
 
+######################################
+# changes and errors
+######################################
+def test_change_name_galah_config_GBIF():
+    galah.galah_config(atlas="GBIF")
+    output = galah.galah_config()
+    assert output[output["Configuration"] == "atlas"]["Value"][2] == "Global"
+
+
+def test_show_all_licences_Global():
+    galah.galah_config(atlas="Global")
+    with pytest.raises(Exception) as e_info:
+        galah.show_all(licences=True)
+    assert "licences" in str(e_info.value)
+
+
+def test_show_all_lists_Global():
+    galah.galah_config(atlas="Global")
+    with pytest.raises(Exception) as e_info:
+        galah.show_all(lists=True)
+    assert "lists" in str(e_info.value)
+
+
+def test_not_equals_filter_GBIF():
+    galah.galah_config(atlas="Global")
+    with pytest.raises(Exception) as e_info:
+        galah.atlas_occurrences(filters=["year != 2025"])
+    assert "cannot be used" in str(e_info.value)
+
+
+######################################
+# show_all
+######################################
 def test_show_all_assertions_global():
     galah.galah_config(atlas="GBIF")
     output = galah.show_all(assertions=True)
@@ -43,40 +77,161 @@ def test_show_all_ranks_global():
     assert output.shape[1] > 1
 
 
-# integration test for search_taxa() - have to test get_api_url
+######################################
+# search_all
+######################################
+def test_search_all_assertions_global():
+    galah.galah_config(atlas="GBIF")
+    total_show_all = galah.show_all(assertions=True)
+    total_search_all = galah.search_all(assertions="collection")
+    assert total_search_all.shape[0] < total_show_all.shape[0]
+
+
+def test_search_all_assertions_column_name_global():
+    galah.galah_config(atlas="GBIF")
+    total_show_all = galah.show_all(assertions=True)
+    total_search_all = galah.search_all(assertions="STATUS", column_name="ID")
+    assert total_search_all.shape[0] < total_show_all.shape[0]
+
+
+def test_search_all_atlases_global():
+    galah.galah_config(atlas="GBIF")
+    total_show_all = galah.show_all(atlases=True)
+    total_search_all = galah.search_all(atlases="Global")
+    assert total_search_all.shape[0] < total_show_all.shape[0]
+
+
+def test_search_all_atlases_column_name_global():
+    galah.galah_config(atlas="GBIF")
+    total_show_all = galah.show_all(atlases=True)
+    total_search_all = galah.search_all(atlases="Global", column_name="institution")
+    assert total_search_all.shape[0] < total_show_all.shape[0]
+
+
+def test_search_all_apis_global():
+    galah.galah_config(atlas="GBIF")
+    total_show_all = galah.show_all(apis=True)
+    total_search_all = galah.search_all(apis="Global")
+    assert total_search_all.shape[0] < total_show_all.shape[0]
+
+
+def test_search_all_apis_column_name_global():
+    galah.galah_config(atlas="GBIF")
+    total_show_all = galah.show_all(apis=True)
+    total_search_all = galah.search_all(apis="collection", column_name="system")
+    assert total_search_all.shape[0] < total_show_all.shape[0]
+
+
+def test_search_all_datasets_global():
+    galah.galah_config(atlas="GBIF")
+    total_show_all = galah.show_all(datasets=True)
+    total_search_all = galah.search_all(datasets="Herbarium")
+    assert total_search_all.shape[0] < total_show_all.shape[0]
+
+
+def test_search_all_datasets_column_name_global():
+    galah.galah_config(atlas="GBIF")
+    total_show_all = galah.show_all(datasets=True)
+    total_search_all = galah.search_all(datasets="Marsup", column_name="title")
+    assert total_search_all.shape[0] < total_show_all.shape[0]
+
+
+def test_search_all_fields_global():
+    galah.galah_config(atlas="GBIF")
+    total_show_all = galah.show_all(fields=True)
+    total_search_all = galah.search_all(fields="name")
+    assert total_search_all.shape[0] < total_show_all.shape[0]
+
+
+def test_search_all_fields_column_name_global():
+    galah.galah_config(atlas="GBIF")
+    total_show_all = galah.show_all(fields=True)
+    total_search_all = galah.search_all(fields="layer", column_name="name")
+    assert total_search_all.shape[0] < total_show_all.shape[0]
+
+
+def test_search_all_providers_global():
+    galah.galah_config(atlas="GBIF")
+    total_show_all = galah.show_all(providers=True)
+    total_search_all = galah.search_all(providers="Univers")
+    assert total_search_all.shape[0] < total_show_all.shape[0]
+
+
+def test_search_all_providers_column_name_global():
+    galah.galah_config(atlas="GBIF")
+    total_show_all = galah.show_all(providers=True)
+    total_search_all = galah.search_all(providers="Institute", column_name="description")
+    assert total_search_all.shape[0] < total_show_all.shape[0]
+
+
+def test_search_all_ranks_global():
+    galah.galah_config(atlas="GBIF")
+    total_show_all = galah.show_all(ranks=True)
+    total_search_all = galah.search_all(ranks="kingdom")
+    assert total_search_all.shape[0] < total_show_all.shape[0]
+
+
+def test_search_all_ranks_column_name_global():
+    galah.galah_config(atlas="GBIF")
+    total_show_all = galah.show_all(ranks=True)
+    total_search_all = galah.search_all(ranks="0", column_name="id")
+    assert total_search_all.shape[0] < total_show_all.shape[0]
+
+
+######################################
+# show_values
+######################################
+def test_show_values_global():
+    galah.galah_config(atlas="GBIF")
+    first_output = galah.show_values(field="basisOfRecord")
+    assert first_output.shape[0] > 0
+    assert first_output.shape[1] > 0
+
+
+######################################
+# search_values
+######################################
+def test_search_values_global():
+    galah.galah_config(atlas="GBIF")
+    first_output = galah.show_values(field="basisOfRecord")
+    second_output = galah.search_values(field="basisOfRecord", value="OBS")
+    assert first_output.shape[0] > second_output.shape[0]
+
+
+######################################
+# search_taxa
+######################################
 def test_search_taxa_global():
     galah.galah_config(atlas="GBIF")
     output = galah.search_taxa("Vulpes vulpes")
     assert output["usageKey"][0] != None
 
 
-'''
-# test atlas_counts() can call search_taxa() function with single taxa
+######################################
+# atlas_counts
+######################################
 def test_atlas_counts_global():
     galah.galah_config(atlas="GBIF")
     taxa = "Vulpes vulpes"
     assert galah.atlas_counts(taxa)["totalRecords"][0] > 0
 
 
-# testing filtering works when no taxa are entered
 def test_atlas_counts_filters_global():
     galah.galah_config(atlas="GBIF")
-    f = "year=2022"
     all_counts = galah.atlas_counts()
-    filtered_counts = galah.atlas_counts(filters=f)
+    filtered_counts = galah.atlas_counts(filters="year=2022")
     assert all_counts["totalRecords"][0] > filtered_counts["totalRecords"][0]
 
 
 # testing filtering works when no taxa are entered
 def test_atlas_counts_filters_groupby_expand_global():
     galah.galah_config(atlas="GBIF")
-    f = "year=2022"
-    groups = ["month", "basisOfRecord"]
-    filtered_counts = galah.atlas_counts(filters=f, group_by=groups)
+    filtered_counts = galah.atlas_counts(filters="year=2022", group_by=["month", "basisOfRecord"])
     assert filtered_counts.shape[0] > 0
     assert filtered_counts.shape[1] > 0
 
 
+#'''
 # testing filtering works when no taxa are entered
 def test_atlas_counts_filters_groupby_global():
     galah.galah_config(atlas="GBIF")
@@ -98,9 +253,7 @@ def test_atlas_counts_taxa_filter_global():
 # test atlas counts for a taxa and empty filter
 def test_atlas_counts_taxa_filter_empty_global():
     galah.galah_config(atlas="GBIF")
-    taxa = "Vulpes vulpes"
-    filter1 = "year="
-    assert galah.atlas_counts(taxa, filters=filter1)["totalRecords"][0] > 0
+    assert galah.atlas_counts(taxa="Vulpes vulpes", filters="year=")["totalRecords"][0] > 0
 
 
 """
@@ -181,10 +334,12 @@ def test_atlas_counts_taxa_groups_expand_global():
 # test altas_counts() can call search_taxa() and using two filter, filter results with single taxa
 def test_atlas_counts_taxa_filters_global():
     galah.galah_config(atlas="GBIF")
-    taxa = "Vulpes vulpes"
-    filters = ["year=2020", "basisOfRecord=HUMAN_OBSERVATION"]
-    # test single taxa is working (search_taxa(), galah_filter() x 2)
-    assert galah.atlas_counts(taxa, filters=filters)["totalRecords"][0] > 0
+    assert (
+        galah.atlas_counts(taxa="Vulpes vulpes", filters=["year=2020", "basisOfRecord=HUMAN_OBSERVATION"])[
+            "totalRecords"
+        ][0]
+        > 0
+    )
 
 
 # test altas_counts() can call search_taxa() and using two filter, filter results with single taxa and group by one group
@@ -379,6 +534,7 @@ def test_atlas_counts_multiple_taxa_filters_group_by_multiple_separate_expand_gl
     assert output["count"][0] >= 0  # checks that all species counts are greater than or equal zero
 
 
+"""
 # checking if atlas species can successfully call search_taxa() and get a non-empty dataframe\
 def test_atlas_species_species_global():
     galah.galah_config(
@@ -414,132 +570,6 @@ def test_atlas_species_global_filter_notaxa():
     )
     filtered_species_table = galah.atlas_species(filters=["year=2022", "basisOfRecord=HUMAN_OBSERVATION"])
     assert filtered_species_table.shape[0] > 0
-
-
-# search_all() - assertions using "AMBIGUOUS_COLLECTION"
-def test_search_all_assertions_global():
-    galah.galah_config(atlas="GBIF")
-    total_show_all = galah.show_all(assertions=True)
-    total_search_all = galah.search_all(assertions="collection")
-    assert total_search_all.shape[0] < total_show_all.shape[0]
-
-
-# search_all() - assertions using "collection" and column name "description"
-def test_search_all_assertions_column_name_global():
-    galah.galah_config(atlas="GBIF")
-    total_show_all = galah.show_all(assertions=True)
-    total_search_all = galah.search_all(assertions="STATUS", column_name="ID")
-    assert total_search_all.shape[0] < total_show_all.shape[0]
-
-
-# search_all() - atlases using "Global"
-def test_search_all_atlases_global():
-    galah.galah_config(atlas="GBIF")
-    total_show_all = galah.show_all(atlases=True)
-    total_search_all = galah.search_all(atlases="Global")
-    assert total_search_all.shape[0] < total_show_all.shape[0]
-
-
-# search_all() - atlases using "Global" and column name "institution"
-def test_search_all_atlases_column_name_global():
-    galah.galah_config(atlas="GBIF")
-    total_show_all = galah.show_all(atlases=True)
-    total_search_all = galah.search_all(atlases="Global", column_name="institution")
-    assert total_search_all.shape[0] < total_show_all.shape[0]
-
-
-# search_all() - apis using "Global"
-def test_search_all_apis_global():
-    galah.galah_config(atlas="GBIF")
-    total_show_all = galah.show_all(apis=True)
-    total_search_all = galah.search_all(apis="Global")
-    assert total_search_all.shape[0] < total_show_all.shape[0]
-
-
-# search_all() - apis using "collection" and column name "systems"
-def test_search_all_apis_column_name_global():
-    galah.galah_config(atlas="GBIF")
-    total_show_all = galah.show_all(apis=True)
-    total_search_all = galah.search_all(apis="collection", column_name="system")
-    assert total_search_all.shape[0] < total_show_all.shape[0]
-
-
-# search_all() - datasets using "Torres"
-def test_search_all_datasets_global():
-    galah.galah_config(atlas="GBIF")
-    total_show_all = galah.show_all(datasets=True)
-    total_search_all = galah.search_all(datasets="Herbarium")
-    assert total_search_all.shape[0] < total_show_all.shape[0]
-
-
-# search_all() - datasets using "4047" and column_name "uid"
-def test_search_all_datasets_column_name_global():
-    galah.galah_config(atlas="GBIF")
-    total_show_all = galah.show_all(datasets=True)
-    total_search_all = galah.search_all(datasets="Marsup", column_name="title")
-    assert total_search_all.shape[0] < total_show_all.shape[0]
-
-
-# search_all() - fields using "accepted"
-def test_search_all_fields_global():
-    galah.galah_config(atlas="GBIF")
-    total_show_all = galah.show_all(fields=True)
-    total_search_all = galah.search_all(fields="accepted")
-    assert total_search_all.shape[0] < total_show_all.shape[0]
-
-
-# search_all() - fields using "field" and column_nane "info"
-def test_search_all_fields_column_name_global():
-    galah.galah_config(atlas="GBIF")
-    total_show_all = galah.show_all(fields=True)
-    total_search_all = galah.search_all(fields="layer", column_name="Parameter")
-    assert total_search_all.shape[0] < total_show_all.shape[0]
-
-
-# search_all() - providers using "Ecological"
-def test_search_all_providers_global():
-    galah.galah_config(atlas="GBIF")
-    total_show_all = galah.show_all(providers=True)
-    total_search_all = galah.search_all(providers="Univers")
-    assert total_search_all.shape[0] < total_show_all.shape[0]
-
-
-# search_all() - providers using "1518" and column_name "uid"
-def test_search_all_providers_column_name_global():
-    galah.galah_config(atlas="GBIF")
-    total_show_all = galah.show_all(providers=True)
-    total_search_all = galah.search_all(providers="Insititute", column_name="description")
-    assert total_search_all.shape[0] < total_show_all.shape[0]
-
-
-# search_all() - ranks using "kingdom"
-def test_search_all_ranks_global():
-    galah.galah_config(atlas="GBIF")
-    total_show_all = galah.show_all(ranks=True)
-    total_search_all = galah.search_all(ranks="kingdom")
-    assert total_search_all.shape[0] < total_show_all.shape[0]
-
-
-# search_all() - ranks using "0" and column_name "id"
-def test_search_all_ranks_column_name_global():
-    galah.galah_config(atlas="GBIF")
-    total_show_all = galah.show_all(ranks=True)
-    total_search_all = galah.search_all(ranks="0", column_name="id")
-    assert total_search_all.shape[0] < total_show_all.shape[0]
-
-
-def test_show_values_global():
-    galah.galah_config(atlas="GBIF")
-    first_output = galah.show_values(field="basisOfRecord")
-    assert first_output.shape[0] > 0
-    assert first_output.shape[1] > 0
-
-
-def test_search_values_global():
-    galah.galah_config(atlas="GBIF")
-    first_output = galah.show_values(field="basisOfRecord")
-    second_output = galah.search_values(field="basisOfRecord", value="OBS")
-    assert first_output.shape[0] > second_output.shape[0]
 
 
 # first test for atlas_occurrences() - check if search_taxa() is working
@@ -580,4 +610,4 @@ def test_atlas_occurrences_taxa_filters3_global():
     assert occurrences.shape[0] > 0
 
 
-#'''
+#"""

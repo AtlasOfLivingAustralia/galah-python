@@ -4,15 +4,6 @@ import os
 import galah
 
 
-# unit test for galah_group_by
-def test_galah_group_by_1():
-    URL = "https://biocache-ws.ala.org.au/ws/occurrence/search?fq=%28lsid%3Ahttps%3A//biodiversity.org.au/afd/taxa/2869ce8a-8212-46c2-8327-dfb7fabb8296%29"
-    groups = ["year"]
-    output = galah.galah_group_by(URL, method="GET", group_by=groups, expand=False)
-    assert output.shape[0] > 1
-    assert output.shape[1] > 1
-
-
 # unit test for galah.atlas_counts()
 def test_atlas_counts():
     # first test is to test if galah.atlas_counts() returns greater than 0

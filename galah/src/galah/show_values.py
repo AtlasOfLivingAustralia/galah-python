@@ -2,10 +2,10 @@ import pandas as pd
 import requests
 
 from .common_functions import kvp_to_columns, print_if_verbose
-from .get_api_url import get_api_url, readConfig
+from .galah_config import get_api_url, readConfig
 
 
-def show_values(field=None, lists=False, all_fields=False, verbose=False):
+def show_values(field=None, lists=False, all_fields=False, verbose=False, config_file=None):
     """
     Users may wish to see the specific values within a chosen field, profile or list to narrow queries or understand
     more about the information of interest. ``show_values()`` provides users with these values.
@@ -43,7 +43,7 @@ def show_values(field=None, lists=False, all_fields=False, verbose=False):
         raise TypeError("show_values() only takes a single string as the field argument, i.e. field='basisOfRecord'")
 
     # get configurations
-    configs = readConfig()
+    configs = readConfig(config_file=config_file)
 
     # get atlas
     atlas = configs["galahSettings"]["atlas"]
@@ -128,23 +128,7 @@ def process_value_results(atlas=None, response_json=None, lists=False, all_field
             result = response_json[0]["fieldResult"]
             for i, entry in enumerate(result):
                 # check if last character is a full stop
-                if entry["i18nCode"][-1] == ".":
-                    # check to see if the length is more than 2
-                    if len(entry["i18nCode"].split(".")) > 2:
-                        temparray = entry["i18nCode"].split(".")
-                        name = " ".join(temparray[1:])
-                        tempdf = pd.DataFrame([[temparray[0], name]], columns=["field", "category"])
-                    else:
-                        tempdf = pd.DataFrame(
-                            [entry["i18nCode"][0:-1].split(".")],
-                            columns=["field", "category"],
-                        )
-                    dataFrame = pd.concat([dataFrame, tempdf], ignore_index=True)
-                elif len(entry["i18nCode"].split(".")) > 2:
-                    temparray = entry["i18nCode"].split(".")
-                    name = " ".join(temparray[1:])
-                    tempdf = pd.DataFrame([[temparray[0], name]], columns=["field", "category"])
-                    dataFrame = pd.concat([dataFrame, tempdf], ignore_index=True)
-                else:
-                    tempdf = pd.DataFrame([entry["i18nCode"].split(".")], columns=["field", "category"])
-                    dataFrame = pd.concat([dataFrame, tempdf], ignore_index=True)
+                tempdf = pd.DataFrame([entry["i18nCode"].split(".")], columns=["field", "category"])
+                dataFrame = pd.concat([dataFrame, tempdf], ignore_index=True)
+
+    return dataFrame

@@ -64,6 +64,8 @@ def galah_config(
     if config_file is None:
         inifile = os.path.join(os.path.dirname(os.path.abspath(__file__)), "config.ini")
     else:
+        if not os.path.isfile(config_file):
+            os.system("touch {}".format(config_file))
         inifile = config_file
     configParser.read(inifile)
 
@@ -79,6 +81,13 @@ def galah_config(
             "usernameGBIF": "None",
             "passwordGBIF": "None",
         }
+
+    # check for global atlas and make sure it is named correctly
+    atlas = check_atlas_name(atlas=atlas)
+
+    # set the ranks by default for the Global atlas
+    if atlas == "Global":
+        ranks = "Global"
 
     # check to see if there are any arguments to update - if not, return dataframe.  If so, update file.
     if (
@@ -133,6 +142,19 @@ def galah_config(
         fileObject.close()
 
 
+def check_atlas_name(atlas=None):
+    # set the global name
+    if atlas == "GBIF":
+        return "Global"
+
+    # same with UK
+    if atlas == "UK":
+        return "United Kingdom"
+
+    # return atlas by default
+    return atlas
+
+
 def readConfig(config_file=None):
     """
     The galah package supports large data downloads, and also interfaces with the ALA which requires that users of some
@@ -150,8 +172,41 @@ def readConfig(config_file=None):
     """
     configFile = configparser.ConfigParser()
     if config_file is None:
-        inifile = os.path.join(os.path.dirname(os.path.abspath(__file__)), "config.ini")
-    else:
-        inifile = config_file
-    configFile.read(inifile)
+        config_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), "config.ini")
+    configFile.read(config_file)
     return configFile
+
+
+# readConfig
+# get the URL for the API we want to ping for the
+def get_api_url(column1=None, column1value=None, column2=None, column2value=None, config_file=None):
+
+    # first, get specific atlas
+    atlasfile = os.path.join(os.path.dirname(os.path.abspath(__file__)), "node_config.csv")
+    atlaslist = pd.read_csv(atlasfile)
+    configs = readConfig(config_file=config_file)
+
+    # get specific atlas
+    specific_atlas = atlaslist[atlaslist["atlas"] == configs["galahSettings"]["atlas"]]
+
+    # get rows with specific value
+    rows = specific_atlas[specific_atlas[column1].astype(str).str.contains(column1value, case=True, na=False)]
+
+    # check to see if there are two columns to filter by
+    if column2 is None and column2value is None:
+
+        # else, return the singular URL
+        index = rows[rows[column1].astype(str).str.contains(column1value, case=True, na=False)].index[0]
+        baseURL = rows[rows[column1].astype(str).str.contains(column1value, case=True, na=False)]["api_url"][index]
+        method = rows[rows[column1].astype(str).str.contains(column1value, case=True, na=False)]["method"][index]
+
+    # if there are two columns to filter by, first check for the name and value
+    else:
+
+        # else, return the singular URL
+        index = rows[rows[column2].astype(str).str.contains(column2value, case=True, na=False)].index[0]
+        baseURL = rows.loc[rows[column1].astype(str).str.contains(column1value, case=True, na=False)]["api_url"][index]
+        method = rows.loc[rows[column1].astype(str).str.contains(column1value, case=True, na=False)]["method"][index]
+
+    # return the final URL
+    return baseURL, method

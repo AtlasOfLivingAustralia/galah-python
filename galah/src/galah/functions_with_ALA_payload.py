@@ -379,3 +379,81 @@ else:
                 
             else:
             """
+
+"""
+# galah_filter()
+    # elif atlas in ["Australia","ALA"]:
+    #     if specialChar == '=' or specialChar == '==':
+    #         if parts[1].isdigit() and ifgroupBy:
+    #             return "{}:{}".format(parts[0],parts[1])
+    #         elif parts[1] == '':
+    #             return "*:* AND -{}:*".format(parts[0])
+    #         elif parts[1] == "True":
+    #             return"assertions:{}".format(parts[0])
+    #         elif parts[1] == "False":
+    #             return "-assertions:{}".format(parts[0])
+    #         else:
+    #             # check if this is array
+    #             arrayChars = re.compile('[]') # removed this: \[\]
+    #             arrayChar = arrayChars.findall(parts[1])
+    #             if arrayChar:
+    #                 temp_array = parts[1][1:-1].split(",")
+    #                 for value in temp_array:
+    #                     # added quotes here
+    #                     returnString += "{}:\"{}\" OR ".format(parts[0], value)
+    #                 returnString = returnString[:-4]
+    #                 return returnString
+    #             else:
+    #                 return "{}:\"{}\"".format(parts[0],parts[1])
+
+    #     elif specialChar == '>':
+    #         return "{}:[{} TO *] AND -({}:{})".format(parts[0], parts[1], parts[0], parts[1])
+
+    #     # less than
+    #     elif specialChar == '<':
+    #         return "{}:[* TO {}] AND -({}:{})".format(parts[0], parts[1], parts[0], parts[1])
+
+    #     # greater than or equal to
+    #     elif specialChar == '=>' or specialChar == '>=':
+    #         return "{}:[{} TO *]".format(parts[0], parts[1])
+
+    #     # less than or equal to
+    #     elif specialChar == '<=' or specialChar == '=<':
+    #         return "{}:[* TO {}]".format(parts[0], parts[1])
+
+    #     # not equal to
+    #     elif specialChar == '!=' or specialChar == '=!':
+    #         print("here")
+    #         return "-{}:{}".format(parts[0], parts[1])
+
+    #     # else, there is either an error in the filters or a missing case
+    #     else:
+    #         raise ValueError("The special character {} is not included in the filters function.  Either it is not a logical operator, or it has not been included yet.".format(specialChar[0]))
+
+
+"""
+
+
+"""
+atlas_occurrences()
+
+    # # test to check if atlas is working
+    # requestURL, method = get_api_url(
+    #     column1="called_by",
+    #     column1value="atlas_counts",
+    #     column2="api_name",
+    #     column2value="records_counts",
+    # )
+    # requestURL += "?pageSize=0"
+
+    # # check if the atlas is working - if not, let the user know
+    # response = requests.request(method, requestURL, headers=headers)
+    # try:
+    #     response.raise_for_status()
+    #     if test:
+    #         return
+    # except requests.exceptions.HTTPError as e:
+    #     print("The {} atlas might be down...")
+    #     print("Error: " + str(e))
+    #     sys.exit()
+"""

@@ -1,105 +1,16 @@
-import urllib
-
 import geopandas as gpd
 import shapely
 from shapely import MultiPolygon, Polygon
 
-from .common_dictionaries import ATLAS_KEYWORDS, atlases
 from .galah_filter import galah_filter
 from .galah_geolocate import galah_geolocate
-from .search_taxa import search_taxa
-
-
-def generate_list_taxonConceptIDs(taxa=None, scientific_name=None, atlas=None, verbose=None):
-    """Function for getting more than one taxonConceptIDs"""
-
-    if taxa is None and scientific_name is None:
-        raise ValueError("Please provide either a taxa or scientific_name for this information")
-
-    if atlas is None:
-        raise ValueError("Please provide an atlas to this function")
-
-    # change taxa into list for easier looping and check if type of variable is correct
-    if scientific_name is not None:
-
-        # check for correct dictionary
-        lens = [None for i in range(len(scientific_name))]
-        for i, key in enumerate(scientific_name):
-            lens[i] = len(scientific_name[key])
-        if len(set(lens)) > 1:
-            raise ValueError(
-                "Please provide a correctly formatted dictionary with scientific_name - you are missing one or more taxonomic keys."
-            )
-        keys = scientific_name.keys()
-        for i in range(lens[0]):
-            tempdf = search_taxa(scientific_name=dict({key: [scientific_name[key][i]] for key in keys}))
-            if tempdf.empty:
-                print("No taxon matches were found for {} in the selected atlas ({})".format(scientific_name, atlas))
-                if len(scientific_name) == 1:
-                    return None
-                continue
-
-    else:
-
-        if type(taxa) is str:
-            taxa = [taxa]
-        elif type(taxa) is list:
-            pass
-        else:
-            raise TypeError(
-                "The taxa argument can only be a string or a list."
-                '\nExample: galah.atlas_counts("Vulpes vulpes")'
-                '\n         galah.atlas_counts["Osphranter rufus","Vulpes vulpes","Macropus giganteus","Phascolarctos cinereus"])'
-            )
-
-        # get the number of records associated with each taxa
-        for name in taxa:
-
-            # create temporary dataframe for taxon id
-            tempdf = search_taxa(taxa=name, verbose=verbose)
-
-            # check if dataframe is empty - if so, return None; else, continue
-            if tempdf.empty:
-                print("No taxon matches were found for {} in the selected atlas ({})".format(name, atlas))
-                if len(taxa) == 1:
-                    return None
-                continue
-
-    # get the taxonConceptID for taxa while checking for extant atlas
-    if atlas in atlases:
-        if scientific_name is not None:
-            taxonConceptID = list(search_taxa(scientific_name=scientific_name)[ATLAS_KEYWORDS[atlas]])
-        else:
-            taxonConceptID = list(search_taxa(taxa=taxa)[ATLAS_KEYWORDS[atlas]])
-    else:
-        raise ValueError("Atlas {} is not taken into account".format(atlas))
-
-    # add taxon IDs to URL, but first check for GBIF
-    if atlas in ["Global", "GBIF"]:
-
-        # add using taxonKey
-        # return taxonConceptID
-        return "".join(["taxonKey={}&".format(urllib.parse.quote(str(tid))) for tid in taxonConceptID])
-
-    # for Australia
-    elif atlas in ["Australia", "ALA"]:
-
-        # try adding %22
-        return (
-            "fq=%28lsid%3A%22"
-            + "%22%20OR%20lsid%3A%22".join(urllib.parse.quote(str(tid)) for tid in taxonConceptID)
-            + "%29"
-        )
-
-    else:
-
-        return "fq=%28lsid%3A" + "%20OR%20lsid%3A".join(urllib.parse.quote(str(tid)) for tid in taxonConceptID) + "%29"
+from .search_taxa import generate_list_taxonConceptIDs
 
 
 def add_to_payload_ALA(
     payload=None,
-    atlas=None,
     taxa=None,
+    atlas=None,
     scientific_name=None,
     filters=None,
     polygon=None,

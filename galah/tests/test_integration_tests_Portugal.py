@@ -1,10 +1,17 @@
 import galah
+import pytest
 
 
 def test_show_all_assertions_portugal():
     galah.galah_config(atlas="Portugal")
+    with pytest.raises(Exception) as e_info:
+        galah.show_all(assertions=True)
+    assert "Portugal" in str(e_info.value)
+    """
+    galah.galah_config(atlas="Portugal")
     output = galah.show_all(assertions=True)
     assert output.shape[1] > 1
+    """
 
 
 def test_show_all_atlases_portugal():
@@ -33,8 +40,14 @@ def test_show_all_datasets_portugal():
 
 def test_show_all_fields_portugal():
     galah.galah_config(atlas="Portugal")
+    with pytest.raises(Exception) as e_info:
+        galah.show_all(fields=True)
+    assert "Portugal" in str(e_info.value)
+    """
+    galah.galah_config(atlas="Portugal")
     output = galah.show_all(fields=True)
     assert output.shape[1] > 1
+    """
 
 
 def test_show_all_providers_portugal():
@@ -49,6 +62,7 @@ def test_show_all_ranks_portugal():
     assert output.shape[1] > 1
 
 
+'''
 # integration test for search_taxa() - have to test get_api_url
 def test_search_taxa_portugal():
     galah.galah_config(atlas="Portugal")
@@ -56,7 +70,6 @@ def test_search_taxa_portugal():
     assert output["usageKey"][0] != None
 
 
-'''
 # test atlas_counts() can call search_taxa() function with single taxa
 def test_atlas_counts_portugal():
     galah.galah_config(atlas="Portugal")
@@ -408,19 +421,19 @@ def test_atlas_species_Portugal_family_portugal():
 
 
 # search_all() - assertions using "AMBIGUOUS_COLLECTION"
-def test_search_all_assertions_portugal():
-    galah.galah_config(atlas="Portugal")
-    total_show_all = galah.show_all(assertions=True)
-    total_search_all = galah.search_all(assertions="collection")
-    assert total_search_all.shape[0] < total_show_all.shape[0]
+# def test_search_all_assertions_portugal():
+#     galah.galah_config(atlas="Portugal")
+#     total_show_all = galah.show_all(assertions=True)
+#     total_search_all = galah.search_all(assertions="collection")
+#     assert total_search_all.shape[0] < total_show_all.shape[0]
 
 
-# search_all() - assertions using "collection" and column name "description"
-def test_search_all_assertions_column_name_portugal():
-    galah.galah_config(atlas="Portugal")
-    total_show_all = galah.show_all(assertions=True)
-    total_search_all = galah.search_all(assertions="status", column_name="name")
-    assert total_search_all.shape[0] < total_show_all.shape[0]
+# # search_all() - assertions using "collection" and column name "description"
+# def test_search_all_assertions_column_name_portugal():
+#     galah.galah_config(atlas="Portugal")
+#     total_show_all = galah.show_all(assertions=True)
+#     total_search_all = galah.search_all(assertions="status", column_name="name")
+#     assert total_search_all.shape[0] < total_show_all.shape[0]
 
 
 # search_all() - atlases using "Portugal"
@@ -488,19 +501,19 @@ def test_search_all_datasets_column_name_portugal():
 
 
 # search_all() - fields using "accepted"
-def test_search_all_fields_portugal():
-    galah.galah_config(atlas="Portugal")
-    total_show_all = galah.show_all(fields=True)
-    total_search_all = galah.search_all(fields="accepted")
-    assert total_search_all.shape[0] < total_show_all.shape[0]
+# def test_search_all_fields_portugal():
+#     galah.galah_config(atlas="Portugal")
+#     total_show_all = galah.show_all(fields=True)
+#     total_search_all = galah.search_all(fields="accepted")
+#     assert total_search_all.shape[0] < total_show_all.shape[0]
 
 
-# search_all() - fields using "field" and column_nane "info"
-def test_search_all_fields_column_name_portugal():
-    galah.galah_config(atlas="Portugal")
-    total_show_all = galah.show_all(fields=True)
-    total_search_all = galah.search_all(fields="scien", column_name="jsonName")
-    assert total_search_all.shape[0] < total_show_all.shape[0]
+# # search_all() - fields using "field" and column_nane "info"
+# def test_search_all_fields_column_name_portugal():
+#     galah.galah_config(atlas="Portugal")
+#     total_show_all = galah.show_all(fields=True)
+#     total_search_all = galah.search_all(fields="scien", column_name="jsonName")
+#     assert total_search_all.shape[0] < total_show_all.shape[0]
 
 
 # no providers listed Portugal

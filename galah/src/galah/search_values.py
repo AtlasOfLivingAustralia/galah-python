@@ -1,7 +1,7 @@
 from .show_values import show_values
 
 
-def search_values(field=None, value=None, lists=False, all_fields=False, column_name=None):
+def search_values(field=None, value=None, lists=False, all_fields=False, column_name=None, config_file=None):
     """
     Users may wish to see the specific values within a chosen field, profile or list to narrow queries or understand
     more about the information of interest. ``search_values()`` allows users for search for specific values within
@@ -37,28 +37,22 @@ def search_values(field=None, value=None, lists=False, all_fields=False, column_
 
     if value is None:
         raise ValueError("Please specify the field you want to see query-able values for, i.e. field='basisOfRecord'")
-    elif type(value) is not str:
+
+    if not isinstance(value, str):
         raise TypeError("show_values() only takes a single string as the field argument, i.e. field='basisOfRecord'")
 
-    # get initial data frame
-    dataFrame = show_values(field=field, lists=lists, all_fields=all_fields)
+    if column_name is not None and not isinstance(column_name, str):
+        raise ValueError("Only strings are a valid query for the column_name variable")
 
-    # check for column name to search by
+    # get initial data frame
+    dataFrame = show_values(field=field, lists=lists, all_fields=all_fields, config_file=config_file)
+
     if column_name is None:
         column_name = dataFrame.columns[-1]
 
-    # throw ValueError if column_name variable is not a string
-    elif type(column_name) is not str:
-        raise ValueError("Only strings are a valid query for the column_name variable")
-
     # check to see if the user input the correct variable type; else, throw value error
-    if type(value) is str:
-        return (
-            dataFrame.loc[dataFrame[column_name].astype(str).str.contains(value, case=False, na=False)]
-            .sort_values(column_name, key=lambda x: x.str.len())
-            .reset_index(drop=True)
-        )
-    else:
-        raise ValueError(
-            "You can only pass one string to your search parameter = run show_all(assertions=True) to get strings to pass"
-        )
+    return (
+        dataFrame.loc[dataFrame[column_name].astype(str).str.contains(value, case=False, na=False)]
+        .sort_values(column_name, key=lambda x: x.str.len())
+        .reset_index(drop=True)
+    )

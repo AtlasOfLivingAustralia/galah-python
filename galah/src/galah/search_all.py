@@ -1,3 +1,6 @@
+from pandas.api.types import is_numeric_dtype
+
+from .common_checks import check_atlas
 from .galah_config import readConfig
 from .show_all import (
     show_all_apis,
@@ -31,6 +34,7 @@ def search_all(
     reasons=None,
     column_name=None,
     verbose=False,
+    config_file=None,
 ):
     """
     The living atlases store a huge amount of information, above and beyond the occurrence records that are their main output.
@@ -82,35 +86,35 @@ def search_all(
     .. program-output:: python -c "import galah; import pandas as pd;pd.set_option('display.max_columns', None);print(galah.search_all(apis=\\\'Australia\\\'))"
     """
 
-    # set up the option for getting back multiple values
-    return_array = []
-
     # configs
-    configs = readConfig()
+    configs = readConfig(config_file=config_file)
 
     # get atlas
     atlas = configs["galahSettings"]["atlas"]
 
-    headers = {"User-Agent": "galah-python/{}".format(__version__)}
+    # check atlas is valid
+    check_atlas(atlas=atlas, function="search_all")
 
+    headers = {"User-Agent": "galah-python/{}".format(__version__)}
     # check for column_name variable not being a string
-    if not isinstance(column_name, str):
+
+    if column_name is not None and not isinstance(column_name, str):
         raise ValueError("Only strings are a valid query for the column_name variable")
 
     options = {
-        # name:  [var, show_all function, check_sort_name, check_column_name ,column_name]
-        "assertions": [assertions, show_all_assertions, check_column_name_assertions, "description"],
-        "atlases": [atlases, show_all_atlases, check_column_name_apis_atlases, "description"],
-        "apis": [apis, show_all_apis, check_column_name_apis_atlases, "description"],
-        "collection": [collection, show_all_collections, check_column_name_collection, "description"],
-        "datasets": [datasets, show_all_datasets, check_column_name_datasets, "description"],
-        "fields": [fields, show_all_fields, check_column_name_fields, "description"],
-        "licences": [licences, show_all_licences, check_column_name_licences, "description"],
-        "lists": [lists, show_all_lists, check_column_name_lists, "description"],
-        "profiles": [profiles, show_all_profiles, check_column_name_profiles, "description"],
-        "providers": [providers, show_all_providers, check_column_name_providers, "description"],
-        "ranks": [ranks, show_all_ranks, check_column_name_ranks, "description"],
-        "reason": [reasons, show_all_reasons, check_column_name_reasons, "description"],
+        # name:  [var, show_all function, check_column_name ,column_name]
+        "assertions": [assertions, show_all_assertions, check_column_name_assertions],
+        "atlases": [atlases, show_all_atlases, check_column_name_apis_atlases],
+        "apis": [apis, show_all_apis, check_column_name_apis_atlases],
+        "collection": [collection, show_all_collections, check_column_name_collection],
+        "datasets": [datasets, show_all_datasets, check_column_name_datasets],
+        "fields": [fields, show_all_fields, check_column_name_fields],
+        "licences": [licences, show_all_licences, check_column_name_licences],
+        "lists": [lists, show_all_lists, check_column_name_lists],
+        "profiles": [profiles, show_all_profiles, check_column_name_profiles],
+        "providers": [providers, show_all_providers, check_column_name_providers],
+        "ranks": [ranks, show_all_ranks, check_column_name_ranks],
+        "reason": [reasons, show_all_reasons, check_column_name_reasons],
     }
 
     # loop over all options
@@ -123,23 +127,25 @@ def search_all(
                     "You can only pass one string to your search parameter = run show_all(assertions=True) to get strings to pass"
                 )
 
-            # get initial dataframe
-            dataFrame = options[o][1](atlas=atlas, headers=headers, verbose=verbose)
+            if o in ["atlases", "apis", "ranks"]:
+                dataFrame = options[o][1]()
 
-            # first, check column name, and then check sorting name
-            options[o][3] = options[o][2](atlas=atlas, column_name=column_name)
+                # first, check column name, and then check sorting name
+                column_name = options[o][2](column_name=column_name)
 
-        return_dataFrame = dataFrame.loc[
-            dataFrame[options[o][2]].astype(str).str.contains(options[o][0], case=False, na=False)
-        ]
-        return_array.append(
-            return_dataFrame.sort_values(options[o][3], key=lambda x: x.str.len()).reset_index(drop=True)
-        )
+            else:
+                # get initial dataframe
+                dataFrame = options[o][1](atlas=atlas, headers=headers, verbose=verbose)
 
-    # return a single data frame if only one query was flagged; otherwise, return array
-    if len(return_array) == 1:
-        return return_array[0]
-    return return_array
+                # first, check column name, and then check sorting name
+                column_name = options[o][2](atlas=atlas, column_name=column_name)
+
+            if is_numeric_dtype(dataFrame[column_name].dtypes):
+                dataFrame = dataFrame.map(str)
+            return_dataFrame = dataFrame.loc[
+                dataFrame[column_name].astype(str).str.contains(options[o][0], case=False, na=False)
+            ]
+            return return_dataFrame.sort_values(column_name, key=lambda x: x.str.len()).reset_index(drop=True)
 
 
 """
@@ -151,12 +157,12 @@ def check_column_name_assertions(atlas=None, column_name=None):
     # check if column_name is None; if it is, set it to default
     if column_name is None and atlas in ["Global", "GBIF"]:
         return "Description"
-    elif column_name is None:
+    if column_name is None:
         return "description"
     return column_name
 
 
-def check_column_name_apis_atlases(atlas=None, column_name=None):
+def check_column_name_apis_atlases(column_name=None):
     # check if column_name is None; if it is, set it to default
     if column_name is None:
         return "atlas"
@@ -166,10 +172,9 @@ def check_column_name_apis_atlases(atlas=None, column_name=None):
 def check_column_name_collection(atlas=None, column_name=None):
     # check to see if user wants default column name
     if column_name is None:
-        if atlas in ["France"]:
-            return "producers"
-        else:
-            return "name"
+        # if atlas in ["France"]:
+        #     return "producers"
+        return "name"
     return column_name
 
 
@@ -194,9 +199,9 @@ def check_column_name_datasets(atlas=None, column_name=None):
 
 def check_column_name_fields(atlas=None, column_name=None):
     if column_name is None and atlas in ["Global", "GBIF"]:
-        return "Description"
-    elif column_name is None and atlas in ["Portugal"]:
-        return "name"
+        return "qualifiedName"
+    # elif column_name is None and atlas in ["Portugal"]:
+    #     return "name"
     elif column_name is None:
         return "description"
     return column_name
@@ -218,9 +223,7 @@ def check_column_name_lists(atlas=None, column_name=None):
 
 def check_column_name_profiles(atlas=None, column_name=None):
     # check if column_name is None; if it is, set it to default
-    if column_name is None and atlas in ["Global", "GBIF"]:
-        return "Description"
-    elif column_name is None:
+    if column_name is None:
         return "description"
     return column_name
 

@@ -609,3 +609,17 @@ FIELD_SELECTIONS = {
     "event": ["eventRemarks", "eventTime", "eventID", "eventDate", "samplingEffort", "samplingProtocol"],
     "media": ["multimedia", "multimediaLicence", "images", "videos", "sounds"],
 }
+
+GROUP_BY_FACETS = {
+    "Australia": "facets",
+    "Austria": "facets",
+    "Brazil": "facets",
+    "France": "facets",
+    "GBIF": "facet",
+    "Global": "facet",
+    "Guatemala": "facets",
+    "Portugal": "facets",
+    "Spain": "facets",
+    "Sweden": "facets",
+    "United Kingdom": "facets",
+}

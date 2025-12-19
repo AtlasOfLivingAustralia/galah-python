@@ -1,16 +1,14 @@
 import io
-import urllib.parse
 
 import pandas as pd
 import requests
 
 from .atlas_occurrences import atlas_occurrences
-from .common_dictionaries import ATLAS_KEYWORDS, ATLAS_SPECIES_FIELDS, atlases
-from .common_functions import add_extras_to_URL, get_api_url, print_if_verbose
-from .galah_config import readConfig
-from .galah_filter import add_filters
-from .galah_geolocate import galah_geolocate
-from .search_taxa import search_taxa
+from .common_add_functions import add_extras_to_URL, add_filters, add_spatial_shapes, add_taxa
+from .common_checks import check_atlas, check_email_empty, check_string_list
+from .common_dictionaries import ATLAS_SPECIES_FIELDS
+from .common_functions import group_by_atlas_species, print_if_verbose
+from .galah_config import get_api_url, readConfig
 from .show_all import show_all
 from .version import __version__
 
@@ -29,6 +27,8 @@ def atlas_species(
     bbox=None,
     simplify_polygon=False,
     config_file=None,
+    tolerance=None,
+    mint_doi=None,
 ):
     """
     While there are reasons why users may need to check every record meeting their search criteria (i.e. using ``galah.atlas_occurrences()``),
@@ -76,50 +76,26 @@ def atlas_species(
     # get atlas
     atlas = configs["galahSettings"]["atlas"]
 
+    # check atlas is valid
+    check_atlas(atlas=atlas, function="atlas_species")
+
+    # check for email
+    check_email_empty()
+
     # get headers
     headers = {"User-Agent": "galah-python/{}".format(__version__)}
 
-    # check for email
-    if configs["galahSettings"]["email"] in [
-        None,
-        "",
-        configs["galahSettings"]["email"] == "email@example.com",
-    ]:
-        raise ValueError("Please provide an email for querying.")
+    # check variable types
+    filters = check_string_list(filters, "filters")
+    taxa = check_string_list(taxa, "taxa")
 
-    # first, check if the user has specified a taxa and if it is of the right variable type
-    if type(taxa) is not str and type(taxa) is not list and taxa is not None:
-        raise ValueError("Only a string or list can be specified for taxa names")
-
-    # check to see if rank is in possible ranks for atlas
-    if rank.lower() not in ATLAS_SPECIES_FIELDS[atlas]:
-        raise ValueError(
-            "{} is not a valid rank for the {} atlas.  Possible ranks are:\n\n{}\n".format(
-                rank, atlas, ", ".join(ATLAS_SPECIES_FIELDS[atlas])
-            )
-        )
+    atlas_species_error_checks(rank=rank, atlas=atlas)
 
     # get the ID of the rank to use to facet the data
     rankID = ATLAS_SPECIES_FIELDS[atlas][rank]
 
-    # get initial url
-    if atlas not in ["Global", "GBIF"]:
-        baseURL, method = get_api_url(column1="api_name", column1value="records_species")
-    else:
-        baseURL, method = get_api_url(column1="api_name", column1value="records_occurrences")
-
-    # raise warning - not sure how to fix it
-    if atlas in ["Spain"]:
-        print(
-            "There have been some issues getting all species when using a genus name.  If genus doesn't work, either use a species name or anything of family or higher order."
-        )
-    if atlas in ["Sweden"]:
-        print(
-            "There have been some issues getting taxonomy from the Swedish atlas, as they don't store names of taxon higher than species."
-        )
-
-    # get the taxonConceptID for taxa
-    if atlas in [
+    # declare all of the working atlases
+    working_atlases = [
         "Australia",
         "Austria",
         "Brazil",
@@ -129,106 +105,10 @@ def atlas_species(
         "Spain",
         "Sweden",
         "United Kingdom",
-    ]:
-
-        # if there is no taxa, just add question mark
-        if taxa is None:
-
-            # remember to add question mark
-            URL = baseURL + "?"
-
-        # if there is taxa, add these as fields on the URL
-        else:
-
-            # get the taxonConceptID for taxa - first check for extant atlas
-            if atlas in atlases:
-                taxonConceptID = list(search_taxa(taxa)[ATLAS_KEYWORDS[atlas]])
-            else:
-                raise ValueError("Atlas {} is not taken into account".format(atlas))
-
-            # add taxon IDs to the URL
-            if atlas in ["Global", "GBIF"]:
-                URL = baseURL + "".join(["taxonKey={}&".format(urllib.parse.quote(str(tid))) for tid in taxonConceptID])
-            else:
-                URL = (
-                    baseURL
-                    + "?fq=%28lsid%3A"
-                    + "%20OR%20lsid%3A".join(urllib.parse.quote(str(tid)) for tid in taxonConceptID)
-                    + "%29"
-                )
-
-        # check if filters are specified
-        if filters is not None:
-
-            # check the type of variable filters is
-            if type(filters) is list or type(filters) is str:
-
-                # add filters to URL
-                if taxa is None:
-                    URL = add_filters(URL=URL + "fq=", atlas=atlas, filters=filters)
-                else:
-                    URL = add_filters(URL=URL + "AND", atlas=atlas, filters=filters)
-
-            # else, make sure that the filters is in the following format
-            else:
-                raise TypeError(
-                    "filters should only be a list, and are in the following format:\n\nfilters=['year:2020']"
-                )
-
-        if group_by is not None:
-
-            # add facets into URL
-            URL += "&facets={}".format(group_by)
-
-        else:
-
-            # add facets into URL
-            URL += "&facets={}".format(rankID)
-
-        if polygon is not None or bbox is not None:
-
-            URL += "&wkt=" + urllib.parse.quote(
-                str(galah_geolocate(polygon=polygon, bbox=bbox, simplify_polygon=simplify_polygon))
-            )
-
-        if counts:
-
-            URL += "&count=true"
-
-        # set lookup=True to get all species data
-        URL += "&lookup=True"
-
-        # check if a user wants to use a data profile
-        if use_data_profile:
-            data_profile_list = list(show_all(profiles=True)["shortName"])
-        else:
-            data_profile_list = None
-
-        # add other things to URL
-        URL += add_extras_to_URL(
-            add_email=True,
-            use_data_profile=use_data_profile,
-            data_profile_list=data_profile_list,
-        )
-
-        # check to see if user wants the query URL
-        print_if_verbose(verbose=verbose, headers=headers, URL=URL, method=method)
-
-        # get response from url
-        response = requests.request(method, URL, headers=headers)
-
-        # check response first to see if user has hit maximum number of queries
-        if response.status_code == 429:
-            raise ValueError("You have reached the maximum number of daily queries for the ALA.")
-
-        if atlas in ["United Kingdom"]:
-            return pd.DataFrame(response.json()[0]["fieldResult"])
-
-        # return data as pandas dataframe
-        return pd.read_csv(io.StringIO(response.text))
+    ]
 
     # GBIF is treated differently, as it gives us a species list
-    elif atlas in ["Global", "GBIF"]:
+    if atlas in ["Global", "GBIF"]:
 
         # get the initial list
         test_list = atlas_occurrences(
@@ -264,6 +144,76 @@ def atlas_species(
         # else, return everything
         return test_list.reset_index(drop=True)
 
-    # else, this atlas hasn't been integrated into atlas_species yet
-    else:
-        raise ValueError("Atlas {} is not taken into account".format(atlas))
+    # get the taxonConceptID for taxa
+    elif atlas in working_atlases:
+
+        # get initial url
+        baseURL, method = get_api_url(column1="api_name", column1value="records_species", config_file=config_file)
+
+        # add information to URL
+        URL = add_taxa(taxa=taxa, atlas=atlas, URL=baseURL, scientific_name=scientific_name)
+        URL = add_filters(filters=filters, atlas=atlas, URL=URL)
+        URL = group_by_atlas_species(group_by=group_by, rankID=rankID, URL=URL)
+        URL = add_spatial_shapes(
+            polygon=polygon, bbox=bbox, URL=URL, simplify_polygon=simplify_polygon, tolerance=tolerance
+        )
+
+        # add this for getting counts
+        if counts:
+
+            URL += "&count=true"
+
+        # set lookup=True to get all species data
+        URL += "&lookup=True"
+
+        # mint a DOI if requested
+        if mint_doi:
+            URL += "&mintDoi=TRUE&"
+
+        # add last things to URL
+        if atlas in ["Australia", "ALA"]:
+            URL += add_extras_to_URL(
+                add_email=False,
+                use_data_profile=use_data_profile,
+                data_profile_list=list(show_all(profiles=True)["shortName"]),
+                atlas=atlas,
+            )
+        else:
+            URL += add_extras_to_URL(add_email=False, atlas=atlas)
+
+        # check to see if user wants the query URL
+        print_if_verbose(verbose=verbose, headers=headers, URL=URL, method=method)
+
+        # get response from url
+        response = requests.request(method, URL, headers=headers)
+
+        # check to see if the user has gotten a 403 error
+        # check_for_403_error(response=response, atlas=atlas)
+
+        if atlas in ["United Kingdom"]:
+            return pd.DataFrame(response.json()[0]["fieldResult"])
+
+        # return data as pandas dataframe
+        return pd.read_csv(io.StringIO(response.text))
+
+
+def atlas_species_error_checks(rank=None, atlas=None):
+    """raise all possible exceptions/errors before running the rest of the function"""
+
+    # check to see if rank is in possible ranks for atlas
+    if rank.lower() not in ATLAS_SPECIES_FIELDS[atlas]:
+        raise ValueError(
+            "{} is not a valid rank for the {} atlas.  Possible ranks are:\n\n{}\n".format(
+                rank, atlas, ", ".join(ATLAS_SPECIES_FIELDS[atlas])
+            )
+        )
+
+    # raise warning - not sure how to fix it
+    if atlas in ["Spain"]:
+        print(
+            "There have been some issues getting all species when using a genus name.  If genus doesn't work, either use a species name or anything of family or higher order."
+        )
+    if atlas in ["Sweden"]:
+        print(
+            "There have been some issues getting taxonomy from the Swedish atlas, as they don't store names of taxon higher than species."
+        )
