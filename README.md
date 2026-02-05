@@ -3,7 +3,8 @@
 <!-- badges: start -->
 
 [![pypi](https://img.shields.io/pypi/v/galah-python.svg)](https://pypi.org/project/galah-python/)
-[![Codecov test coverage](https://codecov.io/gh/AtlasOfLivingAustralia/galah-python/branch/main/graph/badge.svg)](https://app.codecov.io/gh/AtlasOfLivingAustralia/galah-python?branch=main)
+[![codecov.io](https://codecov.io/github/AtlasOfLivingAustralia/galah-python/coverage.svg?branch=master)]
+(https://codecov.io/github/AtlasOfLivingAustralia/galah-python?branch=master)
 
 <!-- badges: end -->
 
