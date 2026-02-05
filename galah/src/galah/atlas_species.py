@@ -3,11 +3,15 @@ import io
 import pandas as pd
 import requests
 
-from .atlas_occurrences import atlas_occurrences
-from .common_add_functions import add_extras_to_URL, add_filters, add_spatial_shapes, add_taxa
-from .common_checks import check_atlas, check_email_empty, check_string_list
+from .add_to_payload_functions import add_to_payload_ALA
+from .atlas_occurrences import atlas_occurrences, check_for_403_error
+from .common_add_functions import (add_extras_to_URL, add_filters,
+                                   add_spatial_shapes, add_taxa)
+from .common_checks import (check_atlas, check_email_empty,
+                            check_for_non_working_atlases, check_string_list)
 from .common_dictionaries import ATLAS_SPECIES_FIELDS
-from .common_functions import group_by_atlas_species, print_if_verbose
+from .common_functions import (group_by_atlas_species, print_if_verbose,
+                               set_bool_argument)
 from .galah_config import get_api_url, readConfig
 from .show_all import show_all
 from .version import __version__
@@ -17,9 +21,8 @@ def atlas_species(
     taxa=None,
     scientific_name=None,
     rank="species",
-    group_by=None,
+    group_by=None,  # taxonConceptID
     filters=None,
-    verbose=False,
     status_accepted=True,
     use_data_profile=False,
     counts=False,
@@ -43,8 +46,6 @@ def atlas_species(
             the rank you ultimately want to get names for, i.e. "genus" or "species".  Default is ``species``.
         filters : string
             filters, in the form ``field`` ``logical`` ``value`` (e.g. ``"year=2021"``)
-        verbose : logical
-            If ``True``, galah gives you the URLs used to query all the data.  Default to ``False``.
         status_accepted : logical
             If ``True``, galah gives you only the accepted taxonomic ranks. Default is ``False``.  **FOR GBIF ONLY
         polygon : shapely Polygon
@@ -67,20 +68,33 @@ def atlas_species(
 
         galah.atlas_species(taxa="Heleioporus")
 
+    
     .. program-output:: python -c "import galah; import pandas as pd;pd.set_option('display.max_columns', None);print(galah.atlas_species(taxa=\\\"Heleioporus\\\"))"
     """
+
+    # ---------------------------------------------------------------------------------------------
+    # Declare all variables, run checks on compatibility of arguments.
+    # ---------------------------------------------------------------------------------------------
 
     # get configs
     configs = readConfig(config_file=config_file)
 
     # get atlas
     atlas = configs["galahSettings"]["atlas"]
+    verbose = set_bool_argument(arg=configs["galahSettings"]["verbose"], name_arg="verbose")
+    timeout = int(configs["galahSettings"]["timeout"])
+    authenticate = set_bool_argument(arg=configs["galahSettings"]["authenticate"], name_arg="authenticate")
+    access_token = configs["galahSettings"]["access_token"]
+    client_id = configs["galahSettings"]["client_id"]
+
+    # check to see if atlas is in list of non-functioning atlases
+    check_for_non_working_atlases(atlas=atlas)
 
     # check atlas is valid
     check_atlas(atlas=atlas, function="atlas_species")
 
     # check for email
-    check_email_empty()
+    check_email_empty(config_file=config_file)
 
     # get headers
     headers = {"User-Agent": "galah-python/{}".format(__version__)}
@@ -94,18 +108,11 @@ def atlas_species(
     # get the ID of the rank to use to facet the data
     rankID = ATLAS_SPECIES_FIELDS[atlas][rank]
 
-    # declare all of the working atlases
-    working_atlases = [
-        "Australia",
-        "Austria",
-        "Brazil",
-        "France",
-        "Guatemala",
-        "Portugal",
-        "Spain",
-        "Sweden",
-        "United Kingdom",
-    ]
+    # ---------------------------------------------------------------------------------------------
+    # For GBIF, run atlas_occurrences, but with an option to get a species list
+    # Then, checks if authenticate option is True and the atlas is ALA
+    # Otherwise, go with default workflow
+    # ---------------------------------------------------------------------------------------------
 
     # GBIF is treated differently, as it gives us a species list
     if atlas in ["Global", "GBIF"]:
@@ -144,8 +151,35 @@ def atlas_species(
         # else, return everything
         return test_list.reset_index(drop=True)
 
-    # get the taxonConceptID for taxa
-    elif atlas in working_atlases:
+    # atlas_species()
+    if atlas in ["Australia", "ALA"] and authenticate:
+
+        # create payload and add buffer to polygon if user specifies it
+        payload = add_to_payload_ALA(
+            payload={},
+            atlas=atlas,
+            taxa=taxa,
+            filters=filters,
+            polygon=polygon,
+            bbox=bbox,
+            simplify_polygon=simplify_polygon,
+            scientific_name=scientific_name,
+        )
+
+        # add authorization token and client id for authentication
+        headers["Authorization"] = "Bearer {}".format(access_token)
+        headers["client_id"] = client_id
+
+        # create the query id
+        qid_URL, method2 = get_api_url(column1="api_name", column1value="occurrences_qid")
+        qid = requests.request(method2, qid_URL, data=payload, headers=headers)
+
+        # create the URL to grab the species ID and lists
+        baseURL, method = get_api_url(column1="api_name", column1value="records_species", config_file=config_file)
+        URL = baseURL + "?fq=%28qid%3A" + qid.text + "%29"
+        URL = group_by_atlas_species(group_by=group_by, rankID=rankID, URL=URL)
+
+    else:
 
         # get initial url
         baseURL, method = get_api_url(column1="api_name", column1value="records_species", config_file=config_file)
@@ -158,43 +192,48 @@ def atlas_species(
             polygon=polygon, bbox=bbox, URL=URL, simplify_polygon=simplify_polygon, tolerance=tolerance
         )
 
-        # add this for getting counts
-        if counts:
+    # ---------------------------------------------------------------------------------------------
+    # Add common extras to URL
+    # ---------------------------------------------------------------------------------------------
 
-            URL += "&count=true"
+    # add this for getting counts
+    if counts:
 
-        # set lookup=True to get all species data
-        URL += "&lookup=True"
+        URL += "&count=true"
 
-        # mint a DOI if requested
-        if mint_doi:
-            URL += "&mintDoi=TRUE&"
+    # set lookup=True to get all species data
+    URL += "&lookup=True"
 
-        # add last things to URL
-        if atlas in ["Australia", "ALA"]:
-            URL += add_extras_to_URL(
-                add_email=False,
-                use_data_profile=use_data_profile,
-                data_profile_list=list(show_all(profiles=True)["shortName"]),
-                atlas=atlas,
-            )
-        else:
-            URL += add_extras_to_URL(add_email=False, atlas=atlas)
+    # mint a DOI if requested
+    if mint_doi:
+        URL += "&mintDoi=TRUE&"
 
-        # check to see if user wants the query URL
-        print_if_verbose(verbose=verbose, headers=headers, URL=URL, method=method)
+    # add last things to URL
+    if atlas in ["Australia", "ALA"]:
+        URL += add_extras_to_URL(
+            add_email=False,
+            use_data_profile=use_data_profile,
+            data_profile_list=list(show_all(profiles=True)["shortName"]),
+            atlas=atlas,
+            config_file=config_file
+        )
+    else:
+        URL += add_extras_to_URL(add_email=False, atlas=atlas, config_file=config_file)
 
-        # get response from url
-        response = requests.request(method, URL, headers=headers)
+    # check to see if user wants the query URL
+    print_if_verbose(verbose=verbose, headers=headers, URL=URL, method=method)
 
-        # check to see if the user has gotten a 403 error
-        # check_for_403_error(response=response, atlas=atlas)
+    # get response from url
+    response = requests.request(method=method, url=URL, headers=headers, timeout=timeout)
 
-        if atlas in ["United Kingdom"]:
-            return pd.DataFrame(response.json()[0]["fieldResult"])
+    # check to see if the user has gotten a 403 error
+    check_for_403_error(response=response, atlas=atlas)
 
-        # return data as pandas dataframe
-        return pd.read_csv(io.StringIO(response.text))
+    if atlas in ["United Kingdom"]:
+        return pd.DataFrame(response.json()[0]["fieldResult"])
+
+    # return data as pandas dataframe
+    return pd.read_csv(io.StringIO(response.text))
 
 
 def atlas_species_error_checks(rank=None, atlas=None):

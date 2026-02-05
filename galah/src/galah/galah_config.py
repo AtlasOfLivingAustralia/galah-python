@@ -1,7 +1,13 @@
 import configparser
+import json
 import os
+import time
 
 import pandas as pd
+import requests
+
+from .common_functions import is_bool_argument
+from .get_tokens_from_web import get_auth_config, get_tokens_from_web
 
 # how I did this:
 # https://www.codeproject.com/Articles/5319621/Configuration-Files-in-Python
@@ -15,9 +21,14 @@ def galah_config(
     data_profile=None,
     ranks=None,
     reason=None,
+    verbose=None,
+    timeout=600,
     usernameGBIF=None,
     passwordGBIF=None,
     config_file=None,
+    authenticate=None,
+    auth_filename=None,
+    auth_clear=None,
 ):
     """
     The galah package supports large data downloads, and also interfaces with the ALA which requires that users of some
@@ -38,10 +49,14 @@ def galah_config(
             A string letting galah know what taxonomic ranks to show.  Use 'all' to see all 69 possible ranks, and 'gbif' to see the 9 most common ranks.
         reason: integer
             A number (integer) providing the reason you are downloading data.  Default is set to 4 (scientific research).  For a list of all possible reasons run ``galah.show_all_reasons()``
+        verbose : logical
+            If ``True``, galah gives you the URLs used to query all the data.  Default to ``False``.
         usernameGBIF: string
             Your username for GBIF atlas.  Default is ''.
         passwordGBIF: string
             Your password for GBIF atlas.  Default is ''.
+        authenticate: logical
+            An argument to
 
     Returns
     -------
@@ -61,15 +76,11 @@ def galah_config(
     configParser = configparser.ConfigParser()
 
     # read the config file
-    if config_file is None:
-        inifile = os.path.join(os.path.dirname(os.path.abspath(__file__)), "config.ini")
-    else:
-        if not os.path.isfile(config_file):
-            os.system("touch {}".format(config_file))
-        inifile = config_file
+    inifile = get_config_filename(config_file=config_file)
     configParser.read(inifile)
 
     # if configuration file is empty, fill with default values
+
     if len(configParser.sections()) == 0:
         configParser["galahSettings"] = {
             "email": "None",
@@ -78,26 +89,107 @@ def galah_config(
             "data_profile": "None",
             "ranks": "all",
             "reason": "4",
-            "usernameGBIF": "None",
-            "passwordGBIF": "None",
+            "verbose": "False",
+            "timeout": "600",
+            "usernamegbif": "",
+            "passwordgbif": "",
+            "authenticate": "False",
+            "client_id": "",
+            "client_secret": "",
+            "access_token": "",
+            "refresh_token": "",
+            "scopes": "",
+            "expires_at": "",
         }
 
     # check for global atlas and make sure it is named correctly
     atlas = check_atlas_name(atlas=atlas)
 
     # set the ranks by default for the Global atlas
-    if atlas == "Global":
-        ranks = "Global"
+    ranks = set_ranks(atlas=atlas, ranks=ranks)
+
+    # checking that these arguments are boolean if user has specified them
+    is_bool_argument(email_notify, "email_notify")
+    is_bool_argument(verbose, "verbose")
+    is_bool_argument(authenticate, "authenticate")
+    is_bool_argument(auth_clear, "auth_clear")
+
+    # check to see if someone wants to clear bad authentication information
+    configParser = check_for_clearing_auth_info(configParser=configParser, auth_clear=auth_clear)
+
+    # if the user wants authentication on, make sure that all authentication information needed is stored
+    if authenticate:
+
+        all_auth_settings = [
+            configParser["galahSettings"]["client_id"],
+            configParser["galahSettings"]["client_secret"],
+            configParser["galahSettings"]["refresh_token"],
+            configParser["galahSettings"]["access_token"],
+            configParser["galahSettings"]["scopes"],
+            configParser["galahSettings"]["expires_at"],
+        ]
+
+        if all(x not in [None, ""] for x in all_auth_settings):
+
+            # check if token is expired
+            expiry = is_access_token_expired(expires_at=float(configParser["galahSettings"]["expires_at"]))
+
+            # if token is expired, regenerate the token
+            if expiry:
+
+                # get token url
+                auth_info = get_auth_config()
+
+                # regenerate the token
+                refresh_token, expires_in = regenerate_token(
+                    refresh_token=configParser["galahSettings"]["refresh_token"],
+                    token_url=auth_info["token_url"],
+                    client_id=configParser["galahSettings"]["client_id"],
+                    client_secret = configParser["galahSettings"]["client_secret"],
+                    scope=configParser["galahSettings"]["scopes"],
+                )
+
+                # set the new token in the config file
+                configParser["galahSettings"]["refresh_token"] = refresh_token
+                configParser["galahSettings"]["expires_at"] = str(time.time() + float(expires_in))
+
+        else:
+
+            # check if person has provided an authentication json
+            if auth_filename is not None:
+
+                # read file into json
+                with open(auth_filename) as f:
+                    auth_json = json.load(f)
+
+                # set client_id and expires_at now
+                configParser["galahSettings"]["client_id"] = auth_json["profile"]["client_id"]
+                # configParser["galahSettings"]["client_secret"] = auth_json["profile"]["client_secret"]
+                configParser["galahSettings"]["expires_at"] = str(auth_json["expires_at"])
+
+            # if not, open web for them
+            elif all(x in [None, ""] for x in all_auth_settings):
+
+                # get the tokens from the web
+                try:
+                    client_id, auth_json = get_tokens_from_web()
+                    configParser["galahSettings"]["client_id"] = client_id
+                    configParser["galahSettings"]["expires_at"] = str(time.time() + float(auth_json["expires_in"]))
+
+                except KeyboardInterrupt:
+                    print("\nCancelled.")
+
+            else:
+                raise ValueError(
+                    "Your stored authentication information is incomplete.  Set the 'auth_clear' argument to True to reset all of the config changes."
+                )
+
+            configParser["galahSettings"]["scopes"] = auth_json["scope"]
+            configParser["galahSettings"]["refresh_token"] = auth_json["refresh_token"]
+            configParser["galahSettings"]["access_token"] = auth_json["access_token"]
 
     # check to see if there are any arguments to update - if not, return dataframe.  If so, update file.
-    if (
-        email is None
-        and email_notify is None
-        and atlas is None
-        and data_profile is None
-        and ranks is None
-        and reason is None
-    ):
+    if all(x is None for x in [authenticate, auth_filename, email, email_notify, atlas, data_profile, reason, verbose]):
 
         # create dictionary for pandas dataframe
         settings_dict = {"Configuration": [], "Value": []}
@@ -110,36 +202,58 @@ def galah_config(
 
     else:
 
-        list_of_terms = [
-            "email",
-            "email_notify",
-            "atlas",
-            "data_profile",
-            "ranks",
-            "reason",
-            "usernameGBIF",
-            "passwordGBIF",
-        ]
-        list_of_vars = [
-            email,
-            email_notify,
-            atlas,
-            data_profile,
-            ranks,
-            reason,
-            usernameGBIF,
-            passwordGBIF,
-        ]
+        terms_vars_dict = {
+            "email": email,
+            "email_notify": email_notify,
+            "atlas": atlas,
+            "data_profile": data_profile,
+            "ranks": ranks, 
+            "reason": reason,
+            "verbose": verbose,
+            "timeout": timeout,
+            "usernameGBIF": usernameGBIF,
+            "passwordGBIF": passwordGBIF,
+            "authenticate": authenticate,
+            "client_id": configParser["galahSettings"]["client_id"],
+            "client_secret": "", # need to implement this?
+            "access_token": configParser["galahSettings"]["access_token"],
+            "refresh_token": configParser["galahSettings"]["refresh_token"],
+            "scopes": configParser["galahSettings"]["scopes"],
+            "expires_at": configParser["galahSettings"]["expires_at"],
+        }
 
         # update the field to change
-        for name, item in zip(list_of_terms, list_of_vars):
-            if item is not None:
-                configParser["galahSettings"][name] = str(item)
+        for key in terms_vars_dict.keys():
+            if terms_vars_dict[key] is not None:
+                configParser["galahSettings"][key] = str(terms_vars_dict[key])
 
         # write to file
         with open(inifile, "w") as fileObject:
             configParser.write(fileObject)
         fileObject.close()
+
+
+###################################################################################################
+# Checks for galah_config
+###################################################################################################
+
+
+def set_ranks(atlas=None, ranks=None):
+    if ranks is None:
+        if atlas == "Global":
+            return "Global"
+        else:
+            return "all"
+    return ranks
+
+
+def get_config_filename(config_file=None):
+    if config_file is None:
+        return os.path.join(os.path.dirname(os.path.abspath(__file__)), "config.ini")
+    else:
+        if not os.path.isfile(config_file):
+            raise ValueError("Please create your own config file on your system first before editing it.")
+        return config_file
 
 
 def check_atlas_name(atlas=None):
@@ -210,3 +324,37 @@ def get_api_url(column1=None, column1value=None, column2=None, column2value=None
 
     # return the final URL
     return baseURL, method
+
+
+def is_access_token_expired(expires_at=None):
+    """
+    Check if your JWT token is expired
+    """
+    return time.time() > expires_at
+
+
+def regenerate_token(token_url=None, refresh_token=None, scope=None, client_id=None, client_secret=None):
+
+    # set up payload
+    payload = {"refresh_token": refresh_token, "grant_type": "refresh_token", "scope": scope, "client_id": client_id}
+    if client_secret is not None and not "":
+        payload["client_secret"] = client_secret
+
+    # print("token_url: {}".format(token_url))
+
+    # get the new token
+    r = requests.post(token_url, data=payload, timeout = 600)
+
+    # return the access token and expires_in if it works; otherwise, throw error
+    if r.ok:
+        data = r.json()
+        return data["access_token"], data["expires_in"]
+    else:
+        print("Unable to refresh access token. ", r.status_code, r.content)
+
+
+def check_for_clearing_auth_info(configParser=None, auth_clear=False):
+    if auth_clear:
+        for x in ["client_id", "refresh_token", "access_token", "scopes", "expires_at"]:
+            configParser["galahSettings"][x] = ""
+    return configParser

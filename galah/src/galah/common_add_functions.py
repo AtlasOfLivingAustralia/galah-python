@@ -1,15 +1,16 @@
 import urllib
 
 from .galah_config import readConfig
-from .galah_filter import check_for_duplicate_filters, galah_filter, process_or_filters
+from .galah_filter import (check_for_duplicate_filters, galah_filter,
+                           process_or_filters)
 from .galah_geolocate import galah_geolocate
 from .search_taxa import generate_list_taxonConceptIDs
 
 
-def add_extras_to_URL(add_email=True, use_data_profile=False, data_profile_list=None, atlas=None):
+def add_extras_to_URL(add_email=True, use_data_profile=False, data_profile_list=None, atlas=None, config_file=None):
 
     # get your configs
-    configs = readConfig()
+    configs = readConfig(config_file=config_file)
 
     # initialise variable
     end_url = "&"
@@ -50,7 +51,7 @@ def add_extras_to_URL(add_email=True, use_data_profile=False, data_profile_list=
     return end_url
 
 
-def add_filters(URL=None, atlas=None, filters=None):
+def add_filters(URL=None, atlas=None, filters=None, authenticate=False):
     """Adding filters directly to the URL"""
     # first, check if filters are None
     if filters is None:
@@ -66,7 +67,7 @@ def add_filters(URL=None, atlas=None, filters=None):
         # now, loop over filters
         fs = []
         for f in filters:
-            fs.append(galah_filter(f))
+            fs.append(galah_filter(f=f, authenticate=authenticate))
 
         # add filters to URL
         URL += "&".join(fs)
@@ -93,6 +94,13 @@ def add_filters(URL=None, atlas=None, filters=None):
     # split list based on the condition
     for f in filters:
         (and_filters, or_filters)[any(x in f for x in ["|", ","])].append(f)
+
+    # try this
+    if len(or_filters) > 0:
+        for f in or_filters:
+            if ", " in f:
+                and_filters.append(f)
+                or_filters.remove(f)
 
     # add and filters
     if len(and_filters) > 0:
@@ -154,9 +162,12 @@ def add_taxa(taxa=None, atlas=None, URL=None, scientific_name=None):
 
     # return None if there is no taxonConceptID; otherwise,
     if taxonConceptID is None:
-        return None
+        if URL[-1] == "?":
+            URL += "?" # try this
+        return URL
     if URL[-1] == "?":
         return URL + taxonConceptID
+
     URL += "?" + taxonConceptID
 
     return URL

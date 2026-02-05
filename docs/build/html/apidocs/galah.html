@@ -14,42 +14,46 @@
   
   <script data-cfasync="false">
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
-    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
-<link href="../_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
-<link href="../_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
-
-  
-  <link href="../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
+  <link href="../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../_static/css/extra.css?v=bc76f7e5" />
-    <link rel="stylesheet" type="text/css" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../_static/css/extra.css?v=bc76f7e5" />
   
+  <!-- So that users can add custom icons -->
+  <script src="../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
-<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
-  <script src="../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
     <script src="../_static/documentation_options.js?v=c5b435e8"></script>
-    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
-    <script src="../_static/design-tabs.js?v=36754332"></script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'apidocs/galah';</script>
     <link rel="icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Authors and Citation" href="../authors/index.html" />
-    <link rel="prev" title="Temporal filtering" href="../galah_user_guide/Temporal_Filtering.html" />
+    <link rel="prev" title="Authentication (Experimental)" href="../galah_user_guide/authentication.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="0.12.1" />
   </head>
   
   
@@ -57,31 +61,16 @@
 
   
   
-  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
   
   <div id="pst-scroll-pixel-helper"></div>
   
   <button type="button" class="btn rounded-pill" id="pst-back-to-top">
-    <i class="fa-solid fa-arrow-up"></i>
-    Back to top
-  </button>
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
 
   
-  <input type="checkbox"
-          class="sidebar-toggle"
-          name="__primary"
-          id="__primary"/>
-  <label class="overlay overlay-primary" for="__primary"></label>
-  
-  <input type="checkbox"
-          class="sidebar-toggle"
-          name="__secondary"
-          id="__secondary"/>
-  <label class="overlay overlay-secondary" for="__secondary"></label>
-  
-  <div class="search-button__wrapper">
-    <div class="search-button__overlay"></div>
-    <div class="search-button__search-container">
+  <dialog id="pst-search-dialog">
+    
 <form class="bd-search d-flex align-items-center"
       action="../search.html"
       method="get">
@@ -89,7 +78,6 @@
   <input type="search"
          class="form-control"
          name="q"
-         id="search-input"
          placeholder="Search the docs ..."
          aria-label="Search the docs ..."
          autocomplete="off"
@@ -97,20 +85,27 @@
          autocapitalize="off"
          spellcheck="false"/>
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
-</form></div>
-  </div>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
   
-    <header class="bd-header navbar navbar-expand-lg bd-navbar">
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
 <div class="bd-header__inner bd-page-width">
-  <label class="sidebar-toggle primary-toggle" for="__primary">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
     <span class="fa-solid fa-bars"></span>
-  </label>
+  </button>
   
   
   <div class="col-lg-3 navbar-header-items__start">
     
       <div class="navbar-item">
 
+  
+    
   
 
 <a class="navbar-brand logo" href="../index.html">
@@ -125,7 +120,7 @@
     
     
     <img src="../_static/logo.png" class="logo__image only-light" alt="Galah 0.12.1 documentation - Home"/>
-    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Galah 0.12.1 documentation - Home"/>`);</script>
+    <img src="../_static/logo.png" class="logo__image only-dark pst-js-only" alt="Galah 0.12.1 documentation - Home"/>
   
   
 </a></div>
@@ -137,43 +132,43 @@
     <div class="me-auto navbar-header-items__center">
       
         <div class="navbar-item">
-<nav class="navbar-nav">
+<nav>
   <ul class="bd-navbar-elements navbar-nav">
     
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../getting_started/index.html">
-                        Getting Started
-                      </a>
-                    </li>
-                
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../getting_started/index.html">
+    Getting Started
+  </a>
+</li>
 
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../galah_user_guide/index.html">
-                        Galah User Guide
-                      </a>
-                    </li>
-                
 
-                    <li class="nav-item current active">
-                      <a class="nav-link nav-internal" href="#">
-                        API Docs
-                      </a>
-                    </li>
-                
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../galah_user_guide/index.html">
+    Galah User Guide
+  </a>
+</li>
 
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../authors/index.html">
-                        Authors
-                      </a>
-                    </li>
-                
 
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../cheatsheet/index.html">
-                        Cheat Sheet
-                      </a>
-                    </li>
-                
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="#">
+    API Docs
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../authors/index.html">
+    Authors
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../cheatsheet/index.html">
+    Cheat Sheet
+  </a>
+</li>
+
   </ul>
 </nav></div>
       
@@ -185,31 +180,23 @@
         <div class="navbar-item navbar-persistent--container">
           
 
- <script>
- document.write(`
-   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass"></i>
-    <span class="search-button__default-text">Search</span>
-    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-   </button>
- `);
- </script>
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
         </div>
       
       
         <div class="navbar-item">
 
-<script>
-document.write(`
-  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
-    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
-    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
-  </button>
-`);
-</script></div>
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
       
-        <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+        <div class="navbar-item"><ul class="navbar-icon-links"
     aria-label="Icon Links">
         <li class="nav-item">
           
@@ -220,7 +207,7 @@ document.write(`
           
           
           
-          <a href="https://github.com/AtlasOfLivingAustralia/galah_python" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i></span>
+          <a href="https://github.com/AtlasOfLivingAustralia/galah_python" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
             <span class="sr-only">GitHub</span></a>
         </li>
 </ul></div>
@@ -232,22 +219,18 @@ document.write(`
   
     <div class="navbar-persistent--mobile">
 
- <script>
- document.write(`
-   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass"></i>
-    <span class="search-button__default-text">Search</span>
-    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-   </button>
- `);
- </script>
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
     </div>
   
 
   
-    <label class="sidebar-toggle secondary-toggle" for="__secondary" tabindex="0">
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
       <span class="fa-solid fa-outdent"></span>
-    </label>
+    </button>
   
 </div>
 
@@ -259,7 +242,8 @@ document.write(`
       
       
       
-      <div class="bd-sidebar-primary bd-sidebar">
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
         
 
   
@@ -268,46 +252,49 @@ document.write(`
     
       <div class="sidebar-header-items__center">
         
-          <div class="navbar-item">
-<nav class="navbar-nav">
+          
+          
+            <div class="navbar-item">
+<nav>
   <ul class="bd-navbar-elements navbar-nav">
     
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../getting_started/index.html">
-                        Getting Started
-                      </a>
-                    </li>
-                
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../getting_started/index.html">
+    Getting Started
+  </a>
+</li>
 
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../galah_user_guide/index.html">
-                        Galah User Guide
-                      </a>
-                    </li>
-                
 
-                    <li class="nav-item current active">
-                      <a class="nav-link nav-internal" href="#">
-                        API Docs
-                      </a>
-                    </li>
-                
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../galah_user_guide/index.html">
+    Galah User Guide
+  </a>
+</li>
 
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../authors/index.html">
-                        Authors
-                      </a>
-                    </li>
-                
 
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../cheatsheet/index.html">
-                        Cheat Sheet
-                      </a>
-                    </li>
-                
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="#">
+    API Docs
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../authors/index.html">
+    Authors
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../cheatsheet/index.html">
+    Cheat Sheet
+  </a>
+</li>
+
   </ul>
 </nav></div>
+          
         
       </div>
     
@@ -317,17 +304,13 @@ document.write(`
         
           <div class="navbar-item">
 
-<script>
-document.write(`
-  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
-    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
-    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
-  </button>
-`);
-</script></div>
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
         
-          <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+          <div class="navbar-item"><ul class="navbar-icon-links"
     aria-label="Icon Links">
         <li class="nav-item">
           
@@ -338,7 +321,7 @@ document.write(`
           
           
           
-          <a href="https://github.com/AtlasOfLivingAustralia/galah_python" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i></span>
+          <a href="https://github.com/AtlasOfLivingAustralia/galah_python" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
             <span class="sr-only">GitHub</span></a>
         </li>
 </ul></div>
@@ -358,29 +341,32 @@ document.write(`
   
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
   </div>
-  
-  <div id="rtd-footer-container"></div>
 
 
       </div>
       
-      <main id="main-content" class="bd-main">
+      <main id="main-content" class="bd-main" role="main">
         
         
           <div class="bd-content">
             <div class="bd-article-container">
               
-              <div class="bd-header-article">
+              <div class="bd-header-article d-print-none">
 <div class="header-article-items header-article__inner">
   
     <div class="header-article-items__start">
       
         <div class="header-article-item">
 
-
-
-<nav aria-label="Breadcrumb">
+<nav aria-label="Breadcrumb" class="d-print-none">
   <ul class="bd-breadcrumbs">
     
     <li class="breadcrumb-item breadcrumb-home">
@@ -388,7 +374,7 @@ document.write(`
         <i class="fa-solid fa-home"></i>
       </a>
     </li>
-    <li class="breadcrumb-item active" aria-current="page">API Docs</li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">API Docs</span></li>
   </ul>
 </nav>
 </div>
@@ -409,7 +395,7 @@ document.write(`
 <span id="api-docs"></span><h1>API Docs<a class="headerlink" href="#module-galah" title="Link to this heading">#</a></h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="galah.atlas_counts">
-<span class="sig-prename descclassname"><span class="pre">galah.</span></span><span class="sig-name descname"><span class="pre">atlas_counts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">taxa</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scientific_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filters</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">group_by</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">total_group_by</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_data_profile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">polygon</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bbox</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">simplify_polygon</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config_file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#galah.atlas_counts" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">galah.</span></span><span class="sig-name descname"><span class="pre">atlas_counts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">taxa</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scientific_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filters</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">group_by</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">total_group_by</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_data_profile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">polygon</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bbox</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">simplify_polygon</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tolerance</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config_file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#galah.atlas_counts" title="Link to this definition">#</a></dt>
 <dd><p>Prior to downloading data, it is often valuable to have some estimate of how many records are available, both for deciding
 if the query is feasible, and for estimating how long it will take to download. Alternatively, for some kinds of reporting,
 the count of observations may be all that is required, for example for understanding how observations are growing or shrinking
@@ -424,7 +410,6 @@ argument.  It can also return the total number of groups by using the <cite>tota
 <li><p><strong>filters</strong> (<em>pandas.DataFrame</em>) – filters, in the form <code class="docutils literal notranslate"><span class="pre">field</span></code> <code class="docutils literal notranslate"><span class="pre">logical</span></code> <code class="docutils literal notranslate"><span class="pre">value</span></code> (e.g. <code class="docutils literal notranslate"><span class="pre">&quot;year=2021&quot;</span></code>)</p></li>
 <li><p><strong>group_by</strong> (<em>string</em>) – zero or more individual column names (i.e. fields) to include. See <code class="docutils literal notranslate"><span class="pre">galah.show_all()</span></code> and <code class="docutils literal notranslate"><span class="pre">galah.search_all()</span></code> to see valid fields.</p></li>
 <li><p><strong>total_group_by</strong> (<em>logical</em>) – If <code class="docutils literal notranslate"><span class="pre">True</span></code>, galah gives total number of groups in data. Defaults to <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
-<li><p><strong>verbose</strong> (<em>logical</em>) – If <code class="docutils literal notranslate"><span class="pre">True</span></code>, galah gives more information like progress bars. Defaults to <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
 <li><p><strong>use_data_profile</strong> (<em>string</em>) – A profile name. Should be a string - the name or abbreviation of a data quality profile to apply to the query. Valid values can be seen using <code class="docutils literal notranslate"><span class="pre">galah.show_all(profiles=True)</span></code></p></li>
 <li><p><strong>polygon</strong> (<em>shapely Polygon</em>) – A polygon object denoting a geographical region.  Defaults to <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
 <li><p><strong>bbox</strong> (<em>dict</em><em> or </em><em>shapely Polygon</em>) – A polygon or dictionary object denoting four points, which are the corners of a geographical region.  Defaults to <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
@@ -444,25 +429,26 @@ span.prompt1:before {
 }
 </style><span class="prompt1"><span class="n">galah</span><span class="o">.</span><span class="n">atlas_counts</span><span class="p">()</span></span>
 </pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>   totalRecords
-0     151265039
+0     166681820
 </pre></div>
 </div>
 <p>Return records from 2020 onwards, grouped by year</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="n">galah</span><span class="o">.</span><span class="n">atlas_counts</span><span class="p">(</span><span class="n">filters</span><span class="o">=</span><span class="s2">&quot;year&gt;2019&quot;</span><span class="p">,</span><span class="n">group_by</span><span class="o">=</span><span class="s2">&quot;year&quot;</span><span class="p">)</span></span>
 </pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>   year     count
-0  2020   7247902
-1  2021   8567786
-2  2022   9199693
-3  2023  10616214
-4  2024   5914678
-5  2025   1098412
+0  2020   7311339
+1  2021   8692641
+2  2022   9429439
+3  2023  11005849
+4  2024  11882709
+5  2025   9127623
+6  2026    252818
 </pre></div>
 </div>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="galah.atlas_media">
-<span class="sig-prename descclassname"><span class="pre">galah.</span></span><span class="sig-name descname"><span class="pre">atlas_media</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">taxa</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scientific_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filters</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fields</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">multimedia</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">assertions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_data_profile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">polygon</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bbox</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">simplify_polygon</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">collect</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">thumbnail</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">progress_bar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config_file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#galah.atlas_media" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">galah.</span></span><span class="sig-name descname"><span class="pre">atlas_media</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">taxa</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scientific_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filters</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fields</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">multimedia</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_data_profile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">polygon</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bbox</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">simplify_polygon</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">collect</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">thumbnail</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">progress_bar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config_file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mint_doi</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">doi</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tolerance</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.05</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#galah.atlas_media" title="Link to this definition">#</a></dt>
 <dd><p>In addition to text data describing individual occurrences and their attributes, ALA stores images, sounds and videos
 associated with a given record. <code class="docutils literal notranslate"><span class="pre">galah.atlas_media()</span></code> displays metadata for any and all of the media types.</p>
 <dl class="field-list simple">
@@ -491,7 +477,6 @@ Default is set to <code class="docutils literal notranslate"><span class="pre">&
 </div></blockquote>
 <p>See <code class="docutils literal notranslate"><span class="pre">galah.show_all()</span></code> and <code class="docutils literal notranslate"><span class="pre">galah.search_all()</span></code> to see all valid fields.</p>
 </p></li>
-<li><p><strong>verbose</strong> (<em>logical</em>) – If <code class="docutils literal notranslate"><span class="pre">True</span></code>, galah gives more information like URLs queried. Defaults to <code class="docutils literal notranslate"><span class="pre">False</span></code></p></li>
 <li><p><strong>multimedia</strong> (<em>string / list</em>) – This is for specifying what types of multimedia you would like, i.e “images”.  Defaults to [‘images’,’videos’,’sounds’]</p></li>
 <li><p><strong>assertions</strong> (<em>string</em>) – Using “assertions” returns all quality assertion-related columns. These columns are data quality checks run by each living atlas. The list of assertions is shown by <code class="docutils literal notranslate"><span class="pre">galah.show_all(assertions=True)</span></code>.</p></li>
 <li><p><strong>use_data_profile</strong> (<em>logical</em>) – if <code class="docutils literal notranslate"><span class="pre">True</span></code>, uses data profile set in <code class="docutils literal notranslate"><span class="pre">galah_config()</span></code>. Valid values can be seen using <code class="docutils literal notranslate"><span class="pre">galah.show_all(profiles=True)</span></code>. Default is <code class="docutils literal notranslate"><span class="pre">False</span></code></p></li>
@@ -519,10 +504,6 @@ Default is set to <code class="docutils literal notranslate"><span class="pre">&
 3       -30.298183        153.005912  2020-09-04T18:28:00Z   
 4       -30.297841        153.005873  2020-09-26T17:39:00Z   
 5       -28.678673        153.297699  2020-08-13T00:00:00Z   
-6       -28.661653        153.300439  2020-10-12T17:20:00Z   
-7       -28.661653        153.300439  2020-10-12T17:20:00Z   
-8       -28.213785        153.386929  2020-01-17T07:09:00Z   
-9       -28.213785        153.386929  2020-01-17T07:09:00Z   
 
              scientificName                              recordID  \
 0  Ornithorhynchus anatinus  6882dfe3-5295-493d-a005-66f8392e9d5b   
@@ -531,22 +512,14 @@ Default is set to <code class="docutils literal notranslate"><span class="pre">&
 3  Ornithorhynchus anatinus  dd885218-bdb9-404a-8441-e5cd329f6605   
 4  Ornithorhynchus anatinus  072bc4f0-7581-44c6-b0ec-e3fe58d251fc   
 5  Ornithorhynchus anatinus  12d8c7f9-9d66-4312-9245-87a0a1021557   
-6  Ornithorhynchus anatinus  2a701513-b21d-4baa-bac4-5e6a3a65252b   
-7  Ornithorhynchus anatinus  2a701513-b21d-4baa-bac4-5e6a3a65252b   
-8  Ornithorhynchus anatinus  808b0c19-9616-45f1-994e-e3b33fc32836   
-9  Ornithorhynchus anatinus  808b0c19-9616-45f1-994e-e3b33fc32836   
 
-              dataResourceName occurrenceStatus multimedia  \
-0        iNaturalist Australia          PRESENT      Image   
-1        iNaturalist Australia          PRESENT      Image   
-2        iNaturalist Australia          PRESENT      Image   
-3        iNaturalist Australia          PRESENT      Image   
-4        iNaturalist Australia          PRESENT      Image   
-5        iNaturalist Australia          PRESENT      Image   
-6        iNaturalist Australia          PRESENT      Image   
-7        iNaturalist Australia          PRESENT      Image   
-8  Earth Guardians Weekly Feed          PRESENT      Image   
-9  Earth Guardians Weekly Feed          PRESENT      Image   
+        dataResourceName occurrenceStatus multimedia  \
+0  iNaturalist Australia          PRESENT      Image   
+1  iNaturalist Australia          PRESENT      Image   
+2  iNaturalist Australia          PRESENT      Image   
+3  iNaturalist Australia          PRESENT      Image   
+4  iNaturalist Australia          PRESENT      Image   
+5  iNaturalist Australia          PRESENT      Image   
 
                                  images videos  sounds       creator  \
 0  792a93d4-6436-4222-9a00-00cda0ec1f14    NaN     NaN  kerrycameron   
@@ -555,22 +528,14 @@ Default is set to <code class="docutils literal notranslate"><span class="pre">&
 3  40aadbde-3918-4bba-9dc9-13fa1da3809b    NaN     NaN  Brett Vercoe   
 4  14374712-1c37-4e2d-af28-4572f64e7d3a    NaN     NaN  Brett Vercoe   
 5  393df479-5fbb-464e-82ed-4d6fd19dd863    NaN     NaN  julespetroff   
-6  7424399a-f327-4ea1-9ffa-aa7a2b69f82b    NaN     NaN  julespetroff   
-7  cee7bb9f-6b2e-4c47-8ba8-c9a3bdf92fa0    NaN     NaN  julespetroff   
-8  66904cee-f8ca-4e3a-b7d5-d738f4bd0978    NaN     NaN          None   
-9  dfdbd258-d90a-484b-af19-2070705f166c    NaN     NaN          None   
 
-                                          license    mimetype  width  height  \
+                                          license    mimeType  width  height  \
 0  http://creativecommons.org/licenses/by-nc/4.0/  image/jpeg    927     701   
 1  http://creativecommons.org/licenses/by-nc/4.0/  image/jpeg   1365    2048   
 2  http://creativecommons.org/licenses/by-nc/4.0/  image/jpeg   2048    1238   
 3  http://creativecommons.org/licenses/by-nc/4.0/  image/jpeg   2048    1365   
 4  http://creativecommons.org/licenses/by-nc/4.0/  image/jpeg   2048    1365   
 5  http://creativecommons.org/licenses/by-nc/4.0/  image/jpeg    638     426   
-6  http://creativecommons.org/licenses/by-nc/4.0/  image/jpeg    713     401   
-7  http://creativecommons.org/licenses/by-nc/4.0/  image/jpeg    661     500   
-8                                            None  image/jpeg   2988    5312   
-9                                            None  image/jpeg   2988    5312   
 
                                             imageUrl  
 0  https://images.ala.org.au/store/4/1/f/1/792a93...  
@@ -578,29 +543,24 @@ Default is set to <code class="docutils literal notranslate"><span class="pre">&
 2  https://images.ala.org.au/store/e/9/8/a/09efd0...  
 3  https://images.ala.org.au/store/b/9/0/8/40aadb...  
 4  https://images.ala.org.au/store/a/3/d/7/143747...  
-5  https://images.ala.org.au/store/3/6/8/d/393df4...  
-6  https://images.ala.org.au/store/b/2/8/f/742439...  
-7  https://images.ala.org.au/store/0/a/f/2/cee7bb...  
-8  https://images.ala.org.au/store/8/7/9/0/66904c...  
-9  https://images.ala.org.au/store/c/6/6/1/dfdbd2...
+5  https://images.ala.org.au/store/3/6/8/d/393df4...
 </pre></div>
 </div>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="galah.atlas_occurrences">
-<span class="sig-prename descclassname"><span class="pre">galah.</span></span><span class="sig-name descname"><span class="pre">atlas_occurrences</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">taxa</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scientific_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filters</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fields</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">assertions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_data_profile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">species_list</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">status_accepted</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">polygon</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bbox</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">simplify_polygon</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mint_doi</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">doi</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config_file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#galah.atlas_occurrences" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">galah.</span></span><span class="sig-name descname"><span class="pre">atlas_occurrences</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">taxa</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scientific_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filters</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fields</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_data_profile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">species_list</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">status_accepted</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">polygon</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bbox</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">simplify_polygon</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mint_doi</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">doi</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config_file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tolerance</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.05</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#galah.atlas_occurrences" title="Link to this definition">#</a></dt>
 <dd><p>The most common form of data stored by living atlases are observations of individual life forms, known as ‘occurrences’.
 This function allows the user to search for occurrence records that match their specific criteria, and return them as a
 <code class="docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code> for analysis. Optionally, the user can also request a DOI for a given download to facilitate
-citation and re-use of specific data resources.</p>
+citation and reuse of specific data resources.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>taxa</strong> (<em>string</em>) – one or more scientific names. Use <code class="docutils literal notranslate"><span class="pre">galah.search_taxa()</span></code> to search for valid scientific names.</p></li>
 <li><p><strong>filters</strong> (<em>string / list</em>) – filters, in the form <code class="docutils literal notranslate"><span class="pre">field</span></code> <code class="docutils literal notranslate"><span class="pre">logical</span></code> <code class="docutils literal notranslate"><span class="pre">value</span></code> (e.g. <code class="docutils literal notranslate"><span class="pre">&quot;year=2021&quot;</span></code>)</p></li>
 <li><p><strong>test</strong> (<em>logical</em>) – Test if the API is up and running correctly.  Prints status of Atlas and returns.</p></li>
-<li><p><strong>verbose</strong> (<em>logical</em>) – If <code class="docutils literal notranslate"><span class="pre">True</span></code>, galah gives more information like URLs of your queries. Defaults to <code class="docutils literal notranslate"><span class="pre">False</span></code></p></li>
 <li><p><strong>fields</strong> (<em>string / list</em>) – <p>Name of one or more column groups to include. Valid options are “basic”, “event” and “assertions”
 Default is set to <code class="docutils literal notranslate"><span class="pre">&quot;fields=basic&quot;</span></code>, which returns:</p>
 <blockquote>
@@ -654,11 +614,11 @@ Default is set to <code class="docutils literal notranslate"><span class="pre">&
 3          -39.026141        146.332604  2023-07-16T00:00:00Z  Vulpes vulpes   
 4          -39.021544        146.443742  2023-03-14T15:40:48Z  Vulpes vulpes   
 ...               ...               ...                   ...            ...   
-8251        39.300000        -75.400000  2023-11-02T04:54:00Z  Vulpes vulpes   
-8252        40.000000        -81.500000  2023-07-14T11:15:00Z  Vulpes vulpes   
-8253        42.100000        -71.600000  2023-12-18T13:33:00Z  Vulpes vulpes   
-8254        43.600000        145.300000  2023-08-09T10:50:47Z  Vulpes vulpes   
-8255        51.100000         -0.500000  2023-03-17T12:04:54Z  Vulpes vulpes   
+8497        39.300000        -75.400000  2023-11-02T04:54:00Z  Vulpes vulpes   
+8498        40.000000        -81.500000  2023-07-14T11:15:00Z  Vulpes vulpes   
+8499        42.100000        -71.600000  2023-12-18T13:33:00Z  Vulpes vulpes   
+8500        43.600000        145.300000  2023-08-09T10:50:47Z  Vulpes vulpes   
+8501        51.100000         -0.500000  2023-03-17T12:04:54Z  Vulpes vulpes   
 
                                          taxonConceptID  \
 0     https://biodiversity.org.au/afd/taxa/2869ce8a-...   
@@ -667,11 +627,11 @@ Default is set to <code class="docutils literal notranslate"><span class="pre">&
 3     https://biodiversity.org.au/afd/taxa/2869ce8a-...   
 4     https://biodiversity.org.au/afd/taxa/2869ce8a-...   
 ...                                                 ...   
-8251  https://biodiversity.org.au/afd/taxa/2869ce8a-...   
-8252  https://biodiversity.org.au/afd/taxa/2869ce8a-...   
-8253  https://biodiversity.org.au/afd/taxa/2869ce8a-...   
-8254  https://biodiversity.org.au/afd/taxa/2869ce8a-...   
-8255  https://biodiversity.org.au/afd/taxa/2869ce8a-...   
+8497  https://biodiversity.org.au/afd/taxa/2869ce8a-...   
+8498  https://biodiversity.org.au/afd/taxa/2869ce8a-...   
+8499  https://biodiversity.org.au/afd/taxa/2869ce8a-...   
+8500  https://biodiversity.org.au/afd/taxa/2869ce8a-...   
+8501  https://biodiversity.org.au/afd/taxa/2869ce8a-...   
 
                                   recordID             dataResourceName  \
 0     572341b6-94ca-4d96-bf4f-889cbd5e26f0                    FeralScan   
@@ -680,11 +640,11 @@ Default is set to <code class="docutils literal notranslate"><span class="pre">&
 3     147fbb76-92b6-460c-bb12-4f9fc5f353b0                    FeralScan   
 4     e82ec752-fbcc-40e4-97e4-41adbfdee088        iNaturalist Australia   
 ...                                    ...                          ...   
-8251  531ca541-8c12-4bdd-834d-31980cd127ab  Earth Guardians Weekly Feed   
-8252  4065886d-ce29-48d2-b8b3-9bc4195ba8b3  Earth Guardians Weekly Feed   
-8253  d35e6a68-ca70-42d2-beae-e6747d1138cf  Earth Guardians Weekly Feed   
-8254  47b6921d-3891-4e52-b1aa-9fbd57e76823  Earth Guardians Weekly Feed   
-8255  65fc1040-5675-4f6c-8c92-40f8de159bed  Earth Guardians Weekly Feed   
+8497  531ca541-8c12-4bdd-834d-31980cd127ab  Earth Guardians Weekly Feed   
+8498  4065886d-ce29-48d2-b8b3-9bc4195ba8b3  Earth Guardians Weekly Feed   
+8499  d35e6a68-ca70-42d2-beae-e6747d1138cf  Earth Guardians Weekly Feed   
+8500  47b6921d-3891-4e52-b1aa-9fbd57e76823  Earth Guardians Weekly Feed   
+8501  65fc1040-5675-4f6c-8c92-40f8de159bed  Earth Guardians Weekly Feed   
 
      occurrenceStatus  
 0             PRESENT  
@@ -693,13 +653,13 @@ Default is set to <code class="docutils literal notranslate"><span class="pre">&
 3             PRESENT  
 4             PRESENT  
 ...               ...  
-8251          PRESENT  
-8252          PRESENT  
-8253          PRESENT  
-8254          PRESENT  
-8255          PRESENT  
+8497          PRESENT  
+8498          PRESENT  
+8499          PRESENT  
+8500          PRESENT  
+8501          PRESENT  
 
-[8256 rows x 8 columns]
+[8502 rows x 8 columns]
 </pre></div>
 </div>
 <p>Download records of Vulpes vulpes in 2023, returning only <code class="docutils literal notranslate"><span class="pre">eventDate</span></code> field</p>
@@ -713,20 +673,20 @@ Default is set to <code class="docutils literal notranslate"><span class="pre">&
 3     2023-01-01T00:00:00Z
 4     2023-01-01T00:00:00Z
 ...                    ...
-8251  2023-12-31T00:00:00Z
-8252  2023-12-31T00:00:00Z
-8253  2023-12-31T00:00:00Z
-8254  2023-12-31T14:01:00Z
-8255  2023-12-31T16:56:00Z
+8497  2023-12-31T00:00:00Z
+8498  2023-12-31T00:00:00Z
+8499  2023-12-31T00:00:00Z
+8500  2023-12-31T14:01:00Z
+8501  2023-12-31T16:56:00Z
 
-[8256 rows x 1 columns]
+[8502 rows x 1 columns]
 </pre></div>
 </div>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="galah.atlas_species">
-<span class="sig-prename descclassname"><span class="pre">galah.</span></span><span class="sig-name descname"><span class="pre">atlas_species</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">taxa</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scientific_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rank</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'species'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filters</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">status_accepted</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_data_profile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">counts</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">polygon</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bbox</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">simplify_polygon</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config_file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#galah.atlas_species" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">galah.</span></span><span class="sig-name descname"><span class="pre">atlas_species</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">taxa</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scientific_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rank</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'species'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">group_by</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filters</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">status_accepted</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_data_profile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">counts</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">polygon</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bbox</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">simplify_polygon</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config_file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tolerance</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mint_doi</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#galah.atlas_species" title="Link to this definition">#</a></dt>
 <dd><p>While there are reasons why users may need to check every record meeting their search criteria (i.e. using <code class="docutils literal notranslate"><span class="pre">galah.atlas_occurrences()</span></code>),
 a common use case is to simply identify which species occur in a specified region, time period, or taxonomic group.
 This function returns a <code class="docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code> with one row per species, and columns giving associated taxonomic information.</p>
@@ -736,7 +696,6 @@ This function returns a <code class="docutils literal notranslate"><span class="
 <li><p><strong>taxa</strong> (<em>string / list</em>) – one or more scientific names. Use <code class="docutils literal notranslate"><span class="pre">galah.search_taxa()</span></code> to search for valid scientific names.</p></li>
 <li><p><strong>rank</strong> (<em>string</em>) – the rank you ultimately want to get names for, i.e. “genus” or “species”.  Default is <code class="docutils literal notranslate"><span class="pre">species</span></code>.</p></li>
 <li><p><strong>filters</strong> (<em>string</em>) – filters, in the form <code class="docutils literal notranslate"><span class="pre">field</span></code> <code class="docutils literal notranslate"><span class="pre">logical</span></code> <code class="docutils literal notranslate"><span class="pre">value</span></code> (e.g. <code class="docutils literal notranslate"><span class="pre">&quot;year=2021&quot;</span></code>)</p></li>
-<li><p><strong>verbose</strong> (<em>logical</em>) – If <code class="docutils literal notranslate"><span class="pre">True</span></code>, galah gives you the URLs used to query all the data.  Default to <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
 <li><p><strong>status_accepted</strong> (<em>logical</em>) – If <code class="docutils literal notranslate"><span class="pre">True</span></code>, galah gives you only the accepted taxonomic ranks. Default is <code class="docutils literal notranslate"><span class="pre">False</span></code>.  <a href="#id1"><span class="problematic" id="id2">**</span></a>FOR GBIF ONLY</p></li>
 <li><p><strong>polygon</strong> (<em>shapely Polygon</em>) – A polygon shape denoting a geographical region.  Defaults to <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
 <li><p><strong>bbox</strong> (<em>dict</em><em> or </em><em>shapely Polygon</em>) – A polygon or dictionary type denoting four points, which are the corners of a geographical region.  Defaults to <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
@@ -751,12 +710,12 @@ This function returns a <code class="docutils literal notranslate"><span class="
 <p class="rubric">Examples</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="n">galah</span><span class="o">.</span><span class="n">atlas_species</span><span class="p">(</span><span class="n">taxa</span><span class="o">=</span><span class="s2">&quot;Heleioporus&quot;</span><span class="p">)</span></span>
 </pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>                                             Species  \
-0  https://biodiversity.org.au/afd/taxa/8bbafeb6-...   
-1  https://biodiversity.org.au/afd/taxa/894e0593-...   
-2  https://biodiversity.org.au/afd/taxa/7683b712-...   
-3  https://biodiversity.org.au/afd/taxa/dfae4fa3-...   
-4  https://biodiversity.org.au/afd/taxa/c77dbdfb-...   
-5  https://biodiversity.org.au/afd/taxa/d147024b-...   
+0  https://biodiversity.org.au/afd/taxa/4437371b-...   
+1  https://biodiversity.org.au/afd/taxa/d497c571-...   
+2  https://biodiversity.org.au/afd/taxa/f0d1bb06-...   
+3  https://biodiversity.org.au/afd/taxa/55de9548-...   
+4  https://biodiversity.org.au/afd/taxa/4f42e8dd-...   
+5  https://biodiversity.org.au/afd/taxa/40389159-...   
 
                 Species Name Scientific Name Authorship Taxon Rank   Kingdom  \
 0          Heleioporus eyrei               (Gray, 1845)    species  Animalia   
@@ -779,7 +738,7 @@ This function returns a <code class="docutils literal notranslate"><span class="
 1  Giant Burrowing Frog  
 2  Western Spotted Frog  
 3             Sand Frog  
-4          Hooting Frog  
+4    Western Marsh Frog  
 5           Plains Frog
 </pre></div>
 </div>
@@ -787,7 +746,7 @@ This function returns a <code class="docutils literal notranslate"><span class="
 
 <dl class="py function">
 <dt class="sig sig-object py" id="galah.galah_config">
-<span class="sig-prename descclassname"><span class="pre">galah.</span></span><span class="sig-name descname"><span class="pre">galah_config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">email</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">email_notify</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atlas</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_profile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ranks</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reason</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">usernameGBIF</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">passwordGBIF</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config_file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#galah.galah_config" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">galah.</span></span><span class="sig-name descname"><span class="pre">galah_config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">email</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">email_notify</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atlas</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_profile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ranks</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reason</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">600</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">usernameGBIF</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">passwordGBIF</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config_file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">authenticate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">auth_filename</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">auth_clear</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#galah.galah_config" title="Link to this definition">#</a></dt>
 <dd><p>The galah package supports large data downloads, and also interfaces with the ALA which requires that users of some
 services provide a registered email address and reason for downloading data. The <code class="docutils literal notranslate"><span class="pre">galah_config()</span></code> function provides a way
 to manage these issues as simply as possible.</p>
@@ -798,10 +757,12 @@ to manage these issues as simply as possible.</p>
 <li><p><strong>email_notify</strong> (<em>string</em>) – Used to receive an email for each query to <code class="docutils literal notranslate"><span class="pre">galah.atlas_occurrences()</span></code>. Defaults to <code class="docutils literal notranslate"><span class="pre">None</span></code>, but can be useful in some instances, for example for tracking DOIs assigned to specific downloads for later citation.</p></li>
 <li><p><strong>atlas</strong> (<em>string</em>) – Living Atlas to point to, <code class="docutils literal notranslate"><span class="pre">Australia</span></code> by default. Can be an organisation name, acronym, or region (see <code class="docutils literal notranslate"><span class="pre">show_all(atlases=True)</span></code> for admissible values)</p></li>
 <li><p><strong>data_profile</strong> (<em>string</em>) – A profile name. Should be a string - the name or abbreviation of a data quality profile to apply to the query. Valid values can be seen using <code class="docutils literal notranslate"><span class="pre">galah.show_all(profiles=True)</span></code></p></li>
-<li><p><strong>ranks</strong> (<em>string</em>) – A string letting galah know what taxonomic ranks to show.  Use “all” to see all 69 possible ranks, and “gbif” to see the 9 most common ranks.</p></li>
+<li><p><strong>ranks</strong> (<em>string</em>) – A string letting galah know what taxonomic ranks to show.  Use ‘all’ to see all 69 possible ranks, and ‘gbif’ to see the 9 most common ranks.</p></li>
 <li><p><strong>reason</strong> (<em>integer</em>) – A number (integer) providing the reason you are downloading data.  Default is set to 4 (scientific research).  For a list of all possible reasons run <code class="docutils literal notranslate"><span class="pre">galah.show_all_reasons()</span></code></p></li>
-<li><p><strong>usernameGBIF</strong> (<em>string</em>) – Your username for GBIF atlas.  Default is “”.</p></li>
-<li><p><strong>passwordGBIF</strong> (<em>string</em>) – Your password for GBIF atlas.  Default is “”.</p></li>
+<li><p><strong>verbose</strong> (<em>logical</em>) – If <code class="docutils literal notranslate"><span class="pre">True</span></code>, galah gives you the URLs used to query all the data.  Default to <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
+<li><p><strong>usernameGBIF</strong> (<em>string</em>) – Your username for GBIF atlas.  Default is ‘’.</p></li>
+<li><p><strong>passwordGBIF</strong> (<em>string</em>) – Your password for GBIF atlas.  Default is ‘’.</p></li>
+<li><p><strong>authenticate</strong> (<em>logical</em>) – An argument to</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -814,12 +775,12 @@ to manage these issues as simply as possible.</p>
 </dl>
 <p class="rubric">Examples</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="kn">import</span><span class="w"> </span><span class="nn">galah</span></span>
-<span class="prompt1"><span class="n">galah</span><span class="o">.</span><span class="n">galah_config</span><span class="p">(</span><span class="n">email</span><span class="o">=</span><span class="s2">&quot;yourname@example.com&quot;</span><span class="p">)</span></span>
+<span class="prompt1"><span class="n">galah</span><span class="o">.</span><span class="n">galah_config</span><span class="p">(</span><span class="n">email</span><span class="o">=</span><span class="s1">&#39;yourname@example.com&#39;</span><span class="p">)</span></span>
 </pre></div></div></dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="galah.search_all">
-<span class="sig-prename descclassname"><span class="pre">galah.</span></span><span class="sig-name descname"><span class="pre">search_all</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">assertions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atlases</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">apis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">collection</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">datasets</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fields</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">licences</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lists</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">profiles</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">providers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ranks</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reasons</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#galah.search_all" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">galah.</span></span><span class="sig-name descname"><span class="pre">search_all</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">assertions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atlases</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">apis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">collection</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">datasets</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fields</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">licences</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lists</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">profiles</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">providers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ranks</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reasons</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config_file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#galah.search_all" title="Link to this definition">#</a></dt>
 <dd><p>The living atlases store a huge amount of information, above and beyond the occurrence records that are their main output.
 In galah, one way that users can investigate this information is by searching for a specific option or category for the
 type of information they are interested in.  <code class="docutils literal notranslate"><span class="pre">search_all()</span></code> is a helper function that can do searches within multiple
@@ -848,97 +809,106 @@ types of information.</p>
 </dl>
 <p class="rubric">Examples</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="kn">import</span><span class="w"> </span><span class="nn">galah</span></span>
-<span class="prompt1"><span class="n">galah</span><span class="o">.</span><span class="n">search_all</span><span class="p">(</span><span class="n">apis</span><span class="o">=</span><span class="s2">&quot;Australia&quot;</span><span class="p">)</span></span>
-</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>        atlas         system                   api_name  \
-0   Australia    collections    collections_collections   
-1   Australia        species           species_children   
-2   Australia        spatial             spatial_layers   
-3   Australia        records            records_species   
-4   Australia        records        records_occurrences   
-5   Australia        records             records_fields   
-6   Australia        records             records_facets   
-7   Australia        records             records_counts   
-8   Australia        records         records_assertions   
-9   Australia  name-matching        names_search_single   
-10  Australia  name-matching      names_search_multiple   
-11  Australia        species  names_search_bulk_species   
-12  Australia  name-matching               names_lookup   
-13  Australia         logger             logger_reasons   
-14  Australia          lists               lists_lookup   
-15  Australia          lists                  lists_all   
-16  Australia         images             image_download   
-17  Australia         images             image_metadata   
-18  Australia         images             image_licences   
-19  Australia            doi               doi_download   
-20  Australia   data-quality            profiles_lookup   
-21  Australia   data-quality               profiles_all   
-22  Australia    collections      collections_providers   
-23  Australia    collections       collections_datasets   
-24  Australia        species             species_lookup   
-25  Australia    occurrences            occurrences_qid   
+<span class="prompt1"><span class="n">galah</span><span class="o">.</span><span class="n">search_all</span><span class="p">(</span><span class="n">apis</span><span class="o">=</span><span class="s1">&#39;Australia&#39;</span><span class="p">)</span></span>
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>        atlas          system                   api_name  \
+0   Australia     collections    collections_collections   
+1   Australia         species             species_lookup   
+2   Australia         species           species_children   
+3   Australia         spatial             spatial_layers   
+4   Australia         records            records_species   
+5   Australia         records        records_occurrences   
+6   Australia         records             records_fields   
+7   Australia         records             records_facets   
+8   Australia         records             records_counts   
+9   Australia         records         records_assertions   
+10  Australia   name-matching        names_search_single   
+11  Australia   name-matching       names_search_epithet   
+12  Australia   name-matching      names_search_multiple   
+13  Australia     occurrences            occurrences_qid   
+14  Australia         species  names_search_bulk_species   
+15  Australia          logger             logger_reasons   
+16  Australia           lists               lists_lookup   
+17  Australia           lists                  lists_all   
+18  Australia          images             image_download   
+19  Australia          images        image_bulk_metadata   
+20  Australia          images             image_metadata   
+21  Australia          images             image_licences   
+22  Australia             doi               doi_download   
+23  Australia    data-quality            profiles_lookup   
+24  Australia    data-quality               profiles_all   
+25  Australia     collections      collections_providers   
+26  Australia     collections       collections_datasets   
+27  Australia   name-matching               names_lookup   
+28  Australia  authentication             authentication   
 
                                               api_url  \
 0       https://api.ala.org.au/metadata/ws/collection   
-1   https://api.ala.org.au/species/childConcepts/{...   
-2       https://api.ala.org.au/spatial-service/fields   
-3   https://api.ala.org.au/occurrences/occurrences...   
+1   https://api.ala.org.au/species/childConcepts/{id}   
+2   https://api.ala.org.au/species/childConcepts/{...   
+3       https://api.ala.org.au/spatial-service/fields   
 4   https://api.ala.org.au/occurrences/occurrences...   
-5     https://api.ala.org.au/occurrences/index/fields   
-6   https://api.ala.org.au/occurrences/occurrences...   
+5   https://api.ala.org.au/occurrences/occurrences...   
+6     https://api.ala.org.au/occurrences/index/fields   
 7   https://api.ala.org.au/occurrences/occurrences...   
-8   https://api.ala.org.au/occurrences/assertions/...   
-9   https://api.ala.org.au/namematching/api/search...   
+8   https://api.ala.org.au/occurrences/occurrences...   
+9   https://api.ala.org.au/occurrences/assertions/...   
 10  https://api.ala.org.au/namematching/api/search...   
-11      https://bie.ala.org.au/ws/species/lookup/bulk   
-12  https://api.ala.org.au/namematching/api/getByT...   
-13  https://api.ala.org.au/logger/service/logger/r...   
-14  https://api.ala.org.au/specieslist/ws/speciesL...   
-15  https://api.ala.org.au/specieslist/ws/speciesList   
-16  https://api.ala.org.au/images/ws/image/{id}/or...   
-17  https://api.ala.org.au/images/ws/getImageInfoF...   
-18           https://api.ala.org.au/images/ws/licence   
-19  https://api.ala.org.au/doi/api/doi/{doi_string...   
-20  https://api.ala.org.au/dqf-service/api/v1/data...   
-21  https://api.ala.org.au/dqf-service/api/v1/data...   
-22    https://api.ala.org.au/metadata/ws/dataProvider   
-23  \thttps://api.ala.org.au/metadata/ws/dataResource   
-24  https://api.ala.org.au/species/childConcepts/{id}   
-25             https://api.ala.org.au/occurrences/qid   
+11  https://api.ala.org.au/namematching/api/search...   
+12  https://api.ala.org.au/namematching/api/search...   
+13             https://api.ala.org.au/occurrences/qid   
+14  https://api.ala.org.au/species/species/lookup/...   
+15  https://api.ala.org.au/logger/service/logger/r...   
+16  https://api.ala.org.au/specieslist/ws/speciesL...   
+17  https://api.ala.org.au/specieslist/ws/speciesList   
+18  https://api.ala.org.au/images/ws/image/{id}/or...   
+19  https://api.ala.org.au/images/ws/getImageInfoF...   
+20   https://api.ala.org.au/images/ws/image/{imageID}   
+21           https://api.ala.org.au/images/ws/licence   
+22  https://api.ala.org.au/doi/api/doi/{doi_string...   
+23  https://api.ala.org.au/dqf-service/api/v1/data...   
+24  https://api.ala.org.au/dqf-service/api/v1/data...   
+25    https://api.ala.org.au/metadata/ws/dataProvider   
+26    https://api.ala.org.au/metadata/ws/dataResource   
+27  https://api.ala.org.au/namematching/api/getByT...   
+28    https://api.ala.org.au/common/api/getAuthConfig   
 
                            called_by  functional method  
 0               show_all-collections        True    GET  
 1                     atlas_taxonomy        True    GET  
-2                    show_all-fields        True    GET  
-3                      atlas_species        True    GET  
-4                  atlas_occurrences        True    GET  
-5                    show_all-fields        True    GET  
-6   atlas_counts, show_values-fields        True    GET  
-7                       atlas_counts        True    GET  
-8                show_all-assertions        True    GET  
-9                        search_taxa        True    GET  
+2                     atlas_taxonomy        True    GET  
+3                    show_all-fields        True    GET  
+4                      atlas_species        True    GET  
+5                  atlas_occurrences        True    GET  
+6                    show_all-fields        True    GET  
+7   atlas_counts, show_values-fields        True    GET  
+8                       atlas_counts        True    GET  
+9                show_all-assertions        True    GET  
 10                       search_taxa        True    GET  
-11                     atlas_species        True   POST  
-12                search_identifiers        True    GET  
-13                  show_all-reasons        True    GET  
-14                 show_values-lists        True    GET  
-15                    show_all-lists        True    GET  
-16                    media_download        True    GET  
-17                    media_metadata        True   POST  
-18                 show_all-licences        True    GET  
-19                      doi_download        True    GET  
-20              show_values-profiles        True    GET  
-21                 show_all-profiles        True    GET  
-22                show_all-providers        True    GET  
-23                 show_all-datasets        True    GET  
-24                    atlas_taxonomy        True    GET  
-25                 atlas_occurrences        True   POST
+11                       search_taxa        True    GET  
+12                       search_taxa        True   POST  
+13                 atlas_occurrences        True   POST  
+14                     atlas_species        True   POST  
+15                  show_all-reasons        True    GET  
+16                 show_values-lists        True    GET  
+17                    show_all-lists        True    GET  
+18                    media_download        True    GET  
+19                    media_metadata        True   POST  
+20                    media_metadata        True    GET  
+21                 show_all-licences        True    GET  
+22                      doi_download        True    GET  
+23              show_values-profiles        True    GET  
+24                 show_all-profiles        True    GET  
+25                show_all-providers        True    GET  
+26                 show_all-datasets        True    GET  
+27                search_identifiers        True    GET  
+28         get_authentication_tokens        True    GET
 </pre></div>
 </div>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="galah.search_taxa">
-<span class="sig-prename descclassname"><span class="pre">galah.</span></span><span class="sig-name descname"><span class="pre">search_taxa</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">taxa</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">identifiers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">specific_epithet</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scientific_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#galah.search_taxa" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">galah.</span></span><span class="sig-name descname"><span class="pre">search_taxa</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">taxa</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">identifiers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">specific_epithet</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scientific_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config_file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#galah.search_taxa" title="Link to this definition">#</a></dt>
 <dd><p>Look up taxonomic names before downloading data from the ALA, using <code class="docutils literal notranslate"><span class="pre">atlas_occurrences()</span></code>, <code class="docutils literal notranslate"><span class="pre">atlas_species()</span></code> or
 <code class="docutils literal notranslate"><span class="pre">atlas_counts()</span></code>. Taxon information returned by <code class="docutils literal notranslate"><span class="pre">search_taxa()</span></code> may be passed to the <code class="docutils literal notranslate"><span class="pre">taxa</span></code> argument of <code class="docutils literal notranslate"><span class="pre">atlas</span></code>
 functions.</p>
@@ -962,10 +932,10 @@ clades) prior to downloading data.</p>
 <p>Get taxonomic identifiers for “Vulpes vulpes”</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="kn">import</span><span class="w"> </span><span class="nn">galah</span></span>
 <span class="prompt1"><span class="n">galah</span><span class="o">.</span><span class="n">search_taxa</span><span class="p">(</span><span class="n">taxa</span><span class="o">=</span><span class="s2">&quot;Vulpes vulpes&quot;</span><span class="p">)</span></span>
-</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>  scientificName scientificNameAuthorship  ... vernacularName   issues
-0  Vulpes vulpes           Linnaeus, 1758  ...            Fox  noIssue
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>  scientificName scientificNameAuthorship  ...   issues vernacularName
+0  Vulpes vulpes           Linnaeus, 1758  ...  noIssue            Fox
 
-[1 rows x 12 columns]
+[1 rows x 14 columns]
 </pre></div>
 </div>
 <p>Get the species name from a taxonomic identifier</p>
@@ -974,14 +944,14 @@ clades) prior to downloading data.</p>
 </pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>        scientificName scientificNameAuthorship  \
 0  Eucalyptus blakelyi                   Maiden   
 
-                                     taxonConceptID     rank  kingdom  \
-0  https://id.biodiversity.org.au/node/apni/2914510  species  Plantae   
+                                     taxonConceptID     rank     matchType  \
+0  https://id.biodiversity.org.au/node/apni/2914510  species  taxonIdMatch   
 
-       phylum     order     family       genus              species  \
-0  Charophyta  Myrtales  Myrtaceae  Eucalyptus  Eucalyptus blakelyi   
+   kingdom      phylum         classs     order     family       genus  \
+0  Plantae  Charophyta  Equisetopsida  Myrtales  Myrtaceae  Eucalyptus   
 
-         vernacularName   issues  
-0  White-budded Red-gum  noIssue
+               species   issues     vernacularName  
+0  Eucalyptus blakelyi  noIssue  Blakely&#39;s Red Gum
 </pre></div>
 </div>
 <p>Search taxonomic levels by using the key word “specificEpithet”</p>
@@ -990,14 +960,14 @@ clades) prior to downloading data.</p>
 </pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>                      scientificName scientificNameAuthorship  \
 0  Pardalotus (Pardalotus) punctatus             (Shaw, 1792)   
 
-                                      taxonConceptID     rank   kingdom  \
-0  https://biodiversity.org.au/afd/taxa/5254fe03-...  species  Animalia   
+                                      taxonConceptID     rank   matchType  \
+0  https://biodiversity.org.au/afd/taxa/5254fe03-...  species  exactMatch   
 
-     phylum          order        family       genus               species  \
-0  Chordata  Passeriformes  Pardalotidae  Pardalotus  Pardalotus punctatus   
+    kingdom    phylum classs          order        family       genus  \
+0  Animalia  Chordata   Aves  Passeriformes  Pardalotidae  Pardalotus   
 
-      vernacularName   issues  
-0  Spotted Pardalote  noIssue
+                species   issues     vernacularName  
+0  Pardalotus punctatus  noIssue  Spotted Pardalote
 </pre></div>
 </div>
 <p>Search taxonomic levels by using the key word “scientificName”</p>
@@ -1005,26 +975,22 @@ clades) prior to downloading data.</p>
 <span class="prompt1"><span class="n">galah</span><span class="o">.</span><span class="n">search_taxa</span><span class="p">(</span><span class="n">scientific_name</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;family&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;pardalotidae&quot;</span><span class="p">,</span><span class="s2">&quot;maluridae&quot;</span><span class="p">],</span><span class="s2">&quot;scientificName&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;pardolatus striatus&quot;</span><span class="p">,</span><span class="s2">&quot;malurus cyaneus&quot;</span><span class="p">]})</span></span>
 </pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>                       scientificName scientificNameAuthorship  \
 0  Pardalotus (Pardalotinus) striatus           (Gmelin, 1789)   
-0           Malurus (Malurus) cyaneus            (Ellis, 1782)   
 
-                                      taxonConceptID     rank   kingdom  \
-0  https://biodiversity.org.au/afd/taxa/e3103245-...  species  Animalia   
-0  https://biodiversity.org.au/afd/taxa/ae56080e-...  species  Animalia   
+                                      taxonConceptID     rank   matchType  \
+0  https://biodiversity.org.au/afd/taxa/e3103245-...  species  fuzzyMatch   
 
-     phylum          order        family       genus              species  \
-0  Chordata  Passeriformes  Pardalotidae  Pardalotus  Pardalotus striatus   
-0  Chordata  Passeriformes     Maluridae     Malurus      Malurus cyaneus   
+    kingdom    phylum classs          order        family       genus  \
+0  Animalia  Chordata   Aves  Passeriformes  Pardalotidae  Pardalotus   
 
-       vernacularName   issues  
-0  Striated Pardalote  noIssue  
-0   Superb Fairy-wren  noIssue
+               species   issues      vernacularName  
+0  Pardalotus striatus  noIssue  Striated Pardalote
 </pre></div>
 </div>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="galah.search_values">
-<span class="sig-prename descclassname"><span class="pre">galah.</span></span><span class="sig-name descname"><span class="pre">search_values</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">field</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lists</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">all_fields</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#galah.search_values" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">galah.</span></span><span class="sig-name descname"><span class="pre">search_values</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">field</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lists</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">all_fields</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config_file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#galah.search_values" title="Link to this definition">#</a></dt>
 <dd><p>Users may wish to see the specific values within a chosen field, profile or list to narrow queries or understand
 more about the information of interest. <code class="docutils literal notranslate"><span class="pre">search_values()</span></code> allows users for search for specific values within
 a specified field.</p>
@@ -1044,18 +1010,13 @@ a specified field.</p>
 </dl>
 <p class="rubric">Examples</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="kn">import</span><span class="w"> </span><span class="nn">galah</span></span>
-<span class="prompt1"><span class="n">galah</span><span class="o">.</span><span class="n">search_values</span><span class="p">(</span><span class="n">field</span><span class="o">=</span><span class="s2">&quot;basisOfRecord&quot;</span><span class="p">,</span><span class="n">value</span><span class="o">=</span><span class="s2">&quot;OBS&quot;</span><span class="p">)</span></span>
-</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>           field             category
-0  basisOfRecord          OBSERVATION
-1  basisOfRecord    HUMAN_OBSERVATION
-2  basisOfRecord  MACHINE_OBSERVATION
-</pre></div>
-</div>
+<span class="prompt1"><span class="n">galah</span><span class="o">.</span><span class="n">search_values</span><span class="p">(</span><span class="n">field</span><span class="o">=</span><span class="s1">&#39;basisOfRecord&#39;</span><span class="p">,</span><span class="n">value</span><span class="o">=</span><span class="s1">&#39;OBS&#39;</span><span class="p">)</span></span>
+</pre></div></div><p>#.. program-output:: python -c ‘import galah; print(galah.search_values(field='basisOfRecord',value='obs'))’</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="galah.show_all">
-<span class="sig-prename descclassname"><span class="pre">galah.</span></span><span class="sig-name descname"><span class="pre">show_all</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">assertions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atlases</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">apis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">collection</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">datasets</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fields</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">licences</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lists</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">profiles</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">providers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ranks</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reasons</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#galah.show_all" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">galah.</span></span><span class="sig-name descname"><span class="pre">show_all</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">assertions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atlases</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">apis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">collection</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">datasets</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fields</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">licences</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lists</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">profiles</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">providers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ranks</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reasons</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config_file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#galah.show_all" title="Link to this definition">#</a></dt>
 <dd><p>The living atlases store a huge amount of information, above and beyond the occurrence records that are their main output.
 In galah, one way that users can investigate this information is by showing all the available options or categories for the
 type of information they are interested in. <code class="docutils literal notranslate"><span class="pre">show_all()</span></code> is a helper function that can display multiple types of information,
@@ -1091,33 +1052,33 @@ displaying all valid options for the information specified.</p>
 3                                    &quot;P to Z&quot; flora EPBC   
 4      (Appendix 2) Stratigraphic distribution of key...   
 ...                                                  ...   
-11551  Zooplankton samples from Heron net trawls alon...   
-11552  Zooplankton sampling in the coastal waters of ...   
-11553                         Zoos Victoria Moth Tracker   
-11554                            Zosteria fulvipubescens   
-11555                            Zosteria fulvipubescens   
+14004  Zooplankton sampling in the coastal waters of ...   
+14005                         Zoos Victoria Moth Tracker   
+14006                            Zosteria fulvipubescens   
+14007                            Zosteria fulvipubescens   
+14008                                                zza   
 
                                                      uri      uid  
 0      https://collections.ala.org.au/ws/dataResource...  dr23929  
 1      https://collections.ala.org.au/ws/dataResource...  dr24170  
 2      https://collections.ala.org.au/ws/dataResource...  dr24172  
 3      https://collections.ala.org.au/ws/dataResource...  dr24173  
-4      https://collections.ala.org.au/ws/dataResource...  dr30595  
+4      https://collections.ala.org.au/ws/dataResource...  dr30390  
 ...                                                  ...      ...  
-11551  https://collections.ala.org.au/ws/dataResource...  dr23120  
-11552  https://collections.ala.org.au/ws/dataResource...  dr15943  
-11553  https://collections.ala.org.au/ws/dataResource...  dr22371  
-11554  https://collections.ala.org.au/ws/dataResource...  dr27880  
-11555  https://collections.ala.org.au/ws/dataResource...  dr27881  
+14004  https://collections.ala.org.au/ws/dataResource...  dr15943  
+14005  https://collections.ala.org.au/ws/dataResource...  dr22371  
+14006  https://collections.ala.org.au/ws/dataResource...  dr27880  
+14007  https://collections.ala.org.au/ws/dataResource...  dr27881  
+14008  https://collections.ala.org.au/ws/dataResource...  dr33432  
 
-[11556 rows x 3 columns]
+[14009 rows x 3 columns]
 </pre></div>
 </div>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="galah.show_values">
-<span class="sig-prename descclassname"><span class="pre">galah.</span></span><span class="sig-name descname"><span class="pre">show_values</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">field</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lists</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">all_fields</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#galah.show_values" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">galah.</span></span><span class="sig-name descname"><span class="pre">show_values</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">field</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lists</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">all_fields</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config_file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#galah.show_values" title="Link to this definition">#</a></dt>
 <dd><p>Users may wish to see the specific values within a chosen field, profile or list to narrow queries or understand
 more about the information of interest. <code class="docutils literal notranslate"><span class="pre">show_values()</span></code> provides users with these values.</p>
 <dl class="field-list simple">
@@ -1135,17 +1096,17 @@ more about the information of interest. <code class="docutils literal notranslat
 </dl>
 <p class="rubric">Examples</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="kn">import</span><span class="w"> </span><span class="nn">galah</span></span>
-<span class="prompt1"><span class="n">galah</span><span class="o">.</span><span class="n">show_values</span><span class="p">(</span><span class="n">field</span><span class="o">=</span><span class="s2">&quot;basisOfRecord&quot;</span><span class="p">)</span></span>
+<span class="prompt1"><span class="n">galah</span><span class="o">.</span><span class="n">show_values</span><span class="p">(</span><span class="n">field</span><span class="o">=</span><span class="s1">&#39;basisOfRecord&#39;</span><span class="p">)</span></span>
 </pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>           field             category
 0  basisOfRecord    HUMAN_OBSERVATION
 1  basisOfRecord   PRESERVED_SPECIMEN
-2  basisOfRecord  MACHINE_OBSERVATION
-3  basisOfRecord           OCCURRENCE
-4  basisOfRecord      MATERIAL_SAMPLE
-5  basisOfRecord          OBSERVATION
+2  basisOfRecord           OCCURRENCE
+3  basisOfRecord  MACHINE_OBSERVATION
+4  basisOfRecord          OBSERVATION
+5  basisOfRecord      MATERIAL_SAMPLE
 6  basisOfRecord      LIVING_SPECIMEN
-7  basisOfRecord    MATERIAL_CITATION
-8  basisOfRecord      FOSSIL_SPECIMEN
+7  basisOfRecord      FOSSIL_SPECIMEN
+8  basisOfRecord    MATERIAL_CITATION
 </pre></div>
 </div>
 </dd></dl>
@@ -1159,16 +1120,16 @@ more about the information of interest. <code class="docutils literal notranslat
               
               
               
-                <footer class="prev-next-footer">
+                <footer class="prev-next-footer d-print-none">
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="../galah_user_guide/Temporal_Filtering.html"
+       href="../galah_user_guide/authentication.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Temporal filtering</p>
+        <p class="prev-next-title">Authentication (Experimental)</p>
       </div>
     </a>
     <a class="right-next"
@@ -1187,7 +1148,8 @@ more about the information of interest. <code class="docutils literal notranslat
             
             
               
-                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
 
   <div class="sidebar-secondary-item">
@@ -1224,8 +1186,8 @@ more about the information of interest. <code class="docutils literal notranslat
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae"></script>
-<script src="../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae"></script>
+  <script defer src="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
 
   <footer class="bd-footer">
 <div class="bd-footer__inner bd-page-width">
@@ -1245,7 +1207,7 @@ more about the information of interest. <code class="docutils literal notranslat
         <div class="footer-item">
 
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.2.3.
     <br/>
   </p>
 </div>
@@ -1258,7 +1220,8 @@ more about the information of interest. <code class="docutils literal notranslat
       
         <div class="footer-item">
 <p class="theme-version">
-  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.15.2.
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
 </p></div>
       
     </div>

@@ -44,10 +44,12 @@ setup(
         "shapely",
         "geopandas",
         "tqdm",
+        "oauthlib", #unsure
+        "oauth2"
     ],
     include_package_data=True,
     package_data={
         # If any package contains *.ini files or *.csv files, include them
-        "": ["config.ini", "node_config.csv", "gbif_assertions.csv", "gbif_fields.csv", "ALA_keys.json"],
+        "": ["config.ini", "node_config.csv", "gbif_assertions.csv", "gbif_fields.csv"],
     },
 )

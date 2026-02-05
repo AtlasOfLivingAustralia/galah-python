@@ -8,7 +8,7 @@ def print_if_verbose(verbose=False, headers=None, URL=None, method=None, payload
         print("Method: {}".format(method))
         print()
 
-    if payload is not None:
+    if verbose and payload is not None:
         print("Payload: \n\n{}\n".format(payload))
         print()
 
@@ -36,3 +36,20 @@ def group_by_atlas_species(group_by=None, rankID=None, URL=None):
         URL += "&facets={}".format(rankID)
 
     return URL
+
+
+def set_bool_argument(arg=None, name_arg=None):
+    # set boolean dict for more efficient variable setting
+    boolean_dict = {"True": True, "False": False}
+
+    if isinstance(arg, str) and arg in ["True", "False"]:
+        return boolean_dict[arg]
+    elif isinstance(arg, bool):
+        return arg
+    else:
+        raise ValueError("Only True/False or boolean values are accepted for {}".format(name_arg))
+
+
+def is_bool_argument(arg=None, arg_name=None):
+    if arg is not None and not isinstance(arg, bool):
+        raise ValueError("The {} option only accepts True or False.".format(arg_name))

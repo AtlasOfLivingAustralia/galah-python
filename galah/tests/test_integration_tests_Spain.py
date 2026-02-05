@@ -1,7 +1,16 @@
+import configparser
+
 import galah
 
+configParser = configparser.ConfigParser()
+configParser.read("logins.txt")
+email_es = configParser["Spain"]["email"]
 
-# test for Spain data quality profiles here
+galah.galah_config(authenticate=False)
+
+######################################
+# changes and errors
+######################################
 def test_data_quality_profiles_spain(capfd):
     galah.galah_config(atlas="Spain")
     galah.show_all(profiles=True)  # Writes "Hello World!" to stdout
@@ -494,32 +503,32 @@ def test_atlas_species_spain_filter_notaxa():
 # atlas_occurrences
 ######################################
 def test_atlas_occurrences_taxa_spain():
-    galah.galah_config(atlas="Spain", email="amanda.buyan@csiro.au")
+    galah.galah_config(atlas="Spain", email=email_es)
     occurrences = galah.atlas_occurrences(taxa="Vipera latastei")
     assert occurrences.shape[0] > 1
 
 
 def test_atlas_occurrences_taxa_fields_spain():
-    galah.galah_config(atlas="Spain", email="amanda.buyan@csiro.au")
+    galah.galah_config(atlas="Spain", email=email_es)
     occurrences = galah.atlas_occurrences(taxa="Vipera latastei", fields=["latitude", "longitude"])
     assert occurrences.shape[1] == 2
 
 
 def test_atlas_occurrences_taxa_filters_spain():
-    galah.galah_config(atlas="Spain", email="amanda.buyan@csiro.au")
+    galah.galah_config(atlas="Spain", email=email_es)
     occurrences1 = galah.atlas_occurrences(taxa="Vipera latastei")
     occurrences2 = galah.atlas_occurrences(taxa="Vipera latastei", filters="year=2020")
     assert occurrences2.shape[0] < occurrences1.shape[0]
 
 
 def test_atlas_occurrences_taxa_filter_fields_spain():
-    galah.galah_config(atlas="Spain", email="amanda.buyan@csiro.au")
+    galah.galah_config(atlas="Spain", email=email_es)
     occurrences = galah.atlas_occurrences(taxa="Vipera latastei", filters="year=2020", fields=["latitude", "longitude"])
     assert occurrences.shape[1] == 2
 
 
 def test_atlas_occurrences_taxa_filters_spain():
-    galah.galah_config(atlas="Spain", email="amanda.buyan@csiro.au")
+    galah.galah_config(atlas="Spain", email=email_es)
     filters = ["year>2018", "basis_of_record=HumanObservation"]
     occurrences1 = galah.atlas_occurrences(taxa="Vipera latastei")
     occurrences2 = galah.atlas_occurrences(taxa="Vipera latastei", filters=filters)
@@ -527,7 +536,7 @@ def test_atlas_occurrences_taxa_filters_spain():
 
 
 def test_atlas_occurrences_taxa_filters_fields_spain():
-    galah.galah_config(atlas="Spain", email="amanda.buyan@csiro.au")
+    galah.galah_config(atlas="Spain", email=email_es)
     occurrences = galah.atlas_occurrences(
         taxa="Vipera latastei",
         filters=["year>2018", "basis_of_record=HumanObservation"],

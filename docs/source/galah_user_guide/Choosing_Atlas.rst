@@ -120,7 +120,7 @@ return the total number of species records in each Living Atlas in one table.
 
     >>> import galah
     >>> import pandas as pd
-    >>> atlases = ["Australia","Austria","Brazil","France","GBIF","Spain"]
+    >>> atlases = ["Australia","Austria","Brazil","GBIF","Kew","Spain","Sweden","United Kingdom"]
     >>> counts_dict = {"Atlas": [], "Total Records": []}
     >>> for atlas in atlases:
     >>>     galah.galah_config(atlas=atlas)

@@ -1,7 +1,16 @@
-import galah
+import configparser
+
 import pytest
 
+import galah
 
+configParser = configparser.ConfigParser()
+configParser.read("logins.txt")
+email_gbif = configParser["GBIF"]["email"]
+usernameGBIF = configParser["GBIF"]["usernameGBIF"]
+passwordGBIF = configParser["GBIF"]["passwordGBIF"]
+
+galah.galah_config(authenticate=False)
 ######################################
 # changes and errors
 ######################################
@@ -539,9 +548,9 @@ def test_atlas_counts_multiple_taxa_filters_group_by_multiple_separate_expand_gl
 def test_atlas_species_species_global():
     galah.galah_config(
         atlas="GBIF",
-        email="ala4r@ala.org.au",
-        usernameGBIF="atlasoflivingaustralia",
-        passwordGBIF="galah-gbif-test-login",
+        email=email_gbif,
+        usernameGBIF=usernameGBIF,
+        passwordGBIF=passwordGBIF,
     )
     taxa = "Heleioporus"
     species_table = galah.atlas_species(taxa=taxa)
@@ -552,9 +561,9 @@ def test_atlas_species_species_global():
 def test_atlas_species_family_global():
     galah.galah_config(
         atlas="GBIF",
-        email="ala4r@ala.org.au",
-        usernameGBIF="atlasoflivingaustralia",
-        passwordGBIF="galah-gbif-test-login",
+        email=email_gbif,
+        usernameGBIF=usernameGBIF,
+        passwordGBIF=passwordGBIF,
     )
     taxa = "Limnodynastidae"
     species_table = galah.atlas_species(taxa=taxa)
@@ -564,9 +573,9 @@ def test_atlas_species_family_global():
 def test_atlas_species_global_filter_notaxa():
     galah.galah_config(
         atlas="GBIF",
-        email="ala4r@ala.org.au",
-        usernameGBIF="atlasoflivingaustralia",
-        passwordGBIF="galah-gbif-test-login",
+        email=email_gbif,
+        usernameGBIF=usernameGBIF,
+        passwordGBIF=passwordGBIF,
     )
     filtered_species_table = galah.atlas_species(filters=["year=2022", "basisOfRecord=HUMAN_OBSERVATION"])
     assert filtered_species_table.shape[0] > 0
@@ -576,9 +585,9 @@ def test_atlas_species_global_filter_notaxa():
 def test_atlas_occurrences_taxa_filters_global():
     galah.galah_config(
         atlas="GBIF",
-        email="ala4r@ala.org.au",
-        usernameGBIF="atlasoflivingaustralia",
-        passwordGBIF="galah-gbif-test-login",
+        email=email_gbif,
+        usernameGBIF=usernameGBIF,
+        passwordGBIF=passwordGBIF,
     )
     occurrences = galah.atlas_occurrences(taxa="Vulpes vulpes", filters="year=2022")
     assert occurrences.shape[0] > 1
@@ -588,9 +597,9 @@ def test_atlas_occurrences_taxa_filters_global():
 def test_atlas_occurrences_taxa_filters2_global():
     galah.galah_config(
         atlas="GBIF",
-        email="ala4r@ala.org.au",
-        usernameGBIF="atlasoflivingaustralia",
-        passwordGBIF="galah-gbif-test-login",
+        email=email_gbif,
+        usernameGBIF=usernameGBIF,
+        passwordGBIF=passwordGBIF,
     )
     filters = ["year=2022", "basisOfRecord=HUMAN_OBSERVATION"]
     occurrences = galah.atlas_occurrences(taxa="Vulpes vulpes", filters=filters)
@@ -601,9 +610,9 @@ def test_atlas_occurrences_taxa_filters2_global():
 def test_atlas_occurrences_taxa_filters3_global():
     galah.galah_config(
         atlas="GBIF",
-        email="ala4r@ala.org.au",
-        usernameGBIF="atlasoflivingaustralia",
-        passwordGBIF="galah-gbif-test-login",
+        email=email_gbif,
+        usernameGBIF=usernameGBIF,
+        passwordGBIF=passwordGBIF,
     )
     filters = ["year>=2023", "basisOfRecord=HUMAN_OBSERVATION"]
     occurrences = galah.atlas_occurrences(taxa="Vulpes vulpes", filters=filters)

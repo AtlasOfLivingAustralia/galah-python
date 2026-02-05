@@ -16,16 +16,19 @@ def add_to_payload_ALA(
     polygon=None,
     bbox=None,
     simplify_polygon=False,
+    authenticate=False,
 ):
     """Function for adding variables to the payload when we cache (post) data to the ALA"""
 
     if taxa is not None:
-        taxa_list = generate_list_taxonConceptIDs(taxa=taxa, atlas=atlas)
+        taxa_list = generate_list_taxonConceptIDs(taxa=taxa, atlas=atlas, authenticate=authenticate)
         fq = [" OR ".join("lsid:{}".format(id) for id in taxa_list)]
         payload = add_individual_to_payload(payload=payload, fq=fq)
 
     if scientific_name is not None:
-        taxa_list = generate_list_taxonConceptIDs(scientific_name=scientific_name, atlas=atlas)
+        taxa_list = generate_list_taxonConceptIDs(
+            scientific_name=scientific_name, atlas=atlas, authenticate=authenticate
+        )
         fq = [" OR ".join("lsid:{}".format(id) for id in taxa_list)]
         payload = add_individual_to_payload(payload=payload, fq=fq)
 
@@ -34,7 +37,7 @@ def add_to_payload_ALA(
             filters = [filters]
 
         for f in filters:
-            filters_check = galah_filter(f)
+            filters_check = galah_filter(f=f, authenticate=authenticate)
             if " AND " in filters_check:
                 filters_check = filters_check.split(" AND ")
             payload = add_filter_to_payload(filters_check, payload=payload)

@@ -2,10 +2,11 @@ import itertools
 import re
 
 from .common_dictionaries import GBIF_PREDICATE_DEFINITIONS
+from .common_functions import set_bool_argument
 from .galah_config import readConfig
 
 
-def galah_filter(f, occurrencesGBIF=False):
+def galah_filter(f, occurrencesGBIF=False, authenticate=False):
     """
     "Filters" are arguments of the form field logical value that are used to narrow down the number of records returned by
     a specific query. For example, it is common for users to request records from a particular year (``year=2020``), or
@@ -13,6 +14,10 @@ def galah_filter(f, occurrencesGBIF=False):
 
     Filters are passed to ``atlas_occurrences()``, ``atlas_species()``, ``atlas_counts()`` or ``atlas_media()``.
     """
+
+    # ---------------------------------------------------------------------------------------------
+    # Declare all variables, run checks on compatibility of arguments.
+    # ---------------------------------------------------------------------------------------------
 
     # first, check for special characters
     char_string = "[!=<>]"
@@ -25,6 +30,12 @@ def galah_filter(f, occurrencesGBIF=False):
 
     # get atlas
     atlas = configs["galahSettings"]["atlas"]
+    authenticate = set_bool_argument(arg=configs["galahSettings"]["authenticate"], name_arg="authenticate")
+
+    # ---------------------------------------------------------------------------------------------
+    # Check for all special characters in the provided filter; then, split the filter by the
+    # special characters for encoding
+    # ---------------------------------------------------------------------------------------------
 
     # need to check for special characters
     specialChar = specialChars.findall(f)
@@ -44,6 +55,19 @@ def galah_filter(f, occurrencesGBIF=False):
     # remove leading and trailing white spaces from each filter part
     for i, p in enumerate(parts):
         parts[i] = p.strip()
+
+    # ---------------------------------------------------------------------------------------------
+    # Now, encode the filters in the following ways:
+    #     1. If the user is querying GBIF and they are downloading occurrences, add the filters to
+    #        the GBIF predicates (payload) and return the predicates
+    #     2. If the user is querying GBIF and NOT downloading occurrences, encode the filter into
+    #        URL characters and return the string to add to the URL
+    #     3. For all other atlases:
+    #          a. If someone wants to use the authentication option (ALA only), format filters for
+    #             inclusion in the paylaod
+    #          b. If no authentication option is set, encode the filter into URL characters and
+    #             return the string to add to the URL
+    # ---------------------------------------------------------------------------------------------
 
     # first check if occurrences are being called with GBIF
     if atlas in ["Global", "GBIF"] and occurrencesGBIF:
@@ -71,8 +95,6 @@ def galah_filter(f, occurrencesGBIF=False):
                 parts[0], parts[1], parts[0], parts[1]
             ),
             "<": '%28{}%3A%5B*%20TO%20{}%5d%20AND%20-%28{}%3A"{}"%29%29'.format(parts[0], parts[1], parts[0], parts[1]),
-            # ">": "{}={}%2C%2A".format(parts[0], int(parts[1]) + 1),
-            # "<": "{}=%2A%2C{}".format(parts[0], int(parts[1]) - 1),
             "!=": "{}=%2A%2C{}".format(parts[0], parts[1].replace(" ", "%20")),
             "=!": "{}=%2A%2C{}".format(parts[0], parts[1].replace(" ", "%20")),
         }
@@ -89,42 +111,88 @@ def galah_filter(f, occurrencesGBIF=False):
     # all other atlases are like this
     else:
 
-        # strings to return for all other atlases
-        return_strings = {
-            "=": "{}={}".format(parts[0], parts[1].replace(" ", "%20")),
-            "==": "{}={}".format(parts[0], parts[1].replace(" ", "%20")),
-            ">=": "%28{}%3A%5B{}%20TO%20%2A%5d%29".format(parts[0], parts[1]),
-            "=>": "%28{}%3A%5B{}%20TO%20%2A%5d%29".format(parts[0], parts[1]),
-            ">": "%28{}:%5B{}%20TO%20*%5d%20AND%20-%28{}%3A%22{}%22%29%29".format(
-                parts[0], parts[1], parts[0], parts[1]
-            ),
-            "<": '%28{}%3A%5B*%20TO%20{}%5d%20AND%20-%28{}%3A"{}"%29%29'.format(parts[0], parts[1], parts[0], parts[1]),
-            "<=": "%28{}%3A%5B*%20TO%20{}%5d%29".format(parts[0], parts[1]),
-            "=<": "%28{}%3A%5B*%20TO%20{}%5d%29".format(parts[0], parts[1]),
-            "!=": "-%28{}%3A%22{}%22%29".format(parts[0], parts[1]),
-            "=!": "-%28{}%3A%22{}%22%29".format(parts[0], parts[1]),
-        }
+        # check to see if the user wants to use authentication procedure
+        if authenticate:
 
-        # check for any logical expressions that are not included
-        check_for_characters(specialChar=specialChar, string_dict=return_strings)
+            # all return strings
+            return_strings_ALA = {
+                "=": "{}:{}".format(parts[0], parts[1]),
+                "==": "{}:{}".format(parts[0], parts[1]),
+                ">=": "{}:[{} TO *]".format(parts[0], parts[1]),
+                "=>": "{}:[{} TO *]".format(parts[0], parts[1]),
+                ">": "{}:[{} TO *] AND -({}:{})".format(parts[0], parts[1], parts[0], parts[1]),
+                "<": "{}:[* TO {}] AND -({}:{})".format(parts[0], parts[1], parts[0], parts[1]),
+                "<=": "{}:[* TO {}]".format(parts[0], parts[1]),
+                "=<": "{}:[* TO {}]".format(parts[0], parts[1]),
+                "!=": "-{}:{}".format(parts[0], parts[1]),
+                "=!": "-{}:{}".format(parts[0], parts[1]),
+            }
 
-        # start checking for different logical operators, starting with equals
-        if specialChar == "=" or specialChar == "==":
+            # check for any logical expressions that are not included
+            check_for_characters(specialChar=specialChar, string_dict=return_strings_ALA)
 
-            returnString = process_equals_filter(parts=parts, returnString=returnString)
+            # start checking for different logical operators, starting with equals
+            if specialChar == "=" or specialChar == "==":
+
+                returnString = process_equals_filter(parts=parts, returnString=returnString, authenticate=authenticate)
+
+            # if not equals, use declared dictionary
+            else:
+
+                # create return strings
+                returnString += return_strings_ALA[specialChar]
+
+            # return the string
+            return returnString
 
         else:
 
-            # create return strings
-            returnString += return_strings[specialChar]
+            # strings to return for all other atlases
+            return_strings = {
+                "=": "{}={}".format(parts[0], parts[1].replace(" ", "%20")),
+                "==": "{}={}".format(parts[0], parts[1].replace(" ", "%20")),
+                ">=": "%28{}%3A%5B{}%20TO%20%2A%5d%29".format(parts[0], parts[1]),
+                "=>": "%28{}%3A%5B{}%20TO%20%2A%5d%29".format(parts[0], parts[1]),
+                ">": "%28{}:%5B{}%20TO%20*%5d%20AND%20-%28{}%3A%22{}%22%29%29".format(
+                    parts[0], parts[1], parts[0], parts[1]
+                ),
+                "<": '%28{}%3A%5B*%20TO%20{}%5d%20AND%20-%28{}%3A"{}"%29%29'.format(
+                    parts[0], parts[1], parts[0], parts[1]
+                ),
+                "<=": "%28{}%3A%5B*%20TO%20{}%5d%29".format(parts[0], parts[1]),
+                "=<": "%28{}%3A%5B*%20TO%20{}%5d%29".format(parts[0], parts[1]),
+                "!=": "-%28{}%3A%22{}%22%29".format(parts[0], parts[1]),
+                "=!": "-%28{}%3A%22{}%22%29".format(parts[0], parts[1]),
+            }
 
-        # return a string to be added to the URL
-        return returnString
+            # check for any logical expressions that are not included
+            check_for_characters(specialChar=specialChar, string_dict=return_strings)
+
+            # start checking for different logical operators, starting with equals
+            if specialChar == "=" or specialChar == "==":
+
+                # create return string
+                returnString = process_equals_filter(parts=parts, returnString=returnString)
+
+            # if not equals, use declared dictionary
+            else:
+
+                # create return strings
+                returnString += return_strings[specialChar]
+
+            # return a string to be added to the URL
+            return returnString
+
+
+###################################################################################################
+# Check functions for galah_filter
+###################################################################################################
 
 
 def check_for_characters(specialChar=None, string_dict=None):
     """Check for any logical expressions that aren't included here"""
 
+    # check to see if user entered a special character galah_filter doesn't cover
     if specialChar not in string_dict.keys():
         raise ValueError(
             "The special character {} is not included in the filters function.  Either it is not a logical operator, or it has not been included yet.".format(
@@ -176,40 +244,80 @@ def process_GBIF_predicates(specialChar=None, parts=None, occurrences_GBIF_filte
         return occurrences_GBIF_filters[specialChar]
 
 
-def process_equals_filter(parts=None, returnString=None):
+def process_equals_filter(parts=None, returnString=None, authenticate=None):
+    """check for all possibilities for the equals filter"""
 
-    # check if the filter is a number or a string and if there is a group by
-    if parts[1].isdigit():
-        # this one is square brackets
-        # returnString += "%5B{}:%22{}%22%5d".format(parts[0], parts[1])
-        returnString += "%28{}%3A%22{}%22%29".format(parts[0], parts[1].replace(" ", "%20"))
-    # if filter is querying a field that has no value
-    elif parts[1] == "":
-        # returnString += "%28{}%3A%28%2A%29%29".format(parts[0])
-        returnString += "%2A%3A%2A%20AND%20-{}%3A%2A".format(parts[0])
-    elif parts[1] == "True":
-        returnString += "%28assertions%3A%22{}%22%29".format(parts[0])
-    elif parts[1] == "False":
-        returnString += "-%28assertions%3A%22{}%22%29".format(parts[0])
-    else:
-        # check if this is array
-        arrayChars = re.compile("\]\[")
-        arrayChar = arrayChars.findall(parts[1])
-        if arrayChar:
-            returnString += "%28"
-            temp_array = parts[1][1:-1].split(",")
-            for value in temp_array:
-                returnString += "{}%3A22{}%22%20OR%20".format(
-                    parts[0],
-                    value.replace(" ", "%20").replace("'", "").replace('"', "").replace("&", "%26").replace(",", "%2C"),
-                )
-            returnString = returnString[:-8] + "%29"
-        # added quotes
+    if authenticate:
+
+        # check if the filter is a number or a string and if there is a group by
+        if parts[1].isdigit():
+            # this one is square brackets
+            returnString += "{}:{}".format(parts[0], parts[1])
+        # if filter is querying a field that has no value
+        elif parts[1] == "":
+            returnString += "*:* AND -{}:*".format(parts[0])
+        elif parts[1] == "True":
+            returnString += "assertions:{}".format(parts[0])
+        elif parts[1] == "False":
+            returnString += "-assertions:{}".format(parts[0])
         else:
-            returnString += "%28{}%3A%22{}%22%29".format(
-                parts[0],
-                parts[1].replace(" ", "%20").replace("'", "").replace('"', "").replace("&", "%26").replace(",", "%2C"),
-            )
+            # check if this is array
+            arrayChars = re.compile("\]\[")
+            arrayChar = arrayChars.findall(parts[1])
+            if arrayChar:
+                temp_array = parts[1][1:-1].split(",")
+                for value in temp_array:
+                    returnString += "{}:{} OR".format(
+                        parts[0],
+                        value.replace("'", "").replace('"', ""),
+                    )
+            # added quotes
+            else:
+                returnString += "{}:{}".format(parts[0], parts[1].replace("'", "").replace('"', ""))
+
+    else:
+
+        # check if the filter is a number or a string and if there is a group by
+        if parts[1].isdigit():
+            # this one is square brackets
+            # returnString += "%5B{}:%22{}%22%5d".format(parts[0], parts[1])
+            returnString += "%28{}%3A%22{}%22%29".format(parts[0], parts[1].replace(" ", "%20"))
+        # if filter is querying a field that has no value
+        elif parts[1] == "":
+            # returnString += "%28{}%3A%28%2A%29%29".format(parts[0])
+            returnString += "%2A%3A%2A%20AND%20-{}%3A%2A".format(parts[0])
+        elif parts[1] == "True":
+            returnString += "%28assertions%3A%22{}%22%29".format(parts[0])
+        elif parts[1] == "False":
+            returnString += "-%28assertions%3A%22{}%22%29".format(parts[0])
+        else:
+            # check if this is array
+            arrayChars = re.compile("\]\[")
+            arrayChar = arrayChars.findall(parts[1])
+            if arrayChar:
+                returnString += "%28"
+                temp_array = parts[1][1:-1].split(",")
+                for value in temp_array:
+                    returnString += "{}%3A22{}%22%20OR%20".format(
+                        parts[0],
+                        value.replace(" ", "%20")
+                        .replace("'", "")
+                        .replace('"', "")
+                        .replace("&", "%26")
+                        .replace(",", "%2C"),
+                    )
+                returnString = returnString[:-8] + "%29"
+            # added quotes
+            else:
+                returnString += "%28{}%3A%22{}%22%29".format(
+                    parts[0],
+                    parts[1]
+                    .replace(" ", "%20")
+                    .replace("'", "")
+                    .replace('"', "")
+                    .replace("&", "%26")
+                    .replace(",", "%2C"),
+                )
 
     # return the string
     return returnString
@@ -226,7 +334,6 @@ def check_for_duplicate_filters(filters=None):
     filters = sorted(filters)
 
     # initialise important variables
-    # duplicates = {}
     non_duplicates = []
 
     # find and log duplicates
@@ -279,6 +386,7 @@ def log_duplicates(filters=None):
 
 
 def process_or_filters(or_filters=None, URL=None):
+    """ensure the or filters get encoded properly"""
 
     # loop over all or filters to add to URL
     for f in or_filters:

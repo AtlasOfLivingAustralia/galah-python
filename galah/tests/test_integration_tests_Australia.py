@@ -1,13 +1,19 @@
+import configparser
 import os
 
-import galah
 import geopandas as gpd
 import pandas as pd
 import pytest
 import shapely
 
+import galah
 
-# """
+configParser = configparser.ConfigParser()
+configParser.read("logins.txt")
+email_au = configParser["Australia"]["email"]
+
+
+#'''
 ######################################
 # exceptions and errors
 ######################################
@@ -48,8 +54,17 @@ def test_show_values_australia_fields_number():
 def test_empty_galah_config():
     if os.path.isfile("test.ini"):
         os.remove("test.ini")
+    os.system("touch test.ini")
     galah.galah_config(config_file="test.ini")
     assert os.path.isfile("test.ini")
+
+
+def test_empty_galah_config_raise_error():
+    if os.path.isfile("test.ini"):
+        os.remove("test.ini")
+    with pytest.raises(Exception) as e_info:
+        galah.galah_config(config_file="test.ini")
+    assert "config" in str(e_info.value)
 
 
 def test_search_values_australia_field_none():
@@ -151,14 +166,14 @@ def test_galah_atlas_occurrences_invalid_email():
 
 
 def test_atlas_counts_invalid_filters():
-    galah.galah_config(atlas="Australia", email="amanda.buyan@csiro.au")
+    galah.galah_config(atlas="Australia", email=email_au)
     with pytest.raises(Exception) as e_info:
         galah.atlas_occurrences(filters=1998)
     assert "filters" in str(e_info.value)
 
 
 def test_atlas_counts_invalid_filters_list():
-    galah.galah_config(atlas="Australia", email="amanda.buyan@csiro.au")
+    galah.galah_config(atlas="Australia", email=email_au)
     with pytest.raises(Exception) as e_info:
         galah.atlas_occurrences(filters=[1998])
     assert "filters" in str(e_info.value)
@@ -220,8 +235,8 @@ def test_galah_group_by_more_than_2():
 
 
 def test_verbose_atlas_counts(capfd):
-    galah.galah_config(atlas="Australia")
-    galah.atlas_counts(verbose=True)
+    galah.galah_config(atlas="Australia", verbose=True)
+    galah.atlas_counts()
     out, err = capfd.readouterr()
     assert "URL" in out
 
@@ -245,6 +260,13 @@ def test_show_all_ranks_invalid_value():
     with pytest.raises(Exception) as e_info:
         galah.show_all(ranks=True)
     assert "values" in str(e_info.value)
+
+
+def test_check_atlas_not_working():
+    galah.galah_config(atlas="France")
+    with pytest.raises(Exception) as e_info:
+        galah.atlas_counts()
+    assert "atlas" in str(e_info.value)
 
 
 ######################################
@@ -597,6 +619,7 @@ def test_atlas_counts_australia_scientific_name():
 def test_atlas_counts_australia_config():
     if os.path.isfile("test.ini"):
         os.remove("test.ini")
+    os.system("touch test.ini")
     galah.galah_config(config_file="test.ini", atlas="Australia")
     taxa = "Vulpes vulpes"
     assert galah.atlas_counts(taxa=taxa)["totalRecords"][0] > 0
@@ -1009,67 +1032,67 @@ def tests_atlas_counts_geolocate_polygon_simplify_single_shape():
 # atlas_species
 ######################################
 def test_atlas_species_Australia_species_australia():
-    galah.galah_config(atlas="Australia", email="ala4r@ala.org.au")
+    galah.galah_config(atlas="Australia", email=email_au)
     taxa = "Heleioporus"
     species_table = galah.atlas_species(taxa=taxa)
     assert species_table.shape[0] > 0
 
 
 def test_atlas_species_Australia_species_rank_australia():
-    galah.galah_config(atlas="Australia", email="ala4r@ala.org.au")
+    galah.galah_config(atlas="Australia", email=email_au)
     taxa = "Vulpes"
     species_table = galah.atlas_species(taxa=taxa, rank="subspecies")
     assert species_table.shape[0] > 0
 
 
 def test_atlas_species_Australia_family_australia():
-    galah.galah_config(atlas="Australia", email="ala4r@ala.org.au")
+    galah.galah_config(atlas="Australia", email=email_au)
     taxa = "Limnodynastidae"
     species_table = galah.atlas_species(taxa=taxa)
     assert species_table.shape[0] > 0
 
 
 def test_atlas_species_Australia_family_rank_australia():
-    galah.galah_config(atlas="Australia", email="ala4r@ala.org.au")
+    galah.galah_config(atlas="Australia", email=email_au)
     taxa = "Limnodynastidae"
     species_table = galah.atlas_species(taxa=taxa, rank="genus")
     assert species_table.shape[0] > 0
 
 
 def test_atlas_species_Australia_family_australia():
-    galah.galah_config(atlas="Australia", email="ala4r@ala.org.au")
+    galah.galah_config(atlas="Australia", email=email_au)
     taxa = "Limnodynastidae"
     species_table = galah.atlas_species(taxa=taxa, rank="subspecies")
     assert species_table.shape[0] > 0
 
 
 def test_atlas_species_Australia_filter():
-    galah.galah_config(atlas="Australia", email="ala4r@ala.org.au")
+    galah.galah_config(atlas="Australia", email=email_au)
     full_species_table = galah.atlas_species(taxa="Rodentia")
     filtered_species_table = galah.atlas_species(taxa="Rodentia", filters="stateProvince=Victoria")
     assert full_species_table.shape[0] > filtered_species_table.shape[0]
 
 
 def test_atlas_species_Australia_filter_notaxa():
-    galah.galah_config(atlas="Australia", email="ala4r@ala.org.au")
+    galah.galah_config(atlas="Australia", email=email_au)
     filtered_species_table = galah.atlas_species(filters=["year=2022", "stateProvince=Victoria"])
     assert filtered_species_table.shape[0] > 0
 
 
 def test_atlas_species_Australia_polygon():
-    galah.galah_config(atlas="Australia", email="ala4r@ala.org.au")
+    galah.galah_config(atlas="Australia", email=email_au)
     full_species_table = galah.atlas_species(polygon=shapely.box(143, -29, 148, -28))
     assert full_species_table.shape[0] > 0
 
 
 def test_atlas_species_Australia_bbox():
-    galah.galah_config(atlas="Australia", email="ala4r@ala.org.au")
+    galah.galah_config(atlas="Australia", email=email_au)
     full_species_table = galah.atlas_species(bbox=shapely.box(143, -29, 148, -28))
     assert full_species_table.shape[0] > 0
 
 
 def test_atlas_species_Australia_filter_polygon():
-    galah.galah_config(atlas="Australia", email="ala4r@ala.org.au")
+    galah.galah_config(atlas="Australia", email=email_au)
     full_species_table = galah.atlas_species(polygon=shapely.box(143, -29, 148, -28))
     filtered_species_table = galah.atlas_species(
         polygon=shapely.box(143, -29, 148, -28), filters="stateProvince=Victoria"
@@ -1078,14 +1101,14 @@ def test_atlas_species_Australia_filter_polygon():
 
 
 def test_atlas_species_Australia_filter_polygon():
-    galah.galah_config(atlas="Australia", email="ala4r@ala.org.au")
+    galah.galah_config(atlas="Australia", email=email_au)
     full_species_table = galah.atlas_species(bbox=shapely.box(143, -29, 148, -28))
     filtered_species_table = galah.atlas_species(bbox=shapely.box(143, -29, 148, -28), filters="stateProvince=Victoria")
     assert full_species_table.shape[0] > filtered_species_table.shape[0]
 
 
 def test_atlas_species_Australia_filter_notaxa():
-    galah.galah_config(atlas="Australia", email="ala4r@ala.org.au")
+    galah.galah_config(atlas="Australia", email=email_au)
     filtered_species_table = galah.atlas_species(filters=["year=2022", "stateProvince=Victoria"])
     assert filtered_species_table.shape[0] > 0
 
@@ -1094,26 +1117,26 @@ def test_atlas_species_Australia_filter_notaxa():
 # atlas_occurrences
 ######################################
 def test_atlas_occurrences_taxa_australia():
-    galah.galah_config(atlas="Australia", email="ala4r@ala.org.au")
+    galah.galah_config(atlas="Australia", email=email_au)
     occurrences = galah.atlas_occurrences(taxa="Vulpes vulpes")
     assert occurrences.shape[0] > 1
 
 
 def test_atlas_occurrences_taxa_fields_australia():
-    galah.galah_config(atlas="Australia", email="ala4r@ala.org.au")
+    galah.galah_config(atlas="Australia", email=email_au)
     occurrences = galah.atlas_occurrences(taxa="Vulpes vulpes", fields=["decimalLatitude", "decimalLongitude"])
     assert occurrences.shape[1] == 2
 
 
 def test_atlas_occurrences_taxa_filters_australia():
-    galah.galah_config(atlas="Australia", email="ala4r@ala.org.au")
+    galah.galah_config(atlas="Australia", email=email_au)
     occurrences1 = galah.atlas_occurrences(taxa="Vulpes vulpes")
     occurrences2 = galah.atlas_occurrences(taxa="Vulpes vulpes", filters="year=2020")
     assert occurrences2.shape[0] < occurrences1.shape[0]
 
 
 def test_atlas_occurrences_taxa_filter_fields_australia():
-    galah.galah_config(atlas="Australia", email="ala4r@ala.org.au")
+    galah.galah_config(atlas="Australia", email=email_au)
     occurrences = galah.atlas_occurrences(
         taxa="Vulpes vulpes",
         filters="year=2020",
@@ -1123,7 +1146,7 @@ def test_atlas_occurrences_taxa_filter_fields_australia():
 
 
 def test_atlas_occurrences_taxa_filters2_australia():
-    galah.galah_config(atlas="Australia", email="ala4r@ala.org.au")
+    galah.galah_config(atlas="Australia", email=email_au)
     filters = ["year>2018", "basisOfRecord=HUMAN_OBSERVATION"]
     occurrences1 = galah.atlas_occurrences(taxa="Vulpes vulpes")
     occurrences2 = galah.atlas_occurrences(taxa="Vulpes vulpes", filters=filters)
@@ -1131,7 +1154,7 @@ def test_atlas_occurrences_taxa_filters2_australia():
 
 
 def test_atlas_occurrences_taxa_filters_fields_australia():
-    galah.galah_config(atlas="Australia", email="ala4r@ala.org.au")
+    galah.galah_config(atlas="Australia", email=email_au)
     occurrences = galah.atlas_occurrences(
         taxa="Vulpes vulpes",
         filters=["year>2018", "basisOfRecord=HUMAN_OBSERVATION"],
@@ -1141,7 +1164,7 @@ def test_atlas_occurrences_taxa_filters_fields_australia():
 
 
 def test_atlas_occurrences_taxa_filters_data_profile_australia():
-    galah.galah_config(atlas="Australia", email="ala4r@ala.org.au")
+    galah.galah_config(atlas="Australia", email=email_au)
     occurrences1 = galah.atlas_occurrences(taxa="Vulpes vulpes")
     galah.galah_config(data_profile="ALA")
     occurrences2 = galah.atlas_occurrences(taxa="Vulpes vulpes", use_data_profile=True)
@@ -1150,47 +1173,47 @@ def test_atlas_occurrences_taxa_filters_data_profile_australia():
 
 
 def test_atlas_occurrences_geolocate_polygon():
-    galah.galah_config(atlas="Australia", email="ala4r@ala.org.au")
+    galah.galah_config(atlas="Australia", email=email_au)
     test_shape = shapely.box(143, -29, 148, -28)
     occurrences = galah.atlas_occurrences(polygon=test_shape)
     assert occurrences.shape[0] > 0
 
 
 def test_atlas_occurrences_geolocate_bbox():
-    galah.galah_config(atlas="Australia", email="ala4r@ala.org.au")
+    galah.galah_config(atlas="Australia", email=email_au)
     test_shape = shapely.box(143, -29, 148, -28)
     occurrences = galah.atlas_occurrences(bbox=test_shape)
     assert occurrences.shape[0] > 0
 
 
 def test_atlas_occurrences_geolocate_bbox_dict():
-    galah.galah_config(atlas="Australia", email="ala4r@ala.org.au")
+    galah.galah_config(atlas="Australia", email=email_au)
     occurrences = galah.atlas_occurrences(bbox={"xmin": 143, "ymin": -29, "xmax": 148, "ymax": -28})
     assert occurrences.shape[0] > 0
 
 
 def test_atlas_occurrences_geolocate_polygon_taxa():
-    galah.galah_config(atlas="Australia", email="ala4r@ala.org.au")
+    galah.galah_config(atlas="Australia", email=email_au)
     test_shape = shapely.box(143, -29, 148, -28)
     occurrences = galah.atlas_occurrences(taxa="reptilia", polygon=test_shape)
     assert occurrences.shape[0] > 0
 
 
 def test_atlas_occurrences_geolocate_bbox_taxa():
-    galah.galah_config(atlas="Australia", email="ala4r@ala.org.au")
+    galah.galah_config(atlas="Australia", email=email_au)
     test_shape = shapely.box(143, -29, 148, -28)
     occurrences = galah.atlas_occurrences(taxa="reptilia", bbox=test_shape)
     assert occurrences.shape[0] > 0
 
 
 def test_atlas_occurrences_mint_doi():
-    galah.galah_config(atlas="Australia", email="amanda.buyan@csiro.au")  # ala4r@ala.org.au
+    galah.galah_config(atlas="Australia", email=email_au)  # ala4r@ala.org.au
     occurrences = galah.atlas_occurrences(taxa="Vulpes vulpes", mint_doi=True)
     assert occurrences.shape[0] > 0
 
 
 def test_atlas_occurrences_doi():
-    galah.galah_config(atlas="Australia", email="amanda.buyan@csiro.au")  # ala4r@ala.org.au
+    galah.galah_config(atlas="Australia", email=email_au)  # ala4r@ala.org.au
     occurrences = galah.atlas_occurrences(doi="https://doi.org/10.26197/ala.e413b946-8959-41f8-9ae9-897d86029844")
     assert occurrences.shape[0] > 0
 
@@ -1198,32 +1221,31 @@ def test_atlas_occurrences_doi():
 ######################################
 # atlas_media
 ######################################
-# """
 
 
 # test if it can get a taxa and return output
 def test_atlas_media_taxa_australia():
-    galah.galah_config(atlas="Australia", email="amanda.buyan@csiro.au")  # ala4r@ala.org.au
+    galah.galah_config(atlas="Australia", email=email_au)
     output = galah.atlas_media(taxa="Liopholis margaretae")
     assert output.shape[0] > 1
 
 
 # test if the filters component of atlas_media is working
 def test_atlas_media_filters_australia():
-    galah.galah_config(atlas="Australia", email="amanda.buyan@csiro.au")
+    galah.galah_config(atlas="Australia", email=email_au)
     raw_output = galah.atlas_media(taxa="Liopholis margaretae")
     filtered_output = galah.atlas_media(taxa="Liopholis margaretae", filters="decimalLatitude<-24.0")
     assert raw_output.shape[0] > filtered_output.shape[0]
 
 
 def test_atlas_media_multimedia_australia():
-    galah.galah_config(atlas="Australia", email="amanda.buyan@csiro.au")
+    galah.galah_config(atlas="Australia", email=email_au)
     multimedia_output = galah.atlas_media(taxa="Liopholis margaretae", multimedia="images")
     assert multimedia_output.shape[0] > 0
 
 
 def test_atlas_media_filters_multimedia_australia():
-    galah.galah_config(atlas="Australia", email="amanda.buyan@csiro.au")
+    galah.galah_config(atlas="Australia", email=email_au)
     raw_output = galah.atlas_media(taxa="Liopholis margaretae")
     multimedia_output = galah.atlas_media(
         taxa="Liopholis margaretae", filters="decimalLatitude<=-24.0", multimedia="images"
@@ -1232,7 +1254,7 @@ def test_atlas_media_filters_multimedia_australia():
 
 
 def test_atlas_media_filters_multimedia_collect_path_australia():
-    galah.galah_config(atlas="Australia", email="amanda.buyan@csiro.au")
+    galah.galah_config(atlas="Australia", email=email_au)
     path = "test"
     multimedia_output = galah.atlas_media(
         taxa="Liopholis margaretae",
@@ -1259,7 +1281,7 @@ def test_atlas_counts_no_valid_taxa_output(capfd):
 
 
 def test_atlas_occurrences_no_valid_taxa():
-    galah.galah_config(atlas="Australia", email="amanda.buyan@csiro.au")
+    galah.galah_config(atlas="Australia", email=email_au)
     occurrences = galah.atlas_occurrences(
         taxa="Macronycteris commersoni",
         filters=["cl22=Tasmania"],
@@ -1268,8 +1290,8 @@ def test_atlas_occurrences_no_valid_taxa():
     assert occurrences == None
 
 
-def test_atlas_occurrences_no_valid_taxa(capfd):
-    galah.galah_config(atlas="Australia", email="amanda.buyan@csiro.au")
+def test_atlas_occurrences_no_valid_taxa_output(capfd):
+    galah.galah_config(atlas="Australia", email=email_au)
     occurrences = galah.atlas_occurrences(
         taxa="Macronycteris commersoni",
         filters=["cl22=Tasmania"],
@@ -1282,8 +1304,9 @@ def test_atlas_occurrences_no_valid_taxa(capfd):
 def test_atlas_counts_galah_config_custom_file():
     galah.galah_config(
         atlas="Australia",
-        email="amanda.buyan@csiro.au",
+        email=email_au,
         config_file="./temp_config_atlas_counts.ini",
+        authenticate=False
     )
     counts = galah.atlas_counts(config_file="./temp_config_atlas_counts.ini")
     assert counts["totalRecords"][0] > 0
@@ -1292,8 +1315,9 @@ def test_atlas_counts_galah_config_custom_file():
 def test_atlas_occurrences_galah_config_custom_file():
     galah.galah_config(
         atlas="Australia",
-        email="amanda.buyan@csiro.au",
+        email=email_au,
         config_file="./temp_config_atlas_occurrences.ini",
+        authenticate=False
     )
     occurrences = galah.atlas_occurrences(taxa="Vulpes vulpes", config_file="./temp_config_atlas_occurrences.ini")
     assert occurrences.shape[0] > 0
@@ -1302,8 +1326,9 @@ def test_atlas_occurrences_galah_config_custom_file():
 def test_atlas_media_galah_config_custom_file():
     galah.galah_config(
         atlas="Australia",
-        email="amanda.buyan@csiro.au",
+        email=email_au,
         config_file="./temp_config_atlas_media.ini",
+        authenticate=False
     )
     filters = ["year=2020", "decimalLongitude>153.0"]
     output = galah.atlas_media(
@@ -1317,12 +1342,13 @@ def test_atlas_media_galah_config_custom_file():
 def test_atlas_species_Australia_species_australia_galah_config_custom_file():
     galah.galah_config(
         atlas="Australia",
-        email="amanda.buyan@csiro.au",
+        email=email_au,
         config_file="./temp_config_atlas_species.ini",
+        authenticate=False
     )
     taxa = "Heleioporus"
     species_table = galah.atlas_species(taxa=taxa, config_file="./temp_config_atlas_species.ini")
     assert species_table.shape[0] > 0
 
 
-# """
+#'''

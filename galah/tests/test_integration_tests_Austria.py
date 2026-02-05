@@ -1,5 +1,12 @@
+import configparser
+
 import galah
 
+configParser = configparser.ConfigParser()
+configParser.read("logins.txt")
+email_at = configParser["Austria"]["email"]
+
+galah.galah_config(authenticate=False,verbose=False)
 
 ######################################
 # show_all
@@ -468,21 +475,21 @@ def test_atlas_counts_multiple_taxa_filters_group_by_multiple_separate_expand_au
 # atlas_species
 ######################################
 def test_atlas_species_Austria_species_austria():
-    galah.galah_config(atlas="Austria")
+    galah.galah_config(atlas="Austria",email=email_at)
     taxa = "Sehirus"
     species_table = galah.atlas_species(taxa=taxa)
     assert species_table.shape[0] > 0
 
 
 def test_atlas_species_Austria_family_austria():
-    galah.galah_config(atlas="Austria")
+    galah.galah_config(atlas="Austria",email=email_at)
     taxa = "Cydnidae"
     species_table = galah.atlas_species(taxa=taxa)
     assert species_table.shape[0] > 0
 
 
 def test_atlas_species_Austria_filter_notaxa():
-    galah.galah_config(atlas="Austria")
+    galah.galah_config(atlas="Austria",email=email_at)
     filtered_species_table = galah.atlas_species(filters=["year=2022", "basis_of_record=HumanObservation"])
     assert filtered_species_table.shape[0] > 0
 
@@ -491,26 +498,26 @@ def test_atlas_species_Austria_filter_notaxa():
 # atlas_occurrences
 ######################################
 def test_atlas_occurrences_taxa_austria():
-    galah.galah_config(atlas="Austria", email="ala4r@ala.org.au", reason=10)
+    galah.galah_config(atlas="Austria", email=email_at, reason=10)
     occurrences = galah.atlas_occurrences(taxa="Sehirus luctuosus")
     assert occurrences.shape[0] > 1
 
 
 def test_atlas_occurrences_taxa_fields_austria():
-    galah.galah_config(atlas="Austria", email="ala4r@ala.org.au", reason=10)
+    galah.galah_config(atlas="Austria", email=email_at, reason=10)
     occurrences = galah.atlas_occurrences(taxa="Sehirus luctuosus", fields=["latitude", "longitude"])
     assert occurrences.shape[1] == 2
 
 
 def test_atlas_occurrences_taxa_filters_austria():
-    galah.galah_config(atlas="Austria", email="ala4r@ala.org.au", reason=10)
+    galah.galah_config(atlas="Austria", email=email_at, reason=10)
     occurrences1 = galah.atlas_occurrences(taxa="Sehirus luctuosus")
     occurrences2 = galah.atlas_occurrences(taxa="Sehirus luctuosus", filters="year=2020")
     assert occurrences2.shape[0] < occurrences1.shape[0]
 
 
 def test_atlas_occurrences_taxa_filter_fields_austria():
-    galah.galah_config(atlas="Austria", email="ala4r@ala.org.au", reason=10)
+    galah.galah_config(atlas="Austria", email=email_at, reason=10)
     occurrences = galah.atlas_occurrences(
         taxa="Sehirus luctuosus", filters="year=2020", fields=["latitude", "longitude"]
     )
@@ -518,7 +525,7 @@ def test_atlas_occurrences_taxa_filter_fields_austria():
 
 
 def test_atlas_occurrences_taxa_filters_austria():
-    galah.galah_config(atlas="Austria", email="ala4r@ala.org.au", reason=10)
+    galah.galah_config(atlas="Austria", email=email_at, reason=10)
     filters = ["year>2018", "basis_of_record=HumanObservation"]
     occurrences1 = galah.atlas_occurrences(taxa="Sehirus luctuosus")
     occurrences2 = galah.atlas_occurrences(taxa="Sehirus luctuosus", filters=filters)
@@ -526,7 +533,7 @@ def test_atlas_occurrences_taxa_filters_austria():
 
 
 def test_atlas_occurrences_taxa_filters_fields_austria():
-    galah.galah_config(atlas="Austria", email="ala4r@ala.org.au", reason=10)
+    galah.galah_config(atlas="Austria", email=email_at, reason=10)
     occurrences = galah.atlas_occurrences(
         taxa="Sehirus luctuosus",
         filters=["year>2018", "basis_of_record=HumanObservation"],

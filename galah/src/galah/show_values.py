@@ -1,7 +1,7 @@
 import pandas as pd
 import requests
 
-from .common_functions import kvp_to_columns, print_if_verbose
+from .common_functions import kvp_to_columns, print_if_verbose, set_bool_argument
 from .galah_config import get_api_url, readConfig
 
 
@@ -33,7 +33,7 @@ def show_values(field=None, lists=False, all_fields=False, verbose=False, config
         import galah
         galah.show_values(field='basisOfRecord')
 
-    .. program-output:: python -c "import galah; print(galah.show_values(field=\\\'basisOfRecord\\\'))"
+    .. program-output:: python -c "import galah; print(galah.show_values(field=\'basisOfRecord\'))"
     """
 
     # check to see if field is input correctly
@@ -47,6 +47,8 @@ def show_values(field=None, lists=False, all_fields=False, verbose=False, config
 
     # get atlas
     atlas = configs["galahSettings"]["atlas"]
+    verbose = set_bool_argument(arg=configs["galahSettings"]["verbose"], name_arg="verbose")
+    timeout = int(configs["galahSettings"]["timeout"])
 
     # get headers
     headers = {}
@@ -125,10 +127,22 @@ def process_value_results(atlas=None, response_json=None, lists=False, all_field
                 return dataFrame.reset_index(drop=True)
             return pd.DataFrame(response_json)
         else:
+
+            # loop over all fields in result
             result = response_json[0]["fieldResult"]
             for i, entry in enumerate(result):
+
                 # check if last character is a full stop
-                tempdf = pd.DataFrame([entry["i18nCode"].split(".")], columns=["field", "category"])
+                split_entry = entry["i18nCode"].split(".")
+
+                # if full stop(s) is/are in the value, join the values into one string
+                if len(split_entry) > 2:
+                    split_entry = [split_entry[0],".".join(split_entry[1:])]
+
+                # create dataframe
+                tempdf = pd.DataFrame([split_entry], columns=["field", "category"])
+
+                # concatenate value into dataframe
                 dataFrame = pd.concat([dataFrame, tempdf], ignore_index=True)
 
     return dataFrame

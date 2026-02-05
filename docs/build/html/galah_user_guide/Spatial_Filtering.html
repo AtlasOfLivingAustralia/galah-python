@@ -14,34 +14,37 @@
   
   <script data-cfasync="false">
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
-    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
-<link href="../_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
-<link href="../_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
-
-  
-  <link href="../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
+  <link href="../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../_static/css/extra.css?v=bc76f7e5" />
-    <link rel="stylesheet" type="text/css" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../_static/css/extra.css?v=bc76f7e5" />
   
+  <!-- So that users can add custom icons -->
+  <script src="../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
-<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
-  <script src="../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
     <script src="../_static/documentation_options.js?v=c5b435e8"></script>
-    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
-    <script src="../_static/design-tabs.js?v=36754332"></script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'galah_user_guide/Spatial_Filtering';</script>
     <link rel="icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
@@ -50,6 +53,7 @@
     <link rel="prev" title="Taxonomic Filtering" href="Taxonomic_Filtering.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="0.12.1" />
   </head>
   
   
@@ -57,31 +61,16 @@
 
   
   
-  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
   
   <div id="pst-scroll-pixel-helper"></div>
   
   <button type="button" class="btn rounded-pill" id="pst-back-to-top">
-    <i class="fa-solid fa-arrow-up"></i>
-    Back to top
-  </button>
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
 
   
-  <input type="checkbox"
-          class="sidebar-toggle"
-          name="__primary"
-          id="__primary"/>
-  <label class="overlay overlay-primary" for="__primary"></label>
-  
-  <input type="checkbox"
-          class="sidebar-toggle"
-          name="__secondary"
-          id="__secondary"/>
-  <label class="overlay overlay-secondary" for="__secondary"></label>
-  
-  <div class="search-button__wrapper">
-    <div class="search-button__overlay"></div>
-    <div class="search-button__search-container">
+  <dialog id="pst-search-dialog">
+    
 <form class="bd-search d-flex align-items-center"
       action="../search.html"
       method="get">
@@ -89,7 +78,6 @@
   <input type="search"
          class="form-control"
          name="q"
-         id="search-input"
          placeholder="Search the docs ..."
          aria-label="Search the docs ..."
          autocomplete="off"
@@ -97,20 +85,27 @@
          autocapitalize="off"
          spellcheck="false"/>
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
-</form></div>
-  </div>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
   
-    <header class="bd-header navbar navbar-expand-lg bd-navbar">
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
 <div class="bd-header__inner bd-page-width">
-  <label class="sidebar-toggle primary-toggle" for="__primary">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
     <span class="fa-solid fa-bars"></span>
-  </label>
+  </button>
   
   
   <div class="col-lg-3 navbar-header-items__start">
     
       <div class="navbar-item">
 
+  
+    
   
 
 <a class="navbar-brand logo" href="../index.html">
@@ -125,7 +120,7 @@
     
     
     <img src="../_static/logo.png" class="logo__image only-light" alt="Galah 0.12.1 documentation - Home"/>
-    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Galah 0.12.1 documentation - Home"/>`);</script>
+    <img src="../_static/logo.png" class="logo__image only-dark pst-js-only" alt="Galah 0.12.1 documentation - Home"/>
   
   
 </a></div>
@@ -137,43 +132,43 @@
     <div class="me-auto navbar-header-items__center">
       
         <div class="navbar-item">
-<nav class="navbar-nav">
+<nav>
   <ul class="bd-navbar-elements navbar-nav">
     
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../getting_started/index.html">
-                        Getting Started
-                      </a>
-                    </li>
-                
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../getting_started/index.html">
+    Getting Started
+  </a>
+</li>
 
-                    <li class="nav-item current active">
-                      <a class="nav-link nav-internal" href="index.html">
-                        Galah User Guide
-                      </a>
-                    </li>
-                
 
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../apidocs/galah.html">
-                        API Docs
-                      </a>
-                    </li>
-                
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="index.html">
+    Galah User Guide
+  </a>
+</li>
 
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../authors/index.html">
-                        Authors
-                      </a>
-                    </li>
-                
 
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../cheatsheet/index.html">
-                        Cheat Sheet
-                      </a>
-                    </li>
-                
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../apidocs/galah.html">
+    API Docs
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../authors/index.html">
+    Authors
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../cheatsheet/index.html">
+    Cheat Sheet
+  </a>
+</li>
+
   </ul>
 </nav></div>
       
@@ -185,31 +180,23 @@
         <div class="navbar-item navbar-persistent--container">
           
 
- <script>
- document.write(`
-   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass"></i>
-    <span class="search-button__default-text">Search</span>
-    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-   </button>
- `);
- </script>
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
         </div>
       
       
         <div class="navbar-item">
 
-<script>
-document.write(`
-  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
-    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
-    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
-  </button>
-`);
-</script></div>
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
       
-        <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+        <div class="navbar-item"><ul class="navbar-icon-links"
     aria-label="Icon Links">
         <li class="nav-item">
           
@@ -220,7 +207,7 @@ document.write(`
           
           
           
-          <a href="https://github.com/AtlasOfLivingAustralia/galah_python" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i></span>
+          <a href="https://github.com/AtlasOfLivingAustralia/galah_python" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
             <span class="sr-only">GitHub</span></a>
         </li>
 </ul></div>
@@ -232,22 +219,18 @@ document.write(`
   
     <div class="navbar-persistent--mobile">
 
- <script>
- document.write(`
-   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass"></i>
-    <span class="search-button__default-text">Search</span>
-    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-   </button>
- `);
- </script>
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
     </div>
   
 
   
-    <label class="sidebar-toggle secondary-toggle" for="__secondary" tabindex="0">
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
       <span class="fa-solid fa-outdent"></span>
-    </label>
+    </button>
   
 </div>
 
@@ -259,7 +242,8 @@ document.write(`
       
       
       
-      <div class="bd-sidebar-primary bd-sidebar">
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
         
 
   
@@ -268,46 +252,49 @@ document.write(`
     
       <div class="sidebar-header-items__center">
         
-          <div class="navbar-item">
-<nav class="navbar-nav">
+          
+          
+            <div class="navbar-item">
+<nav>
   <ul class="bd-navbar-elements navbar-nav">
     
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../getting_started/index.html">
-                        Getting Started
-                      </a>
-                    </li>
-                
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../getting_started/index.html">
+    Getting Started
+  </a>
+</li>
 
-                    <li class="nav-item current active">
-                      <a class="nav-link nav-internal" href="index.html">
-                        Galah User Guide
-                      </a>
-                    </li>
-                
 
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../apidocs/galah.html">
-                        API Docs
-                      </a>
-                    </li>
-                
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="index.html">
+    Galah User Guide
+  </a>
+</li>
 
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../authors/index.html">
-                        Authors
-                      </a>
-                    </li>
-                
 
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../cheatsheet/index.html">
-                        Cheat Sheet
-                      </a>
-                    </li>
-                
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../apidocs/galah.html">
+    API Docs
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../authors/index.html">
+    Authors
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../cheatsheet/index.html">
+    Cheat Sheet
+  </a>
+</li>
+
   </ul>
 </nav></div>
+          
         
       </div>
     
@@ -317,17 +304,13 @@ document.write(`
         
           <div class="navbar-item">
 
-<script>
-document.write(`
-  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
-    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
-    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
-  </button>
-`);
-</script></div>
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
         
-          <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+          <div class="navbar-item"><ul class="navbar-icon-links"
     aria-label="Icon Links">
         <li class="nav-item">
           
@@ -338,7 +321,7 @@ document.write(`
           
           
           
-          <a href="https://github.com/AtlasOfLivingAustralia/galah_python" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i></span>
+          <a href="https://github.com/AtlasOfLivingAustralia/galah_python" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
             <span class="sr-only">GitHub</span></a>
         </li>
 </ul></div>
@@ -352,20 +335,17 @@ document.write(`
 <nav class="bd-docs-nav bd-links"
      aria-label="Section Navigation">
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
-  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
-<li class="toctree-l1 has-children"><a class="reference internal" href="Getting_Started.html">Getting Started</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="Choosing_Atlas.html">Choosing an Atlas</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Download_Data.html">Download Data</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Look_Up_Info.html">Look Up Information</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Narrow_Results.html">Narrow Results</a></li>
+  <div class="bd-toc-item navbar-nav"><ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="Choosing_Atlas.html">Choosing an Atlas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Download_Data.html">Download Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Look_Up_Info.html">Look Up Information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Narrow_Results.html">Narrow Results</a></li>
 </ul>
-</li>
-<li class="toctree-l1 current active has-children"><a class="reference internal" href="Advanced.html">Advanced</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="Taxonomic_Filtering.html">Taxonomic Filtering</a></li>
-<li class="toctree-l2 current active"><a class="current reference internal" href="#">Spatial filtering</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Temporal_Filtering.html">Temporal filtering</a></li>
-</ul>
-</li>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="Taxonomic_Filtering.html">Taxonomic Filtering</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Spatial filtering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Temporal_Filtering.html">Temporal filtering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="authentication.html">Authentication (Experimental)</a></li>
 </ul>
 </div>
 </nav></div>
@@ -373,29 +353,32 @@ document.write(`
   
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
   </div>
-  
-  <div id="rtd-footer-container"></div>
 
 
       </div>
       
-      <main id="main-content" class="bd-main">
+      <main id="main-content" class="bd-main" role="main">
         
         
           <div class="bd-content">
             <div class="bd-article-container">
               
-              <div class="bd-header-article">
+              <div class="bd-header-article d-print-none">
 <div class="header-article-items header-article__inner">
   
     <div class="header-article-items__start">
       
         <div class="header-article-item">
 
-
-
-<nav aria-label="Breadcrumb">
+<nav aria-label="Breadcrumb" class="d-print-none">
   <ul class="bd-breadcrumbs">
     
     <li class="breadcrumb-item breadcrumb-home">
@@ -406,10 +389,7 @@ document.write(`
     
     <li class="breadcrumb-item"><a href="index.html" class="nav-link">Galah User Guide</a></li>
     
-    
-    <li class="breadcrumb-item"><a href="Advanced.html" class="nav-link">Advanced</a></li>
-    
-    <li class="breadcrumb-item active" aria-current="page">Spatial filtering</li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Spatial filtering</span></li>
   </ul>
 </nav>
 </div>
@@ -486,10 +466,10 @@ as follows:</p>
 <span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">avocets</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span></span>
 </pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>   decimalLatitude  decimalLongitude             eventDate                 scientificName                                                             taxonConceptID                              recordID                          dataResourceName occurrenceStatus
 0       -36.525833        139.823608  2012-07-29T00:00:00Z  Recurvirostra novaehollandiae  https://biodiversity.org.au/afd/taxa/c69e7308-527a-429d-a80d-143bd20b5100  838c1162-6c3e-4b5f-84d3-3639556f1acf               BirdLife Australia, Birdata          PRESENT
-1       -36.521950        139.827200                   NaN  Recurvirostra novaehollandiae  https://biodiversity.org.au/afd/taxa/c69e7308-527a-429d-a80d-143bd20b5100  e02745af-44d4-4ad8-9816-7aaaaa318a82  Australian Waterbird Surveys (1983-2018)          PRESENT
+1       -36.521950        139.827200                   NaN  Recurvirostra novaehollandiae  https://biodiversity.org.au/afd/taxa/c69e7308-527a-429d-a80d-143bd20b5100  3e4d190c-7032-48ba-885e-ebf513fe5af0  Australian Waterbird Surveys (1983-2018)          PRESENT
 2       -36.521950        139.827200  2010-10-21T00:00:00Z  Recurvirostra novaehollandiae  https://biodiversity.org.au/afd/taxa/c69e7308-527a-429d-a80d-143bd20b5100  8fdebcda-de5e-4c2c-94dc-a9fb25cd6817  Australian Waterbird Surveys (1983-2018)          PRESENT
-3       -36.521950        139.827200  2023-10-17T00:00:00Z  Recurvirostra novaehollandiae  https://biodiversity.org.au/afd/taxa/c69e7308-527a-429d-a80d-143bd20b5100  c91d351f-06d7-4a0a-95a5-6d77e0921923                                  SA Fauna          PRESENT
-4       -36.521950        139.827200                   NaN  Recurvirostra novaehollandiae  https://biodiversity.org.au/afd/taxa/c69e7308-527a-429d-a80d-143bd20b5100  3e4d190c-7032-48ba-885e-ebf513fe5af0  Australian Waterbird Surveys (1983-2018)          PRESENT
+3       -36.521950        139.827200                   NaN  Recurvirostra novaehollandiae  https://biodiversity.org.au/afd/taxa/c69e7308-527a-429d-a80d-143bd20b5100  e02745af-44d4-4ad8-9816-7aaaaa318a82  Australian Waterbird Surveys (1983-2018)          PRESENT
+4       -36.521950        139.827200  2023-10-17T00:00:00Z  Recurvirostra novaehollandiae  https://biodiversity.org.au/afd/taxa/c69e7308-527a-429d-a80d-143bd20b5100  c91d351f-06d7-4a0a-95a5-6d77e0921923                                  SA Fauna          PRESENT
 </pre></div>
 </div>
 </section>
@@ -513,22 +493,36 @@ have been recorded in King George Square.</p>
 <span class="prompt1"><span class="o">...</span> <span class="p">)</span></span>
 <span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">species_king_george_square</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span></span>
 </pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>    decimalLatitude  decimalLongitude             eventDate                     scientificName         vernacularName
-0        -27.468625        153.024333  2006-03-30T09:32:00Z              Threskiornis moluccus  Australian White Ibis
-1        -27.468611        153.024444  2023-12-02T09:12:02Z                Cosmophasis baehrae                    NaN
-2        -27.468546        153.023911  2024-02-03T20:45:00Z                        Mediastinia                    NaN
-3        -27.468536        153.024300  2025-05-31T08:08:00Z                 Achyra affinitalis             Grass Moth
-4        -27.468529        153.023898  2025-03-19T07:01:00Z  Manorina (Myzantha) melanocephala            Noisy Miner
-5        -27.468510        153.023821  2023-04-08T17:49:00Z                 Entomyzon cyanotis  Blue-faced Honeyeater
-6        -27.468419        153.023700  2025-05-31T08:08:00Z                 Achyra affinitalis             Grass Moth
-7        -27.468418        153.024140  2022-08-30T11:29:00Z              Threskiornis moluccus  Australian White Ibis
-8        -27.468364        153.024121  2024-08-28T10:31:54Z                           Vitellus                    NaN
-9        -27.468326        153.024077  2022-07-24T14:43:00Z              Threskiornis moluccus  Australian White Ibis
-10       -27.468308        153.024097  2024-10-13T14:34:00Z              Threskiornis moluccus  Australian White Ibis
-11       -27.468295        153.023967  2024-10-13T14:35:00Z                 Gymnorhina tibicen      Australian Magpie
-12       -27.468294        153.023907  2024-11-11T13:56:00Z              Threskiornis moluccus  Australian White Ibis
-13       -27.468262        153.023941  2025-03-19T06:55:00Z              Intellagama lesueurii   Eastern Water Dragon
-14       -27.468167        153.024047  2024-07-23T10:00:53Z              Threskiornis moluccus  Australian White Ibis
-15       -27.468155        153.024011  2024-04-26T12:07:00Z              Threskiornis moluccus  Australian White Ibis
+0        -27.468680        153.024292  2025-07-12T13:04:19Z              Threskiornis moluccus  Australian White Ibis
+1        -27.468658        153.024151  2025-10-31T12:34:07Z              Threskiornis moluccus  Australian White Ibis
+2        -27.468625        153.024333  2006-03-30T09:32:00Z              Threskiornis moluccus  Australian White Ibis
+3        -27.468611        153.024444  2023-12-02T09:12:02Z                Cosmophasis baehrae                    NaN
+4        -27.468607        153.024216  2025-06-13T12:19:00Z              Threskiornis moluccus  Australian White Ibis
+5        -27.468588        153.024186  2025-09-17T10:16:31Z              Threskiornis moluccus  Australian White Ibis
+6        -27.468546        153.023911  2024-02-03T20:45:00Z                        Mediastinia                    NaN
+7        -27.468536        153.024300  2025-05-31T08:08:00Z                 Achyra affinitalis             Grass Moth
+8        -27.468529        153.023898  2025-03-19T07:01:00Z  Manorina (Myzantha) melanocephala            Noisy Miner
+9        -27.468510        153.023821  2023-04-08T17:49:00Z                 Entomyzon cyanotis  Blue-faced Honeyeater
+10       -27.468506        153.023926  2026-01-02T16:50:39Z              Threskiornis moluccus  Australian White Ibis
+11       -27.468464        153.023703  2025-05-30T07:49:00Z                          CRAMBIDAE                    NaN
+12       -27.468419        153.023700  2025-05-31T08:08:00Z                 Achyra affinitalis             Grass Moth
+13       -27.468418        153.024140  2022-08-30T11:29:00Z              Threskiornis moluccus  Australian White Ibis
+14       -27.468364        153.024121  2024-08-28T10:31:54Z                           Vitellus                    NaN
+15       -27.468326        153.024077  2024-10-29T15:38:00Z          Hirundo (Hirundo) neoxena        Welcome Swallow
+16       -27.468326        153.024077  2022-07-24T14:43:00Z              Threskiornis moluccus  Australian White Ibis
+17       -27.468326        153.024077  2024-10-29T15:38:00Z            Columba (Columba) livia              Rock Dove
+18       -27.468326        153.024077  2024-10-29T15:38:00Z              Threskiornis moluccus  Australian White Ibis
+19       -27.468326        153.024077  2025-04-09T16:43:00Z              Threskiornis moluccus  Australian White Ibis
+20       -27.468320        153.024292  2025-06-21T10:04:29Z              Threskiornis moluccus  Australian White Ibis
+21       -27.468308        153.024097  2024-10-13T14:34:00Z              Threskiornis moluccus  Australian White Ibis
+22       -27.468295        153.023967  2024-10-13T14:35:00Z                 Gymnorhina tibicen      Australian Magpie
+23       -27.468294        153.023907  2024-11-11T13:56:00Z              Threskiornis moluccus  Australian White Ibis
+24       -27.468262        153.023941  2025-03-19T06:55:00Z              Intellagama lesueurii           Water Dragon
+25       -27.468195        153.024169  2025-06-26T14:57:21Z                 Gymnorhina tibicen      Australian Magpie
+26       -27.468167        153.024047  2024-07-23T10:00:53Z              Threskiornis moluccus  Australian White Ibis
+27       -27.468155        153.024011  2024-04-26T12:07:00Z              Threskiornis moluccus  Australian White Ibis
+28       -27.468092        153.024049  2025-07-09T13:34:00Z              Threskiornis moluccus  Australian White Ibis
+29       -27.467989        153.024131  2025-08-15T09:23:58Z              Threskiornis moluccus  Australian White Ibis
 </pre></div>
 </div>
 <p>This argument can be provided as its string; however, we show you the above to give you an idea of what
@@ -544,17 +538,20 @@ inside the provided shape.</p>
 <span class="prompt1"><span class="o">...</span>   <span class="n">fields</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;decimalLatitude&quot;</span><span class="p">,</span> <span class="s2">&quot;decimalLongitude&quot;</span><span class="p">,</span> <span class="s2">&quot;eventDate&quot;</span><span class="p">,</span> <span class="s2">&quot;scientificName&quot;</span><span class="p">,</span> <span class="s2">&quot;vernacularName&quot;</span><span class="p">]</span></span>
 <span class="prompt1"><span class="o">...</span> <span class="p">)</span></span>
 <span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">species_king_george_square</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span></span>
-</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>   decimalLatitude  decimalLongitude             eventDate                     scientificName         vernacularName
-0       -27.468625        153.024333  2006-03-30T09:32:00Z              Threskiornis moluccus  Australian White Ibis
-1       -27.468611        153.024444  2023-12-02T09:12:02Z                Cosmophasis baehrae                    NaN
-2       -27.468546        153.023911  2024-02-03T20:45:00Z                        Mediastinia                    NaN
-3       -27.468536        153.024300  2025-05-31T08:08:00Z                 Achyra affinitalis             Grass Moth
-4       -27.468529        153.023898  2025-03-19T07:01:00Z  Manorina (Myzantha) melanocephala            Noisy Miner
-5       -27.468510        153.023821  2023-04-08T17:49:00Z                 Entomyzon cyanotis  Blue-faced Honeyeater
-6       -27.468419        153.023700  2025-05-31T08:08:00Z                 Achyra affinitalis             Grass Moth
-7       -27.468418        153.024140  2022-08-30T11:29:00Z              Threskiornis moluccus  Australian White Ibis
-8       -27.468364        153.024121  2024-08-28T10:31:54Z                           Vitellus                    NaN
-9       -27.468326        153.024077  2022-07-24T14:43:00Z              Threskiornis moluccus  Australian White Ibis
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>15
+4
+
+   decimalLatitude  decimalLongitude             eventDate             scientificName         vernacularName
+0       -27.468418        153.024140  2022-08-30T11:29:00Z      Threskiornis moluccus  Australian White Ibis
+1       -27.468364        153.024121  2024-08-28T10:31:54Z                   Vitellus                    NaN
+2       -27.468326        153.024077  2022-07-24T14:43:00Z      Threskiornis moluccus  Australian White Ibis
+3       -27.468326        153.024077  2024-10-29T15:38:00Z  Hirundo (Hirundo) neoxena        Welcome Swallow
+4       -27.468326        153.024077  2024-10-29T15:38:00Z    Columba (Columba) livia              Rock Dove
+5       -27.468326        153.024077  2024-10-29T15:38:00Z      Threskiornis moluccus  Australian White Ibis
+6       -27.468326        153.024077  2025-04-09T16:43:00Z      Threskiornis moluccus  Australian White Ibis
+7       -27.468320        153.024292  2025-06-21T10:04:29Z      Threskiornis moluccus  Australian White Ibis
+8       -27.468308        153.024097  2024-10-13T14:34:00Z      Threskiornis moluccus  Australian White Ibis
+9       -27.468295        153.023967  2024-10-13T14:35:00Z         Gymnorhina tibicen      Australian Magpie
 </pre></div>
 </div>
 </section>
@@ -581,14 +578,14 @@ shapefile from the above link, and perform our filtering and summarising as foll
 <span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">brisbane_parks</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span></span>
 </pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>   OBJECTID  ...                                           geometry
 0        64  ...  POLYGON ((152.99236 -27.53098, 152.99118 -27.5...
-1        65  ...  POLYGON ((152.99137 -27.53090, 152.99130 -27.5...
+1        65  ...  POLYGON ((152.99137 -27.5309, 152.9913 -27.530...
 2       102  ...  POLYGON ((152.98534 -27.57025, 152.98534 -27.5...
-3       115  ...  POLYGON ((152.98702 -27.57090, 152.98723 -27.5...
+3       115  ...  POLYGON ((152.98702 -27.5709, 152.98723 -27.57...
 4       116  ...  POLYGON ((152.98525 -27.57294, 152.98513 -27.5...
-5       147  ...  POLYGON ((152.98423 -27.57400, 152.98429 -27.5...
+5       147  ...  POLYGON ((152.98423 -27.574, 152.98429 -27.574...
 6       166  ...  POLYGON ((152.96348 -27.55583, 152.96348 -27.5...
 7       188  ...  POLYGON ((152.98312 -27.56635, 152.98302 -27.5...
-8       401  ...  POLYGON ((152.98792 -27.52198, 152.98800 -27.5...
+8       401  ...  POLYGON ((152.98792 -27.52198, 152.988 -27.521...
 9       402  ...  POLYGON ((152.98165 -27.51611, 152.98159 -27.5...
 
 [10 rows x 13 columns]
@@ -613,7 +610,8 @@ shapefile from the above link, and perform our filtering and summarising as foll
 <span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="o">*</span><span class="n">plot_brisbane_parks_bbox</span><span class="o">.</span><span class="n">exterior</span><span class="o">.</span><span class="n">xy</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">)</span></span>
 <span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Latitude&quot;</span><span class="p">,</span><span class="n">size</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span><span class="n">x</span><span class="o">=</span><span class="mf">.45</span><span class="p">,</span><span class="n">y</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span></span>
 <span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Longitude&quot;</span><span class="p">,</span><span class="n">size</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span></span>
-</pre></div></div><a class="reference internal image-reference" href="../_images/brisbane_parks_and_bbox.png"><img alt="../_images/brisbane_parks_and_bbox.png" src="../_images/brisbane_parks_and_bbox.png" style="width: 630.0px; height: 900.0px;" /></a>
+</pre></div></div><a class="reference internal image-reference" href="../_images/brisbane_parks_and_bbox.png"><img alt="../_images/brisbane_parks_and_bbox.png" src="../_images/brisbane_parks_and_bbox.png" style="width: 630.0px; height: 900.0px;" />
+</a>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="c1"># third, find all occurrences of Trichoglossus chlorolepidotus in the bounding box in 2022</span></span>
 <span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span><span class="w"> </span><span class="nn">galah</span></span>
 <span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">galah_config</span><span class="p">(</span><span class="n">email</span><span class="o">=</span><span class="s2">&quot;your-email-here&quot;</span><span class="p">)</span></span>
@@ -630,13 +628,13 @@ shapefile from the above link, and perform our filtering and summarising as foll
 3          -27.574852        152.992831  ...        eBird Australia          PRESENT
 4          -27.574169        152.995529  ...        eBird Australia          PRESENT
 ...               ...               ...  ...                    ...              ...
-2786       -27.517759        152.985278  ...        eBird Australia          PRESENT
-2787       -27.517759        152.985278  ...        eBird Australia          PRESENT
-2788       -27.517759        152.985278  ...        eBird Australia          PRESENT
-2789       -27.517759        152.985278  ...        eBird Australia          PRESENT
-2790       -27.517759        152.985278  ...        eBird Australia          PRESENT
+3732       -27.517759        152.985278  ...        eBird Australia          PRESENT
+3733       -27.517759        152.985278  ...        eBird Australia          PRESENT
+3734       -27.517759        152.985278  ...        eBird Australia          PRESENT
+3735       -27.517759        152.985278  ...        eBird Australia          PRESENT
+3736       -27.517759        152.985278  ...        eBird Australia          PRESENT
 
-[2791 rows x 8 columns]
+[3737 rows x 8 columns]
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">brisbane_parks_all</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">edgecolor</span> <span class="o">=</span> <span class="s2">&quot;#5A5A5A&quot;</span><span class="p">,</span> <span class="n">linewidth</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">facecolor</span> <span class="o">=</span> <span class="s2">&quot;white&quot;</span><span class="p">,</span> <span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">7</span><span class="p">,</span><span class="mi">10</span><span class="p">))</span></span>
@@ -645,7 +643,8 @@ shapefile from the above link, and perform our filtering and summarising as foll
 <span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Longitude&quot;</span><span class="p">,</span><span class="n">size</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span></span>
 <span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">lorikeet_brisbane</span><span class="p">[</span><span class="s2">&quot;decimalLongitude&quot;</span><span class="p">],</span><span class="n">lorikeet_brisbane</span><span class="p">[</span><span class="s2">&quot;decimalLatitude&quot;</span><span class="p">],</span><span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="s2">&quot;orange&quot;</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s2">&quot;Lorikeet occurrences&quot;</span><span class="p">)</span></span>
 <span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span><span class="mf">0.96</span><span class="p">))</span></span>
-</pre></div></div><a class="reference internal image-reference" href="../_images/lorikeets_on_map_shapefile.png"><img alt="../_images/lorikeets_on_map_shapefile.png" src="../_images/lorikeets_on_map_shapefile.png" style="width: 630.0px; height: 900.0px;" /></a>
+</pre></div></div><a class="reference internal image-reference" href="../_images/lorikeets_on_map_shapefile.png"><img alt="../_images/lorikeets_on_map_shapefile.png" src="../_images/lorikeets_on_map_shapefile.png" style="width: 630.0px; height: 900.0px;" />
+</a>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="c1"># Filter records down to only those in the shapefile polygons</span></span>
 <span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">brisbane_parks</span><span class="p">[</span><span class="s2">&quot;count&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="mi">0</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">brisbane_parks</span><span class="p">))])</span></span>
 <span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">park</span> <span class="ow">in</span> <span class="n">brisbane_parks</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span></span>
@@ -654,16 +653,16 @@ shapefile from the above link, and perform our filtering and summarising as foll
 <span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">brisbane_parks_counts</span> <span class="o">=</span> <span class="n">brisbane_parks</span><span class="p">[[</span><span class="s2">&quot;PARK_NAME&quot;</span><span class="p">,</span><span class="s2">&quot;count&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s2">&quot;count&quot;</span><span class="p">,</span><span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></span>
 <span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">brisbane_parks_counts</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span></span>
 </pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>                        PARK_NAME  count
-0                NYUNDARE-BA PARK    552
-1              SHERWOOD ARBORETUM    475
-2                   FAULKNER PARK     64
-3              FORT ROAD BUSHLAND     46
-4         STRICKLAND TERRACE PARK     44
-5               BENARRAWA RESERVE     34
-6  GRACEVILLE RIVERSIDE PARKLANDS     33
-7                  NOSWORTHY PARK     17
-8           HORACE WINDOW RESERVE     14
-9          GRACEVILLE AVENUE PARK      7
+0                NYUNDARE-BA PARK    821
+1              SHERWOOD ARBORETUM    697
+2                   FAULKNER PARK     65
+3              FORT ROAD BUSHLAND     53
+4               BENARRAWA RESERVE     48
+5         STRICKLAND TERRACE PARK     48
+6  GRACEVILLE RIVERSIDE PARKLANDS     34
+7                  NOSWORTHY PARK     21
+8           HORACE WINDOW RESERVE     16
+9          GRACEVILLE AVENUE PARK      9
 </pre></div>
 </div>
 <p>Some shapefiles cover large geographic areas with the caveat that even the bounding box doesn’t restrict the
@@ -680,7 +679,7 @@ occurrence data, has been written detailing how to approach larger problems such
               
               
               
-                <footer class="prev-next-footer">
+                <footer class="prev-next-footer d-print-none">
                   
 <div class="prev-next-area">
     <a class="left-prev"
@@ -708,7 +707,8 @@ occurrence data, has been written detailing how to approach larger problems such
             
             
               
-                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
 
   <div class="sidebar-secondary-item">
@@ -738,8 +738,8 @@ occurrence data, has been written detailing how to approach larger problems such
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae"></script>
-<script src="../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae"></script>
+  <script defer src="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
 
   <footer class="bd-footer">
 <div class="bd-footer__inner bd-page-width">
@@ -759,7 +759,7 @@ occurrence data, has been written detailing how to approach larger problems such
         <div class="footer-item">
 
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.2.3.
     <br/>
   </p>
 </div>
@@ -772,7 +772,8 @@ occurrence data, has been written detailing how to approach larger problems such
       
         <div class="footer-item">
 <p class="theme-version">
-  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.15.2.
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
 </p></div>
       
     </div>

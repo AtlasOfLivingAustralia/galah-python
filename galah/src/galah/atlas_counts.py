@@ -1,10 +1,15 @@
 import pandas as pd
 import requests
 
-from .common_add_functions import add_extras_to_URL, add_filters, add_spatial_shapes, add_taxa
-from .common_checks import check_atlas, check_string_list
+from .add_to_payload_functions import add_to_payload_ALA
+from .common_add_functions import (add_extras_to_URL, add_filters,
+                                   add_spatial_shapes, add_taxa)
+from .common_checks import (check_atlas, check_atlas_authenticate,
+                            check_atlas_data_profile,
+                            check_for_non_working_atlases,
+                            check_max_queries_ALA, check_string_list)
 from .common_dictionaries import COUNTS_NAMES
-from .common_functions import print_if_verbose
+from .common_functions import print_if_verbose, set_bool_argument
 from .galah_config import get_api_url, readConfig
 from .galah_group_by import galah_group_by
 from .show_all import show_all
@@ -18,7 +23,6 @@ def atlas_counts(
     group_by=None,
     total_group_by=False,
     use_data_profile=False,
-    verbose=False,
     polygon=None,
     bbox=None,
     simplify_polygon=False,
@@ -45,8 +49,6 @@ def atlas_counts(
             zero or more individual column names (i.e. fields) to include. See ``galah.show_all()`` and ``galah.search_all()`` to see valid fields.
         total_group_by : logical
             If ``True``, galah gives total number of groups in data. Defaults to ``False``.
-        verbose : logical
-            If ``True``, galah gives more information like progress bars. Defaults to ``False``.
         use_data_profile : string
             A profile name. Should be a string - the name or abbreviation of a data quality profile to apply to the query. Valid values can be seen using ``galah.show_all(profiles=True)``
         polygon : shapely Polygon
@@ -82,29 +84,28 @@ def atlas_counts(
 
     """
 
+    # ---------------------------------------------------------------------------------------------
+    # Declare all variables, run checks on compatibility of arguments.
+    # ---------------------------------------------------------------------------------------------
+
     # get configs
     configs = readConfig(config_file=config_file)
 
-    # get atlas
+    # get atlas and verbose
     atlas = configs["galahSettings"]["atlas"]
+    verbose = set_bool_argument(arg=configs["galahSettings"]["verbose"], name_arg="verbose")
+    timeout = int(configs["galahSettings"]["timeout"])
+    authenticate = set_bool_argument(arg=configs["galahSettings"]["authenticate"], name_arg="authenticate")
+    access_token = configs["galahSettings"]["access_token"]
+    client_id = configs["galahSettings"]["client_id"]
+
+    # check to see if atlas is in list of non-functioning atlases
+    check_for_non_working_atlases(atlas=atlas)
 
     # check atlas is valid
     check_atlas(atlas=atlas, function="atlas_counts")
-
-    # raise error if argument is wrong type and/or the atlas doesn't have a quality profile but the user has specified one
-    if use_data_profile and atlas not in ["Australia", "ALA"]:
-        raise ValueError(
-            "True and False are the only values accepted for data_profile, and the only atlas using a data \n"
-            "quality profile is Australia.  Your atlas and data profile is \n"
-            "set in your config file.  To set your default filter, find out what profiles are on offer:\n"
-            "profiles = galah.show_all(profiles=True)\n\n"
-            "and then type\n\n"
-            "profiles['shortName']\n\n"
-            "to get the names of the data quality profiles you can use.  To set a data profile, type\n"
-            'galah.galah_config(data_profile="NAME FROM SHORTNAME HERE")'
-            "If you don't want to use a data quality profile, set it to None by typing the following:\n\n"
-            'galah.galah_config(data_profile="None")'
-        )
+    check_atlas_authenticate(atlas=atlas, authenticate=authenticate)
+    check_atlas_data_profile(atlas=atlas, use_data_profile=use_data_profile)
 
     # set default column 2 value
     column2value = "records_counts"
@@ -113,37 +114,141 @@ def atlas_counts(
     if group_by is not None and atlas in ["Brazil"]:
         column2value = "records_facets"
 
-    # get the baseURL and method
-    URL, method = get_api_url(
-        column1="called_by",
-        column1value="atlas_counts",
-        column2="api_name",
-        column2value=column2value,
-        config_file=config_file,
-    )
+    # ---------------------------------------------------------------------------------------------
+    # Declare all variables, run checks on compatibility of arguments.
+    # ---------------------------------------------------------------------------------------------
 
-    # check the type of filters
-    filters = check_string_list(filters, "filters")
+    # first, check if the authenticate argument is true
+    if authenticate:
 
-    # get headers
-    headers = {"User-Agent": "galah-python/{}".format(__version__)}
+        # create payload (for ALA)
+        payload = {}
 
-    # add taxa to URL
-    URL = add_taxa(taxa=taxa, atlas=atlas, URL=URL, scientific_name=scientific_name)
+        # check for Australian atlas
+        if atlas in ["Australia", "ALA"]:
 
-    # return None if there are no valid taxa
-    if URL is None:
-        return None
+            # create payload
+            payload = add_to_payload_ALA(
+                payload=payload,
+                atlas=atlas,
+                taxa=taxa,
+                filters=filters,
+                polygon=polygon,
+                bbox=bbox,
+                scientific_name=scientific_name,
+                simplify_polygon=simplify_polygon,
+                authenticate=authenticate,
+            )
 
-    # check if user wants to group counts
-    if group_by is not None:
+            # get the URL for counts
+            countsURL, method = get_api_url(
+                column1="called_by",
+                column1value="atlas_counts",
+                column2="api_name",
+                column2value=column2value,
+                config_file=config_file,
+            )
 
-        # check for GBIF first
-        if configs["galahSettings"]["atlas"] not in ["Global", "GBIF"]:
+            # check for group by
+            if group_by is not None:
 
-            # # add a separator if the user has taxa specified
-            # if taxa is not None and filters is not None:
-            #     URL += "%20AND%20"
+                # return grouped table
+                return galah_group_by(
+                    URL=countsURL,
+                    method=method,
+                    group_by=group_by,
+                    filters=filters,
+                    verbose=verbose,
+                    total_group_by=total_group_by,
+                    payload=payload,
+                )
+
+            # create the query id
+            qid_URL, method2 = get_api_url(column1="api_name", column1value="occurrences_qid")
+
+            # format headers with authentication
+            headers = {
+                "User-Agent": "galah-python {}".format(__version__),
+                "Authorization": "Bearer {}".format(access_token),
+                "client_id": client_id,
+            }
+
+            # print all information in the query ID call if verbose is True
+            print_if_verbose(verbose=verbose, headers=headers, URL=qid_URL, method=method2, payload=payload)
+
+            # cache the user's query and get a query ID
+            qid = requests.request(method2, qid_URL, data=payload, headers=headers)
+
+            # create the URL to grab your queryID and counts
+            URL = countsURL + "?fq=%28qid%3A" + qid.text + "%29&flimit=-1&pageSize=0"
+
+            # add last things to URL
+            if atlas in ["Australia", "ALA"]:
+                URL += add_extras_to_URL(
+                    add_email=False,
+                    use_data_profile=use_data_profile,
+                    data_profile_list=list(show_all(profiles=True)["shortName"]),
+                    atlas=atlas,
+                    config_file=config_file
+                )
+            else:
+                URL += add_extras_to_URL(add_email=False, atlas=atlas,config_file=config_file)
+
+            # print all information in the counts call if verbose is True
+            print_if_verbose(verbose=verbose, URL=URL, method=method)
+
+            # get data
+            response = requests.request(method, URL, headers=headers)
+
+            # check for max queries ALA
+            check_max_queries_ALA(response=response)
+
+            # get data from response
+            response_json = response.json()
+
+            # return dataFrame with total number of records
+            return pd.DataFrame({"totalRecords": [response_json[COUNTS_NAMES[atlas]]]})
+
+    else:
+
+        # get the baseURL and method
+        URL, method = get_api_url(
+            column1="called_by",
+            column1value="atlas_counts",
+            column2="api_name",
+            column2value=column2value,
+            config_file=config_file,
+        )
+
+        # check the type of filters
+        filters = check_string_list(filters, "filters")
+
+        # get headers
+        headers = {"User-Agent": "galah-python/{}".format(__version__)}
+
+        # add taxa to URL
+        URL = add_taxa(taxa=taxa, atlas=atlas, URL=URL, scientific_name=scientific_name)
+        
+        # return None if there are no valid taxa
+        if "fq" not in URL and all(x is None for x in [filters,polygon,bbox]):
+            if taxa is not None:
+                return None
+
+        # check if user wants to group counts
+        if group_by is not None:
+
+            # check for GBIF first
+            if atlas not in ["Global", "GBIF"]:
+
+                # return grouped data frame
+                return galah_group_by(
+                    URL=URL,
+                    method=method,
+                    group_by=group_by,
+                    filters=filters,
+                    verbose=verbose,
+                    total_group_by=total_group_by,
+                )
 
             # return grouped data frame
             return galah_group_by(
@@ -155,41 +260,35 @@ def atlas_counts(
                 total_group_by=total_group_by,
             )
 
-        # return grouped data frame
-        return galah_group_by(
-            URL=URL,
-            method=method,
-            group_by=group_by,
-            filters=filters,
-            verbose=verbose,
-            total_group_by=total_group_by,
+        # add filters and spatial shapes
+        URL = add_filters(URL=URL, atlas=atlas, filters=filters)
+        URL = add_spatial_shapes(
+            polygon=polygon, bbox=bbox, URL=URL, simplify_polygon=simplify_polygon, tolerance=tolerance
         )
 
-    # add filters and spatial shapes
-    URL = add_filters(URL=URL, atlas=atlas, filters=filters)
-    URL = add_spatial_shapes(
-        polygon=polygon, bbox=bbox, URL=URL, simplify_polygon=simplify_polygon, tolerance=tolerance
-    )
+        # add last things to URL
+        if atlas in ["Australia", "ALA"]:
+            URL += add_extras_to_URL(
+                add_email=False,
+                use_data_profile=use_data_profile,
+                data_profile_list=list(show_all(profiles=True)["shortName"]),
+                atlas=atlas,
+                config_file=config_file
+            )
+        else:
+            URL += add_extras_to_URL(add_email=False, atlas=atlas,config_file=config_file)
 
-    # add last things to URL
-    if atlas in ["Australia", "ALA"]:
-        URL += add_extras_to_URL(
-            add_email=False,
-            use_data_profile=use_data_profile,
-            data_profile_list=list(show_all(profiles=True)["shortName"]),
-            atlas=atlas,
-        )
-    else:
-        URL += add_extras_to_URL(add_email=False, atlas=atlas)
+        # check to see if the user wants the querying URL
+        print_if_verbose(verbose=verbose, headers=headers, URL=URL, method=method)
 
-    # check to see if the user wants the querying URL
-    print_if_verbose(verbose=verbose, headers=headers, URL=URL, method=method)
+        # get data
+        response = requests.request(method, URL, headers=headers, timeout=timeout)
 
-    # get data
-    response = requests.request(method, URL, headers=headers)
+        # get data from response
+        response_json = response.json()
 
-    # get data from response
-    response_json = response.json()
+        # check for max queries ALA
+        check_max_queries_ALA(response=response)
 
-    # return dataFrame with total number of records
-    return pd.DataFrame({"totalRecords": [response_json[COUNTS_NAMES[atlas]]]})
+        # return dataFrame with total number of records
+        return pd.DataFrame({"totalRecords": [response_json[COUNTS_NAMES[atlas]]]})

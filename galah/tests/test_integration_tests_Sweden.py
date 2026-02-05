@@ -1,6 +1,12 @@
+import configparser
+
 import galah
 
+configParser = configparser.ConfigParser()
+configParser.read("logins.txt")
+email_se = configParser["Sweden"]["email"]
 
+galah.galah_config(authenticate=False)
 ######################################
 # show_all
 ######################################
@@ -456,26 +462,26 @@ def test_atlas_species_Sweden_family_sweden():
 # atlas_occurrences
 ######################################
 def test_atlas_occurrences_taxa_sweden():
-    galah.galah_config(atlas="Sweden", email="martinjwestgate@gmail.com")
+    galah.galah_config(atlas="Sweden", email=email_se)
     occurrences = galah.atlas_occurrences(taxa="Alces alces")
     assert occurrences.shape[0] > 1
 
 
 def test_atlas_occurrences_taxa_fields_sweden():
-    galah.galah_config(atlas="Sweden", email="martinjwestgate@gmail.com")
+    galah.galah_config(atlas="Sweden", email=email_se)
     occurrences = galah.atlas_occurrences(taxa="Alces alces", fields=["decimalLatitude", "decimalLongitude"])
     assert occurrences.shape[1] == 2
 
 
 def test_atlas_occurrences_taxa_filters_sweden():
-    galah.galah_config(atlas="Sweden", email="martinjwestgate@gmail.com")
+    galah.galah_config(atlas="Sweden", email=email_se)
     occurrences1 = galah.atlas_occurrences(taxa="Alces alces")
     occurrences2 = galah.atlas_occurrences(taxa="Alces alces", filters="year=2020")
     assert occurrences2.shape[0] < occurrences1.shape[0]
 
 
 def test_atlas_occurrences_taxa_filter_fields_sweden():
-    galah.galah_config(atlas="Sweden", email="martinjwestgate@gmail.com")
+    galah.galah_config(atlas="Sweden", email=email_se)
     occurrences = galah.atlas_occurrences(
         taxa="Alces alces",
         filters="year=2020",
@@ -485,7 +491,7 @@ def test_atlas_occurrences_taxa_filter_fields_sweden():
 
 
 def test_atlas_occurrences_taxa_filters_sweden():
-    galah.galah_config(atlas="Sweden", email="martinjwestgate@gmail.com")
+    galah.galah_config(atlas="Sweden", email=email_se)
     filters = ["year>2018", "basis_of_record=HumanObservation"]
     occurrences1 = galah.atlas_occurrences(taxa="Alces alces")
     occurrences2 = galah.atlas_occurrences(taxa="Alces alces", filters=filters)
@@ -493,7 +499,7 @@ def test_atlas_occurrences_taxa_filters_sweden():
 
 
 def test_atlas_occurrences_taxa_filters_fields_sweden():
-    galah.galah_config(atlas="Sweden", email="martinjwestgate@gmail.com")
+    galah.galah_config(atlas="Sweden", email=email_se)
     occurrences = galah.atlas_occurrences(
         taxa="Alces alces",
         filters=["year>2018", "basis_of_record=HumanObservation"],

@@ -1,7 +1,8 @@
-import galah
 import pytest
 
+import galah
 
+'''
 def test_show_all_assertions_portugal():
     galah.galah_config(atlas="Portugal")
     with pytest.raises(Exception) as e_info:
@@ -62,7 +63,7 @@ def test_show_all_ranks_portugal():
     assert output.shape[1] > 1
 
 
-'''
+
 # integration test for search_taxa() - have to test get_api_url
 def test_search_taxa_portugal():
     galah.galah_config(atlas="Portugal")

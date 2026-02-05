@@ -25,16 +25,6 @@ def galah_geolocate(polygon=None, bbox=None, simplify_polygon=False, tolerance=1
     Returns
     -------
         Either a string or a polygon object.
-
-    Examples
-    --------
-
-    .. prompt:: python
-
-        import galah
-        galah.search_taxa(taxa="Vulpes vulpes",polygon=)
-
-    .. program-output:: python -c "import galah; print(galah.search_taxa(taxa=\\\"Vulpes vulpes\\\"))"
     """
 
     # get configs

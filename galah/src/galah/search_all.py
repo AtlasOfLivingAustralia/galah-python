@@ -2,20 +2,11 @@ from pandas.api.types import is_numeric_dtype
 
 from .common_checks import check_atlas
 from .galah_config import readConfig
-from .show_all import (
-    show_all_apis,
-    show_all_assertions,
-    show_all_atlases,
-    show_all_collections,
-    show_all_datasets,
-    show_all_fields,
-    show_all_licences,
-    show_all_lists,
-    show_all_profiles,
-    show_all_providers,
-    show_all_ranks,
-    show_all_reasons,
-)
+from .show_all import (show_all_apis, show_all_assertions, show_all_atlases,
+                       show_all_collections, show_all_datasets,
+                       show_all_fields, show_all_licences, show_all_lists,
+                       show_all_profiles, show_all_providers, show_all_ranks,
+                       show_all_reasons)
 from .version import __version__
 
 
@@ -83,8 +74,9 @@ def search_all(
         import galah
         galah.search_all(apis='Australia')
 
-    .. program-output:: python -c "import galah; import pandas as pd;pd.set_option('display.max_columns', None);print(galah.search_all(apis=\\\'Australia\\\'))"
+    .. program-output:: python -c "import galah; import pandas as pd;pd.set_option('display.max_columns', None);print(galah.search_all(apis=\'Australia\'))"
     """
+    # was \\\'
 
     # configs
     configs = readConfig(config_file=config_file)
@@ -185,6 +177,7 @@ def check_column_name_datasets(atlas=None, column_name=None):
         "Brazil",
         "France",
         "Guatemala",
+        "Kew",
         "Portugal",
         "Spain",
         "Sweden",

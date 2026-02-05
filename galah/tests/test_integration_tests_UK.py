@@ -1,12 +1,20 @@
-import galah
+import configparser
+
 import pytest
 
+import galah
+
+configParser = configparser.ConfigParser()
+configParser.read("logins.txt")
+email_uk = configParser["United Kingdom"]["email"]
+
+galah.galah_config(authenticate=False)
 
 ######################################
 # name change for UK atlas
 ######################################
 def test_change_name_galah_config_UK():
-    galah.galah_config(atlas="UK")
+    galah.galah_config(atlas="UK",authenticate=False)
     output = galah.galah_config()
     assert output[output["Configuration"] == "atlas"]["Value"][2] == "United Kingdom"
 
@@ -15,56 +23,56 @@ def test_change_name_galah_config_UK():
 # show_all
 ######################################
 def test_show_all_assertions_uk():
-    galah.galah_config(atlas="United Kingdom")
+    galah.galah_config(atlas="United Kingdom",authenticate=False)
     output = galah.show_all(assertions=True)
     assert output.shape[1] > 1
 
 
 def test_show_all_atlases_uk():
-    galah.galah_config(atlas="United Kingdom")
+    galah.galah_config(atlas="United Kingdom",authenticate=False)
     output = galah.show_all(atlases=True)
     assert output.shape[1] > 1
 
 
 def test_show_all_apis_uk():
-    galah.galah_config(atlas="United Kingdom")
+    galah.galah_config(atlas="United Kingdom",authenticate=False)
     output = galah.show_all(apis=True)
     assert output.shape[1] > 1
 
 
 def test_show_all_collection_uk():
-    galah.galah_config(atlas="United Kingdom")
+    galah.galah_config(atlas="United Kingdom",authenticate=False)
     with pytest.raises(Exception) as e_info:
         galah.show_all(collection=True)
     assert "collections" in str(e_info.value)
 
 
 def test_show_all_datasets_uk():
-    galah.galah_config(atlas="United Kingdom")
+    galah.galah_config(atlas="United Kingdom",authenticate=False)
     output = galah.show_all(datasets=True)
     assert output.shape[1] > 1
 
 
 def test_show_all_fields_uk():
-    galah.galah_config(atlas="United Kingdom")
+    galah.galah_config(atlas="United Kingdom",authenticate=False)
     output = galah.show_all(fields=True)
     assert output.shape[1] > 1
 
 
 def test_show_all_lists_uk():
-    galah.galah_config(atlas="United Kingdom")
+    galah.galah_config(atlas="United Kingdom",authenticate=False)
     output = galah.show_all(lists=True)
     assert output.shape[1] > 1
 
 
 def test_show_all_providers_uk():
-    galah.galah_config(atlas="United Kingdom")
+    galah.galah_config(atlas="United Kingdom",authenticate=False)
     output = galah.show_all(providers=True)
     assert output.shape[1] > 1
 
 
 def test_show_all_ranks_uk():
-    galah.galah_config(atlas="United Kingdom")
+    galah.galah_config(atlas="United Kingdom",authenticate=False)
     output = galah.show_all(ranks=True)
     assert output.shape[1] > 1
 
@@ -115,84 +123,84 @@ def test_search_all_apis_column_name_uk():
 
 
 def test_search_all_collection_uk():
-    galah.galah_config(atlas="United Kingdom")
+    galah.galah_config(atlas="United Kingdom",authenticate=False)
     with pytest.raises(Exception) as e_info:
         galah.search_all(collection="Agricultural")
     assert "collections" in str(e_info.value)
 
 
 def test_search_all_collection_column_name_uk():
-    galah.galah_config(atlas="United Kingdom")
+    galah.galah_config(atlas="United Kingdom",authenticate=False)
     with pytest.raises(Exception) as e_info:
         galah.search_all(collection="Agricultural", column_name="id")
     assert "collections" in str(e_info.value)
 
 
 def test_search_all_datasets_uk():
-    galah.galah_config(atlas="United Kingdom")
+    galah.galah_config(atlas="United Kingdom",authenticate=False)
     total_show_all = galah.show_all(datasets=True)
     total_search_all = galah.search_all(datasets="Nacional")
     assert total_search_all.shape[0] < total_show_all.shape[0]
 
 
 def test_search_all_datasets_column_name_uk():
-    galah.galah_config(atlas="United Kingdom")
+    galah.galah_config(atlas="United Kingdom",authenticate=False)
     total_show_all = galah.show_all(datasets=True)
     total_search_all = galah.search_all(datasets="4047", column_name="uid")
     assert total_search_all.shape[0] < total_show_all.shape[0]
 
 
 def test_search_all_fields_uk():
-    galah.galah_config(atlas="United Kingdom")
+    galah.galah_config(atlas="United Kingdom",authenticate=False)
     total_show_all = galah.show_all(fields=True)
     total_search_all = galah.search_all(fields="accepted")
     assert total_search_all.shape[0] < total_show_all.shape[0]
 
 
 def test_search_all_fields_column_name_uk():
-    galah.galah_config(atlas="United Kingdom")
+    galah.galah_config(atlas="United Kingdom",authenticate=False)
     total_show_all = galah.show_all(fields=True)
     total_search_all = galah.search_all(fields="basis", column_name="description")
     assert total_search_all.shape[0] < total_show_all.shape[0]
 
 
 def test_search_all_lists_uk():
-    galah.galah_config(atlas="United Kingdom")
+    galah.galah_config(atlas="United Kingdom",authenticate=False)
     total_show_all = galah.show_all(lists=True)
     total_search_all = galah.search_all(lists="Quadrat")
     assert total_search_all.shape[0] < total_show_all.shape[0]
 
 
 def test_search_all_lists_column_name_uk():
-    galah.galah_config(atlas="United Kingdom")
+    galah.galah_config(atlas="United Kingdom",authenticate=False)
     total_show_all = galah.show_all(lists=True)
     total_search_all = galah.search_all(lists="SPATIAL", column_name="listType")
     assert total_search_all.shape[0] < total_show_all.shape[0]
 
 
 def test_search_all_providers_uk():
-    galah.galah_config(atlas="United Kingdom")
+    galah.galah_config(atlas="United Kingdom",authenticate=False)
     total_show_all = galah.show_all(providers=True)
     total_search_all = galah.search_all(providers="Ecological")
     assert total_search_all.shape[0] < total_show_all.shape[0]
 
 
 def test_search_all_providers_column_name_uk():
-    galah.galah_config(atlas="United Kingdom")
+    galah.galah_config(atlas="United Kingdom",authenticate=False)
     total_show_all = galah.show_all(providers=True)
     total_search_all = galah.search_all(providers="1518", column_name="uid")
     assert total_search_all.shape[0] < total_show_all.shape[0]
 
 
 def test_search_all_ranks_uk():
-    galah.galah_config(atlas="United Kingdom")
+    galah.galah_config(atlas="United Kingdom",authenticate=False)
     total_show_all = galah.show_all(ranks=True)
     total_search_all = galah.search_all(ranks="kingdom")
     assert total_search_all.shape[0] < total_show_all.shape[0]
 
 
 def test_search_all_ranks_column_name_uk():
-    galah.galah_config(atlas="United Kingdom")
+    galah.galah_config(atlas="United Kingdom",authenticate=False)
     total_show_all = galah.show_all(ranks=True)
     total_search_all = galah.search_all(ranks="0", column_name="id")
     assert total_search_all.shape[0] < total_show_all.shape[0]
@@ -202,7 +210,7 @@ def test_search_all_ranks_column_name_uk():
 # show_values
 ######################################
 def test_search_values_uk():
-    galah.galah_config(atlas="United Kingdom")
+    galah.galah_config(atlas="United Kingdom",authenticate=False)
     output = galah.show_values(field="basis_of_record")
     assert output.shape[0] > 0
 
@@ -211,7 +219,7 @@ def test_search_values_uk():
 # search_values
 ######################################
 def test_search_values_uk():
-    galah.galah_config(atlas="United Kingdom")
+    galah.galah_config(atlas="United Kingdom",authenticate=False)
     first_output = galah.show_values(field="basis_of_record")
     second_output = galah.search_values(field="basis_of_record", value="obs")
     assert first_output.shape[0] > second_output.shape[0]
@@ -221,7 +229,7 @@ def test_search_values_uk():
 # search_taxa
 ######################################
 def test_search_taxa_uk():
-    galah.galah_config(atlas="United Kingdom")
+    galah.galah_config(atlas="United Kingdom",authenticate=False)
     output = galah.search_taxa("Vulpes vulpes")
     assert output["guid"][0] != None
 
@@ -230,13 +238,13 @@ def test_search_taxa_uk():
 # atlas_counts
 ######################################
 def test_atlas_counts_uk():
-    galah.galah_config(atlas="United Kingdom")
+    galah.galah_config(atlas="United Kingdom",authenticate=False)
     taxa = "Vulpes vulpes"
     assert galah.atlas_counts(taxa=taxa)["totalRecords"][0] > 0
 
 
 def test_atlas_counts_filters_uk():
-    galah.galah_config(atlas="United Kingdom")
+    galah.galah_config(atlas="United Kingdom",authenticate=False)
     f = "year=2022"
     all_counts = galah.atlas_counts()
     filtered_counts = galah.atlas_counts(filters=f)
@@ -244,7 +252,7 @@ def test_atlas_counts_filters_uk():
 
 
 def test_atlas_counts_filters_groupby_expand_uk():
-    galah.galah_config(atlas="United Kingdom")
+    galah.galah_config(atlas="United Kingdom",authenticate=False)
     f = "year=2022"
     groups = ["month", "basis_of_record"]
     filtered_counts = galah.atlas_counts(filters=f, group_by=groups)
@@ -253,7 +261,7 @@ def test_atlas_counts_filters_groupby_expand_uk():
 
 
 def test_atlas_counts_filters_groupby_uk():
-    galah.galah_config(atlas="United Kingdom")
+    galah.galah_config(atlas="United Kingdom",authenticate=False)
     f = "year=2022"
     groups = ["month", "basis_of_record"]
     filtered_counts = galah.atlas_counts(filters="year=2022", group_by=groups)
@@ -262,35 +270,35 @@ def test_atlas_counts_filters_groupby_uk():
 
 
 def test_atlas_counts_taxa_filter_uk():
-    galah.galah_config(atlas="United Kingdom")
+    galah.galah_config(atlas="United Kingdom",authenticate=False)
     taxa = "Vulpes vulpes"
     filter1 = "year=2020"
     assert galah.atlas_counts(taxa, filters=filter1)["totalRecords"][0] > 0
 
 
 def test_atlas_counts_taxa_filter_empty_uk():
-    galah.galah_config(atlas="United Kingdom")
+    galah.galah_config(atlas="United Kingdom",authenticate=False)
     taxa = "Vulpes vulpes"
     filter1 = "year="
     assert galah.atlas_counts(taxa, filters=filter1)["totalRecords"][0] > 0
 
 
 def test_atlas_counts_taxa_same_filter_uk():
-    galah.galah_config(atlas="United Kingdom")
+    galah.galah_config(atlas="United Kingdom",authenticate=False)
     taxa = "Vulpes vulpes"
     f = ["year >=2018", "year <= 2022"]
     assert galah.atlas_counts(taxa, filters=f)["totalRecords"][0] > 0
 
 
 def test_atlas_counts_taxa_filters_uk_total_group_by():
-    galah.galah_config(atlas="United Kingdom")
+    galah.galah_config(atlas="United Kingdom",authenticate=False)
     output = galah.atlas_counts(taxa="reptilia", filters="year=2020", group_by="species", total_group_by=True)
     assert output.shape[0] == 1
     assert output["count"][0] > 0
 
 
 def test_atlas_counts_multiple_taxa_filters_separate_uk():
-    galah.galah_config(atlas="United Kingdom")
+    galah.galah_config(atlas="United Kingdom",authenticate=False)
     taxa_array = ["Vulpes vulpes", "Meles meles"]
     f = ["basis_of_record = HumanObservation", "year=2022"]
     output = galah.atlas_counts(taxa=taxa_array, filters=f, group_by="species")
@@ -298,7 +306,7 @@ def test_atlas_counts_multiple_taxa_filters_separate_uk():
 
 
 def test_atlas_counts_taxa_group_uk():
-    galah.galah_config(atlas="United Kingdom")
+    galah.galah_config(atlas="United Kingdom",authenticate=False)
     taxa = "Vulpes vulpes"
     group_by = "year"
     output = galah.atlas_counts(taxa, group_by=group_by)
@@ -307,7 +315,7 @@ def test_atlas_counts_taxa_group_uk():
 
 
 def test_atlas_counts_taxa_groups_uk():
-    galah.galah_config(atlas="United Kingdom")
+    galah.galah_config(atlas="United Kingdom",authenticate=False)
     taxa = "Vulpes vulpes"
     group_by = ["year", "basis_of_record"]
     output = galah.atlas_counts(taxa, group_by=group_by)
@@ -316,7 +324,7 @@ def test_atlas_counts_taxa_groups_uk():
 
 
 def test_atlas_counts_taxa_groups_expand_uk():
-    galah.galah_config(atlas="United Kingdom")
+    galah.galah_config(atlas="United Kingdom",authenticate=False)
     taxa = "Vulpes vulpes"
     group_by = ["year", "basis_of_record"]
     output = galah.atlas_counts(taxa, group_by=group_by)
@@ -325,14 +333,14 @@ def test_atlas_counts_taxa_groups_expand_uk():
 
 
 def test_atlas_counts_taxa_filters_uk():
-    galah.galah_config(atlas="United Kingdom")
+    galah.galah_config(atlas="United Kingdom",authenticate=False)
     taxa = "Vulpes vulpes"
     filters = ["year=2020", "basis_of_record=HumanObservation"]
     assert galah.atlas_counts(taxa, filters=filters)["totalRecords"][0] > 0
 
 
 def test_atlas_counts_taxa_filters_group_by_no_expand_uk():
-    galah.galah_config(atlas="United Kingdom")
+    galah.galah_config(atlas="United Kingdom",authenticate=False)
     taxa = "Vulpes vulpes"
     filters = ["year=2020", "basis_of_record=HumanObservation"]
     group_by = "basis_of_record"
@@ -342,13 +350,13 @@ def test_atlas_counts_taxa_filters_group_by_no_expand_uk():
 
 
 def test_atlas_counts_multiple_taxa_uk():
-    galah.galah_config(atlas="United Kingdom")
+    galah.galah_config(atlas="United Kingdom",authenticate=False)
     taxa_array = ["Vulpes vulpes", "Meles meles", "Physoderma potteri"]
     assert galah.atlas_counts(taxa_array)["totalRecords"][0] > 0
 
 
 def test_atlas_counts_multiple_taxa_uk():
-    galah.galah_config(atlas="United Kingdom")
+    galah.galah_config(atlas="United Kingdom",authenticate=False)
     taxa_array = ["Vulpes vulpes", "Meles meles", "Physoderma potteri"]
     group_by = "year"
     output = galah.atlas_counts(taxa_array, group_by=group_by)
@@ -357,7 +365,7 @@ def test_atlas_counts_multiple_taxa_uk():
 
 
 def test_atlas_counts_multiple_taxa_group_by_uk():
-    galah.galah_config(atlas="United Kingdom")
+    galah.galah_config(atlas="United Kingdom",authenticate=False)
     taxa_array = ["Vulpes vulpes", "Meles meles", "Physoderma potteri"]
     group_by = ["year", "basis_of_record"]
     output = galah.atlas_counts(taxa_array, group_by=group_by)
@@ -366,14 +374,14 @@ def test_atlas_counts_multiple_taxa_group_by_uk():
 
 
 def test_atlas_counts_multiple_taxa_filter_uk():
-    galah.galah_config(atlas="United Kingdom")
+    galah.galah_config(atlas="United Kingdom",authenticate=False)
     taxa_array = ["Vulpes vulpes", "Meles meles", "Physoderma potteri"]
     filter1 = "year=2020"
     assert galah.atlas_counts(taxa_array, filters=filter1)["totalRecords"][0] > 0
 
 
 def test_atlas_counts_multiple_taxa_filter_group_by_uk():
-    galah.galah_config(atlas="United Kingdom")
+    galah.galah_config(atlas="United Kingdom",authenticate=False)
     taxa_array = ["Vulpes vulpes", "Meles meles", "Physoderma potteri"]
     filter1 = "year=2020"
     group_by = "basis_of_record"
@@ -383,14 +391,14 @@ def test_atlas_counts_multiple_taxa_filter_group_by_uk():
 
 
 def test_atlas_counts_multiple_taxa_filters_uk():
-    galah.galah_config(atlas="United Kingdom")
+    galah.galah_config(atlas="United Kingdom",authenticate=False)
     taxa_array = ["Vulpes vulpes", "Meles meles", "Physoderma potteri"]
     filters = ["year=2020", "basis_of_record=HumanObservation"]
     assert galah.atlas_counts(taxa_array, filters=filters)["totalRecords"][0] > 0
 
 
 def test_atlas_counts_multiple_taxa_filters_group_by_uk():
-    galah.galah_config(atlas="United Kingdom")
+    galah.galah_config(atlas="United Kingdom",authenticate=False)
     taxa_array = ["Vulpes vulpes", "Meles meles", "Physoderma potteri"]
     filters = ["year=2020", "basis_of_record=HumanObservation"]
     group_by = "year"
@@ -400,7 +408,7 @@ def test_atlas_counts_multiple_taxa_filters_group_by_uk():
 
 
 def test_atlas_counts_multiple_taxa_filters_group_by_multiple_uk():
-    galah.galah_config(atlas="United Kingdom")
+    galah.galah_config(atlas="United Kingdom",authenticate=False)
     taxa_array = ["Vulpes vulpes", "Meles meles", "Physoderma potteri"]
     filters = ["year>2010", "basis_of_record=HumanObservation"]
     group_by = ["species", "month"]
@@ -410,7 +418,7 @@ def test_atlas_counts_multiple_taxa_filters_group_by_multiple_uk():
 
 
 def test_atlas_counts_multiple_taxa_filters_group_by_multiple_uk2_uk():
-    galah.galah_config(atlas="United Kingdom")
+    galah.galah_config(atlas="United Kingdom",authenticate=False)
     taxa_array = ["Vulpes vulpes", "Meles meles", "Physoderma potteri"]
     filters = ["year>2010", "basis_of_record=HumanObservation"]
     group_by = ["state", "year"]
@@ -420,7 +428,7 @@ def test_atlas_counts_multiple_taxa_filters_group_by_multiple_uk2_uk():
 
 
 def test_atlas_counts_invalid_multiple_taxa_separate_uk():
-    galah.galah_config(atlas="United Kingdom")
+    galah.galah_config(atlas="United Kingdom",authenticate=False)
     taxa_array = ["Vulpes vulpes", "Meles meles", "Physoderma potteri", "Vulpes vulpes"]
     output = galah.atlas_counts(taxa_array, group_by="species")
     assert output.shape[0] == len(taxa_array) - 1
@@ -428,7 +436,7 @@ def test_atlas_counts_invalid_multiple_taxa_separate_uk():
 
 
 def test_atlas_counts_multiple_taxa_separate_uk():
-    galah.galah_config(atlas="United Kingdom")
+    galah.galah_config(atlas="United Kingdom",authenticate=False)
     taxa_array = ["Vulpes vulpes", "Meles meles", "Physoderma potteri"]
     output = galah.atlas_counts(taxa_array, group_by="species")
     assert output.shape[0] == len(taxa_array)
@@ -437,7 +445,7 @@ def test_atlas_counts_multiple_taxa_separate_uk():
 
 
 def test_atlas_counts_multiple_taxa_filters_separate_uk():
-    galah.galah_config(atlas="United Kingdom")
+    galah.galah_config(atlas="United Kingdom",authenticate=False)
     taxa_array = ["Vulpes vulpes", "Meles meles"]
     f = ["basis_of_record = HumanObservation", "year=2019"]
     output = galah.atlas_counts(taxa_array, filters=f, group_by="species")
@@ -447,7 +455,7 @@ def test_atlas_counts_multiple_taxa_filters_separate_uk():
 
 
 def test_atlas_counts_multiple_taxa_filters_group_by_separate_uk():
-    galah.galah_config(atlas="United Kingdom")
+    galah.galah_config(atlas="United Kingdom",authenticate=False)
     taxa_array = ["Vulpes vulpes", "Meles meles", "Physoderma potteri"]
     f = ["basis_of_record = HumanObservation", "year=2019"]
     group_by = ["month", "species"]
@@ -457,7 +465,7 @@ def test_atlas_counts_multiple_taxa_filters_group_by_separate_uk():
 
 
 def test_atlas_counts_multiple_taxa_filter_group_by_multiple_separate_uk():
-    galah.galah_config(atlas="United Kingdom")
+    galah.galah_config(atlas="United Kingdom",authenticate=False)
     taxa_array = ["Vulpes vulpes", "Meles meles", "Physoderma potteri"]
     f = ["basis_of_record = HumanObservation"]
     group_by = ["year", "month"]
@@ -467,7 +475,7 @@ def test_atlas_counts_multiple_taxa_filter_group_by_multiple_separate_uk():
 
 
 def test_atlas_counts_multiple_taxa_filters_group_by_multiple_separate_expand_uk():
-    galah.galah_config(atlas="United Kingdom")
+    galah.galah_config(atlas="United Kingdom",authenticate=False)
     taxa_array = ["Vulpes vulpes", "Meles meles", "Physoderma potteri"]
     f = ["basis_of_record = HumanObservation", "year=2022"]
     group_by = ["year", "species"]
@@ -510,26 +518,26 @@ def test_atlas_species_uk_filter_notaxa():
 # atlas_occurrences
 ######################################
 def test_atlas_occurrences_taxa_uk():
-    galah.galah_config(atlas="United Kingdom", email="ala4r@ala.org.au", reason="10")
+    galah.galah_config(atlas="United Kingdom", email=email_uk, reason="10")
     occurrences = galah.atlas_occurrences(taxa="Vulpes vulpes")
     assert occurrences.shape[0] > 1
 
 
 def test_atlas_occurrences_taxa_fields_uk():
-    galah.galah_config(atlas="United Kingdom", email="ala4r@ala.org.au", reason="10")
+    galah.galah_config(atlas="United Kingdom", email=email_uk, reason="10")
     occurrences = galah.atlas_occurrences(taxa="Vulpes vulpes", fields=["decimalLatitude", "decimalLongitude"])
     assert occurrences.shape[1] == 2
 
 
 def test_atlas_occurrences_taxa_filters_uk():
-    galah.galah_config(atlas="United Kingdom", email="ala4r@ala.org.au", reason="10")
+    galah.galah_config(atlas="United Kingdom", email=email_uk, reason="10")
     occurrences1 = galah.atlas_occurrences(taxa="Vulpes vulpes")
     occurrences2 = galah.atlas_occurrences(taxa="Vulpes vulpes", filters="year=2020")
     assert occurrences2.shape[0] < occurrences1.shape[0]
 
 
 def test_atlas_occurrences_taxa_filter_fields_uk():
-    galah.galah_config(atlas="United Kingdom", email="ala4r@ala.org.au", reason="10")
+    galah.galah_config(atlas="United Kingdom", email=email_uk, reason="10")
     occurrences = galah.atlas_occurrences(
         taxa="Vulpes vulpes", filters="year=2020", fields=["decimalLatitude", "decimalLongitude"]
     )
@@ -537,7 +545,7 @@ def test_atlas_occurrences_taxa_filter_fields_uk():
 
 
 def test_atlas_occurrences_taxa_filters2_uk():
-    galah.galah_config(atlas="United Kingdom", email="ala4r@ala.org.au", reason="10")
+    galah.galah_config(atlas="United Kingdom", email=email_uk, reason="10")
     filters = ["year>2018", "basisOfRecord=HUMAN_OBSERVATION"]
     occurrences1 = galah.atlas_occurrences(taxa="Vulpes vulpes")
     occurrences2 = galah.atlas_occurrences(taxa="Vulpes vulpes", filters=filters)
@@ -545,7 +553,7 @@ def test_atlas_occurrences_taxa_filters2_uk():
 
 
 def test_atlas_occurrences_taxa_filters_fields_uk2():
-    galah.galah_config(atlas="United Kingdom", email="ala4r@ala.org.au", reason="10")
+    galah.galah_config(atlas="United Kingdom", email=email_uk, reason="10")
     occurrences = galah.atlas_occurrences(
         taxa="Vulpes vulpes",
         filters=["year>2018", "basis_of_record=HumanObservation"],

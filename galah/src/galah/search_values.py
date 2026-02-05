@@ -32,7 +32,7 @@ def search_values(field=None, value=None, lists=False, all_fields=False, column_
         import galah
         galah.search_values(field='basisOfRecord',value='OBS')
 
-    .. program-output:: python -c 'import galah; print(galah.search_values(field=\\\'basisOfRecord\\\',value=\\\'OBS\\\'))'
+    #.. program-output:: python -c 'import galah; print(galah.search_values(field=\\\'basisOfRecord\\\',value=\\\'obs\\\'))'
     """
 
     if value is None:

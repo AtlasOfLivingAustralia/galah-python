@@ -3,8 +3,8 @@ import os
 import pandas as pd
 import requests
 
-from .common_checks import check_atlas
-from .common_functions import print_if_verbose
+from .common_checks import check_atlas, check_for_non_working_atlases
+from .common_functions import print_if_verbose, set_bool_argument
 from .galah_config import get_api_url, readConfig
 from .version import __version__
 
@@ -76,11 +76,17 @@ def show_all(
     # get configurations for different atlases
     configs = readConfig(config_file=config_file)
 
+    # get atlas and verbose
     atlas = configs["galahSettings"]["atlas"]
+    verbose = set_bool_argument(arg=configs["galahSettings"]["verbose"], name_arg="verbose")
+
+    # check to see if atlas is in list of non-functioning atlases
+    check_for_non_working_atlases(atlas=atlas)
 
     # check atlas is valid
     check_atlas(atlas=atlas, function="show_all")
 
+    # initialise headers
     headers = {"User-Agent": "galah-python/{}".format(__version__)}
 
     # set up the option for getting back multiple values
@@ -206,7 +212,6 @@ def show_all_assertions(atlas=None, headers=None, verbose=None, config_file=None
 
         # read this from a pre-downloaded CSV - potentially change this later
         assertions_dict = pd.read_csv(os.path.join(os.path.dirname(os.path.abspath(__file__)), "gbif_assertions.csv"))
-        print("here")
         assertions_dict.reset_index(drop=True, inplace=True)
         return assertions_dict
 
@@ -363,8 +368,6 @@ def show_all_datasets(atlas=None, headers=None, verbose=None, config_file=None):
             verbose=verbose,
             config_file=config_file,
         )
-        # if atlas in ["France"]:
-        #     return pd.DataFrame.from_dict(response.json()["_embedded"]["datasets"])
         return pd.DataFrame.from_dict(response.json())
 
 
@@ -385,17 +388,6 @@ def show_all_fields(atlas=None, headers=None, verbose=None, config_file=None):
     -------
         An object of class ``pandas.DataFrame`` containing all data of interest.
     """
-
-    if atlas in ["Portugal"]:
-        # add this temporarily until Portugal gets their APIs fixed
-        raise ValueError("Portugal's fields endpoint is currently not working.")
-        """
-        df = pd.DataFrame()
-        for i, item in enumerate(response.json()):
-            df = pd.concat([df, pd.DataFrame(item, index=[i])])
-        return df
-        """
-
     # get data from API
     response = get_response_show_all(
         column1="called_by",
@@ -577,7 +569,7 @@ def show_all_licences(atlas=None, headers=None, verbose=None, config_file=None):
         raise ValueError("The {} atlas does not have a list of licences".format(atlas))
 
     # check for atlases that have an endpoint but no data
-    elif atlas in ["Austria", "Brazil"]:
+    elif atlas in ["Austria", "Brazil", "Kew"]:
         raise ValueError("{} has an API endpoint for licences, but it is empty.".format(atlas))
 
     # otherwise, do default call
@@ -619,6 +611,9 @@ def show_all_lists(atlas=None, headers=None, verbose=None, config_file=None):
     # first, check for APIs that do not have lists
     if atlas in ["France", "GBIF", "Global"]:
         raise ValueError("The {} atlas does not have a lists API.".format(atlas))
+
+    if atlas in ["Kew"]:
+        raise ValueError("{} has an API endpoint for licences, but it is empty.".format(atlas))
 
     # then, look for lists and set offsets
     response = get_response_show_all(

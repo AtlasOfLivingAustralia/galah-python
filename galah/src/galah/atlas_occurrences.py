@@ -7,14 +7,17 @@ import pandas as pd
 import requests
 from requests.auth import HTTPBasicAuth
 
-from .common_add_functions import add_extras_to_URL, add_filters, add_predicates, add_spatial_shapes, add_taxa
-from .common_checks import check_atlas, check_email_empty, check_string_list
-from .common_dictionaries import (
-    ATLAS_OCCURRENCES_DOWNLOAD_ARGUMENTS,
-    ATLAS_OCCURRENCES_ERROR_MESSAGES,
-    ATLAS_SELECTIONS,
-)
-from .common_functions import print_if_verbose
+from .add_to_payload_functions import add_to_payload_ALA
+from .common_add_functions import (add_extras_to_URL, add_filters,
+                                   add_predicates, add_spatial_shapes,
+                                   add_taxa)
+from .common_checks import (check_atlas, check_atlas_authenticate,
+                            check_atlas_data_profile, check_email_empty,
+                            check_for_non_working_atlases, check_string_list)
+from .common_dictionaries import (ATLAS_OCCURRENCES_DOWNLOAD_ARGUMENTS,
+                                  ATLAS_OCCURRENCES_ERROR_MESSAGES,
+                                  ATLAS_SELECTIONS)
+from .common_functions import print_if_verbose, set_bool_argument
 from .galah_config import get_api_url, readConfig
 from .galah_select import galah_select
 from .show_all import show_all
@@ -25,7 +28,6 @@ def atlas_occurrences(
     taxa=None,
     scientific_name=None,
     filters=None,
-    verbose=False,
     fields=None,
     use_data_profile=False,
     species_list=False,
@@ -52,8 +54,6 @@ def atlas_occurrences(
             filters, in the form ``field`` ``logical`` ``value`` (e.g. ``"year=2021"``)
         test : logical
             Test if the API is up and running correctly.  Prints status of Atlas and returns.
-        verbose : logical
-            If ``True``, galah gives more information like URLs of your queries. Defaults to ``False``
         fields : string / list
             Name of one or more column groups to include. Valid options are "basic", "event" and "assertions"
             Default is set to ``"fields=basic"``, which returns:
@@ -119,18 +119,32 @@ def atlas_occurrences(
 
     """
 
+    # ---------------------------------------------------------------------------------------------
+    # Declare all variables, run checks on compatibility of arguments.
+    # ---------------------------------------------------------------------------------------------
+
     # get configs
     configs = readConfig(config_file=config_file)
 
     # get atlas
     atlas = configs["galahSettings"]["atlas"]
+    verbose = set_bool_argument(arg=configs["galahSettings"]["verbose"], name_arg="verbose")
+    timeout = int(configs["galahSettings"]["timeout"])
+    authenticate = set_bool_argument(arg=configs["galahSettings"]["authenticate"], name_arg="authenticate")
+    access_token = configs["galahSettings"]["access_token"]
+    client_id = configs["galahSettings"]["client_id"]
+    authentication = None
+
+    # check to see if atlas is in list of non-functioning atlases
+    check_for_non_working_atlases(atlas=atlas)
 
     # check atlas is valid
     check_atlas(atlas=atlas, function="atlas_occurrences")
-    check_for_Portugal(atlas=atlas)
+    check_atlas_authenticate(atlas=atlas, authenticate=authenticate)
+    check_atlas_data_profile(atlas=atlas, use_data_profile=use_data_profile)
 
     # check for email
-    check_email_empty()
+    check_email_empty(config_file=config_file)
 
     # check variables to see if they are strings/lists
     taxa = check_string_list(taxa, "taxa")
@@ -146,9 +160,12 @@ def atlas_occurrences(
         if "!=" in filters or "=!" in filters:
             raise ValueError("The current iteration of GBIF and galah does not support != as an option.")
 
-    # for every atlas except for GBIF
+    # declare for every atlas except for GBIF
     headers = {"User-Agent": "galah-python {}".format(__version__)}
-    authentication = None
+
+    # ---------------------------------------------------------------------------------------------
+    # First, check for DOIs to see if a person is re-downloading a dataset
+    # ---------------------------------------------------------------------------------------------
 
     if doi is not None:
 
@@ -165,15 +182,19 @@ def atlas_occurrences(
         print_if_verbose(verbose=verbose, headers=headers, URL=URL, method=method)
 
         # get data and return
-        response = requests.request(method, URL)
+        response = requests.request(method=method, url=URL, timeout=timeout)
         return pd.read_csv(
             zipfile.ZipFile(io.BytesIO(response.content)).open("data.csv"),
             sep=ATLAS_OCCURRENCES_DOWNLOAD_ARGUMENTS[atlas]["separator"],
             low_memory=False,
         )
 
+    # ---------------------------------------------------------------------------------------------
+    # Now, if they are creating their own query, construct the query
+    # ---------------------------------------------------------------------------------------------
     if atlas in ["Global", "GBIF"]:
 
+        # get the URL and method from GBIF
         URL, method = get_api_url(
             column1="called_by",
             column1value="atlas_occurrences",
@@ -182,6 +203,7 @@ def atlas_occurrences(
             config_file=config_file,
         )
 
+        # prepare headers
         headers = {
             "User-Agent": "galah-python/{}".format(__version__),
             "X-USER-AGENT": "galah-python/{}".format(__version__),
@@ -189,24 +211,28 @@ def atlas_occurrences(
             "Accept": "application/json",
         }
 
+        # prepare authentication
         authentication = HTTPBasicAuth(
             configs["galahSettings"]["usernameGBIF"],
             configs["galahSettings"]["passwordGBIF"],
         )
 
+        # add a question mark to separate the URLs from the filters
         URL = add_question_mark(URL)
 
+        # add any taxon; if no taxon, returns original url
         URL = add_taxa(taxa=taxa, atlas=atlas, URL=URL, scientific_name=scientific_name)
 
         # GBIF takes predicates - initialise variable in case GBIF is their desired atlas
         predicates = add_predicates(predicates=[], filters=filters, occurrencesGBIF=True)
 
+        # You cannot specify which data fields you want from GBIF, as far as I'm aware
         if fields is not None:
             print(
                 "GBIF, unfortunately, does not support choosing your desired data fields before download.  You will have to download them and then get categories you want."
             )
 
-        # check if user wants species list
+        # check if user wants species list; if not, they get a csv with the occurrences
         if species_list:
             format = "SPECIES_LIST"
             if status_accepted:
@@ -235,7 +261,9 @@ def atlas_occurrences(
         print_if_verbose(verbose=verbose, headers=headers, URL=URL, method=method, payload=payload)
 
         # get response
-        response = requests.request(method, URL, headers=headers, auth=authentication, data=payload)
+        response = requests.request(
+            method=method, url=URL, headers=headers, auth=authentication, data=payload, timeout=timeout
+        )
 
         # get job number
         job_number = response.text
@@ -243,6 +271,7 @@ def atlas_occurrences(
         # make the download url
         statusURL = URL.replace("request", job_number)
 
+        # return downloaded data when the job is done
         return get_data(
             response=response,
             atlas=atlas,
@@ -252,59 +281,129 @@ def atlas_occurrences(
             verbose=verbose,
             filename="{}.csv".format(job_number),
             mint_doi=mint_doi,
+            timeout=timeout,
         )
 
     else:
 
-        URL, method = get_api_url(
-            column1="called_by",
-            column1value="atlas_occurrences",
-            column2="api_name",
-            column2value="records_occurrences",
-            config_file=config_file,
-        )
+        # atlas_occurrences()
+        if atlas in ["Australia", "ALA"] and authenticate:
 
-        URL = add_taxa(taxa=taxa, atlas=atlas, URL=URL, scientific_name=scientific_name)
+            # create payload
+            payload = add_to_payload_ALA(
+                payload={},
+                atlas=atlas,
+                taxa=taxa,
+                filters=filters,
+                polygon=polygon,
+                bbox=bbox,
+                simplify_polygon=simplify_polygon,
+                scientific_name=scientific_name,
+                authenticate=authenticate,
+            )
 
-        if URL is None:
-            return None
+            # add authorization token and client id for authentication
+            headers["Authorization"] = "Bearer {}".format(access_token)
+            headers["client_id"] = client_id
 
-        URL = add_filters(filters=filters, atlas=atlas, URL=URL)
-        URL = add_spatial_shapes(
-            polygon=polygon, bbox=bbox, URL=URL, simplify_polygon=simplify_polygon, tolerance=tolerance
-        )
+            # If no payload (i.e. no filters), then raise an error
+            if payload is None:
+                raise ValueError("You need to narrow down your query, as you cannot download all records from the ALA.")
 
-        # check for no filters
-        var_list = [taxa, filters, polygon, bbox, scientific_name]
-        check_for_no_filters(var_list=var_list, atlas=atlas)
+            # create the query id
+            qid_URL, method2 = get_api_url(column1="api_name", column1value="occurrences_qid")
+            qid = requests.request(method2, qid_URL, data=payload, headers=headers)
 
-        # add fields for the user to download
-        URL = add_fields(fields=fields, atlas=atlas, URL=URL)
+            # get URL for downloading occurrences
+            baseURL, method = get_api_url(
+                column1="api_name", column1value="records_occurrences", config_file=config_file
+            )
 
-        # mint a DOI if requested
-        if mint_doi:
-            URL += "&mintDoi=TRUE"
+            # Add qa=None to not get any assertions
+            if fields is None:
+                fields = "basic"
 
-        # check if a user wants to use a data profile
-        # add other things to URL
-        URL += "&dwcHeaders=True"
+            # construct the URL
+            URL = baseURL + "?fq=%28qid%3A" + qid.text + "%29"
+            URL = add_fields(fields=fields, atlas=atlas, URL=URL)
+            URL += "&flimit=-1&dwcHeaders=true" # True
 
-        # add last things to URL
-        if atlas in ["Australia", "ALA"]:
+            # add the option to mint a DOI
+            if mint_doi:
+                URL += "&mintDoi=TRUE"
+
+            # add extra information to the URL
             URL += add_extras_to_URL(
-                add_email=True,
+                add_email=False,
                 use_data_profile=use_data_profile,
                 data_profile_list=list(show_all(profiles=True)["shortName"]),
                 atlas=atlas,
+                config_file=config_file
             )
+
+            # print information if user has chosen the verbose option
+            print_if_verbose(verbose=verbose, headers=headers, URL=URL, method=method, payload=payload)
+
+            # get data
+            response = requests.request(method, URL, headers=headers)
+
         else:
-            URL += add_extras_to_URL(add_email=True, atlas=atlas)
 
-        # check to see if user wants the query URL
-        print_if_verbose(verbose=verbose, headers=headers, URL=URL, method=method)
+            # get the URL for creating a query
+            URL, method = get_api_url(
+                column1="called_by",
+                column1value="atlas_occurrences",
+                column2="api_name",
+                column2value="records_occurrences",
+                config_file=config_file,
+            )
 
-        # get the request
-        response = requests.request(method, URL, headers=headers)
+            # add any taxon user has specified; returns original URL if taxa and scientific_name is None
+            URL = add_taxa(taxa=taxa, atlas=atlas, URL=URL, scientific_name=scientific_name)
+
+            if "fq" not in URL and URL[-1] != "?":
+                if taxa is not None:
+                    return None
+                URL += "?"
+
+            # add filters, including spatial filters
+            URL = add_filters(filters=filters, atlas=atlas, URL=URL)
+            URL = add_spatial_shapes(
+                polygon=polygon, bbox=bbox, URL=URL, simplify_polygon=simplify_polygon, tolerance=tolerance
+            )
+
+            # check for no filters
+            var_list = [taxa, filters, polygon, bbox, scientific_name]
+            check_for_no_filters(var_list=var_list, atlas=atlas)
+
+            # add fields for the user to download
+            URL = add_fields(fields=fields, atlas=atlas, URL=URL)
+
+            # mint a DOI if requested
+            if mint_doi:
+                URL += "&mintDoi=TRUE"
+
+            # check if a user wants to use a data profile
+            # add other things to URL
+            URL += "&dwcHeaders=true"
+
+            # add last things to URL
+            if atlas in ["Australia", "ALA"]:
+                URL += add_extras_to_URL(
+                    add_email=True,
+                    use_data_profile=use_data_profile,
+                    data_profile_list=list(show_all(profiles=True)["shortName"]),
+                    atlas=atlas,
+                    config_file=config_file
+                )
+            else:
+                URL += add_extras_to_URL(add_email=True, atlas=atlas, config_file=config_file)
+
+            # check to see if user wants the query URL
+            print_if_verbose(verbose=verbose, headers=headers, URL=URL, method=method)
+
+            # get the request
+            response = requests.request(method=method, url=URL, headers=headers, timeout=timeout)
 
         # Austria returns zipfile from URL; have to return it straight away
         if atlas in ["Austria", "United Kingdom", "UK"]:
@@ -328,6 +427,7 @@ def atlas_occurrences(
 
 
 def add_question_mark(URL=None):
+    """adds a question mark at the end of the URL"""
     if URL[-1] != "?":
         URL += "?"
     return URL
@@ -342,28 +442,27 @@ def get_data(
     verbose=None,
     filename=None,
     mint_doi=None,
+    timeout=600,
 ):
+    """Returns the data from the download"""
 
     # check to see if the user has gotten a 403 error
     check_for_403_error(response=response, atlas=atlas)
 
     # check status of download
-    response_download = requests.get(statusURL, headers=headers, auth=authentication)
+    response_download = requests.get(url=statusURL, headers=headers, auth=authentication, timeout=timeout)
     while response_download.json()["status"] != ATLAS_OCCURRENCES_DOWNLOAD_ARGUMENTS[atlas]["finished_status"]:
         time.sleep(5)
-        print("still working....")
-        response_download = requests.get(statusURL, headers=headers, auth=authentication)
-        print(response_download.json()["status"])
+        response_download = requests.get(url=statusURL, headers=headers, auth=authentication, timeout=timeout)
     zipURL = response_download.json()[ATLAS_OCCURRENCES_DOWNLOAD_ARGUMENTS[atlas]["zipURL_arg"]]
-    print(response_download.json())
-    print(zipURL)
 
     # check to see if the user wants the zip URL
     print_if_verbose(verbose=verbose, headers=headers, URL=zipURL, method="GET")
 
     # return dataFrame
-    data = requests.get(zipURL, headers=headers)
+    data = requests.get(zipURL, headers=headers, timeout=timeout)
 
+    # print the doi if user has asked for a doi
     if mint_doi:
         zip = zipfile.ZipFile(io.BytesIO(data.content))
         text = zip.read("doi.txt").decode().strip()
@@ -379,8 +478,11 @@ def get_data(
 
 
 def add_fields(fields=None, atlas=None, URL=None):
+    """adds fields you want to download"""
+
     # add fields
     if fields is not None:
+
         # first, check for assertions
         if "assertions" in fields:
             URL += "&qa=includeall"
@@ -396,12 +498,13 @@ def add_fields(fields=None, atlas=None, URL=None):
 
 
 def check_for_Portugal(atlas=None):
+    """Portugal atlas is not working; raise error to let user know"""
     if atlas in ["Portugal"]:
         raise ValueError("We currently cannot get occurrences from the {} atlas.".format(atlas))
 
 
 def check_for_no_filters(var_list=None, atlas=None):
-    # raise error if user hasn't specified any type of filters
+    """raise error if user hasn't specified any type of filters"""
 
     if all(v is None for v in var_list):
         raise Exception(
@@ -412,6 +515,7 @@ def check_for_no_filters(var_list=None, atlas=None):
 
 
 def check_for_403_error(response=None, atlas=None):
+    """raise error if user hasn't done any authentication and/or gets a 403 error"""
     if response.status_code == 403:
         print(response.text)
         raise ValueError(

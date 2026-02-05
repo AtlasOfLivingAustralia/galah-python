@@ -1,18 +1,19 @@
 ﻿atlas,system,api_name,api_url,called_by,functional,method
 Australia,collections,collections_collections,https://api.ala.org.au/metadata/ws/collection,show_all-collections,TRUE,GET
-Australia,collections,collections_datasets,	https://api.ala.org.au/metadata/ws/dataResource,show_all-datasets,TRUE,GET
+Australia,collections,collections_datasets,https://api.ala.org.au/metadata/ws/dataResource,show_all-datasets,TRUE,GET
 Australia,collections,collections_providers,https://api.ala.org.au/metadata/ws/dataProvider,show_all-providers,TRUE,GET
 Australia,data-quality,profiles_all,https://api.ala.org.au/dqf-service/api/v1/data-profiles?enabled=true,show_all-profiles,TRUE,GET
 Australia,data-quality,profiles_lookup,https://api.ala.org.au/dqf-service/api/v1/data-profiles/{profile},show_values-profiles,TRUE,GET
 Australia,doi,doi_download,https://api.ala.org.au/doi/api/doi/{doi_string}/download,doi_download,TRUE,GET
 Australia,images,image_licences,https://api.ala.org.au/images/ws/licence,show_all-licences,TRUE,GET
-Australia,images,image_metadata,https://api.ala.org.au/images/ws/getImageInfoForIdList,media_metadata,TRUE,POST
+Australia,images,image_metadata,https://api.ala.org.au/images/ws/image/{imageID},media_metadata,TRUE,GET
+Australia,images,image_bulk_metadata,https://api.ala.org.au/images/ws/getImageInfoForIdList,media_metadata,TRUE,POST
 Australia,images,image_download,https://api.ala.org.au/images/ws/image/{id}/original,media_download,TRUE,GET
 Australia,lists,lists_all,https://api.ala.org.au/specieslist/ws/speciesList,show_all-lists,TRUE,GET
 Australia,lists,lists_lookup,https://api.ala.org.au/specieslist/ws/speciesListItems/{list_id},show_values-lists,TRUE,GET
 Australia,logger,logger_reasons,https://api.ala.org.au/logger/service/logger/reasons,show_all-reasons,TRUE,GET
 Australia,name-matching,names_lookup,https://api.ala.org.au/namematching/api/getByTaxonID,search_identifiers,TRUE,GET
-Australia,species,names_search_bulk_species,https://bie.ala.org.au/ws/species/lookup/bulk,atlas_species,TRUE,POST
+Australia,species,names_search_bulk_species,https://api.ala.org.au/species/species/lookup/bulk,atlas_species,TRUE,POST
 Australia,name-matching,names_search_multiple,https://api.ala.org.au/namematching/api/searchAllByClassification,search_taxa,TRUE,POST
 Australia,name-matching,names_search_epithet,https://api.ala.org.au/namematching/api/searchByClassification,search_taxa,TRUE,GET
 Australia,name-matching,names_search_single,https://api.ala.org.au/namematching/api/search?q={name},search_taxa,TRUE,GET
@@ -26,6 +27,7 @@ Australia,spatial,spatial_layers,https://api.ala.org.au/spatial-service/fields,s
 Australia,species,species_children,https://api.ala.org.au/species/childConcepts/{id}/children,atlas_taxonomy,TRUE,GET
 Australia,species,species_lookup,https://api.ala.org.au/species/childConcepts/{id},atlas_taxonomy,TRUE,GET
 Australia,occurrences,occurrences_qid,https://api.ala.org.au/occurrences/qid,atlas_occurrences,TRUE,POST
+Australia,authentication,authentication,https://api.ala.org.au/common/api/getAuthConfig,get_authentication_tokens,TRUE,GET
 Austria,collections,collections_collections,https://collectory.biodiversityatlas.at/ws/collection,show_all-collections,TRUE,GET
 Austria,collections,collections_datasets,https://collectory.biodiversityatlas.at/ws/dataResource,show_all-datasets,TRUE,GET
 Austria,collections,collections_providers,https://collectory.biodiversityatlas.at/ws/dataProvider,show_all-providers,TRUE,GET
@@ -63,6 +65,16 @@ Brazil,spatial,spatial_layers,https://portal-espacial.sibbr.gov.br/spatial-hub/l
 Brazil,species,names_search_single,https://bie-webservice.sibbr.gov.br/bie-index/search?q={name}&pageSize=5,search_taxa,TRUE,GET
 Brazil,species,species_children,https://bie-webservice.sibbr.gov.br/bie-index/childConcepts/,atlas_taxonomy,TRUE,GET
 Brazil,species,species_lookup,https://bie-webservice.sibbr.gov.br/bie-index/species,atlas_taxonomy,TRUE,GET
+Estonia,records,records_counts,https://elurikkus.ee/biocache-service/occurrences/search,atlas_counts,TRUE,GET
+Estonia,records,records_facets,https://elurikkus.ee/biocache-service/occurrence/facets,"atlas_counts, show_values-fields",TRUE,GET
+Estonia,records,records_species,https://elurikkus.ee/biocache-service/occurrences/facets/download,atlas_species,FALSE,GET
+Estonia,records,records_assertions,https://elurikkus.ee/biocache-service/assertions/codes,show_all-assertions,TRUE,GET
+Estonia,collections,collections_collections,https://elurikkus.ee/collectory/ws/collection,show_all-collections,TRUE,GET
+Estonia,collections,collections_datasets,https://elurikkus.ee/collectory/ws/dataResource,show_all-datasets,TRUE,GET
+Estonia,records,records_fields,https://elurikkus.ee/biocache-service/index/fields,show_all-fields,TRUE,GET
+Estonia,collections,collections_providers,https://elurikkus.ee/collectory/ws/dataProvider,show_all-providers,TRUE,GET
+Estonia,name-matching,names_search_single,https://elurikkus.ee/bie-index/search?q={name}&pageSize=5,search_taxa,TRUE,GET
+Estonia,species,species_children,https://elurikkus.ee/bie-index/childConcepts/{id},atlas_taxonomy,TRUE,GET
 Flanders,species,species_lookup,https://natuurdata.dev.inbo.be/bie-index/childConcepts/{id},atlas_taxonomy,TRUE,GET
 Flanders,records,records_assertions,https://natuurdata.dev.inbo.be/biocache-service/assertions/codes,show_all-assertions,TRUE,GET
 Flanders,records,records_fields,https://natuurdata.dev.inbo.be/biocache-service/index/fields,show_all-fields,TRUE,GET
@@ -101,6 +113,7 @@ Global,collections,collections_collections_search,https://api.gbif.org/v1/grscic
 Global,collections,collections_datasets,https://api.gbif.org/v1/dataset,show_all-datasets,TRUE,GET
 Global,collections,collections_datasets_search,https://api.gbif.org/v1/dataset/search,search_all-datasets,TRUE,GET
 Global,records,records_counts,https://api.gbif.org/v1/occurrence/search,"atlas_counts, show_values-fields",TRUE,GET
+Global,records,records_fields,https://api.gbif.org/v1/occurrence/term,show_all-fields,TRUE,GET
 Global,records,records_occurrences,https://api.gbif.org/v1/occurrence/download/request,atlas_occurrences,TRUE,POST
 Global,species,species_children,https://api.gbif.org/v1/species/{id}/children,atlas_taxonomy,TRUE,GET
 Guatemala,collections,collections_collections,https://snib.conap.gob.gt/colecciones/ws/collection,show_all-collections,TRUE,GET
@@ -120,6 +133,22 @@ Guatemala,spatial,spatial_layers,https://geoespacial.snib.conap.gob.gt/ws/layers
 Guatemala,species,names_search_single,https://snib.conap.gob.gt/especies-ws/search?q={name}&pageSize=5,search_taxa,TRUE,GET
 Guatemala,species,species_children,https://snib.conap.gob.gt/especies-ws/childConcepts/,atlas_taxonomy,TRUE,GET
 Guatemala,species,species_lookup,https://snib.conap.gob.gt/especies-ws/species,atlas_taxonomy,TRUE,GET
+Kew,records,records_occurrences,https://records-ws.data.kew.org/occurrences/offline/download,atlas_occurrences,TRUE,GET
+Kew,records,records_counts,https://records-ws.data.kew.org/occurrences/search,atlas_counts,TRUE,GET
+Kew,records,records_facets,https://records-ws.data.kew.org/occurrences/facets,"atlas_counts, show_values-fields",TRUE,GET
+Kew,records,records_species,https://records-ws.data.kew.org/occurrences/facets/download,atlas_species,TRUE,GET
+Kew,images,image_metadata,https://images.data.kew.org/ws/image/{id},media_metadata,TRUE,GET
+Kew,records,records_assertions,https://records-ws.data.kew.org/assertions/codes,show_all-assertions,TRUE,GET
+Kew,collections,collections_collections,https://collections.data.kew.org/ws/collection,show_all-collections,TRUE,GET
+Kew,collections,collections_datasets,https://collections.data.kew.org/ws/dataResource,show_all-datasets,TRUE,GET
+Kew,records,records_fields,https://records-ws.data.kew.org/index/fields,show_all-fields,TRUE,GET
+Kew,images,image_licences,https://images.data.kew.org/ws/licence,show_all-licences,TRUE,GET
+Kew,lists,lists_all,https://lists.data.kew.org/ws/speciesList,show_all-lists,TRUE,GET
+Kew,lists,lists_lookup,https://lists.data/kew.org/ws/speciesListItems/{list_id},show_values-lists,TRUE,GET
+Kew,collections,collections_providers,https://collections.data.kew.org/ws/dataProvider,show_all-providers,TRUE,GET
+Kew,logger,logger_reasons,https://logger.data.kew.org/service/logger/reasons,show_all-reasons,TRUE,GET
+Kew,name-matching,names_search_single,https://species-ws.data.kew.org/search?q={name}&pageSize=5,search_taxa,TRUE,GET
+Kew,species,species_children,https://species-ws.data.kew.org/childConcepts/{id},atlas_taxonomy,TRUE,GET
 Portugal,records,records_occurrences,https://registos-ws.gbif.pt/occurrences/offline/download,atlas_occurrences,FALSE,GET
 Portugal,records,records_counts,https://registos-ws.gbif.pt/occurrences/search,atlas_counts,TRUE,GET
 Portugal,records,records_facets,https://registos-ws.gbif.pt/occurrence/facets,"atlas_counts, show_values-fields",TRUE,GET

@@ -7,3 +7,6 @@ build/
 galah/dist/
 .idea
 docs/.DS_Store
+galah/tests/*.ini
+galah/tests/*.txt
+galah/tests/*.json
