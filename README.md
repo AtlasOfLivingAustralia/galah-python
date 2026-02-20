@@ -2,8 +2,10 @@
 
 <!-- badges: start -->
 
+![Python](https://img.shields.io/badge/Python-3776AB?style=flat&logo=python&logoColor=white)
 [![pypi](https://img.shields.io/pypi/v/galah-python.svg)](https://pypi.org/project/galah-python/)
-[![codecov.io](https://codecov.io/github/AtlasOfLivingAustralia/galah-python/coverage.svg?branch=master)]
+![downloads](https://img.shields.io/pypi/d18m/galah-python)
+[![Codecov test coverage](https://codecov.io/gh/AtlasOfLivingAustralia/galah-python/branch/main/graph/badge.svg)](https://app.codecov.io/gh/AtlasOfLivingAustralia/galah-python?branch=main)
 (https://codecov.io/github/AtlasOfLivingAustralia/galah-python?branch=master)
 
 <!-- badges: end -->

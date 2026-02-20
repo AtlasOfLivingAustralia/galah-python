@@ -1,19 +1,21 @@
 import configparser
 import os
+import shutil
 
+import galah
 import geopandas as gpd
 import pandas as pd
 import pytest
 import shapely
 
-import galah
-
 configParser = configparser.ConfigParser()
 configParser.read("logins.txt")
 email_au = configParser["Australia"]["email"]
 
+galah.galah_config(authenticate=False)
 
-#'''
+
+# """
 ######################################
 # exceptions and errors
 ######################################
@@ -1256,6 +1258,9 @@ def test_atlas_media_filters_multimedia_australia():
 def test_atlas_media_filters_multimedia_collect_path_australia():
     galah.galah_config(atlas="Australia", email=email_au)
     path = "test"
+    if os.path.isdir("test"):
+        shutil.rmtree("test")
+    os.mkdir("test")
     multimedia_output = galah.atlas_media(
         taxa="Liopholis margaretae",
         multimedia="images",
@@ -1303,10 +1308,7 @@ def test_atlas_occurrences_no_valid_taxa_output(capfd):
 
 def test_atlas_counts_galah_config_custom_file():
     galah.galah_config(
-        atlas="Australia",
-        email=email_au,
-        config_file="./temp_config_atlas_counts.ini",
-        authenticate=False
+        atlas="Australia", email=email_au, config_file="./temp_config_atlas_counts.ini", authenticate=False
     )
     counts = galah.atlas_counts(config_file="./temp_config_atlas_counts.ini")
     assert counts["totalRecords"][0] > 0
@@ -1314,10 +1316,7 @@ def test_atlas_counts_galah_config_custom_file():
 
 def test_atlas_occurrences_galah_config_custom_file():
     galah.galah_config(
-        atlas="Australia",
-        email=email_au,
-        config_file="./temp_config_atlas_occurrences.ini",
-        authenticate=False
+        atlas="Australia", email=email_au, config_file="./temp_config_atlas_occurrences.ini", authenticate=False
     )
     occurrences = galah.atlas_occurrences(taxa="Vulpes vulpes", config_file="./temp_config_atlas_occurrences.ini")
     assert occurrences.shape[0] > 0
@@ -1325,10 +1324,7 @@ def test_atlas_occurrences_galah_config_custom_file():
 
 def test_atlas_media_galah_config_custom_file():
     galah.galah_config(
-        atlas="Australia",
-        email=email_au,
-        config_file="./temp_config_atlas_media.ini",
-        authenticate=False
+        atlas="Australia", email=email_au, config_file="./temp_config_atlas_media.ini", authenticate=False
     )
     filters = ["year=2020", "decimalLongitude>153.0"]
     output = galah.atlas_media(
@@ -1341,14 +1337,11 @@ def test_atlas_media_galah_config_custom_file():
 
 def test_atlas_species_Australia_species_australia_galah_config_custom_file():
     galah.galah_config(
-        atlas="Australia",
-        email=email_au,
-        config_file="./temp_config_atlas_species.ini",
-        authenticate=False
+        atlas="Australia", email=email_au, config_file="./temp_config_atlas_species.ini", authenticate=False
     )
     taxa = "Heleioporus"
     species_table = galah.atlas_species(taxa=taxa, config_file="./temp_config_atlas_species.ini")
     assert species_table.shape[0] > 0
 
 
-#'''
+# """

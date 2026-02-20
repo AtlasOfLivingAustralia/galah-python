@@ -2,12 +2,15 @@ import pandas as pd
 import requests
 
 from .add_to_payload_functions import add_to_payload_ALA
-from .common_add_functions import (add_extras_to_URL, add_filters,
-                                   add_spatial_shapes, add_taxa)
-from .common_checks import (check_atlas, check_atlas_authenticate,
-                            check_atlas_data_profile,
-                            check_for_non_working_atlases,
-                            check_max_queries_ALA, check_string_list)
+from .common_add_functions import add_extras_to_URL, add_filters, add_spatial_shapes, add_taxa
+from .common_checks import (
+    check_atlas,
+    check_atlas_authenticate,
+    check_atlas_data_profile,
+    check_for_non_working_atlases,
+    check_max_queries_ALA,
+    check_string_list,
+)
 from .common_dictionaries import COUNTS_NAMES
 from .common_functions import print_if_verbose, set_bool_argument
 from .galah_config import get_api_url, readConfig
@@ -119,95 +122,91 @@ def atlas_counts(
     # ---------------------------------------------------------------------------------------------
 
     # first, check if the authenticate argument is true
-    if authenticate:
+    if authenticate and atlas in ["Australia", "ALA"]:
 
-        # create payload (for ALA)
-        payload = {}
+        # create payload
+        payload = add_to_payload_ALA(
+            payload={},
+            atlas=atlas,
+            taxa=taxa,
+            filters=filters,
+            polygon=polygon,
+            bbox=bbox,
+            scientific_name=scientific_name,
+            simplify_polygon=simplify_polygon,
+            authenticate=authenticate,
+        )
 
-        # check for Australian atlas
-        if atlas in ["Australia", "ALA"]:
+        # get the URL for counts
+        countsURL, method = get_api_url(
+            column1="called_by",
+            column1value="atlas_counts",
+            column2="api_name",
+            column2value=column2value,
+            config_file=config_file,
+        )
 
-            # create payload
-            payload = add_to_payload_ALA(
-                payload=payload,
-                atlas=atlas,
-                taxa=taxa,
+        # check for group by
+        if group_by is not None:
+
+            # return grouped table
+            return galah_group_by(
+                URL=countsURL,
+                method=method,
+                group_by=group_by,
                 filters=filters,
-                polygon=polygon,
-                bbox=bbox,
-                scientific_name=scientific_name,
-                simplify_polygon=simplify_polygon,
-                authenticate=authenticate,
+                verbose=verbose,
+                total_group_by=total_group_by,
+                payload=payload,
             )
 
-            # get the URL for counts
-            countsURL, method = get_api_url(
-                column1="called_by",
-                column1value="atlas_counts",
-                column2="api_name",
-                column2value=column2value,
+        # create the query id
+        qid_URL, method2 = get_api_url(column1="api_name", column1value="occurrences_qid")
+
+        # format headers with authentication
+        headers = {
+            "User-Agent": "galah-python {}".format(__version__),
+            "Authorization": "Bearer {}".format(access_token),
+            "client_id": client_id,
+        }
+
+        # print all information in the query ID call if verbose is True
+        print_if_verbose(verbose=verbose, headers=headers, URL=qid_URL, method=method2, payload=payload)
+
+        # cache the user's query and get a query ID
+        qid = requests.request(method2, qid_URL, data=payload, headers=headers)
+        print(qid)
+        print(qid.text)
+
+        # create the URL to grab your queryID and counts
+        URL = countsURL + "?fq=%28qid%3A" + qid.text + "%29&flimit=-1&pageSize=0"  # "/" + qid.text
+
+        # add last things to URL
+        if atlas in ["Australia", "ALA"]:
+            URL += add_extras_to_URL(
+                add_email=False,
+                use_data_profile=use_data_profile,
+                data_profile_list=list(show_all(profiles=True)["shortName"]),
+                atlas=atlas,
                 config_file=config_file,
             )
+        else:
+            URL += add_extras_to_URL(add_email=False, atlas=atlas, config_file=config_file)
 
-            # check for group by
-            if group_by is not None:
+        # print all information in the counts call if verbose is True
+        print_if_verbose(verbose=verbose, URL=URL, method=method)
 
-                # return grouped table
-                return galah_group_by(
-                    URL=countsURL,
-                    method=method,
-                    group_by=group_by,
-                    filters=filters,
-                    verbose=verbose,
-                    total_group_by=total_group_by,
-                    payload=payload,
-                )
+        # get data
+        response = requests.request(method, URL, headers=headers)
 
-            # create the query id
-            qid_URL, method2 = get_api_url(column1="api_name", column1value="occurrences_qid")
+        # check for max queries ALA
+        check_max_queries_ALA(response=response)
 
-            # format headers with authentication
-            headers = {
-                "User-Agent": "galah-python {}".format(__version__),
-                "Authorization": "Bearer {}".format(access_token),
-                "client_id": client_id,
-            }
+        # get data from response
+        response_json = response.json()
 
-            # print all information in the query ID call if verbose is True
-            print_if_verbose(verbose=verbose, headers=headers, URL=qid_URL, method=method2, payload=payload)
-
-            # cache the user's query and get a query ID
-            qid = requests.request(method2, qid_URL, data=payload, headers=headers)
-
-            # create the URL to grab your queryID and counts
-            URL = countsURL + "?fq=%28qid%3A" + qid.text + "%29&flimit=-1&pageSize=0"
-
-            # add last things to URL
-            if atlas in ["Australia", "ALA"]:
-                URL += add_extras_to_URL(
-                    add_email=False,
-                    use_data_profile=use_data_profile,
-                    data_profile_list=list(show_all(profiles=True)["shortName"]),
-                    atlas=atlas,
-                    config_file=config_file
-                )
-            else:
-                URL += add_extras_to_URL(add_email=False, atlas=atlas,config_file=config_file)
-
-            # print all information in the counts call if verbose is True
-            print_if_verbose(verbose=verbose, URL=URL, method=method)
-
-            # get data
-            response = requests.request(method, URL, headers=headers)
-
-            # check for max queries ALA
-            check_max_queries_ALA(response=response)
-
-            # get data from response
-            response_json = response.json()
-
-            # return dataFrame with total number of records
-            return pd.DataFrame({"totalRecords": [response_json[COUNTS_NAMES[atlas]]]})
+        # return dataFrame with total number of records
+        return pd.DataFrame({"totalRecords": [response_json[COUNTS_NAMES[atlas]]]})
 
     else:
 
@@ -228,9 +227,9 @@ def atlas_counts(
 
         # add taxa to URL
         URL = add_taxa(taxa=taxa, atlas=atlas, URL=URL, scientific_name=scientific_name)
-        
+
         # return None if there are no valid taxa
-        if "fq" not in URL and all(x is None for x in [filters,polygon,bbox]):
+        if all(x not in URL for x in ["fq", "taxonKey"]) and all(x is None for x in [filters, polygon, bbox]):
             if taxa is not None:
                 return None
 
@@ -273,10 +272,10 @@ def atlas_counts(
                 use_data_profile=use_data_profile,
                 data_profile_list=list(show_all(profiles=True)["shortName"]),
                 atlas=atlas,
-                config_file=config_file
+                config_file=config_file,
             )
         else:
-            URL += add_extras_to_URL(add_email=False, atlas=atlas,config_file=config_file)
+            URL += add_extras_to_URL(add_email=False, atlas=atlas, config_file=config_file)
 
         # check to see if the user wants the querying URL
         print_if_verbose(verbose=verbose, headers=headers, URL=URL, method=method)

@@ -25,6 +25,7 @@ ATLAS_COMMON_NAMES = {
     "Australia": "vernacularName",
     "Austria": "commonName",
     "Brazil": "commonName",
+    "Flanders": "vernacularName",
     "France": "englishVernacularName",
     "Global": "canonicalName",
     "GBIF": "canonicalName",
@@ -41,6 +42,7 @@ ATLAS_KEYWORDS = {
     "Austria": "guid",
     "Brazil": "guid",
     "France": "id",
+    "Flanders": "taxonConceptID",
     "Global": "usageKey",
     "GBIF": "usageKey",
     "Guatemala": "guid",
@@ -56,6 +58,7 @@ ATLAS_OCCURRENCES_ERROR_MESSAGES = {
     "Australia": "go to https://auth.ala.org.au/cas/login to register.",
     "Austria": "go to https://auth.biodiversityatlas.at/cas/login to register.",
     "Brazil": "email atendimento_sibbr@rnp.br to find out more information.",
+    "Flanders": "",
     "France": "visit https://inpn.mnhn.fr/contact/contacteznous to find out more information.",
     "GBIF": "go to https://www.gbif.org/user/profile to register.",
     "Global": "go to https://www.gbif.org/user/profile to register.",
@@ -76,6 +79,11 @@ ATLAS_OCCURRENCES_DOWNLOAD_ARGUMENTS = {
         "separator": ",",
     },
     "Brazil": {
+        "finished_status": "finished",
+        "zipURL_arg": "downloadUrl",
+        "separator": ",",
+    },
+    "Flanders": {
         "finished_status": "finished",
         "zipURL_arg": "downloadUrl",
         "separator": ",",
@@ -158,6 +166,16 @@ ATLAS_SPECIES_FIELDS = {
         "genus": "genus_guid",
         "species": "species_guid",
         "subspecies": "subspecies_guid",
+    },
+    "Flanders": {
+        "kingdom": "kingdomID",
+        "phylum": "phylumID",
+        "class": "classID",
+        "order": "orderID",
+        "family": "familyID",
+        "genus": "genusID",
+        "species": "speciesID",
+        "subspecies": "subspeciesID",
     },
     "France": {
         "kingdom": "kingdomID",
@@ -349,6 +367,7 @@ COUNTS_NAMES = {
     "Australia": "totalRecords",
     "Austria": "totalRecords",
     "Brazil": "totalRecords",
+    "Flanders": "totalRecords",
     "France": "totalRecords",
     "Global": "count",
     "GBIF": "count",
@@ -454,6 +473,19 @@ SEARCH_TAXA_FIELDS = {
         "genus",
         "species",
         "commonName",
+    ],
+    "Flanders": [
+        # "rank",
+        # "matchType",
+        "KINGDOM",
+        "PHYLUM",
+        "CLASS",  # was class
+        "ORDER",
+        "FAMILY",
+        "GENUS",
+        "SPECIES",
+        # "issues",
+        # "vernacularName",
     ],
     "France": [
         "scientificName",
@@ -619,6 +651,7 @@ VERNACULAR_NAMES = {
 
 MM_EXTENSIONS = {
     "image/jpeg": "jpg",
+    "image/jpg": "jpg",
     "image/png": "png",
     "audio/mpeg": "mpg",
     "audio/x-wav": "wav",
@@ -641,13 +674,14 @@ FIELD_SELECTIONS = {
         "occurrenceStatus",
     ],
     "event": ["eventRemarks", "eventTime", "eventID", "eventDate", "samplingEffort", "samplingProtocol"],
-    "media": ["multimedia", "multimediaLicence", "images", "videos", "sounds"],
+    "media": ["multimedia", "images", "videos", "sounds"],  # "multimediaLicence",
 }
 
 GROUP_BY_FACETS = {
     "Australia": "facets",
     "Austria": "facets",
     "Brazil": "facets",
+    "Flanders": "facets",
     "France": "facets",
     "GBIF": "facet",
     "Global": "facet",
@@ -657,4 +691,37 @@ GROUP_BY_FACETS = {
     "Spain": "facets",
     "Sweden": "facets",
     "United Kingdom": "facets",
+}
+
+IMAGE_NAMES = {
+    "Australia": "imageID",
+    "Austria": "id",
+    "Brazil": "id",
+    "Flanders": "id",
+    "Kew": "id",
+    "Spain": "id",
+    "Sweden": "id",
+    "United Kingdom": "id",
+}
+
+IMAGE_COLUMN_NAMES = {
+    "Australia": "images",
+    "Austria": "image_url",
+    "Brazil": "images",
+    "Flanders": "images",
+    "Kew": "images",
+    "Spain": "images",
+    "Sweden": "images",
+    "United Kingdom": "images",
+}
+
+IMAGE_MERGE_NAMES = {
+    "Australia": "images",
+    "Austria": "image_url",
+    "Brazil": "images",
+    "Flanders": "images",
+    "Kew": "images",
+    "Spain": "images",
+    "Sweden": "images",
+    "United Kingdom": "images",
 }

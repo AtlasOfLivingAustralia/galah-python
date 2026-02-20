@@ -2,11 +2,20 @@ from pandas.api.types import is_numeric_dtype
 
 from .common_checks import check_atlas
 from .galah_config import readConfig
-from .show_all import (show_all_apis, show_all_assertions, show_all_atlases,
-                       show_all_collections, show_all_datasets,
-                       show_all_fields, show_all_licences, show_all_lists,
-                       show_all_profiles, show_all_providers, show_all_ranks,
-                       show_all_reasons)
+from .show_all import (
+    show_all_apis,
+    show_all_assertions,
+    show_all_atlases,
+    show_all_collections,
+    show_all_datasets,
+    show_all_fields,
+    show_all_licences,
+    show_all_lists,
+    show_all_profiles,
+    show_all_providers,
+    show_all_ranks,
+    show_all_reasons,
+)
 from .version import __version__
 
 
@@ -175,6 +184,7 @@ def check_column_name_datasets(atlas=None, column_name=None):
         "Australia",
         "Austria",
         "Brazil",
+        "Flanders",
         "France",
         "Guatemala",
         "Kew",

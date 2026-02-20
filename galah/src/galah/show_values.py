@@ -71,7 +71,7 @@ def show_values(field=None, lists=False, all_fields=False, verbose=False, config
     print_if_verbose(verbose=verbose, headers=headers, URL=URL, method=method)
 
     # query the API
-    response = requests.request(method, URL, headers=headers)
+    response = requests.request(method, URL, headers=headers, timeout=timeout)
     response_json = response.json()
 
     # return dataFrame
@@ -137,7 +137,7 @@ def process_value_results(atlas=None, response_json=None, lists=False, all_field
 
                 # if full stop(s) is/are in the value, join the values into one string
                 if len(split_entry) > 2:
-                    split_entry = [split_entry[0],".".join(split_entry[1:])]
+                    split_entry = [split_entry[0], ".".join(split_entry[1:])]
 
                 # create dataframe
                 tempdf = pd.DataFrame([split_entry], columns=["field", "category"])

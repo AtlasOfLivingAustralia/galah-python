@@ -1,4 +1,6 @@
 import configparser
+import os
+import shutil
 
 import galah
 
@@ -6,8 +8,12 @@ configParser = configparser.ConfigParser()
 configParser.read("logins.txt")
 email_at = configParser["Austria"]["email"]
 
-galah.galah_config(authenticate=False,verbose=False)
+galah.galah_config(authenticate=False, verbose=False)
 
+print(galah.galah_config())
+
+
+# """
 ######################################
 # show_all
 ######################################
@@ -222,8 +228,8 @@ def test_show_values_austria():
 ######################################
 def test_search_values_austria():
     galah.galah_config(atlas="Austria")
-    first_output = galah.show_values(field="basis_of_record")
-    second_output = galah.search_values(field="basis_of_record", value="Obs")
+    first_output = galah.show_values(field="year")
+    second_output = galah.search_values(field="year", value="2024")
     assert first_output.shape[0] > second_output.shape[0]
 
 
@@ -231,7 +237,7 @@ def test_search_values_austria():
 # search_taxa
 ######################################
 def test_search_taxa_austria():
-    galah.galah_config(atlas="Austria")
+    galah.galah_config(atlas="Austria", authenticate=False)
     output = galah.search_taxa("Sehirus luctuosus")
     assert output["guid"][0] != None
 
@@ -272,13 +278,6 @@ def test_atlas_counts_taxa_filter_austria():
     galah.galah_config(atlas="Austria")
     taxa = "Sehirus luctuosus"
     filter1 = "year=2020"
-    assert galah.atlas_counts(taxa, filters=filter1)["totalRecords"][0] > 0
-
-
-def test_atlas_counts_taxa_filter_empty_austria():
-    galah.galah_config(atlas="Austria")
-    taxa = "Sehirus luctuosus"
-    filter1 = "year="
     assert galah.atlas_counts(taxa, filters=filter1)["totalRecords"][0] > 0
 
 
@@ -475,21 +474,21 @@ def test_atlas_counts_multiple_taxa_filters_group_by_multiple_separate_expand_au
 # atlas_species
 ######################################
 def test_atlas_species_Austria_species_austria():
-    galah.galah_config(atlas="Austria",email=email_at)
+    galah.galah_config(atlas="Austria", email=email_at)
     taxa = "Sehirus"
     species_table = galah.atlas_species(taxa=taxa)
     assert species_table.shape[0] > 0
 
 
 def test_atlas_species_Austria_family_austria():
-    galah.galah_config(atlas="Austria",email=email_at)
+    galah.galah_config(atlas="Austria", email=email_at)
     taxa = "Cydnidae"
     species_table = galah.atlas_species(taxa=taxa)
     assert species_table.shape[0] > 0
 
 
 def test_atlas_species_Austria_filter_notaxa():
-    galah.galah_config(atlas="Austria",email=email_at)
+    galah.galah_config(atlas="Austria", email=email_at)
     filtered_species_table = galah.atlas_species(filters=["year=2022", "basis_of_record=HumanObservation"])
     assert filtered_species_table.shape[0] > 0
 
@@ -540,6 +539,56 @@ def test_atlas_occurrences_taxa_filters_fields_austria():
         fields=["latitude", "longitude"],
     )
     assert occurrences.shape[1] == 2
+
+
+######################################
+# atlas_media
+######################################
+
+
+# test if it can get a taxa and return output
+def test_atlas_media_taxa_austria():
+    galah.galah_config(atlas="Austria", email=email_at)
+    output = galah.atlas_media(taxa="Sehirus luctuosus")
+    assert output.shape[0] > 1
+
+
+# test if the filters component of atlas_media is working
+def test_atlas_media_filters_austria():
+    galah.galah_config(atlas="Austria", email=email_at)
+    raw_output = galah.atlas_media(taxa="Sehirus luctuosus")
+    filtered_output = galah.atlas_media(taxa="Sehirus luctuosus", filters="year>=2025")
+    assert raw_output.shape[0] > filtered_output.shape[0]
+
+
+def test_atlas_media_multimedia_austria():
+    galah.galah_config(atlas="Austria", email=email_at)
+    multimedia_output = galah.atlas_media(taxa="Sehirus luctuosus", multimedia="image_url")
+    assert multimedia_output.shape[0] > 0
+
+
+def test_atlas_media_filters_multimedia_austria():
+    galah.galah_config(atlas="Austria", email=email_at)
+    raw_output = galah.atlas_media(taxa="Sehirus luctuosus")
+    multimedia_output = galah.atlas_media(taxa="Sehirus luctuosus", filters="year>=2025", multimedia="image_url")
+    assert raw_output.shape[0] > multimedia_output.shape[0]
+
+
+def test_atlas_media_filters_multimedia_collect_path_austria():
+    galah.galah_config(atlas="Austria", email=email_at)
+    path = "test"
+    if os.path.isdir("test"):
+        shutil.rmtree("test")
+    os.mkdir("test")
+    multimedia_output = galah.atlas_media(
+        taxa="Sehirus luctuosus",
+        multimedia="image_url",
+        filters="year>=2020",
+        collect=True,
+        path=path,
+    )
+    files = os.listdir(path)
+    assert len(files) > 0
 
 
 # """

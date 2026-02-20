@@ -1,4 +1,6 @@
 import configparser
+import os
+import shutil
 
 import galah
 
@@ -7,6 +9,8 @@ configParser.read("logins.txt")
 email_se = configParser["Sweden"]["email"]
 
 galah.galah_config(authenticate=False)
+
+
 ######################################
 # show_all
 ######################################
@@ -506,6 +510,56 @@ def test_atlas_occurrences_taxa_filters_fields_sweden():
         fields=["decimalLatitude", "decimalLongitude"],
     )
     assert occurrences.shape[1] == 2
+
+
+######################################
+# atlas_media
+######################################
+
+
+# test if it can get a taxa and return output
+def test_atlas_media_taxa_sweden():
+    galah.galah_config(atlas="Sweden", email=email_se)
+    output = galah.atlas_media(taxa="Alces alces")
+    assert output.shape[0] > 1
+
+
+# test if the filters component of atlas_media is working
+def test_atlas_media_filters_sweden():
+    galah.galah_config(atlas="Sweden", email=email_se)
+    raw_output = galah.atlas_media(taxa="Alces alces")
+    filtered_output = galah.atlas_media(taxa="Alces alces", filters="decimalLatitude<-24.0")
+    assert raw_output.shape[0] > filtered_output.shape[0]
+
+
+def test_atlas_media_multimedia_sweden():
+    galah.galah_config(atlas="Sweden", email=email_se)
+    multimedia_output = galah.atlas_media(taxa="Alces alces", multimedia="images")
+    assert multimedia_output.shape[0] > 0
+
+
+def test_atlas_media_filters_multimedia_sweden():
+    galah.galah_config(atlas="Sweden", email=email_se)
+    raw_output = galah.atlas_media(taxa="Alces alces")
+    multimedia_output = galah.atlas_media(taxa="Alces alces", filters="decimalLatitude<=-24.0", multimedia="images")
+    assert raw_output.shape[0] > multimedia_output.shape[0]
+
+
+def test_atlas_media_filters_multimedia_collect_path_sweden():
+    galah.galah_config(atlas="Sweden", email=email_se)
+    path = "test"
+    if os.path.isdir("test"):
+        shutil.rmtree("test")
+    os.mkdir("test")
+    multimedia_output = galah.atlas_media(
+        taxa="Alces alces",
+        multimedia="images",
+        filters="decimalLatitude<=-24.0",
+        collect=True,
+        path=path,
+    )
+    files = os.listdir(path)
+    assert len(files) > 0
 
 
 # """

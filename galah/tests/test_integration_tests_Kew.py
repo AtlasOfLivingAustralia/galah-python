@@ -1,8 +1,9 @@
 import configparser
-
-import pytest
+import os
+import shutil
 
 import galah
+import pytest
 
 configParser = configparser.ConfigParser()
 configParser.read("logins.txt")
@@ -433,9 +434,9 @@ def test_atlas_counts_multiple_taxa_separate_kew():
 def test_atlas_counts_multiple_taxa_filters_group_by_separate_kew():
     galah.galah_config(atlas="Kew")
     taxa_array = ["Hypoestes forskaolii", "Galanthus nivalis", "Curcuma longa"]
-    f = ["basisOfRecord = LIVING_SPECIMEN", "year>=2019"]
+    f = ["year>=2019"]
     group_by = ["month", "species"]
-    output = galah.atlas_counts(taxa_array, filters=f, group_by=group_by)
+    output = galah.atlas_counts(taxa=taxa_array, filters=f, group_by=group_by)
     assert output.shape[1] == len(group_by) + 1
     assert (output["count"] > 0).all()
 
@@ -516,6 +517,53 @@ def test_atlas_occurrences_taxa_filters_fields_kew2():
         fields=["decimalLatitude", "decimalLongitude"],
     )
     assert occurrences.shape[1] == 2
+
+
+######################################
+# atlas_media
+######################################
+def test_atlas_media_taxa_kew():
+    galah.galah_config(atlas="Kew", email=email_kew)  # verbose=True,
+    media = galah.atlas_media(taxa="Hypoestes forskaolii", filters="year>2010")
+    assert media.shape[0] > 0
+
+
+# test if the filters component of atlas_media is working
+def test_atlas_media_filters_kew():
+    galah.galah_config(atlas="Kew", email=email_kew)
+    raw_output = galah.atlas_media(taxa="Hypoestes forskaolii")
+    filtered_output = galah.atlas_media(taxa="Hypoestes forskaolii", filters="year>=2020")
+    assert raw_output.shape[0] > filtered_output.shape[0]
+
+
+def test_atlas_media_multimedia_kew():
+    galah.galah_config(atlas="Kew", email=email_kew)
+    multimedia_output = galah.atlas_media(taxa="Hypoestes forskaolii", multimedia="images")
+    assert multimedia_output.shape[0] > 0
+
+
+def test_atlas_media_filters_multimedia_kew():
+    galah.galah_config(atlas="Kew", email=email_kew)
+    raw_output = galah.atlas_media(taxa="Hypoestes forskaolii")
+    multimedia_output = galah.atlas_media(taxa="Hypoestes forskaolii", filters="year>=2020", multimedia="images")
+    assert raw_output.shape[0] > multimedia_output.shape[0]
+
+
+def test_atlas_media_filters_multimedia_collect_path_kew():
+    galah.galah_config(atlas="Kew", email=email_kew)
+    path = "test"
+    if os.path.isdir("test"):
+        shutil.rmtree("test")
+    os.mkdir("test")
+    multimedia_output = galah.atlas_media(
+        taxa="Hypoestes forskaolii",
+        multimedia="images",
+        filters="year>=2020",
+        collect=True,
+        path=path,
+    )
+    files = os.listdir(path)
+    assert len(files) > 0
 
 
 #'''

@@ -44,7 +44,6 @@ def add_to_payload_ALA(
 
     if polygon is not None or bbox is not None:
         wkts = galah_geolocate(polygon=polygon, bbox=bbox, simplify_polygon=simplify_polygon)
-        fq = [" OR ".join("lsid:{}".format(id) for id in taxa_list)]
         payload = add_individual_to_payload(payload=payload, wkt=wkts)
 
     return payload

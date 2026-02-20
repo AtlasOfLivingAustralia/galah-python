@@ -1,5 +1,6 @@
 import itertools
 import re
+from functools import reduce
 
 from .common_dictionaries import GBIF_PREDICATE_DEFINITIONS
 from .common_functions import set_bool_argument
@@ -247,77 +248,70 @@ def process_GBIF_predicates(specialChar=None, parts=None, occurrences_GBIF_filte
 def process_equals_filter(parts=None, returnString=None, authenticate=None):
     """check for all possibilities for the equals filter"""
 
+    # define variables depending on whether or not we are authenticating
     if authenticate:
 
-        # check if the filter is a number or a string and if there is a group by
-        if parts[1].isdigit():
-            # this one is square brackets
-            returnString += "{}:{}".format(parts[0], parts[1])
-        # if filter is querying a field that has no value
-        elif parts[1] == "":
-            returnString += "*:* AND -{}:*".format(parts[0])
-        elif parts[1] == "True":
-            returnString += "assertions:{}".format(parts[0])
-        elif parts[1] == "False":
-            returnString += "-assertions:{}".format(parts[0])
-        else:
-            # check if this is array
-            arrayChars = re.compile("\]\[")
-            arrayChar = arrayChars.findall(parts[1])
-            if arrayChar:
-                temp_array = parts[1][1:-1].split(",")
-                for value in temp_array:
-                    returnString += "{}:{} OR".format(
-                        parts[0],
-                        value.replace("'", "").replace('"', ""),
-                    )
-            # added quotes
-            else:
-                returnString += "{}:{}".format(parts[0], parts[1].replace("'", "").replace('"', ""))
+        return_strings = {
+            "digit": "{}:{}".format(parts[0], parts[1]),
+            "": "*:* AND -{}:*".format(parts[0]),
+            "True": "assertions:{}".format(parts[0]),
+            "False": "-assertions:{}".format(parts[0]),
+        }
+        arrayChar_true = "{}:{} OR"
+        arrayChar_false = "{}:{}"
+        replace_values = {"'": "", '"': ""}
 
     else:
 
-        # check if the filter is a number or a string and if there is a group by
-        if parts[1].isdigit():
-            # this one is square brackets
-            # returnString += "%5B{}:%22{}%22%5d".format(parts[0], parts[1])
-            returnString += "%28{}%3A%22{}%22%29".format(parts[0], parts[1].replace(" ", "%20"))
-        # if filter is querying a field that has no value
-        elif parts[1] == "":
-            # returnString += "%28{}%3A%28%2A%29%29".format(parts[0])
-            returnString += "%2A%3A%2A%20AND%20-{}%3A%2A".format(parts[0])
-        elif parts[1] == "True":
-            returnString += "%28assertions%3A%22{}%22%29".format(parts[0])
-        elif parts[1] == "False":
-            returnString += "-%28assertions%3A%22{}%22%29".format(parts[0])
-        else:
-            # check if this is array
-            arrayChars = re.compile("\]\[")
-            arrayChar = arrayChars.findall(parts[1])
-            if arrayChar:
+        return_strings = {
+            "digit": "%28{}%3A%22{}%22%29".format(parts[0], parts[1].replace(" ", "%20")),
+            "": "%2A%3A%2A%20AND%20-{}%3A%2A".format(parts[0]),
+            "True": "%28assertions%3A%22{}%22%29".format(parts[0]),
+            "False": "-%28assertions%3A%22{}%22%29".format(parts[0]),
+        }
+        arrayChar_true = "{}%3A22{}%22%20OR%20"
+        arrayChar_false = "%28{}%3A%22{}%22%29"
+        replace_values = {" ": "%20", "'": "", '"': "", "&": "%26", ",": "%2C"}
+
+    # first, check for digit in filter
+    if parts[1].isdigit():
+        returnString += return_strings["digit"]
+
+    # then, check for empty and boolean values
+    elif parts[1] in ["", "True", "False"]:
+        returnString += return_strings[parts[1]]
+
+    # otherwise, check for list/string values
+    else:
+
+        # check for list characters
+        arrayChars = re.compile("\]\[")
+        arrayChar = arrayChars.findall(parts[1])
+
+        # if a list character is present, loop through all values and add to filters
+        if arrayChar:
+
+            # if we are not authenticating, add left round bracket to URL
+            if not authenticate:
                 returnString += "%28"
-                temp_array = parts[1][1:-1].split(",")
-                for value in temp_array:
-                    returnString += "{}%3A22{}%22%20OR%20".format(
-                        parts[0],
-                        value.replace(" ", "%20")
-                        .replace("'", "")
-                        .replace('"', "")
-                        .replace("&", "%26")
-                        .replace(",", "%2C"),
-                    )
-                returnString = returnString[:-8] + "%29"
-            # added quotes
-            else:
-                returnString += "%28{}%3A%22{}%22%29".format(
-                    parts[0],
-                    parts[1]
-                    .replace(" ", "%20")
-                    .replace("'", "")
-                    .replace('"', "")
-                    .replace("&", "%26")
-                    .replace(",", "%2C"),
+
+            # now, go through and format all values in array
+            temp_array = parts[1][1:-1].split(",")
+            for value in temp_array:
+                returnString += arrayChar_true.format(
+                    parts[0], reduce(lambda a, kv: a.replace(*kv), replace_values.items(), value)
                 )
+
+            # if we are not authenticating, add right round bracket to URL
+            if not authenticate:
+                returnString += "%29"
+
+        # otherwise, prep filter as per usual
+        else:
+
+            returnString += arrayChar_false.format(
+                parts[0], reduce(lambda a, kv: a.replace(*kv), replace_values.items(), parts[1])
+            )
 
     # return the string
     return returnString

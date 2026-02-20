@@ -1,10 +1,9 @@
 import urllib
 
 from .galah_config import readConfig
-from .galah_filter import (check_for_duplicate_filters, galah_filter,
-                           process_or_filters)
+from .galah_filter import check_for_duplicate_filters, galah_filter, process_or_filters
 from .galah_geolocate import galah_geolocate
-from .search_taxa import generate_list_taxonConceptIDs
+from .search_taxa import generate_list_taxonConceptIDs, search_taxa
 
 
 def add_extras_to_URL(add_email=True, use_data_profile=False, data_profile_list=None, atlas=None, config_file=None):
@@ -15,13 +14,11 @@ def add_extras_to_URL(add_email=True, use_data_profile=False, data_profile_list=
     # initialise variable
     end_url = "&"
 
-    # first, check for email_notify
-    end_url += "emailNotify={}&".format(configs["galahSettings"]["email_notify"].lower())
-
     # next, check for email
     if add_email:
         if configs["galahSettings"]["email_notify"] not in ["None", ""]:
             end_url += "email={}&".format(urllib.parse.quote(configs["galahSettings"]["email"]))
+            end_url += "emailNotify={}&".format(configs["galahSettings"]["email_notify"].lower())
 
     # then, check for data profile
     if use_data_profile:
@@ -40,12 +37,12 @@ def add_extras_to_URL(add_email=True, use_data_profile=False, data_profile_list=
                     "galah.galah_config(data_profile='None')"
                 )
     else:
-        if atlas in ["Australia", "ALA"]:
-            end_url += "disableAllQualityFilters=true&"
+        # if atlas in ["Australia", "ALA"]:
+        end_url += "disableAllQualityFilters=true&"
 
     # finally, add reason
-    end_url += "reasonTypeId={}".format(configs["galahSettings"]["reason"])
-    end_url += "&pageSize=0"
+    end_url += "reasonTypeId={}&".format(configs["galahSettings"]["reason"])
+    end_url += "pageSize=0"
 
     # return end_url
     return end_url
@@ -53,6 +50,7 @@ def add_extras_to_URL(add_email=True, use_data_profile=False, data_profile_list=
 
 def add_filters(URL=None, atlas=None, filters=None, authenticate=False):
     """Adding filters directly to the URL"""
+
     # first, check if filters are None
     if filters is None:
         return URL
@@ -117,21 +115,35 @@ def add_filters(URL=None, atlas=None, filters=None, authenticate=False):
 
 
 # adds predicates to GBIF
-def add_predicates(predicates=None, filters=None, occurrencesGBIF=False):
+def add_predicates(predicates=None, filters=None, occurrencesGBIF=False, taxa=None):
     """for adding filters specifically to atlas_occurrences"""
 
-    if filters is None:
+    if all(x is None for x in [filters, taxa]):
         return predicates
 
     if isinstance(filters, str):
         filters = [filters]
 
-    if any("!=" in f for f in filters):
-        raise ValueError("!= cannot be used with GBIF atlas.  Run separate queries.")
+    if isinstance(taxa, str):
+        taxa = [taxa]
 
-    for f in filters:
+    if filters is not None:
+        if any("!=" in f for f in filters):
+            raise ValueError("!= cannot be used with GBIF atlas.  Run separate queries.")
 
-        predicates.append(galah_filter(f, occurrencesGBIF=occurrencesGBIF))
+        for f in filters:
+
+            predicates.append(galah_filter(f, occurrencesGBIF=occurrencesGBIF))
+
+    if taxa is not None:
+
+        for t in taxa:
+
+            # get the taxon key
+            t2 = search_taxa(taxa=t)["usageKey"][0]
+
+            # have to see if taxonKey is the right one
+            predicates.append(galah_filter("taxonKey={}".format(t2), occurrencesGBIF=occurrencesGBIF))
 
     return predicates
 
@@ -150,7 +162,7 @@ def add_spatial_shapes(polygon=None, bbox=None, URL=None, simplify_polygon=False
     return URL
 
 
-def add_taxa(taxa=None, atlas=None, URL=None, scientific_name=None):
+def add_taxa(taxa=None, atlas=None, URL=None, scientific_name=None, predicates=None):
 
     if all(x is None for x in [taxa, scientific_name]):
         if URL[-1] == "?":
@@ -163,7 +175,7 @@ def add_taxa(taxa=None, atlas=None, URL=None, scientific_name=None):
     # return None if there is no taxonConceptID; otherwise,
     if taxonConceptID is None:
         if URL[-1] == "?":
-            URL += "?" # try this
+            URL += "?"  # try this
         return URL
     if URL[-1] == "?":
         return URL + taxonConceptID

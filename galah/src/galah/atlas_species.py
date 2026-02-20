@@ -5,13 +5,10 @@ import requests
 
 from .add_to_payload_functions import add_to_payload_ALA
 from .atlas_occurrences import atlas_occurrences, check_for_403_error
-from .common_add_functions import (add_extras_to_URL, add_filters,
-                                   add_spatial_shapes, add_taxa)
-from .common_checks import (check_atlas, check_email_empty,
-                            check_for_non_working_atlases, check_string_list)
+from .common_add_functions import add_extras_to_URL, add_filters, add_spatial_shapes, add_taxa
+from .common_checks import check_atlas, check_email_empty, check_for_non_working_atlases, check_string_list
 from .common_dictionaries import ATLAS_SPECIES_FIELDS
-from .common_functions import (group_by_atlas_species, print_if_verbose,
-                               set_bool_argument)
+from .common_functions import group_by_atlas_species, print_if_verbose, set_bool_argument
 from .galah_config import get_api_url, readConfig
 from .show_all import show_all
 from .version import __version__
@@ -68,7 +65,7 @@ def atlas_species(
 
         galah.atlas_species(taxa="Heleioporus")
 
-    
+
     .. program-output:: python -c "import galah; import pandas as pd;pd.set_option('display.max_columns', None);print(galah.atlas_species(taxa=\\\"Heleioporus\\\"))"
     """
 
@@ -122,7 +119,6 @@ def atlas_species(
             taxa=taxa,
             filters=filters,
             species_list=True,
-            verbose=verbose,
             status_accepted=status_accepted,
         )
 
@@ -164,14 +160,20 @@ def atlas_species(
             bbox=bbox,
             simplify_polygon=simplify_polygon,
             scientific_name=scientific_name,
+            authenticate=authenticate,
         )
 
         # add authorization token and client id for authentication
         headers["Authorization"] = "Bearer {}".format(access_token)
         headers["client_id"] = client_id
 
-        # create the query id
+        # get the query id url
         qid_URL, method2 = get_api_url(column1="api_name", column1value="occurrences_qid")
+
+        # print this information if verbose option is selected
+        print_if_verbose(verbose=verbose, headers=headers, URL=qid_URL, method=method2, payload=payload)
+
+        # get qid
         qid = requests.request(method2, qid_URL, data=payload, headers=headers)
 
         # create the URL to grab the species ID and lists
@@ -215,7 +217,7 @@ def atlas_species(
             use_data_profile=use_data_profile,
             data_profile_list=list(show_all(profiles=True)["shortName"]),
             atlas=atlas,
-            config_file=config_file
+            config_file=config_file,
         )
     else:
         URL += add_extras_to_URL(add_email=False, atlas=atlas, config_file=config_file)

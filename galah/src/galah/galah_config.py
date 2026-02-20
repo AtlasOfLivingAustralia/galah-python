@@ -145,7 +145,7 @@ def galah_config(
                     refresh_token=configParser["galahSettings"]["refresh_token"],
                     token_url=auth_info["token_url"],
                     client_id=configParser["galahSettings"]["client_id"],
-                    client_secret = configParser["galahSettings"]["client_secret"],
+                    client_secret=configParser["galahSettings"]["client_secret"],
                     scope=configParser["galahSettings"]["scopes"],
                 )
 
@@ -207,7 +207,7 @@ def galah_config(
             "email_notify": email_notify,
             "atlas": atlas,
             "data_profile": data_profile,
-            "ranks": ranks, 
+            "ranks": ranks,
             "reason": reason,
             "verbose": verbose,
             "timeout": timeout,
@@ -215,7 +215,7 @@ def galah_config(
             "passwordGBIF": passwordGBIF,
             "authenticate": authenticate,
             "client_id": configParser["galahSettings"]["client_id"],
-            "client_secret": "", # need to implement this?
+            "client_secret": "",  # need to implement this?
             "access_token": configParser["galahSettings"]["access_token"],
             "refresh_token": configParser["galahSettings"]["refresh_token"],
             "scopes": configParser["galahSettings"]["scopes"],
@@ -343,7 +343,7 @@ def regenerate_token(token_url=None, refresh_token=None, scope=None, client_id=N
     # print("token_url: {}".format(token_url))
 
     # get the new token
-    r = requests.post(token_url, data=payload, timeout = 600)
+    r = requests.post(token_url, data=payload, timeout=600)
 
     # return the access token and expires_in if it works; otherwise, throw error
     if r.ok:

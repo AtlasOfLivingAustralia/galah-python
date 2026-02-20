@@ -1,4 +1,6 @@
 import configparser
+import os
+import shutil
 
 import galah
 
@@ -7,6 +9,7 @@ configParser.read("logins.txt")
 email_es = configParser["Spain"]["email"]
 
 galah.galah_config(authenticate=False)
+
 
 ######################################
 # changes and errors
@@ -543,6 +546,56 @@ def test_atlas_occurrences_taxa_filters_fields_spain():
         fields=["latitude", "longitude"],
     )
     assert occurrences.shape[1] == 2
+
+
+######################################
+# atlas_media
+######################################
+
+
+# test if it can get a taxa and return output
+def test_atlas_media_taxa_spain():
+    galah.galah_config(atlas="Spain", email=email_es)
+    output = galah.atlas_media(taxa="Vipera latastei")
+    assert output.shape[0] > 1
+
+
+# test if the filters component of atlas_media is working
+def test_atlas_media_filters_spain():
+    galah.galah_config(atlas="Spain", email=email_es)
+    raw_output = galah.atlas_media(taxa="Vipera latastei")
+    filtered_output = galah.atlas_media(taxa="Vipera latastei", filters="decimalLatitude<-24.0")
+    assert raw_output.shape[0] > filtered_output.shape[0]
+
+
+def test_atlas_media_multimedia_spain():
+    galah.galah_config(atlas="Spain", email=email_es)
+    multimedia_output = galah.atlas_media(taxa="Vipera latastei", multimedia="images")
+    assert multimedia_output.shape[0] > 0
+
+
+def test_atlas_media_filters_multimedia_spain():
+    galah.galah_config(atlas="Spain", email=email_es)
+    raw_output = galah.atlas_media(taxa="Vipera latastei")
+    multimedia_output = galah.atlas_media(taxa="Vipera latastei", filters="decimalLatitude<=-24.0", multimedia="images")
+    assert raw_output.shape[0] > multimedia_output.shape[0]
+
+
+def test_atlas_media_filters_multimedia_collect_path_spain():
+    galah.galah_config(atlas="Spain", email=email_es)
+    path = "test"
+    if os.path.isdir("test"):
+        shutil.rmtree("test")
+    os.mkdir("test")
+    multimedia_output = galah.atlas_media(
+        taxa="Vipera latastei",
+        multimedia="images",
+        filters="decimalLatitude<=-24.0",
+        collect=True,
+        path=path,
+    )
+    files = os.listdir(path)
+    assert len(files) > 0
 
 
 # """

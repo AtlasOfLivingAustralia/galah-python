@@ -32,7 +32,8 @@ Austria,collections,collections_collections,https://collectory.biodiversityatlas
 Austria,collections,collections_datasets,https://collectory.biodiversityatlas.at/ws/dataResource,show_all-datasets,TRUE,GET
 Austria,collections,collections_providers,https://collectory.biodiversityatlas.at/ws/dataProvider,show_all-providers,TRUE,GET
 Austria,images,image_licences,https://images.biodiversityatlas.at/ws/licence,show_all-licences,TRUE,GET
-Austria,images,image_metadata,https://images.biodiversityatlas.at/ws/image/,media_metadata,FALSE,GET
+Austria,images,image_metadata,https://images.biodiversityatlas.at/ws/image/{id},media_metadata,TRUE,GET
+Austria,images,image_download,https://images.biodiversityatlas.at/ws/image/{id}/original,media_download,TRUE,GET
 Austria,lists,lists_all,https://lists.biodiversityatlas.at/ws/speciesList/,show_all-lists,TRUE,GET
 Austria,lists,lists_lookup,https://lists.biodiversityatlas.at/ws/speciesListItems/{list_id},show_values-lists,TRUE,GET
 Austria,logger,logger_reasons,https://logger.biodiversityatlas.at/service/logger/reasons,show_all-reasons,TRUE,GET
@@ -51,7 +52,7 @@ Brazil,collections,collections_collections,https://collectory.sibbr.gov.br/colle
 Brazil,collections,collections_datasets,https://collectory.sibbr.gov.br/collectory/ws/dataResource,show_all-datasets,TRUE,GET
 Brazil,collections,collections_providers,https://collectory.sibbr.gov.br/collectory/ws/dataProvider,show_all-providers,TRUE,GET
 Brazil,images,image_licences,https://images.sibbr.gov.br/images/ws/licence,show_all-licences,TRUE,GET
-Brazil,images,image_metadata,https://images.sibbr.gov.br/images/ws/image/,media_metadata,FALSE,GET
+Brazil,images,image_metadata,https://images.sibbr.gov.br/ws/image/details?id={id},media_metadata,TRUE,GET
 Brazil,lists,lists_all,https://specieslist.sibbr.gov.br/ws/speciesList/,show_all-lists,TRUE,GET
 Brazil,lists,lists_lookup,https://specieslist.sibbr.gov.br/ws/speciesListItems/{list_id},show_values-lists,TRUE,GET
 Brazil,records,records_assertions,https://biocache-service.sibbr.gov.br/biocache-service/assertions/codes,show_all-assertions,TRUE,GET
@@ -75,24 +76,25 @@ Estonia,records,records_fields,https://elurikkus.ee/biocache-service/index/field
 Estonia,collections,collections_providers,https://elurikkus.ee/collectory/ws/dataProvider,show_all-providers,TRUE,GET
 Estonia,name-matching,names_search_single,https://elurikkus.ee/bie-index/search?q={name}&pageSize=5,search_taxa,TRUE,GET
 Estonia,species,species_children,https://elurikkus.ee/bie-index/childConcepts/{id},atlas_taxonomy,TRUE,GET
-Flanders,species,species_lookup,https://natuurdata.dev.inbo.be/bie-index/childConcepts/{id},atlas_taxonomy,TRUE,GET
-Flanders,records,records_assertions,https://natuurdata.dev.inbo.be/biocache-service/assertions/codes,show_all-assertions,TRUE,GET
-Flanders,records,records_fields,https://natuurdata.dev.inbo.be/biocache-service/index/fields,show_all-fields,TRUE,GET
-Flanders,data-quality,profiles_all,https://natuurdata.dev.inbo.be/dqf-service/api/v1/data-profiles/,show_all-profiles,TRUE,GET
-Flanders,data-quality,profiles_lookup,https://natuurdata.dev.inbo.be/dqf-service/api/v1/quality/activeProfile?profileName={profile},show_values-profiles,TRUE,GET
-Flanders,records,records_facets,https://natuurdata.dev.inbo.be/biocache-service/occurrence/facets,"atlas_counts, show_values-fields",TRUE,GET
-Flanders,records,records_species,https://natuurdata.dev.inbo.be/biocache-service/occurrences/facets/download,atlas_species,TRUE,GET
-Flanders,records,records_occurrences,https://natuurdata.dev.inbo.be/biocache-service/occurrences/offline/download,atlas_occurrences,TRUE,GET
-Flanders,records,records_counts,https://natuurdata.dev.inbo.be/biocache-service/occurrences/search,atlas_counts,TRUE,GET
-Flanders,collections,collections_collections,https://natuurdata.dev.inbo.be/collectory/ws/collection,show_all-collections,TRUE,GET
-Flanders,collections,collections_providers,https://natuurdata.dev.inbo.be/collectory/ws/dataProvider,show_all-providers,TRUE,GET
-Flanders,collections,collections_datasets,https://natuurdata.dev.inbo.be/collectory/ws/dataResource,show_all-datasets,TRUE,GET
-Flanders,images,image_metadata,https://natuurdata.dev.inbo.be/image-service/ws/getImageInfoForIdList,media_metadata,TRUE,GET
-Flanders,images,image_download,files/media	https://natuurdata.dev.inbo.be/image-service/ws/image/{id}/original,media_download,TRUE,GET
-Flanders,images,image_licences,https://natuurdata.dev.inbo.be/image-service/ws/licence,show_all-licences,TRUE,GET
-Flanders,lists,lists_all,https://natuurdata.dev.inbo.be/species-list/ws/speciesList/,show_all-lists,TRUE,GET
-Flanders,lists,lists_lookup,https://natuurdata.dev.inbo.be/species-list/ws/speciesListItems/{list_id},show_values-lists,TRUE,GET
-Flanders,logger,logger_reasons,https://natuurdata.dev.inbo.be/logger/service/logger/reasons,show_all-reasons,TRUE,GET
+Flanders,name-matching,names_search_single,https://api.gbif.org/v2/species/match?verbose=FALSE&scientificName={name},search_taxa,TRUE,GET
+Flanders,species,species_lookup,https://natuurdata.inbo.be/bie-index/childConcepts/{id},atlas_taxonomy,TRUE,GET
+Flanders,records,records_assertions,https://natuurdata.inbo.be/biocache-service/assertions/codes,show_all-assertions,TRUE,GET
+Flanders,records,records_fields,https://natuurdata.inbo.be/biocache-service/index/fields,show_all-fields,TRUE,GET
+Flanders,data-quality,profiles_all,https://natuurdata.inbo.be/dqf-service/api/v1/data-profiles/,show_all-profiles,TRUE,GET
+Flanders,data-quality,profiles_lookup,https://natuurdata.inbo.be/dqf-service/api/v1/quality/activeProfile?profileName={profile},show_values-profiles,TRUE,GET
+Flanders,records,records_facets,https://natuurdata.inbo.be/biocache-service/occurrence/facets,"atlas_counts, show_values-fields",TRUE,GET
+Flanders,records,records_species,https://natuurdata.inbo.be/biocache-service/occurrences/facets/download,atlas_species,TRUE,GET
+Flanders,records,records_occurrences,https://natuurdata.inbo.be/biocache-service/occurrences/offline/download,atlas_occurrences,TRUE,GET
+Flanders,records,records_counts,https://natuurdata.inbo.be/biocache-service/occurrences/search,atlas_counts,TRUE,GET
+Flanders,collections,collections_collections,https://natuurdata.inbo.be/collectory/ws/collection,show_all-collections,TRUE,GET
+Flanders,collections,collections_providers,https://natuurdata.inbo.be/collectory/ws/dataProvider,show_all-providers,TRUE,GET
+Flanders,collections,collections_datasets,https://natuurdata.inbo.be/collectory/ws/dataResource,show_all-datasets,TRUE,GET
+Flanders,images,image_metadata,https://natuurdata.inbo.be/image-service/ws/image/{id},media_metadata,TRUE,GET
+Flanders,images,image_download,https://natuurdata.inbo.be/image-service/ws/image/{id}/original,media_download,TRUE,GET
+Flanders,images,image_licences,https://natuurdata.inbo.be/image-service/ws/licence,show_all-licences,TRUE,GET
+Flanders,lists,lists_all,https://natuurdata.inbo.be/species-list/ws/speciesList/,show_all-lists,TRUE,GET
+Flanders,lists,lists_lookup,https://natuurdata.inbo.be/species-list/ws/speciesListItems/{list_id},show_values-lists,TRUE,GET
+Flanders,logger,logger_reasons,https://natuurdata.inbo.be/logger/service/logger/reasons,show_all-reasons,TRUE,GET
 France,collections,collections_collections,https://openobs.mnhn.fr/api/datasets/producers,show_all-collections,TRUE,GET
 France,collections,collections_datasets,https://openobs.mnhn.fr/api/datasets,show_all-datasets,TRUE,GET
 France,collections,collections_providers,https://openobs.mnhn.fr/api/datasets/providers,show_all-providers,TRUE,GET
@@ -115,6 +117,7 @@ Global,collections,collections_datasets_search,https://api.gbif.org/v1/dataset/s
 Global,records,records_counts,https://api.gbif.org/v1/occurrence/search,"atlas_counts, show_values-fields",TRUE,GET
 Global,records,records_fields,https://api.gbif.org/v1/occurrence/term,show_all-fields,TRUE,GET
 Global,records,records_occurrences,https://api.gbif.org/v1/occurrence/download/request,atlas_occurrences,TRUE,POST
+Global,records,records_key,https://api.gbif.org/v1/occurrence/download/request/{key}.zip,atlas_occurrences,TRUE,GET
 Global,species,species_children,https://api.gbif.org/v1/species/{id}/children,atlas_taxonomy,TRUE,GET
 Guatemala,collections,collections_collections,https://snib.conap.gob.gt/colecciones/ws/collection,show_all-collections,TRUE,GET
 Guatemala,collections,collections_datasets,https://snib.conap.gob.gt/colecciones/ws/dataResource,show_all-datasets,TRUE,GET
@@ -168,7 +171,8 @@ Spain,collections,collections_datasets,https://colecciones.gbif.es/ws/dataResour
 Spain,collections,collections_providers,https://colecciones.gbif.es/ws/dataProvider,show_all-providers,TRUE,GET
 Spain,doi,doi_download,https://doi.gbif.es/doi/{doi_string}/download,doi_download,TRUE,GET
 Spain,images,image_licences,https://imagenes.gbif.es/ws/licence,show_all-licences,TRUE,GET
-Spain,images,image_metadata,https://imagenes.gbif.es/ws/image/,media_metadata,FALSE,GET
+Spain,images,image_metadata,https://imagenes.gbif.es/ws/image/details?id={id},media_metadata,TRUE,GET
+Spain,images,image_download,https://imagenes.gbif.es/ws/image/{id}/original,media_download,TRUE,GET
 Spain,lists,lists_all,https://listas.gbif.es/ws/speciesList,show_all-lists,TRUE,GET
 Spain,lists,lists_lookup,https://listas.gbif.es/ws/speciesListItems/{list_id},show_values-lists,TRUE,GET
 Spain,data-quality,profiles_all,https://data-quality.gbif.es/api/v1/data-profiles,show_all-profiles,TRUE,GET
@@ -191,7 +195,8 @@ Sweden,collections,collections_collections,https://collections.biodiversitydata.
 Sweden,collections,collections_datasets,https://collections.biodiversitydata.se/ws/dataResource,show_all-datasets,TRUE,GET
 Sweden,collections,collections_providers,https://collections.biodiversitydata.se/ws/dataProvider,show_all-providers,TRUE,GET
 Sweden,images,image_licences,https://images.biodiversitydata.se/licence,show_all-licences,TRUE,GET
-Sweden,images,image_metadata,https://images.biodiversitydata.se/image/,media_metadata,FALSE,GET
+Sweden,images,image_metadata,https://images.biodiversitydata.se/ws/image/{id},media_metadata,TRUE,GET
+Sweden,images,image_download,https://images.biodiversitydata.se/image/{id}/original,media_download,TRUE,GET
 Sweden,logger,logger_reasons,https://logger.biodiversitydata.se/service/logger/reasons,show_all-reasons,TRUE,GET
 Sweden,records,records_assertions,https://records.biodiversitydata.se/ws/assertions/codes,show_all-assertions,TRUE,GET
 Sweden,records,records_counts,https://records.biodiversitydata.se/ws/occurrences/search,atlas_counts,TRUE,GET
@@ -210,8 +215,8 @@ United Kingdom,collections,collections_collections,https://registry.nbnatlas.org
 United Kingdom,collections,collections_datasets,https://registry.nbnatlas.org/ws/dataResource,show_all-datasets,TRUE,GET
 United Kingdom,collections,collections_providers,https://registry.nbnatlas.org/ws/dataProvider,show_all-providers,TRUE,GET
 United Kingdom,images,image_licences,https://images.nbnatlas.org/licence,show_all-licences,TRUE,GET
-United Kingdom,images,image_metadata,https://images.nbnatlas.org/ws/getImageInfoForIdList,media_metadata,TRUE,POST
-United Kingdom,images,image_download,https://api.ala.org.au/images/ws/image/{id}/original,media_download,TRUE,GET
+United Kingdom,images,image_metadata,https://images.nbnatlas.org/ws/image/{id},media_metadata,TRUE,GET
+United Kingdom,images,image_download,https://images.nbnatlas.org/image/{id}/original,media_download,TRUE,GET
 United Kingdom,lists,lists_all,https://lists.nbnatlas.org/ws/speciesList,show_all-lists,TRUE,GET
 United Kingdom,lists,lists_lookup,https://lists.nbnatlas.org/ws/speciesListItems/{list_id},show_values-lists,TRUE,GET
 United Kingdom,logger,logger_reasons,https://logger.nbnatlas.org/service/logger/reasons,show_all-reasons,TRUE,GET
@@ -221,7 +226,7 @@ United Kingdom,records,records_assertions,https://records-ws.nbnatlas.org/assert
 United Kingdom,records,records_counts,https://records-ws.nbnatlas.org/occurrences/search,atlas_counts,TRUE,GET
 United Kingdom,records,records_facets,https://records-ws.nbnatlas.org/occurrence/facets,"atlas_counts, show_values-fields",TRUE,GET
 United Kingdom,records,records_fields,https://records-ws.nbnatlas.org/index/fields,show_all-fields,TRUE,GET
-United Kingdom,records,records_occurrences,https://records-ws.nbnatlas.org/occurrences/index/download,atlas_occurrences,TRUE,GET
+United Kingdom,records,records_occurrences,https://records-ws.nbnatlas.org/occurrences/offline/download,atlas_occurrences,TRUE,GET
 United Kingdom,records,records_species,https://records-ws.nbnatlas.org/occurrence/facets,atlas_species,TRUE,GET
 United Kingdom,species,species_children,https://species-ws.nbnatlas.org/childConcepts/{id}/children,atlas_taxonomy,TRUE,GET
 United Kingdom,species,species_lookup,https://species-ws.nbnatlas.org/childConcepts/{id},atlas_taxonomy,TRUE,GET

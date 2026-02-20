@@ -1,8 +1,9 @@
 import configparser
-
-import pytest
+import os
+import shutil
 
 import galah
+import pytest
 
 configParser = configparser.ConfigParser()
 configParser.read("logins.txt")
@@ -11,21 +12,22 @@ email_br = configParser["Brazil"]["email"]
 
 galah.galah_config(authenticate=False)
 
+
 ######################################
 # exceptions and errors
 ######################################
 def test_atlas_occurrences_doi_brazil():
-    galah.galah_config(atlas="Brazil",email=email_br)
+    galah.galah_config(atlas="Brazil", email=email_br)
     with pytest.raises(Exception) as e_info:
         galah.atlas_occurrences(doi="Yes")
-    assert "Australia" in str(e_info.value)
+    assert "DOI" in str(e_info.value)
 
 
 def test_geolocate_not_working_brazil():
-    galah.galah_config(atlas="Brazil",email=email_br)
+    galah.galah_config(atlas="Brazil", email=email_br)
     with pytest.raises(Exception) as e_info:
         galah.atlas_occurrences(polygon="Yes")
-    assert "Australia" in str(e_info.value)
+    assert "geolocate" in str(e_info.value)
 
 
 def test_atlas_counts_data_quality_brazil():
@@ -615,6 +617,56 @@ def test_atlas_occurrences_taxa_filters_fields_brazil():
         fields=["latitude", "longitude"],
     )
     assert occurrences.shape[1] == 2
+
+
+######################################
+# atlas_media
+######################################
+
+
+# test if it can get a taxa and return output
+def test_atlas_media_taxa_brazil():
+    galah.galah_config(atlas="Brazil", email=email_br)
+    output = galah.atlas_media(taxa="Ramphastos toco")
+    assert output.shape[0] > 1
+
+
+# test if the filters component of atlas_media is working
+def test_atlas_media_filters_brazil():
+    galah.galah_config(atlas="Brazil", email=email_br)
+    raw_output = galah.atlas_media(taxa="Ramphastos toco")
+    filtered_output = galah.atlas_media(taxa="Ramphastos toco", filters="year>=2024")
+    assert raw_output.shape[0] > filtered_output.shape[0]
+
+
+def test_atlas_media_multimedia_brazil():
+    galah.galah_config(atlas="Brazil", email=email_br)
+    multimedia_output = galah.atlas_media(taxa="Ramphastos toco", multimedia="images")
+    assert multimedia_output.shape[0] > 0
+
+
+def test_atlas_media_filters_multimedia_brazil():
+    galah.galah_config(atlas="Brazil", email=email_br)
+    raw_output = galah.atlas_media(taxa="Ramphastos toco")
+    multimedia_output = galah.atlas_media(taxa="Ramphastos toco", filters="year>=2024", multimedia="images")
+    assert raw_output.shape[0] > multimedia_output.shape[0]
+
+
+def test_atlas_media_filters_multimedia_collect_path_brazil():
+    galah.galah_config(atlas="Brazil", email=email_br)
+    path = "test"
+    if os.path.isdir("test"):
+        shutil.rmtree("test")
+    os.mkdir("test")
+    multimedia_output = galah.atlas_media(
+        taxa="Ramphastos toco",
+        multimedia="images",
+        filters="year>=2024",
+        collect=True,
+        path=path,
+    )
+    files = os.listdir(path)
+    assert len(files) > 0
 
 
 #'''

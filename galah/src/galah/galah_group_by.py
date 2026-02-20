@@ -51,6 +51,7 @@ def galah_group_by(
     # check if authenticate is True and there is a payload
     if authenticate and payload:
 
+        # add authorization and client id for the authenticate loop
         headers["Authorization"] = "Bearer {}".format(access_token)
         headers["client_id"] = client_id
 
@@ -82,7 +83,7 @@ def galah_group_by(
         URL = add_filters(URL=URL, atlas=atlas, filters=filters)
 
         # then, add facets and round out the URL
-        if URL[-1] not in ["&", "?"] and "fq" not in URL:
+        if URL[-1] not in ["&", "?"] and all(x not in URL for x in ["?", "fq"]):
             URL += "?"
         initial_URL = (
             URL
@@ -154,34 +155,19 @@ def galah_group_by(
             # do this loop for all other atlases
             else:
 
-                if authenticate:
-
-                    dict_values = get_facets_expand_authenticate(
-                        URL=URL,
-                        f=f,
-                        group_by=group_by,
-                        verbose=verbose,
-                        headers=headers,
-                        method=method,
-                        atlas=atlas,
-                        expand=expand,
-                        dict_values=dict_values,
-                        payload=payload,
-                    )
-
-                else:
-
-                    dict_values = get_facets_expand(
-                        URL=URL,
-                        f=f,
-                        group_by=group_by,
-                        verbose=verbose,
-                        headers=headers,
-                        method=method,
-                        atlas=atlas,
-                        expand=expand,
-                        dict_values=dict_values,
-                    )
+                dict_values = get_facets_expand(
+                    URL=URL,
+                    f=f,
+                    group_by=group_by,
+                    verbose=verbose,
+                    headers=headers,
+                    method=method,
+                    atlas=atlas,
+                    expand=expand,
+                    dict_values=dict_values,
+                    authenticate=authenticate,
+                    payload=payload,
+                )
 
         # format table
         counts = pd.DataFrame(dict_values).reset_index(drop=True)
@@ -330,6 +316,10 @@ def get_GBIF_facets_expand(URL=None, f=None, group_by=None, verbose=None, header
     inc = 0
     start = 1
 
+    if len(group_by) == 2:
+        if group_by[1] == "scientificName":
+            start = 0
+
     # loop over facets
     for facet in f:
 
@@ -386,6 +376,8 @@ def get_facets_expand(
     atlas=None,
     expand=False,
     dict_values=None,
+    authenticate=None,
+    payload=None,
 ):
     """For all atlases other than GBIF, get the names and values of the group by list"""
 
@@ -399,10 +391,43 @@ def get_facets_expand(
         # if name is in your group_by statement, do this loop
         if name in group_by:
 
-            tempURL = get_tempURL(URL=URL, name=name, value=value, group_by=group_by)
+            if authenticate:
 
-            # check to see if the user wants the querying URL
-            print_if_verbose(verbose=verbose, headers=headers, URL=tempURL, method=method)
+                # create new payload
+                temp_payload = copy.deepcopy(payload)
+                if "fq" not in temp_payload:
+                    temp_payload["fq"] = [f]
+                else:
+                    if any(name in x for x in temp_payload["fq"]):
+                        temp_payload["fq"] = [x for x in temp_payload["fq"] if name not in x]
+                        temp_payload["fq"].append(f)
+
+                # create payload and get qid
+                qid_URL, method2 = get_api_url(column1="api_name", column1value="occurrences_qid")
+
+                # print options if verbose is set to True
+                print_if_verbose(verbose=verbose, headers=headers, URL=qid_URL, method=method2, payload=temp_payload)
+
+                # get the QID of the query
+                qid = requests.request(method2, qid_URL, data=temp_payload, headers=headers)
+
+                # make the URL with the QID
+                if URL[-1] not in ["&", "?"]:
+                    tempURL = URL + "?"
+                tempURL = URL + "fq=%28qid%3A" + qid.text + "%29"
+
+                # add facets to the QID
+                tempURL += "&facets={}".format(group_by[-1])
+
+                # check to see if the user wants the querying URL
+                print_if_verbose(verbose=verbose, headers=headers, URL=tempURL, method=method, payload=payload)
+
+            else:
+
+                tempURL = get_tempURL(URL=URL, name=name, value=value, group_by=group_by)
+
+                # check to see if the user wants the querying URL
+                print_if_verbose(verbose=verbose, headers=headers, URL=tempURL, method=method)
 
             # get data
             response = requests.request(method, tempURL, headers=headers)
@@ -499,87 +524,6 @@ def get_facets(results=None, group_by=None, expand=None, dict_values=None):
     return dict_values
 
 
-def get_facets_expand_authenticate(
-    URL=None,
-    f=None,
-    group_by=None,
-    verbose=None,
-    headers=None,
-    method=None,
-    atlas=None,
-    expand=None,
-    dict_values=None,
-    payload=None,
-):
-    """Return the dictionary values for two groups when the authenticate option is set to True"""
-
-    # loop over facets
-    for facet in f:
-
-        # split each facet to make it human readable
-        name, value = facet.split(":")
-        value = value.replace('"', "")
-
-        # if name is in your group_by statement, do this loop
-        if name in group_by:
-
-            # create a different payload to the original so you can:
-            #     1) add the facets as filters for group_by counts
-            #     2) in case filters and group_by have the same names in them
-            temp_payload = copy.deepcopy(payload)
-            if "fq" not in temp_payload:
-                temp_payload["fq"] = [f]
-            else:
-                if any(name in x for x in temp_payload["fq"]):
-                    temp_payload["fq"] = [x for x in temp_payload["fq"] if name not in x]
-                    temp_payload["fq"].append(f)
-
-            # create payload and get qid
-            qid_URL, method2 = get_api_url(column1="api_name", column1value="occurrences_qid")
-
-            # print options if verbose is set to True
-            print_if_verbose(verbose=verbose, headers=headers, URL=qid_URL, method=method2, payload=temp_payload)
-
-            # get the QID of the query
-            qid = requests.request(method2, qid_URL, data=temp_payload, headers=headers)
-
-            # make the URL with the QID
-            if URL[-1] not in ["&", "?"]:
-                tempURL = URL + "?"
-            else:
-                tempURL = URL + "fq=%28qid%3A" + qid.text + "%29"
-
-            # add facets to the QID
-            tempURL += "&facets={}".format(group_by[-1])
-
-            # check to see if the user wants the querying URL
-            print_if_verbose(verbose=verbose, headers=headers, URL=tempURL, method=method)
-
-            # get data
-            response = requests.request(method, tempURL, headers=headers)
-            response_json = response.json()
-
-            # if there is no data available, move onto next variable
-            if response_json is None or not response_json["facetResults"]:
-                continue
-
-            # put data in table (and check if user wants Brazil, because that is an exception)
-            results_array = get_results_array_expand(response_json=response_json, atlas=atlas, group_by=group_by)
-
-            # loop over each entry in the results
-            for entry in results_array:
-
-                # check to see if the name of the facet is in the group_by array - sometimes,
-                # there is a name with extra characters and we don't want that one
-                if entry["fq"].split(":")[0] in group_by:
-
-                    # potentially tab again
-                    dict_values = put_entries_in_grouped_dict(entry=entry, dict_values=dict_values, expand=expand)
-
-    # return the dictionary values
-    return dict_values
-
-
 def return_total_group_by(total_group_by=None, counts=None):
     """Return the number of rows if someone wants the total number of values"""
 
@@ -597,7 +541,7 @@ def return_total_group_by(total_group_by=None, counts=None):
 
 
 def get_results_array_expand(response_json=None, atlas=None, group_by=None):
-    """Return the list of dicts containing the names and counts of facetes"""
+    """Return the list of dicts containing the names and counts of facets"""
 
     # check for Brazil, since they're handled differently
     if atlas in ["Brazil"]:

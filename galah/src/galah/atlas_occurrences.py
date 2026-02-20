@@ -8,15 +8,20 @@ import requests
 from requests.auth import HTTPBasicAuth
 
 from .add_to_payload_functions import add_to_payload_ALA
-from .common_add_functions import (add_extras_to_URL, add_filters,
-                                   add_predicates, add_spatial_shapes,
-                                   add_taxa)
-from .common_checks import (check_atlas, check_atlas_authenticate,
-                            check_atlas_data_profile, check_email_empty,
-                            check_for_non_working_atlases, check_string_list)
-from .common_dictionaries import (ATLAS_OCCURRENCES_DOWNLOAD_ARGUMENTS,
-                                  ATLAS_OCCURRENCES_ERROR_MESSAGES,
-                                  ATLAS_SELECTIONS)
+from .common_add_functions import add_extras_to_URL, add_filters, add_predicates, add_spatial_shapes, add_taxa
+from .common_checks import (
+    check_atlas,
+    check_atlas_authenticate,
+    check_atlas_data_profile,
+    check_email_empty,
+    check_for_non_working_atlases,
+    check_string_list,
+)
+from .common_dictionaries import (
+    ATLAS_OCCURRENCES_DOWNLOAD_ARGUMENTS,
+    ATLAS_OCCURRENCES_ERROR_MESSAGES,
+    ATLAS_SELECTIONS,
+)
 from .common_functions import print_if_verbose, set_bool_argument
 from .galah_config import get_api_url, readConfig
 from .galah_select import galah_select
@@ -151,14 +156,10 @@ def atlas_occurrences(
     filters = check_string_list(filters, "filters")
 
     # checks for fields
-    if atlas not in ["Global", "GBIF"] and fields is None:
-        fields = "basic"
-    fields = check_string_list(fields, "fields")
+    fields = check_fields(fields=fields, atlas=atlas)
 
-    # check for Global atlas
-    if atlas in ["Global", "GBIF"] and filters is not None:
-        if "!=" in filters or "=!" in filters:
-            raise ValueError("The current iteration of GBIF and galah does not support != as an option.")
+    # check for != or =! in GBIF filters
+    check_gbif_filters(atlas=atlas, filters=filters)
 
     # declare for every atlas except for GBIF
     headers = {"User-Agent": "galah-python {}".format(__version__)}
@@ -195,7 +196,7 @@ def atlas_occurrences(
     if atlas in ["Global", "GBIF"]:
 
         # get the URL and method from GBIF
-        URL, method = get_api_url(
+        baseURL, method = get_api_url(
             column1="called_by",
             column1value="atlas_occurrences",
             column2="api_name",
@@ -218,13 +219,10 @@ def atlas_occurrences(
         )
 
         # add a question mark to separate the URLs from the filters
-        URL = add_question_mark(URL)
-
-        # add any taxon; if no taxon, returns original url
-        URL = add_taxa(taxa=taxa, atlas=atlas, URL=URL, scientific_name=scientific_name)
+        URL = add_question_mark(baseURL)
 
         # GBIF takes predicates - initialise variable in case GBIF is their desired atlas
-        predicates = add_predicates(predicates=[], filters=filters, occurrencesGBIF=True)
+        predicates = add_predicates(predicates=[], filters=filters, occurrencesGBIF=True, taxa=taxa)
 
         # You cannot specify which data fields you want from GBIF, as far as I'm aware
         if fields is not None:
@@ -267,9 +265,7 @@ def atlas_occurrences(
 
         # get job number
         job_number = response.text
-
-        # make the download url
-        statusURL = URL.replace("request", job_number)
+        statusURL = baseURL.replace("request", job_number)
 
         # return downloaded data when the job is done
         return get_data(
@@ -287,7 +283,7 @@ def atlas_occurrences(
     else:
 
         # atlas_occurrences()
-        if atlas in ["Australia", "ALA"] and authenticate:
+        if authenticate and atlas in ["Australia", "ALA"]:
 
             # create payload
             payload = add_to_payload_ALA(
@@ -321,12 +317,12 @@ def atlas_occurrences(
 
             # Add qa=None to not get any assertions
             if fields is None:
-                fields = "basic"
+                fields = ["basic"]
 
             # construct the URL
-            URL = baseURL + "?fq=%28qid%3A" + qid.text + "%29"
+            URL = baseURL + "?fq=%28qid%3A" + qid.text + "%29"  # try adding quotes
             URL = add_fields(fields=fields, atlas=atlas, URL=URL)
-            URL += "&flimit=-1&dwcHeaders=true" # True
+            URL += "&flimit=-1&dwcHeaders=true"  # True
 
             # add the option to mint a DOI
             if mint_doi:
@@ -334,18 +330,18 @@ def atlas_occurrences(
 
             # add extra information to the URL
             URL += add_extras_to_URL(
-                add_email=False,
+                add_email=True,  # False
                 use_data_profile=use_data_profile,
                 data_profile_list=list(show_all(profiles=True)["shortName"]),
                 atlas=atlas,
-                config_file=config_file
+                config_file=config_file,
             )
 
             # print information if user has chosen the verbose option
             print_if_verbose(verbose=verbose, headers=headers, URL=URL, method=method, payload=payload)
 
             # get data
-            response = requests.request(method, URL, headers=headers)
+            response = requests.request(method=method, url=URL, headers=headers)
 
         else:
 
@@ -385,7 +381,9 @@ def atlas_occurrences(
 
             # check if a user wants to use a data profile
             # add other things to URL
-            URL += "&dwcHeaders=true"
+            if URL[-1] != "&":
+                URL += "&"
+            URL += "flimit=-1&dwcHeaders=true"
 
             # add last things to URL
             if atlas in ["Australia", "ALA"]:
@@ -394,7 +392,7 @@ def atlas_occurrences(
                     use_data_profile=use_data_profile,
                     data_profile_list=list(show_all(profiles=True)["shortName"]),
                     atlas=atlas,
-                    config_file=config_file
+                    config_file=config_file,
                 )
             else:
                 URL += add_extras_to_URL(add_email=True, atlas=atlas, config_file=config_file)
@@ -406,7 +404,7 @@ def atlas_occurrences(
             response = requests.request(method=method, url=URL, headers=headers, timeout=timeout)
 
         # Austria returns zipfile from URL; have to return it straight away
-        if atlas in ["Austria", "United Kingdom", "UK"]:
+        if atlas in ["Austria"]:
             return pd.read_csv(
                 zipfile.ZipFile(io.BytesIO(response.content)).open("data.csv"),
                 sep=ATLAS_OCCURRENCES_DOWNLOAD_ARGUMENTS[atlas]["separator"],
@@ -424,6 +422,20 @@ def atlas_occurrences(
             filename="data.csv",
             mint_doi=mint_doi,
         )
+
+
+def check_fields(fields=None, atlas=None):
+    if atlas not in ["Global", "GBIF"] and fields is None:
+        return ["basic"]
+    return check_string_list(fields, "fields")
+
+
+def check_gbif_filters(atlas=None, filters=None):
+
+    # check for Global atlas
+    if atlas in ["Global", "GBIF"] and filters is not None:
+        if "!=" in filters or "=!" in filters:
+            raise ValueError("The current iteration of GBIF and galah does not support != as an option.")
 
 
 def add_question_mark(URL=None):

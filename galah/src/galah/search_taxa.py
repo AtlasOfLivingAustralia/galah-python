@@ -4,13 +4,22 @@ import urllib
 import pandas as pd
 import requests
 
-from .common_checks import (check_args_none, check_args_specific_atlas,
-                            check_atlas, check_atlas_authenticate,
-                            check_for_dict, check_for_non_working_atlases,
-                            check_taxa_type)
-from .common_dictionaries import (ATLAS_KEYWORDS, SEARCH_TAXA_ENTRIES,
-                                  SEARCH_TAXA_FIELDS, TAXONCONCEPT_NAMES,
-                                  VERNACULAR_NAMES)
+from .common_checks import (
+    check_args_none,
+    check_args_specific_atlas,
+    check_atlas,
+    check_atlas_authenticate,
+    check_for_dict,
+    check_for_non_working_atlases,
+    check_taxa_type,
+)
+from .common_dictionaries import (
+    ATLAS_KEYWORDS,
+    SEARCH_TAXA_ENTRIES,
+    SEARCH_TAXA_FIELDS,
+    TAXONCONCEPT_NAMES,
+    VERNACULAR_NAMES,
+)
 from .common_functions import print_if_verbose, set_bool_argument
 from .galah_config import get_api_url, readConfig
 from .version import __version__
@@ -246,26 +255,44 @@ def search_taxa(taxa=None, identifiers=None, specific_epithet=None, scientific_n
                 "UK": None,
             }
 
-            # get the raw data
-            raw_data = check_raw_data(
-                raw_data=raw_data_dict[atlas], response_json=response_json, atlas=atlas, name=name
-            )
+            if atlas in ["Flanders"]:
+                data = {}
+                if "key" in response_json["usage"]:
+                    data["taxonConceptID"] = response_json["usage"]["key"]
+                if "name" in response_json["usage"]:
+                    data["scientificName"] = response_json["usage"]["name"]
+                if "authorship" in response_json["usage"]:
+                    data["scientificNameAuthorship"] = response_json["usage"]["authorship"]
+                if "rank" in response_json["usage"]:
+                    data["taxonRank"] = response_json["usage"]["rank"]
+                for entry in response_json["classification"]:
+                    rank = entry["rank"].lower().capitalize()
+                    data[rank] = entry["name"]
 
-            # if raw_data is None, go to next taxa (potentially put error here)
-            # ["Global", "GBIF", "Austria", "UK", "United Kingdom"]
-            if atlas in ["Australia", "ALA"] and not raw_data["success"]:
-                continue
+            else:
 
-            # get the data from the raw_data
-            data = {}
-            if raw_data is not None:
-                for k in SEARCH_TAXA_FIELDS[atlas]:
-                    if k in raw_data:
-                        data[k] = raw_data[k]
+                # get the raw data
+                raw_data = check_raw_data(
+                    raw_data=raw_data_dict[atlas], response_json=response_json, atlas=atlas, name=name
+                )
 
-            # check if the atlas is GBIF and get vernacular names accordingly
-            if atlas in ["Global", "GBIF", "Portugal", "Spain"]:
-                data[VERNACULAR_NAMES[atlas][1]] = get_vernacularName(raw_data=raw_data, atlas=atlas, timeout=timeout)
+                # if raw_data is None, go to next taxa (potentially put error here)
+                # ["Global", "GBIF", "Austria", "UK", "United Kingdom"]
+                if atlas in ["Australia", "ALA"] and not raw_data["success"]:
+                    continue
+
+                # get the data from the raw_data
+                data = {}
+                if raw_data is not None:
+                    for k in SEARCH_TAXA_FIELDS[atlas]:
+                        if k in raw_data:
+                            data[k] = raw_data[k]
+
+                # check if the atlas is GBIF and get vernacular names accordingly
+                if atlas in ["Global", "GBIF", "Portugal", "Spain"]:
+                    data[VERNACULAR_NAMES[atlas][1]] = get_vernacularName(
+                        raw_data=raw_data, atlas=atlas, timeout=timeout
+                    )
 
             # add every taxon to dataframe
             tempdf = pd.DataFrame(data, index=[1])
@@ -352,7 +379,7 @@ def create_search_taxa_url(dict_of_specifics=None, config_file=None):
 
 def process_dicts_to_URLs(baseURL=None, dict_of_specifics=None, head_key=None):
     """
-    Function for adding informations in dicts to the URLs themselves
+    Function for adding information in dicts to the URLs themselves
     """
 
     # get the length of keys and dicts for looping
@@ -530,11 +557,13 @@ def authenticate_bulk_query(taxa=None, access_token=None, client_id=None, verbos
     )
 
     # set up the payload and headers
-    payload = {"vernacular": "true", "names": [], "issues": "true"}
+    payload = {"names": [], "vernacular": "true"}  # , "issues": "true"}
     headers = {
         "User-Agent": "galah-python {}".format(__version__),
         "Authorization": "Bearer {}".format(access_token),
         "client_id": client_id,
+        "accept": "*/*",
+        "Content-Type": "application/json",
     }
     payload["names"] = taxa
 
@@ -546,10 +575,15 @@ def authenticate_bulk_query(taxa=None, access_token=None, client_id=None, verbos
     species_list_json = species_list.json()
     species_list_dataframe = pd.DataFrame()
     for i in range(len(species_list_json)):
+        if all(not isinstance(species_list_json[i][x], list) for x in species_list_json[i]):
+            for x in species_list_json[i]:
+                species_list_json[i][x] = [species_list_json[i][x]]
         species_list_dataframe = pd.concat([species_list_dataframe, pd.DataFrame(species_list_json[i])])
 
     # reset the index so everything is sequential
     species_list_dataframe = species_list_dataframe.reset_index(drop=True)
+    if species_list_dataframe.empty:
+        raise ValueError("There are no taxa with the name(s) {} in the Australian atlas.".format(taxa))
 
     # rename some of the columns to ensure clarity
     species_list_rename = species_list_dataframe.rename(
@@ -563,26 +597,29 @@ def authenticate_bulk_query(taxa=None, access_token=None, client_id=None, verbos
         }
     )
 
-    # combine multiple vernacular names into one entry
-    species_list_rename = (
-        species_list_rename.groupby(
-            [
-                "scientificName",
-                "scientificNameAuthorship",
-                "taxonConceptID",
-                "rank",
-                "kingdom",
-                "phylum",
-                "class",
-                "order",
-                "family",
-                "genus",
-                "species",
-            ]
+    # test this
+    if species_list_rename.shape[0] > 1:
+
+        # combine multiple vernacular names into one entry
+        species_list_rename = (
+            species_list_rename.groupby(
+                [
+                    "scientificName",
+                    "scientificNameAuthorship",
+                    "taxonConceptID",
+                    "rank",
+                    "kingdom",
+                    "phylum",
+                    "class",
+                    "order",
+                    "family",
+                    "genus",
+                    "species",
+                ]
+            )
+            .agg({"vernacularName": ", ".join})
+            .reset_index()
         )
-        .agg({"vernacularName": ", ".join})
-        .reset_index()
-    )
 
     # return the species list
     return species_list_rename[

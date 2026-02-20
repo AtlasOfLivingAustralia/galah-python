@@ -1,8 +1,7 @@
 import configparser
 
-import pytest
-
 import galah
+import pytest
 
 configParser = configparser.ConfigParser()
 configParser.read("logins.txt")
@@ -11,6 +10,8 @@ usernameGBIF = configParser["GBIF"]["usernameGBIF"]
 passwordGBIF = configParser["GBIF"]["passwordGBIF"]
 
 galah.galah_config(authenticate=False)
+
+
 ######################################
 # changes and errors
 ######################################
@@ -35,7 +36,7 @@ def test_show_all_lists_Global():
 
 
 def test_not_equals_filter_GBIF():
-    galah.galah_config(atlas="Global")
+    galah.galah_config(atlas="Global", email=email_gbif)
     with pytest.raises(Exception) as e_info:
         galah.atlas_occurrences(filters=["year != 2025"])
     assert "cannot be used" in str(e_info.value)
@@ -233,25 +234,14 @@ def test_atlas_counts_filters_global():
 
 
 # testing filtering works when no taxa are entered
-def test_atlas_counts_filters_groupby_expand_global():
+def test_atlas_counts_filters_groupby_global():
     galah.galah_config(atlas="GBIF")
     filtered_counts = galah.atlas_counts(filters="year=2022", group_by=["month", "basisOfRecord"])
     assert filtered_counts.shape[0] > 0
     assert filtered_counts.shape[1] > 0
 
 
-#'''
-# testing filtering works when no taxa are entered
-def test_atlas_counts_filters_groupby_global():
-    galah.galah_config(atlas="GBIF")
-    f = "year=2022"
-    groups = ["month", "basisOfRecord"]
-    filtered_counts = galah.atlas_counts(filters="year=2022", group_by=groups)
-    assert filtered_counts.shape[0] > 0
-    assert filtered_counts.shape[1] > 0
-
-
-# test altas_counts() can call search_taxa() and using one filter, filter results with single taxa
+# test atlas_counts() can call search_taxa() and using one filter, filter results with single taxa
 def test_atlas_counts_taxa_filter_global():
     galah.galah_config(atlas="GBIF")
     taxa = "Vulpes vulpes"
@@ -283,7 +273,7 @@ def test_atlas_counts_taxa_same_filter_global2_global():
 """
 
 
-# test altas_counts() with total_group_by
+# test atlas_counts() with total_group_by
 def test_atlas_counts_taxa_filters_global_total_group_by():
     galah.galah_config(atlas="GBIF")
     output = galah.atlas_counts(
@@ -340,7 +330,7 @@ def test_atlas_counts_taxa_groups_expand_global():
     assert output.shape[1] == len(group_by) + 1
 
 
-# test altas_counts() can call search_taxa() and using two filter, filter results with single taxa
+# test atlas_counts() can call search_taxa() and using two filter, filter results with single taxa
 def test_atlas_counts_taxa_filters_global():
     galah.galah_config(atlas="GBIF")
     assert (
@@ -351,7 +341,7 @@ def test_atlas_counts_taxa_filters_global():
     )
 
 
-# test altas_counts() can call search_taxa() and using two filter, filter results with single taxa and group by one group
+# test atlas_counts() can call search_taxa() and using two filter, filter results with single taxa and group by one group
 def test_atlas_counts_taxa_filters_group_by_no_expand_global():
     galah.galah_config(atlas="GBIF")
     taxa = "Vulpes vulpes"
@@ -405,7 +395,7 @@ def test_atlas_counts_multiple_taxa_group_by_global():
     assert output.shape[1] == len(group_by) + 1
 
 
-# test altas_counts() can call search_taxa() and using one filter, filter results with multiple taxa
+# test atlas_counts() can call search_taxa() and using one filter, filter results with multiple taxa
 def test_atlas_counts_multiple_taxa_filter_global():
     galah.galah_config(atlas="GBIF")
     taxa_array = [
@@ -418,7 +408,7 @@ def test_atlas_counts_multiple_taxa_filter_global():
     assert galah.atlas_counts(taxa_array, filters=filter1)["totalRecords"][0] > 0
 
 
-# test altas_counts() can call search_taxa() and using one filter, filter results with multiple taxa
+# test atlas_counts() can call search_taxa() and using one filter, filter results with multiple taxa
 def test_atlas_counts_multiple_taxa_filter_group_by_global():
     galah.galah_config(atlas="GBIF")
     taxa_array = [
@@ -434,7 +424,7 @@ def test_atlas_counts_multiple_taxa_filter_group_by_global():
     assert output.shape[1] == 2
 
 
-# test altas_counts() can call search_taxa() and using one filter, filter results with multiple taxa
+# test atlas_counts() can call search_taxa() and using one filter, filter results with multiple taxa
 def test_atlas_counts_multiple_taxa_filters_global():
     galah.galah_config(atlas="GBIF")
     taxa_array = [
@@ -447,7 +437,7 @@ def test_atlas_counts_multiple_taxa_filters_global():
     assert galah.atlas_counts(taxa_array, filters=filters)["totalRecords"][0] > 0
 
 
-# test altas_counts() can call search_taxa() and using one filter, filter results with multiple taxa
+# test atlas_counts() can call search_taxa() and using one filter, filter results with multiple taxa
 def test_atlas_counts_multiple_taxa_filters_group_by_global():
     galah.galah_config(atlas="GBIF")
     taxa_array = [
@@ -463,7 +453,7 @@ def test_atlas_counts_multiple_taxa_filters_group_by_global():
     assert output.shape[1] == 2
 
 
-# test altas_counts() can call search_taxa() and using one filter, filter results with multiple taxa
+# test atlas_counts() can call search_taxa() and using one filter, filter results with multiple taxa
 def test_atlas_counts_multiple_taxa_filters_group_by_multiple_global():
     galah.galah_config(atlas="GBIF")
     taxa_array = [
@@ -495,7 +485,7 @@ def test_atlas_counts_multiple_taxa_separate_global():
     assert (output["count"] >= 0).all()  # checks that all species counts are greater than or equal to zero
 
 
-# test altas_counts() can call search_taxa() and using one filter, filter and group results with multiple taxa separated
+# test atlas_counts() can call search_taxa() and using one filter, filter and group results with multiple taxa separated
 def test_atlas_counts_multiple_taxa_filters_group_by_separate_global():
     galah.galah_config(atlas="GBIF")
     taxa_array = [
@@ -511,7 +501,7 @@ def test_atlas_counts_multiple_taxa_filters_group_by_separate_global():
     assert (output["count"] > 0).all()  # checks that all species counts are greater than zero
 
 
-# test altas_counts() can call search_taxa() and using one filter, filter and group results with multiple taxa separated
+# test atlas_counts() can call search_taxa() and using one filter, filter and group results with multiple taxa separated
 def test_atlas_counts_multiple_taxa_filter_group_by_multiple_separate_global():
     galah.galah_config(atlas="GBIF")
     taxa_array = [
@@ -527,7 +517,7 @@ def test_atlas_counts_multiple_taxa_filter_group_by_multiple_separate_global():
     assert (output["count"] > 0).all()  # checks that all species counts are greater than zero
 
 
-# test altas_counts() can call search_taxa() and using one filter, filter and group results with multiple taxa separated
+# test atlas_counts() can call search_taxa() and using one filter, filter and group results with multiple taxa separated
 def test_atlas_counts_multiple_taxa_filters_group_by_multiple_separate_expand_global():
     galah.galah_config(atlas="GBIF")
     taxa_array = [
@@ -543,7 +533,11 @@ def test_atlas_counts_multiple_taxa_filters_group_by_multiple_separate_expand_gl
     assert output["count"][0] >= 0  # checks that all species counts are greater than or equal zero
 
 
-"""
+######################################
+# atlas_species
+######################################
+
+
 # checking if atlas species can successfully call search_taxa() and get a non-empty dataframe\
 def test_atlas_species_species_global():
     galah.galah_config(
@@ -581,6 +575,10 @@ def test_atlas_species_global_filter_notaxa():
     assert filtered_species_table.shape[0] > 0
 
 
+######################################
+# atlas_occurrences
+######################################
+"""
 # first test for atlas_occurrences() - check if search_taxa() is working
 def test_atlas_occurrences_taxa_filters_global():
     galah.galah_config(
