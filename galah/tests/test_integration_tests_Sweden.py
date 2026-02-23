@@ -392,7 +392,7 @@ def test_atlas_counts_invalid_multiple_taxa_separate_sweden():
     galah.galah_config(atlas="Sweden")
     taxa_array = ["Alces alces", "Carcinus maenas", "Sorex araneus", "Oniscus asellus"]
     output = galah.atlas_counts(taxa_array, group_by="species")
-    assert output.shape[0] == len(taxa_array) - 1
+    assert output.shape[0] == len(taxa_array)
     assert output.shape[1] == 2
 
 

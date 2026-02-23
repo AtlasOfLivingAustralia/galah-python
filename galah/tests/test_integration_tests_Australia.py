@@ -1308,39 +1308,39 @@ def test_atlas_occurrences_no_valid_taxa_output(capfd):
 
 def test_atlas_counts_galah_config_custom_file():
     galah.galah_config(
-        atlas="Australia", email=email_au, config_file="./temp_config_atlas_counts.ini", authenticate=False
+        atlas="Australia", email=email_au, config_file="./temp_config.ini", authenticate=False
     )
-    counts = galah.atlas_counts(config_file="./temp_config_atlas_counts.ini")
+    counts = galah.atlas_counts(config_file="./temp_config.ini")
     assert counts["totalRecords"][0] > 0
 
 
 def test_atlas_occurrences_galah_config_custom_file():
     galah.galah_config(
-        atlas="Australia", email=email_au, config_file="./temp_config_atlas_occurrences.ini", authenticate=False
+        atlas="Australia", email=email_au, config_file="./temp_config.ini", authenticate=False
     )
-    occurrences = galah.atlas_occurrences(taxa="Vulpes vulpes", config_file="./temp_config_atlas_occurrences.ini")
+    occurrences = galah.atlas_occurrences(taxa="Vulpes vulpes", config_file="./temp_config.ini")
     assert occurrences.shape[0] > 0
 
 
 def test_atlas_media_galah_config_custom_file():
     galah.galah_config(
-        atlas="Australia", email=email_au, config_file="./temp_config_atlas_media.ini", authenticate=False
+        atlas="Australia", email=email_au, config_file="./temp_config.ini", authenticate=False
     )
     filters = ["year=2020", "decimalLongitude>153.0"]
     output = galah.atlas_media(
         taxa="Ornithorhynchus anatinus",
         filters=filters,
-        config_file="./temp_config_atlas_media.ini",
+        config_file="./temp_config.ini",
     )
     assert output.shape[0] > 0
 
 
 def test_atlas_species_Australia_species_australia_galah_config_custom_file():
     galah.galah_config(
-        atlas="Australia", email=email_au, config_file="./temp_config_atlas_species.ini", authenticate=False
+        atlas="Australia", email=email_au, config_file="./temp_config.ini", authenticate=False
     )
     taxa = "Heleioporus"
-    species_table = galah.atlas_species(taxa=taxa, config_file="./temp_config_atlas_species.ini")
+    species_table = galah.atlas_species(taxa=taxa, config_file="./temp_config.ini")
     assert species_table.shape[0] > 0
 
 

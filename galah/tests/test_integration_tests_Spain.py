@@ -564,7 +564,7 @@ def test_atlas_media_taxa_spain():
 def test_atlas_media_filters_spain():
     galah.galah_config(atlas="Spain", email=email_es)
     raw_output = galah.atlas_media(taxa="Vipera latastei")
-    filtered_output = galah.atlas_media(taxa="Vipera latastei", filters="decimalLatitude<-24.0")
+    filtered_output = galah.atlas_media(taxa="Vipera latastei", filters="decimalLatitude>41")
     assert raw_output.shape[0] > filtered_output.shape[0]
 
 
@@ -577,7 +577,7 @@ def test_atlas_media_multimedia_spain():
 def test_atlas_media_filters_multimedia_spain():
     galah.galah_config(atlas="Spain", email=email_es)
     raw_output = galah.atlas_media(taxa="Vipera latastei")
-    multimedia_output = galah.atlas_media(taxa="Vipera latastei", filters="decimalLatitude<=-24.0", multimedia="images")
+    multimedia_output = galah.atlas_media(taxa="Vipera latastei", filters="decimalLatitude>41", multimedia="images")
     assert raw_output.shape[0] > multimedia_output.shape[0]
 
 
@@ -590,7 +590,7 @@ def test_atlas_media_filters_multimedia_collect_path_spain():
     multimedia_output = galah.atlas_media(
         taxa="Vipera latastei",
         multimedia="images",
-        filters="decimalLatitude<=-24.0",
+        filters="decimalLatitude>41",
         collect=True,
         path=path,
     )
