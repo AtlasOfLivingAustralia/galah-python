@@ -1,15 +1,9 @@
-import configparser
-
 import galah
 import pytest
 
-configParser = configparser.ConfigParser()
-configParser.read("logins.txt")
-email_gbif = configParser["GBIF"]["email"]
-usernameGBIF = configParser["GBIF"]["usernameGBIF"]
-passwordGBIF = configParser["GBIF"]["passwordGBIF"]
-
-galah.galah_config(authenticate=False)
+email_gbif = "ala4r@ala.org.au"
+usernameGBIF = "atlasoflivingaustralia"
+passwordGBIF = "galah-gbif-test-login"
 
 
 ######################################

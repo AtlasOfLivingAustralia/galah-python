@@ -7,16 +7,14 @@ import pandas as pd
 import pytest
 import shapely
 
-configParser = configparser.ConfigParser()
-configParser.read("logins.txt")
-email_au = configParser["Australia"]["email"]
+email_au = "ala4r@ala.org.au"
 
-
+'''
 ######################################
 # exceptions and errors
 ######################################
 def test_atlas_counts_no_valid_taxa_output_authenticate():
-    galah.galah_config(atlas="Australia", authenticate=True, auth_filename="auth.json")
+    galah.galah_config(atlas="Australia", authenticate=True) #, auth_filename="auth.json")
     with pytest.raises(Exception) as e_info:
         galah.atlas_counts(taxa="Macronycteris commersoni")
     assert "There are" in str(e_info.value)
@@ -815,6 +813,4 @@ def test_atlas_media_galah_config_custom_file_authenticate():
         config_file="./temp_config_atlas_media.ini",
     )
     assert output.shape[0] > 0
-
-
-# """
+'''

@@ -1,15 +1,9 @@
-import configparser
 import os
 import shutil
 
 import galah
-import pytest
 
-configParser = configparser.ConfigParser()
-configParser.read("logins.txt")
-email_kew = configParser["Kew"]["email"]
-
-galah.galah_config(authenticate=False)
+email_kew = "ala4r@ala.org.au"
 
 ######################################
 # exceptions and errors

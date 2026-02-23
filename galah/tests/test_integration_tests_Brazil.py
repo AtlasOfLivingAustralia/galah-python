@@ -5,12 +5,7 @@ import shutil
 import galah
 import pytest
 
-configParser = configparser.ConfigParser()
-configParser.read("logins.txt")
-email_br = configParser["Brazil"]["email"]
-
-
-galah.galah_config(authenticate=False)
+email_br = "ala4r@ala.org.au"
 
 
 ######################################

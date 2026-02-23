@@ -1,13 +1,10 @@
-import configparser
 import os
 import shutil
 
 import galah
 import pytest
 
-configParser = configparser.ConfigParser()
-configParser.read("logins.txt")
-email_fl = configParser["Flanders"]["email"]
+email_fl = "ala4r@ala.org.au"
 
 ######################################
 # exceptions and errors

@@ -4,13 +4,7 @@ import shutil
 
 import galah
 
-configParser = configparser.ConfigParser()
-configParser.read("logins.txt")
-email_at = configParser["Austria"]["email"]
-
-galah.galah_config(authenticate=False, verbose=False)
-
-print(galah.galah_config())
+email_at = "ala4r@ala.org.au"
 
 
 # """

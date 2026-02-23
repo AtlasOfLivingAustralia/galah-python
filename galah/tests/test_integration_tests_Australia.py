@@ -8,12 +8,7 @@ import pandas as pd
 import pytest
 import shapely
 
-configParser = configparser.ConfigParser()
-configParser.read("logins.txt")
-email_au = configParser["Australia"]["email"]
-
-galah.galah_config(authenticate=False)
-
+email_au = "ala4r@ala.org.au"
 
 # """
 ######################################

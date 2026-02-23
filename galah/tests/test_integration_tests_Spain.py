@@ -1,14 +1,9 @@
-import configparser
 import os
 import shutil
 
 import galah
 
-configParser = configparser.ConfigParser()
-configParser.read("logins.txt")
-email_es = configParser["Spain"]["email"]
-
-galah.galah_config(authenticate=False)
+email_es = "test@ala.org.au"
 
 
 ######################################
