@@ -27,7 +27,6 @@ setup(
     package_dir={"": "src"},
     url="https://galah.ala.org.au/Python/",
     keywords="galah",
-    #'tempfile'
     install_requires=[
         "setuptools",
         "numpy",
@@ -44,7 +43,7 @@ setup(
         "shapely",
         "geopandas",
         "tqdm",
-        "oauthlib", #unsure
+        "oauthlib",
         "oauth2"
     ],
     include_package_data=True,

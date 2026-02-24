@@ -529,7 +529,6 @@ def check_for_no_filters(var_list=None, atlas=None):
 def check_for_403_error(response=None, atlas=None):
     """raise error if user hasn't done any authentication and/or gets a 403 error"""
     if response.status_code == 403:
-        print(response.text)
         raise ValueError(
             "It appears that you are not registered as a user on the {} atlas.  Please {}".format(
                 atlas, ATLAS_OCCURRENCES_ERROR_MESSAGES[atlas]

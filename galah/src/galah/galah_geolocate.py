@@ -102,9 +102,6 @@ def check_simplify_polygon(simplify_polygon=False, shape=None, tolerance=10000):
         Either the simplified shape or original.
     """
     if simplify_polygon:
-        print(shapely.count_coordinates(shape))
         new_shape = shape.simplify(tolerance=tolerance)
-        print(shapely.count_coordinates(new_shape))
-        print()
         return str(shape.simplify(tolerance=tolerance))
     return shape

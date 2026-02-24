@@ -175,8 +175,6 @@ def atlas_counts(
 
         # cache the user's query and get a query ID
         qid = requests.request(method2, qid_URL, data=payload, headers=headers)
-        print(qid)
-        print(qid.text)
 
         # create the URL to grab your queryID and counts
         URL = countsURL + "?fq=%28qid%3A" + qid.text + "%29&flimit=-1&pageSize=0"  # "/" + qid.text

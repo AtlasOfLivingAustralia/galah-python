@@ -9,7 +9,6 @@ This section will take you through an introduction on what ``galah`` can be used
    :hidden:
 
    Introduction
-   Prerequisites
    Installation
    Configuration
    Tutorial

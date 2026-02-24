@@ -253,23 +253,61 @@ def show_all_atlases():
     """
     # data of all the atlases galah currently supports
     data = {
-        "atlas": ["Australia", "Austria", "Brazil", "France", "Global", "Spain"],
+        "atlas": [
+            "Australia", 
+            "Austria", 
+            "Brazil", 
+            "Flanders",
+            "France", 
+            "Global", 
+            "Guatemala",
+            "Kew",
+            "Portugal",
+            "Spain",
+            "Sweden",
+            "United Kingdom"
+        ],
         "institution": [
             "Atlas of Living Australia",
             "Biodiversitäts-Atlas Österreich",
             "Sistemas de Informações sobre a Biodiversidade Brasileira",
-            "Inventaire National du Patrimoine Naturel",
+            "Vlaams Biodiversiteitsportaal",
+            "Portail français d'accès aux données d'observation sur les espèces",
             "Global Biodiversity Information Facility",
+            "Sistema Nacional de Información sobre Diversidad Biológica de Guatemala",
+            "Kew Data Portal",
+            "GBIF Portugal",
             "GBIF Spain",
+            "Swedish Biodiversity Data Infrastructure",
+            "National Biodiversity Network"
         ],
-        "acronym": ["ALA", "BAO", "SiBBr", "INPN", "GBIF", "GBIF.es"],
+        "acronym": [
+            "ALA", 
+            "BAO", 
+            "SiBBr", 
+            "VBP",
+            "OpenObs",
+            "GBIF", 
+            "SNIBgt",
+            "KDP",
+            "GBIF.pt",
+            "GBIF.es", 
+            "SDBI", 
+            "NBN"
+        ],
         "url": [
             "https://www.ala.org.au",
             "https://biodiversityatlas.at",
             "https://sibbr.gov.br",
+            "https://natuurdata.inbo.be",
             "https://inpn.mnhn.fr",
             "https://gbif.org",
+            "https://snib.conap.gob.gt",
+            "https://data.kew.org",
+            "https://www.gbif.pt",
             "https://www.gbif.es",
+            "https://biodiversitydata.se",
+            "https://nbn.org.uk"
         ],
     }
 

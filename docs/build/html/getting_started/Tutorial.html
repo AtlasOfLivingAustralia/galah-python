@@ -337,7 +337,6 @@
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
   <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="Introduction.html">Introduction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Prerequisites.html">Prerequisites</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Configuration.html">Configuring Galah</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Tutorial</a></li>
@@ -422,7 +421,19 @@ span.prompt1:before {
 </style><span class="prompt1"><span class="o">&gt;&gt;</span> <span class="kn">import</span><span class="w"> </span><span class="nn">galah</span></span>
 <span class="prompt1"><span class="o">&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">show_all</span><span class="p">(</span><span class="n">atlases</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></span>
 </pre></div></div><p>and a list like this will appear:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>             atlas                                                              institution  acronym                           url
+0        Australia                                                Atlas of Living Australia      ALA        https://www.ala.org.au
+1          Austria                                          Biodiversitäts-Atlas Österreich      BAO  https://biodiversityatlas.at
+2           Brazil                Sistemas de Informações sobre a Biodiversidade Brasileira    SiBBr          https://sibbr.gov.br
+3         Flanders                                            Vlaams Biodiversiteitsportaal      VBP    https://natuurdata.inbo.be
+4           France       Portail français d&#39;accès aux données d&#39;observation sur les espèces  OpenObs          https://inpn.mnhn.fr
+5           Global                                 Global Biodiversity Information Facility     GBIF              https://gbif.org
+6        Guatemala  Sistema Nacional de Información sobre Diversidad Biológica de Guatemala   SNIBgt     https://snib.conap.gob.gt
+7              Kew                                                          Kew Data Portal      KDP          https://data.kew.org
+8         Portugal                                                            GBIF Portugal  GBIF.pt           https://www.gbif.pt
+9            Spain                                                               GBIF Spain  GBIF.es           https://www.gbif.es
+10          Sweden                                 Swedish Biodiversity Data Infrastructure     SDBI   https://biodiversitydata.se
+11  United Kingdom                                            National Biodiversity Network      NBN            https://nbn.org.uk
 </pre></div>
 </div>
 <p>To choose an atlas, select the region that the atlas represents.  By default, the atlas is set to <code class="docutils literal notranslate"><span class="pre">Australia</span></code>, which is
@@ -440,7 +451,24 @@ Once you have registered your email, you can store it in <code class="docutils l
 <p>This will not return anything.  No error messages means it is configured correctly.  To see what your configuation settings
 are, type</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">&gt;&gt;&gt; galah.galah_config()</span>
-</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>    Configuration                  Value
+0           email  amanda.buyan@csiro.au
+1    email_notify                  False
+2           atlas              Australia
+3    data_profile                    ALA
+4           ranks                    all
+5          reason                     10
+6         verbose                  False
+7         timeout                    600
+8    usernamegbif                       
+9    passwordgbif                       
+10   authenticate                  False
+11      client_id                       
+12  client_secret                       
+13   access_token                       
+14  refresh_token                       
+15         scopes                       
+16     expires_at
 </pre></div>
 </div>
 </section>
@@ -449,39 +477,57 @@ are, type</p>
 <p>Now that <code class="docutils literal notranslate"><span class="pre">galah</span></code> is configured, we will get counts of records, so you know how many you are downloading.  To see how
 many records are currently in the ALA, type</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">atlas_counts</span><span class="p">()</span></span>
-</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>   totalRecords
+0     167267751
 </pre></div>
 </div>
 <p>If you are not interested in a specific species, but in the number of records in the atlas from the year 2020 onwards, you can
 add this to the <code class="docutils literal notranslate"><span class="pre">filters</span></code> argument of <code class="docutils literal notranslate"><span class="pre">atlas_counts()</span></code>.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">atlas_counts</span><span class="p">(</span><span class="n">filters</span><span class="o">=</span><span class="s2">&quot;year&gt;=2020&quot;</span><span class="p">)</span></span>
-</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>   totalRecords
+0      58064387
 </pre></div>
 </div>
 <p>If you are wondering how the number of records for all species in the ALA changed over each year from 2020 onwards, you can
 tell <code class="docutils literal notranslate"><span class="pre">galah</span></code> to group your results by year, to get yearly counts.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">atlas_counts</span><span class="p">(</span><span class="n">filters</span><span class="o">=</span><span class="s2">&quot;year&gt;=2020&quot;</span><span class="p">,</span><span class="n">group_by</span><span class="o">=</span><span class="s2">&quot;year&quot;</span><span class="p">)</span></span>
-</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>   year     count
+0  2020   7312539
+1  2021   8696470
+2  2022   9431261
+3  2023  11012769
+4  2024  11945732
+5  2025   9246525
+6  2026    419091
 </pre></div>
 </div>
 <p>To narrow down your search by a specific species, you can use the <code class="docutils literal notranslate"><span class="pre">search_taxa()</span></code> function to check whether or not the
 taxonomic information for the species you are wanting to search.  For this example, lLet’s choose the taxa <em>Vulpes vulpes</em>,
 or the red fox.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">search_taxa</span><span class="p">(</span><span class="n">taxa</span><span class="o">=</span><span class="s2">&quot;Vulpes vulpes&quot;</span><span class="p">)</span></span>
-</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>  scientificName scientificNameAuthorship                                                             taxonConceptID     rank   matchType   kingdom    phylum    classs      order   family   genus        species   issues vernacularName
+0  Vulpes vulpes           Linnaeus, 1758  https://biodiversity.org.au/afd/taxa/2869ce8a-8212-46c2-8327-dfb7fabb8296  species  exactMatch  Animalia  Chordata  Mammalia  Carnivora  Canidae  Vulpes  Vulpes vulpes  noIssue            Fox
 </pre></div>
 </div>
 <p>Now that we can see we indeed have the red fox, we can see how many records the ALA has of the red fox.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">&gt;&gt;&gt; import galah</span>
 <span class="prompt1">&gt;&gt;&gt; galah.atlas_counts(taxa=&quot;Vulpes vulpes&quot;)</span>
-</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>   totalRecords
+0        158142
 </pre></div>
 </div>
 <p>Now, we can put our <code class="docutils literal notranslate"><span class="pre">filters</span></code> query together with our red fox query, to see how many occurrences of red foxes in the ALA
 were seen each year from 2020 onwards.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">&gt;&gt;&gt; import galah</span>
 <span class="prompt1">&gt;&gt;&gt; galah.atlas_counts(taxa=&quot;Vulpes vulpes&quot;,filters=&quot;year&gt;=2020&quot;,group_by=&quot;year&quot;)</span>
-</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>   year  count
+0  2020   6658
+1  2021   8293
+2  2022   8286
+3  2023   8516
+4  2024   8705
+5  2025   8640
+6  2026   1397
 </pre></div>
 </div>
 </section>
@@ -491,26 +537,39 @@ were seen each year from 2020 onwards.</p>
 To do this, we will take the query from above and change the function name from <code class="docutils literal notranslate"><span class="pre">atlas_counts()</span></code> to <code class="docutils literal notranslate"><span class="pre">atlas_occurrences()</span></code>.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">&gt;&gt;&gt; import galah</span>
 <span class="prompt1">&gt;&gt;&gt; galah.atlas_occurrences(taxa=&quot;Vulpes vulpes&quot;,filters=&quot;year&gt;=2020&quot;)</span>
-</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>       decimalLatitude  decimalLongitude             eventDate scientificName                                                             taxonConceptID                              recordID             dataResourceName occurrenceStatus
+0           -39.136718        146.373940  2025-05-24T00:00:00Z  Vulpes vulpes  https://biodiversity.org.au/afd/taxa/2869ce8a-8212-46c2-8327-dfb7fabb8296  748efb94-997e-4ce8-948d-4eab3843fb19                    FeralScan          PRESENT
+1           -39.083564        146.383184  2023-02-02T00:00:00Z  Vulpes vulpes  https://biodiversity.org.au/afd/taxa/2869ce8a-8212-46c2-8327-dfb7fabb8296  572341b6-94ca-4d96-bf4f-889cbd5e26f0                    FeralScan          PRESENT
+2           -39.055892        146.448243  2023-09-26T12:58:13Z  Vulpes vulpes  https://biodiversity.org.au/afd/taxa/2869ce8a-8212-46c2-8327-dfb7fabb8296  c9e41540-1253-4db8-b13a-25b353dc93b5        iNaturalist Australia          PRESENT
+3           -39.048423        146.365914  2021-03-05T00:00:00Z  Vulpes vulpes  https://biodiversity.org.au/afd/taxa/2869ce8a-8212-46c2-8327-dfb7fabb8296  9869adbf-26c2-4258-a2c2-c76517f3b5ea                    FeralScan          PRESENT
+4           -39.043553        146.465719  2024-07-02T00:00:00Z  Vulpes vulpes  https://biodiversity.org.au/afd/taxa/2869ce8a-8212-46c2-8327-dfb7fabb8296  e4135950-eb4d-47aa-97fb-11ad8a75032a                    FeralScan          PRESENT
+...                ...               ...                   ...            ...                                                                        ...                                   ...                          ...              ...
+50490        50.800000         -0.400000  2021-06-07T09:33:00Z  Vulpes vulpes  https://biodiversity.org.au/afd/taxa/2869ce8a-8212-46c2-8327-dfb7fabb8296  1e90a2e4-e0f5-4f2c-a7ce-97d3d465a1f4  Earth Guardians Weekly Feed          PRESENT
+50491        51.100000         -0.500000  2023-03-17T12:04:54Z  Vulpes vulpes  https://biodiversity.org.au/afd/taxa/2869ce8a-8212-46c2-8327-dfb7fabb8296  65fc1040-5675-4f6c-8c92-40f8de159bed  Earth Guardians Weekly Feed          PRESENT
+50492        51.400000         -2.300000  2021-05-24T19:37:00Z  Vulpes vulpes  https://biodiversity.org.au/afd/taxa/2869ce8a-8212-46c2-8327-dfb7fabb8296  abc59803-000c-47bd-b758-8420dfce4714  Earth Guardians Weekly Feed          PRESENT
+50493        51.574697         -0.109975  2020-04-14T17:10:00Z  Vulpes vulpes  https://biodiversity.org.au/afd/taxa/2869ce8a-8212-46c2-8327-dfb7fabb8296  89d22e27-4c17-430d-90e3-74455cc78ec2  Earth Guardians Weekly Feed          PRESENT
+50494        51.900000         -0.200000  2025-07-14T08:53:00Z  Vulpes vulpes  https://biodiversity.org.au/afd/taxa/2869ce8a-8212-46c2-8327-dfb7fabb8296  0bebb889-7a1c-44a6-ac42-33ab06023fa7  Earth Guardians Weekly Feed          PRESENT
+
+[50495 rows x 8 columns]
 </pre></div>
 </div>
 <p>If you are only interested in the scientific name, as well as latitude and longitude, use the <code class="docutils literal notranslate"><span class="pre">fields</span></code> option as follows:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">import galah</span>
 <span class="prompt1">galah.atlas_occurrences(taxa=&quot;Vulpes vulpes&quot;,filters=&quot;year&gt;=2020&quot;,fields=[&quot;scientificName&quot;,&quot;decimalLatitude&quot;,&quot;decimalLongitude&quot;])</span>
 </pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>      scientificName  decimalLatitude  decimalLongitude
-0      Vulpes vulpes       -35.218890        147.874100
-1      Vulpes vulpes       -30.428311        150.316217
-2      Vulpes vulpes       -38.052510        141.345190
-3      Vulpes vulpes       -37.984120        143.749400
-4      Vulpes vulpes       -31.077040        150.090000
+0      Vulpes vulpes       -37.682500        146.365000
+1      Vulpes vulpes       -30.338044        153.053270
+2      Vulpes vulpes       -34.616240        150.673405
+3      Vulpes vulpes       -35.479000        141.927000
+4      Vulpes vulpes       -30.714955        152.965720
 ...              ...              ...               ...
-49787  Vulpes vulpes       -35.857217        148.406382
-49788  Vulpes vulpes       -38.597676        146.293984
-49789  Vulpes vulpes       -34.279632        150.241224
-49790  Vulpes vulpes       -35.293259        149.480354
-49791  Vulpes vulpes       -30.303365        153.095474
+50490  Vulpes vulpes       -35.619921        150.273701
+50491  Vulpes vulpes       -33.832658        149.999258
+50492  Vulpes vulpes       -33.799617        151.170631
+50493  Vulpes vulpes       -34.649641        150.695218
+50494  Vulpes vulpes       -35.306166        148.210198
 
-[49792 rows x 3 columns]
+[50495 rows x 3 columns]
 </pre></div>
 </div>
 <p>Check out other vignettes and the API docs for more information on how to use each of these functions, as well as to

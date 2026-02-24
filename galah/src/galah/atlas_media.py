@@ -400,7 +400,6 @@ def get_image_metadata(
     if atlas in ["Austria"]:
         df_metadata = df_metadata.rename(columns={"imageIdentifier": "image_url"})
 
-    # print(list(new_filtered_media_array["images"]))
     df_metadata = df_metadata.rename(columns={"imageIdentifier": "images"})
     return pd.merge(
         new_filtered_media_array,

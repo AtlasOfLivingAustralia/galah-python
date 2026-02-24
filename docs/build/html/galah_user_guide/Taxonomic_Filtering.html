@@ -487,7 +487,7 @@ single or multiple species.  We can also group the multiple species by their spe
 number of records for each robin.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">atlas_counts</span><span class="p">(</span><span class="n">taxa</span><span class="o">=</span><span class="s2">&quot;Petroica boodang&quot;</span><span class="p">)</span></span>
 </pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>   totalRecords
-0        149452
+0        149525
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">aus_petroica</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Petroica boodang&quot;</span><span class="p">,</span> <span class="s2">&quot;Petroica goodenovii&quot;</span><span class="p">,</span></span>
@@ -498,17 +498,17 @@ number of records for each robin.</p>
 <span class="prompt1"><span class="o">...</span>     <span class="n">group_by</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;species&quot;</span><span class="p">,</span><span class="s2">&quot;vernacularName&quot;</span><span class="p">]</span></span>
 <span class="prompt1"><span class="o">...</span> <span class="p">)</span></span>
 </pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>                  species               vernacularName   count
-0        Petroica boodang        Eastern Scarlet Robin    3951
-1        Petroica boodang                Scarlet Robin  134813
-2        Petroica boodang  South-western Scarlet Robin    2960
-3        Petroica boodang      Tasmanian Scarlet Robin    7728
-4     Petroica goodenovii             Red-capped Robin  132768
-5     Petroica multicolor                Pacific Robin    6887
-6      Petroica phoenicea                  Flame Robin   93059
+0        Petroica boodang        Eastern Scarlet Robin    3954
+1        Petroica boodang                Scarlet Robin  134878
+2        Petroica boodang  South-western Scarlet Robin    2963
+3        Petroica boodang      Tasmanian Scarlet Robin    7730
+4     Petroica goodenovii             Red-capped Robin  132810
+5     Petroica multicolor                Pacific Robin    6889
+6      Petroica phoenicea                  Flame Robin   93130
 7   Petroica rodinogaster          Mainland Pink Robin      72
-8   Petroica rodinogaster                   Pink Robin   18905
-9   Petroica rodinogaster         Tasmanian Pink Robin      87
-10         Petroica rosea                   Rose Robin   69259
+8   Petroica rodinogaster                   Pink Robin   18911
+9   Petroica rodinogaster         Tasmanian Pink Robin      88
+10         Petroica rosea                   Rose Robin   69328
 </pre></div>
 </div>
 <p>This can be useful in searching for paraphyletic or polyphyletic groups.  For example, to get counts of non-chordates:</p>
@@ -520,10 +520,10 @@ number of records for each robin.</p>
 <span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">non_chordates</span><span class="o">.</span><span class="n">head</span><span class="p">()</span></span>
 </pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>           phylum     count
 0  Acanthocephala       486
-1        Annelida    348060
-2      Arthropoda  11506370
-3     Brachiopoda      3122
-4         Bryozoa     33562
+1        Annelida    348674
+2      Arthropoda  11587024
+3     Brachiopoda      3133
+4         Bryozoa     33614
 </pre></div>
 </div>
 </section>
@@ -547,13 +547,13 @@ has been identified e.g.</p>
 1                          Pitta (Erythropitta)    subgenus      6
 2            Pitta (Erythropitta) erythrogaster     species    178
 3   Pitta (Erythropitta) erythrogaster digglesi  subspecies   1044
-4                            Pitta (Pitta) iris     species   7651
-5                       Pitta (Pitta) iris iris  subspecies     96
+4                            Pitta (Pitta) iris     species   7652
+5                       Pitta (Pitta) iris iris  subspecies     98
 6              Pitta (Pitta) iris johnstoneiana  subspecies     29
-7                      Pitta (Pitta) versicolor     species  35851
+7                      Pitta (Pitta) versicolor     species  35883
 8           Pitta (Pitta) versicolor intermedia  subspecies     64
 9            Pitta (Pitta) versicolor simillima  subspecies     57
-10          Pitta (Pitta) versicolor versicolor  subspecies    452
+10          Pitta (Pitta) versicolor versicolor  subspecies    456
 </pre></div>
 </div>
 <p>If, for instance, you have the correct species or subspecies name, then searching for matches against the species
@@ -586,18 +586,18 @@ and two subspecies. This can then be used in <code class="docutils literal notra
 <span class="prompt1"><span class="o">...</span>     <span class="n">expand</span><span class="o">=</span><span class="kc">False</span></span>
 <span class="prompt1"><span class="o">...</span> <span class="p">)</span></span>
 </pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>                                       scientificName  count
-0                      Aquila (Uroaetus) audax fleayi   5270
-1                                  Bettongia gaimardi   2419
+0                      Aquila (Uroaetus) audax fleayi   5275
+1                                  Bettongia gaimardi   2424
 2                        Bettongia gaimardi cuniculus     54
 3                         Bettongia gaimardi gaimardi      9
-4                   Melanodryas (Amaurodryas) vittata  17762
+4                   Melanodryas (Amaurodryas) vittata  17770
 5             Melanodryas (Amaurodryas) vittata kingi     16
 6           Melanodryas (Amaurodryas) vittata vittata     78
-7               Platycercus (Platycercus) caledonicus  62510
+7               Platycercus (Platycercus) caledonicus  62544
 8       Platycercus (Platycercus) caledonicus brownii     24
 9   Platycercus (Platycercus) caledonicus caledonicus     47
 10                                        Sarcophilus    111
-11                               Sarcophilus harrisii  36773
+11                               Sarcophilus harrisii  36797
 12                     Tyto novaehollandiae castanops     86
 </pre></div>
 </div>

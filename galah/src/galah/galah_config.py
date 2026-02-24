@@ -340,8 +340,6 @@ def regenerate_token(token_url=None, refresh_token=None, scope=None, client_id=N
     if client_secret is not None and not "":
         payload["client_secret"] = client_secret
 
-    # print("token_url: {}".format(token_url))
-
     # get the new token
     r = requests.post(token_url, data=payload, timeout=600)
 
