@@ -44,7 +44,7 @@ setup(
         "geopandas",
         "tqdm",
         "oauthlib",
-        "oauth2"
+        "oauth2",
     ],
     include_package_data=True,
     package_data={

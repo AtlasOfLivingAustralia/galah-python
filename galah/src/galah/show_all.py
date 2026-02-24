@@ -254,18 +254,18 @@ def show_all_atlases():
     # data of all the atlases galah currently supports
     data = {
         "atlas": [
-            "Australia", 
-            "Austria", 
-            "Brazil", 
+            "Australia",
+            "Austria",
+            "Brazil",
             "Flanders",
-            "France", 
-            "Global", 
+            "France",
+            "Global",
             "Guatemala",
             "Kew",
             "Portugal",
             "Spain",
             "Sweden",
-            "United Kingdom"
+            "United Kingdom",
         ],
         "institution": [
             "Atlas of Living Australia",
@@ -279,21 +279,21 @@ def show_all_atlases():
             "GBIF Portugal",
             "GBIF Spain",
             "Swedish Biodiversity Data Infrastructure",
-            "National Biodiversity Network"
+            "National Biodiversity Network",
         ],
         "acronym": [
-            "ALA", 
-            "BAO", 
-            "SiBBr", 
+            "ALA",
+            "BAO",
+            "SiBBr",
             "VBP",
             "OpenObs",
-            "GBIF", 
+            "GBIF",
             "SNIBgt",
             "KDP",
             "GBIF.pt",
-            "GBIF.es", 
-            "SDBI", 
-            "NBN"
+            "GBIF.es",
+            "SDBI",
+            "NBN",
         ],
         "url": [
             "https://www.ala.org.au",
@@ -307,7 +307,7 @@ def show_all_atlases():
             "https://www.gbif.pt",
             "https://www.gbif.es",
             "https://biodiversitydata.se",
-            "https://nbn.org.uk"
+            "https://nbn.org.uk",
         ],
     }
 

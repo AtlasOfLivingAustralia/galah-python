@@ -128,7 +128,7 @@ def atlas_media(
     # check for fields
     if fields is None:
         if atlas in ["Kew"]:
-            fields = ["basic", "multimedia", "images"] # try this
+            fields = ["basic", "multimedia", "images"]  # try this
         elif atlas in ["Austria"]:
             fields = ["basic", "multimedia", "image_url"]
         else:

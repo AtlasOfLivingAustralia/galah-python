@@ -1,3 +1,25 @@
+## 0.13.0 (2026-02-24)
+
+### Feat
+
+- **finalising-authentication**: finalising authentication
+
+### Fix
+
+- **updating-some-files-and-docs**: updating some files and docs
+- **tests-and-coverage**: updating tests so they can properly run
+- **fixing-coverage**: fixing coverage
+- **quick-fix-for-atlas_media-and-adding-coverage**: quick fix for atlas_media and adding coverage github actions
+- **README.md**: still trying to get codecov to work
+- **removing-fiels-that-shouldn't-be-there**: remove files that shouldn't be there
+- **authentication-and-vignette**: added a bunch more authentication checks and a vignette on this
+
+### Refactor
+
+- **whole-package**: continuing to refactor code
+- **galah-python-package**: so far, refactored search_all, search_values, show_all, show_values, search_taxa, gitignore, tests, incorporated codespell, isort, black, flake8
+- **show-and-search-functions**: refactoring show and search functions so they are easier to debug
+
 ## 0.12.1 (2025-06-30)
 
 ### Fix
