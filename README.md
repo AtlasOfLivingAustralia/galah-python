@@ -55,19 +55,23 @@ $ pip install galah-python
 
 `galah-python` depends on the following packages:
 
-  *  `numpy`
-  *  `pandas`
-  *  `requests`
-  *  `urllib3`
-  *  `TIME-python`
-  *  `zip-files`
-  *  `configparser`
-  *  `glob2`
-  *  `shutils`
-  *  `setuptools`
-  *  `shapely`
-  *  `pytest`
-  *  `unittest2py3k`
+  * `setuptools`
+  * `numpy`
+  * `pandas`
+  * `requests`
+  * `urllib3`
+  * `zip-files`
+  * `configparser`
+  * `glob2`
+  * `bytesbufio`
+  * `shutils`
+  * `pytest`
+  * `unittest2py3k`
+  * `shapely`
+  * `geopandas`
+  * `tqdm`
+  * `oauthlib`
+  * `oauth2`
 
 ## Usage
 
