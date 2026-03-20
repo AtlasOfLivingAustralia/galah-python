@@ -205,8 +205,12 @@ def galah_group_by(
                     dict_values=dict_values,
                 )
 
-        # get all counts into a dictionary and sort them
+        # get all counts into a dictionary and sort them - check types first
         counts = pd.DataFrame(dict_values).reset_index(drop=True)
+        for column in counts.columns:
+            types = pd.api.types.infer_dtype(counts[column]) #
+            if "mixed" in types:
+                counts[column] = counts[column].astype(str)
         counts.sort_values(by=group_by)
 
         # if user wants total, return total number of rows

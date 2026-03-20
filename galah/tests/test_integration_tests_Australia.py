@@ -683,6 +683,13 @@ def test_atlas_counts_filters_groupby_australia():
     assert filtered_counts.shape[1] > 0
 
 
+def test_atlas_counts_filter_groupby_mixed_values_australia():
+    galah.galah_config(atlas="Australia")
+    filtered_counts = galah.atlas_counts(filters=["dataResourceName=BirdLife Australia, Birdata","COORDINATE_UNCERTAINTY_METERS_INVALID=True"],group_by="raw_coordinateUncertaintyInMeters")
+    assert filtered_counts.shape[0] > 0
+    assert filtered_counts.shape[1] > 0
+
+
 def test_atlas_counts_taxa_filter_australia():
     galah.galah_config(atlas="Australia")
     taxa = "Vulpes vulpes"
