@@ -1,5 +1,5 @@
 galah_python==0.12.1
-geopandas==1.1.1
+geopandas==1.1.2
 matplotlib==3.10.7
 pandas==2.3.3
 Shapely==2.1.2
