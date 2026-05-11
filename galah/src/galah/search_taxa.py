@@ -181,16 +181,19 @@ def search_taxa(taxa=None, identifiers=None, specific_epithet=None, scientific_n
         response_json = response.json()
 
         # check for homonyms and other thingsio
-        check_for_homonyms(atlas=atlas, response_json=response_json, taxa=taxa)
+        # check_for_homonyms(atlas=atlas, response_json=response_json, taxa=taxa)
 
         # check for lists
         response_json = check_for_lists(response_json=response_json, atlas=atlas)
 
         # compile dataframe
-        return_dict = {}
+        # TODO: check to see if there are multiple
+        return_dict = {x: [] for x in SEARCH_TAXA_FIELDS[atlas]}
         for k in SEARCH_TAXA_FIELDS[atlas]:
             if k in response_json:
-                return_dict[k] = [response_json[k]]
+                return_dict[k].append(response_json[k])
+            else:
+                return_dict[k].append("")
 
         # return dataframe
         return pd.DataFrame(return_dict)
@@ -230,9 +233,6 @@ def search_taxa(taxa=None, identifiers=None, specific_epithet=None, scientific_n
             # get the response
             response = requests.request(method=method, url=URL, headers=headers, timeout=timeout)
             response_json = response.json()
-
-            # check for homonyms
-            check_for_homonyms(atlas=atlas, response_json=response_json, taxa=taxa)
 
             # check to see if the taxa was successfully returned
             check_for_success_AU_ES(atlas=atlas, response_json=response_json, taxa=taxa)
@@ -278,8 +278,8 @@ def search_taxa(taxa=None, identifiers=None, specific_epithet=None, scientific_n
 
                 # if raw_data is None, go to next taxa (potentially put error here)
                 # ["Global", "GBIF", "Austria", "UK", "United Kingdom"]
-                if atlas in ["Australia", "ALA"] and not raw_data["success"]:
-                    continue
+                # if atlas in ["Australia", "ALA"] and not raw_data["success"]:
+                #     continue
 
                 # get the data from the raw_data
                 data = {}
@@ -287,6 +287,10 @@ def search_taxa(taxa=None, identifiers=None, specific_epithet=None, scientific_n
                     for k in SEARCH_TAXA_FIELDS[atlas]:
                         if k in raw_data:
                             data[k] = raw_data[k]
+                        elif k == "scientificName":
+                            data[k] = name
+                        else:
+                            data[k] = ""
 
                 # check if the atlas is GBIF and get vernacular names accordingly
                 if atlas in ["Global", "GBIF", "Portugal", "Spain"]:
@@ -307,20 +311,19 @@ def search_taxa(taxa=None, identifiers=None, specific_epithet=None, scientific_n
 ###################################################################################################
 
 
-def generate_list_taxonConceptIDs(taxa=None, scientific_name=None, atlas=None, authenticate=False):
+def generate_list_taxonConceptIDs(
+    taxa=None, scientific_name=None, identifiers=None, specific_epithet=None, atlas=None, authenticate=False
+):
     """Function for getting more than one taxonConceptIDs"""
 
     # get the taxonConceptID for taxa while checking for extant atlas
-    if scientific_name is not None:
-        df_taxa = search_taxa(scientific_name=scientific_name)
-        if df_taxa.empty:
-            return None
-        taxonConceptID = list(df_taxa[ATLAS_KEYWORDS[atlas]])
-    else:
-        df_taxa = search_taxa(taxa=taxa)
-        if df_taxa.empty:
-            return None
-        taxonConceptID = list(df_taxa[ATLAS_KEYWORDS[atlas]])
+    df_taxa = search_taxa(
+        taxa=taxa, scientific_name=scientific_name, identifiers=identifiers, specific_epithet=specific_epithet
+    )
+
+    if df_taxa.empty:
+        return None
+    taxonConceptID = list(df_taxa[ATLAS_KEYWORDS[atlas]])
 
     # add taxon IDs to URL, but first check for GBIF
     if atlas in ["Global", "GBIF"]:
@@ -486,19 +489,6 @@ def get_vernacularName(raw_data=None, atlas=None, timeout=600):
     return vernacular_name
 
 
-def check_for_homonyms(atlas=None, response_json=None, taxa=None):
-    """
-    Check for homonyms in the ALA
-    """
-    # check for homonyms only for Australia
-    if atlas in ["Australia", "ALA"]:
-        if not response_json["success"]:
-            if "homonym" in response_json["issues"]:
-                print("Warning: Search for {} returned multiple taxa due to a homonym issue.".format(taxa))
-                print("Please use the `scientific_name` argument to clarify taxa.")
-                return pd.DataFrame({"search_term": taxa, "issues": response_json["issues"]})
-
-
 def check_for_lists(response_json=None, atlas=None):
     """
     Check if any information returned by atlases is a list; if so, turn these lists into strings
@@ -539,7 +529,7 @@ def check_for_success_AU_ES(atlas=None, response_json=None, taxa=None):
     """
 
     # Check to see if a name wasn't found either in the Australian or Spanish backbone
-    if atlas in ["Australia", "Spain"] and not response_json["success"]:
+    if atlas in ["Australia", "Spain"] and not response_json["success"] and response_json["issues"][0] != "homonym":
         print("We were not able to find {} in the {} backbone.".format(taxa, atlas))
 
 

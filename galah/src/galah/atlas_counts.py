@@ -22,6 +22,8 @@ from .version import __version__
 def atlas_counts(
     taxa=None,
     scientific_name=None,
+    identifiers=None,
+    specific_epithet=None,
     filters=None,
     group_by=None,
     total_group_by=False,
@@ -46,6 +48,12 @@ def atlas_counts(
     ----------
         taxa : string
             one or more scientific names. Use ``galah.search_taxa()`` to search for valid scientific names.
+        identifiers : string / list
+            one or more taxonomic identifiers (such as guid or taxonConceptID) to search.
+        specific_epithet : list
+            search taxonomic levels by using the argument "specificEpithet".
+        scientific_name : dictionary
+            search taxonomic levels by using the argument "scientificName".
         filters : pandas.DataFrame
             filters, in the form ``field`` ``logical`` ``value`` (e.g. ``"year=2021"``)
         group_by : string
@@ -133,6 +141,8 @@ def atlas_counts(
             polygon=polygon,
             bbox=bbox,
             scientific_name=scientific_name,
+            specific_epithet=specific_epithet,
+            identifiers=identifiers,
             simplify_polygon=simplify_polygon,
             authenticate=authenticate,
         )
@@ -224,7 +234,14 @@ def atlas_counts(
         headers = {"User-Agent": "galah-python/{}".format(__version__)}
 
         # add taxa to URL
-        URL = add_taxa(taxa=taxa, atlas=atlas, URL=URL, scientific_name=scientific_name)
+        URL = add_taxa(
+            taxa=taxa,
+            atlas=atlas,
+            URL=URL,
+            scientific_name=scientific_name,
+            identifiers=identifiers,
+            specific_epithet=specific_epithet,
+        )
 
         # return None if there are no valid taxa
         if all(x not in URL for x in ["fq", "taxonKey"]) and all(x is None for x in [filters, polygon, bbox]):

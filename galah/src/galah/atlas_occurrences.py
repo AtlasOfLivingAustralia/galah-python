@@ -32,6 +32,8 @@ from .version import __version__
 def atlas_occurrences(
     taxa=None,
     scientific_name=None,
+    specific_epithet=None,
+    identifiers=None,
     filters=None,
     fields=None,
     use_data_profile=False,
@@ -42,6 +44,7 @@ def atlas_occurrences(
     simplify_polygon=False,
     mint_doi=False,
     doi=None,
+    print_doi=True,
     config_file=None,
     tolerance=0.05,
 ):
@@ -55,6 +58,12 @@ def atlas_occurrences(
     ----------
         taxa : string
             one or more scientific names. Use ``galah.search_taxa()`` to search for valid scientific names.
+        identifiers : string / list
+            one or more taxonomic identifiers (such as guid or taxonConceptID) to search.
+        specific_epithet : list
+            search taxonomic levels by using the argument "specificEpithet".
+        scientific_name : dictionary
+            search taxonomic levels by using the argument "scientificName".
         filters : string / list
             filters, in the form ``field`` ``logical`` ``value`` (e.g. ``"year=2021"``)
         test : logical
@@ -290,11 +299,13 @@ def atlas_occurrences(
                 payload={},
                 atlas=atlas,
                 taxa=taxa,
+                scientific_name=scientific_name,
+                specific_epithet=specific_epithet,
+                identifiers=identifiers,
                 filters=filters,
                 polygon=polygon,
                 bbox=bbox,
                 simplify_polygon=simplify_polygon,
-                scientific_name=scientific_name,
                 authenticate=authenticate,
             )
 
@@ -355,7 +366,14 @@ def atlas_occurrences(
             )
 
             # add any taxon user has specified; returns original URL if taxa and scientific_name is None
-            URL = add_taxa(taxa=taxa, atlas=atlas, URL=URL, scientific_name=scientific_name)
+            URL = add_taxa(
+                taxa=taxa,
+                atlas=atlas,
+                URL=URL,
+                scientific_name=scientific_name,
+                specific_epithet=specific_epithet,
+                identifiers=identifiers,
+            )
 
             if "fq" not in URL and URL[-1] != "?":
                 if taxa is not None:
@@ -369,7 +387,7 @@ def atlas_occurrences(
             )
 
             # check for no filters
-            var_list = [taxa, filters, polygon, bbox, scientific_name]
+            var_list = [taxa, filters, polygon, bbox, scientific_name, specific_epithet, identifiers]
             check_for_no_filters(var_list=var_list, atlas=atlas)
 
             # add fields for the user to download
@@ -421,6 +439,7 @@ def atlas_occurrences(
             verbose=verbose,
             filename="data.csv",
             mint_doi=mint_doi,
+            print_doi=print_doi,
         )
 
 
@@ -455,6 +474,7 @@ def get_data(
     filename=None,
     mint_doi=None,
     timeout=600,
+    print_doi=True,
 ):
     """Returns the data from the download"""
 
@@ -478,8 +498,15 @@ def get_data(
     if mint_doi:
         zip = zipfile.ZipFile(io.BytesIO(data.content))
         text = zip.read("doi.txt").decode().strip()
-        print("DOI:\n")
-        print("\t{}\n".format(text))
+        if print_doi:
+            print("DOI:\n")
+            print("\t{}\n".format(text))
+        else:
+            return text, pd.read_csv(
+                zipfile.ZipFile(io.BytesIO(data.content)).open(filename),
+                sep=ATLAS_OCCURRENCES_DOWNLOAD_ARGUMENTS[atlas]["separator"],
+                low_memory=False,
+            )
 
     # return dataframe
     return pd.read_csv(

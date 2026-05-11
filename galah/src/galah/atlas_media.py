@@ -18,6 +18,8 @@ from .version import __version__
 def atlas_media(
     taxa=None,
     scientific_name=None,
+    identifiers=None,
+    specific_epithet=None,
     filters=None,
     fields=None,
     multimedia=None,
@@ -42,6 +44,12 @@ def atlas_media(
     ----------
         taxa : string / list
             one or more scientific names. Use ``galah.search_taxa()`` to search for valid scientific names.
+        identifiers : string / list
+            one or more taxonomic identifiers (such as guid or taxonConceptID) to search.
+        specific_epithet : list
+            search taxonomic levels by using the argument "specificEpithet".
+        scientific_name : dictionary
+            search taxonomic levels by using the argument "scientificName".
         filters : string / list
             filters, in the form ``field`` ``logical`` ``value`` (e.g. ``"year=2021"``)
         fields : string / list
@@ -152,6 +160,9 @@ def atlas_media(
     # get occurrence data from atlas_occurrences
     dataFrame = atlas_occurrences(
         taxa=taxa,
+        scientific_name=scientific_name,
+        specific_epithet=specific_epithet,
+        identifiers=identifiers,
         filters=filters,
         fields=fields,
         use_data_profile=use_data_profile,
@@ -159,7 +170,6 @@ def atlas_media(
         bbox=bbox,
         tolerance=tolerance,
         simplify_polygon=simplify_polygon,
-        scientific_name=scientific_name,
         mint_doi=mint_doi,
         doi=doi,
         config_file=config_file,

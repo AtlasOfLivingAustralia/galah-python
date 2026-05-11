@@ -162,15 +162,23 @@ def add_spatial_shapes(polygon=None, bbox=None, URL=None, simplify_polygon=False
     return URL
 
 
-def add_taxa(taxa=None, atlas=None, URL=None, scientific_name=None, predicates=None):
+def add_taxa(
+    taxa=None, atlas=None, URL=None, scientific_name=None, predicates=None, specific_epithet=None, identifiers=None
+):
 
-    if all(x is None for x in [taxa, scientific_name]):
+    if all(x is None for x in [taxa, scientific_name, specific_epithet, identifiers]):
         if URL[-1] == "?":
             return URL
         return URL + "?"
 
     # if there is no taxa, assume you will get the total number of records in the ALA
-    taxonConceptID = generate_list_taxonConceptIDs(taxa=taxa, atlas=atlas, scientific_name=scientific_name)
+    taxonConceptID = generate_list_taxonConceptIDs(
+        taxa=taxa,
+        atlas=atlas,
+        scientific_name=scientific_name,
+        specific_epithet=specific_epithet,
+        identifiers=identifiers,
+    )
 
     # return None if there is no taxonConceptID; otherwise,
     if taxonConceptID is None:

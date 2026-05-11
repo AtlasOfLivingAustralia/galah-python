@@ -9,9 +9,11 @@ from .search_taxa import generate_list_taxonConceptIDs
 
 def add_to_payload_ALA(
     payload=None,
-    taxa=None,
     atlas=None,
+    taxa=None,
     scientific_name=None,
+    specific_epithet=None,
+    identifiers=None,
     filters=None,
     polygon=None,
     bbox=None,
@@ -20,14 +22,14 @@ def add_to_payload_ALA(
 ):
     """Function for adding variables to the payload when we cache (post) data to the ALA"""
 
-    if taxa is not None:
-        taxa_list = generate_list_taxonConceptIDs(taxa=taxa, atlas=atlas, authenticate=authenticate)
-        fq = [" OR ".join("lsid:{}".format(id) for id in taxa_list)]
-        payload = add_individual_to_payload(payload=payload, fq=fq)
-
-    if scientific_name is not None:
+    if any(x is not None for x in [taxa, scientific_name, specific_epithet, identifiers]):
         taxa_list = generate_list_taxonConceptIDs(
-            scientific_name=scientific_name, atlas=atlas, authenticate=authenticate
+            taxa=taxa,
+            atlas=atlas,
+            authenticate=authenticate,
+            scientific_name=scientific_name,
+            specific_epithet=specific_epithet,
+            identifiers=identifiers,
         )
         fq = [" OR ".join("lsid:{}".format(id) for id in taxa_list)]
         payload = add_individual_to_payload(payload=payload, fq=fq)

@@ -11,6 +11,7 @@ import shapely
 email_au = "ala4r@ala.org.au"
 
 
+# '''
 # """
 ######################################
 # exceptions and errors
@@ -219,12 +220,6 @@ def test_search_taxa_scientific_name_dict_length_not_equal():
     assert "dictionary" in str(e_info.value)
 
 
-def test_search_taxa_homonyms():
-    galah.galah_config(atlas="Australia")
-    mg = galah.search_taxa(taxa="Morganella")
-    assert mg.empty
-
-
 def test_galah_group_by_more_than_2():
     galah.galah_config(atlas="Australia")
     with pytest.raises(Exception) as e_info:
@@ -265,6 +260,40 @@ def test_check_atlas_not_working():
     with pytest.raises(Exception) as e_info:
         galah.atlas_counts()
     assert "atlas" in str(e_info.value)
+
+
+def test_atlas_counts_no_valid_taxa():
+    galah.galah_config(atlas="Australia")
+    counts = galah.atlas_counts(taxa="Macronycteris commersoni")
+    assert counts == None
+
+
+def test_atlas_counts_no_valid_taxa_output(capfd):
+    galah.galah_config(atlas="Australia")
+    counts = galah.atlas_counts(taxa="Macronycteris commersoni")
+    out, err = capfd.readouterr()
+    assert "We were not" in out
+
+
+def test_atlas_occurrences_no_valid_taxa():
+    galah.galah_config(atlas="Australia", email=email_au)
+    occurrences = galah.atlas_occurrences(
+        taxa="Macronycteris commersoni",
+        filters=["cl22=Tasmania"],
+        fields=["scientificName", "decimalLatitude", "decimalLongitude"],
+    )
+    assert occurrences == None
+
+
+def test_atlas_occurrences_no_valid_taxa_output(capfd):
+    galah.galah_config(atlas="Australia", email=email_au)
+    occurrences = galah.atlas_occurrences(
+        taxa="Macronycteris commersoni",
+        filters=["cl22=Tasmania"],
+        fields=["scientificName", "decimalLatitude", "decimalLongitude"],
+    )
+    out, err = capfd.readouterr()
+    assert "We were not" in out
 
 
 ######################################
@@ -600,9 +629,21 @@ def test_search_taxa_australia_scientific_name():
     assert output.shape[0] > 0
 
 
+def test_search_taxa_australia_homonyms():
+    galah.galah_config(atlas="Australia")
+    output = galah.search_taxa(taxa="Morganella")
+    assert output.shape[0] > 0
+
+
 ######################################
 # atlas_counts
 ######################################
+def test_atlas_counts_galah_config_custom_file():
+    galah.galah_config(atlas="Australia", email=email_au, config_file="./temp_config.ini", authenticate=False)
+    counts = galah.atlas_counts(config_file="./temp_config.ini")
+    assert counts["totalRecords"][0] > 0
+
+
 def test_atlas_counts_australia_scientific_name():
     galah.galah_config(atlas="Australia")
     output = galah.atlas_counts(
@@ -685,7 +726,10 @@ def test_atlas_counts_filters_groupby_australia():
 
 def test_atlas_counts_filter_groupby_mixed_values_australia():
     galah.galah_config(atlas="Australia")
-    filtered_counts = galah.atlas_counts(filters=["dataResourceName=BirdLife Australia, Birdata","COORDINATE_UNCERTAINTY_METERS_INVALID=True"],group_by="raw_coordinateUncertaintyInMeters")
+    filtered_counts = galah.atlas_counts(
+        filters=["dataResourceName=BirdLife Australia, Birdata", "COORDINATE_UNCERTAINTY_METERS_INVALID=True"],
+        group_by="raw_coordinateUncertaintyInMeters",
+    )
     assert filtered_counts.shape[0] > 0
     assert filtered_counts.shape[1] > 0
 
@@ -1033,9 +1077,35 @@ def tests_atlas_counts_geolocate_polygon_simplify_single_shape():
     assert counts["totalRecords"][0] > 0
 
 
+def test_atlas_counts_australia_specific_epithet():
+    galah.galah_config(atlas="Australia")
+    output = galah.atlas_counts(
+        specific_epithet={
+            "class": "aves",
+            "family": "pardalotidae",
+            "genus": "pardalotus",
+            "specificEpithet": "punctatus",
+        }
+    )
+    assert output.shape[0] > 0
+
+
+def test_atlas_counts_australia_identifiers():
+    galah.galah_config(atlas="Australia")
+    output = galah.atlas_counts(identifiers="https://id.biodiversity.org.au/node/apni/2914510")
+    assert output.shape[0] > 0
+
+
 ######################################
 # atlas_species
 ######################################
+def test_atlas_species_Australia_species_australia_galah_config_custom_file():
+    galah.galah_config(atlas="Australia", email=email_au, config_file="./temp_config.ini", authenticate=False)
+    taxa = "Heleioporus"
+    species_table = galah.atlas_species(taxa=taxa, config_file="./temp_config.ini")
+    assert species_table.shape[0] > 0
+
+
 def test_atlas_species_Australia_species_australia():
     galah.galah_config(atlas="Australia", email=email_au)
     taxa = "Heleioporus"
@@ -1118,9 +1188,34 @@ def test_atlas_species_Australia_filter_notaxa():
     assert filtered_species_table.shape[0] > 0
 
 
+def test_atlas_species_australia_specific_epithet():
+    galah.galah_config(atlas="Australia")
+    output = galah.atlas_species(
+        specific_epithet={
+            "class": "aves",
+            "family": "pardalotidae",
+            "genus": "pardalotus",
+            "specificEpithet": "punctatus",
+        }
+    )
+    assert output.shape[0] > 0
+
+
+def test_atlas_species_australia_identifiers():
+    galah.galah_config(atlas="Australia")
+    output = galah.atlas_species(identifiers="https://id.biodiversity.org.au/node/apni/2914510")
+    assert output.shape[0] > 0
+
+
 ######################################
 # atlas_occurrences
 ######################################
+def test_atlas_occurrences_galah_config_custom_file():
+    galah.galah_config(atlas="Australia", email=email_au, config_file="./temp_config.ini", authenticate=False)
+    occurrences = galah.atlas_occurrences(taxa="Vulpes vulpes", config_file="./temp_config.ini")
+    assert occurrences.shape[0] > 0
+
+
 def test_atlas_occurrences_taxa_australia():
     galah.galah_config(atlas="Australia", email=email_au)
     occurrences = galah.atlas_occurrences(taxa="Vulpes vulpes")
@@ -1217,10 +1312,36 @@ def test_atlas_occurrences_mint_doi():
     assert occurrences.shape[0] > 0
 
 
+def test_atlas_occurrences_mint_doi_print_false():
+    galah.galah_config(atlas="Australia", email=email_au)  # ala4r@ala.org.au
+    doi,occurrences = galah.atlas_occurrences(taxa="Vulpes vulpes", mint_doi=True,print_doi=False)
+    assert isinstance(doi,str)
+    assert occurrences.shape[0] > 0
+
+
 def test_atlas_occurrences_doi():
     galah.galah_config(atlas="Australia", email=email_au)  # ala4r@ala.org.au
     occurrences = galah.atlas_occurrences(doi="https://doi.org/10.26197/ala.e413b946-8959-41f8-9ae9-897d86029844")
     assert occurrences.shape[0] > 0
+
+
+def test_atlas_occurrences_australia_specific_epithet():
+    galah.galah_config(atlas="Australia")
+    output = galah.atlas_occurrences(
+        specific_epithet={
+            "class": "aves",
+            "family": "pardalotidae",
+            "genus": "pardalotus",
+            "specificEpithet": "punctatus",
+        }
+    )
+    assert output.shape[0] > 0
+
+
+def test_atlas_occurrences_australia_identifiers():
+    galah.galah_config(atlas="Australia")
+    output = galah.atlas_occurrences(identifiers="https://id.biodiversity.org.au/node/apni/2914510")
+    assert output.shape[0] > 0
 
 
 ######################################
@@ -1275,50 +1396,23 @@ def test_atlas_media_filters_multimedia_collect_path_australia():
     assert len(files) > 0
 
 
-def test_atlas_counts_no_valid_taxa():
+def test_atlas_media_australia_specific_epithet():
     galah.galah_config(atlas="Australia")
-    counts = galah.atlas_counts(taxa="Macronycteris commersoni")
-    assert counts == None
+    output = galah.atlas_media(
+        specific_epithet={
+            "class": "aves",
+            "family": "pardalotidae",
+            "genus": "pardalotus",
+            "specificEpithet": "punctatus",
+        }
+    )
+    assert output.shape[0] > 0
 
 
-def test_atlas_counts_no_valid_taxa_output(capfd):
+def test_atlas_media_australia_identifiers():
     galah.galah_config(atlas="Australia")
-    counts = galah.atlas_counts(taxa="Macronycteris commersoni")
-    out, err = capfd.readouterr()
-    assert "We were not" in out
-
-
-def test_atlas_occurrences_no_valid_taxa():
-    galah.galah_config(atlas="Australia", email=email_au)
-    occurrences = galah.atlas_occurrences(
-        taxa="Macronycteris commersoni",
-        filters=["cl22=Tasmania"],
-        fields=["scientificName", "decimalLatitude", "decimalLongitude"],
-    )
-    assert occurrences == None
-
-
-def test_atlas_occurrences_no_valid_taxa_output(capfd):
-    galah.galah_config(atlas="Australia", email=email_au)
-    occurrences = galah.atlas_occurrences(
-        taxa="Macronycteris commersoni",
-        filters=["cl22=Tasmania"],
-        fields=["scientificName", "decimalLatitude", "decimalLongitude"],
-    )
-    out, err = capfd.readouterr()
-    assert "We were not" in out
-
-
-def test_atlas_counts_galah_config_custom_file():
-    galah.galah_config(atlas="Australia", email=email_au, config_file="./temp_config.ini", authenticate=False)
-    counts = galah.atlas_counts(config_file="./temp_config.ini")
-    assert counts["totalRecords"][0] > 0
-
-
-def test_atlas_occurrences_galah_config_custom_file():
-    galah.galah_config(atlas="Australia", email=email_au, config_file="./temp_config.ini", authenticate=False)
-    occurrences = galah.atlas_occurrences(taxa="Vulpes vulpes", config_file="./temp_config.ini")
-    assert occurrences.shape[0] > 0
+    output = galah.atlas_media(identifiers="https://id.biodiversity.org.au/node/apni/2914510")
+    assert output.shape[0] > 0
 
 
 def test_atlas_media_galah_config_custom_file():
@@ -1332,11 +1426,5 @@ def test_atlas_media_galah_config_custom_file():
     assert output.shape[0] > 0
 
 
-def test_atlas_species_Australia_species_australia_galah_config_custom_file():
-    galah.galah_config(atlas="Australia", email=email_au, config_file="./temp_config.ini", authenticate=False)
-    taxa = "Heleioporus"
-    species_table = galah.atlas_species(taxa=taxa, config_file="./temp_config.ini")
-    assert species_table.shape[0] > 0
-
-
+# '''
 # """

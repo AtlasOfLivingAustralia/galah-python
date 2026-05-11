@@ -17,6 +17,8 @@ from .version import __version__
 def atlas_species(
     taxa=None,
     scientific_name=None,
+    identifiers=None,
+    specific_epithet=None,
     rank="species",
     group_by=None,  # taxonConceptID
     filters=None,
@@ -28,7 +30,6 @@ def atlas_species(
     simplify_polygon=False,
     config_file=None,
     tolerance=None,
-    mint_doi=None,
 ):
     """
     While there are reasons why users may need to check every record meeting their search criteria (i.e. using ``galah.atlas_occurrences()``),
@@ -39,6 +40,12 @@ def atlas_species(
     ----------
         taxa : string / list
             one or more scientific names. Use ``galah.search_taxa()`` to search for valid scientific names.
+        identifiers : string / list
+            one or more taxonomic identifiers (such as guid or taxonConceptID) to search.
+        specific_epithet : list
+            search taxonomic levels by using the argument "specificEpithet".
+        scientific_name : dictionary
+            search taxonomic levels by using the argument "scientificName".
         rank : string
             the rank you ultimately want to get names for, i.e. "genus" or "species".  Default is ``species``.
         filters : string
@@ -100,6 +107,7 @@ def atlas_species(
     filters = check_string_list(filters, "filters")
     taxa = check_string_list(taxa, "taxa")
 
+    # check for any possible errors
     atlas_species_error_checks(rank=rank, atlas=atlas)
 
     # get the ID of the rank to use to facet the data
@@ -131,6 +139,7 @@ def atlas_species(
         # if rank is not species, only select for rank user has specified
         if rank != "species":
 
+            # determine the rank below the specified rank
             rank_below = species_fields[index + 1]
 
             # only select ranks user is interested in
@@ -155,11 +164,13 @@ def atlas_species(
             payload={},
             atlas=atlas,
             taxa=taxa,
+            specific_epithet=specific_epithet,
+            identifiers=identifiers,
+            scientific_name=scientific_name,
             filters=filters,
             polygon=polygon,
             bbox=bbox,
             simplify_polygon=simplify_polygon,
-            scientific_name=scientific_name,
             authenticate=authenticate,
         )
 
@@ -187,7 +198,14 @@ def atlas_species(
         baseURL, method = get_api_url(column1="api_name", column1value="records_species", config_file=config_file)
 
         # add information to URL
-        URL = add_taxa(taxa=taxa, atlas=atlas, URL=baseURL, scientific_name=scientific_name)
+        URL = add_taxa(
+            taxa=taxa,
+            atlas=atlas,
+            URL=baseURL,
+            scientific_name=scientific_name,
+            specific_epithet=specific_epithet,
+            identifiers=identifiers,
+        )
         URL = add_filters(filters=filters, atlas=atlas, URL=URL)
         URL = group_by_atlas_species(group_by=group_by, rankID=rankID, URL=URL)
         URL = add_spatial_shapes(
@@ -205,10 +223,6 @@ def atlas_species(
 
     # set lookup=True to get all species data
     URL += "&lookup=True"
-
-    # mint a DOI if requested
-    if mint_doi:
-        URL += "&mintDoi=TRUE&"
 
     # add last things to URL
     if atlas in ["Australia", "ALA"]:
