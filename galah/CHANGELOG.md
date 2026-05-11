@@ -1,3 +1,10 @@
+## 0.13.1 (2026-05-11)
+
+### Fix
+
+- **specific_epithet-and-identifiers**: added specific_epithet and identifiers to atlas_media, atlas_occurrences and atlas_species; added option to store DOI in variable
+- **galah_group_by**: fixed a bug whereby if strings and numeric values were to come up in group_by, there would be an error - these are now converted to strings for easy display
+
 ## 0.13.0 (2026-02-24)
 
 ### Feat
