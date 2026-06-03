@@ -1,5 +1,6 @@
 import itertools
 import re
+import urllib
 from functools import reduce
 
 from .common_dictionaries import GBIF_PREDICATE_DEFINITIONS
@@ -88,16 +89,16 @@ def galah_filter(f, occurrencesGBIF=False, authenticate=False):
 
         # all return strings
         return_strings_GBIF = {
-            "=": "{}={}".format(parts[0], parts[1].replace(" ", "%20")),
-            "==": "{}={}".format(parts[0], parts[1].replace(" ", "%20")),
-            ">=": "{}={}%2C%2A".format(parts[0], parts[1].replace(" ", "%20")),
-            "=>": "{}={}%2C%2A".format(parts[0], parts[1].replace(" ", "%20")),
+            "=": "{}={}".format(parts[0], urllib.parse.quote(parts[1])),
+            "==": "{}={}".format(parts[0], urllib.parse.quote(parts[1])),
+            ">=": "{}={}%2C%2A".format(parts[0], urllib.parse.quote(parts[1])),
+            "=>": "{}={}%2C%2A".format(parts[0], urllib.parse.quote(parts[1])),
             ">": "%28{}:%5B{}%20TO%20*%5d%20AND%20-%28{}%3A%22{}%22%29%29".format(
                 parts[0], parts[1], parts[0], parts[1]
             ),
             "<": '%28{}%3A%5B*%20TO%20{}%5d%20AND%20-%28{}%3A"{}"%29%29'.format(parts[0], parts[1], parts[0], parts[1]),
-            "!=": "{}=%2A%2C{}".format(parts[0], parts[1].replace(" ", "%20")),
-            "=!": "{}=%2A%2C{}".format(parts[0], parts[1].replace(" ", "%20")),
+            "!=": "{}=%2A%2C{}".format(parts[0], urllib.parse.quote(parts[1])),
+            "=!": "{}=%2A%2C{}".format(parts[0], urllib.parse.quote(parts[1])),
         }
 
         # check for any logical expressions that are not included

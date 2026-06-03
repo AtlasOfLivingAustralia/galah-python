@@ -29,6 +29,7 @@ def galah_config(
     authenticate=None,
     auth_filename=None,
     auth_clear=None,
+    qgis=None,
 ):
     """
     The galah package supports large data downloads, and also interfaces with the ALA which requires that users of some
@@ -100,6 +101,7 @@ def galah_config(
             "refresh_token": "",
             "scopes": "",
             "expires_at": "",
+            "qgis": "False",
         }
 
     # check for global atlas and make sure it is named correctly
@@ -220,6 +222,7 @@ def galah_config(
             "refresh_token": configParser["galahSettings"]["refresh_token"],
             "scopes": configParser["galahSettings"]["scopes"],
             "expires_at": configParser["galahSettings"]["expires_at"],
+            "qgis": qgis,
         }
 
         # update the field to change
@@ -257,6 +260,7 @@ def get_config_filename(config_file=None):
 
 
 def check_atlas_name(atlas=None):
+
     # set the global name
     if atlas == "GBIF":
         return "Global"
@@ -270,29 +274,19 @@ def check_atlas_name(atlas=None):
 
 
 def readConfig(config_file=None):
-    """
-    The galah package supports large data downloads, and also interfaces with the ALA which requires that users of some
-    services provide a registered email address and reason for downloading data. The ``galah_config()`` function provides a way
-    to manage these issues as simply as possible.
 
-    Parameters
-    ----------
-        config_file : str
-            Name of your configuration file.  Default is `config.ini`.
-
-    Returns
-    -------
-        Dictionary containing configuration file information.
-    """
+    # make empty config file
     configFile = configparser.ConfigParser()
+
+    # read default name of config file if none is provided
     if config_file is None:
         config_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), "config.ini")
+
+    # read and return the configuration file
     configFile.read(config_file)
     return configFile
 
 
-# readConfig
-# get the URL for the API we want to ping for the
 def get_api_url(column1=None, column1value=None, column2=None, column2value=None, config_file=None):
 
     # first, get specific atlas
@@ -327,9 +321,9 @@ def get_api_url(column1=None, column1value=None, column2=None, column2value=None
 
 
 def is_access_token_expired(expires_at=None):
-    """
-    Check if your JWT token is expired
-    """
+
+    # return True or False depending on whether or not the current time is more than the time the
+    # token expires at
     return time.time() > expires_at
 
 
@@ -337,7 +331,7 @@ def regenerate_token(token_url=None, refresh_token=None, scope=None, client_id=N
 
     # set up payload
     payload = {"refresh_token": refresh_token, "grant_type": "refresh_token", "scope": scope, "client_id": client_id}
-    if client_secret is not None and not "":
+    if client_secret not in [None, ""]:
         payload["client_secret"] = client_secret
 
     # get the new token
@@ -352,7 +346,11 @@ def regenerate_token(token_url=None, refresh_token=None, scope=None, client_id=N
 
 
 def check_for_clearing_auth_info(configParser=None, auth_clear=False):
+
+    # clear all authentication information
     if auth_clear:
         for x in ["client_id", "refresh_token", "access_token", "scopes", "expires_at"]:
             configParser["galahSettings"][x] = ""
+
+    # return the empty configuration
     return configParser

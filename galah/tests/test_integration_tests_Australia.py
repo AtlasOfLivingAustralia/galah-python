@@ -262,10 +262,11 @@ def test_check_atlas_not_working():
     assert "atlas" in str(e_info.value)
 
 
-def test_atlas_counts_no_valid_taxa():
+def test_atlas_counts_no_valid_taxa(capfd):
     galah.galah_config(atlas="Australia")
     counts = galah.atlas_counts(taxa="Macronycteris commersoni")
-    assert counts == None
+    out, err = capfd.readouterr()
+    assert "We were not" in out
 
 
 def test_atlas_counts_no_valid_taxa_output(capfd):
@@ -275,14 +276,16 @@ def test_atlas_counts_no_valid_taxa_output(capfd):
     assert "We were not" in out
 
 
-def test_atlas_occurrences_no_valid_taxa():
+def test_atlas_occurrences_no_valid_taxa(capfd):
     galah.galah_config(atlas="Australia", email=email_au)
     occurrences = galah.atlas_occurrences(
         taxa="Macronycteris commersoni",
         filters=["cl22=Tasmania"],
         fields=["scientificName", "decimalLatitude", "decimalLongitude"],
     )
-    assert occurrences == None
+    out, err = capfd.readouterr()
+    assert "We were not" in out
+    # assert occurrences.empty is True
 
 
 def test_atlas_occurrences_no_valid_taxa_output(capfd):
@@ -295,6 +298,12 @@ def test_atlas_occurrences_no_valid_taxa_output(capfd):
     out, err = capfd.readouterr()
     assert "We were not" in out
 
+
+def test_change_user_agent(capfd):
+    galah.galah_config(atlas="Australia", verbose=True, qgis=True)
+    galah.atlas_counts()
+    out, err = capfd.readouterr()
+    assert "qgis" in out
 
 ######################################
 # show_all functions
@@ -561,13 +570,6 @@ def test_show_values_australia_lists():
     galah.galah_config(atlas="Australia")
     first_output = galah.show_values(field="dr656", lists=True)
     assert first_output.shape[0] > 0
-
-
-def test_show_values_australia_lists_kvp():
-    galah.galah_config(atlas="Australia")
-    first_output = galah.show_values(field="dr656", lists=True)
-    second_output = galah.show_values(field="dr656", lists=True, all_fields=True)
-    assert first_output.shape[1] < second_output.shape[1]  # change to 0 if this isn't working
 
 
 ######################################

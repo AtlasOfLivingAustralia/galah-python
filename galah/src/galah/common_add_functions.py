@@ -6,7 +6,7 @@ from .galah_geolocate import galah_geolocate
 from .search_taxa import generate_list_taxonConceptIDs, search_taxa
 
 
-def add_extras_to_URL(add_email=True, use_data_profile=False, data_profile_list=None, atlas=None, config_file=None):
+def add_extras_to_URL(add_email=True, use_data_profile=False, data_profile_list=None, config_file=None):
 
     # get your configs
     configs = readConfig(config_file=config_file)
@@ -73,9 +73,11 @@ def add_filters(URL=None, atlas=None, filters=None, authenticate=False):
         # return URL for GBIF
         return URL
 
-    # check to see if taxa are already in the URL - if not, add fq
-    if "fq=" not in URL:
-        URL += "fq="  # was
+    # check to see if taxa are already in the URL - if not, add q or fq
+    if "q=" not in URL:
+        URL += "q="
+    elif "fq=" not in URL:
+        URL += "&fq="  # was
     else:
         URL += "%20AND%20"  # add this; test this
     URL += "%28"

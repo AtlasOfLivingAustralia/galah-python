@@ -9,7 +9,16 @@ from tqdm import tqdm
 
 from .atlas_occurrences import atlas_occurrences
 from .common_checks import check_atlas, check_for_non_working_atlases, check_string_list
-from .common_dictionaries import FIELD_SELECTIONS, IMAGE_COLUMN_NAMES, IMAGE_MERGE_NAMES, IMAGE_NAMES, MM_EXTENSIONS
+from .common_dictionaries import (
+    FIELD_SELECTIONS,
+    IMAGE_COLUMN_NAMES,
+    IMAGE_MERGE_NAMES,
+    IMAGE_NAMES,
+    MM_EXTENSIONS,
+    USER_AGENT,
+    USER_AGENT_QGIS,
+    ATLAS_SELECTIONS
+)
 from .common_functions import print_if_verbose, set_bool_argument
 from .galah_config import get_api_url, readConfig
 from .version import __version__
@@ -116,6 +125,7 @@ def atlas_media(
     authenticate = set_bool_argument(arg=configs["galahSettings"]["authenticate"], name_arg="authenticate")
     access_token = configs["galahSettings"]["access_token"]
     client_id = configs["galahSettings"]["client_id"]
+    qgis = set_bool_argument(arg=configs["galahSettings"]["qgis"], name_arg="qgis")
 
     # check to see if atlas is in list of non-functioning atlases
     check_for_non_working_atlases(atlas=atlas)
@@ -126,31 +136,51 @@ def atlas_media(
     # check the type of filters
     filters = check_string_list(filters, "filters")
 
+    # set user agent
+    user_agent = USER_AGENT
+    if qgis:
+        user_agent = USER_AGENT_QGIS
+
     # get headers
     headers = {
-        "User-Agent": "galah-python/{}".format(__version__),
+        "User-Agent": user_agent,
         "Content-Type": "application/json",
         "accept": "application/json",
     }
 
     # check for fields
     if fields is None:
-        if atlas in ["Kew"]:
-            fields = ["basic", "multimedia", "images"]  # try this
-        elif atlas in ["Austria"]:
-            fields = ["basic", "multimedia", "image_url"]
+
+        # check for atlas-specific fields
+        if isinstance(ATLAS_SELECTIONS[atlas],str):
+            fields = [ATLAS_SELECTIONS[atlas]]
         else:
-            fields = ["basic", "media"]
+            fields = ATLAS_SELECTIONS[atlas]
+
+        # check for this cause sometimes it happens with Austria
+        for x in ["multimedia","image_url","images","video","sounds"]:
+            if x in fields:
+                fields.remove(x)
+            
+        # add specific atlas fields for images
+        if atlas in ["Kew"]:
+            fields += ["multimedia", "images"]  # try this
+        elif atlas in ["Austria"]:
+            fields += ["multimedia", "image_url"]
+        else:
+            fields += ["media"]
 
     # get multimedia fields
     multimedia = check_multimedia(multimedia=multimedia, atlas=atlas)
 
+    # add specific fields if the word "basic" is in the fields variable
     if "basic" in fields:
         fields.remove("basic")
         fields += FIELD_SELECTIONS["basic"]
         if atlas in ["Austria", "Brazil"]:
             fields = ["data_resource" if x == "dataResourceName" else x for x in fields]
 
+    # add specific fields if the word "media" is in the fields variable
     if "media" in fields:
         fields.remove("media")
         fields += FIELD_SELECTIONS["media"]
@@ -180,6 +210,9 @@ def atlas_media(
             "There are no occurrences or media associated with your query.  Please try your query on atlas_counts before trying it again on atlas_media."
         )
 
+    # set this variable to let the user know there is no media associated with their query
+    no_images = True
+
     # loop through all possible media
     for media in multimedia:
 
@@ -207,6 +240,8 @@ def atlas_media(
 
         # check to see which occurrence entries have
         if not media_array.empty:
+
+            no_images = False
 
             # filter by NaNs
             filtered_media_array = media_array.loc[
@@ -270,7 +305,9 @@ def atlas_media(
 
             # return pandas dataframe with metadata
             return media_metadata_df
-
+    
+    if no_images:
+        print("We could not find any media associated with your query.\n")
 
 def write_image_to_file(image=None, headers=None, path=None, thumbnail=False, timeout=600, atlas=None):
 
