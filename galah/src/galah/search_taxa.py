@@ -19,6 +19,8 @@ from .common_dictionaries import (
     SEARCH_TAXA_FIELDS,
     TAXONCONCEPT_NAMES,
     VERNACULAR_NAMES,
+    USER_AGENT,
+    USER_AGENT_QGIS,
 )
 from .common_functions import print_if_verbose, set_bool_argument
 from .galah_config import get_api_url, readConfig
@@ -98,9 +100,6 @@ def search_taxa(taxa=None, identifiers=None, specific_epithet=None, scientific_n
     # get configuration
     configs = readConfig(config_file=config_file)
 
-    # set header
-    headers = {"User-Agent": "galah-python/{}".format(__version__)}
-
     # get args from config
     atlas = configs["galahSettings"]["atlas"]
     verbose = set_bool_argument(arg=configs["galahSettings"]["verbose"], name_arg="verbose")
@@ -108,11 +107,20 @@ def search_taxa(taxa=None, identifiers=None, specific_epithet=None, scientific_n
     authenticate = set_bool_argument(arg=configs["galahSettings"]["authenticate"], name_arg="authenticate")
     access_token = configs["galahSettings"]["access_token"]
     client_id = configs["galahSettings"]["client_id"]
+    qgis = set_bool_argument(arg=configs["galahSettings"]["qgis"], name_arg="qgis")
 
     # run checks to see if atlas is valid, as well as the options with it
     check_for_non_working_atlases(atlas=atlas)
     check_atlas(atlas=atlas, function="search_taxa")
     check_atlas_authenticate(atlas=atlas, authenticate=authenticate)
+
+    # set user agent
+    user_agent = USER_AGENT
+    if qgis:
+        user_agent = USER_AGENT_QGIS
+
+    # set header
+    headers = {"User-Agent": user_agent}
 
     # ---------------------------------------------------------------------------------------------
     # Put arguments in specific order to check which argument the user has specified
@@ -170,30 +178,80 @@ def search_taxa(taxa=None, identifiers=None, specific_epithet=None, scientific_n
         # check to see if arguments are correct
         check_taxa_specifics(dict_of_specifics=all_args_specifics[index])
 
-        # get URL and method
-        URL, method = create_search_taxa_url(dict_of_specifics=all_args_specifics[index], config_file=config_file)
-
-        # check to see if the user wants the URL for querying
-        print_if_verbose(verbose=verbose, headers=headers, URL=URL, method=method)
-
-        # get the data from API
-        response = requests.request(method=method, url=URL, headers=headers, timeout=timeout)
-        response_json = response.json()
-
-        # check for homonyms and other thingsio
-        # check_for_homonyms(atlas=atlas, response_json=response_json, taxa=taxa)
-
-        # check for lists
-        response_json = check_for_lists(response_json=response_json, atlas=atlas)
-
-        # compile dataframe
-        # TODO: check to see if there are multiple
+        # initialise dictionary to return as a data frame
         return_dict = {x: [] for x in SEARCH_TAXA_FIELDS[atlas]}
-        for k in SEARCH_TAXA_FIELDS[atlas]:
-            if k in response_json:
-                return_dict[k].append(response_json[k])
-            else:
-                return_dict[k].append("")
+
+        # if identifiers are specified, only create one URL (potentially create exception with lots of them)
+        if "identifiers" in all_args_specifics[index]:
+
+            # check if identifier is str, if it is, convert to list
+            if isinstance(all_args_specifics[index]["identifiers"], str):
+                all_args_specifics[index]["identifiers"] = [all_args_specifics[index]["identifiers"]]
+
+            # loop over all identifiers
+            for i,id in enumerate(all_args_specifics[index]["identifiers"]):
+
+                if i == 0:
+                    first = True
+                else:
+                    first = False
+
+                # get URL and method
+                URL, method = create_url_identifiers(
+                    identifier=id, dict_of_specifics=all_args_specifics[index], config_file=config_file
+                )
+
+                # add to return dictionary for querying
+                return_dict = add_to_return_dict(
+                    return_dict=return_dict,
+                    URL=URL,
+                    method=method,
+                    verbose=verbose,
+                    headers=headers,
+                    timeout=timeout,
+                    atlas=atlas,
+                )
+
+        else:
+
+            # get the key that is either scientific_name or specific_epithet
+            sn_sp_key = [
+                x
+                for x in list(all_args_specifics[index].keys())
+                if x not in ["column1", "column1value", "column2", "column2value"]
+            ][0]
+
+            # get the base URL for all these queries
+            baseURL, method = get_api_url(
+                column1=all_args_specifics[index]["column1"],
+                column1value=all_args_specifics[index]["column1value"],
+                column2=all_args_specifics[index]["column2"],
+                column2value=all_args_specifics[index]["column2value"],
+                config_file=config_file,
+            )
+
+            # actual names
+            names_keys = list(all_args_specifics[index][sn_sp_key].keys())
+
+            # loop over all names
+            for i in range(len(all_args_specifics[index][sn_sp_key][names_keys[0]])):
+
+                # create a temporary dictionary with only one entry in it
+                temp_dict = {key: all_args_specifics[index][sn_sp_key][key][i] for key in names_keys}
+
+                # get URL and method
+                URL = process_dicts_to_URLs(names_dict=temp_dict, baseURL=baseURL)
+
+                # add to return dictionary for querying
+                return_dict = add_to_return_dict(
+                    return_dict=return_dict,
+                    URL=URL,
+                    method=method,
+                    verbose=verbose,
+                    headers=headers,
+                    timeout=timeout,
+                    atlas=atlas,
+                )
 
         # return dataframe
         return pd.DataFrame(return_dict)
@@ -209,7 +267,14 @@ def search_taxa(taxa=None, identifiers=None, specific_epithet=None, scientific_n
         # if the person has authentication set to True, do more efficient query
         if authenticate:
 
-            return authenticate_bulk_query(taxa=taxa, access_token=access_token, client_id=client_id, verbose=verbose)
+            return authenticate_bulk_query(
+                taxa=taxa,
+                access_token=access_token,
+                client_id=client_id,
+                verbose=verbose,
+                user_agent=user_agent,
+                timeout=timeout,
+            )
 
         # loop over all taxa (as doing bulk query requires authentication)
         for name in taxa:
@@ -225,7 +290,7 @@ def search_taxa(taxa=None, identifiers=None, specific_epithet=None, scientific_n
 
             # create URL, get result and concatenate result onto dataFrame
             # make sure all the atlases are checked
-            URL = baseURL.replace("{name}", "%20".join(name.split(" ")))
+            URL = baseURL.replace("{name}", urllib.parse.quote(name))
 
             # print URLs if things are verbose
             print_if_verbose(verbose=verbose, headers=headers, URL=URL, method=method)
@@ -233,7 +298,7 @@ def search_taxa(taxa=None, identifiers=None, specific_epithet=None, scientific_n
             # get the response
             response = requests.request(method=method, url=URL, headers=headers, timeout=timeout)
             response_json = response.json()
-
+            
             # check to see if the taxa was successfully returned
             check_for_success_AU_ES(atlas=atlas, response_json=response_json, taxa=taxa)
 
@@ -256,19 +321,34 @@ def search_taxa(taxa=None, identifiers=None, specific_epithet=None, scientific_n
             }
 
             if atlas in ["Flanders"]:
-                data = {}
-                if "key" in response_json["usage"]:
-                    data["taxonConceptID"] = response_json["usage"]["key"]
-                if "name" in response_json["usage"]:
-                    data["scientificName"] = response_json["usage"]["name"]
-                if "authorship" in response_json["usage"]:
-                    data["scientificNameAuthorship"] = response_json["usage"]["authorship"]
-                if "rank" in response_json["usage"]:
-                    data["taxonRank"] = response_json["usage"]["rank"]
-                for entry in response_json["classification"]:
-                    rank = entry["rank"].lower().capitalize()
-                    data[rank] = entry["name"]
 
+                # initialise the data dictionary
+                data = {x: [] for x in SEARCH_TAXA_FIELDS[atlas]}
+
+                # account for different naming in Flanders
+                key_translation = {
+                    "key": "taxonConceptID",
+                    "name": "scientificName",
+                    "authorship": "scientificNameAuthorship",
+                    "rank": "taxonRank",
+                    "canonicalName": "canonicalName"
+                }
+
+                # loop over translated keys
+                for key in key_translation.keys():
+                    if key in response_json["usage"]:
+                        data[key_translation[key]].append(response_json["usage"][key])
+                    else:
+                        data[key_translation[key]].append("")
+
+                # loop over the higher order classification
+                taxon_info = [x for x in SEARCH_TAXA_FIELDS[atlas] if x not in key_translation.values()]
+                for ti in taxon_info:
+                    if any(ti.upper() in x.values() for x in response_json["classification"]):
+                        index = [ti.upper() in x.values() for x in response_json["classification"]].index(True)
+                        data[ti].append(response_json["classification"][index]["name"])
+                    else:
+                        data[ti].append("")
             else:
 
                 # get the raw data
@@ -276,21 +356,16 @@ def search_taxa(taxa=None, identifiers=None, specific_epithet=None, scientific_n
                     raw_data=raw_data_dict[atlas], response_json=response_json, atlas=atlas, name=name
                 )
 
-                # if raw_data is None, go to next taxa (potentially put error here)
-                # ["Global", "GBIF", "Austria", "UK", "United Kingdom"]
-                # if atlas in ["Australia", "ALA"] and not raw_data["success"]:
-                #     continue
-
                 # get the data from the raw_data
-                data = {}
+                data = {x: [] for x in SEARCH_TAXA_FIELDS[atlas]}
                 if raw_data is not None:
-                    for k in SEARCH_TAXA_FIELDS[atlas]:
-                        if k in raw_data:
-                            data[k] = raw_data[k]
-                        elif k == "scientificName":
-                            data[k] = name
-                        else:
-                            data[k] = ""
+                    if isinstance(raw_data,list):
+                        print("We couldn't find an exact match - here are the closest:\n")
+                        for rd in raw_data:
+                            populate_taxa_dict(raw_data=rd,atlas=atlas,data=data,name=name)
+                    else:
+                        populate_taxa_dict(raw_data=raw_data,atlas=atlas,data=data,name=name)
+
 
                 # check if the atlas is GBIF and get vernacular names accordingly
                 if atlas in ["Global", "GBIF", "Portugal", "Spain"]:
@@ -299,7 +374,10 @@ def search_taxa(taxa=None, identifiers=None, specific_epithet=None, scientific_n
                     )
 
             # add every taxon to dataframe
-            tempdf = pd.DataFrame(data, index=[1])
+            if len(data["scientificName"]) == 1:
+                tempdf = pd.DataFrame(data, index=[1])
+            else:
+                tempdf = pd.DataFrame(data)
             dataFrame = pd.concat([dataFrame, tempdf], ignore_index=True)
 
         # return dataFrame with all data
@@ -310,6 +388,19 @@ def search_taxa(taxa=None, identifiers=None, specific_epithet=None, scientific_n
 # Functions that other galah functions use uses
 ###################################################################################################
 
+def populate_taxa_dict(raw_data=None,atlas=None,data=None,name=None):
+
+    # populate dict
+    for k in SEARCH_TAXA_FIELDS[atlas]:
+        if k in raw_data:
+            data[k].append(raw_data[k])
+        elif k == "scientificName":
+            data[k].append(name)
+        else:
+            data[k].append("")
+
+    # return dict
+    return data
 
 def generate_list_taxonConceptIDs(
     taxa=None, scientific_name=None, identifiers=None, specific_epithet=None, atlas=None, authenticate=False
@@ -339,7 +430,7 @@ def generate_list_taxonConceptIDs(
 
         # add %22
         return (
-            "fq=%28lsid%3A%22"
+            "q=%28lsid%3A%22"
             + "%22%20OR%20lsid%3A%22".join(urllib.parse.quote(str(tid)) for tid in taxonConceptID)
             + "%29"
         )
@@ -354,12 +445,31 @@ def generate_list_taxonConceptIDs(
 ###################################################################################################
 
 
-def create_search_taxa_url(dict_of_specifics=None, config_file=None):
-    """
-    Create a search_taxa URL for either identifiers, specific_epithet or scientific_name.
-    """
+def add_to_return_dict(return_dict=None, URL=None, method=None, verbose=False, headers=None, timeout=None, atlas=None):
 
-    # if keyword correct, add to URL
+    # check to see if the user wants the URL for querying
+    print_if_verbose(verbose=verbose, headers=headers, URL=URL, method=method)
+
+    # get the data from API
+    response = requests.request(method=method, url=URL, headers=headers, timeout=timeout)
+    response_json = response.json()
+
+    # check for lists
+    response_json = check_for_lists(response_json=response_json, atlas=atlas)
+
+    # compile data into
+    for k in SEARCH_TAXA_FIELDS[atlas]:
+        if k in response_json:
+            return_dict[k].append(response_json[k])
+        else:
+            return_dict[k].append("")
+
+    return return_dict
+
+
+def create_url_identifiers(identifier=None, dict_of_specifics=None, config_file=None):
+
+    # get the baseURL and method
     baseURL, method = get_api_url(
         column1=dict_of_specifics["column1"],
         column1value=dict_of_specifics["column1value"],
@@ -368,39 +478,35 @@ def create_search_taxa_url(dict_of_specifics=None, config_file=None):
         config_file=config_file,
     )
 
-    # create URL based on different case
-    if "identifiers" in dict_of_specifics.keys():
-        URL = baseURL + "?taxonID=" + urllib.parse.quote(dict_of_specifics["identifiers"])
-    if "specific_epithet" in dict_of_specifics.keys():
-        URL = process_dicts_to_URLs(baseURL=baseURL, dict_of_specifics=dict_of_specifics, head_key="specific_epithet")
-    if "scientific_name" in dict_of_specifics.keys():
-        URL = process_dicts_to_URLs(baseURL=baseURL, dict_of_specifics=dict_of_specifics, head_key="scientific_name")
+    # create the URL
+    URL = baseURL + "?taxonID=" + urllib.parse.quote(identifier)
 
-    # return URL and method
+    # return the URL and method
     return URL, method
 
 
-def process_dicts_to_URLs(baseURL=None, dict_of_specifics=None, head_key=None):
+def process_dicts_to_URLs(baseURL=None, names_dict=None):
     """
     Function for adding information in dicts to the URLs themselves
     """
 
     # get the length of keys and dicts for looping
-    len_key = list(dict_of_specifics[head_key].keys())[0]
-    len_dict = len(dict_of_specifics[head_key][len_key])
+    len_key = list(names_dict.keys())[0]
+    len_dict = len(names_dict[len_key])
 
     # initialise ending of URL
     end = ""
 
-    # add dict information to the end variable
-    for i in range(len_dict):
-        end += (
-            "&".join(
-                "=".join([key, urllib.parse.quote(dict_of_specifics[head_key][key][i])])
-                for key in dict_of_specifics[head_key].keys()
-            )
-            + "&"
-        )
+    # check if we have a list for dict entries; if not, don't loop
+    if isinstance(names_dict[len_key], list):
+
+        # add dict information to the end variable
+        for i in range(len_dict):
+            end += "&".join("=".join([key, urllib.parse.quote(names_dict[key])]) for key in names_dict.keys()) + "&"
+
+    else:
+
+        end += "&".join("=".join([key, urllib.parse.quote(names_dict[key])]) for key in names_dict.keys()) + "&"
 
     # add the information to the URL
     URL = baseURL + "?" + end
@@ -511,6 +617,7 @@ def check_raw_data(raw_data=None, response_json=None, atlas=None, name=None):
     """
     Check if you need to search for raw data
     """
+    brazil_entries = {x: [] for x in SEARCH_TAXA_FIELDS[atlas]}
 
     # check to see if raw_data is None and needs to be filtered through
     if raw_data is None:
@@ -518,6 +625,16 @@ def check_raw_data(raw_data=None, response_json=None, atlas=None, name=None):
             for item in response_json[SEARCH_TAXA_ENTRIES[atlas][0]][SEARCH_TAXA_ENTRIES[atlas][1]]:
                 if name.lower() == item["scientificName"].lower():
                     return item
+
+        # try this
+        elif atlas in ["Brazil"]:
+            for item in response_json[SEARCH_TAXA_ENTRIES[atlas][0]][SEARCH_TAXA_ENTRIES[atlas][1]]:
+                if name.lower() in item["scientificName"].lower():
+                    for x in SEARCH_TAXA_FIELDS:
+                        brazil_entries[x].append(item[x])
+
+            if len(brazil_entries["scientificName"]) > 0:
+                return brazil_entries
 
     # otherwise, return the raw data
     return raw_data
@@ -533,7 +650,7 @@ def check_for_success_AU_ES(atlas=None, response_json=None, taxa=None):
         print("We were not able to find {} in the {} backbone.".format(taxa, atlas))
 
 
-def authenticate_bulk_query(taxa=None, access_token=None, client_id=None, verbose=None):
+def authenticate_bulk_query(taxa=None, access_token=None, client_id=None, verbose=None, user_agent=None, timeout=600):
     """
     If a person provides a list of species names and they're authenticated, do a bulk query
     """
@@ -549,7 +666,7 @@ def authenticate_bulk_query(taxa=None, access_token=None, client_id=None, verbos
     # set up the payload and headers
     payload = {"names": [], "vernacular": "true"}  # , "issues": "true"}
     headers = {
-        "User-Agent": "galah-python {}".format(__version__),
+        "User-Agent": user_agent,
         "Authorization": "Bearer {}".format(access_token),
         "client_id": client_id,
         "accept": "*/*",
@@ -561,7 +678,9 @@ def authenticate_bulk_query(taxa=None, access_token=None, client_id=None, verbos
     print_if_verbose(verbose=verbose, headers=headers, URL=baseURL, method=method, payload=payload)
 
     # get the list of species data and add it to a dataframe
-    species_list = requests.request(method=method, url=baseURL, data=json.dumps(payload), headers=headers)
+    species_list = requests.request(
+        method=method, url=baseURL, data=json.dumps(payload), headers=headers, timeout=timeout
+    )
     species_list_json = species_list.json()
     species_list_dataframe = pd.DataFrame()
     for i in range(len(species_list_json)):

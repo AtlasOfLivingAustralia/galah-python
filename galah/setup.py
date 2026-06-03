@@ -4,15 +4,11 @@ and dependencies
 """
 
 from setuptools import setup, find_packages
-import os
 
 pkg_vars = {}
 
 with open("src/galah/version.py") as fp:
     exec(fp.read(), pkg_vars)
-
-os.system("conda install geos")
-os.system("pip install packaging")
 
 setup(
     # name='galah',

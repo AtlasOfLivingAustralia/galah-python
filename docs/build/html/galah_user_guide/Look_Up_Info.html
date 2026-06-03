@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Look Up Information &#8212; Galah 0.13.0 documentation</title>
+    <title>Look Up Information &#8212; Galah 0.13.1 documentation</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../_static/documentation_options.js?v=1019fba8"></script>
+    <script src="../_static/documentation_options.js?v=b4617fb1"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/design-tabs.js?v=f930bc37"></script>
@@ -53,7 +53,7 @@
     <link rel="prev" title="Download Data" href="Download_Data.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.13.0" />
+  <meta name="docsearch:version" content="0.13.1" />
   </head>
   
   
@@ -119,8 +119,8 @@
       
     
     
-    <img src="../_static/logo.png" class="logo__image only-light" alt="Galah 0.13.0 documentation - Home"/>
-    <img src="../_static/logo.png" class="logo__image only-dark pst-js-only" alt="Galah 0.13.0 documentation - Home"/>
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Galah 0.13.1 documentation - Home"/>
+    <img src="../_static/logo.png" class="logo__image only-dark pst-js-only" alt="Galah 0.13.1 documentation - Home"/>
   
   
 </a></div>
@@ -425,19 +425,16 @@ span.prompt1:before {
   content: " ";
 }
 </style><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">show_all</span><span class="p">(</span><span class="n">atlases</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></span>
-</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>             atlas                                                              institution  acronym                           url
-0        Australia                                                Atlas of Living Australia      ALA        https://www.ala.org.au
-1          Austria                                          Biodiversitäts-Atlas Österreich      BAO  https://biodiversityatlas.at
-2           Brazil                Sistemas de Informações sobre a Biodiversidade Brasileira    SiBBr          https://sibbr.gov.br
-3         Flanders                                            Vlaams Biodiversiteitsportaal      VBP    https://natuurdata.inbo.be
-4           France       Portail français d&#39;accès aux données d&#39;observation sur les espèces  OpenObs          https://inpn.mnhn.fr
-5           Global                                 Global Biodiversity Information Facility     GBIF              https://gbif.org
-6        Guatemala  Sistema Nacional de Información sobre Diversidad Biológica de Guatemala   SNIBgt     https://snib.conap.gob.gt
-7              Kew                                                          Kew Data Portal      KDP          https://data.kew.org
-8         Portugal                                                            GBIF Portugal  GBIF.pt           https://www.gbif.pt
-9            Spain                                                               GBIF Spain  GBIF.es           https://www.gbif.es
-10          Sweden                                 Swedish Biodiversity Data Infrastructure     SDBI   https://biodiversitydata.se
-11  United Kingdom                                            National Biodiversity Network      NBN            https://nbn.org.uk
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>            atlas                                                institution  acronym                           url
+0       Australia                                  Atlas of Living Australia      ALA        https://www.ala.org.au
+1         Austria                            Biodiversitäts-Atlas Österreich      BAO  https://biodiversityatlas.at
+2          Brazil  Sistemas de Informações sobre a Biodiversidade Brasileira    SiBBr          https://sibbr.gov.br
+3        Flanders                              Vlaams Biodiversiteitsportaal      VBP    https://natuurdata.inbo.be
+4          Global                   Global Biodiversity Information Facility     GBIF              https://gbif.org
+5             Kew                                            Kew Data Portal      KDP          https://data.kew.org
+6           Spain                                                 GBIF Spain  GBIF.es           https://www.gbif.es
+7          Sweden                   Swedish Biodiversity Data Infrastructure     SDBI   https://biodiversitydata.se
+8  United Kingdom                              National Biodiversity Network      NBN            https://nbn.org.uk
 </pre></div>
 </div>
 <p>To search for a specific available Living Atlas:</p>
@@ -448,20 +445,20 @@ span.prompt1:before {
 </div>
 <p>To show all fields:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">show_all</span><span class="p">(</span><span class="n">fields</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></span>
-</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>                       id                                       description   type link
-0       acceptedNameUsage    http://rs.tdwg.org/dwc/terms/acceptedNameUsage  field  NaN
-1     acceptedNameUsageID  http://rs.tdwg.org/dwc/terms/acceptedNameUsageID  field  NaN
-2            accessRights                                               NaN  field  NaN
-3          annotationsDoi                                               NaN  field  NaN
-4          annotationsUid                                               NaN  field  NaN
-...                   ...                                               ...    ...  ...
-1041    multimediaLicence                                Media filter field  media     
-1042               images                                Media filter field  media     
-1043               videos                                Media filter field  media     
-1044               sounds                                Media filter field  media     
-1045                  qid                  Reference to pre-generated query  other     
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>                      id                                       description   type link
+0      acceptedNameUsage    http://rs.tdwg.org/dwc/terms/acceptedNameUsage  field  NaN
+1    acceptedNameUsageID  http://rs.tdwg.org/dwc/terms/acceptedNameUsageID  field  NaN
+2           accessRights                                               NaN  field  NaN
+3         annotationsDoi                                               NaN  field  NaN
+4         annotationsUid                                               NaN  field  NaN
+..                   ...                                               ...    ...  ...
+852    multimediaLicence                                Media filter field  media     
+853               images                                Media filter field  media     
+854               videos                                Media filter field  media     
+855               sounds                                Media filter field  media     
+856                  qid                  Reference to pre-generated query  other     
 
-[1046 rows x 4 columns]
+[857 rows x 4 columns]
 </pre></div>
 </div>
 <p>And to search for a specific field:</p>

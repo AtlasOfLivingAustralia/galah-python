@@ -11,6 +11,8 @@ import requests
 
 AUTH_CONFIG_URL = "https://api.ala.org.au/common/api/getAuthConfig"
 
+ALLOWED_AUTH_DOMAINS = {"auth.ala.org.au", "auth-test.ala.org.au"}
+
 REDIRECT_HOST = "localhost"
 REDIRECT_PORT = 1410
 REDIRECT_PATH = "/callback"
@@ -67,10 +69,21 @@ class CallbackHandler(BaseHTTPRequestHandler):
 
 
 def get_auth_config() -> dict:
+
+    # get configuration
     r = requests.get(AUTH_CONFIG_URL, timeout=30)
     r.raise_for_status()
     cfg = r.json()
-    # expecting keys: client_id, authorize_url, token_url, scopes
+
+    # Validate returned URLs against allowlist
+    from urllib.parse import urlparse
+
+    for key in ("authorize_url", "token_url"):
+        parsed = urlparse(cfg[key])
+        if parsed.hostname not in ALLOWED_AUTH_DOMAINS:
+            raise RuntimeError(f"Auth config returned untrusted {key} domain: {parsed.hostname}")
+        if parsed.scheme != "https":
+            raise RuntimeError(f"Auth config {key} must use HTTPS")
     return cfg
 
 

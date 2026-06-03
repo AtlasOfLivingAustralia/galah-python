@@ -1,3 +1,8 @@
+from .version import __version__
+
+USER_AGENT = "galah-python{}".format(__version__)
+USER_AGENT_QGIS = "qgis-galah-python{}".format(__version__)
+
 # all available atlases
 atlases = [
     "Australia",
@@ -58,11 +63,11 @@ ATLAS_OCCURRENCES_ERROR_MESSAGES = {
     "Australia": "go to https://auth.ala.org.au/cas/login to register.",
     "Austria": "go to https://auth.biodiversityatlas.at/cas/login to register.",
     "Brazil": "email atendimento_sibbr@rnp.br to find out more information.",
-    "Flanders": "",
+    "Flanders": "go to http://natuurdata.inbo.be/ to register.",
     "France": "visit https://inpn.mnhn.fr/contact/contacteznous to find out more information.",
     "GBIF": "go to https://www.gbif.org/user/profile to register.",
     "Global": "go to https://www.gbif.org/user/profile to register.",
-    "Kew": "Amanda find this out.",
+    "Kew": "go to https://data.kew.org to register.",
     "Spain": "go to https://auth.gbif.es/cas/login?lang=en to register.",
 }
 
@@ -270,17 +275,15 @@ ATLAS_SPECIES_FIELDS = {
 
 # default selections for occurrence data
 ATLAS_SELECTIONS = {
-    "Australia": "basic",
+    "Australia": ["basic"],
     "Austria": [
-        "latitude",
-        "longitude",
-        "occurrence_date",
-        "taxon_name",
-        "common_name",
-        "taxon_concept_lsid",
-        "occurrence_id",
-        "data_resource_uid",
-        "occurrence_status",
+        "decimalLatitude",
+        "decimalLongitude",
+        "eventDate",
+        "scientificName",
+        "taxonConceptID",
+        "recordID",
+        "occurrenceStatus",
     ],
     "Brazil": [
         "latitude",
@@ -304,6 +307,7 @@ ATLAS_SELECTIONS = {
         "data_resource_uid",
         "occurrence_status",
     ],
+    "Flanders": ["basic"],
     "Global": [
         "decimalLatitude",
         "decimalLongitude",
@@ -335,30 +339,14 @@ ATLAS_SELECTIONS = {
         "data_resource_uid",
         "occurrence_status",
     ],
-    "Kew": "basic",
+    "Kew": ["basic"],
     "Portugal": [],
     "Spain": [
-        "latitude",
-        "longitude",
-        "occurrence_date",
-        "taxon_name",
-        "common_name",
-        "taxon_concept_lsid",
-        "occurrence_id",
-        "data_resource_uid",
-        "occurrence_status",
+        "basic"
     ],
-    "Sweden": "basic",
+    "Sweden": ["basic"],
     "United Kingdom": [
-        "latitude",
-        "longitude",
-        "occurrence_date",
-        "taxon_name",
-        "common_name",
-        "taxon_concept_lsid",
-        "occurrence_id",
-        "data_resource_uid",
-        "occurrence_status",
+        "basic"
     ],
 }
 
@@ -475,17 +463,18 @@ SEARCH_TAXA_FIELDS = {
         "commonName",
     ],
     "Flanders": [
-        # "rank",
-        # "matchType",
-        "KINGDOM",
-        "PHYLUM",
-        "CLASS",  # was class
-        "ORDER",
-        "FAMILY",
-        "GENUS",
-        "SPECIES",
-        # "issues",
-        # "vernacularName",
+        "scientificName",
+        "scientificNameAuthorship",
+        "taxonConceptID",
+        "taxonRank",
+        "kingdom",
+        "phylum",
+        "class",
+        "order",
+        "family",
+        "genus",
+        "species",
+        "canonicalName",
     ],
     "France": [
         "scientificName",

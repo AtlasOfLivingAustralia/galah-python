@@ -457,42 +457,42 @@ def test_atlas_counts_multiple_taxa_filters_group_by_multiple_separate_expand_sp
 # atlas_species
 ######################################
 def test_atlas_species_Spain_species_spain():
-    galah.galah_config(atlas="Spain")
+    galah.galah_config(atlas="Spain",email=email_es)
     taxa = "Vipera latastei"
     species_table = galah.atlas_species(taxa=taxa)
     assert species_table.shape[0] > 0
 
 
 def test_atlas_species_Spain_species_rank_subspecies_spain():
-    galah.galah_config(atlas="Spain")
+    galah.galah_config(atlas="Spain",email=email_es)
     taxa = "Viperidae"
     species_table = galah.atlas_species(taxa=taxa, rank="subspecies")
     assert species_table.shape[0] > 0
 
 
 def test_atlas_species_Spain_family_spain():
-    galah.galah_config(atlas="Spain")
+    galah.galah_config(atlas="Spain",email=email_es)
     taxa = "Viperidae"
     species_table = galah.atlas_species(taxa=taxa)
     assert species_table.shape[0] > 0
 
 
 def test_atlas_species_Spain_family_rank_genus_spain():
-    galah.galah_config(atlas="Spain")
+    galah.galah_config(atlas="Spain",email=email_es)
     taxa = "Viperidae"
     species_table = galah.atlas_species(taxa=taxa, rank="genus")
     assert species_table.shape[0] > 0
 
 
 def test_atlas_species_Spain_family_rank_subspecies_spain():
-    galah.galah_config(atlas="Spain")
+    galah.galah_config(atlas="Spain",email=email_es)
     taxa = "Viperidae"
     species_table = galah.atlas_species(taxa=taxa, rank="subspecies")
     assert species_table.shape[0] > 0
 
 
 def test_atlas_species_spain_filter_notaxa():
-    galah.galah_config(atlas="Spain")
+    galah.galah_config(atlas="Spain",email=email_es)
     filtered_species_table = galah.atlas_species(filters=["year=2022", "basis_of_record=HumanObservation"])
     assert filtered_species_table.shape[0] > 0
 

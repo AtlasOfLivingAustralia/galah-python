@@ -2,6 +2,7 @@ import io
 import json
 import time
 import zipfile
+import re
 
 import pandas as pd
 import requests
@@ -21,6 +22,8 @@ from .common_dictionaries import (
     ATLAS_OCCURRENCES_DOWNLOAD_ARGUMENTS,
     ATLAS_OCCURRENCES_ERROR_MESSAGES,
     ATLAS_SELECTIONS,
+    USER_AGENT,
+    USER_AGENT_QGIS,
 )
 from .common_functions import print_if_verbose, set_bool_argument
 from .galah_config import get_api_url, readConfig
@@ -147,6 +150,7 @@ def atlas_occurrences(
     authenticate = set_bool_argument(arg=configs["galahSettings"]["authenticate"], name_arg="authenticate")
     access_token = configs["galahSettings"]["access_token"]
     client_id = configs["galahSettings"]["client_id"]
+    qgis = set_bool_argument(arg=configs["galahSettings"]["qgis"], name_arg="qgis")
     authentication = None
 
     # check to see if atlas is in list of non-functioning atlases
@@ -160,6 +164,11 @@ def atlas_occurrences(
     # check for email
     check_email_empty(config_file=config_file)
 
+    # set user agent
+    user_agent = USER_AGENT
+    if qgis:
+        user_agent = USER_AGENT_QGIS
+
     # check variables to see if they are strings/lists
     taxa = check_string_list(taxa, "taxa")
     filters = check_string_list(filters, "filters")
@@ -171,7 +180,7 @@ def atlas_occurrences(
     check_gbif_filters(atlas=atlas, filters=filters)
 
     # declare for every atlas except for GBIF
-    headers = {"User-Agent": "galah-python {}".format(__version__)}
+    headers = {"User-Agent": user_agent}
 
     # ---------------------------------------------------------------------------------------------
     # First, check for DOIs to see if a person is re-downloading a dataset
@@ -213,10 +222,14 @@ def atlas_occurrences(
             config_file=config_file,
         )
 
+        # check for https since we are sending credentials
+        if not baseURL.startswith("https://"):
+            raise ValueError(f"Refusing to send credentials over non-HTTPS: {baseURL}")
+
         # prepare headers
         headers = {
-            "User-Agent": "galah-python/{}".format(__version__),
-            "X-USER-AGENT": "galah-python/{}".format(__version__),
+            "User-Agent": user_agent,
+            "X-USER-AGENT": user_agent,
             "Content-type": "application/json",
             "Accept": "application/json",
         }
@@ -273,7 +286,8 @@ def atlas_occurrences(
         )
 
         # get job number
-        job_number = response.text
+        pattern = "^[a-zA-Z0-9_-]+$"
+        job_number = re.search(pattern, response.text)
         statusURL = baseURL.replace("request", job_number)
 
         # return downloaded data when the job is done
@@ -319,16 +333,12 @@ def atlas_occurrences(
 
             # create the query id
             qid_URL, method2 = get_api_url(column1="api_name", column1value="occurrences_qid")
-            qid = requests.request(method2, qid_URL, data=payload, headers=headers)
+            qid = requests.request(method2, qid_URL, data=payload, headers=headers, timeout=timeout)
 
             # get URL for downloading occurrences
             baseURL, method = get_api_url(
                 column1="api_name", column1value="records_occurrences", config_file=config_file
             )
-
-            # Add qa=None to not get any assertions
-            if fields is None:
-                fields = ["basic"]
 
             # construct the URL
             URL = baseURL + "?fq=%28qid%3A" + qid.text + "%29"  # try adding quotes
@@ -344,7 +354,6 @@ def atlas_occurrences(
                 add_email=True,  # False
                 use_data_profile=use_data_profile,
                 data_profile_list=list(show_all(profiles=True)["shortName"]),
-                atlas=atlas,
                 config_file=config_file,
             )
 
@@ -352,7 +361,7 @@ def atlas_occurrences(
             print_if_verbose(verbose=verbose, headers=headers, URL=URL, method=method, payload=payload)
 
             # get data
-            response = requests.request(method=method, url=URL, headers=headers)
+            response = requests.request(method=method, url=URL, headers=headers, timeout=timeout)
 
         else:
 
@@ -375,7 +384,7 @@ def atlas_occurrences(
                 identifiers=identifiers,
             )
 
-            if "fq" not in URL and URL[-1] != "?":
+            if all(x not in URL for x in ["q","fq"]) and URL[-1] != "?":
                 if taxa is not None:
                     return None
                 URL += "?"
@@ -409,11 +418,10 @@ def atlas_occurrences(
                     add_email=True,
                     use_data_profile=use_data_profile,
                     data_profile_list=list(show_all(profiles=True)["shortName"]),
-                    atlas=atlas,
                     config_file=config_file,
                 )
             else:
-                URL += add_extras_to_URL(add_email=True, atlas=atlas, config_file=config_file)
+                URL += add_extras_to_URL(add_email=True, config_file=config_file)
 
             # check to see if user wants the query URL
             print_if_verbose(verbose=verbose, headers=headers, URL=URL, method=method)
@@ -445,7 +453,7 @@ def atlas_occurrences(
 
 def check_fields(fields=None, atlas=None):
     if atlas not in ["Global", "GBIF"] and fields is None:
-        return ["basic"]
+        return None
     return check_string_list(fields, "fields")
 
 
@@ -521,7 +529,7 @@ def add_fields(fields=None, atlas=None, URL=None):
 
     # add fields
     if fields is not None:
-
+        
         # first, check for assertions
         if "assertions" in fields:
             URL += "&qa=includeall"
@@ -533,6 +541,7 @@ def add_fields(fields=None, atlas=None, URL=None):
     else:
         URL += "&qa=none&" + galah_select(select=ATLAS_SELECTIONS[atlas])
 
+    # return URL with fieldss
     return URL
 
 

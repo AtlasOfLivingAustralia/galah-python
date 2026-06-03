@@ -1,7 +1,7 @@
 from .show_values import show_values
 
 
-def search_values(field=None, value=None, lists=False, all_fields=False, column_name=None, config_file=None):
+def search_values(field=None, value=None, lists=False, column_name=None, config_file=None):
     """
     Users may wish to see the specific values within a chosen field, profile or list to narrow queries or understand
     more about the information of interest. ``search_values()`` allows users for search for specific values within
@@ -15,8 +15,6 @@ def search_values(field=None, value=None, lists=False, all_fields=False, column_
             A string specifying a search term. Not case sensitive.
         lists : logical
             This lets ``show_values()`` know if you want to look up fields, or if you want to look up species in lists.  Default is False.
-        all_fields : logical
-            For threatened and sensitive lists, this argument will give you the option of downloading species statuses.  Default is False.
         verbose : logical
             This option is available for users who want to know what URLs this function is using to get the value. Default to False.
 
@@ -45,7 +43,7 @@ def search_values(field=None, value=None, lists=False, all_fields=False, column_
         raise ValueError("Only strings are a valid query for the column_name variable")
 
     # get initial data frame
-    dataFrame = show_values(field=field, lists=lists, all_fields=all_fields, config_file=config_file)
+    dataFrame = show_values(field=field, lists=lists, config_file=config_file)
 
     if column_name is None:
         column_name = dataFrame.columns[-1]

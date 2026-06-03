@@ -12,9 +12,7 @@ from .galah_config import get_api_url, readConfig
 from .version import __version__
 
 
-def galah_group_by(
-    URL=None, method=None, group_by=None, total_group_by=False, filters=None, verbose=False, payload=None
-):
+def galah_group_by(URL=None, method=None, group_by=None, total_group_by=False, filters=None, payload=None):
     """
     Used for grouping counts by a specific query, i.e. "year" or "basisOfRecord".  It's mainly utilized in atlas_counts.
     """
@@ -28,6 +26,7 @@ def galah_group_by(
 
     # get atlas
     atlas = configs["galahSettings"]["atlas"]
+    timeout = int(configs["galahSettings"]["timeout"])
     verbose = set_bool_argument(arg=configs["galahSettings"]["verbose"], name_arg="verbose")
     authenticate = set_bool_argument(arg=configs["galahSettings"]["authenticate"], name_arg="authenticate")
     access_token = configs["galahSettings"]["access_token"]
@@ -62,7 +61,7 @@ def galah_group_by(
         print_if_verbose(verbose=verbose, headers=headers, URL=qid_URL, method=method2, payload=payload)
 
         # post the request to get a QID
-        qid = requests.request(method2, qid_URL, data=payload, headers=headers)
+        qid = requests.request(method2, qid_URL, data=payload, headers=headers, timeout=timeout)
 
         # now, add facets to the URL with the QID
         facets = "".join("&facets={}".format(g) for g in group_by)
@@ -74,7 +73,7 @@ def galah_group_by(
         print_if_verbose(verbose=verbose, headers=headers, URL=facetURL, method=method, payload=payload)
 
         # get data
-        response = requests.request(method, facetURL, headers=headers)
+        response = requests.request(method, facetURL, headers=headers, timeout=timeout)
         response_json = response.json()
 
     else:
@@ -83,7 +82,7 @@ def galah_group_by(
         URL = add_filters(URL=URL, atlas=atlas, filters=filters)
 
         # then, add facets and round out the URL
-        if URL[-1] not in ["&", "?"] and all(x not in URL for x in ["?", "fq"]):
+        if URL[-1] not in ["&", "?"] and all(x not in URL for x in ["?", "fq", "q"]):
             URL += "?"
         initial_URL = (
             URL
@@ -96,7 +95,7 @@ def galah_group_by(
         print_if_verbose(verbose=verbose, headers=headers, URL=initial_URL, method=method)
 
         # get response from your query, which will include all available fields
-        response = requests.request(method, initial_URL, headers=headers)
+        response = requests.request(method, initial_URL, headers=headers, timeout=timeout)
         response_json = response.json()
 
     # ---------------------------------------------------------------------------------------------
@@ -150,6 +149,7 @@ def galah_group_by(
                     headers=headers,
                     method=method,
                     dict_values=dict_values,
+                    timeout=timeout,
                 )
 
             # do this loop for all other atlases
@@ -167,6 +167,7 @@ def galah_group_by(
                     dict_values=dict_values,
                     authenticate=authenticate,
                     payload=payload,
+                    timeout=timeout,
                 )
 
         # format table
@@ -313,7 +314,9 @@ def get_facets_array(
 ###################################################################################################
 
 
-def get_GBIF_facets_expand(URL=None, f=None, group_by=None, verbose=None, headers=None, method=None, dict_values=None):
+def get_GBIF_facets_expand(
+    URL=None, f=None, group_by=None, verbose=None, headers=None, method=None, dict_values=None, timeout=600
+):
     """Get all facets from GBIF and expand the values into two columns"""
 
     # specify start and increment, as GBIF is different from the other atlases
@@ -355,7 +358,7 @@ def get_GBIF_facets_expand(URL=None, f=None, group_by=None, verbose=None, header
     print_if_verbose(verbose=verbose, headers=headers, URL=newURL, method=method)
 
     # get the data
-    response = requests.request(method=method, url=newURL, headers=headers)
+    response = requests.request(method=method, url=newURL, headers=headers, timeout=timeout)
     response_json = response.json()
 
     # put data in dict
@@ -382,6 +385,7 @@ def get_facets_expand(
     dict_values=None,
     authenticate=None,
     payload=None,
+    timeout=600,
 ):
     """For all atlases other than GBIF, get the names and values of the group by list"""
 
@@ -413,7 +417,7 @@ def get_facets_expand(
                 print_if_verbose(verbose=verbose, headers=headers, URL=qid_URL, method=method2, payload=temp_payload)
 
                 # get the QID of the query
-                qid = requests.request(method2, qid_URL, data=temp_payload, headers=headers)
+                qid = requests.request(method2, qid_URL, data=temp_payload, headers=headers, timeout=timeout)
 
                 # make the URL with the QID
                 if URL[-1] not in ["&", "?"]:
@@ -434,7 +438,7 @@ def get_facets_expand(
                 print_if_verbose(verbose=verbose, headers=headers, URL=tempURL, method=method)
 
             # get data
-            response = requests.request(method, tempURL, headers=headers)
+            response = requests.request(method, tempURL, headers=headers, timeout=timeout)
             response_json = response.json()
 
             # if there is no data available, move onto next variable

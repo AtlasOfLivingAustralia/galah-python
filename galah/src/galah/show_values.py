@@ -5,7 +5,7 @@ from .common_functions import kvp_to_columns, print_if_verbose, set_bool_argumen
 from .galah_config import get_api_url, readConfig
 
 
-def show_values(field=None, lists=False, all_fields=False, verbose=False, config_file=None):
+def show_values(field=None, lists=False, config_file=None):
     """
     Users may wish to see the specific values within a chosen field, profile or list to narrow queries or understand
     more about the information of interest. ``show_values()`` provides users with these values.
@@ -16,8 +16,6 @@ def show_values(field=None, lists=False, all_fields=False, verbose=False, config
             A string to specify what type of parameters should be shown.
         lists : logical
             This lets ``show_values()`` know if you want to look up fields, or if you want to look up species in lists.  Default is False.
-        all_fields : logical
-            For threatened and sensitive lists, this argument will give you the option of downloading species statuses.  Default is False.
         verbose : logical
             This option is available for users who want to know what URLs this function is using to get the value.  Default is False.
 
@@ -60,9 +58,7 @@ def show_values(field=None, lists=False, all_fields=False, verbose=False, config
     else:
         if lists:
             baseURL, method = get_api_url(column1="called_by", column1value="show_values-lists")
-            URL = baseURL.replace("{list_id}", field) + "?max=-1"
-            if all_fields:
-                URL += "&includeKVP=TRUE"
+            URL = baseURL.replace("{list_id}", field) + "?max=9999"
         else:
             baseURL, method = get_api_url(column1="api_name", column1value="records_facets")
             URL = baseURL + "?facets=" + field + "&flimit=-1"
@@ -75,10 +71,10 @@ def show_values(field=None, lists=False, all_fields=False, verbose=False, config
     response_json = response.json()
 
     # return dataFrame
-    return process_value_results(atlas=atlas, response_json=response_json, lists=lists, all_fields=all_fields)
+    return process_value_results(atlas=atlas, response_json=response_json, lists=lists)
 
 
-def process_value_results(atlas=None, response_json=None, lists=False, all_fields=False):
+def process_value_results(atlas=None, response_json=None, lists=False):
     """
     This function is for getting all assertions available in the chosen atlas.
 
@@ -116,16 +112,17 @@ def process_value_results(atlas=None, response_json=None, lists=False, all_field
     # otherwise, assume it is other atlases
     else:
         if lists:
-            if all_fields:
-                dataFrame = pd.DataFrame()
-                for i in response_json:
-                    kvp_values = i["kvpValues"]
-                    flattened_values = kvp_to_columns(kvp_values)
-                    i.update(flattened_values)
-                    del i["kvpValues"]
-                    dataFrame = pd.concat([dataFrame, pd.DataFrame(i, index=[0])])
-                return dataFrame.reset_index(drop=True)
-            return pd.DataFrame(response_json)
+            # if all_fields:
+            dataFrame = pd.DataFrame()
+            for i in response_json:
+                kvp_values = i["kvpValues"]
+                flattened_values = kvp_to_columns(kvp_values)
+                i.update(flattened_values)
+                del i["kvpValues"]
+                dataFrame = pd.concat([dataFrame, pd.DataFrame(i, index=[0])])
+            return dataFrame.reset_index(drop=True)
+            # return pd.DataFrame(response_json)
+
         else:
 
             # loop over all fields in result

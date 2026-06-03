@@ -7,7 +7,7 @@ from .add_to_payload_functions import add_to_payload_ALA
 from .atlas_occurrences import atlas_occurrences, check_for_403_error
 from .common_add_functions import add_extras_to_URL, add_filters, add_spatial_shapes, add_taxa
 from .common_checks import check_atlas, check_email_empty, check_for_non_working_atlases, check_string_list
-from .common_dictionaries import ATLAS_SPECIES_FIELDS
+from .common_dictionaries import ATLAS_SPECIES_FIELDS, USER_AGENT, USER_AGENT_QGIS
 from .common_functions import group_by_atlas_species, print_if_verbose, set_bool_argument
 from .galah_config import get_api_url, readConfig
 from .show_all import show_all
@@ -90,6 +90,7 @@ def atlas_species(
     authenticate = set_bool_argument(arg=configs["galahSettings"]["authenticate"], name_arg="authenticate")
     access_token = configs["galahSettings"]["access_token"]
     client_id = configs["galahSettings"]["client_id"]
+    qgis = set_bool_argument(arg=configs["galahSettings"]["qgis"], name_arg="qgis")
 
     # check to see if atlas is in list of non-functioning atlases
     check_for_non_working_atlases(atlas=atlas)
@@ -100,8 +101,13 @@ def atlas_species(
     # check for email
     check_email_empty(config_file=config_file)
 
+    # set user agent
+    user_agent = USER_AGENT
+    if qgis:
+        user_agent = USER_AGENT_QGIS
+
     # get headers
-    headers = {"User-Agent": "galah-python/{}".format(__version__)}
+    headers = {"User-Agent": user_agent}
 
     # check variable types
     filters = check_string_list(filters, "filters")
@@ -185,7 +191,7 @@ def atlas_species(
         print_if_verbose(verbose=verbose, headers=headers, URL=qid_URL, method=method2, payload=payload)
 
         # get qid
-        qid = requests.request(method2, qid_URL, data=payload, headers=headers)
+        qid = requests.request(method2, qid_URL, data=payload, headers=headers, timeout=timeout)
 
         # create the URL to grab the species ID and lists
         baseURL, method = get_api_url(column1="api_name", column1value="records_species", config_file=config_file)
@@ -230,11 +236,10 @@ def atlas_species(
             add_email=False,
             use_data_profile=use_data_profile,
             data_profile_list=list(show_all(profiles=True)["shortName"]),
-            atlas=atlas,
             config_file=config_file,
         )
     else:
-        URL += add_extras_to_URL(add_email=False, atlas=atlas, config_file=config_file)
+        URL += add_extras_to_URL(add_email=False, config_file=config_file)
 
     # check to see if user wants the query URL
     print_if_verbose(verbose=verbose, headers=headers, URL=URL, method=method)
