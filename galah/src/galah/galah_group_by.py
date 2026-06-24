@@ -6,7 +6,7 @@ import requests
 
 from .common_add_functions import add_filters
 from .common_checks import check_string_list
-from .common_dictionaries import GROUP_BY_FACETS
+from .common_dictionaries import GROUP_BY_FACETS, GBIF_FACET_LIMIT
 from .common_functions import print_if_verbose, set_bool_argument
 from .galah_config import get_api_url, readConfig
 from .version import __version__
@@ -84,11 +84,22 @@ def galah_group_by(URL=None, method=None, group_by=None, total_group_by=False, f
         # then, add facets and round out the URL
         if URL[-1] not in ["&", "?"] and all(x not in URL for x in ["?", "fq", "q"]):
             URL += "?"
+
+        # change ending if GBIf was selected
+        if atlas in ["Global","GBIF"]:
+            end = f"&facetLimit={GBIF_FACET_LIMIT}&facetOffset=0"
+        else:
+            end = "&flimit=-1&pageSize=0"
+
+        # add ampersand if not
+        if URL[-1] != "&":
+            URL += "&"
+
+        # create the initial url
         initial_URL = (
             URL
-            + "&"
             + "&".join(["{}={}".format(GROUP_BY_FACETS[atlas], g) for g in group_by])
-            + "&flimit=-1&pageSize=0"
+            + end
         )
 
         # check to see if the user wants the URL for querying
@@ -103,17 +114,15 @@ def galah_group_by(URL=None, method=None, group_by=None, total_group_by=False, f
     # efficient checking.
     # ---------------------------------------------------------------------------------------------
 
-    # declare facets array
-    facets_array = []
-
     # check if group_by needs to be sorted (if atlas is GBIF)
     group_by = check_needs_sorting(atlas=atlas, group_by=group_by)
-
+    
     # create common variables for looping
-    common_vars = create_common_variables(atlas=atlas, group_by=group_by, response_json=response_json, expand=expand)
+    common_vars = create_common_variables(URL=URL, atlas=atlas, response_json=response_json, expand=expand)
+    facets_array = [None for x in range(common_vars["length"])]
 
     # get all counts for each value
-    dict_values = {entry: [] for entry in [*group_by, "count"]}
+    dict_values = {entry: [] for entry in [*group_by, "count"]} # None for x in range(common_vars["length"])
 
     # ---------------------------------------------------------------------------------------------
     # If group_by == 2: expand=True, queries are made with group_by values as a filter and
@@ -123,6 +132,7 @@ def galah_group_by(URL=None, method=None, group_by=None, total_group_by=False, f
     # ---------------------------------------------------------------------------------------------
     if expand:
 
+        # create array of facets
         facets_array = get_facets_array(
             atlas=atlas,
             facets_array=facets_array,
@@ -132,11 +142,9 @@ def galah_group_by(URL=None, method=None, group_by=None, total_group_by=False, f
             facet_name=common_vars["facet_name"],
         )
 
-        combined_facets_array = list(itertools.product(*facets_array))
-
         # loop over facets array
         # was combined_facets_array
-        for f in combined_facets_array:
+        for f in facets_array[0]: # was combined_facets_array
 
             # check for GBIF atlas
             if atlas in ["Global", "GBIF"]:
@@ -170,6 +178,9 @@ def galah_group_by(URL=None, method=None, group_by=None, total_group_by=False, f
                     timeout=timeout,
                 )
 
+
+        # print(len(combined_facets_array))
+
         # format table
         counts = pd.DataFrame(dict_values).reset_index(drop=True)
         counts.sort_values(by=group_by)
@@ -180,23 +191,45 @@ def galah_group_by(URL=None, method=None, group_by=None, total_group_by=False, f
         # return dataFrame with all counts values
         return counts
 
+    # elif atlas in ["Global","GBIF"] and len(response_json["facets"][0]["counts"]) == GBIF_FACET_LIMIT:
+
+    #     total_entries = 0
+    #     total_pages = 0
+
+    #     while len(response_json["facets"][0]["counts"]) == GBIF_FACET_LIMIT:
+    #         total_pages += 1
+    #         total_entries += GBIF_FACET_LIMIT
+
+    #         new_URL = (
+    #             URL
+    #             + "&"
+    #             + "&".join(["{}={}".format(GROUP_BY_FACETS[atlas], g) for g in group_by])
+    #             + f"&facetLimit={GBIF_FACET_LIMIT}&facetOffset={GBIF_FACET_LIMIT * total_pages}"
+    #         )
+
+    #         response = requests.request(method, new_URL, headers=headers, timeout=timeout)
+    #         response_json = response.json()
+    #         print(response.status_code)
+    
     else:
+
+        # check about entries
+        if atlas in ["Global","GBIF"] and len(response_json["facets"][0]["counts"]) == GBIF_FACET_LIMIT:
+            print("You will only get the first 100,000 entries for your query")
 
         # loop over the array length
         for i in range(common_vars["length"]):
 
-            # check if atlas is GBIF
-            if atlas in ["Global", "GBIF"]:
+            if atlas in ["Global","GBIF"]:
 
                 dict_values = get_GBIF_facets(
                     group_by=group_by,
-                    results_array=common_vars["results_array"],  # used to be results_array
+                    results_array=common_vars["results_array"],
                     i=i,
-                    field_name=common_vars["field_name"],
+                    field_name = common_vars["field_name"],
                     dict_values=dict_values,
                 )
 
-            # otherwise, it's all other atlases
             else:
 
                 dict_values = get_facets(
@@ -248,7 +281,7 @@ def check_needs_sorting(atlas=None, group_by=None):
 ###################################################################################################
 
 
-def create_common_variables(atlas=None, group_by=None, response_json=None, expand=None):
+def create_common_variables(URL = None, atlas=None, response_json=None, expand=None):
     """create a common variables dictionary for straightforward looping for all atlases"""
 
     common_variables = {
@@ -256,12 +289,13 @@ def create_common_variables(atlas=None, group_by=None, response_json=None, expan
         "results_array": None,
         "field_name": "",
         "facet_name": "fq",
+        "pages": 0,
     }
 
     # set some common variables
     if atlas in ["Global", "GBIF"]:
-        common_variables["length"] = len(response_json["facets"])
-        common_variables["results_array"] = response_json["facets"]
+        common_variables["length"] = len(response_json["facets"]) #[0]["counts"]) # added [0]["counts"]
+        common_variables["results_array"] = response_json["facets"] #[0]["counts"]
         common_variables["field_name"] = "counts"
         if expand:
             response_json["facets"] = sorted(response_json["facets"], key=lambda d: d["field"])
@@ -284,12 +318,14 @@ def get_facets_array(
     """Get the facets array for all atlases"""
 
     # GBIF indexes from 1; all others index from 0
-    if atlas not in ["Global", "GBIF"]:
-        start = 0
-        end = len(group_by) - 1
-    else:
-        start = 1
-        end = len(group_by)
+    # if atlas not in ["Global", "GBIF"]:
+    #     start = 0
+    #     end = len(group_by) # - 1
+    # else:
+    # start = 1
+    # end = len(group_by)
+    start = 0
+    end = len(group_by)
 
     # Now create facets array
     for i in range(start, end):
@@ -303,7 +339,7 @@ def get_facets_array(
                 temp_array.append(entry[facet_name])
 
         # append this array to the end
-        facets_array.append(temp_array)
+        facets_array[i] = temp_array
 
     # return facets array
     return facets_array
@@ -321,38 +357,37 @@ def get_GBIF_facets_expand(
 
     # specify start and increment, as GBIF is different from the other atlases
     inc = 0
-    start = 1
+    start = 0 # was 1
 
-    if len(group_by) == 2:
-        if group_by[1] == "scientificName":
-            start = 0
+    # add ampersand
+    if URL[-1] != "&":
+        URL += "&"
 
-    # loop over facets
-    for facet in f:
-
-        # check if user is grouping by scientific name
-        if group_by[start + inc] == "scientificName":
-            newURL = (
-                URL
-                + "&{}={}".format(
-                    group_by[start + inc],
-                    "%20".join(facet.split(":")[1].split(" ")),
-                )
-                + "&facet="
-                + group_by[start - 1 + inc]
-                + "&flimit=-1&pageSize=0"
+    # first, check if scientificName is one of the facets
+    # check if user is grouping by scientific name
+    if group_by[-1] == "scientificName": # was start + inc
+        newURL = (
+            URL
+            + "{}={}".format(
+                group_by[start + inc],
+                "%20".join(f.split(":")[1].split(" ")),
             )
-        else:
-            newURL = (
-                URL
-                + "&{}={}".format(group_by[start + inc], facet.split(":")[1])
-                + "&facet="
-                + group_by[start - 1 + inc]
-                + "&flimit=-1&pageSize=0"
-            )
+            + "&facet="
+            + group_by[start - 1 + inc]
+            + "&flimit=-1&pageSize=0"
+        )
 
-        # increase your increment for looping
-        inc += 1
+    else:
+        newURL = (
+            URL
+            + "{}={}".format(group_by[start + inc], f.split(":")[1])
+            + "&facet="
+            + group_by[start - 1 + inc]
+            + "&flimit=-1&pageSize=0"
+        )
+
+    # increase your increment for looping
+    inc += 1
 
     # check to see if the user wants the querying URL
     print_if_verbose(verbose=verbose, headers=headers, URL=newURL, method=method)
@@ -365,7 +400,7 @@ def get_GBIF_facets_expand(
     for entry in response_json["facets"][0]["counts"]:
         dict_values[group_by[start - 1]].append(entry["name"])
         dict_values["count"].append(int(entry["count"]))
-        dict_values[group_by[start]].append(facet.split(":")[1])
+        dict_values[group_by[start]].append(f.split(":")[1])
         for key in dict_values:
             if (key != group_by[start]) and (key != group_by[start - 1]) and (key != "count"):
                 dict_values[key].append("-")
@@ -389,88 +424,86 @@ def get_facets_expand(
 ):
     """For all atlases other than GBIF, get the names and values of the group by list"""
 
-    # loop over facets
-    for facet in f:
 
-        # split each facet to make it human readable
-        name, value = facet.split(":")
-        value = value.replace('"', "")
+    # split each facet to make it human readable
+    name, value = f.split(":")
+    value = value.replace('"', "")
 
-        # if name is in your group_by statement, do this loop
-        if name in group_by:
+    # if name is in your group_by statement, do this loop
+    if name in group_by:
 
-            if authenticate:
+        if authenticate:
 
-                # create new payload
-                temp_payload = copy.deepcopy(payload)
-                if "fq" not in temp_payload:
-                    temp_payload["fq"] = [f]
+            # create new payload
+            temp_payload = copy.deepcopy(payload)
+            if "fq" not in temp_payload:
+                temp_payload["fq"] = [f]
+            else:
+                if any(name in x for x in temp_payload["fq"]):
+                    temp_payload["fq"] = [x for x in temp_payload["fq"] if name not in x]
+                    temp_payload["fq"].append(f)
+
+            # create payload and get qid
+            qid_URL, method2 = get_api_url(column1="api_name", column1value="occurrences_qid")
+
+            # print options if verbose is set to True
+            print_if_verbose(verbose=verbose, headers=headers, URL=qid_URL, method=method2, payload=temp_payload)
+
+            # get the QID of the query
+            qid = requests.request(method2, qid_URL, data=temp_payload, headers=headers, timeout=timeout)
+
+            # make the URL with the QID
+            if URL[-1] not in ["&", "?"]:
+                tempURL = URL + "?"
+            tempURL = URL + "fq=%28qid%3A" + qid.text + "%29"
+
+            # add facets to the QID
+            tempURL += "&facets={}".format(group_by[-1])
+
+            # check to see if the user wants the querying URL
+            print_if_verbose(verbose=verbose, headers=headers, URL=tempURL, method=method, payload=payload)
+
+        else:
+
+            tempURL = get_tempURL(URL=URL, name=name, value=value, group_by=group_by)
+
+            # check to see if the user wants the querying URL
+            print_if_verbose(verbose=verbose, headers=headers, URL=tempURL, method=method)
+
+        # get data
+        response = requests.request(method, tempURL, headers=headers, timeout=timeout)
+        response_json = response.json()
+
+        # if there is no data available, move onto next variable
+        if atlas in ["Brazil"]:
+            if response_json is None or not response_json[0]["fieldResult"]:
+                return dict_values # was continue
+        else:
+            if response_json is None or not response_json["facetResults"]:
+                return dict_values
+
+        # put data in table (and check if user wants Brazil, because that is an exception)
+        results_array = get_results_array_expand(response_json=response_json, atlas=atlas, group_by=group_by)
+
+        # loop over each entry in the results
+        for entry in results_array:
+
+            if entry["fq"].split(":")[0] in group_by:
+
+                if len(f.split(":")) > 2:
+                    name_and_values = f.split(":")
+                    name = name_and_values[0]
+                    value = ":".join(name_and_values[1:])
                 else:
-                    if any(name in x for x in temp_payload["fq"]):
-                        temp_payload["fq"] = [x for x in temp_payload["fq"] if name not in x]
-                        temp_payload["fq"].append(f)
+                    name, value = f.split(":")
+                value = value.replace('"', "")
 
-                # create payload and get qid
-                qid_URL, method2 = get_api_url(column1="api_name", column1value="occurrences_qid")
+                # trying this - potentially remove it
+                if name in group_by and name not in entry["fq"].split(":"):
+                    dict_values[name].append(value)
 
-                # print options if verbose is set to True
-                print_if_verbose(verbose=verbose, headers=headers, URL=qid_URL, method=method2, payload=temp_payload)
-
-                # get the QID of the query
-                qid = requests.request(method2, qid_URL, data=temp_payload, headers=headers, timeout=timeout)
-
-                # make the URL with the QID
-                if URL[-1] not in ["&", "?"]:
-                    tempURL = URL + "?"
-                tempURL = URL + "fq=%28qid%3A" + qid.text + "%29"
-
-                # add facets to the QID
-                tempURL += "&facets={}".format(group_by[-1])
-
-                # check to see if the user wants the querying URL
-                print_if_verbose(verbose=verbose, headers=headers, URL=tempURL, method=method, payload=payload)
-
-            else:
-
-                tempURL = get_tempURL(URL=URL, name=name, value=value, group_by=group_by)
-
-                # check to see if the user wants the querying URL
-                print_if_verbose(verbose=verbose, headers=headers, URL=tempURL, method=method)
-
-            # get data
-            response = requests.request(method, tempURL, headers=headers, timeout=timeout)
-            response_json = response.json()
-
-            # if there is no data available, move onto next variable
-            if atlas in ["Brazil"]:
-                if response_json is None or not response_json[0]["fieldResult"]:
-                    continue
-            else:
-                if response_json is None or not response_json["facetResults"]:
-                    continue
-
-            # put data in table (and check if user wants Brazil, because that is an exception)
-            results_array = get_results_array_expand(response_json=response_json, atlas=atlas, group_by=group_by)
-
-            # loop over each entry in the results
-            for entry in results_array:
-
-                if entry["fq"].split(":")[0] in group_by:
-
-                    if len(facet.split(":")) > 2:
-                        name_and_values = facet.split(":")
-                        name = name_and_values[0]
-                        value = ":".join(name_and_values[1:])
-                    else:
-                        name, value = facet.split(":")
-                    value = value.replace('"', "")
-
-                    # trying this - potentially remove it
-                    if name in group_by and name not in entry["fq"].split(":"):
-                        dict_values[name].append(value)
-
-                # potentially tab again
-                dict_values = put_entries_in_grouped_dict(entry=entry, dict_values=dict_values, expand=expand)
+            # potentially tab again
+            dict_values = put_entries_in_grouped_dict(entry=entry, dict_values=dict_values, expand=expand)
 
     return dict_values
 
@@ -483,8 +516,8 @@ def get_GBIF_facets(group_by=None, results_array=None, i=None, field_name=None, 
     for g in group_by:
 
         # check for an underscore in the name; if so, change to camel case
-        if "_" in results_array[i]["field"]:
-            test_name = results_array[i]["field"].split("_")
+        if "_" in results_array[i]["field"]: # "field"
+            test_name = results_array[i]["field"].split("_") # "field"
             for k in range(len(test_name)):
                 test_name[k] = test_name[k].lower()
                 if k > 0:
@@ -493,8 +526,8 @@ def get_GBIF_facets(group_by=None, results_array=None, i=None, field_name=None, 
 
         # otherwise, change to lowercase
         else:
-            test_name = results_array[i]["field"].lower()
-
+            test_name = results_array[i]["field"].lower() # "field"
+            
         # check to see for empty values - if empty values, add "-" rather than NaN
         if test_name == g:
             for item in results_array[i][field_name]:

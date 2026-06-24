@@ -97,6 +97,9 @@ def galah_filter(f, occurrencesGBIF=False, authenticate=False):
                 parts[0], parts[1], parts[0], parts[1]
             ),
             "<": '%28{}%3A%5B*%20TO%20{}%5d%20AND%20-%28{}%3A"{}"%29%29'.format(parts[0], parts[1], parts[0], parts[1]),
+            "<=": "%28{}%3A%5B*%20TO%20{}%5d%29".format(parts[0], parts[1]),
+            "=<": "%28{}%3A%5B*%20TO%20{}%5d%29".format(parts[0], parts[1]),
+            
             "!=": "{}=%2A%2C{}".format(parts[0], urllib.parse.quote(parts[1])),
             "=!": "{}=%2A%2C{}".format(parts[0], urllib.parse.quote(parts[1])),
         }

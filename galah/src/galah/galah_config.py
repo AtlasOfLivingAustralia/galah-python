@@ -115,6 +115,7 @@ def galah_config(
     is_bool_argument(verbose, "verbose")
     is_bool_argument(authenticate, "authenticate")
     is_bool_argument(auth_clear, "auth_clear")
+    is_bool_argument(qgis, "qgis")
 
     # check to see if someone wants to clear bad authentication information
     configParser = check_for_clearing_auth_info(configParser=configParser, auth_clear=auth_clear)
@@ -203,6 +204,17 @@ def galah_config(
         return pd.DataFrame.from_dict(settings_dict)
 
     else:
+
+        if qgis is None:
+            qgis = False
+        if email_notify is None:
+            email_notify = False
+        if verbose is None:
+            verbose = False
+        if authenticate is None:
+            authenticate = False
+        if qgis is None:
+            qgis = False
 
         terms_vars_dict = {
             "email": email,

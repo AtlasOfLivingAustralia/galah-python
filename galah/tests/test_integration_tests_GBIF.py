@@ -9,7 +9,7 @@ email_gbif = "ala4r@ala.org.au"
 usernameGBIF = configParser["GBIF"]["usernameGBIF"]
 passwordGBIF = configParser["GBIF"]["passwordGBIF"]
 
-
+#"""
 ######################################
 # changes and errors
 ######################################
@@ -253,7 +253,7 @@ def test_atlas_counts_taxa_filter_empty_global():
     assert galah.atlas_counts(taxa="Vulpes vulpes", filters="year=")["totalRecords"][0] > 0
 
 
-"""
+
 # TODO: Figure these out
 # test atlas_counts() can call search_taxa() and using two filters with the same field, return results for a single taxa
 def test_atlas_counts_taxa_same_filter_global():
@@ -263,12 +263,11 @@ def test_atlas_counts_taxa_same_filter_global():
     assert galah.atlas_counts(taxa, filters=f)['totalRecords'][0] > 0
 
 # test atlas_counts() can call search_taxa() and using two filters with the same field, return results for a single taxa
-def test_atlas_counts_taxa_same_filter_global2_global():
-    galah.galah_config(atlas="GBIF")
-    taxa = "Anigozanthos manglesii"
-    f = ["year >=2018", "year <= 2022", "year!=2020"]
-    assert galah.atlas_counts(taxa, filters=f)['totalRecords'][0] > 0
-"""
+# def test_atlas_counts_taxa_same_filter_global2_global():
+#     galah.galah_config(atlas="GBIF")
+#     taxa = "Anigozanthos manglesii"
+#     f = ["year >=2018", "year <= 2022", "year!=2020"]
+#     assert galah.atlas_counts(taxa, filters=f)['totalRecords'][0] > 0
 
 
 # test atlas_counts() with total_group_by
@@ -322,7 +321,7 @@ def test_atlas_counts_taxa_groups_global():
 def test_atlas_counts_taxa_groups_expand_global():
     galah.galah_config(atlas="GBIF")
     taxa = "Vulpes vulpes"
-    group_by = ["year", "basisOfRecord"]
+    group_by = ["month", "basisOfRecord"] # changed from year
     output = galah.atlas_counts(taxa, group_by=group_by)
     assert output.shape[0] > 0
     assert output.shape[1] == len(group_by) + 1
@@ -576,7 +575,7 @@ def test_atlas_species_global_filter_notaxa():
 ######################################
 # atlas_occurrences
 ######################################
-"""
+
 # first test for atlas_occurrences() - check if search_taxa() is working
 def test_atlas_occurrences_taxa_filters_global():
     galah.galah_config(
@@ -585,7 +584,7 @@ def test_atlas_occurrences_taxa_filters_global():
         usernameGBIF=usernameGBIF,
         passwordGBIF=passwordGBIF,
     )
-    occurrences = galah.atlas_occurrences(taxa="Vulpes vulpes", filters="year=2022")
+    occurrences = galah.atlas_occurrences(taxa="Vulpes vulpes", filters=["year=2022","month=6"])
     assert occurrences.shape[0] > 1
 
 
@@ -597,7 +596,7 @@ def test_atlas_occurrences_taxa_filters2_global():
         usernameGBIF=usernameGBIF,
         passwordGBIF=passwordGBIF,
     )
-    filters = ["year=2022", "basisOfRecord=HUMAN_OBSERVATION"]
+    filters = ["year=2022", "basisOfRecord=HUMAN_OBSERVATION","month=6"]
     occurrences = galah.atlas_occurrences(taxa="Vulpes vulpes", filters=filters)
     assert occurrences.shape[0] > 0
 
@@ -610,7 +609,7 @@ def test_atlas_occurrences_taxa_filters3_global():
         usernameGBIF=usernameGBIF,
         passwordGBIF=passwordGBIF,
     )
-    filters = ["year>=2023", "basisOfRecord=HUMAN_OBSERVATION"]
+    filters = ["year>=2026", "basisOfRecord=HUMAN_OBSERVATION","month=6"]
     occurrences = galah.atlas_occurrences(taxa="Vulpes vulpes", filters=filters)
     assert occurrences.shape[0] > 0
 

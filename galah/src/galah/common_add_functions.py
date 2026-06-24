@@ -1,5 +1,7 @@
 import urllib
 
+from .common_dictionaries import SOURCE_TYPE_ID,QGIS_SOURCE_TYPE_ID
+from .common_functions import set_bool_argument
 from .galah_config import readConfig
 from .galah_filter import check_for_duplicate_filters, galah_filter, process_or_filters
 from .galah_geolocate import galah_geolocate
@@ -10,6 +12,14 @@ def add_extras_to_URL(add_email=True, use_data_profile=False, data_profile_list=
 
     # get your configs
     configs = readConfig(config_file=config_file)
+
+    # get qgis argument
+    atlas = configs["galahSettings"]["atlas"]
+    qgis = set_bool_argument(arg=configs["galahSettings"]["qgis"], name_arg="qgis")
+    if qgis:
+        sourceTypeId = QGIS_SOURCE_TYPE_ID
+    else:
+        sourceTypeId = SOURCE_TYPE_ID
 
     # initialise variable
     end_url = "&"
@@ -41,8 +51,9 @@ def add_extras_to_URL(add_email=True, use_data_profile=False, data_profile_list=
         end_url += "disableAllQualityFilters=true&"
 
     # finally, add reason
-    end_url += "reasonTypeId={}&".format(configs["galahSettings"]["reason"])
-    end_url += "pageSize=0"
+    end_url += f"reasonTypeId={configs["galahSettings"]["reason"]}"
+    if atlas in ["ALA","Australia"]:
+        end_url += f"&sourceTypeId={sourceTypeId}&pageSize=0"
 
     # return end_url
     return end_url

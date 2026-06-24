@@ -448,25 +448,25 @@ Once you have registered your email, you can store it in <code class="docutils l
 <p>This will not return anything.  No error messages means it is configured correctly.  To see what your configuation settings
 are, type</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">&gt;&gt;&gt; galah.galah_config()</span>
-</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>    Configuration                  Value
-0           email  amanda.buyan@csiro.au
-1    email_notify                  False
-2           atlas              Australia
-3    data_profile                    ALA
-4           ranks                    all
-5          reason                     10
-6         verbose                  False
-7         timeout                    600
-8    usernamegbif                       
-9    passwordgbif                       
-10   authenticate                  False
-11      client_id                       
-12  client_secret                       
-13   access_token                       
-14  refresh_token                       
-15         scopes                       
-16     expires_at                       
-17           qgis                  False
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>    Configuration                   Value
+0           email   amanda.buyan@csiro.au
+1    email_notify                   False
+2           atlas               Australia
+3    data_profile                     ALA
+4           ranks                     all
+5          reason                      10
+6         verbose                   False
+7         timeout                     600
+8    usernamegbif  atlasoflivingaustralia
+9    passwordgbif   galah-gbif-test-login
+10   authenticate                   False
+11      client_id                        
+12  client_secret                        
+13   access_token                        
+14  refresh_token                        
+15         scopes                        
+16     expires_at                        
+17           qgis                   False
 </pre></div>
 </div>
 </section>
@@ -476,27 +476,27 @@ are, type</p>
 many records are currently in the ALA, type</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">atlas_counts</span><span class="p">()</span></span>
 </pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>   totalRecords
-0     181071285
+0     181470312
 </pre></div>
 </div>
 <p>If you are not interested in a specific species, but in the number of records in the atlas from the year 2020 onwards, you can
 add this to the <code class="docutils literal notranslate"><span class="pre">filters</span></code> argument of <code class="docutils literal notranslate"><span class="pre">atlas_counts()</span></code>.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">atlas_counts</span><span class="p">(</span><span class="n">filters</span><span class="o">=</span><span class="s2">&quot;year&gt;=2020&quot;</span><span class="p">)</span></span>
 </pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>   totalRecords
-0      65057072
+0      65432820
 </pre></div>
 </div>
 <p>If you are wondering how the number of records for all species in the ALA changed over each year from 2020 onwards, you can
 tell <code class="docutils literal notranslate"><span class="pre">galah</span></code> to group your results by year, to get yearly counts.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">atlas_counts</span><span class="p">(</span><span class="n">filters</span><span class="o">=</span><span class="s2">&quot;year&gt;=2020&quot;</span><span class="p">,</span><span class="n">group_by</span><span class="o">=</span><span class="s2">&quot;year&quot;</span><span class="p">)</span></span>
 </pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>   year     count
-0  2020   8323047
-1  2021   9708522
-2  2022  10487202
-3  2023  12187075
-4  2024  13091940
-5  2025  10012194
-6  2026   1247092
+0  2020   8323729
+1  2021   9710172
+2  2022  10489353
+3  2023  12198513
+4  2024  13118441
+5  2025  10074276
+6  2026   1518336
 </pre></div>
 </div>
 <p>To narrow down your search by a specific species, you can use the <code class="docutils literal notranslate"><span class="pre">search_taxa()</span></code> function to check whether or not the
@@ -511,7 +511,7 @@ or the red fox.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">&gt;&gt;&gt; import galah</span>
 <span class="prompt1">&gt;&gt;&gt; galah.atlas_counts(taxa=&quot;Vulpes vulpes&quot;)</span>
 </pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>   totalRecords
-0        160137
+0        160710
 </pre></div>
 </div>
 <p>Now, we can put our <code class="docutils literal notranslate"><span class="pre">filters</span></code> query together with our red fox query, to see how many occurrences of red foxes in the ALA
@@ -521,11 +521,11 @@ were seen each year from 2020 onwards.</p>
 </pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>   year  count
 0  2020   6665
 1  2021   8338
-2  2022   8602
-3  2023   8634
-4  2024   8845
-5  2025   9128
-6  2026   1869
+2  2022   8604
+3  2023   9020
+4  2024   8856
+5  2025   9189
+6  2026   1974
 </pre></div>
 </div>
 </section>
@@ -542,32 +542,32 @@ To do this, we will take the query from above and change the function name from 
 3           -39.048423        146.365914  2021-03-05T00:00:00Z  Vulpes vulpes  https://biodiversity.org.au/afd/taxa/2869ce8a-8212-46c2-8327-dfb7fabb8296  9869adbf-26c2-4258-a2c2-c76517f3b5ea                    FeralScan          PRESENT
 4           -39.043553        146.465719  2024-07-02T00:00:00Z  Vulpes vulpes  https://biodiversity.org.au/afd/taxa/2869ce8a-8212-46c2-8327-dfb7fabb8296  e4135950-eb4d-47aa-97fb-11ad8a75032a                    FeralScan          PRESENT
 ...                ...               ...                   ...            ...                                                                        ...                                   ...                          ...              ...
-52076        50.800000         -0.400000  2021-06-07T09:33:00Z  Vulpes vulpes  https://biodiversity.org.au/afd/taxa/2869ce8a-8212-46c2-8327-dfb7fabb8296  1e90a2e4-e0f5-4f2c-a7ce-97d3d465a1f4  Earth Guardians Weekly Feed          PRESENT
-52077        51.100000         -0.500000  2023-03-17T12:04:54Z  Vulpes vulpes  https://biodiversity.org.au/afd/taxa/2869ce8a-8212-46c2-8327-dfb7fabb8296  65fc1040-5675-4f6c-8c92-40f8de159bed  Earth Guardians Weekly Feed          PRESENT
-52078        51.400000         -2.300000  2021-05-24T19:37:00Z  Vulpes vulpes  https://biodiversity.org.au/afd/taxa/2869ce8a-8212-46c2-8327-dfb7fabb8296  abc59803-000c-47bd-b758-8420dfce4714  Earth Guardians Weekly Feed          PRESENT
-52079        51.574697         -0.109975  2020-04-14T17:10:00Z  Vulpes vulpes  https://biodiversity.org.au/afd/taxa/2869ce8a-8212-46c2-8327-dfb7fabb8296  89d22e27-4c17-430d-90e3-74455cc78ec2  Earth Guardians Weekly Feed          PRESENT
-52080        51.900000         -0.200000  2025-07-14T08:53:00Z  Vulpes vulpes  https://biodiversity.org.au/afd/taxa/2869ce8a-8212-46c2-8327-dfb7fabb8296  0bebb889-7a1c-44a6-ac42-33ab06023fa7  Earth Guardians Weekly Feed          PRESENT
+52641        50.800000         -0.400000  2021-06-07T09:33:00Z  Vulpes vulpes  https://biodiversity.org.au/afd/taxa/2869ce8a-8212-46c2-8327-dfb7fabb8296  1e90a2e4-e0f5-4f2c-a7ce-97d3d465a1f4  Earth Guardians Weekly Feed          PRESENT
+52642        51.100000         -0.500000  2023-03-17T12:04:54Z  Vulpes vulpes  https://biodiversity.org.au/afd/taxa/2869ce8a-8212-46c2-8327-dfb7fabb8296  65fc1040-5675-4f6c-8c92-40f8de159bed  Earth Guardians Weekly Feed          PRESENT
+52643        51.400000         -2.300000  2021-05-24T19:37:00Z  Vulpes vulpes  https://biodiversity.org.au/afd/taxa/2869ce8a-8212-46c2-8327-dfb7fabb8296  abc59803-000c-47bd-b758-8420dfce4714  Earth Guardians Weekly Feed          PRESENT
+52644        51.574697         -0.109975  2020-04-14T17:10:00Z  Vulpes vulpes  https://biodiversity.org.au/afd/taxa/2869ce8a-8212-46c2-8327-dfb7fabb8296  89d22e27-4c17-430d-90e3-74455cc78ec2  Earth Guardians Weekly Feed          PRESENT
+52645        51.900000         -0.200000  2025-07-14T08:53:00Z  Vulpes vulpes  https://biodiversity.org.au/afd/taxa/2869ce8a-8212-46c2-8327-dfb7fabb8296  0bebb889-7a1c-44a6-ac42-33ab06023fa7  Earth Guardians Weekly Feed          PRESENT
 
-[52081 rows x 8 columns]
+[52646 rows x 8 columns]
 </pre></div>
 </div>
 <p>If you are only interested in the scientific name, as well as latitude and longitude, use the <code class="docutils literal notranslate"><span class="pre">fields</span></code> option as follows:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">import galah</span>
 <span class="prompt1">galah.atlas_occurrences(taxa=&quot;Vulpes vulpes&quot;,filters=&quot;year&gt;=2020&quot;,fields=[&quot;scientificName&quot;,&quot;decimalLatitude&quot;,&quot;decimalLongitude&quot;])</span>
 </pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>      scientificName  decimalLatitude  decimalLongitude
-0      Vulpes vulpes       -33.574652        150.246178
-1      Vulpes vulpes       -32.119660        151.945620
-2      Vulpes vulpes       -30.574234        149.130333
-3      Vulpes vulpes       -34.990220        138.706610
-4      Vulpes vulpes       -37.823152        145.172300
+0      Vulpes vulpes       -34.808540        150.020930
+1      Vulpes vulpes       -38.073940        145.511460
+2      Vulpes vulpes       -36.995980        147.174120
+3      Vulpes vulpes       -37.758808        145.002055
+4      Vulpes vulpes       -32.047700        149.943430
 ...              ...              ...               ...
-52076  Vulpes vulpes       -32.166127        151.975675
-52077  Vulpes vulpes       -37.417012        149.924553
-52078  Vulpes vulpes       -33.758802        151.254002
-52079  Vulpes vulpes       -30.430003        151.596162
-52080  Vulpes vulpes       -34.996137        149.921838
+52641  Vulpes vulpes       -35.225011        149.171831
+52642  Vulpes vulpes       -38.208088        145.237976
+52643  Vulpes vulpes       -30.286256        150.860431
+52644  Vulpes vulpes       -30.349631        150.282939
+52645  Vulpes vulpes       -38.428991        144.153737
 
-[52081 rows x 3 columns]
+[52646 rows x 3 columns]
 </pre></div>
 </div>
 <p>Check out other vignettes and the API docs for more information on how to use each of these functions, as well as to

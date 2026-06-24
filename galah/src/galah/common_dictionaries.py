@@ -2,6 +2,9 @@ from .version import __version__
 
 USER_AGENT = "galah-python{}".format(__version__)
 USER_AGENT_QGIS = "qgis-galah-python{}".format(__version__)
+GBIF_FACET_LIMIT = 100000
+SOURCE_TYPE_ID = 2005
+QGIS_SOURCE_TYPE_ID = 2006
 
 # all available atlases
 atlases = [
@@ -69,6 +72,8 @@ ATLAS_OCCURRENCES_ERROR_MESSAGES = {
     "Global": "go to https://www.gbif.org/user/profile to register.",
     "Kew": "go to https://data.kew.org to register.",
     "Spain": "go to https://auth.gbif.es/cas/login?lang=en to register.",
+    "Sweden": "go to https://biodiversitydata.se/ to register.",
+    "United Kingdom": "go to https://registry.nbnatlas.org/ to register."
 }
 
 # specifying what each atlas' status is
@@ -447,6 +452,7 @@ SEARCH_TAXA_FIELDS = {
         "genus",
         "species",
         "commonName",
+        "name_match_metric" # name_parse_type
     ],
     "Brazil": [
         "scientificName",
@@ -461,6 +467,7 @@ SEARCH_TAXA_FIELDS = {
         "genus",
         "species",
         "commonName",
+        "name_match_matric"
     ],
     "Flanders": [
         "scientificName",
@@ -475,6 +482,7 @@ SEARCH_TAXA_FIELDS = {
         "genus",
         "species",
         "canonicalName",
+        "matchType"
     ],
     "France": [
         "scientificName",

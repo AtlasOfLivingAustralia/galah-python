@@ -284,10 +284,11 @@ def atlas_occurrences(
         response = requests.request(
             method=method, url=URL, headers=headers, auth=authentication, data=payload, timeout=timeout
         )
+        job_number = response.text
 
         # get job number
-        pattern = "^[a-zA-Z0-9_-]+$"
-        job_number = re.search(pattern, response.text)
+        # pattern = "^[a-zA-Z0-9_-]+$"
+        # job_number = re.search(pattern, response.text)
         statusURL = baseURL.replace("request", job_number)
 
         # return downloaded data when the job is done
