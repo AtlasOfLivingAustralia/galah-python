@@ -77,7 +77,9 @@ def show_all(
 
     # get atlas and verbose
     atlas = configs["galahSettings"]["atlas"]
-    verbose = set_bool_argument(arg=configs["galahSettings"]["verbose"], name_arg="verbose")
+    verbose = set_bool_argument(
+        arg=configs["galahSettings"]["verbose"], name_arg="verbose"
+    )
     timeout = int(configs["galahSettings"]["timeout"])
 
     # check to see if atlas is in list of non-functioning atlases
@@ -110,7 +112,9 @@ def show_all(
 
     # check for
     if not all(type(options[x][0]) is bool for x in options):
-        raise ValueError("Only True and False values are accepted in the show_all() function.")
+        raise ValueError(
+            "Only True and False values are accepted in the show_all() function."
+        )
 
     # Now, go through all options
     for o in options.keys():
@@ -120,7 +124,11 @@ def show_all(
             else:
                 return_array.append(
                     options[o][1](
-                        atlas=atlas, headers=headers, verbose=verbose, config_file=config_file, timeout=timeout
+                        atlas=atlas,
+                        headers=headers,
+                        verbose=verbose,
+                        config_file=config_file,
+                        timeout=timeout,
                     )
                 )
 
@@ -175,7 +183,11 @@ def get_response_show_all(
 
     # get data and check for
     URL, method = get_api_url(
-        column1=column1, column1value=column1value, column2=column2, column2value=column2value, config_file=config_file
+        column1=column1,
+        column1value=column1value,
+        column2=column2,
+        column2value=column2value,
+        config_file=config_file,
     )
 
     # if user wants more verbose message, print it
@@ -192,7 +204,9 @@ def get_response_show_all(
     return response
 
 
-def show_all_assertions(atlas=None, headers=None, verbose=None, config_file=None, timeout=600):
+def show_all_assertions(
+    atlas=None, headers=None, verbose=None, config_file=None, timeout=600
+):
     """
     This function is for getting all assertions available in the chosen atlas.
 
@@ -214,7 +228,11 @@ def show_all_assertions(atlas=None, headers=None, verbose=None, config_file=None
     if atlas in ["Global", "GBIF"]:
 
         # read this from a pre-downloaded CSV - potentially change this later
-        assertions_dict = pd.read_csv(os.path.join(os.path.dirname(os.path.abspath(__file__)), "gbif_assertions.csv"))
+        assertions_dict = pd.read_csv(
+            os.path.join(
+                os.path.dirname(os.path.abspath(__file__)), "gbif_assertions.csv"
+            )
+        )
         assertions_dict.reset_index(drop=True, inplace=True)
         return assertions_dict
 
@@ -333,11 +351,15 @@ def show_all_apis():
     """
 
     # append the full atlaslist to return_array
-    atlasfile = os.path.join(os.path.dirname(os.path.abspath(__file__)), "node_config.csv")
+    atlasfile = os.path.join(
+        os.path.dirname(os.path.abspath(__file__)), "node_config.csv"
+    )
     return pd.read_csv(atlasfile)
 
 
-def show_all_collections(atlas=None, headers=None, verbose=None, config_file=None, timeout=600):
+def show_all_collections(
+    atlas=None, headers=None, verbose=None, config_file=None, timeout=600
+):
     """
     This function is for getting all collections available in the chosen atlas.
 
@@ -374,7 +396,9 @@ def show_all_collections(atlas=None, headers=None, verbose=None, config_file=Non
     return pd.DataFrame.from_dict(response.json())
 
 
-def show_all_datasets(atlas=None, headers=None, verbose=None, config_file=None, timeout=600):
+def show_all_datasets(
+    atlas=None, headers=None, verbose=None, config_file=None, timeout=600
+):
     """
     This function is for getting all datasets available in the chosen atlas.
 
@@ -416,7 +440,9 @@ def show_all_datasets(atlas=None, headers=None, verbose=None, config_file=None, 
         return pd.DataFrame.from_dict(response.json())
 
 
-def show_all_fields(atlas=None, headers=None, verbose=None, config_file=None, timeout=600):
+def show_all_fields(
+    atlas=None, headers=None, verbose=None, config_file=None, timeout=600
+):
     """
     This function is for getting all assertions available in the chosen atlas.
 
@@ -451,12 +477,18 @@ def show_all_fields(atlas=None, headers=None, verbose=None, config_file=None, ti
     # remove anything with 'Contextual' or 'Environmental' from the options for Australian atlas
     if atlas in ["Australia", "Brazil", "Spain"]:
 
-        fields_values = fields_values[~fields_values["classs"].astype(str).str.contains("Contextual|Environmental")]
+        fields_values = fields_values[
+            ~fields_values["classs"]
+            .astype(str)
+            .str.contains("Contextual|Environmental")
+        ]
 
     # select only the columns titled 'name', 'info', (and) 'infoUrl'
     if atlas in ["Australia", "Spain"]:
         fields_select = fields_values[["name", "info", "infoUrl"]]
-        dataFrame = fields_select.rename(columns={"name": "id", "info": "description", "infoUrl": "link"})
+        dataFrame = fields_select.rename(
+            columns={"name": "id", "info": "description", "infoUrl": "link"}
+        )
         dataFrame.insert(loc=2, column="type", value="field")
     elif atlas in [
         "Austria",
@@ -469,7 +501,9 @@ def show_all_fields(atlas=None, headers=None, verbose=None, config_file=None, ti
         "United Kingdom",
     ]:
         fields_select = fields_values[["name", "info"]]
-        dataFrame = fields_select.rename(columns={"name": "id", "info": "description"})  # , inplace=True)
+        dataFrame = fields_select.rename(
+            columns={"name": "id", "info": "description"}
+        )  # , inplace=True)
         dataFrame["type"] = "field"
         dataFrame["link"] = ""
     else:
@@ -478,7 +512,9 @@ def show_all_fields(atlas=None, headers=None, verbose=None, config_file=None, ti
         return df
 
     # second: get spatial layers
-    spatial_layers = get_spatial_layers_from_fields(atlas=atlas, headers=headers, verbose=verbose, timeout=timeout)
+    spatial_layers = get_spatial_layers_from_fields(
+        atlas=atlas, headers=headers, verbose=verbose, timeout=timeout
+    )
 
     # third: get media fields
     if atlas in ["Australia", "Spain"]:
@@ -532,7 +568,9 @@ def show_all_fields(atlas=None, headers=None, verbose=None, config_file=None, ti
         return dataFrame
 
 
-def get_spatial_layers_from_fields(atlas=None, headers=None, verbose=None, config_file=None, timeout=600):
+def get_spatial_layers_from_fields(
+    atlas=None, headers=None, verbose=None, config_file=None, timeout=600
+):
     """
     This function is for getting the spatial layers for the fields argument.
 
@@ -585,7 +623,9 @@ def get_spatial_layers_from_fields(atlas=None, headers=None, verbose=None, confi
                     spatial_values["name"] + " " + spatial_values["desc"]
                 )  # changed from displayname and description
             else:
-                spatial_layers["description"] = spatial_values["displayname"] + " " + spatial_values["description"]
+                spatial_layers["description"] = (
+                    spatial_values["displayname"] + " " + spatial_values["description"]
+                )
             spatial_layers["type"] = "layers"
             spatial_layers["link"] = ""
 
@@ -593,7 +633,9 @@ def get_spatial_layers_from_fields(atlas=None, headers=None, verbose=None, confi
     return spatial_layers
 
 
-def show_all_licences(atlas=None, headers=None, verbose=None, config_file=None, timeout=600):
+def show_all_licences(
+    atlas=None, headers=None, verbose=None, config_file=None, timeout=600
+):
     """
     This function is for getting all licences available in the chosen atlas.
 
@@ -617,7 +659,9 @@ def show_all_licences(atlas=None, headers=None, verbose=None, config_file=None, 
 
     # check for atlases that have an endpoint but no data
     elif atlas in ["Austria", "Brazil", "Kew"]:
-        raise ValueError("{} has an API endpoint for licences, but it is empty.".format(atlas))
+        raise ValueError(
+            "{} has an API endpoint for licences, but it is empty.".format(atlas)
+        )
 
     # otherwise, do default call
     else:
@@ -638,7 +682,9 @@ def show_all_licences(atlas=None, headers=None, verbose=None, config_file=None, 
     return df[["id", "name", "acronym", "url"]]
 
 
-def show_all_lists(atlas=None, headers=None, verbose=None, config_file=None, timeout=600):
+def show_all_lists(
+    atlas=None, headers=None, verbose=None, config_file=None, timeout=600
+):
     """
     This function is for getting all lists available in the chosen atlas.
 
@@ -661,7 +707,9 @@ def show_all_lists(atlas=None, headers=None, verbose=None, config_file=None, tim
         raise ValueError("The {} atlas does not have a lists API.".format(atlas))
 
     if atlas in ["Kew"]:
-        raise ValueError("{} has an API endpoint for licences, but it is empty.".format(atlas))
+        raise ValueError(
+            "{} has an API endpoint for licences, but it is empty.".format(atlas)
+        )
 
     if atlas in ["Australia", "ALA"]:
 
@@ -669,7 +717,9 @@ def show_all_lists(atlas=None, headers=None, verbose=None, config_file=None, tim
         df = pd.DataFrame()
 
         # get initial URL
-        baseURL, method = get_api_url(column1="called_by", column1value="show_all-lists")
+        baseURL, method = get_api_url(
+            column1="called_by", column1value="show_all-lists"
+        )
 
         # print the URLs if user has chosen the verbose option
         print_if_verbose(verbose=verbose, headers=headers, URL=baseURL, method=method)
@@ -696,14 +746,18 @@ def show_all_lists(atlas=None, headers=None, verbose=None, config_file=None, tim
                 new_url = URL + "&page={}&offset={}".format(page, offset)
                 response = requests.request(method=method, url=new_url, timeout=timeout)
                 response_json = response.json()
-                df = pd.concat([df, pd.DataFrame(response_json["lists"])], ignore_index=True)
+                df = pd.concat(
+                    [df, pd.DataFrame(response_json["lists"])], ignore_index=True
+                )
                 page += 1
                 current_lists += maximum
                 offset += maximum
 
         else:
 
-            response = response = requests.request(method=method, url=URL, timeout=timeout)
+            response = response = requests.request(
+                method=method, url=URL, timeout=timeout
+            )
             df = pd.DataFrame.from_dict(response.json()["lists"])
 
     else:
@@ -724,13 +778,17 @@ def show_all_lists(atlas=None, headers=None, verbose=None, config_file=None, tim
         df = pd.DataFrame.from_dict(response.json()["lists"])
 
     # rename dataResourceUid
-    if "dataResourceUid" in df and atlas in ["Australia","ALA"]:
+    if "dataResourceUid" in df and atlas in ["Australia", "ALA"]:
         df = df.rename(columns={"dataResourceUid": "species_list_uid"})
 
     # reorder information for easier use
     old_columns = list(df.columns)
     print(old_columns)
-    item_list = [e for e in old_columns if e not in ("species_list_uid", "dataResourceUid", "listName", "description")]
+    item_list = [
+        e
+        for e in old_columns
+        if e not in ("species_list_uid", "dataResourceUid", "listName", "description")
+    ]
     first_columns = ["species_list_uid", "dataResourceUid", "listName", "description"]
     for fc in first_columns:
         if fc not in old_columns:
@@ -741,7 +799,9 @@ def show_all_lists(atlas=None, headers=None, verbose=None, config_file=None, tim
     return df[columns_order]
 
 
-def show_all_profiles(atlas=None, headers=None, verbose=None, config_file=None, timeout=600):
+def show_all_profiles(
+    atlas=None, headers=None, verbose=None, config_file=None, timeout=600
+):
     """
     This function is for getting all profiles available in the chosen atlas.
 
@@ -786,10 +846,14 @@ def show_all_profiles(atlas=None, headers=None, verbose=None, config_file=None, 
 
     # else, raise value error
     else:
-        raise ValueError("Only the Australian atlas has data quality profiles you can use.")
+        raise ValueError(
+            "Only the Australian atlas has data quality profiles you can use."
+        )
 
 
-def show_all_providers(atlas=None, headers=None, verbose=None, config_file=None, timeout=600):
+def show_all_providers(
+    atlas=None, headers=None, verbose=None, config_file=None, timeout=600
+):
     """
     This function is for getting all data providers available in the chosen atlas.
 
@@ -808,7 +872,9 @@ def show_all_providers(atlas=None, headers=None, verbose=None, config_file=None,
     """
     # raise an exception specific to France, as their providers are empty
     if atlas in ["France"]:
-        raise ValueError("{} has an API endpoint for providers, but it is empty.".format(atlas))
+        raise ValueError(
+            "{} has an API endpoint for providers, but it is empty.".format(atlas)
+        )
 
     # check for atlases with providers
     else:
@@ -1019,7 +1085,9 @@ def show_all_ranks():
         )
 
 
-def show_all_reasons(atlas=None, headers=None, verbose=None, config_file=None, timeout=600):
+def show_all_reasons(
+    atlas=None, headers=None, verbose=None, config_file=None, timeout=600
+):
     """
     This function is for getting all reasons available in the chosen atlas.
 

@@ -45,14 +45,20 @@ def galah_geolocate(polygon=None, bbox=None, simplify_polygon=False, tolerance=1
             if all(x not in polygon for x in ["POLYGON", "MULTIPOLYGON", "shp"]):
                 raise ValueError("Only a shape file or wkt should be passed to polygon")
             polygon = check_simplify_polygon(
-                simplify_polygon=simplify_polygon, shape=shapely.wkt.loads(polygon), tolerance=tolerance
+                simplify_polygon=simplify_polygon,
+                shape=shapely.wkt.loads(polygon),
+                tolerance=tolerance,
             )
             return shapely.wkt.loads(polygon)
         elif isinstance(polygon, (Polygon, MultiPolygon)):
-            polygon = check_simplify_polygon(simplify_polygon=simplify_polygon, shape=polygon, tolerance=tolerance)
+            polygon = check_simplify_polygon(
+                simplify_polygon=simplify_polygon, shape=polygon, tolerance=tolerance
+            )
             return str(polygon)
         else:
-            raise ValueError("The only types of variables geolocate takes are str and polygons")
+            raise ValueError(
+                "The only types of variables geolocate takes are str and polygons"
+            )
 
     # then, check to see if user has given a bounding box
     if bbox is not None:
@@ -81,7 +87,9 @@ def galah_geolocate(polygon=None, bbox=None, simplify_polygon=False, tolerance=1
                 )
             )
         else:
-            raise ValueError("The only types of variables geolocate takes for bounding box are dicts and polygons")
+            raise ValueError(
+                "The only types of variables geolocate takes for bounding box are dicts and polygons"
+            )
 
 
 def check_simplify_polygon(simplify_polygon=False, shape=None, tolerance=10000):

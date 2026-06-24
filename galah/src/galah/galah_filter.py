@@ -24,7 +24,9 @@ def galah_filter(f, occurrencesGBIF=False, authenticate=False):
     # first, check for special characters
     char_string = "[!=<>]"
     specialChars = re.compile(char_string)
-    otherSpecialChars = re.compile("withingeoDistanceisNullisNotNull")  # not sure about this
+    otherSpecialChars = re.compile(
+        "withingeoDistanceisNullisNotNull"
+    )  # not sure about this
     returnString = ""
 
     # get configs
@@ -32,7 +34,9 @@ def galah_filter(f, occurrencesGBIF=False, authenticate=False):
 
     # get atlas
     atlas = configs["galahSettings"]["atlas"]
-    authenticate = set_bool_argument(arg=configs["galahSettings"]["authenticate"], name_arg="authenticate")
+    authenticate = set_bool_argument(
+        arg=configs["galahSettings"]["authenticate"], name_arg="authenticate"
+    )
 
     # ---------------------------------------------------------------------------------------------
     # Check for all special characters in the provided filter; then, split the filter by the
@@ -44,7 +48,9 @@ def galah_filter(f, occurrencesGBIF=False, authenticate=False):
     if specialChar is None or len(specialChar) == 0:
         if ["within", "geoDistance", "isNull", "isNotNull"] not in specialChar:
             raise ValueError(
-                "Either your filters does not have the correct special characters {}".format(char_string)
+                "Either your filters does not have the correct special characters {}".format(
+                    char_string
+                )
                 + "or we need to include another special character we have forgotten about."
             )
         specialChar = otherSpecialChars.findall(f)
@@ -77,11 +83,15 @@ def galah_filter(f, occurrencesGBIF=False, authenticate=False):
         occurrences_GBIF_filters = {}
 
         # check for any logical expressions that are not included
-        check_for_characters(specialChar=specialChar, string_dict=GBIF_PREDICATE_DEFINITIONS)
+        check_for_characters(
+            specialChar=specialChar, string_dict=GBIF_PREDICATE_DEFINITIONS
+        )
 
         # return GBIF predicates
         return process_GBIF_predicates(
-            specialChar=specialChar, parts=parts, occurrences_GBIF_filters=occurrences_GBIF_filters
+            specialChar=specialChar,
+            parts=parts,
+            occurrences_GBIF_filters=occurrences_GBIF_filters,
         )
 
     # then, check if your atlas is GBIF
@@ -96,10 +106,11 @@ def galah_filter(f, occurrencesGBIF=False, authenticate=False):
             ">": "%28{}:%5B{}%20TO%20*%5d%20AND%20-%28{}%3A%22{}%22%29%29".format(
                 parts[0], parts[1], parts[0], parts[1]
             ),
-            "<": '%28{}%3A%5B*%20TO%20{}%5d%20AND%20-%28{}%3A"{}"%29%29'.format(parts[0], parts[1], parts[0], parts[1]),
+            "<": '%28{}%3A%5B*%20TO%20{}%5d%20AND%20-%28{}%3A"{}"%29%29'.format(
+                parts[0], parts[1], parts[0], parts[1]
+            ),
             "<=": "%28{}%3A%5B*%20TO%20{}%5d%29".format(parts[0], parts[1]),
             "=<": "%28{}%3A%5B*%20TO%20{}%5d%29".format(parts[0], parts[1]),
-            
             "!=": "{}=%2A%2C{}".format(parts[0], urllib.parse.quote(parts[1])),
             "=!": "{}=%2A%2C{}".format(parts[0], urllib.parse.quote(parts[1])),
         }
@@ -125,8 +136,12 @@ def galah_filter(f, occurrencesGBIF=False, authenticate=False):
                 "==": "{}:{}".format(parts[0], parts[1]),
                 ">=": "{}:[{} TO *]".format(parts[0], parts[1]),
                 "=>": "{}:[{} TO *]".format(parts[0], parts[1]),
-                ">": "{}:[{} TO *] AND -({}:{})".format(parts[0], parts[1], parts[0], parts[1]),
-                "<": "{}:[* TO {}] AND -({}:{})".format(parts[0], parts[1], parts[0], parts[1]),
+                ">": "{}:[{} TO *] AND -({}:{})".format(
+                    parts[0], parts[1], parts[0], parts[1]
+                ),
+                "<": "{}:[* TO {}] AND -({}:{})".format(
+                    parts[0], parts[1], parts[0], parts[1]
+                ),
                 "<=": "{}:[* TO {}]".format(parts[0], parts[1]),
                 "=<": "{}:[* TO {}]".format(parts[0], parts[1]),
                 "!=": "-{}:{}".format(parts[0], parts[1]),
@@ -134,12 +149,16 @@ def galah_filter(f, occurrencesGBIF=False, authenticate=False):
             }
 
             # check for any logical expressions that are not included
-            check_for_characters(specialChar=specialChar, string_dict=return_strings_ALA)
+            check_for_characters(
+                specialChar=specialChar, string_dict=return_strings_ALA
+            )
 
             # start checking for different logical operators, starting with equals
             if specialChar == "=" or specialChar == "==":
 
-                returnString = process_equals_filter(parts=parts, returnString=returnString, authenticate=authenticate)
+                returnString = process_equals_filter(
+                    parts=parts, returnString=returnString, authenticate=authenticate
+                )
 
             # if not equals, use declared dictionary
             else:
@@ -177,7 +196,9 @@ def galah_filter(f, occurrencesGBIF=False, authenticate=False):
             if specialChar == "=" or specialChar == "==":
 
                 # create return string
-                returnString = process_equals_filter(parts=parts, returnString=returnString)
+                returnString = process_equals_filter(
+                    parts=parts, returnString=returnString
+                )
 
             # if not equals, use declared dictionary
             else:
@@ -206,7 +227,9 @@ def check_for_characters(specialChar=None, string_dict=None):
         )
 
 
-def process_GBIF_predicates(specialChar=None, parts=None, occurrences_GBIF_filters=None):
+def process_GBIF_predicates(
+    specialChar=None, parts=None, occurrences_GBIF_filters=None
+):
     """create the GBIF predicates"""
 
     # occurrences_GBIF_filters = {
@@ -222,8 +245,13 @@ def process_GBIF_predicates(specialChar=None, parts=None, occurrences_GBIF_filte
     # }
 
     # first check for dictionaries in the vocab
-    if specialChar in GBIF_PREDICATE_DEFINITIONS.keys() and type(GBIF_PREDICATE_DEFINITIONS[specialChar]) is dict:
-        parts[0] = "_".join([entry.upper() for entry in re.findall(".[^A-Z]*", parts[0])])
+    if (
+        specialChar in GBIF_PREDICATE_DEFINITIONS.keys()
+        and type(GBIF_PREDICATE_DEFINITIONS[specialChar]) is dict
+    ):
+        parts[0] = "_".join(
+            [entry.upper() for entry in re.findall(".[^A-Z]*", parts[0])]
+        )
         return {
             "type": GBIF_PREDICATE_DEFINITIONS[specialChar][0],
             "predicates": [
@@ -237,7 +265,9 @@ def process_GBIF_predicates(specialChar=None, parts=None, occurrences_GBIF_filte
 
     # then check if the predicate definitions are what we want
     elif specialChar in GBIF_PREDICATE_DEFINITIONS.keys():
-        parts[0] = "_".join([entry.upper() for entry in re.findall(".[^A-Z]*", parts[0])])
+        parts[0] = "_".join(
+            [entry.upper() for entry in re.findall(".[^A-Z]*", parts[0])]
+        )
         return {
             "type": GBIF_PREDICATE_DEFINITIONS[specialChar],
             "key": parts[0],
@@ -268,7 +298,9 @@ def process_equals_filter(parts=None, returnString=None, authenticate=None):
     else:
 
         return_strings = {
-            "digit": "%28{}%3A%22{}%22%29".format(parts[0], parts[1].replace(" ", "%20")),
+            "digit": "%28{}%3A%22{}%22%29".format(
+                parts[0], parts[1].replace(" ", "%20")
+            ),
             "": "%2A%3A%2A%20AND%20-{}%3A%2A".format(parts[0]),
             "True": "%28assertions%3A%22{}%22%29".format(parts[0]),
             "False": "-%28assertions%3A%22{}%22%29".format(parts[0]),
@@ -303,7 +335,8 @@ def process_equals_filter(parts=None, returnString=None, authenticate=None):
             temp_array = parts[1][1:-1].split(",")
             for value in temp_array:
                 returnString += arrayChar_true.format(
-                    parts[0], reduce(lambda a, kv: a.replace(*kv), replace_values.items(), value)
+                    parts[0],
+                    reduce(lambda a, kv: a.replace(*kv), replace_values.items(), value),
                 )
 
             # if we are not authenticating, add right round bracket to URL
@@ -314,7 +347,8 @@ def process_equals_filter(parts=None, returnString=None, authenticate=None):
         else:
 
             returnString += arrayChar_false.format(
-                parts[0], reduce(lambda a, kv: a.replace(*kv), replace_values.items(), parts[1])
+                parts[0],
+                reduce(lambda a, kv: a.replace(*kv), replace_values.items(), parts[1]),
             )
 
     # return the string

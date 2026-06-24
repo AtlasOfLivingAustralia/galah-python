@@ -5,7 +5,11 @@ from .galah_config import readConfig
 def check_atlas(atlas=None, function=None):
     """Check to see if the atlas the user provided is correct"""
     if atlas not in atlases:
-        raise ValueError("Atlas {} not taken into account for the {} function".format(atlas, function))
+        raise ValueError(
+            "Atlas {} not taken into account for the {} function".format(
+                atlas, function
+            )
+        )
 
 
 def check_email_empty(config_file=None):
@@ -45,7 +49,11 @@ def check_taxa_type(taxa=None):
             taxa = [taxa]
 
     else:
-        raise ValueError("The taxa argument only takes a string or a list, not {}.".format(type(taxa)))
+        raise ValueError(
+            "The taxa argument only takes a string or a list, not {}.".format(
+                type(taxa)
+            )
+        )
 
     # return taxa
     return taxa
@@ -58,10 +66,16 @@ def check_for_dict(variable=None, variable_name=None):
 
 def check_args_none(all_args=None, names_all_args=None):
     if all(x is None for x in all_args):
-        raise ValueError("You need to specify one of the following:\n\n{}".format("\n".join(names_all_args)))
+        raise ValueError(
+            "You need to specify one of the following:\n\n{}".format(
+                "\n".join(names_all_args)
+            )
+        )
 
 
-def check_args_specific_atlas(all_args=None, names_all_args=None, atlas=None, specific_atlases=None):
+def check_args_specific_atlas(
+    all_args=None, names_all_args=None, atlas=None, specific_atlases=None
+):
     if any(x is not None for x in all_args) and atlas not in specific_atlases:
         raise ValueError(
             "{} are only available for the {} atlas(es).".format(
@@ -100,4 +114,6 @@ def check_atlas_data_profile(atlas=None, use_data_profile=False):
 def check_max_queries_ALA(response=None):
     # check for daily maximum
     if response.status_code == 429:
-        raise ValueError("You have reached the maximum number of daily queries for the ALA.")
+        raise ValueError(
+            "You have reached the maximum number of daily queries for the ALA."
+        )

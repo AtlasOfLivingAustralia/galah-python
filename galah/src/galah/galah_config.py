@@ -118,7 +118,9 @@ def galah_config(
     is_bool_argument(qgis, "qgis")
 
     # check to see if someone wants to clear bad authentication information
-    configParser = check_for_clearing_auth_info(configParser=configParser, auth_clear=auth_clear)
+    configParser = check_for_clearing_auth_info(
+        configParser=configParser, auth_clear=auth_clear
+    )
 
     # if the user wants authentication on, make sure that all authentication information needed is stored
     if authenticate:
@@ -135,7 +137,9 @@ def galah_config(
         if all(x not in [None, ""] for x in all_auth_settings):
 
             # check if token is expired
-            expiry = is_access_token_expired(expires_at=float(configParser["galahSettings"]["expires_at"]))
+            expiry = is_access_token_expired(
+                expires_at=float(configParser["galahSettings"]["expires_at"])
+            )
 
             # if token is expired, regenerate the token
             if expiry:
@@ -154,7 +158,9 @@ def galah_config(
 
                 # set the new token in the config file
                 configParser["galahSettings"]["refresh_token"] = refresh_token
-                configParser["galahSettings"]["expires_at"] = str(time.time() + float(expires_in))
+                configParser["galahSettings"]["expires_at"] = str(
+                    time.time() + float(expires_in)
+                )
 
         else:
 
@@ -166,9 +172,13 @@ def galah_config(
                     auth_json = json.load(f)
 
                 # set client_id and expires_at now
-                configParser["galahSettings"]["client_id"] = auth_json["profile"]["client_id"]
+                configParser["galahSettings"]["client_id"] = auth_json["profile"][
+                    "client_id"
+                ]
                 # configParser["galahSettings"]["client_secret"] = auth_json["profile"]["client_secret"]
-                configParser["galahSettings"]["expires_at"] = str(auth_json["expires_at"])
+                configParser["galahSettings"]["expires_at"] = str(
+                    auth_json["expires_at"]
+                )
 
             # if not, open web for them
             elif all(x in [None, ""] for x in all_auth_settings):
@@ -177,7 +187,9 @@ def galah_config(
                 try:
                     client_id, auth_json = get_tokens_from_web()
                     configParser["galahSettings"]["client_id"] = client_id
-                    configParser["galahSettings"]["expires_at"] = str(time.time() + float(auth_json["expires_in"]))
+                    configParser["galahSettings"]["expires_at"] = str(
+                        time.time() + float(auth_json["expires_in"])
+                    )
 
                 except KeyboardInterrupt:
                     print("\nCancelled.")
@@ -192,7 +204,19 @@ def galah_config(
             configParser["galahSettings"]["access_token"] = auth_json["access_token"]
 
     # check to see if there are any arguments to update - if not, return dataframe.  If so, update file.
-    if all(x is None for x in [authenticate, auth_filename, email, email_notify, atlas, data_profile, reason, verbose]):
+    if all(
+        x is None
+        for x in [
+            authenticate,
+            auth_filename,
+            email,
+            email_notify,
+            atlas,
+            data_profile,
+            reason,
+            verbose,
+        ]
+    ):
 
         # create dictionary for pandas dataframe
         settings_dict = {"Configuration": [], "Value": []}
@@ -267,7 +291,9 @@ def get_config_filename(config_file=None):
         return os.path.join(os.path.dirname(os.path.abspath(__file__)), "config.ini")
     else:
         if not os.path.isfile(config_file):
-            raise ValueError("Please create your own config file on your system first before editing it.")
+            raise ValueError(
+                "Please create your own config file on your system first before editing it."
+            )
         return config_file
 
 
@@ -292,17 +318,23 @@ def readConfig(config_file=None):
 
     # read default name of config file if none is provided
     if config_file is None:
-        config_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), "config.ini")
+        config_file = os.path.join(
+            os.path.dirname(os.path.abspath(__file__)), "config.ini"
+        )
 
     # read and return the configuration file
     configFile.read(config_file)
     return configFile
 
 
-def get_api_url(column1=None, column1value=None, column2=None, column2value=None, config_file=None):
+def get_api_url(
+    column1=None, column1value=None, column2=None, column2value=None, config_file=None
+):
 
     # first, get specific atlas
-    atlasfile = os.path.join(os.path.dirname(os.path.abspath(__file__)), "node_config.csv")
+    atlasfile = os.path.join(
+        os.path.dirname(os.path.abspath(__file__)), "node_config.csv"
+    )
     atlaslist = pd.read_csv(atlasfile)
     configs = readConfig(config_file=config_file)
 
@@ -310,23 +342,39 @@ def get_api_url(column1=None, column1value=None, column2=None, column2value=None
     specific_atlas = atlaslist[atlaslist["atlas"] == configs["galahSettings"]["atlas"]]
 
     # get rows with specific value
-    rows = specific_atlas[specific_atlas[column1].astype(str).str.contains(column1value, case=True, na=False)]
+    rows = specific_atlas[
+        specific_atlas[column1]
+        .astype(str)
+        .str.contains(column1value, case=True, na=False)
+    ]
 
     # check to see if there are two columns to filter by
     if column2 is None and column2value is None:
 
         # else, return the singular URL
-        index = rows[rows[column1].astype(str).str.contains(column1value, case=True, na=False)].index[0]
-        baseURL = rows[rows[column1].astype(str).str.contains(column1value, case=True, na=False)]["api_url"][index]
-        method = rows[rows[column1].astype(str).str.contains(column1value, case=True, na=False)]["method"][index]
+        index = rows[
+            rows[column1].astype(str).str.contains(column1value, case=True, na=False)
+        ].index[0]
+        baseURL = rows[
+            rows[column1].astype(str).str.contains(column1value, case=True, na=False)
+        ]["api_url"][index]
+        method = rows[
+            rows[column1].astype(str).str.contains(column1value, case=True, na=False)
+        ]["method"][index]
 
     # if there are two columns to filter by, first check for the name and value
     else:
 
         # else, return the singular URL
-        index = rows[rows[column2].astype(str).str.contains(column2value, case=True, na=False)].index[0]
-        baseURL = rows.loc[rows[column1].astype(str).str.contains(column1value, case=True, na=False)]["api_url"][index]
-        method = rows.loc[rows[column1].astype(str).str.contains(column1value, case=True, na=False)]["method"][index]
+        index = rows[
+            rows[column2].astype(str).str.contains(column2value, case=True, na=False)
+        ].index[0]
+        baseURL = rows.loc[
+            rows[column1].astype(str).str.contains(column1value, case=True, na=False)
+        ]["api_url"][index]
+        method = rows.loc[
+            rows[column1].astype(str).str.contains(column1value, case=True, na=False)
+        ]["method"][index]
 
     # return the final URL
     return baseURL, method
@@ -339,10 +387,17 @@ def is_access_token_expired(expires_at=None):
     return time.time() > expires_at
 
 
-def regenerate_token(token_url=None, refresh_token=None, scope=None, client_id=None, client_secret=None):
+def regenerate_token(
+    token_url=None, refresh_token=None, scope=None, client_id=None, client_secret=None
+):
 
     # set up payload
-    payload = {"refresh_token": refresh_token, "grant_type": "refresh_token", "scope": scope, "client_id": client_id}
+    payload = {
+        "refresh_token": refresh_token,
+        "grant_type": "refresh_token",
+        "scope": scope,
+        "client_id": client_id,
+    }
     if client_secret not in [None, ""]:
         payload["client_secret"] = client_secret
 

@@ -3,7 +3,7 @@ This is the setup script for galah.  It contains all of the package information
 and dependencies
 """
 
-from setuptools import setup, find_packages
+from setuptools import find_packages, setup
 
 pkg_vars = {}
 

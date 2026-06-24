@@ -1,6 +1,6 @@
 import urllib
 
-from .common_dictionaries import SOURCE_TYPE_ID,QGIS_SOURCE_TYPE_ID
+from .common_dictionaries import QGIS_SOURCE_TYPE_ID, SOURCE_TYPE_ID
 from .common_functions import set_bool_argument
 from .galah_config import readConfig
 from .galah_filter import check_for_duplicate_filters, galah_filter, process_or_filters
@@ -8,7 +8,9 @@ from .galah_geolocate import galah_geolocate
 from .search_taxa import generate_list_taxonConceptIDs, search_taxa
 
 
-def add_extras_to_URL(add_email=True, use_data_profile=False, data_profile_list=None, config_file=None):
+def add_extras_to_URL(
+    add_email=True, use_data_profile=False, data_profile_list=None, config_file=None
+):
 
     # get your configs
     configs = readConfig(config_file=config_file)
@@ -27,14 +29,20 @@ def add_extras_to_URL(add_email=True, use_data_profile=False, data_profile_list=
     # next, check for email
     if add_email:
         if configs["galahSettings"]["email_notify"] not in ["None", ""]:
-            end_url += "email={}&".format(urllib.parse.quote(configs["galahSettings"]["email"]))
-            end_url += "emailNotify={}&".format(configs["galahSettings"]["email_notify"].lower())
+            end_url += "email={}&".format(
+                urllib.parse.quote(configs["galahSettings"]["email"])
+            )
+            end_url += "emailNotify={}&".format(
+                configs["galahSettings"]["email_notify"].lower()
+            )
 
     # then, check for data profile
     if use_data_profile:
         if not (configs["galahSettings"]["data_profile"] in ["None", ""]):
             if configs["galahSettings"]["data_profile"] in data_profile_list:
-                end_url += "qualityProfile={}&".format(configs["galahSettings"]["data_profile"])
+                end_url += "qualityProfile={}&".format(
+                    configs["galahSettings"]["data_profile"]
+                )
             else:
                 raise ValueError(
                     "The data quality profile not recognised. To see valid data quality profiles, run \n\n"
@@ -52,7 +60,7 @@ def add_extras_to_URL(add_email=True, use_data_profile=False, data_profile_list=
 
     # finally, add reason
     end_url += f"reasonTypeId={configs["galahSettings"]["reason"]}"
-    if atlas in ["ALA","Australia"]:
+    if atlas in ["ALA", "Australia"]:
         end_url += f"&sourceTypeId={sourceTypeId}&pageSize=0"
 
     # return end_url
@@ -71,7 +79,9 @@ def add_filters(URL=None, atlas=None, filters=None, authenticate=False):
 
         # check for filters that are not valid with GBIF
         if any("!=" in f for f in filters):
-            raise ValueError("!= cannot be used with GBIF atlas.  Run separate queries.")
+            raise ValueError(
+                "!= cannot be used with GBIF atlas.  Run separate queries."
+            )
 
         # now, loop over filters
         fs = []
@@ -142,7 +152,9 @@ def add_predicates(predicates=None, filters=None, occurrencesGBIF=False, taxa=No
 
     if filters is not None:
         if any("!=" in f for f in filters):
-            raise ValueError("!= cannot be used with GBIF atlas.  Run separate queries.")
+            raise ValueError(
+                "!= cannot be used with GBIF atlas.  Run separate queries."
+            )
 
         for f in filters:
 
@@ -156,27 +168,44 @@ def add_predicates(predicates=None, filters=None, occurrencesGBIF=False, taxa=No
             t2 = search_taxa(taxa=t)["usageKey"][0]
 
             # have to see if taxonKey is the right one
-            predicates.append(galah_filter("taxonKey={}".format(t2), occurrencesGBIF=occurrencesGBIF))
+            predicates.append(
+                galah_filter("taxonKey={}".format(t2), occurrencesGBIF=occurrencesGBIF)
+            )
 
     return predicates
 
 
 # galah_geolocate
-def add_spatial_shapes(polygon=None, bbox=None, URL=None, simplify_polygon=False, tolerance=0.05):
+def add_spatial_shapes(
+    polygon=None, bbox=None, URL=None, simplify_polygon=False, tolerance=0.05
+):
     # testing for galah_geolocate - implemented in next version
 
     if all(x is None for x in [polygon, bbox]):
         return URL
 
     URL += "&wkt=" + urllib.parse.quote(
-        str(galah_geolocate(polygon=polygon, bbox=bbox, simplify_polygon=simplify_polygon, tolerance=tolerance))
+        str(
+            galah_geolocate(
+                polygon=polygon,
+                bbox=bbox,
+                simplify_polygon=simplify_polygon,
+                tolerance=tolerance,
+            )
+        )
     )
 
     return URL
 
 
 def add_taxa(
-    taxa=None, atlas=None, URL=None, scientific_name=None, predicates=None, specific_epithet=None, identifiers=None
+    taxa=None,
+    atlas=None,
+    URL=None,
+    scientific_name=None,
+    predicates=None,
+    specific_epithet=None,
+    identifiers=None,
 ):
 
     if all(x is None for x in [taxa, scientific_name, specific_epithet, identifiers]):

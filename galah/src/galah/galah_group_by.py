@@ -6,13 +6,20 @@ import requests
 
 from .common_add_functions import add_filters
 from .common_checks import check_string_list
-from .common_dictionaries import GROUP_BY_FACETS, GBIF_FACET_LIMIT
+from .common_dictionaries import GBIF_FACET_LIMIT, GROUP_BY_FACETS
 from .common_functions import print_if_verbose, set_bool_argument
 from .galah_config import get_api_url, readConfig
 from .version import __version__
 
 
-def galah_group_by(URL=None, method=None, group_by=None, total_group_by=False, filters=None, payload=None):
+def galah_group_by(
+    URL=None,
+    method=None,
+    group_by=None,
+    total_group_by=False,
+    filters=None,
+    payload=None,
+):
     """
     Used for grouping counts by a specific query, i.e. "year" or "basisOfRecord".  It's mainly utilized in atlas_counts.
     """
@@ -27,8 +34,12 @@ def galah_group_by(URL=None, method=None, group_by=None, total_group_by=False, f
     # get atlas
     atlas = configs["galahSettings"]["atlas"]
     timeout = int(configs["galahSettings"]["timeout"])
-    verbose = set_bool_argument(arg=configs["galahSettings"]["verbose"], name_arg="verbose")
-    authenticate = set_bool_argument(arg=configs["galahSettings"]["authenticate"], name_arg="authenticate")
+    verbose = set_bool_argument(
+        arg=configs["galahSettings"]["verbose"], name_arg="verbose"
+    )
+    authenticate = set_bool_argument(
+        arg=configs["galahSettings"]["authenticate"], name_arg="authenticate"
+    )
     access_token = configs["galahSettings"]["access_token"]
     client_id = configs["galahSettings"]["client_id"]
 
@@ -55,22 +66,40 @@ def galah_group_by(URL=None, method=None, group_by=None, total_group_by=False, f
         headers["client_id"] = client_id
 
         # get response from your query, which will include all available fields
-        qid_URL, method2 = get_api_url(column1="api_name", column1value="occurrences_qid")
+        qid_URL, method2 = get_api_url(
+            column1="api_name", column1value="occurrences_qid"
+        )
 
         # print information if wanting to know what the URL is
-        print_if_verbose(verbose=verbose, headers=headers, URL=qid_URL, method=method2, payload=payload)
+        print_if_verbose(
+            verbose=verbose,
+            headers=headers,
+            URL=qid_URL,
+            method=method2,
+            payload=payload,
+        )
 
         # post the request to get a QID
-        qid = requests.request(method2, qid_URL, data=payload, headers=headers, timeout=timeout)
+        qid = requests.request(
+            method2, qid_URL, data=payload, headers=headers, timeout=timeout
+        )
 
         # now, add facets to the URL with the QID
         facets = "".join("&facets={}".format(g) for g in group_by)
         if URL[-1] not in ["&"]:
             URL += "?"
-        facetURL = URL + "fq=%28qid%3A" + qid.text + "%29" + facets + "&flimit=-1&pageSize=0"
+        facetURL = (
+            URL + "fq=%28qid%3A" + qid.text + "%29" + facets + "&flimit=-1&pageSize=0"
+        )
 
         # if verbose is true, print all new information
-        print_if_verbose(verbose=verbose, headers=headers, URL=facetURL, method=method, payload=payload)
+        print_if_verbose(
+            verbose=verbose,
+            headers=headers,
+            URL=facetURL,
+            method=method,
+            payload=payload,
+        )
 
         # get data
         response = requests.request(method, facetURL, headers=headers, timeout=timeout)
@@ -86,7 +115,7 @@ def galah_group_by(URL=None, method=None, group_by=None, total_group_by=False, f
             URL += "?"
 
         # change ending if GBIf was selected
-        if atlas in ["Global","GBIF"]:
+        if atlas in ["Global", "GBIF"]:
             end = f"&facetLimit={GBIF_FACET_LIMIT}&facetOffset=0"
         else:
             end = "&flimit=-1&pageSize=0"
@@ -103,10 +132,14 @@ def galah_group_by(URL=None, method=None, group_by=None, total_group_by=False, f
         )
 
         # check to see if the user wants the URL for querying
-        print_if_verbose(verbose=verbose, headers=headers, URL=initial_URL, method=method)
+        print_if_verbose(
+            verbose=verbose, headers=headers, URL=initial_URL, method=method
+        )
 
         # get response from your query, which will include all available fields
-        response = requests.request(method, initial_URL, headers=headers, timeout=timeout)
+        response = requests.request(
+            method, initial_URL, headers=headers, timeout=timeout
+        )
         response_json = response.json()
 
     # ---------------------------------------------------------------------------------------------
@@ -116,13 +149,17 @@ def galah_group_by(URL=None, method=None, group_by=None, total_group_by=False, f
 
     # check if group_by needs to be sorted (if atlas is GBIF)
     group_by = check_needs_sorting(atlas=atlas, group_by=group_by)
-    
+
     # create common variables for looping
-    common_vars = create_common_variables(URL=URL, atlas=atlas, response_json=response_json, expand=expand)
+    common_vars = create_common_variables(
+        URL=URL, atlas=atlas, response_json=response_json, expand=expand
+    )
     facets_array = [None for x in range(common_vars["length"])]
 
     # get all counts for each value
-    dict_values = {entry: [] for entry in [*group_by, "count"]} # None for x in range(common_vars["length"])
+    dict_values = {
+        entry: [] for entry in [*group_by, "count"]
+    }  # None for x in range(common_vars["length"])
 
     # ---------------------------------------------------------------------------------------------
     # If group_by == 2: expand=True, queries are made with group_by values as a filter and
@@ -144,7 +181,7 @@ def galah_group_by(URL=None, method=None, group_by=None, total_group_by=False, f
 
         # loop over facets array
         # was combined_facets_array
-        for f in facets_array[0]: # was combined_facets_array
+        for f in facets_array[0]:  # was combined_facets_array
 
             # check for GBIF atlas
             if atlas in ["Global", "GBIF"]:
@@ -178,7 +215,6 @@ def galah_group_by(URL=None, method=None, group_by=None, total_group_by=False, f
                     timeout=timeout,
                 )
 
-
         # print(len(combined_facets_array))
 
         # format table
@@ -210,30 +246,35 @@ def galah_group_by(URL=None, method=None, group_by=None, total_group_by=False, f
     #         response = requests.request(method, new_URL, headers=headers, timeout=timeout)
     #         response_json = response.json()
     #         print(response.status_code)
-    
+
     else:
 
         # check about entries
-        if atlas in ["Global","GBIF"] and len(response_json["facets"][0]["counts"]) == GBIF_FACET_LIMIT:
+        if (
+            atlas in ["Global", "GBIF"]
+            and len(response_json["facets"][0]["counts"]) == GBIF_FACET_LIMIT
+        ):
             print("You will only get the first 100,000 entries for your query")
 
         # loop over the array length
         for i in range(common_vars["length"]):
 
-            if atlas in ["Global","GBIF"]:
+            if atlas in ["Global", "GBIF"]:
 
                 dict_values = get_GBIF_facets(
                     group_by=group_by,
                     results_array=common_vars["results_array"],
                     i=i,
-                    field_name = common_vars["field_name"],
+                    field_name=common_vars["field_name"],
                     dict_values=dict_values,
                 )
 
             else:
 
                 dict_values = get_facets(
-                    results=common_vars["results_array"][i][common_vars["field_name"]],  # results_array[i][field_name]
+                    results=common_vars["results_array"][i][
+                        common_vars["field_name"]
+                    ],  # results_array[i][field_name]
                     group_by=group_by,
                     expand=expand,
                     dict_values=dict_values,
@@ -263,7 +304,9 @@ def check_group_by(group_by=None):
     """check to see if we have multiple group by arguments; return True if so, False if not"""
     # throw error for too many entries in group by
     if len(group_by) > 2:
-        raise ValueError("Only 2 groups are allowed, as otherwise the queries will be too complicated.")
+        raise ValueError(
+            "Only 2 groups are allowed, as otherwise the queries will be too complicated."
+        )
     if len(group_by) > 1:
         return True
     return False
@@ -281,7 +324,7 @@ def check_needs_sorting(atlas=None, group_by=None):
 ###################################################################################################
 
 
-def create_common_variables(URL = None, atlas=None, response_json=None, expand=None):
+def create_common_variables(URL=None, atlas=None, response_json=None, expand=None):
     """create a common variables dictionary for straightforward looping for all atlases"""
 
     common_variables = {
@@ -294,11 +337,15 @@ def create_common_variables(URL = None, atlas=None, response_json=None, expand=N
 
     # set some common variables
     if atlas in ["Global", "GBIF"]:
-        common_variables["length"] = len(response_json["facets"]) #[0]["counts"]) # added [0]["counts"]
-        common_variables["results_array"] = response_json["facets"] #[0]["counts"]
+        common_variables["length"] = len(
+            response_json["facets"]
+        )  # [0]["counts"]) # added [0]["counts"]
+        common_variables["results_array"] = response_json["facets"]  # [0]["counts"]
         common_variables["field_name"] = "counts"
         if expand:
-            response_json["facets"] = sorted(response_json["facets"], key=lambda d: d["field"])
+            response_json["facets"] = sorted(
+                response_json["facets"], key=lambda d: d["field"]
+            )
             common_variables["facet_name"] = "name"  # was name
     elif atlas in ["Brazil"]:
         common_variables["length"] = len(response_json)
@@ -313,7 +360,12 @@ def create_common_variables(URL = None, atlas=None, response_json=None, expand=N
 
 
 def get_facets_array(
-    atlas=None, facets_array=None, group_by=None, results_array=None, field_name=None, facet_name=None
+    atlas=None,
+    facets_array=None,
+    group_by=None,
+    results_array=None,
+    field_name=None,
+    facet_name=None,
 ):
     """Get the facets array for all atlases"""
 
@@ -351,13 +403,20 @@ def get_facets_array(
 
 
 def get_GBIF_facets_expand(
-    URL=None, f=None, group_by=None, verbose=None, headers=None, method=None, dict_values=None, timeout=600
+    URL=None,
+    f=None,
+    group_by=None,
+    verbose=None,
+    headers=None,
+    method=None,
+    dict_values=None,
+    timeout=600,
 ):
     """Get all facets from GBIF and expand the values into two columns"""
 
     # specify start and increment, as GBIF is different from the other atlases
     inc = 0
-    start = 0 # was 1
+    start = 0  # was 1
 
     # add ampersand
     if URL[-1] != "&":
@@ -365,7 +424,7 @@ def get_GBIF_facets_expand(
 
     # first, check if scientificName is one of the facets
     # check if user is grouping by scientific name
-    if group_by[-1] == "scientificName": # was start + inc
+    if group_by[-1] == "scientificName":  # was start + inc
         newURL = (
             URL
             + "{}={}".format(
@@ -393,7 +452,9 @@ def get_GBIF_facets_expand(
     print_if_verbose(verbose=verbose, headers=headers, URL=newURL, method=method)
 
     # get the data
-    response = requests.request(method=method, url=newURL, headers=headers, timeout=timeout)
+    response = requests.request(
+        method=method, url=newURL, headers=headers, timeout=timeout
+    )
     response_json = response.json()
 
     # put data in dict
@@ -402,7 +463,11 @@ def get_GBIF_facets_expand(
         dict_values["count"].append(int(entry["count"]))
         dict_values[group_by[start]].append(f.split(":")[1])
         for key in dict_values:
-            if (key != group_by[start]) and (key != group_by[start - 1]) and (key != "count"):
+            if (
+                (key != group_by[start])
+                and (key != group_by[start - 1])
+                and (key != "count")
+            ):
                 dict_values[key].append("-")
 
     return dict_values
@@ -424,7 +489,6 @@ def get_facets_expand(
 ):
     """For all atlases other than GBIF, get the names and values of the group by list"""
 
-
     # split each facet to make it human readable
     name, value = f.split(":")
     value = value.replace('"', "")
@@ -440,17 +504,29 @@ def get_facets_expand(
                 temp_payload["fq"] = [f]
             else:
                 if any(name in x for x in temp_payload["fq"]):
-                    temp_payload["fq"] = [x for x in temp_payload["fq"] if name not in x]
+                    temp_payload["fq"] = [
+                        x for x in temp_payload["fq"] if name not in x
+                    ]
                     temp_payload["fq"].append(f)
 
             # create payload and get qid
-            qid_URL, method2 = get_api_url(column1="api_name", column1value="occurrences_qid")
+            qid_URL, method2 = get_api_url(
+                column1="api_name", column1value="occurrences_qid"
+            )
 
             # print options if verbose is set to True
-            print_if_verbose(verbose=verbose, headers=headers, URL=qid_URL, method=method2, payload=temp_payload)
+            print_if_verbose(
+                verbose=verbose,
+                headers=headers,
+                URL=qid_URL,
+                method=method2,
+                payload=temp_payload,
+            )
 
             # get the QID of the query
-            qid = requests.request(method2, qid_URL, data=temp_payload, headers=headers, timeout=timeout)
+            qid = requests.request(
+                method2, qid_URL, data=temp_payload, headers=headers, timeout=timeout
+            )
 
             # make the URL with the QID
             if URL[-1] not in ["&", "?"]:
@@ -461,14 +537,22 @@ def get_facets_expand(
             tempURL += "&facets={}".format(group_by[-1])
 
             # check to see if the user wants the querying URL
-            print_if_verbose(verbose=verbose, headers=headers, URL=tempURL, method=method, payload=payload)
+            print_if_verbose(
+                verbose=verbose,
+                headers=headers,
+                URL=tempURL,
+                method=method,
+                payload=payload,
+            )
 
         else:
 
             tempURL = get_tempURL(URL=URL, name=name, value=value, group_by=group_by)
 
             # check to see if the user wants the querying URL
-            print_if_verbose(verbose=verbose, headers=headers, URL=tempURL, method=method)
+            print_if_verbose(
+                verbose=verbose, headers=headers, URL=tempURL, method=method
+            )
 
         # get data
         response = requests.request(method, tempURL, headers=headers, timeout=timeout)
@@ -477,13 +561,15 @@ def get_facets_expand(
         # if there is no data available, move onto next variable
         if atlas in ["Brazil"]:
             if response_json is None or not response_json[0]["fieldResult"]:
-                return dict_values # was continue
+                return dict_values  # was continue
         else:
             if response_json is None or not response_json["facetResults"]:
                 return dict_values
 
         # put data in table (and check if user wants Brazil, because that is an exception)
-        results_array = get_results_array_expand(response_json=response_json, atlas=atlas, group_by=group_by)
+        results_array = get_results_array_expand(
+            response_json=response_json, atlas=atlas, group_by=group_by
+        )
 
         # loop over each entry in the results
         for entry in results_array:
@@ -503,12 +589,16 @@ def get_facets_expand(
                     dict_values[name].append(value)
 
             # potentially tab again
-            dict_values = put_entries_in_grouped_dict(entry=entry, dict_values=dict_values, expand=expand)
+            dict_values = put_entries_in_grouped_dict(
+                entry=entry, dict_values=dict_values, expand=expand
+            )
 
     return dict_values
 
 
-def get_GBIF_facets(group_by=None, results_array=None, i=None, field_name=None, dict_values=None):
+def get_GBIF_facets(
+    group_by=None, results_array=None, i=None, field_name=None, dict_values=None
+):
     """Get all facets from GBIF and put into dictionary"""
 
     # loop over each group and make sure entry is human readable and have a dash if
@@ -516,8 +606,8 @@ def get_GBIF_facets(group_by=None, results_array=None, i=None, field_name=None, 
     for g in group_by:
 
         # check for an underscore in the name; if so, change to camel case
-        if "_" in results_array[i]["field"]: # "field"
-            test_name = results_array[i]["field"].split("_") # "field"
+        if "_" in results_array[i]["field"]:  # "field"
+            test_name = results_array[i]["field"].split("_")  # "field"
             for k in range(len(test_name)):
                 test_name[k] = test_name[k].lower()
                 if k > 0:
@@ -526,8 +616,8 @@ def get_GBIF_facets(group_by=None, results_array=None, i=None, field_name=None, 
 
         # otherwise, change to lowercase
         else:
-            test_name = results_array[i]["field"].lower() # "field"
-            
+            test_name = results_array[i]["field"].lower()  # "field"
+
         # check to see for empty values - if empty values, add "-" rather than NaN
         if test_name == g:
             for item in results_array[i][field_name]:
@@ -598,11 +688,15 @@ def get_results_array_expand(response_json=None, atlas=None, group_by=None):
         return response_json["facetResults"][0]["fieldResult"]
 
 
-def put_entries_in_grouped_dict(entry=None, dict_values=None, expand=None, associated_value=None):
+def put_entries_in_grouped_dict(
+    entry=None, dict_values=None, expand=None, associated_value=None
+):
     """Creating dictionaries for galah_group_by"""
 
     # update dict values with entry
-    name, dict_values = get_name_value_grouped_dict(entry=entry, dict_values=dict_values)
+    name, dict_values = get_name_value_grouped_dict(
+        entry=entry, dict_values=dict_values
+    )
 
     # check for a group_by array with length of 2
     if expand:

@@ -73,7 +73,7 @@ ATLAS_OCCURRENCES_ERROR_MESSAGES = {
     "Kew": "go to https://data.kew.org to register.",
     "Spain": "go to https://auth.gbif.es/cas/login?lang=en to register.",
     "Sweden": "go to https://biodiversitydata.se/ to register.",
-    "United Kingdom": "go to https://registry.nbnatlas.org/ to register."
+    "United Kingdom": "go to https://registry.nbnatlas.org/ to register.",
 }
 
 # specifying what each atlas' status is
@@ -346,13 +346,9 @@ ATLAS_SELECTIONS = {
     ],
     "Kew": ["basic"],
     "Portugal": [],
-    "Spain": [
-        "basic"
-    ],
+    "Spain": ["basic"],
     "Sweden": ["basic"],
-    "United Kingdom": [
-        "basic"
-    ],
+    "United Kingdom": ["basic"],
 }
 
 # name of number of counts for atlas_counts
@@ -452,7 +448,7 @@ SEARCH_TAXA_FIELDS = {
         "genus",
         "species",
         "commonName",
-        "name_match_metric" # name_parse_type
+        "name_match_metric",  # name_parse_type
     ],
     "Brazil": [
         "scientificName",
@@ -467,7 +463,7 @@ SEARCH_TAXA_FIELDS = {
         "genus",
         "species",
         "commonName",
-        "name_match_matric"
+        "name_match_matric",
     ],
     "Flanders": [
         "scientificName",
@@ -482,7 +478,7 @@ SEARCH_TAXA_FIELDS = {
         "genus",
         "species",
         "canonicalName",
-        "matchType"
+        "matchType",
     ],
     "France": [
         "scientificName",
@@ -670,7 +666,14 @@ FIELD_SELECTIONS = {
         "dataResourceName",
         "occurrenceStatus",
     ],
-    "event": ["eventRemarks", "eventTime", "eventID", "eventDate", "samplingEffort", "samplingProtocol"],
+    "event": [
+        "eventRemarks",
+        "eventTime",
+        "eventID",
+        "eventDate",
+        "samplingEffort",
+        "samplingProtocol",
+    ],
     "media": ["multimedia", "images", "videos", "sounds"],  # "multimediaLicence",
 }
 
