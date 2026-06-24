@@ -280,7 +280,12 @@ def test_atlas_counts_taxa_same_filter_kew():
 
 def test_atlas_counts_taxa_filters_kew_total_group_by():
     galah.galah_config(atlas="Kew")
-    output = galah.atlas_counts(taxa="Acanthaceae", filters="year>=2020", group_by="species", total_group_by=True)
+    output = galah.atlas_counts(
+        taxa="Acanthaceae",
+        filters="year>=2020",
+        group_by="species",
+        total_group_by=True,
+    )
     assert output.shape[0] == 1
     assert output["count"][0] > 0
 
@@ -410,7 +415,12 @@ def test_atlas_counts_multiple_taxa_filters_group_by_multiple_kew2_kew():
 
 def test_atlas_counts_invalid_multiple_taxa_separate_kew():
     galah.galah_config(atlas="Kew")
-    taxa_array = ["Hypoestes forskaolii", "Galanthus nivalis", "Curcuma longa", "Hypoestes forskaolii"]
+    taxa_array = [
+        "Hypoestes forskaolii",
+        "Galanthus nivalis",
+        "Curcuma longa",
+        "Hypoestes forskaolii",
+    ]
     output = galah.atlas_counts(taxa_array, group_by="species")
     assert output.shape[0] == len(taxa_array) - 1
     assert output.shape[1] == 2
@@ -461,7 +471,9 @@ def test_atlas_species_family_rank_genus_kew():
 
 def test_atlas_species_kew_filter_notaxa():
     galah.galah_config(atlas="Kew", email=email_kew, reason=10)
-    filtered_species_table = galah.atlas_species(filters=["year=2022", "basisOfRecord=PRESERVED_SPECIMEN"])
+    filtered_species_table = galah.atlas_species(
+        filters=["year=2022", "basisOfRecord=PRESERVED_SPECIMEN"]
+    )
     assert filtered_species_table.shape[0] > 0
 
 
@@ -476,21 +488,27 @@ def test_atlas_occurrences_taxa_kew():
 
 def test_atlas_occurrences_taxa_fields_kew():
     galah.galah_config(atlas="Kew", email=email_kew, reason="10")
-    occurrences = galah.atlas_occurrences(taxa="Hypoestes forskaolii", fields=["decimalLatitude", "decimalLongitude"])
+    occurrences = galah.atlas_occurrences(
+        taxa="Hypoestes forskaolii", fields=["decimalLatitude", "decimalLongitude"]
+    )
     assert occurrences.shape[1] == 2
 
 
 def test_atlas_occurrences_taxa_filters_kew():
     galah.galah_config(atlas="Kew", email=email_kew, reason="10")
     occurrences1 = galah.atlas_occurrences(taxa="Hypoestes forskaolii")
-    occurrences2 = galah.atlas_occurrences(taxa="Hypoestes forskaolii", filters="year>=2020")
+    occurrences2 = galah.atlas_occurrences(
+        taxa="Hypoestes forskaolii", filters="year>=2020"
+    )
     assert occurrences2.shape[0] < occurrences1.shape[0]
 
 
 def test_atlas_occurrences_taxa_filter_fields_kew():
     galah.galah_config(atlas="Kew", email=email_kew, reason="10")
     occurrences = galah.atlas_occurrences(
-        taxa="Hypoestes forskaolii", filters="year>=2020", fields=["decimalLatitude", "decimalLongitude"]
+        taxa="Hypoestes forskaolii",
+        filters="year>=2020",
+        fields=["decimalLatitude", "decimalLongitude"],
     )
     assert occurrences.shape[1] == 2
 
@@ -526,20 +544,26 @@ def test_atlas_media_taxa_kew():
 def test_atlas_media_filters_kew():
     galah.galah_config(atlas="Kew", email=email_kew)
     raw_output = galah.atlas_media(taxa="Hypoestes forskaolii")
-    filtered_output = galah.atlas_media(taxa="Hypoestes forskaolii", filters="year>=2020")
+    filtered_output = galah.atlas_media(
+        taxa="Hypoestes forskaolii", filters="year>=2020"
+    )
     assert raw_output.shape[0] > filtered_output.shape[0]
 
 
 def test_atlas_media_multimedia_kew():
     galah.galah_config(atlas="Kew", email=email_kew)
-    multimedia_output = galah.atlas_media(taxa="Hypoestes forskaolii", multimedia="images")
+    multimedia_output = galah.atlas_media(
+        taxa="Hypoestes forskaolii", multimedia="images"
+    )
     assert multimedia_output.shape[0] > 0
 
 
 def test_atlas_media_filters_multimedia_kew():
     galah.galah_config(atlas="Kew", email=email_kew)
     raw_output = galah.atlas_media(taxa="Hypoestes forskaolii")
-    multimedia_output = galah.atlas_media(taxa="Hypoestes forskaolii", filters="year>=2020", multimedia="images")
+    multimedia_output = galah.atlas_media(
+        taxa="Hypoestes forskaolii", filters="year>=2020", multimedia="images"
+    )
     assert raw_output.shape[0] > multimedia_output.shape[0]
 
 

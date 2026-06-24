@@ -1,3 +1,9 @@
+## 0.13.3 (2026-06-24)
+
+### Fix
+
+- **fixed-occurrences-for-gbif-and-group_by**: fixed occurrence downloads for gbif and streamlined the group_by function
+
 ## 0.13.2 (2026-06-03)
 
 ### Fix

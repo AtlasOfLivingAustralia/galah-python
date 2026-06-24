@@ -1,5 +1,6 @@
-import galah
 import pytest
+
+import galah
 
 """
 def test_show_all_providers_not_working_france():

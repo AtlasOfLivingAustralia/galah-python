@@ -47,7 +47,9 @@ def set_bool_argument(arg=None, name_arg=None):
     elif isinstance(arg, bool):
         return arg
     else:
-        raise ValueError("Only True/False or boolean values are accepted for {}".format(name_arg))
+        raise ValueError(
+            "Only True/False or boolean values are accepted for {}".format(name_arg)
+        )
 
 
 def is_bool_argument(arg=None, arg_name=None):

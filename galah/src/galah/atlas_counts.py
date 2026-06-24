@@ -2,7 +2,12 @@ import pandas as pd
 import requests
 
 from .add_to_payload_functions import add_to_payload_ALA
-from .common_add_functions import add_extras_to_URL, add_filters, add_spatial_shapes, add_taxa
+from .common_add_functions import (
+    add_extras_to_URL,
+    add_filters,
+    add_spatial_shapes,
+    add_taxa,
+)
 from .common_checks import (
     check_atlas,
     check_atlas_authenticate,
@@ -104,9 +109,13 @@ def atlas_counts(
 
     # get atlas and verbose
     atlas = configs["galahSettings"]["atlas"]
-    verbose = set_bool_argument(arg=configs["galahSettings"]["verbose"], name_arg="verbose")
+    verbose = set_bool_argument(
+        arg=configs["galahSettings"]["verbose"], name_arg="verbose"
+    )
     timeout = int(configs["galahSettings"]["timeout"])
-    authenticate = set_bool_argument(arg=configs["galahSettings"]["authenticate"], name_arg="authenticate")
+    authenticate = set_bool_argument(
+        arg=configs["galahSettings"]["authenticate"], name_arg="authenticate"
+    )
     access_token = configs["galahSettings"]["access_token"]
     client_id = configs["galahSettings"]["client_id"]
     qgis = set_bool_argument(arg=configs["galahSettings"]["qgis"], name_arg="qgis")
@@ -176,7 +185,9 @@ def atlas_counts(
             )
 
         # create the query id
-        qid_URL, method2 = get_api_url(column1="api_name", column1value="occurrences_qid")
+        qid_URL, method2 = get_api_url(
+            column1="api_name", column1value="occurrences_qid"
+        )
 
         # format headers with authentication
         headers = {
@@ -186,13 +197,23 @@ def atlas_counts(
         }
 
         # print all information in the query ID call if verbose is True
-        print_if_verbose(verbose=verbose, headers=headers, URL=qid_URL, method=method2, payload=payload)
+        print_if_verbose(
+            verbose=verbose,
+            headers=headers,
+            URL=qid_URL,
+            method=method2,
+            payload=payload,
+        )
 
         # cache the user's query and get a query ID
-        qid = requests.request(method2, qid_URL, data=payload, headers=headers, timeout=timeout)
+        qid = requests.request(
+            method2, qid_URL, data=payload, headers=headers, timeout=timeout
+        )
 
         # create the URL to grab your queryID and counts
-        URL = countsURL + "?fq=%28qid%3A" + qid.text + "%29&flimit=-1&pageSize=0"  # "/" + qid.text
+        URL = (
+            countsURL + "?fq=%28qid%3A" + qid.text + "%29&flimit=-1&pageSize=0"
+        )  # "/" + qid.text
 
         # add last things to URL
         if atlas in ["Australia", "ALA"]:
@@ -248,7 +269,9 @@ def atlas_counts(
         )
 
         # return None if there are no valid taxa
-        if all(x not in URL for x in ["q", "fq", "taxonKey"]) and all(x is None for x in [filters, polygon, bbox]):
+        if all(x not in URL for x in ["q", "fq", "taxonKey"]) and all(
+            x is None for x in [filters, polygon, bbox]
+        ):
             if taxa is not None:
                 return None
 
@@ -279,7 +302,11 @@ def atlas_counts(
         # add filters and spatial shapes
         URL = add_filters(URL=URL, atlas=atlas, filters=filters)
         URL = add_spatial_shapes(
-            polygon=polygon, bbox=bbox, URL=URL, simplify_polygon=simplify_polygon, tolerance=tolerance
+            polygon=polygon,
+            bbox=bbox,
+            URL=URL,
+            simplify_polygon=simplify_polygon,
+            tolerance=tolerance,
         )
 
         # add last things to URL

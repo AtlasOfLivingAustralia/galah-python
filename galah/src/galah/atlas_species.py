@@ -5,10 +5,24 @@ import requests
 
 from .add_to_payload_functions import add_to_payload_ALA
 from .atlas_occurrences import atlas_occurrences, check_for_403_error
-from .common_add_functions import add_extras_to_URL, add_filters, add_spatial_shapes, add_taxa
-from .common_checks import check_atlas, check_email_empty, check_for_non_working_atlases, check_string_list
+from .common_add_functions import (
+    add_extras_to_URL,
+    add_filters,
+    add_spatial_shapes,
+    add_taxa,
+)
+from .common_checks import (
+    check_atlas,
+    check_email_empty,
+    check_for_non_working_atlases,
+    check_string_list,
+)
 from .common_dictionaries import ATLAS_SPECIES_FIELDS, USER_AGENT, USER_AGENT_QGIS
-from .common_functions import group_by_atlas_species, print_if_verbose, set_bool_argument
+from .common_functions import (
+    group_by_atlas_species,
+    print_if_verbose,
+    set_bool_argument,
+)
 from .galah_config import get_api_url, readConfig
 from .show_all import show_all
 from .version import __version__
@@ -85,9 +99,13 @@ def atlas_species(
 
     # get atlas
     atlas = configs["galahSettings"]["atlas"]
-    verbose = set_bool_argument(arg=configs["galahSettings"]["verbose"], name_arg="verbose")
+    verbose = set_bool_argument(
+        arg=configs["galahSettings"]["verbose"], name_arg="verbose"
+    )
     timeout = int(configs["galahSettings"]["timeout"])
-    authenticate = set_bool_argument(arg=configs["galahSettings"]["authenticate"], name_arg="authenticate")
+    authenticate = set_bool_argument(
+        arg=configs["galahSettings"]["authenticate"], name_arg="authenticate"
+    )
     access_token = configs["galahSettings"]["access_token"]
     client_id = configs["galahSettings"]["client_id"]
     qgis = set_bool_argument(arg=configs["galahSettings"]["qgis"], name_arg="qgis")
@@ -185,23 +203,37 @@ def atlas_species(
         headers["client_id"] = client_id
 
         # get the query id url
-        qid_URL, method2 = get_api_url(column1="api_name", column1value="occurrences_qid")
+        qid_URL, method2 = get_api_url(
+            column1="api_name", column1value="occurrences_qid"
+        )
 
         # print this information if verbose option is selected
-        print_if_verbose(verbose=verbose, headers=headers, URL=qid_URL, method=method2, payload=payload)
+        print_if_verbose(
+            verbose=verbose,
+            headers=headers,
+            URL=qid_URL,
+            method=method2,
+            payload=payload,
+        )
 
         # get qid
-        qid = requests.request(method2, qid_URL, data=payload, headers=headers, timeout=timeout)
+        qid = requests.request(
+            method2, qid_URL, data=payload, headers=headers, timeout=timeout
+        )
 
         # create the URL to grab the species ID and lists
-        baseURL, method = get_api_url(column1="api_name", column1value="records_species", config_file=config_file)
+        baseURL, method = get_api_url(
+            column1="api_name", column1value="records_species", config_file=config_file
+        )
         URL = baseURL + "?fq=%28qid%3A" + qid.text + "%29"
         URL = group_by_atlas_species(group_by=group_by, rankID=rankID, URL=URL)
 
     else:
 
         # get initial url
-        baseURL, method = get_api_url(column1="api_name", column1value="records_species", config_file=config_file)
+        baseURL, method = get_api_url(
+            column1="api_name", column1value="records_species", config_file=config_file
+        )
 
         # add information to URL
         URL = add_taxa(
@@ -215,7 +247,11 @@ def atlas_species(
         URL = add_filters(filters=filters, atlas=atlas, URL=URL)
         URL = group_by_atlas_species(group_by=group_by, rankID=rankID, URL=URL)
         URL = add_spatial_shapes(
-            polygon=polygon, bbox=bbox, URL=URL, simplify_polygon=simplify_polygon, tolerance=tolerance
+            polygon=polygon,
+            bbox=bbox,
+            URL=URL,
+            simplify_polygon=simplify_polygon,
+            tolerance=tolerance,
         )
 
     # ---------------------------------------------------------------------------------------------
@@ -245,7 +281,9 @@ def atlas_species(
     print_if_verbose(verbose=verbose, headers=headers, URL=URL, method=method)
 
     # get response from url
-    response = requests.request(method=method, url=URL, headers=headers, timeout=timeout)
+    response = requests.request(
+        method=method, url=URL, headers=headers, timeout=timeout
+    )
 
     # check to see if the user has gotten a 403 error
     check_for_403_error(response=response, atlas=atlas)

@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Spatial filtering &#8212; Galah 0.13.2 documentation</title>
+    <title>Spatial filtering &#8212; Galah 0.13.3 documentation</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../_static/documentation_options.js?v=8399f5db"></script>
+    <script src="../_static/documentation_options.js?v=27e171c2"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/design-tabs.js?v=f930bc37"></script>
@@ -53,7 +53,7 @@
     <link rel="prev" title="Taxonomic Filtering" href="Taxonomic_Filtering.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.13.2" />
+  <meta name="docsearch:version" content="0.13.3" />
   </head>
   
   
@@ -119,8 +119,8 @@
       
     
     
-    <img src="../_static/logo.png" class="logo__image only-light" alt="Galah 0.13.2 documentation - Home"/>
-    <img src="../_static/logo.png" class="logo__image only-dark pst-js-only" alt="Galah 0.13.2 documentation - Home"/>
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Galah 0.13.3 documentation - Home"/>
+    <img src="../_static/logo.png" class="logo__image only-dark pst-js-only" alt="Galah 0.13.3 documentation - Home"/>
   
   
 </a></div>
@@ -468,9 +468,9 @@ as follows:</p>
 </pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>   decimalLatitude  decimalLongitude             eventDate                 scientificName                                                             taxonConceptID                              recordID                          dataResourceName occurrenceStatus
 0        -36.52583         139.82361  2012-07-29T00:00:00Z  Recurvirostra novaehollandiae  https://biodiversity.org.au/afd/taxa/c69e7308-527a-429d-a80d-143bd20b5100  8d18db13-67fe-4609-b2c7-4302d54c5c13               BirdLife Australia, Birdata          PRESENT
 1        -36.52195         139.82720  2010-10-21T00:00:00Z  Recurvirostra novaehollandiae  https://biodiversity.org.au/afd/taxa/c69e7308-527a-429d-a80d-143bd20b5100  8fdebcda-de5e-4c2c-94dc-a9fb25cd6817  Australian Waterbird Surveys (1983-2018)          PRESENT
-2        -36.52195         139.82720                   NaN  Recurvirostra novaehollandiae  https://biodiversity.org.au/afd/taxa/c69e7308-527a-429d-a80d-143bd20b5100  3e4d190c-7032-48ba-885e-ebf513fe5af0  Australian Waterbird Surveys (1983-2018)          PRESENT
+2        -36.52195         139.82720                   NaN  Recurvirostra novaehollandiae  https://biodiversity.org.au/afd/taxa/c69e7308-527a-429d-a80d-143bd20b5100  e02745af-44d4-4ad8-9816-7aaaaa318a82  Australian Waterbird Surveys (1983-2018)          PRESENT
 3        -36.52195         139.82720  2024-10-15T00:00:00Z  Recurvirostra novaehollandiae  https://biodiversity.org.au/afd/taxa/c69e7308-527a-429d-a80d-143bd20b5100  9aff2929-bd2c-4f9d-9bb1-fc5133254a6c                                  SA Fauna          PRESENT
-4        -36.52195         139.82720  2023-10-17T00:00:00Z  Recurvirostra novaehollandiae  https://biodiversity.org.au/afd/taxa/c69e7308-527a-429d-a80d-143bd20b5100  c91d351f-06d7-4a0a-95a5-6d77e0921923                                  SA Fauna          PRESENT
+4        -36.52195         139.82720                   NaN  Recurvirostra novaehollandiae  https://biodiversity.org.au/afd/taxa/c69e7308-527a-429d-a80d-143bd20b5100  3e4d190c-7032-48ba-885e-ebf513fe5af0  Australian Waterbird Surveys (1983-2018)          PRESENT
 </pre></div>
 </div>
 </section>
@@ -505,28 +505,29 @@ have been recorded in King George Square.</p>
 8        -27.468546        153.023911  2024-02-03T20:45:00Z                        Mediastinia                    NaN
 9        -27.468536        153.024300  2025-05-31T08:08:00Z                 Achyra affinitalis             Grass Moth
 10       -27.468529        153.023898  2025-03-19T07:01:00Z  Manorina (Myzantha) melanocephala            Noisy Miner
-11       -27.468519        153.024272  2026-04-17T14:18:27Z              Threskiornis moluccus  Australian White Ibis
-12       -27.468510        153.023821  2023-04-08T17:49:00Z                 Entomyzon cyanotis  Blue-faced Honeyeater
-13       -27.468506        153.023926  2026-01-02T16:50:39Z              Threskiornis moluccus  Australian White Ibis
-14       -27.468464        153.023703  2025-05-30T07:49:00Z                          CRAMBIDAE                    NaN
-15       -27.468419        153.023700  2025-05-31T08:08:00Z                 Achyra affinitalis             Grass Moth
-16       -27.468418        153.024140  2022-08-30T11:29:00Z              Threskiornis moluccus  Australian White Ibis
-17       -27.468364        153.024121  2024-08-28T10:31:54Z                           Vitellus                    NaN
-18       -27.468326        153.024077  2024-10-29T15:38:00Z          Hirundo (Hirundo) neoxena        Welcome Swallow
-19       -27.468326        153.024077  2024-10-29T15:38:00Z              Threskiornis moluccus  Australian White Ibis
-20       -27.468326        153.024077  2025-04-09T16:43:00Z              Threskiornis moluccus  Australian White Ibis
-21       -27.468326        153.024077  2022-07-24T14:43:00Z              Threskiornis moluccus  Australian White Ibis
-22       -27.468326        153.024077  2024-10-29T15:38:00Z            Columba (Columba) livia              Rock Dove
-23       -27.468320        153.024292  2025-06-21T10:04:29Z              Threskiornis moluccus  Australian White Ibis
-24       -27.468308        153.024097  2024-10-13T14:34:00Z              Threskiornis moluccus  Australian White Ibis
-25       -27.468295        153.023967  2024-10-13T14:35:00Z                 Gymnorhina tibicen      Australian Magpie
-26       -27.468294        153.023907  2024-11-11T13:56:00Z              Threskiornis moluccus  Australian White Ibis
-27       -27.468262        153.023941  2025-03-19T06:55:00Z              Intellagama lesueurii           Water Dragon
-28       -27.468195        153.024169  2025-06-26T14:57:21Z                 Gymnorhina tibicen      Australian Magpie
-29       -27.468167        153.024047  2024-07-23T10:00:53Z              Threskiornis moluccus  Australian White Ibis
-30       -27.468155        153.024011  2024-04-26T12:07:00Z              Threskiornis moluccus  Australian White Ibis
-31       -27.468092        153.024049  2025-07-09T13:34:00Z              Threskiornis moluccus  Australian White Ibis
-32       -27.467989        153.024131  2025-08-15T09:23:58Z              Threskiornis moluccus  Australian White Ibis
+11       -27.468525        153.024083  2026-06-14T17:10:40Z                       BLATTELLIDAE                    NaN
+12       -27.468519        153.024272  2026-04-17T14:18:27Z              Threskiornis moluccus  Australian White Ibis
+13       -27.468510        153.023821  2023-04-08T17:49:00Z                 Entomyzon cyanotis  Blue-faced Honeyeater
+14       -27.468506        153.023926  2026-01-02T16:50:39Z              Threskiornis moluccus  Australian White Ibis
+15       -27.468464        153.023703  2025-05-30T07:49:00Z                          CRAMBIDAE                    NaN
+16       -27.468419        153.023700  2025-05-31T08:08:00Z                 Achyra affinitalis             Grass Moth
+17       -27.468418        153.024140  2022-08-30T11:29:00Z              Threskiornis moluccus  Australian White Ibis
+18       -27.468364        153.024121  2024-08-28T10:31:54Z                           Vitellus                    NaN
+19       -27.468326        153.024077  2024-10-29T15:38:00Z          Hirundo (Hirundo) neoxena        Welcome Swallow
+20       -27.468326        153.024077  2022-07-24T14:43:00Z              Threskiornis moluccus  Australian White Ibis
+21       -27.468326        153.024077  2024-10-29T15:38:00Z            Columba (Columba) livia              Rock Dove
+22       -27.468326        153.024077  2024-10-29T15:38:00Z              Threskiornis moluccus  Australian White Ibis
+23       -27.468326        153.024077  2025-04-09T16:43:00Z              Threskiornis moluccus  Australian White Ibis
+24       -27.468320        153.024292  2025-06-21T10:04:29Z              Threskiornis moluccus  Australian White Ibis
+25       -27.468308        153.024097  2024-10-13T14:34:00Z              Threskiornis moluccus  Australian White Ibis
+26       -27.468295        153.023967  2024-10-13T14:35:00Z                 Gymnorhina tibicen      Australian Magpie
+27       -27.468294        153.023907  2024-11-11T13:56:00Z              Threskiornis moluccus  Australian White Ibis
+28       -27.468262        153.023941  2025-03-19T06:55:00Z              Intellagama lesueurii           Water Dragon
+29       -27.468195        153.024169  2025-06-26T14:57:21Z                 Gymnorhina tibicen      Australian Magpie
+30       -27.468167        153.024047  2024-07-23T10:00:53Z              Threskiornis moluccus  Australian White Ibis
+31       -27.468155        153.024011  2024-04-26T12:07:00Z              Threskiornis moluccus  Australian White Ibis
+32       -27.468092        153.024049  2025-07-09T13:34:00Z              Threskiornis moluccus  Australian White Ibis
+33       -27.467989        153.024131  2025-08-15T09:23:58Z              Threskiornis moluccus  Australian White Ibis
 </pre></div>
 </div>
 <p>This argument can be provided as its string; however, we show you the above to give you an idea of what
@@ -545,11 +546,11 @@ inside the provided shape.</p>
 </pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>   decimalLatitude  decimalLongitude             eventDate             scientificName         vernacularName
 0       -27.468418        153.024140  2022-08-30T11:29:00Z      Threskiornis moluccus  Australian White Ibis
 1       -27.468364        153.024121  2024-08-28T10:31:54Z                   Vitellus                    NaN
-2       -27.468326        153.024077  2024-10-29T15:38:00Z      Threskiornis moluccus  Australian White Ibis
+2       -27.468326        153.024077  2022-07-24T14:43:00Z      Threskiornis moluccus  Australian White Ibis
 3       -27.468326        153.024077  2024-10-29T15:38:00Z  Hirundo (Hirundo) neoxena        Welcome Swallow
-4       -27.468326        153.024077  2025-04-09T16:43:00Z      Threskiornis moluccus  Australian White Ibis
-5       -27.468326        153.024077  2022-07-24T14:43:00Z      Threskiornis moluccus  Australian White Ibis
-6       -27.468326        153.024077  2024-10-29T15:38:00Z    Columba (Columba) livia              Rock Dove
+4       -27.468326        153.024077  2024-10-29T15:38:00Z    Columba (Columba) livia              Rock Dove
+5       -27.468326        153.024077  2024-10-29T15:38:00Z      Threskiornis moluccus  Australian White Ibis
+6       -27.468326        153.024077  2025-04-09T16:43:00Z      Threskiornis moluccus  Australian White Ibis
 7       -27.468320        153.024292  2025-06-21T10:04:29Z      Threskiornis moluccus  Australian White Ibis
 8       -27.468308        153.024097  2024-10-13T14:34:00Z      Threskiornis moluccus  Australian White Ibis
 9       -27.468295        153.023967  2024-10-13T14:35:00Z         Gymnorhina tibicen      Australian Magpie

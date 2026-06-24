@@ -1,0 +1,17 @@
+setuptools
+numpy
+pandas
+requests
+urllib3
+zip-files
+configparser
+glob2
+bytesbufio
+shutils
+pytest
+unittest2py3k
+shapely
+geopandas
+tqdm
+oauthlib
+oauth2

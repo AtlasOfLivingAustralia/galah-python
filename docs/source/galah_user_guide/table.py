@@ -1,8 +1,18 @@
-import galah
 import pandas as pd
 
+import galah
+
 # "France",
-atlases = ["Australia","Austria","Brazil","GBIF","Kew","Spain","Sweden","United Kingdom"]
+atlases = [
+    "Australia",
+    "Austria",
+    "Brazil",
+    "GBIF",
+    "Kew",
+    "Spain",
+    "Sweden",
+    "United Kingdom",
+]
 counts_dict = {"Atlas": [], "Total Records": []}
 for atlas in atlases:
     galah.galah_config(atlas=atlas)

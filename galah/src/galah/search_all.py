@@ -144,9 +144,13 @@ def search_all(
             if is_numeric_dtype(dataFrame[column_name].dtypes):
                 dataFrame = dataFrame.map(str)
             return_dataFrame = dataFrame.loc[
-                dataFrame[column_name].astype(str).str.contains(options[o][0], case=False, na=False)
+                dataFrame[column_name]
+                .astype(str)
+                .str.contains(options[o][0], case=False, na=False)
             ]
-            return return_dataFrame.sort_values(column_name, key=lambda x: x.str.len()).reset_index(drop=True)
+            return return_dataFrame.sort_values(
+                column_name, key=lambda x: x.str.len()
+            ).reset_index(drop=True)
 
 
 """
