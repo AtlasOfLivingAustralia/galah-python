@@ -1,9 +1,9 @@
+import configparser
 import os
 import shutil
 
-import pytest
-
 import galah
+import shapely
 
 email_fl = "ala4r@ala.org.au"
 
@@ -13,6 +13,7 @@ email_fl = "ala4r@ala.org.au"
 
 
 #'''
+# """
 ######################################
 # show_all
 ######################################
@@ -296,9 +297,7 @@ def test_astlas_counts_taxa_same_filter_flanders():
 
 def test_atlas_counts_taxa_filters_flanders_total_group_by():
     galah.galah_config(atlas="Flanders")
-    output = galah.atlas_counts(
-        taxa="Reptilia", filters="year=2020", group_by="species", total_group_by=True
-    )
+    output = galah.atlas_counts(taxa="Reptilia", filters="year=2020", group_by="species", total_group_by=True)
     assert output.shape[0] == 1
     assert output["count"][0] > 0
 
@@ -414,19 +413,17 @@ def test_atlas_counts_multiple_taxa_filters_group_by_multiple_flanders():
     assert output.shape[1] == len(group_by) + 1
 
 
-"""
-## TODO: LATER
-# test altas_counts() can call search_taxa() and using one filter, filter results with multiple taxa
-def test_atlas_counts_multiple_taxa_filters_group_by_multiple_flanders2_flanders():
-    galah.galah_config(atlas="Flanders")
-    taxa_array = ["Columba palumbus","Larus fuscus","Larus argentatus"]
-    filters = ["year>2010", "basis_of_record=HumanObservation"]
-    group_by = ["state","year"] # may have to change this
-    # county** , associatedOrganisms , day , decade
-    output = galah.atlas_counts(taxa_array,filters=filters,group_by=group_by)
-    assert output['count'][0] > 0
-    assert output.shape[1] == len(group_by) + 1
-#"""
+# ## TODO: LATER
+# # test altas_counts() can call search_taxa() and using one filter, filter results with multiple taxa
+# def test_atlas_counts_multiple_taxa_filters_group_by_multiple_flanders2_flanders():
+#     galah.galah_config(atlas="Flanders")
+#     taxa_array = ["Columba palumbus","Larus fuscus","Larus argentatus"]
+#     filters = ["year>2010", "basis_of_record=HumanObservation"]
+#     group_by = ["state","year"] # may have to change this
+#     # county** , associatedOrganisms , day , decade
+#     output = galah.atlas_counts(taxa_array,filters=filters,group_by=group_by)
+#     assert output['count'][0] > 0
+#     assert output.shape[1] == len(group_by) + 1
 
 
 def test_atlas_counts_invalid_multiple_taxa_separate_flanders():
@@ -491,6 +488,23 @@ def test_atlas_counts_multiple_taxa_filters_group_by_multiple_separate_expand_fl
     assert output["count"][0] >= 0
 
 
+def test_atlas_counts_polygon_flanders():
+    galah.galah_config(atlas="Flanders")
+    at_polygon = shapely.wkt.loads(
+        "MULTIPOLYGON(((4.659576416015625 50.91039363171484,4.945220947265625 50.87574442047066,4.961700439453125 50.74036610336896,4.791412353515625 50.635961867932195,4.577178955078124 50.70211152632997,4.500274658203125 50.78900858809565,4.659576416015625 50.91039363171484)))"
+    )
+    output = galah.atlas_counts(polygon=at_polygon)
+    assert output["totalRecords"][0] > 0
+
+
+def test_atlas_counts_bbox_flanders():
+    galah.galah_config(atlas="Flanders")
+    #                    #xmin, ymin, xmax, ymax
+    at_bbox = shapely.box(4.5, 50.6, 4.9, 50.9)
+    output = galah.atlas_counts(bbox=at_bbox)
+    assert output["totalRecords"][0] > 0
+
+
 ######################################
 # atlas_species
 ######################################
@@ -531,9 +545,7 @@ def test_atlas_species_Flanders_family_rank_subspecies_flanders():
 
 def test_atlas_species_flanders_filter_notaxa():
     galah.galah_config(atlas="Flanders", email=email_fl)
-    filtered_species_table = galah.atlas_species(
-        filters=["year=2022", "basis_of_record=HumanObservation"]
-    )
+    filtered_species_table = galah.atlas_species(filters=["year=2022", "basis_of_record=HumanObservation"])
     assert filtered_species_table.shape[0] > 0
 
 
@@ -548,9 +560,7 @@ def test_atlas_occurrences_taxa_flanders():
 
 def test_atlas_occurrences_taxa_fields_flanders():
     galah.galah_config(atlas="Flanders", email=email_fl)
-    occurrences = galah.atlas_occurrences(
-        taxa="Columba palumbus", fields=["latitude", "longitude"]
-    )
+    occurrences = galah.atlas_occurrences(taxa="Columba palumbus", fields=["latitude", "longitude"])
     assert occurrences.shape[1] == 2
 
 
@@ -587,6 +597,23 @@ def test_atlas_occurrences_taxa_filters_fields_flanders():
     assert occurrences.shape[1] == 2
 
 
+def test_atlas_occurrences_polygon_flanders():
+    galah.galah_config(atlas="Flanders")
+    at_polygon = shapely.wkt.loads(
+        "MULTIPOLYGON(((4.659576416015625 50.91039363171484,4.945220947265625 50.87574442047066,4.961700439453125 50.74036610336896,4.791412353515625 50.635961867932195,4.577178955078124 50.70211152632997,4.500274658203125 50.78900858809565,4.659576416015625 50.91039363171484)))"
+    )
+    output = galah.atlas_occurrences(polygon=at_polygon, filters="year>=2025")
+    assert output.shape[0] > 0
+
+
+def test_atlas_occurrences_bbox_flanders():
+    galah.galah_config(atlas="Flanders")
+    #                    #xmin, ymin, xmax, ymax
+    at_bbox = shapely.box(4.5, 50.6, 4.9, 50.9)
+    output = galah.atlas_occurrences(bbox=at_bbox, filters="year>=2025")
+    assert output.shape[0] > 0
+
+
 ######################################
 # atlas_media
 ######################################
@@ -616,9 +643,7 @@ def test_atlas_media_multimedia_flanders():
 def test_atlas_media_filters_multimedia_flanders():
     galah.galah_config(atlas="Flanders", email=email_fl)
     raw_output = galah.atlas_media(taxa="Columba palumbus")
-    multimedia_output = galah.atlas_media(
-        taxa="Columba palumbus", filters="year>=2020", multimedia="images"
-    )
+    multimedia_output = galah.atlas_media(taxa="Columba palumbus", filters="year>=2020", multimedia="images")
     assert raw_output.shape[0] > multimedia_output.shape[0]
 
 
@@ -640,3 +665,4 @@ def test_atlas_media_filters_multimedia_collect_path_flanders():
 
 
 #'''
+# """

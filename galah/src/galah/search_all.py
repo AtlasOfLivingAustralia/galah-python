@@ -1,22 +1,11 @@
 from pandas.api.types import is_numeric_dtype
 
-from .common_checks import check_atlas
-from .galah_config import readConfig
-from .show_all import (
-    show_all_apis,
-    show_all_assertions,
-    show_all_atlases,
-    show_all_collections,
-    show_all_datasets,
-    show_all_fields,
-    show_all_licences,
-    show_all_lists,
-    show_all_profiles,
-    show_all_providers,
-    show_all_ranks,
-    show_all_reasons,
-)
-from .version import __version__
+from .galah_config import get_config_values
+from .show_all import (show_all_apis, show_all_assertions, show_all_atlases,
+                       show_all_collections, show_all_datasets,
+                       show_all_fields, show_all_licences, show_all_lists,
+                       show_all_profiles, show_all_providers, show_all_ranks,
+                       show_all_reasons)
 
 
 def search_all(
@@ -87,18 +76,29 @@ def search_all(
     """
     # was \\\'
 
-    # configs
-    configs = readConfig(config_file=config_file)
+    (
+        atlas,
+        timeout,
+        verbose,
+        authenticate,
+        access_token,
+        client_id,
+        user_agent,
+        email,
+        password,
+        email_notify,
+        data_profile,
+        usernameGBIF,
+        passwordGBIF,
+        ranks_option,
+        qgis,
+        reason,
+    ) = get_config_values(function="search_all", config_file=config_file)
 
-    # get atlas
-    atlas = configs["galahSettings"]["atlas"]
+    # initialise headers
+    headers = {"User-Agent": user_agent}
 
-    # check atlas is valid
-    check_atlas(atlas=atlas, function="search_all")
-
-    headers = {"User-Agent": "galah-python/{}".format(__version__)}
-    # check for column_name variable not being a string
-
+    # check to see if column_name is a string
     if column_name is not None and not isinstance(column_name, str):
         raise ValueError("Only strings are a valid query for the column_name variable")
 
@@ -128,8 +128,14 @@ def search_all(
                     "You can only pass one string to your search parameter = run show_all(assertions=True) to get strings to pass"
                 )
 
-            if o in ["atlases", "apis", "ranks"]:
+            if o in ["atlases", "apis"]:
                 dataFrame = options[o][1]()
+
+                # first, check column name, and then check sorting name
+                column_name = options[o][2](column_name=column_name)
+
+            elif o in ["ranks"]:
+                dataFrame = options[o][1](atlas=atlas, ranks=ranks_option)
 
                 # first, check column name, and then check sorting name
                 column_name = options[o][2](column_name=column_name)
@@ -144,13 +150,9 @@ def search_all(
             if is_numeric_dtype(dataFrame[column_name].dtypes):
                 dataFrame = dataFrame.map(str)
             return_dataFrame = dataFrame.loc[
-                dataFrame[column_name]
-                .astype(str)
-                .str.contains(options[o][0], case=False, na=False)
+                dataFrame[column_name].astype(str).str.contains(options[o][0], case=False, na=False)
             ]
-            return return_dataFrame.sort_values(
-                column_name, key=lambda x: x.str.len()
-            ).reset_index(drop=True)
+            return return_dataFrame.sort_values(column_name, key=lambda x: x.str.len()).reset_index(drop=True)
 
 
 """

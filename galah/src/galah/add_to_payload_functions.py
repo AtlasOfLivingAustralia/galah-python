@@ -22,9 +22,7 @@ def add_to_payload_ALA(
 ):
     """Function for adding variables to the payload when we cache (post) data to the ALA"""
 
-    if any(
-        x is not None for x in [taxa, scientific_name, specific_epithet, identifiers]
-    ):
+    if any(x is not None for x in [taxa, scientific_name, specific_epithet, identifiers]):
         taxa_list = generate_list_taxonConceptIDs(
             taxa=taxa,
             atlas=atlas,
@@ -47,9 +45,7 @@ def add_to_payload_ALA(
             payload = add_filter_to_payload(filters_check, payload=payload)
 
     if polygon is not None or bbox is not None:
-        wkts = galah_geolocate(
-            polygon=polygon, bbox=bbox, simplify_polygon=simplify_polygon
-        )
+        wkts = galah_geolocate(atlas=atlas, polygon=polygon, bbox=bbox, simplify_polygon=simplify_polygon)
         payload = add_individual_to_payload(payload=payload, wkt=wkts)
 
     return payload
@@ -90,74 +86,3 @@ def add_filter_to_payload(f, payload):
         else:
             payload["fq"].append(f)
     return payload
-
-
-def add_buffer(polygon=None, bbox=None, buffer=None, crs_deg=4326, crs_meters=3577):
-    """DEPRECATED? function to add buffer to shapefile"""
-
-    if buffer is None:
-        raise ValueError("You need to include a buffer with this function")
-
-    # make sure buffer is in meters
-    if buffer > 1000:
-        raise ValueError(
-            "Currently `galah-python` doesn't support buffers greater than 1000km.  Enter a number between 0 and 1000."
-        )
-    buffer = buffer * 1000
-
-    if polygon is not None:
-
-        # make sure polygon is the correct type
-        if (
-            type(polygon) is str
-            or type(polygon) is Polygon
-            or type(polygon) is MultiPolygon
-        ):
-            polygon_df = gpd.GeoDataFrame(
-                {"name": "user_defined_polygon", "geometry": polygon},
-                index=[0],
-                crs="EPSG:{}".format(crs_deg),
-            )
-        else:
-            raise ValueError(
-                "The polygon must be either of type string or type Polygon/MultiPolygon"
-            )
-
-        # change Coordinate Reference System, add buffer, and change it back to
-        polygon_meters = polygon_df.to_crs(crs_meters)
-        polygon_meters_buffer = polygon_meters.buffer(buffer)
-        polygon_buffer = polygon_meters_buffer.to_crs(crs_deg)
-
-        # return the polygon
-        return polygon_buffer[0]
-
-    if bbox is not None:
-
-        # make sure polygon is the correct type
-        if (
-            type(bbox) is str
-            or type(bbox) is dict
-            or type(bbox) is Polygon
-            or type(bbox) is MultiPolygon
-        ):
-            if type(bbox) is dict:
-                bbox = shapely.box(
-                    bbox["xmin"], bbox["ymin"], bbox["xmax"], bbox["ymax"]
-                )
-            bbox_df = gpd.GeoDataFrame(
-                {"name": "user_defined_bbox", "geometry": bbox},
-                index=[0],
-                crs="EPSG:{}".format(crs_deg),
-            )
-        else:
-            raise ValueError(
-                "The polygon must be either of type string or type Polygon/MultiPolygon"
-            )
-
-        # change Coordinate Reference System, add buffer, and change it back to
-        bbox_meters = bbox_df.to_crs(crs_meters)
-        bbox_meters_buffer = bbox_meters.buffer(buffer)
-        bbox_buffer = bbox_meters_buffer.to_crs(crs_deg)
-
-        # return the polygon
-        return bbox_buffer[0]

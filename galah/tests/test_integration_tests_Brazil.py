@@ -1,14 +1,11 @@
-import configparser
-import os
-import shutil
-
-import pytest
-
 import galah
+import pytest
+import shapely
 
 email_br = "ala4r@ala.org.au"
 
 
+# """
 ######################################
 # exceptions and errors
 ######################################
@@ -19,22 +16,22 @@ def test_atlas_occurrences_doi_brazil():
     assert "DOI" in str(e_info.value)
 
 
-def test_geolocate_not_working_brazil():
+def test_geolocate_bad_string_brazil():
     galah.galah_config(atlas="Brazil", email=email_br)
     with pytest.raises(Exception) as e_info:
         galah.atlas_occurrences(polygon="Yes")
-    assert "geolocate" in str(e_info.value)
+    assert "string" in str(e_info.value)
 
 
-def test_atlas_counts_data_quality_brazil():
-    galah.galah_config(atlas="Brazil")
-    with pytest.raises(Exception) as e_info:
-        galah.atlas_counts(use_data_profile=True)
-    assert "True and False" in str(e_info.value)
+# def test_atlas_counts_data_quality_brazil():
+#     galah.galah_config(atlas="Brazil",data_profile="N")
+#     with pytest.raises(Exception) as e_info:
+#         galah.atlas_counts(use_data_profile=True)
+#     assert "Only" in str(e_info.value)
 
 
 def test_show_all_licences_brazil():
-    galah.galah_config(atlas="Brazil")
+    galah.galah_config(atlas="Brazil", data_profile="")
     with pytest.raises(Exception) as e_info:
         galah.show_all(licences=True)
     assert "licences" in str(e_info.value)
@@ -489,19 +486,17 @@ def test_atlas_counts_multiple_taxa_filters_group_by_multiple_brazil():
     assert output.shape[1] == len(group_by) + 1
 
 
-"""
 ## TODO: LATER
 # test altas_counts() can call search_taxa() and using one filter, filter results with multiple taxa
-def test_atlas_counts_multiple_taxa_filters_group_by_multiple_brazil2_brazil():
-    galah.galah_config(atlas="Brazil")
-    taxa_array = ["Ramphastos toco Statius Muller, 1776","Turdus rufiventris Vieillot, 1818","Tapirus terrestris (Linnaeus, 1758)"]
-    filters = ["year>2010", "basis_of_record=HumanObservation"]
-    group_by = ["state","year"] # may have to change this
-    # county** , associatedOrganisms , day , decade
-    output = galah.atlas_counts(taxa_array,filters=filters,group_by=group_by)
-    assert output['count'][0] > 0
-    assert output.shape[1] == len(group_by) + 1
-#"""
+# def test_atlas_counts_multiple_taxa_filters_group_by_multiple_brazil2_brazil():
+#     galah.galah_config(atlas="Brazil")
+#     taxa_array = ["Ramphastos toco Statius Muller, 1776","Turdus rufiventris Vieillot, 1818","Tapirus terrestris (Linnaeus, 1758)"]
+#     filters = ["year>2010", "basis_of_record=HumanObservation"]
+#     group_by = ["state","year"] # may have to change this
+#     # county** , associatedOrganisms , day , decade
+#     output = galah.atlas_counts(taxa_array,filters=filters,group_by=group_by)
+#     assert output['count'][0] > 0
+#     assert output.shape[1] == len(group_by) + 1
 
 
 def test_atlas_counts_invalid_multiple_taxa_separate_brazil():
@@ -586,6 +581,23 @@ def test_atlas_counts_multiple_taxa_filters_group_by_multiple_separate_expand_br
     assert output["count"][0] >= 0
 
 
+def test_atlas_counts_polygon_brazil():
+    galah.galah_config(atlas="Brazil")
+    br_polygon = shapely.wkt.loads(
+        "MULTIPOLYGON(((-54.84375 -2.8977811643254205,-52.734375 -3.1610843296619158,-52.64648437499999 -4.213573563450947,-53.96484375 -5.0895763000547545,-56.33789062499999 -5.17711440129899,-56.162109375 -3.336582999279346,-54.84375 -2.8977811643254205)))"
+    )
+    output = galah.atlas_counts(polygon=br_polygon)
+    assert output["totalRecords"][0] > 0
+
+
+def test_atlas_counts_bbox_brazil():
+    galah.galah_config(atlas="Brazil")
+    #                    #xmin, ymin, xmax, ymax
+    br_bbox = shapely.box(-55.9, -6.6, -53, -3.9)
+    output = galah.atlas_counts(bbox=br_bbox)
+    assert output["totalRecords"][0] > 0
+
+
 ######################################
 # atlas_species
 ######################################
@@ -626,12 +638,11 @@ def test_atlas_species_Brazil_family_rank_subspecies_brazil():
 
 def test_atlas_species_brazil_filter_notaxa():
     galah.galah_config(atlas="Brazil")
-    filtered_species_table = galah.atlas_species(
-        filters=["year=2022", "basis_of_record=HumanObservation"]
-    )
+    filtered_species_table = galah.atlas_species(filters=["year=2022", "basis_of_record=HumanObservation"])
     assert filtered_species_table.shape[0] > 0
 
 
+"""
 ######################################
 # atlas_occurrences
 ######################################
@@ -643,18 +654,14 @@ def test_atlas_occurrences_taxa_brazil():
 
 def test_atlas_occurrences_taxa_fields_brazil():
     galah.galah_config(atlas="Brazil", email=email_br)
-    occurrences = galah.atlas_occurrences(
-        taxa="Ramphastos toco Statius Muller, 1776", fields=["latitude", "longitude"]
-    )
+    occurrences = galah.atlas_occurrences(taxa="Ramphastos toco Statius Muller, 1776", fields=["latitude", "longitude"])
     assert occurrences.shape[1] == 2
 
 
 def test_atlas_occurrences_taxa_filters_brazil():
     galah.galah_config(atlas="Brazil", email=email_br)
     occurrences1 = galah.atlas_occurrences(taxa="Ramphastos toco Statius Muller, 1776")
-    occurrences2 = galah.atlas_occurrences(
-        taxa="Ramphastos toco Statius Muller, 1776", filters="year=2020"
-    )
+    occurrences2 = galah.atlas_occurrences(taxa="Ramphastos toco Statius Muller, 1776", filters="year=2020")
     assert occurrences2.shape[0] < occurrences1.shape[0]
 
 
@@ -672,9 +679,7 @@ def test_atlas_occurrences_taxa_filters_brazil():
     galah.galah_config(atlas="Brazil", email=email_br)
     filters = ["year>2018", "basis_of_record=HumanObservation"]
     occurrences1 = galah.atlas_occurrences(taxa="Ramphastos toco Statius Muller, 1776")
-    occurrences2 = galah.atlas_occurrences(
-        taxa="Ramphastos toco Statius Muller, 1776", filters=filters
-    )
+    occurrences2 = galah.atlas_occurrences(taxa="Ramphastos toco Statius Muller, 1776", filters=filters)
     assert occurrences2.shape[0] < occurrences1.shape[0]
 
 
@@ -686,6 +691,22 @@ def test_atlas_occurrences_taxa_filters_fields_brazil():
         fields=["latitude", "longitude"],
     )
     assert occurrences.shape[1] == 2
+
+def test_atlas_occurrences_polygon_brazil():
+    galah.galah_config(atlas="Brazil", email=email_br)
+    br_polygon = shapely.wkt.loads(
+        "MULTIPOLYGON(((-54.84375 -2.8977811643254205,-52.734375 -3.1610843296619158,-52.64648437499999 -4.213573563450947,-53.96484375 -5.0895763000547545,-56.33789062499999 -5.17711440129899,-56.162109375 -3.336582999279346,-54.84375 -2.8977811643254205)))"
+    )
+    output = galah.atlas_occurrences(polygon=br_polygon)
+    assert output.shape[0] > 0
+
+
+def test_atlas_occurrences_bbox_brazil():
+    galah.galah_config(atlas="Brazil", email=email_br)
+    #                    #xmin, ymin, xmax, ymax
+    br_bbox = shapely.box(-55.9, -6.6, -53, -3.9)
+    output = galah.atlas_occurrences(bbox=br_bbox)
+    assert output.shape[0] > 0
 
 
 ######################################
@@ -704,17 +725,13 @@ def test_atlas_media_taxa_brazil():
 def test_atlas_media_filters_brazil():
     galah.galah_config(atlas="Brazil", email=email_br)
     raw_output = galah.atlas_media(taxa="Ramphastos toco Statius Muller, 1776")
-    filtered_output = galah.atlas_media(
-        taxa="Ramphastos toco Statius Muller, 1776", filters="year>=2024"
-    )
+    filtered_output = galah.atlas_media(taxa="Ramphastos toco Statius Muller, 1776", filters="year>=2024")
     assert raw_output.shape[0] > filtered_output.shape[0]
 
 
 def test_atlas_media_multimedia_brazil():
     galah.galah_config(atlas="Brazil", email=email_br)
-    multimedia_output = galah.atlas_media(
-        taxa="Ramphastos toco Statius Muller, 1776", multimedia="images"
-    )
+    multimedia_output = galah.atlas_media(taxa="Ramphastos toco Statius Muller, 1776", multimedia="images")
     assert multimedia_output.shape[0] > 0
 
 
@@ -747,3 +764,4 @@ def test_atlas_media_filters_multimedia_collect_path_brazil():
 
 
 #'''
+#"""

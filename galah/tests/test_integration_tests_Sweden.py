@@ -1,11 +1,14 @@
+import configparser
 import os
 import shutil
 
 import galah
+import shapely
 
 email_se = "martinjwestgate@gmail.com"
 
 
+# """
 ######################################
 # show_all
 ######################################
@@ -440,6 +443,23 @@ def test_atlas_counts_multiple_taxa_filters_group_by_multiple_separate_expand_sw
     assert output["count"][0] >= 0
 
 
+def test_atlas_counts_polygon_sweden():
+    galah.galah_config(atlas="Sweden")
+    se_polygon = shapely.wkt.loads(
+        "MULTIPOLYGON(((15.570373535156252 59.94469496963479,16.36138916015625 59.740482255822876,16.36138916015625 59.2834217866806,15.460510253906248 59.1878887061937,14.76837158203125 59.440187822995185,14.724426269531252 59.76815180962545,15.570373535156252 59.94469496963479)))"
+    )
+    output = galah.atlas_counts(polygon=se_polygon)
+    assert output["totalRecords"][0] > 0
+
+
+def test_atlas_counts_bbox_sweden():
+    galah.galah_config(atlas="Sweden")
+    #                    #xmin, ymin, xmax, ymax
+    se_bbox = shapely.box(14.4, 58.8, 16.7, 59.9)
+    output = galah.atlas_counts(bbox=se_bbox)
+    assert output["totalRecords"][0] > 0
+
+
 ######################################
 # atlas_species
 ######################################
@@ -468,9 +488,7 @@ def test_atlas_occurrences_taxa_sweden():
 
 def test_atlas_occurrences_taxa_fields_sweden():
     galah.galah_config(atlas="Sweden", email=email_se)
-    occurrences = galah.atlas_occurrences(
-        taxa="Alces alces", fields=["decimalLatitude", "decimalLongitude"]
-    )
+    occurrences = galah.atlas_occurrences(taxa="Alces alces", fields=["decimalLatitude", "decimalLongitude"])
     assert occurrences.shape[1] == 2
 
 
@@ -509,6 +527,23 @@ def test_atlas_occurrences_taxa_filters_fields_sweden():
     assert occurrences.shape[1] == 2
 
 
+def test_atlas_occurrences_polygon_sweden():
+    galah.galah_config(atlas="Sweden", email=email_se)
+    se_polygon = shapely.wkt.loads(
+        "MULTIPOLYGON(((15.570373535156252 59.94469496963479,16.36138916015625 59.740482255822876,16.36138916015625 59.2834217866806,15.460510253906248 59.1878887061937,14.76837158203125 59.440187822995185,14.724426269531252 59.76815180962545,15.570373535156252 59.94469496963479)))"
+    )
+    output = galah.atlas_occurrences(polygon=se_polygon, filters="year>2025")
+    assert output.shape[0] > 0
+
+
+def test_atlas_occurrences_bbox_sweden():
+    galah.galah_config(atlas="Sweden", email=email_se)
+    #                    #xmin, ymin, xmax, ymax
+    se_bbox = shapely.box(14.4, 58.8, 16.7, 59.9)
+    output = galah.atlas_occurrences(bbox=se_bbox, filters="year>=2025")
+    assert output.shape[0] > 0
+
+
 ######################################
 # atlas_media
 ######################################
@@ -517,32 +552,28 @@ def test_atlas_occurrences_taxa_filters_fields_sweden():
 # test if it can get a taxa and return output
 def test_atlas_media_taxa_sweden():
     galah.galah_config(atlas="Sweden", email=email_se)
-    output = galah.atlas_media(taxa="Alces alces")
+    output = galah.atlas_media(taxa="Bos taurus")
     assert output.shape[0] > 1
 
 
 # test if the filters component of atlas_media is working
 def test_atlas_media_filters_sweden():
     galah.galah_config(atlas="Sweden", email=email_se)
-    raw_output = galah.atlas_media(taxa="Alces alces")
-    filtered_output = galah.atlas_media(
-        taxa="Alces alces", filters="decimalLatitude<-24.0"
-    )
+    raw_output = galah.atlas_media(taxa="Bos taurus")
+    filtered_output = galah.atlas_media(taxa="Bos taurus", filters="decimalLatitude>57.5")  # decimalLatitude<-24.0
     assert raw_output.shape[0] > filtered_output.shape[0]
 
 
 def test_atlas_media_multimedia_sweden():
     galah.galah_config(atlas="Sweden", email=email_se)
-    multimedia_output = galah.atlas_media(taxa="Alces alces", multimedia="images")
+    multimedia_output = galah.atlas_media(taxa="Bos taurus", multimedia="images")
     assert multimedia_output.shape[0] > 0
 
 
 def test_atlas_media_filters_multimedia_sweden():
     galah.galah_config(atlas="Sweden", email=email_se)
-    raw_output = galah.atlas_media(taxa="Alces alces")
-    multimedia_output = galah.atlas_media(
-        taxa="Alces alces", filters="decimalLatitude<=-24.0", multimedia="images"
-    )
+    raw_output = galah.atlas_media(taxa="Bos taurus")
+    multimedia_output = galah.atlas_media(taxa="Bos taurus", filters="decimalLatitude>57.5", multimedia="images")
     assert raw_output.shape[0] > multimedia_output.shape[0]
 
 
@@ -553,9 +584,9 @@ def test_atlas_media_filters_multimedia_collect_path_sweden():
         shutil.rmtree("test")
     os.mkdir("test")
     multimedia_output = galah.atlas_media(
-        taxa="Alces alces",
+        taxa="Bos taurus",
         multimedia="images",
-        filters="decimalLatitude<=-24.0",
+        filters="decimalLatitude>57.5",
         collect=True,
         path=path,
     )

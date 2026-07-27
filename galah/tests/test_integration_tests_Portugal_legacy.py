@@ -1,6 +1,5 @@
-import pytest
-
 import galah
+import pytest
 
 '''
 def test_show_all_assertions_portugal():

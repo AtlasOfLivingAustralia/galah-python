@@ -11,6 +11,7 @@ email_kew = "ala4r@ala.org.au"
 
 
 #'''
+# """
 ######################################
 # show_all
 ######################################
@@ -445,6 +446,29 @@ def test_atlas_counts_multiple_taxa_filters_group_by_separate_kew():
     assert (output["count"] > 0).all()
 
 
+"""
+
+
+def test_atlas_counts_polygon_kew():
+    galah.galah_config(atlas="Kew")
+    kew_polygon = shapely.wkt.loads(
+        "MULTIPOLYGON(((0.023345947265625 52.606800578826,0.797882080078125 52.40954011714694,0.627593994140625 51.98191985437979,0.089263916015625 51.64572013010323,-0.586395263671875 52.06304536165708,-0.613861083984375 52.42964095188324,0.023345947265625 52.606800578826)))"
+    )
+    output = galah.atlas_counts(polygon=kew_polygon)
+    assert output["totalRecords"][0] > 0
+
+
+def test_atlas_counts_bbox_kew():
+    galah.galah_config(atlas="Kew")
+    #                    #xmin, ymin, xmax, ymax
+    kew_bbox = shapely.box(-0.60, 51.7, 0.64, 52.4)
+    output = galah.atlas_counts(bbox=kew_bbox)
+    assert output["totalRecords"][0] > 0
+
+
+"""
+
+
 ######################################
 # atlas_species
 ######################################
@@ -471,9 +495,7 @@ def test_atlas_species_family_rank_genus_kew():
 
 def test_atlas_species_kew_filter_notaxa():
     galah.galah_config(atlas="Kew", email=email_kew, reason=10)
-    filtered_species_table = galah.atlas_species(
-        filters=["year=2022", "basisOfRecord=PRESERVED_SPECIMEN"]
-    )
+    filtered_species_table = galah.atlas_species(filters=["year=2022", "basisOfRecord=PRESERVED_SPECIMEN"])
     assert filtered_species_table.shape[0] > 0
 
 
@@ -488,18 +510,14 @@ def test_atlas_occurrences_taxa_kew():
 
 def test_atlas_occurrences_taxa_fields_kew():
     galah.galah_config(atlas="Kew", email=email_kew, reason="10")
-    occurrences = galah.atlas_occurrences(
-        taxa="Hypoestes forskaolii", fields=["decimalLatitude", "decimalLongitude"]
-    )
+    occurrences = galah.atlas_occurrences(taxa="Hypoestes forskaolii", fields=["decimalLatitude", "decimalLongitude"])
     assert occurrences.shape[1] == 2
 
 
 def test_atlas_occurrences_taxa_filters_kew():
     galah.galah_config(atlas="Kew", email=email_kew, reason="10")
     occurrences1 = galah.atlas_occurrences(taxa="Hypoestes forskaolii")
-    occurrences2 = galah.atlas_occurrences(
-        taxa="Hypoestes forskaolii", filters="year>=2020"
-    )
+    occurrences2 = galah.atlas_occurrences(taxa="Hypoestes forskaolii", filters="year>=2020")
     assert occurrences2.shape[0] < occurrences1.shape[0]
 
 
@@ -531,11 +549,34 @@ def test_atlas_occurrences_taxa_filters_fields_kew2():
     assert occurrences.shape[1] == 2
 
 
+"""
+
+
+def test_atlas_occurrences_polygon_kew():
+    galah.galah_config(atlas="Kew", email=email_kew)
+    kew_polygon = shapely.wkt.loads(
+        "MULTIPOLYGON(((0.023345947265625 52.606800578826,0.797882080078125 52.40954011714694,0.627593994140625 51.98191985437979,0.089263916015625 51.64572013010323,-0.586395263671875 52.06304536165708,-0.613861083984375 52.42964095188324,0.023345947265625 52.606800578826)))"
+    )
+    output = galah.atlas_occurrences(polygon=kew_polygon, filters="year>=2025")
+    assert output.shape[0] > 0
+
+
+def test_atlas_occurrences_bbox_kew():
+    galah.galah_config(atlas="Kew", email=email_kew)
+    #                    #xmin, ymin, xmax, ymax
+    kew_bbox = shapely.box(-0.60, 51.7, 0.64, 52.4)
+    output = galah.atlas_occurrences(bbox=kew_bbox, filters="year>=2025")
+    assert output.shape[0] > 0
+
+
+"""
+
+
 ######################################
 # atlas_media
 ######################################
 def test_atlas_media_taxa_kew():
-    galah.galah_config(atlas="Kew", email=email_kew)  # verbose=True,
+    galah.galah_config(atlas="Kew", email=email_kew)
     media = galah.atlas_media(taxa="Hypoestes forskaolii", filters="year>2010")
     assert media.shape[0] > 0
 
@@ -544,26 +585,20 @@ def test_atlas_media_taxa_kew():
 def test_atlas_media_filters_kew():
     galah.galah_config(atlas="Kew", email=email_kew)
     raw_output = galah.atlas_media(taxa="Hypoestes forskaolii")
-    filtered_output = galah.atlas_media(
-        taxa="Hypoestes forskaolii", filters="year>=2020"
-    )
+    filtered_output = galah.atlas_media(taxa="Hypoestes forskaolii", filters="year>=2020")
     assert raw_output.shape[0] > filtered_output.shape[0]
 
 
 def test_atlas_media_multimedia_kew():
     galah.galah_config(atlas="Kew", email=email_kew)
-    multimedia_output = galah.atlas_media(
-        taxa="Hypoestes forskaolii", multimedia="images"
-    )
+    multimedia_output = galah.atlas_media(taxa="Hypoestes forskaolii", multimedia="images")
     assert multimedia_output.shape[0] > 0
 
 
 def test_atlas_media_filters_multimedia_kew():
     galah.galah_config(atlas="Kew", email=email_kew)
     raw_output = galah.atlas_media(taxa="Hypoestes forskaolii")
-    multimedia_output = galah.atlas_media(
-        taxa="Hypoestes forskaolii", filters="year>=2020", multimedia="images"
-    )
+    multimedia_output = galah.atlas_media(taxa="Hypoestes forskaolii", filters="year>=2020", multimedia="images")
     assert raw_output.shape[0] > multimedia_output.shape[0]
 
 
@@ -585,3 +620,4 @@ def test_atlas_media_filters_multimedia_collect_path_kew():
 
 
 #'''
+# """

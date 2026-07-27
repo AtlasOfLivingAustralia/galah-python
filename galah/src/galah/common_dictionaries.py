@@ -5,6 +5,7 @@ USER_AGENT_QGIS = "qgis-galah-python{}".format(__version__)
 GBIF_FACET_LIMIT = 100000
 SOURCE_TYPE_ID = 2005
 QGIS_SOURCE_TYPE_ID = 2006
+ATLAS_CRS = ["EPSG:4326", "WGS84"]
 
 # all available atlases
 atlases = [
@@ -28,6 +29,19 @@ atlases_not_working = [
     "Portugal",
 ]
 
+ATLAS_GEO_NAMES = {
+    "Australia": "wkt",
+    "Austria": "wkt",
+    "Brazil": "wkt",
+    "Flanders": "wkt",
+    "Global": "geometry",
+    "GBIF": "geometry",
+    "Kew": "wkt",
+    "Spain": "wkt",
+    "Sweden": "wkt",
+    "United Kingdom": "wkt",
+}
+
 # common names for each atlas
 ATLAS_COMMON_NAMES = {
     "Australia": "vernacularName",
@@ -38,6 +52,7 @@ ATLAS_COMMON_NAMES = {
     "Global": "canonicalName",
     "GBIF": "canonicalName",
     "Guatemala": "",
+    "Kew": "",
     "Portugal": "",
     "Spain": "vernacularName",
     "Sweden": "",

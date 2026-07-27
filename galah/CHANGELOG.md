@@ -1,3 +1,13 @@
+## 0.13.4 (2026-07-28)
+
+### Fix
+
+- **update-dependency-versions**: update dependency versions
+- **updated-dependency-versions**: updated dependency versions
+- **merging-develop-into-main**: merging develop into main
+- **updated-pyproject.toml**: updated pyproject.toml
+- **update-poetry.lock**: update poetry.lock
+
 ## 0.13.3 (2026-06-24)
 
 ### Fix

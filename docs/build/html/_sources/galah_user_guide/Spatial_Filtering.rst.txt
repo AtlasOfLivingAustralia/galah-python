@@ -102,34 +102,13 @@ have been recorded in King George Square.
 This argument can be provided as its string; however, we show you the above to give you an idea of what 
 ``galah-python`` does when you provide it a string.
 
-There is a third argument of ``atlas_counts``, ``atlas_occurrences``, ``atlas_species`` or ``atlas_media`` 
-called ``simplify_polygon``, which defaults to ``False``. By setting the ``simplify_polygon`` argument 
-to ``True``, the provided ``POLYGON`` or ``MULTIPOLYGON`` will be converted into the smallest bounding box 
-(rectangle) that contains the ``POLYGON``. In this case, records will be included that may not exactly lie 
-inside the provided shape.
-
-.. prompt:: python
-
-    >>> species_king_george_square = galah.atlas_occurrences(
-    ...   polygon=king_george_sq,
-    ...   simplify_polygon=True,
-    ...   fields=["decimalLatitude", "decimalLongitude", "eventDate", "scientificName", "vernacularName"]  
-    ... )
-    >>> species_king_george_square.head(10)
-
-.. program-output:: python3 -c "import galah;import shapely.wkt;import pandas as pd;pd.set_option('display.max_columns', None);pd.set_option('display.expand_frame_repr', False);pd.set_option('max_colwidth', None);king_george_square = shapely.wkt.loads(\"MULTIPOLYGON(((153.0243 -27.46886, 153.0242 -27.46896, 153.0236 -27.46837, 153.0239 -27.46814, 153.0239 -27.46813, 153.0242 -27.46789, 153.0244 -27.46805, 153.0245 -27.46821, 153.0246 -27.46828, 153.0247 -27.46835, 153.0248 -27.46848, 153.0246 -27.4686, 153.0246 -27.46862, 153.0245 -27.46871, 153.0243 -27.46886)))\");species_king_george_square = galah.atlas_occurrences(polygon=king_george_square,simplify_polygon=True,fields=[\"decimalLatitude\", \"decimalLongitude\", \"eventDate\", \"scientificName\", \"vernacularName\"]);print(species_king_george_square.head(10))"
-
 Large shapefiles
 ----------------
 
-The ``simplify_polygon`` argument with option ``polygon`` is provided because objects with a large amount of 
-vertices will take a long time to filter on the ALA's end. In the event you have a large shapefile, using 
-``simplify_polygon=True`` will at least enable an initial reduction of the time it takes for the data to be 
-downloaded, before finer filtering to the actual shapefile will obtain the desired set of occurrences. 
-
-Alternatively, one can also perform the "bbox" reduction before passing the shape to ``atlas_counts``, 
-``atlas_occurrences``, ``atlas_species`` or ``atlas_media`` by using ``{geopandas}`` and the ``unary_union`` 
-function of the ``{shapely}`` package.
+Objects with a large amount of vertices will take a long time to filter on the ALA's end. 
+In the event you have a large shapefile, one can perform the "bbox" reduction before passing 
+the shape to ``atlas_counts``, ``atlas_occurrences``, ``atlas_species`` or ``atlas_media`` 
+by using ``{geopandas}`` and the ``unary_union`` function of the ``{shapely}`` package.
 
 A common situation for this to occur is when a shapefile with multiple shapes is provided, where we are 
 interested in grouping our results by each shape. Here is a mock workflow using a subset of `a shapefile of 

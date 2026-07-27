@@ -2,26 +2,14 @@ import pandas as pd
 import requests
 
 from .add_to_payload_functions import add_to_payload_ALA
-from .common_add_functions import (
-    add_extras_to_URL,
-    add_filters,
-    add_spatial_shapes,
-    add_taxa,
-)
-from .common_checks import (
-    check_atlas,
-    check_atlas_authenticate,
-    check_atlas_data_profile,
-    check_for_non_working_atlases,
-    check_max_queries_ALA,
-    check_string_list,
-)
-from .common_dictionaries import COUNTS_NAMES, USER_AGENT, USER_AGENT_QGIS
-from .common_functions import print_if_verbose, set_bool_argument
-from .galah_config import get_api_url, readConfig
+from .common_add_functions import (add_extras_to_URL, add_filters,
+                                   add_spatial_shapes, add_taxa)
+from .common_checks import check_max_queries_ALA, check_string_list
+from .common_dictionaries import COUNTS_NAMES
+from .common_functions import print_if_verbose
+from .galah_config import get_api_url, get_config_values
 from .galah_group_by import galah_group_by
 from .show_all import show_all
-from .version import __version__
 
 
 def atlas_counts(
@@ -35,9 +23,10 @@ def atlas_counts(
     use_data_profile=False,
     polygon=None,
     bbox=None,
-    simplify_polygon=False,
-    tolerance=0.05,
+    # simplify_polygon=False,
+    # tolerance=0.05,
     config_file=None,
+    crs=None,
 ):
     """
     Prior to downloading data, it is often valuable to have some estimate of how many records are available, both for deciding
@@ -71,8 +60,8 @@ def atlas_counts(
             A polygon object denoting a geographical region.  Defaults to ``None``.
         bbox : dict or shapely Polygon
             A polygon or dictionary object denoting four points, which are the corners of a geographical region.  Defaults to ``None``.
-        simplify_polygon : logical
-            When using the ``polygon`` argument of ``galah.atlas_counts()``, specifies whether or not to simplify the polygon and use this instead.  Defaults to ``True``.
+        crs : str
+            The Coordinate Reference System of your shape.  All atlases are EPSG: 4326 though default value here is None
         config_file : string
             If you want to specify your own config file, put the path and name of the file here.  This is applicable when you are running on a server and each user has different configurations.  Defaults to ``None``.
 
@@ -104,34 +93,25 @@ def atlas_counts(
     # Declare all variables, run checks on compatibility of arguments.
     # ---------------------------------------------------------------------------------------------
 
-    # get configs
-    configs = readConfig(config_file=config_file)
-
-    # get atlas and verbose
-    atlas = configs["galahSettings"]["atlas"]
-    verbose = set_bool_argument(
-        arg=configs["galahSettings"]["verbose"], name_arg="verbose"
-    )
-    timeout = int(configs["galahSettings"]["timeout"])
-    authenticate = set_bool_argument(
-        arg=configs["galahSettings"]["authenticate"], name_arg="authenticate"
-    )
-    access_token = configs["galahSettings"]["access_token"]
-    client_id = configs["galahSettings"]["client_id"]
-    qgis = set_bool_argument(arg=configs["galahSettings"]["qgis"], name_arg="qgis")
-
-    # check to see if atlas is in list of non-functioning atlases
-    check_for_non_working_atlases(atlas=atlas)
-
-    # check atlas is valid
-    check_atlas(atlas=atlas, function="atlas_counts")
-    check_atlas_authenticate(atlas=atlas, authenticate=authenticate)
-    check_atlas_data_profile(atlas=atlas, use_data_profile=use_data_profile)
-
-    # set user agent
-    user_agent = USER_AGENT
-    if qgis:
-        user_agent = USER_AGENT_QGIS
+    # get all config values
+    (
+        atlas,
+        timeout,
+        verbose,
+        authenticate,
+        access_token,
+        client_id,
+        user_agent,
+        email,
+        password,
+        email_notify,
+        data_profile,
+        usernameGBIF,
+        passwordGBIF,
+        ranks,
+        qgis,
+        reason,
+    ) = get_config_values(function="atlas_counts", config_file=config_file)
 
     # set default column 2 value
     column2value = "records_counts"
@@ -168,7 +148,7 @@ def atlas_counts(
             column1value="atlas_counts",
             column2="api_name",
             column2value=column2value,
-            config_file=config_file,
+            atlas=atlas,
         )
 
         # check for group by
@@ -182,12 +162,11 @@ def atlas_counts(
                 filters=filters,
                 total_group_by=total_group_by,
                 payload=payload,
+                config_file=config_file,
             )
 
         # create the query id
-        qid_URL, method2 = get_api_url(
-            column1="api_name", column1value="occurrences_qid"
-        )
+        qid_URL, method2 = get_api_url(column1="api_name", column1value="occurrences_qid", atlas=atlas)
 
         # format headers with authentication
         headers = {
@@ -206,25 +185,24 @@ def atlas_counts(
         )
 
         # cache the user's query and get a query ID
-        qid = requests.request(
-            method2, qid_URL, data=payload, headers=headers, timeout=timeout
-        )
+        qid = requests.request(method2, qid_URL, data=payload, headers=headers, timeout=timeout)
 
         # create the URL to grab your queryID and counts
-        URL = (
-            countsURL + "?fq=%28qid%3A" + qid.text + "%29&flimit=-1&pageSize=0"
-        )  # "/" + qid.text
+        URL = countsURL + "?fq=%28qid%3A" + qid.text + "%29&flimit=-1&pageSize=0"  # "/" + qid.text
 
         # add last things to URL
         if atlas in ["Australia", "ALA"]:
             URL += add_extras_to_URL(
-                add_email=False,
+                atlas=atlas,
                 use_data_profile=use_data_profile,
                 data_profile_list=list(show_all(profiles=True)["shortName"]),
-                config_file=config_file,
+                data_profile=data_profile,
+                reason=reason,
             )
+        elif use_data_profile:
+            raise ValueError("Only the Australian atlas has data quality profiles you can use.")
         else:
-            URL += add_extras_to_URL(add_email=False, config_file=config_file)
+            URL += add_extras_to_URL(add_email=False, reason=reason)
 
         # print all information in the counts call if verbose is True
         print_if_verbose(verbose=verbose, URL=URL, method=method)
@@ -245,11 +223,7 @@ def atlas_counts(
 
         # get the baseURL and method
         URL, method = get_api_url(
-            column1="called_by",
-            column1value="atlas_counts",
-            column2="api_name",
-            column2value=column2value,
-            config_file=config_file,
+            column1="called_by", column1value="atlas_counts", column2="api_name", column2value=column2value, atlas=atlas
         )
 
         # check the type of filters
@@ -269,27 +243,14 @@ def atlas_counts(
         )
 
         # return None if there are no valid taxa
-        if all(x not in URL for x in ["q", "fq", "taxonKey"]) and all(
-            x is None for x in [filters, polygon, bbox]
-        ):
+        if all(x not in URL for x in ["q", "fq", "taxonKey"]) and all(x is None for x in [filters, polygon, bbox]):
             if taxa is not None:
                 return None
 
         # check if user wants to group counts
         if group_by is not None:
 
-            # check for GBIF first
-            if atlas not in ["Global", "GBIF"]:
-
-                # return grouped data frame
-                return galah_group_by(
-                    URL=URL,
-                    method=method,
-                    group_by=group_by,
-                    filters=filters,
-                    total_group_by=total_group_by,
-                )
-
+            # used to check for GBIF first; not sure we need that
             # return grouped data frame
             return galah_group_by(
                 URL=URL,
@@ -297,28 +258,33 @@ def atlas_counts(
                 group_by=group_by,
                 filters=filters,
                 total_group_by=total_group_by,
+                config_file=config_file,
             )
 
         # add filters and spatial shapes
         URL = add_filters(URL=URL, atlas=atlas, filters=filters)
         URL = add_spatial_shapes(
+            atlas=atlas,
             polygon=polygon,
             bbox=bbox,
             URL=URL,
-            simplify_polygon=simplify_polygon,
-            tolerance=tolerance,
+            crs=crs,
+            # simplify_polygon=simplify_polygon,
+            # tolerance=tolerance,
         )
 
         # add last things to URL
         if atlas in ["Australia", "ALA"]:
             URL += add_extras_to_URL(
+                atlas=atlas,
                 add_email=False,
                 use_data_profile=use_data_profile,
                 data_profile_list=list(show_all(profiles=True)["shortName"]),
-                config_file=config_file,
+                data_profile=data_profile,
+                reason=reason,
             )
         else:
-            URL += add_extras_to_URL(add_email=False, config_file=config_file)
+            URL += add_extras_to_URL(atlas=atlas, add_email=False, reason=reason)
 
         # check to see if the user wants the querying URL
         print_if_verbose(verbose=verbose, headers=headers, URL=URL, method=method)

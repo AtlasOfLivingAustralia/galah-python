@@ -8,20 +8,12 @@ import requests
 from tqdm import tqdm
 
 from .atlas_occurrences import atlas_occurrences
-from .common_checks import check_atlas, check_for_non_working_atlases, check_string_list
-from .common_dictionaries import (
-    ATLAS_SELECTIONS,
-    FIELD_SELECTIONS,
-    IMAGE_COLUMN_NAMES,
-    IMAGE_MERGE_NAMES,
-    IMAGE_NAMES,
-    MM_EXTENSIONS,
-    USER_AGENT,
-    USER_AGENT_QGIS,
-)
-from .common_functions import print_if_verbose, set_bool_argument
-from .galah_config import get_api_url, readConfig
-from .version import __version__
+from .common_checks import check_string_list
+from .common_dictionaries import (ATLAS_SELECTIONS, FIELD_SELECTIONS,
+                                  IMAGE_COLUMN_NAMES, IMAGE_MERGE_NAMES,
+                                  IMAGE_NAMES, MM_EXTENSIONS)
+from .common_functions import print_if_verbose
+from .galah_config import get_api_url, get_config_values
 
 
 def atlas_media(
@@ -35,7 +27,7 @@ def atlas_media(
     use_data_profile=False,
     polygon=None,
     bbox=None,
-    simplify_polygon=False,
+    # simplify_polygon=False,
     collect=False,
     path=None,
     thumbnail=False,
@@ -43,7 +35,8 @@ def atlas_media(
     config_file=None,
     mint_doi=False,
     doi=None,
-    tolerance=0.05,
+    crs=None
+    # tolerance=0.05,
 ):
     """
     In addition to text data describing individual occurrences and their attributes, ALA stores images, sounds and videos
@@ -86,8 +79,8 @@ def atlas_media(
             A polygon shape denoting a geographical region.  Defaults to ``None``.
         bbox : dict or shapely Polygon
             A polygon or dictionary type denoting four points, which are the corners of a geographical region.  Defaults to ``None``.
-        simplify_polygon : logical
-            When using the ``polygon`` argument of ``galah.atlas_counts()``, specifies whether or not to draw a bounding box around the polygon and use this instead.  Defaults to ``False``.
+        crs : str
+            The Coordinate Reference System of your shape.  All atlases are EPSG: 4326 though default value here is None
         collect : logical
             if ``True``, downloads full-sized images and media files returned to a local directory.
         path : string
@@ -115,35 +108,28 @@ def atlas_media(
 
     """
 
-    # get configs
-    configs = readConfig(config_file=config_file)
-
-    # get atlas
-    atlas = configs["galahSettings"]["atlas"]
-    timeout = int(configs["galahSettings"]["timeout"])
-    verbose = set_bool_argument(
-        arg=configs["galahSettings"]["verbose"], name_arg="verbose"
-    )
-    authenticate = set_bool_argument(
-        arg=configs["galahSettings"]["authenticate"], name_arg="authenticate"
-    )
-    access_token = configs["galahSettings"]["access_token"]
-    client_id = configs["galahSettings"]["client_id"]
-    qgis = set_bool_argument(arg=configs["galahSettings"]["qgis"], name_arg="qgis")
-
-    # check to see if atlas is in list of non-functioning atlases
-    check_for_non_working_atlases(atlas=atlas)
-
-    # check atlas is valid
-    check_atlas(atlas=atlas, function="atlas_media")
+    # get all config values
+    (
+        atlas,
+        timeout,
+        verbose,
+        authenticate,
+        access_token,
+        client_id,
+        user_agent,
+        email,
+        password,
+        email_notify,
+        data_profile,
+        usernameGBIF,
+        passwordGBIF,
+        ranks,
+        qgis,
+        reason,
+    ) = get_config_values(function="atlas_media", config_file=config_file)
 
     # check the type of filters
     filters = check_string_list(filters, "filters")
-
-    # set user agent
-    user_agent = USER_AGENT
-    if qgis:
-        user_agent = USER_AGENT_QGIS
 
     # get headers
     headers = {
@@ -202,8 +188,8 @@ def atlas_media(
         use_data_profile=use_data_profile,
         polygon=polygon,
         bbox=bbox,
-        tolerance=tolerance,
-        simplify_polygon=simplify_polygon,
+        # tolerance=tolerance,
+        # simplify_polygon=simplify_polygon,
         mint_doi=mint_doi,
         doi=doi,
         config_file=config_file,
@@ -214,39 +200,30 @@ def atlas_media(
             "There are no occurrences or media associated with your query.  Please try your query on atlas_counts before trying it again on atlas_media."
         )
 
-    # set this variable to let the user know there is no media associated with their query
+    # initialise this variable to True - this will let someone know if there is any media
+    # associated with their query
     no_images = True
 
     # loop through all possible media
     for media in multimedia:
 
         # get all occurrences with multimedia files
-        if type(dataFrame[media][0]) is str:
+        if isinstance(dataFrame[media][0], str):
             # remove all "None" entries; may have to update this with different atlases
-            media_array = dataFrame.loc[
-                ~dataFrame[media].str.contains("None", case=True, na=False)
-            ]
+            media_array = dataFrame.loc[~dataFrame[media].str.contains("None", case=True, na=False)]
         else:
             media_array = dataFrame[~dataFrame[media].isnull()]
 
         # get media metadata url
         if authenticate:
-            basemediaURL, method = get_api_url(
-                column1="api_name",
-                column1value="image_bulk_metadata",
-                config_file=config_file,
-            )
+            basemediaURL, method = get_api_url(column1="api_name", column1value="image_bulk_metadata", atlas=atlas)
 
             # add authorization token and client id for authentication
             headers["Authorization"] = "Bearer {}".format(access_token)
             headers["client_id"] = client_id
 
         else:
-            basemediaURL, method = get_api_url(
-                column1="called_by",
-                column1value="media_metadata",
-                config_file=config_file,
-            )
+            basemediaURL, method = get_api_url(column1="called_by", column1value="media_metadata", atlas=atlas)
 
         # check to see which occurrence entries have
         if not media_array.empty:
@@ -260,18 +237,14 @@ def atlas_media(
             ]
 
             # put the longest strings (so the duplicates) at the end
-            filtered_media_array = filtered_media_array.sort_values(
-                by=media, key=lambda x: x.str.len()
-            )
+            filtered_media_array = filtered_media_array.sort_values(by=media, key=lambda x: x.str.len())
 
             # reset the indices for better looping
             filtered_media_array = filtered_media_array.reset_index(drop=True)
 
             # get duplicate rows and top index
             duplicate_rows = filtered_media_array[
-                filtered_media_array[media]
-                .astype(str)
-                .str.contains(r"[,|]", regex=True)
+                filtered_media_array[media].astype(str).str.contains(r"[,|]", regex=True)
             ]  # try this
 
             if not duplicate_rows.empty:
@@ -324,9 +297,7 @@ def atlas_media(
         print("We could not find any media associated with your query.\n")
 
 
-def write_image_to_file(
-    image=None, headers=None, path=None, thumbnail=False, timeout=600, atlas=None
-):
+def write_image_to_file(image=None, headers=None, path=None, thumbnail=False, timeout=600, atlas=None):
 
     # set extension variable
     ext = ""
@@ -335,9 +306,7 @@ def write_image_to_file(
     if image["mimeType"] in MM_EXTENSIONS:
         ext = MM_EXTENSIONS[image["mimeType"]]
     else:
-        raise ValueError(
-            "Extension {} is not in our list of extensions.".format(image["mimeType"])
-        )
+        raise ValueError("Extension {} is not in our list of extensions.".format(image["mimeType"]))
 
     # check if they want the thumbnail vs. original
     if thumbnail:
@@ -348,9 +317,7 @@ def write_image_to_file(
             timeout=timeout,
         )
     else:
-        data = requests.get(
-            url=image["imageUrl"], headers=headers, stream=True, timeout=timeout
-        )
+        data = requests.get(url=image["imageUrl"], headers=headers, stream=True, timeout=timeout)
 
     # write image to file
     with open("{}/{}.{}".format(path, image[IMAGE_MERGE_NAMES[atlas]], ext), "wb") as f:
@@ -365,14 +332,10 @@ def check_multimedia(multimedia=None, atlas=None):
             if type(multimedia) is str:
                 multimedia = [multimedia]
         else:
-            raise ValueError(
-                'multimedia argument should either be a string or a list, i.e. multimedia="images"'
-            )
+            raise ValueError('multimedia argument should either be a string or a list, i.e. multimedia="images"')
     else:
         if (
-            atlas
-            in ["Australia", "Flanders", "Spain", "Sweden", "United Kingdom", "UK"]
-            and multimedia is None
+            atlas in ["Australia", "Flanders", "Spain", "Sweden", "United Kingdom", "UK"] and multimedia is None
         ):  # try Spain here
             multimedia = ["images", "videos", "sounds"]
         elif atlas in ["Austria", "Kew"]:
@@ -438,13 +401,9 @@ def get_image_metadata(
                     if key in response_json["results"][id].keys():
                         media_metadata[key].append(response_json["results"][id][key])
                     elif key == "imageIdentifier":
-                        media_metadata["imageIdentifier"].append(
-                            response_json["results"][id]["imageId"]
-                        )
+                        media_metadata["imageIdentifier"].append(response_json["results"][id]["imageId"])
                     elif key == "mimeType":
-                        media_metadata["mimeType"].append(
-                            response_json["results"][id]["mimetype"]
-                        )
+                        media_metadata["mimeType"].append(response_json["results"][id]["mimetype"])
                     else:
                         media_metadata[key].append("")
 
@@ -452,49 +411,48 @@ def get_image_metadata(
         # loop over data
         for i, row in new_filtered_media_array.iterrows():
 
-            if "[" in row[IMAGE_COLUMN_NAMES[atlas]]:
-                image = re.sub(r"[\[\"\([{})\]]", "", row[IMAGE_COLUMN_NAMES[atlas]])
-                # try this
-                new_filtered_media_array.at[i, IMAGE_COLUMN_NAMES[atlas]] = image
-            else:
-                image = row[IMAGE_COLUMN_NAMES[atlas]]
+            # check to see if there is an id
+            if isinstance(row[IMAGE_COLUMN_NAMES[atlas]], str):
 
-            # replace the imageID word with actual ID
-            mediaURL = basemediaURL.replace("{" + IMAGE_NAMES[atlas] + "}", image)
+                if "[" in row[IMAGE_COLUMN_NAMES[atlas]]:
+                    image = re.sub(r"[\[\"\([{})\]]", "", row[IMAGE_COLUMN_NAMES[atlas]])
+                    # try this
+                    new_filtered_media_array.at[i, IMAGE_COLUMN_NAMES[atlas]] = image
+                else:
+                    image = row[IMAGE_COLUMN_NAMES[atlas]]
 
-            # uncomment for debugging purposes
-            print_if_verbose(
-                verbose=verbose, headers=headers, URL=mediaURL, method=method
-            )
+                # replace the imageID word with actual ID
+                mediaURL = basemediaURL.replace("{" + IMAGE_NAMES[atlas] + "}", image)
 
-            # send the request for image metadata
-            response = requests.request(
-                method=method, url=mediaURL, headers=headers, timeout=timeout
-            )
+                # uncomment for debugging purposes
+                print_if_verbose(verbose=verbose, headers=headers, URL=mediaURL, method=method)
 
-            # get metadata here
-            response_json = response.json()
+                # send the request for image metadata
+                response = requests.request(method=method, url=mediaURL, headers=headers, timeout=timeout)
 
-            if response_json["success"]:
+                # get metadata here
+                response_json = response.json()
 
-                # go through metadata
-                for key in metadata_keys:
-                    if key in response_json:
-                        media_metadata[key].append(response_json[key])
-                    else:
-                        media_metadata[key].append("")
+                if response_json["success"]:
 
-            else:
-                for key in media_metadata.keys():
-                    if key == "imageIdentifier":
-                        if atlas in ["Austria"]:
-                            media_metadata[key].append(row["multimedia"])
+                    # go through metadata
+                    for key in metadata_keys:
+                        if key in response_json:
+                            media_metadata[key].append(response_json[key])
                         else:
-                            media_metadata[key].append(row["images"])
-                    elif key == "imageUrl":
-                        media_metadata[key].append(response_json["message"])
-                    else:
-                        media_metadata[key].append("")
+                            media_metadata[key].append("")
+
+                else:
+                    for key in media_metadata.keys():
+                        if key == "imageIdentifier":
+                            if atlas in ["Austria"]:
+                                media_metadata[key].append(row["multimedia"])
+                            else:
+                                media_metadata[key].append(row["images"])
+                        elif key == "imageUrl":
+                            media_metadata[key].append(response_json["message"])
+                        else:
+                            media_metadata[key].append("")
 
     # now get the metadata into a dataframe and merge it with the filtered array
     df_metadata = pd.DataFrame(media_metadata)
@@ -502,13 +460,17 @@ def get_image_metadata(
         df_metadata = df_metadata.rename(columns={"imageIdentifier": "image_url"})
 
     df_metadata = df_metadata.rename(columns={"imageIdentifier": "images"})
-    return pd.merge(
-        new_filtered_media_array,
-        df_metadata,
-        left_on=IMAGE_MERGE_NAMES[atlas],
-        right_on=IMAGE_MERGE_NAMES[atlas],
-        how="left",
-    )
+    if not df_metadata.empty:
+        return pd.merge(
+            new_filtered_media_array,
+            df_metadata,
+            left_on=IMAGE_MERGE_NAMES[atlas],
+            right_on=IMAGE_MERGE_NAMES[atlas],
+            how="left",
+        )
+    #  and not new_filtered_media_array.empty
+    # try this
+    return new_filtered_media_array
 
 
 def download_media(
@@ -531,9 +493,7 @@ def download_media(
     # loop over images - have progress bar if user wants it
     if progress_bar:
 
-        for i, image in tqdm(
-            media_metadata_df.iterrows(), total=media_metadata_df.shape[0]
-        ):
+        for i, image in tqdm(media_metadata_df.iterrows(), total=media_metadata_df.shape[0]):
 
             write_image_to_file(
                 image=image,
@@ -548,17 +508,13 @@ def download_media(
 
         for i, image in media_metadata_df.iterrows():
 
-            write_image_to_file(
-                image=image, headers=headers, path=path, thumbnail=thumbnail
-            )
+            write_image_to_file(image=image, headers=headers, path=path, thumbnail=thumbnail)
 
     # Let user know where media has been written to
     print("Media written to {}".format(path))
 
 
-def get_duplicate_images(
-    duplicate_rows=None, media=None, duplicate_dict=None, fields=None
-):
+def get_duplicate_images(duplicate_rows=None, media=None, duplicate_dict=None, fields=None):
     for i, row in duplicate_rows.iterrows():
         m = row[media].split(" | ")
         for entry in m:

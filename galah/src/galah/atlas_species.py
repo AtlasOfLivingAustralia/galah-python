@@ -5,27 +5,13 @@ import requests
 
 from .add_to_payload_functions import add_to_payload_ALA
 from .atlas_occurrences import atlas_occurrences, check_for_403_error
-from .common_add_functions import (
-    add_extras_to_URL,
-    add_filters,
-    add_spatial_shapes,
-    add_taxa,
-)
-from .common_checks import (
-    check_atlas,
-    check_email_empty,
-    check_for_non_working_atlases,
-    check_string_list,
-)
-from .common_dictionaries import ATLAS_SPECIES_FIELDS, USER_AGENT, USER_AGENT_QGIS
-from .common_functions import (
-    group_by_atlas_species,
-    print_if_verbose,
-    set_bool_argument,
-)
-from .galah_config import get_api_url, readConfig
+from .common_add_functions import (add_extras_to_URL, add_filters,
+                                   add_spatial_shapes, add_taxa)
+from .common_checks import check_string_list
+from .common_dictionaries import ATLAS_SPECIES_FIELDS
+from .common_functions import group_by_atlas_species, print_if_verbose
+from .galah_config import get_api_url, get_config_values
 from .show_all import show_all
-from .version import __version__
 
 
 def atlas_species(
@@ -41,9 +27,10 @@ def atlas_species(
     counts=False,
     polygon=None,
     bbox=None,
-    simplify_polygon=False,
+    crs=None,
+    # simplify_polygon=False,
     config_file=None,
-    tolerance=None,
+    # tolerance=None,
 ):
     """
     While there are reasons why users may need to check every record meeting their search criteria (i.e. using ``galah.atlas_occurrences()``),
@@ -70,8 +57,8 @@ def atlas_species(
             A polygon shape denoting a geographical region.  Defaults to ``None``.
         bbox : dict or shapely Polygon
             A polygon or dictionary type denoting four points, which are the corners of a geographical region.  Defaults to ``None``.
-        simplify_polygon : logical
-            When using the ``polygon`` argument of ``galah.atlas_counts()``, specifies whether or not to draw a bounding box around the polygon and use this instead.  Defaults to ``False``.
+        crs : str
+            The Coordinate Reference System of your shape.  All atlases are EPSG: 4326 though default value here is None
         config_file : string
             If you want to specify your own config file, put the path and name of the file here.  This is applicable when you are running on a server and each user has different configurations.  Defaults to ``None``.
 
@@ -94,35 +81,25 @@ def atlas_species(
     # Declare all variables, run checks on compatibility of arguments.
     # ---------------------------------------------------------------------------------------------
 
-    # get configs
-    configs = readConfig(config_file=config_file)
-
-    # get atlas
-    atlas = configs["galahSettings"]["atlas"]
-    verbose = set_bool_argument(
-        arg=configs["galahSettings"]["verbose"], name_arg="verbose"
-    )
-    timeout = int(configs["galahSettings"]["timeout"])
-    authenticate = set_bool_argument(
-        arg=configs["galahSettings"]["authenticate"], name_arg="authenticate"
-    )
-    access_token = configs["galahSettings"]["access_token"]
-    client_id = configs["galahSettings"]["client_id"]
-    qgis = set_bool_argument(arg=configs["galahSettings"]["qgis"], name_arg="qgis")
-
-    # check to see if atlas is in list of non-functioning atlases
-    check_for_non_working_atlases(atlas=atlas)
-
-    # check atlas is valid
-    check_atlas(atlas=atlas, function="atlas_species")
-
-    # check for email
-    check_email_empty(config_file=config_file)
-
-    # set user agent
-    user_agent = USER_AGENT
-    if qgis:
-        user_agent = USER_AGENT_QGIS
+    # get all config values
+    (
+        atlas,
+        timeout,
+        verbose,
+        authenticate,
+        access_token,
+        client_id,
+        user_agent,
+        email,
+        password,
+        email_notify,
+        data_profile,
+        usernameGBIF,
+        passwordGBIF,
+        ranks,
+        qgis,
+        reason,
+    ) = get_config_values(function="atlas_species", config_file=config_file)
 
     # get headers
     headers = {"User-Agent": user_agent}
@@ -194,7 +171,6 @@ def atlas_species(
             filters=filters,
             polygon=polygon,
             bbox=bbox,
-            simplify_polygon=simplify_polygon,
             authenticate=authenticate,
         )
 
@@ -203,9 +179,7 @@ def atlas_species(
         headers["client_id"] = client_id
 
         # get the query id url
-        qid_URL, method2 = get_api_url(
-            column1="api_name", column1value="occurrences_qid"
-        )
+        qid_URL, method2 = get_api_url(column1="api_name", column1value="occurrences_qid", atlas=atlas)
 
         # print this information if verbose option is selected
         print_if_verbose(
@@ -217,23 +191,17 @@ def atlas_species(
         )
 
         # get qid
-        qid = requests.request(
-            method2, qid_URL, data=payload, headers=headers, timeout=timeout
-        )
+        qid = requests.request(method2, qid_URL, data=payload, headers=headers, timeout=timeout)
 
         # create the URL to grab the species ID and lists
-        baseURL, method = get_api_url(
-            column1="api_name", column1value="records_species", config_file=config_file
-        )
+        baseURL, method = get_api_url(column1="api_name", column1value="records_species", atlas=atlas)
         URL = baseURL + "?fq=%28qid%3A" + qid.text + "%29"
         URL = group_by_atlas_species(group_by=group_by, rankID=rankID, URL=URL)
 
     else:
 
         # get initial url
-        baseURL, method = get_api_url(
-            column1="api_name", column1value="records_species", config_file=config_file
-        )
+        baseURL, method = get_api_url(column1="api_name", column1value="records_species", atlas=atlas)
 
         # add information to URL
         URL = add_taxa(
@@ -246,13 +214,7 @@ def atlas_species(
         )
         URL = add_filters(filters=filters, atlas=atlas, URL=URL)
         URL = group_by_atlas_species(group_by=group_by, rankID=rankID, URL=URL)
-        URL = add_spatial_shapes(
-            polygon=polygon,
-            bbox=bbox,
-            URL=URL,
-            simplify_polygon=simplify_polygon,
-            tolerance=tolerance,
-        )
+        URL = add_spatial_shapes(atlas=atlas, polygon=polygon, bbox=bbox, URL=URL, crs=crs)
 
     # ---------------------------------------------------------------------------------------------
     # Add common extras to URL
@@ -269,21 +231,21 @@ def atlas_species(
     # add last things to URL
     if atlas in ["Australia", "ALA"]:
         URL += add_extras_to_URL(
-            add_email=False,
+            atlas=atlas,
+            add_email=email_notify,
+            email=email,
             use_data_profile=use_data_profile,
             data_profile_list=list(show_all(profiles=True)["shortName"]),
-            config_file=config_file,
+            reason=reason,
         )
     else:
-        URL += add_extras_to_URL(add_email=False, config_file=config_file)
+        URL += add_extras_to_URL(atlas=atlas, add_email=email_notify, email=email, reason=reason)
 
     # check to see if user wants the query URL
     print_if_verbose(verbose=verbose, headers=headers, URL=URL, method=method)
 
     # get response from url
-    response = requests.request(
-        method=method, url=URL, headers=headers, timeout=timeout
-    )
+    response = requests.request(method=method, url=URL, headers=headers, timeout=timeout)
 
     # check to see if the user has gotten a 403 error
     check_for_403_error(response=response, atlas=atlas)

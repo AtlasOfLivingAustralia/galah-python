@@ -1,6 +1,6 @@
 Metadata-Version: 2.4
 Name: galah-python
-Version: 0.13.2
+Version: 0.13.3
 Summary: Get counts and information on species from many different atlases
 Home-page: https://galah.ala.org.au/Python/
 Author: Amanda Buyan
@@ -25,6 +25,7 @@ Requires-Dist: geopandas
 Requires-Dist: tqdm
 Requires-Dist: oauthlib
 Requires-Dist: oauth2
+Requires-Dist: data-cache
 Dynamic: author
 Dynamic: author-email
 Dynamic: description
