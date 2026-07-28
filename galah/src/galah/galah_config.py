@@ -8,8 +8,7 @@ import pandas as pd
 import requests
 
 from .common_checks import check_atlas_authenticate, check_atlas_data_profile
-from .common_dictionaries import (USER_AGENT, USER_AGENT_QGIS, atlases,
-                                  atlases_not_working)
+from .common_dictionaries import USER_AGENT, USER_AGENT_QGIS, atlases, atlases_not_working
 from .common_functions import is_bool_argument, set_bool_argument
 from .get_tokens_from_web import get_auth_config, get_tokens_from_web
 

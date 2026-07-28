@@ -4,11 +4,14 @@ import urllib
 import pandas as pd
 import requests
 
-from .common_checks import (check_args_none, check_args_specific_atlas,
-                            check_for_dict, check_taxa_type)
-from .common_dictionaries import (ATLAS_KEYWORDS, SEARCH_TAXA_ENTRIES,
-                                  SEARCH_TAXA_FIELDS, TAXONCONCEPT_NAMES,
-                                  VERNACULAR_NAMES)
+from .common_checks import check_args_none, check_args_specific_atlas, check_for_dict, check_taxa_type
+from .common_dictionaries import (
+    ATLAS_KEYWORDS,
+    SEARCH_TAXA_ENTRIES,
+    SEARCH_TAXA_FIELDS,
+    TAXONCONCEPT_NAMES,
+    VERNACULAR_NAMES,
+)
 from .common_functions import print_if_verbose
 from .galah_config import get_api_url, get_config_values
 

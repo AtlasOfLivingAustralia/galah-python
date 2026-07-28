@@ -8,13 +8,13 @@ import requests
 from requests.auth import HTTPBasicAuth
 
 from .add_to_payload_functions import add_to_payload_ALA
-from .common_add_functions import (add_extras_to_URL, add_filters,
-                                   add_predicates, add_spatial_shapes,
-                                   add_taxa)
+from .common_add_functions import add_extras_to_URL, add_filters, add_predicates, add_spatial_shapes, add_taxa
 from .common_checks import check_string_list
-from .common_dictionaries import (ATLAS_OCCURRENCES_DOWNLOAD_ARGUMENTS,
-                                  ATLAS_OCCURRENCES_ERROR_MESSAGES,
-                                  ATLAS_SELECTIONS)
+from .common_dictionaries import (
+    ATLAS_OCCURRENCES_DOWNLOAD_ARGUMENTS,
+    ATLAS_OCCURRENCES_ERROR_MESSAGES,
+    ATLAS_SELECTIONS,
+)
 from .common_functions import print_if_verbose
 from .galah_config import get_api_url, get_config_values
 from .galah_select import galah_select
@@ -518,7 +518,7 @@ def get_data(
         time.sleep(5)
         response_download = requests.get(url=statusURL, headers=headers, auth=authentication, timeout=timeout)
     zipURL = response_download.json()[ATLAS_OCCURRENCES_DOWNLOAD_ARGUMENTS[atlas]["zipURL_arg"]]
-    
+
     # check to see if the user wants the zip URL
     print_if_verbose(verbose=verbose, headers=headers, URL=zipURL, method="GET")
 
@@ -526,8 +526,8 @@ def get_data(
     # if atlas in ["Kew"]:
     #     data = requests.get(zipURL, headers=headers, timeout=timeout) #, auth=basic_auth)
     # else:
-    data = requests.get(zipURL, headers=headers, timeout=timeout) # try stream
-    
+    data = requests.get(zipURL, headers=headers, timeout=timeout)  # try stream
+
     # print the doi if user has asked for a doi
     if mint_doi:
         zip = zipfile.ZipFile(io.BytesIO(data.content))

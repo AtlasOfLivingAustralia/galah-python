@@ -1,9 +1,7 @@
 import urllib
 
-from .common_dictionaries import (ATLAS_GEO_NAMES, QGIS_SOURCE_TYPE_ID,
-                                  SOURCE_TYPE_ID)
-from .galah_filter import (check_for_duplicate_filters, galah_filter,
-                           process_or_filters)
+from .common_dictionaries import ATLAS_GEO_NAMES, QGIS_SOURCE_TYPE_ID, SOURCE_TYPE_ID
+from .galah_filter import check_for_duplicate_filters, galah_filter, process_or_filters
 from .galah_geolocate import galah_geolocate
 from .search_taxa import generate_list_taxonConceptIDs, search_taxa
 

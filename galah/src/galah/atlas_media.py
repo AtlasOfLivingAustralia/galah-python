@@ -9,9 +9,14 @@ from tqdm import tqdm
 
 from .atlas_occurrences import atlas_occurrences
 from .common_checks import check_string_list
-from .common_dictionaries import (ATLAS_SELECTIONS, FIELD_SELECTIONS,
-                                  IMAGE_COLUMN_NAMES, IMAGE_MERGE_NAMES,
-                                  IMAGE_NAMES, MM_EXTENSIONS)
+from .common_dictionaries import (
+    ATLAS_SELECTIONS,
+    FIELD_SELECTIONS,
+    IMAGE_COLUMN_NAMES,
+    IMAGE_MERGE_NAMES,
+    IMAGE_NAMES,
+    MM_EXTENSIONS,
+)
 from .common_functions import print_if_verbose
 from .galah_config import get_api_url, get_config_values
 
@@ -35,7 +40,7 @@ def atlas_media(
     config_file=None,
     mint_doi=False,
     doi=None,
-    crs=None
+    crs=None,
     # tolerance=0.05,
 ):
     """

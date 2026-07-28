@@ -5,8 +5,7 @@ import requests
 
 from .add_to_payload_functions import add_to_payload_ALA
 from .atlas_occurrences import atlas_occurrences, check_for_403_error
-from .common_add_functions import (add_extras_to_URL, add_filters,
-                                   add_spatial_shapes, add_taxa)
+from .common_add_functions import add_extras_to_URL, add_filters, add_spatial_shapes, add_taxa
 from .common_checks import check_string_list
 from .common_dictionaries import ATLAS_SPECIES_FIELDS
 from .common_functions import group_by_atlas_species, print_if_verbose
