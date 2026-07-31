@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Taxonomic Filtering &#8212; Galah 0.13.4 documentation</title>
+    <title>Taxonomic Filtering &#8212; Galah 0.13.5 documentation</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../_static/documentation_options.js?v=ec68e10f"></script>
+    <script src="../_static/documentation_options.js?v=48106516"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/design-tabs.js?v=f930bc37"></script>
@@ -53,7 +53,7 @@
     <link rel="prev" title="Narrow Results" href="Narrow_Results.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.13.4" />
+  <meta name="docsearch:version" content="0.13.5" />
   </head>
   
   
@@ -119,8 +119,8 @@
       
     
     
-    <img src="../_static/logo.png" class="logo__image only-light" alt="Galah 0.13.4 documentation - Home"/>
-    <img src="../_static/logo.png" class="logo__image only-dark pst-js-only" alt="Galah 0.13.4 documentation - Home"/>
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Galah 0.13.5 documentation - Home"/>
+    <img src="../_static/logo.png" class="logo__image only-dark pst-js-only" alt="Galah 0.13.5 documentation - Home"/>
   
   
 </a></div>
@@ -493,20 +493,18 @@ number of records for each robin.</p>
 <span class="prompt1"><span class="o">...</span>     <span class="n">taxa</span><span class="o">=</span><span class="n">aus_petroica</span><span class="p">,</span></span>
 <span class="prompt1"><span class="o">...</span>     <span class="n">group_by</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;species&quot;</span><span class="p">,</span><span class="s2">&quot;vernacularName&quot;</span><span class="p">]</span></span>
 <span class="prompt1"><span class="o">...</span> <span class="p">)</span></span>
-</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>             species               vernacularName   count
-0   Petroica boodang        Eastern Scarlet Robin   29223
-1   Petroica boodang                  Flame Robin  103923
-2   Petroica boodang          Mainland Pink Robin    1105
-3   Petroica boodang                Pacific Robin    6871
-4   Petroica boodang                   Pink Robin   16935
-..               ...                          ...     ...
-61    Petroica rosea                   Rose Robin   78737
-62    Petroica rosea                Scarlet Robin  114250
-63    Petroica rosea  South-western Scarlet Robin   13290
-64    Petroica rosea         Tasmanian Pink Robin    3877
-65    Petroica rosea      Tasmanian Scarlet Robin   20530
-
-[66 rows x 3 columns]
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>                  species               vernacularName   count
+0        Petroica boodang        Eastern Scarlet Robin   29223
+1        Petroica boodang                Scarlet Robin  114250
+2        Petroica boodang  South-western Scarlet Robin   13290
+3        Petroica boodang      Tasmanian Scarlet Robin   20530
+4     Petroica goodenovii             Red-capped Robin  153082
+5     Petroica multicolor                Pacific Robin    6871
+6      Petroica phoenicea                  Flame Robin  103923
+7   Petroica rodinogaster          Mainland Pink Robin    1105
+8   Petroica rodinogaster                   Pink Robin   16935
+9   Petroica rodinogaster         Tasmanian Pink Robin    3877
+10         Petroica rosea                   Rose Robin   78737
 </pre></div>
 </div>
 <p>This can be useful in searching for paraphyletic or polyphyletic groups.  For example, to get counts of non-chordates:</p>
@@ -519,7 +517,7 @@ number of records for each robin.</p>
 </pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>           phylum     count
 0  Acanthocephala       486
 1        Annelida    363788
-2      Arthropoda  12296589
+2      Arthropoda  12296970
 3     Brachiopoda      3153
 4         Bryozoa     36455
 </pre></div>
@@ -541,50 +539,17 @@ has been identified e.g.</p>
 <span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">pitta_ranks</span> <span class="o">=</span> <span class="n">pitta_ranks</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">pitta_ranks</span><span class="p">[</span><span class="s2">&quot;scientificName&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">notnull</span><span class="p">()]</span></span>
 <span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">pitta_ranks</span></span>
 </pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>                                 scientificName   taxonRank  count
-0                                         Pitta     species  40293
-1                                         Pitta  subspecies   8949
-2                                         Pitta       genus    236
-3                                         Pitta    subgenus      6
-4                          Pitta (Erythropitta)     species  40293
-5                          Pitta (Erythropitta)  subspecies   8949
-6                          Pitta (Erythropitta)       genus    236
-7                          Pitta (Erythropitta)    subgenus      6
-8            Pitta (Erythropitta) erythrogaster     species  40293
-9            Pitta (Erythropitta) erythrogaster  subspecies   8949
-10           Pitta (Erythropitta) erythrogaster       genus    236
-11           Pitta (Erythropitta) erythrogaster    subgenus      6
-12  Pitta (Erythropitta) erythrogaster digglesi     species  40293
-13  Pitta (Erythropitta) erythrogaster digglesi  subspecies   8949
-14  Pitta (Erythropitta) erythrogaster digglesi       genus    236
-15  Pitta (Erythropitta) erythrogaster digglesi    subgenus      6
-16                           Pitta (Pitta) iris     species  40293
-17                           Pitta (Pitta) iris  subspecies   8949
-18                           Pitta (Pitta) iris       genus    236
-19                           Pitta (Pitta) iris    subgenus      6
-20                      Pitta (Pitta) iris iris     species  40293
-21                      Pitta (Pitta) iris iris  subspecies   8949
-22                      Pitta (Pitta) iris iris       genus    236
-23                      Pitta (Pitta) iris iris    subgenus      6
-24             Pitta (Pitta) iris johnstoneiana     species  40293
-25             Pitta (Pitta) iris johnstoneiana  subspecies   8949
-26             Pitta (Pitta) iris johnstoneiana       genus    236
-27             Pitta (Pitta) iris johnstoneiana    subgenus      6
-28                     Pitta (Pitta) versicolor     species  40293
-29                     Pitta (Pitta) versicolor  subspecies   8949
-30                     Pitta (Pitta) versicolor       genus    236
-31                     Pitta (Pitta) versicolor    subgenus      6
-32          Pitta (Pitta) versicolor intermedia     species  40293
-33          Pitta (Pitta) versicolor intermedia  subspecies   8949
-34          Pitta (Pitta) versicolor intermedia       genus    236
-35          Pitta (Pitta) versicolor intermedia    subgenus      6
-36           Pitta (Pitta) versicolor simillima     species  40293
-37           Pitta (Pitta) versicolor simillima  subspecies   8949
-38           Pitta (Pitta) versicolor simillima       genus    236
-39           Pitta (Pitta) versicolor simillima    subgenus      6
-40          Pitta (Pitta) versicolor versicolor     species  40293
-41          Pitta (Pitta) versicolor versicolor  subspecies   8949
-42          Pitta (Pitta) versicolor versicolor       genus    236
-43          Pitta (Pitta) versicolor versicolor    subgenus      6
+0                                         Pitta       genus    236
+1                          Pitta (Erythropitta)    subgenus      6
+2            Pitta (Erythropitta) erythrogaster     species    139
+3   Pitta (Erythropitta) erythrogaster digglesi  subspecies   1045
+4                            Pitta (Pitta) iris     species   7322
+5                       Pitta (Pitta) iris iris  subspecies    858
+6              Pitta (Pitta) iris johnstoneiana  subspecies     50
+7                      Pitta (Pitta) versicolor     species  32832
+8           Pitta (Pitta) versicolor intermedia  subspecies   2293
+9            Pitta (Pitta) versicolor simillima  subspecies    504
+10          Pitta (Pitta) versicolor versicolor  subspecies   4199
 </pre></div>
 </div>
 <p>If, for instance, you have the correct species or subspecies name, then searching for matches against the species

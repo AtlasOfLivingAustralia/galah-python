@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Choosing an Atlas &#8212; Galah 0.13.4 documentation</title>
+    <title>Choosing an Atlas &#8212; Galah 0.13.5 documentation</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../_static/documentation_options.js?v=ec68e10f"></script>
+    <script src="../_static/documentation_options.js?v=48106516"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/design-tabs.js?v=f930bc37"></script>
@@ -53,7 +53,7 @@
     <link rel="prev" title="Galah User Guide" href="index.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.13.4" />
+  <meta name="docsearch:version" content="0.13.5" />
   </head>
   
   
@@ -119,8 +119,8 @@
       
     
     
-    <img src="../_static/logo.png" class="logo__image only-light" alt="Galah 0.13.4 documentation - Home"/>
-    <img src="../_static/logo.png" class="logo__image only-dark pst-js-only" alt="Galah 0.13.4 documentation - Home"/>
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Galah 0.13.5 documentation - Home"/>
+    <img src="../_static/logo.png" class="logo__image only-dark pst-js-only" alt="Galah 0.13.5 documentation - Home"/>
   
   
 </a></div>
@@ -452,13 +452,13 @@ Available information may vary for each Living Atlas.</p>
 3                                                                                                                                                     &quot;P to Z&quot; flora EPBC  https://collections.ala.org.au/ws/dataResource/dr24173  dr24173
 4     (Appendix 2) Stratigraphic distribution of key and potential stratigraphic calcareous nannofossil markers in the upper Campanian–Maastrichtian of ODP Hole 122-762C  https://collections.ala.org.au/ws/dataResource/dr30390  dr30390
 ...                                                                                                                                                                   ...                                                     ...      ...
-8255                                                                      Zooplankton data from voyages of the research vessel Warreen, South East Australia  (1938-1942)  https://collections.ala.org.au/ws/dataResource/dr29594  dr29594
-8256                                    Zooplankton samples from Heron net trawls along the 110E meridian, eastern Indian Ocean, RV Investigator voyage IN2019_V03 (2019)  https://collections.ala.org.au/ws/dataResource/dr23120  dr23120
-8257                                                                          Zooplankton sampling in the coastal waters of south eastern Tasmania, Australia (2009-2015)  https://collections.ala.org.au/ws/dataResource/dr15943  dr15943
-8258                                                                                                                                           Zoos Victoria Moth Tracker  https://collections.ala.org.au/ws/dataResource/dr22371  dr22371
-8259                                                                                                                                                                  zza  https://collections.ala.org.au/ws/dataResource/dr33432  dr33432
+8256                                                                      Zooplankton data from voyages of the research vessel Warreen, South East Australia  (1938-1942)  https://collections.ala.org.au/ws/dataResource/dr29594  dr29594
+8257                                    Zooplankton samples from Heron net trawls along the 110E meridian, eastern Indian Ocean, RV Investigator voyage IN2019_V03 (2019)  https://collections.ala.org.au/ws/dataResource/dr23120  dr23120
+8258                                                                          Zooplankton sampling in the coastal waters of south eastern Tasmania, Australia (2009-2015)  https://collections.ala.org.au/ws/dataResource/dr15943  dr15943
+8259                                                                                                                                           Zoos Victoria Moth Tracker  https://collections.ala.org.au/ws/dataResource/dr22371  dr22371
+8260                                                                                                                                                                  zza  https://collections.ala.org.au/ws/dataResource/dr33432  dr33432
 
-[8260 rows x 3 columns]
+[8261 rows x 3 columns]
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">show_all</span><span class="p">(</span><span class="n">fields</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></span>
@@ -524,14 +524,14 @@ make sure your searches are returning the correct taxonomic data.</p>
 <p>Download species occurrence records from other atlases with <code class="docutils literal notranslate"><span class="pre">galah.atlas_occurrences()</span></code></p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">atlas_occurrences</span><span class="p">(</span><span class="n">taxa</span><span class="o">=</span><span class="s2">&quot;Vulpes vulpes&quot;</span><span class="p">,</span> <span class="n">filters</span><span class="o">=</span><span class="s2">&quot;year&gt;2010&quot;</span><span class="p">,</span> <span class="n">fields</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;taxon_name&quot;</span><span class="p">,</span> <span class="s2">&quot;year&quot;</span><span class="p">])</span></span>
 </pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>              scientificName  year
-0              Vulpes vulpes  2013
-1              Vulpes vulpes  2011
-2              Vulpes vulpes  2022
-3              Vulpes vulpes  2018
-4              Vulpes vulpes  2018
+0              Vulpes vulpes  2014
+1              Vulpes vulpes  2025
+2              Vulpes vulpes  2023
+3              Vulpes vulpes  2023
+4              Vulpes vulpes  2016
 ...                      ...   ...
-125029         Vulpes vulpes  2020
-125030         Vulpes vulpes  2019
+125029         Vulpes vulpes  2024
+125030         Vulpes vulpes  2022
 125031  Vulpes vulpes vulpes  2018
 125032  Vulpes vulpes vulpes  2019
 125033  Vulpes vulpes vulpes  2019
@@ -555,10 +555,10 @@ return the total number of species records in each Living Atlas in one table.</p
 <span class="prompt1"><span class="o">&gt;&gt;&gt;</span>     <span class="n">counts_dict</span><span class="p">[</span><span class="s2">&quot;Total Records&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">galah</span><span class="o">.</span><span class="n">atlas_counts</span><span class="p">()[</span><span class="s2">&quot;totalRecords&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span></span>
 <span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">counts_dict</span><span class="p">)</span></span>
 </pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>            Atlas  Total Records
-0       Australia      183564913
+0       Australia      183573512
 1         Austria       16986804
 2          Brazil       43819852
-3            GBIF     3907517700
+3            GBIF     3910012816
 4             Kew        7698316
 5           Spain       59852882
 6          Sweden      175559410
