@@ -19,7 +19,6 @@ from .get_tokens_from_web import get_auth_config, get_tokens_from_web
 
 def galah_config(
     email=None,
-    password=None,
     email_notify=None,
     atlas=None,
     data_profile=None,
@@ -85,7 +84,6 @@ def galah_config(
     if len(configs.sections()) == 0:
         configs["galahSettings"] = {
             "email": "",
-            "password": "",
             "email_notify": "False",
             "atlas": "Australia",
             "data_profile": "None",
@@ -129,7 +127,6 @@ def galah_config(
                 authenticate,
                 auth_filename,
                 email,
-                password,
                 email_notify,
                 atlas,
                 data_profile,
@@ -166,7 +163,6 @@ def galah_config(
     # set a dict with all values needing to be set for straightforward looping
     terms_vars_dict = {
         "email": email,
-        "password": password,
         "email_notify": email_notify,
         "atlas": atlas,
         "data_profile": data_profile,
@@ -226,7 +222,6 @@ def get_config_values(function=None, config_file=None, use_data_profile=False):
     # get atlas
     atlas = configs["galahSettings"]["atlas"]
     email = configs["galahSettings"]["email"]
-    password = configs["galahSettings"]["password"]
     email_notify = set_bool_argument(arg=configs["galahSettings"]["email_notify"], name_arg="email_notify")
     timeout = int(configs["galahSettings"]["timeout"])
     verbose = set_bool_argument(arg=configs["galahSettings"]["verbose"], name_arg="verbose")
@@ -263,7 +258,6 @@ def get_config_values(function=None, config_file=None, use_data_profile=False):
         client_id,
         user_agent,
         email,
-        password,
         email_notify,
         data_profile,
         usernameGBIF,

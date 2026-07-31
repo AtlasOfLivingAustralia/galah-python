@@ -49,7 +49,6 @@ def show_values(field=None, lists=False, config_file=None):
         client_id,
         user_agent,
         email,
-        password,
         email_notify,
         data_profile,
         usernameGBIF,

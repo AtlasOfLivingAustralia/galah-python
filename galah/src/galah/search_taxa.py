@@ -102,7 +102,6 @@ def search_taxa(
         client_id,
         user_agent,
         email,
-        password,
         email_notify,
         data_profile,
         usernameGBIF,

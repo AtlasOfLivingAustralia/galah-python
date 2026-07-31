@@ -140,7 +140,6 @@ def atlas_occurrences(
         client_id,
         user_agent,
         email,
-        password,
         email_notify,
         data_profile,
         usernameGBIF,
@@ -440,10 +439,6 @@ def atlas_occurrences(
             print_if_verbose(verbose=verbose, headers=headers, URL=URL, method=method)
 
             # get the request
-            # if atlas in ["Kew"]:
-            #     authentication = HTTPBasicAuth(email, password)
-            #     response = requests.request(method=method, url=URL, headers=headers, timeout=timeout,auth=authentication)
-            # else:
             response = requests.request(method=method, url=URL, headers=headers, timeout=timeout)
 
         # Austria returns zipfile from URL; have to return it straight away

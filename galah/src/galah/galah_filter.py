@@ -146,20 +146,30 @@ def galah_filter(f, occurrencesGBIF=False, atlas=None, authenticate=False):
 
             # strings to return for all other atlases
             return_strings = {
-                "=": "{}={}".format(parts[0], parts[1].replace(" ", "%20")),
-                "==": "{}={}".format(parts[0], parts[1].replace(" ", "%20")),
-                ">=": "%28{}%3A%5B{}%20TO%20%2A%5d%29".format(parts[0], parts[1]),
-                "=>": "%28{}%3A%5B{}%20TO%20%2A%5d%29".format(parts[0], parts[1]),
+                "=": "{}={}".format(urllib.parse.quote(parts[0]), urllib.parse.quote(parts[1])),
+                "==": "{}={}".format(urllib.parse.quote(parts[0]), urllib.parse.quote(parts[1])),
+                ">=": "%28{}%3A%5B{}%20TO%20%2A%5d%29".format(
+                    urllib.parse.quote(parts[0]), urllib.parse.quote(parts[1])
+                ),
+                "=>": "%28{}%3A%5B{}%20TO%20%2A%5d%29".format(
+                    urllib.parse.quote(parts[0]), urllib.parse.quote(parts[1])
+                ),
                 ">": "%28{}:%5B{}%20TO%20*%5d%20AND%20-%28{}%3A%22{}%22%29%29".format(
-                    parts[0], parts[1], parts[0], parts[1]
+                    urllib.parse.quote(parts[0]),
+                    urllib.parse.quote(parts[1]),
+                    urllib.parse.quote(parts[0]),
+                    urllib.parse.quote(parts[1]),
                 ),
                 "<": '%28{}%3A%5B*%20TO%20{}%5d%20AND%20-%28{}%3A"{}"%29%29'.format(
-                    parts[0], parts[1], parts[0], parts[1]
+                    urllib.parse.quote(parts[0]),
+                    urllib.parse.quote(parts[1]),
+                    urllib.parse.quote(parts[0]),
+                    urllib.parse.quote(parts[1]),
                 ),
-                "<=": "%28{}%3A%5B*%20TO%20{}%5d%29".format(parts[0], parts[1]),
-                "=<": "%28{}%3A%5B*%20TO%20{}%5d%29".format(parts[0], parts[1]),
-                "!=": "-%28{}%3A%22{}%22%29".format(parts[0], parts[1]),
-                "=!": "-%28{}%3A%22{}%22%29".format(parts[0], parts[1]),
+                "<=": "%28{}%3A%5B*%20TO%20{}%5d%29".format(urllib.parse.quote(parts[0]), urllib.parse.quote(parts[1])),
+                "=<": "%28{}%3A%5B*%20TO%20{}%5d%29".format(urllib.parse.quote(parts[0]), urllib.parse.quote(parts[1])),
+                "!=": "-%28{}%3A%22{}%22%29".format(urllib.parse.quote(parts[0]), urllib.parse.quote(parts[1])),
+                "=!": "-%28{}%3A%22{}%22%29".format(urllib.parse.quote(parts[0]), urllib.parse.quote(parts[1])),
             }
 
             # check for any logical expressions that are not included
@@ -260,14 +270,14 @@ def process_equals_filter(parts=None, returnString=None, authenticate=None):
     else:
 
         return_strings = {
-            "digit": "%28{}%3A%22{}%22%29".format(parts[0], parts[1].replace(" ", "%20")),
-            "": "%2A%3A%2A%20AND%20-{}%3A%2A".format(parts[0]),
-            "True": "%28assertions%3A%22{}%22%29".format(parts[0]),
-            "False": "-%28assertions%3A%22{}%22%29".format(parts[0]),
+            "digit": "%28{}%3A%22{}%22%29".format(urllib.parse.quote(parts[0]), urllib.parse.quote(parts[1])),
+            "": "%2A%3A%2A%20AND%20-{}%3A%2A".format(urllib.parse.quote(parts[0])),
+            "True": "%28assertions%3A%22{}%22%29".format(urllib.parse.quote(parts[0])),
+            "False": "-%28assertions%3A%22{}%22%29".format(urllib.parse.quote(parts[0])),
         }
         arrayChar_true = "{}%3A22{}%22%20OR%20"
         arrayChar_false = "%28{}%3A%22{}%22%29"
-        replace_values = {" ": "%20", "'": "", '"': "", "&": "%26", ",": "%2C"}
+        # replace_values = {" ": "%20", "'": "", '"': "", "&": "%26", ",": "%2C"}
 
     # first, check for digit in filter
     if parts[1].isdigit():
@@ -295,7 +305,7 @@ def process_equals_filter(parts=None, returnString=None, authenticate=None):
             temp_array = parts[1][1:-1].split(",")
             for value in temp_array:
                 returnString += arrayChar_true.format(
-                    parts[0],
+                    urllib.parse.quote(parts[0]),
                     reduce(lambda a, kv: a.replace(*kv), replace_values.items(), value),
                 )
 
@@ -305,10 +315,9 @@ def process_equals_filter(parts=None, returnString=None, authenticate=None):
 
         # otherwise, prep filter as per usual
         else:
-
-            returnString += arrayChar_false.format(
-                parts[0],
-                reduce(lambda a, kv: a.replace(*kv), replace_values.items(), parts[1]),
+            return arrayChar_false.format(
+                urllib.parse.quote(parts[0]),
+                urllib.parse.quote(parts[1]),  # reduce(lambda a, kv: a.replace(*kv), replace_values.items(),
             )
 
     # return the string

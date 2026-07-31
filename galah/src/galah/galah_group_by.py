@@ -30,7 +30,6 @@ def galah_group_by(
         client_id,
         user_agent,
         email,
-        password,
         email_notify,
         data_profile,
         usernameGBIF,
@@ -688,6 +687,9 @@ def get_name_value_grouped_dict(entry=None, dict_values=None):
 
 def get_tempURL(URL=None, name=None, value=None, group_by=None):
     """Get the tempURL for getting expanded values"""
+
+    if URL[-1] == "&":
+        URL = URL[:-1]
 
     # add name and value of facet as filter (for non-authentication procedures)
     tempURL = URL + "%20AND%20%28{}%3A%22{}%22%29".format(name, value)

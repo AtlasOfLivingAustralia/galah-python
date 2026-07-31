@@ -79,7 +79,6 @@ def show_all(
         client_id,
         user_agent,
         email,
-        password,
         email_notify,
         data_profile,
         usernameGBIF,
