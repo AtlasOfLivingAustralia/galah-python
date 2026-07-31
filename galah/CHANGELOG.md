@@ -1,3 +1,10 @@
+## 0.13.5 (2026-07-31)
+
+### Fix
+
+- **removed-password;-fixed-galah_filter-bug**: removed the variable password as it was superfluous; fixed a galah filter bug where some filters were not getting properly formatted for the URL
+- **updating-docs-and-version-for-release**: updating docs and version for release
+
 ## 0.13.4 (2026-07-28)
 
 ### Fix
