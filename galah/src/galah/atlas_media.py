@@ -32,7 +32,6 @@ def atlas_media(
     use_data_profile=False,
     polygon=None,
     bbox=None,
-    # simplify_polygon=False,
     collect=False,
     path=None,
     thumbnail=False,
@@ -181,6 +180,9 @@ def atlas_media(
         if atlas in ["Brazil"]:
             fields.remove("videos")
 
+    # check for duplicates that are somehow being introduced
+    fields = list(set(fields))
+
     # get occurrence data from atlas_occurrences
     dataFrame = atlas_occurrences(
         taxa=taxa,
@@ -197,6 +199,7 @@ def atlas_media(
         mint_doi=mint_doi,
         doi=doi,
         config_file=config_file,
+        crs=crs,
     )
 
     if dataFrame.empty:
@@ -512,13 +515,16 @@ def download_media(
 
         for i, image in media_metadata_df.iterrows():
 
-            write_image_to_file(image=image, headers=headers, path=path, thumbnail=thumbnail)
+            write_image_to_file(
+                image=image, headers=headers, path=path, thumbnail=thumbnail, timeout=timeout, atlas=atlas
+            )
 
     # Let user know where media has been written to
     print("Media written to {}".format(path))
 
 
 def get_duplicate_images(duplicate_rows=None, media=None, duplicate_dict=None, fields=None):
+    duplicate_rows = duplicate_rows.loc[:,~duplicate_rows.columns.duplicated()]
     for i, row in duplicate_rows.iterrows():
         m = row[media].split(" | ")
         for entry in m:
@@ -526,3 +532,4 @@ def get_duplicate_images(duplicate_rows=None, media=None, duplicate_dict=None, f
             for name in fields:
                 if name not in media:
                     duplicate_dict[name].append(row[name])
+    return duplicate_dict

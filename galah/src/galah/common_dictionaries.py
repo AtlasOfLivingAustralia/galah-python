@@ -672,12 +672,12 @@ MM_EXTENSIONS = {
 
 FIELD_SELECTIONS = {
     "basic": [
+        "recordID",
+        "scientificName",
+        "taxonConceptID",
         "decimalLatitude",
         "decimalLongitude",
         "eventDate",
-        "scientificName",
-        "taxonConceptID",
-        "recordID",
         "dataResourceName",
         "occurrenceStatus",
     ],

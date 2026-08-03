@@ -1443,14 +1443,15 @@ def test_atlas_media_australia_specific_epithet():
             "family": "pardalotidae",
             "genus": "pardalotus",
             "specificEpithet": "punctatus",
-        }
+        },
+        filters=["year=2026","month=1"]
     )
     assert output.shape[0] > 0
 
 
 def test_atlas_media_australia_identifiers():
     galah.galah_config(qgis=False, atlas="Australia", email=email_au)
-    output = galah.atlas_media(identifiers="https://id.biodiversity.org.au/node/apni/2914510")
+    output = galah.atlas_media(identifiers="https://id.biodiversity.org.au/node/apni/2914510",filters="year=2026")
     assert output.shape[0] > 0
 
 
