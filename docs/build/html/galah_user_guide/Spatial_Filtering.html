@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Spatial filtering &#8212; Galah 0.13.5 documentation</title>
+    <title>Spatial filtering &#8212; Galah 0.13.6 documentation</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../_static/documentation_options.js?v=48106516"></script>
+    <script src="../_static/documentation_options.js?v=7fe8ef7c"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/design-tabs.js?v=f930bc37"></script>
@@ -53,7 +53,7 @@
     <link rel="prev" title="Taxonomic Filtering" href="Taxonomic_Filtering.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.13.5" />
+  <meta name="docsearch:version" content="0.13.6" />
   </head>
   
   
@@ -119,8 +119,8 @@
       
     
     
-    <img src="../_static/logo.png" class="logo__image only-light" alt="Galah 0.13.5 documentation - Home"/>
-    <img src="../_static/logo.png" class="logo__image only-dark pst-js-only" alt="Galah 0.13.5 documentation - Home"/>
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Galah 0.13.6 documentation - Home"/>
+    <img src="../_static/logo.png" class="logo__image only-dark pst-js-only" alt="Galah 0.13.6 documentation - Home"/>
   
   
 </a></div>
@@ -465,12 +465,12 @@ as follows:</p>
 <span class="prompt1"><span class="o">...</span>   <span class="n">filters</span> <span class="o">=</span> <span class="s2">&quot;cl901=The Coorong, Lake Alexandrina &amp; Lake Albert&quot;</span></span>
 <span class="prompt1"><span class="o">...</span> <span class="p">)</span></span>
 <span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">avocets</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span></span>
-</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>   decimalLatitude  decimalLongitude             eventDate                 scientificName                                                             taxonConceptID                              recordID                          dataResourceName occurrenceStatus
-0        -36.52583         139.82361  2012-07-29T00:00:00Z  Recurvirostra novaehollandiae  https://biodiversity.org.au/afd/taxa/c69e7308-527a-429d-a80d-143bd20b5100  8d18db13-67fe-4609-b2c7-4302d54c5c13               BirdLife Australia, Birdata          PRESENT
-1        -36.52195         139.82720  2010-10-21T00:00:00Z  Recurvirostra novaehollandiae  https://biodiversity.org.au/afd/taxa/c69e7308-527a-429d-a80d-143bd20b5100  8fdebcda-de5e-4c2c-94dc-a9fb25cd6817  Australian Waterbird Surveys (1983-2018)          PRESENT
-2        -36.52195         139.82720  2023-10-17T00:00:00Z  Recurvirostra novaehollandiae  https://biodiversity.org.au/afd/taxa/c69e7308-527a-429d-a80d-143bd20b5100  c91d351f-06d7-4a0a-95a5-6d77e0921923                                  SA Fauna          PRESENT
-3        -36.52195         139.82720  2024-10-15T00:00:00Z  Recurvirostra novaehollandiae  https://biodiversity.org.au/afd/taxa/c69e7308-527a-429d-a80d-143bd20b5100  9aff2929-bd2c-4f9d-9bb1-fc5133254a6c                                  SA Fauna          PRESENT
-4        -36.52195         139.82720                   NaN  Recurvirostra novaehollandiae  https://biodiversity.org.au/afd/taxa/c69e7308-527a-429d-a80d-143bd20b5100  e02745af-44d4-4ad8-9816-7aaaaa318a82  Australian Waterbird Surveys (1983-2018)          PRESENT
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>                               recordID                 scientificName                                                             taxonConceptID  decimalLatitude  decimalLongitude             eventDate             dataResourceName occurrenceStatus
+0  00630f58-ee78-4f69-ba39-718b0a1c3356  Recurvirostra novaehollandiae  https://biodiversity.org.au/afd/taxa/c69e7308-527a-429d-a80d-143bd20b5100        -35.59293         139.02180  2008-11-18T00:00:00Z                     SA Fauna          PRESENT
+1  0071444e-ddf2-45dc-9a10-c6399686e306  Recurvirostra novaehollandiae  https://biodiversity.org.au/afd/taxa/c69e7308-527a-429d-a80d-143bd20b5100        -35.57719         138.99233  2008-01-01T00:00:00Z                     SA Fauna          PRESENT
+2  008a2e6c-26b4-4f4e-a428-b0330db53466  Recurvirostra novaehollandiae  https://biodiversity.org.au/afd/taxa/c69e7308-527a-429d-a80d-143bd20b5100        -35.52831         138.82804  2017-11-19T17:15:00Z              eBird Australia          PRESENT
+3  00b11f13-0100-4471-b18b-7e9736ddeeaf  Recurvirostra novaehollandiae  https://biodiversity.org.au/afd/taxa/c69e7308-527a-429d-a80d-143bd20b5100        -36.18001         139.65889  2017-08-05T13:25:00Z              eBird Australia          PRESENT
+4  00c14d0c-2d2d-4bc6-bb86-712809dacc1f  Recurvirostra novaehollandiae  https://biodiversity.org.au/afd/taxa/c69e7308-527a-429d-a80d-143bd20b5100        -35.52306         138.79500  2010-03-07T00:00:00Z  BirdLife Australia, Birdata          PRESENT
 </pre></div>
 </div>
 </section>
@@ -600,18 +600,18 @@ shapefile from the above link, and perform our filtering and summarising as foll
 <span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">lorikeet_brisbane</span></span>
 </pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Warning: A Coordinate Reference System (CRS) is not detected.  Ensure a CRS is specified as an argument, or is part of the variable (i.e. GeoDataFrame.crs)
 Warning: The Coordinate Reference System of all atlases is EPSG:4326 (WGS84).  The results from this shape may be incorrect, as its CRS is None
-     decimalLatitude  decimalLongitude  ... dataResourceName occurrenceStatus
-0         -27.576303        152.981694  ...  eBird Australia          PRESENT
-1         -27.574852        152.992831  ...  eBird Australia          PRESENT
-2         -27.574169        152.995529  ...  eBird Australia          PRESENT
-3         -27.574145        152.977711  ...  eBird Australia          PRESENT
-4         -27.573629        152.992915  ...  eBird Australia          PRESENT
-..               ...               ...  ...              ...              ...
-631       -27.517759        152.985278  ...  eBird Australia          PRESENT
-632       -27.517759        152.985278  ...  eBird Australia          PRESENT
-633       -27.517759        152.985278  ...  eBird Australia          PRESENT
-634       -27.517759        152.985278  ...  eBird Australia          PRESENT
-635       -27.517759        152.985278  ...  eBird Australia          PRESENT
+                                 recordID  ... occurrenceStatus
+0    002d3038-fa16-4eab-aedb-d9db059c8d76  ...          PRESENT
+1    004f15b8-8a50-4733-b155-44af81cb48b2  ...          PRESENT
+2    00f6c956-333f-49f6-8a9f-36bb36c859cd  ...          PRESENT
+3    00fe7569-84bf-4c6b-bd81-962c49b6c8f7  ...          PRESENT
+4    01915fe9-a2ec-4ed1-aa7d-2faaf7d6a442  ...          PRESENT
+..                                    ...  ...              ...
+631  ff4ad076-fa6e-4c3b-b1c3-d9634e12eced  ...          PRESENT
+632  ff88944e-b5b6-44c8-8fd6-bfb73ef9adc3  ...          PRESENT
+633  ff8b128c-1495-4360-a544-9737fbfb3910  ...          PRESENT
+634  ffd5e287-991f-42c5-a02f-fd39ea576d58  ...          PRESENT
+635  ffe75bc5-cd27-426a-a9c3-db2549cb7a9a  ...          PRESENT
 
 [636 rows x 8 columns]
 </pre></div>

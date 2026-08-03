@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Taxonomic Filtering &#8212; Galah 0.13.5 documentation</title>
+    <title>Taxonomic Filtering &#8212; Galah 0.13.6 documentation</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../_static/documentation_options.js?v=48106516"></script>
+    <script src="../_static/documentation_options.js?v=7fe8ef7c"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/design-tabs.js?v=f930bc37"></script>
@@ -53,7 +53,7 @@
     <link rel="prev" title="Narrow Results" href="Narrow_Results.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.13.5" />
+  <meta name="docsearch:version" content="0.13.6" />
   </head>
   
   
@@ -119,8 +119,8 @@
       
     
     
-    <img src="../_static/logo.png" class="logo__image only-light" alt="Galah 0.13.5 documentation - Home"/>
-    <img src="../_static/logo.png" class="logo__image only-dark pst-js-only" alt="Galah 0.13.5 documentation - Home"/>
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Galah 0.13.6 documentation - Home"/>
+    <img src="../_static/logo.png" class="logo__image only-dark pst-js-only" alt="Galah 0.13.6 documentation - Home"/>
   
   
 </a></div>
@@ -458,18 +458,18 @@ in three kingdoms:</p>
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">atlas_occurrences</span><span class="p">(</span><span class="n">scientific_name</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;kingdom&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;Fungi&quot;</span><span class="p">],</span><span class="s2">&quot;scientificName&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;Morganella&quot;</span><span class="p">]})</span></span>
-</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>     decimalLatitude  decimalLongitude             eventDate           scientificName                                      taxonConceptID                              recordID                                                      dataResourceName occurrenceStatus
-0         -47.000000        168.200000  2002-04-30T00:00:00Z      Morganella compacta                                       NZOR-6-128055  f2d0672f-0f8d-467f-a70d-af0ad257743a                       New Zealand Fungal and Plant Disease Collection          PRESENT
-1         -46.879900        168.136500  2021-04-15T00:00:00Z      Morganella compacta                                       NZOR-6-128055  450d6089-a004-4a4b-b281-50f60e7596bf                       New Zealand Fungal and Plant Disease Collection          PRESENT
-2         -46.874875        168.124660  1983-02-13T00:00:00Z      Morganella compacta                                       NZOR-6-128055  eaae280b-c1de-463a-8cc6-3ee72cc00e83                       New Zealand Fungal and Plant Disease Collection          PRESENT
-3         -46.862757        168.116777  1985-04-23T00:00:00Z      Morganella compacta                                       NZOR-6-128055  a08519f3-221b-4006-9803-98d8eeb771a8                       New Zealand Fungal and Plant Disease Collection          PRESENT
-4         -46.554617        169.479051  1990-05-24T00:00:00Z      Morganella compacta                                       NZOR-6-128055  4b2011f7-ef20-428d-af8f-dc17c9656df6                       New Zealand Fungal and Plant Disease Collection          PRESENT
-..               ...               ...                   ...                      ...                                                 ...                                   ...                                                                   ...              ...
-184       -15.831780        145.335830  2020-01-20T13:20:00Z  Morganella purpurascens  https://id.biodiversity.org.au/name/fungi/60022638  aaa77490-aee9-44be-9b68-4fc8efe240f3                                                 iNaturalist Australia          PRESENT
-185       -13.200000        130.700000  2014-01-25T00:00:00Z  Morganella purpurascens  https://id.biodiversity.org.au/name/fungi/60022638  e022611a-52ea-4530-8bc1-bfcef1eee43c                                                       INSDC Sequences          PRESENT
-186              NaN               NaN                   NaN  Morganella purpurascens  https://id.biodiversity.org.au/name/fungi/60022638  be5f2bef-5036-4817-b7aa-aebfa45f4260                      Royal Botanic Gardens, Kew - Fungarium Specimens          PRESENT
-187       -13.197500        130.699722  2014-01-25T00:00:00Z  Morganella purpurascens  https://id.biodiversity.org.au/name/fungi/60022638  61495a3c-d32d-4690-8474-5b5d778c9d79                         National Herbarium of Victoria (MEL) AVH data          PRESENT
-188        -8.916700        148.150000  1953-07-15T00:00:00Z  Morganella purpurascens  https://id.biodiversity.org.au/name/fungi/60022638  633433fe-a3b4-4b4f-af12-36b54c1fd9ff  Centre for Australian National Biodiversity Research (CANB) AVH data          PRESENT
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>                                 recordID           scientificName                                      taxonConceptID  decimalLatitude  decimalLongitude             eventDate                                  dataResourceName occurrenceStatus
+0    001ec30d-3376-4f63-ba32-b48bc3dd137d  Morganella purpurascens  https://id.biodiversity.org.au/name/fungi/60022638       -33.662180        150.270831  2021-04-10T00:00:00Z                                  NSW BioNet Atlas          PRESENT
+1    005ef5cf-aae1-411c-8476-8ac01dc80e9b      Morganella compacta                                       NZOR-6-128055       -36.823429        175.073057                   NaN   New Zealand Fungal and Plant Disease Collection          PRESENT
+2    0084789b-e04d-4742-95b5-2e3761d9fd9c      Morganella compacta                                       NZOR-6-128055       -38.031754        176.486964  2019-05-14T00:00:00Z   New Zealand Fungal and Plant Disease Collection          PRESENT
+3    00efd1aa-ebf2-4afb-bd4d-b76af6ff0207      Morganella compacta                                       NZOR-6-128055       -41.097594        172.934641  2014-05-01T00:00:00Z   New Zealand Fungal and Plant Disease Collection          PRESENT
+4    05defe84-dc0b-4018-8b25-448ad7d5d33d  Morganella purpurascens  https://id.biodiversity.org.au/name/fungi/60022638              NaN               NaN  1910-04-01T00:00:00Z  Royal Botanic Gardens, Kew - Fungarium Specimens          PRESENT
+..                                    ...                      ...                                                 ...              ...               ...                   ...                                               ...              ...
+184  f95e41b4-bff3-47e3-bcc3-83662dc500d0      Morganella compacta                                       NZOR-6-128055       -41.271692        173.135924  2004-05-10T00:00:00Z   New Zealand Fungal and Plant Disease Collection          PRESENT
+185  fc2816fd-4b65-4af1-b0a2-1b086c26d97f  Morganella purpurascens  https://id.biodiversity.org.au/name/fungi/60022638       -26.405958        153.026140  2018-03-16T01:01:09Z                 ALA species sightings and OzAtlas          PRESENT
+186  fe8355bf-df6d-47b4-ab8a-33974e4828b5  Morganella purpurascens  https://id.biodiversity.org.au/name/fungi/60022638       -33.662180        150.270831  2015-04-09T00:00:00Z                                  NSW BioNet Atlas          PRESENT
+187  fefa2961-f077-40c1-becb-7fe21a8296ef      Morganella compacta                                       NZOR-6-128055       -36.905438        174.562352  1975-07-01T00:00:00Z   New Zealand Fungal and Plant Disease Collection          PRESENT
+188  ff8c59c8-b486-4c9f-ac6b-0e5efc97df22  Morganella purpurascens  https://id.biodiversity.org.au/name/fungi/60022638       -27.933286        153.175133  2024-11-26T11:50:00Z                             iNaturalist Australia          PRESENT
 
 [189 rows x 8 columns]
 </pre></div>

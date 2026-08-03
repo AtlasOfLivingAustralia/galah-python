@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>API Docs &#8212; Galah 0.13.5 documentation</title>
+    <title>API Docs &#8212; Galah 0.13.6 documentation</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../_static/documentation_options.js?v=48106516"></script>
+    <script src="../_static/documentation_options.js?v=7fe8ef7c"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/design-tabs.js?v=f930bc37"></script>
@@ -53,7 +53,7 @@
     <link rel="prev" title="Authentication (Experimental)" href="../galah_user_guide/authentication.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.13.5" />
+  <meta name="docsearch:version" content="0.13.6" />
   </head>
   
   
@@ -119,8 +119,8 @@
       
     
     
-    <img src="../_static/logo.png" class="logo__image only-light" alt="Galah 0.13.5 documentation - Home"/>
-    <img src="../_static/logo.png" class="logo__image only-dark pst-js-only" alt="Galah 0.13.5 documentation - Home"/>
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Galah 0.13.6 documentation - Home"/>
+    <img src="../_static/logo.png" class="logo__image only-dark pst-js-only" alt="Galah 0.13.6 documentation - Home"/>
   
   
 </a></div>
@@ -503,69 +503,89 @@ Default is set to <code class="docutils literal notranslate"><span class="pre">&
 <p class="rubric">Examples</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="n">galah</span><span class="o">.</span><span class="n">galah_config</span><span class="p">(</span><span class="n">atlas</span><span class="o">=</span><span class="s2">&quot;Australia&quot;</span><span class="p">,</span><span class="n">email</span><span class="o">=</span><span class="s2">&quot;youremail@example.com&quot;</span><span class="p">)</span></span>
 <span class="prompt1"><span class="n">galah</span><span class="o">.</span><span class="n">atlas_media</span><span class="p">(</span><span class="n">taxa</span><span class="o">=</span><span class="s2">&quot;Ornithorhynchus anatinus&quot;</span><span class="p">,</span><span class="n">filters</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;year=2020&quot;</span><span class="p">,</span><span class="s2">&quot;decimalLongitude&gt;153.0&quot;</span><span class="p">)</span></span>
-</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>   decimalLatitude  decimalLongitude             eventDate  \
-0       -30.311448        153.015910  2020-09-08T17:26:47Z   
-1       -30.300649        153.006628  2020-08-30T18:37:43Z   
-2       -30.298361        153.007479  2020-08-30T18:35:00Z   
-3       -30.298183        153.005912  2020-09-04T18:28:00Z   
-4       -30.297841        153.005873  2020-09-26T17:39:00Z   
-5       -28.678673        153.297699  2020-08-13T00:00:00Z   
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>              eventDate  decimalLatitude             dataResourceName  sounds  \
+0  2020-08-13T00:00:00Z       -28.678673        iNaturalist Australia     NaN   
+1  2020-08-30T18:35:00Z       -30.298361        iNaturalist Australia     NaN   
+2  2020-08-30T18:37:43Z       -30.300649        iNaturalist Australia     NaN   
+3  2020-09-04T18:28:00Z       -30.298183        iNaturalist Australia     NaN   
+4  2020-09-08T17:26:47Z       -30.311448        iNaturalist Australia     NaN   
+5  2020-09-26T17:39:00Z       -30.297841        iNaturalist Australia     NaN   
+6  2020-01-17T07:09:00Z       -28.213785  Earth Guardians Weekly Feed     NaN   
+7  2020-01-17T07:09:00Z       -28.213785  Earth Guardians Weekly Feed     NaN   
+8  2020-10-12T17:20:00Z       -28.661653        iNaturalist Australia     NaN   
+9  2020-10-12T17:20:00Z       -28.661653        iNaturalist Australia     NaN   
 
-             scientificName  \
-0  Ornithorhynchus anatinus   
-1  Ornithorhynchus anatinus   
-2  Ornithorhynchus anatinus   
-3  Ornithorhynchus anatinus   
-4  Ornithorhynchus anatinus   
-5  Ornithorhynchus anatinus   
+                               recordID videos  \
+0  12d8c7f9-9d66-4312-9245-87a0a1021557    NaN   
+1  42912016-2409-4125-a61f-13ffd4c32fcb    NaN   
+2  72ad295f-112d-442f-83e1-fd385ef9163a    NaN   
+3  dd885218-bdb9-404a-8441-e5cd329f6605    NaN   
+4  6882dfe3-5295-493d-a005-66f8392e9d5b    NaN   
+5  072bc4f0-7581-44c6-b0ec-e3fe58d251fc    NaN   
+6  808b0c19-9616-45f1-994e-e3b33fc32836    NaN   
+7  808b0c19-9616-45f1-994e-e3b33fc32836    NaN   
+8  2a701513-b21d-4baa-bac4-5e6a3a65252b    NaN   
+9  2a701513-b21d-4baa-bac4-5e6a3a65252b    NaN   
 
-                                      taxonConceptID  \
-0  https://biodiversity.org.au/afd/taxa/ac61fd14-...   
-1  https://biodiversity.org.au/afd/taxa/ac61fd14-...   
-2  https://biodiversity.org.au/afd/taxa/ac61fd14-...   
-3  https://biodiversity.org.au/afd/taxa/ac61fd14-...   
-4  https://biodiversity.org.au/afd/taxa/ac61fd14-...   
-5  https://biodiversity.org.au/afd/taxa/ac61fd14-...   
+                                      taxonConceptID multimedia  \
+0  https://biodiversity.org.au/afd/taxa/ac61fd14-...      Image   
+1  https://biodiversity.org.au/afd/taxa/ac61fd14-...      Image   
+2  https://biodiversity.org.au/afd/taxa/ac61fd14-...      Image   
+3  https://biodiversity.org.au/afd/taxa/ac61fd14-...      Image   
+4  https://biodiversity.org.au/afd/taxa/ac61fd14-...      Image   
+5  https://biodiversity.org.au/afd/taxa/ac61fd14-...      Image   
+6  https://biodiversity.org.au/afd/taxa/ac61fd14-...      Image   
+7  https://biodiversity.org.au/afd/taxa/ac61fd14-...      Image   
+8  https://biodiversity.org.au/afd/taxa/ac61fd14-...      Image   
+9  https://biodiversity.org.au/afd/taxa/ac61fd14-...      Image   
 
-                               recordID       dataResourceName  \
-0  6882dfe3-5295-493d-a005-66f8392e9d5b  iNaturalist Australia   
-1  72ad295f-112d-442f-83e1-fd385ef9163a  iNaturalist Australia   
-2  42912016-2409-4125-a61f-13ffd4c32fcb  iNaturalist Australia   
-3  dd885218-bdb9-404a-8441-e5cd329f6605  iNaturalist Australia   
-4  072bc4f0-7581-44c6-b0ec-e3fe58d251fc  iNaturalist Australia   
-5  12d8c7f9-9d66-4312-9245-87a0a1021557  iNaturalist Australia   
+  occurrenceStatus  decimalLongitude            scientificName  \
+0          PRESENT        153.297699  Ornithorhynchus anatinus   
+1          PRESENT        153.007479  Ornithorhynchus anatinus   
+2          PRESENT        153.006628  Ornithorhynchus anatinus   
+3          PRESENT        153.005912  Ornithorhynchus anatinus   
+4          PRESENT        153.015910  Ornithorhynchus anatinus   
+5          PRESENT        153.005873  Ornithorhynchus anatinus   
+6          PRESENT        153.386929  Ornithorhynchus anatinus   
+7          PRESENT        153.386929  Ornithorhynchus anatinus   
+8          PRESENT        153.300439  Ornithorhynchus anatinus   
+9          PRESENT        153.300439  Ornithorhynchus anatinus   
 
-  occurrenceStatus multimedia                                images videos  \
-0          PRESENT      Image  792a93d4-6436-4222-9a00-00cda0ec1f14    NaN   
-1          PRESENT      Image  1aad7125-c6c0-4557-b9a2-112c03ac6709    NaN   
-2          PRESENT      Image  09efd0a0-aa51-4d00-80f9-4e78e19aa89e    NaN   
-3          PRESENT      Image  40aadbde-3918-4bba-9dc9-13fa1da3809b    NaN   
-4          PRESENT      Image  14374712-1c37-4e2d-af28-4572f64e7d3a    NaN   
-5          PRESENT      Image  393df479-5fbb-464e-82ed-4d6fd19dd863    NaN   
+                                 images       creator  \
+0  393df479-5fbb-464e-82ed-4d6fd19dd863  julespetroff   
+1  09efd0a0-aa51-4d00-80f9-4e78e19aa89e  Brett Vercoe   
+2  1aad7125-c6c0-4557-b9a2-112c03ac6709  Brett Vercoe   
+3  40aadbde-3918-4bba-9dc9-13fa1da3809b  Brett Vercoe   
+4  792a93d4-6436-4222-9a00-00cda0ec1f14  kerrycameron   
+5  14374712-1c37-4e2d-af28-4572f64e7d3a  Brett Vercoe   
+6  66904cee-f8ca-4e3a-b7d5-d738f4bd0978                 
+7  dfdbd258-d90a-484b-af19-2070705f166c                 
+8  7424399a-f327-4ea1-9ffa-aa7a2b69f82b  julespetroff   
+9  cee7bb9f-6b2e-4c47-8ba8-c9a3bdf92fa0  julespetroff   
 
-   sounds       creator                                         license  \
-0     NaN  kerrycameron  http://creativecommons.org/licenses/by-nc/4.0/   
-1     NaN  Brett Vercoe  http://creativecommons.org/licenses/by-nc/4.0/   
-2     NaN  Brett Vercoe  http://creativecommons.org/licenses/by-nc/4.0/   
-3     NaN  Brett Vercoe  http://creativecommons.org/licenses/by-nc/4.0/   
-4     NaN  Brett Vercoe  http://creativecommons.org/licenses/by-nc/4.0/   
-5     NaN  julespetroff  http://creativecommons.org/licenses/by-nc/4.0/   
-
-     mimeType  width  height  \
-0  image/jpeg    927     701   
-1  image/jpeg   1365    2048   
-2  image/jpeg   2048    1238   
-3  image/jpeg   2048    1365   
-4  image/jpeg   2048    1365   
-5  image/jpeg    638     426   
+                                          license    mimeType  width  height  \
+0  http://creativecommons.org/licenses/by-nc/4.0/  image/jpeg    638     426   
+1  http://creativecommons.org/licenses/by-nc/4.0/  image/jpeg   2048    1238   
+2  http://creativecommons.org/licenses/by-nc/4.0/  image/jpeg   1365    2048   
+3  http://creativecommons.org/licenses/by-nc/4.0/  image/jpeg   2048    1365   
+4  http://creativecommons.org/licenses/by-nc/4.0/  image/jpeg    927     701   
+5  http://creativecommons.org/licenses/by-nc/4.0/  image/jpeg   2048    1365   
+6                                                  image/jpeg   2988    5312   
+7                                                  image/jpeg   2988    5312   
+8  http://creativecommons.org/licenses/by-nc/4.0/  image/jpeg    713     401   
+9  http://creativecommons.org/licenses/by-nc/4.0/  image/jpeg    661     500   
 
                                             imageUrl  
-0  https://images.ala.org.au/store/4/1/f/1/792a93...  
-1  https://images.ala.org.au/store/9/0/7/6/1aad71...  
-2  https://images.ala.org.au/store/e/9/8/a/09efd0...  
+0  https://images.ala.org.au/store/3/6/8/d/393df4...  
+1  https://images.ala.org.au/store/e/9/8/a/09efd0...  
+2  https://images.ala.org.au/store/9/0/7/6/1aad71...  
 3  https://images.ala.org.au/store/b/9/0/8/40aadb...  
-4  https://images.ala.org.au/store/a/3/d/7/143747...  
-5  https://images.ala.org.au/store/3/6/8/d/393df4...
+4  https://images.ala.org.au/store/4/1/f/1/792a93...  
+5  https://images.ala.org.au/store/a/3/d/7/143747...  
+6  https://images.ala.org.au/store/8/7/9/0/66904c...  
+7  https://images.ala.org.au/store/c/6/6/1/dfdbd2...  
+8  https://images.ala.org.au/store/b/2/8/f/742439...  
+9  https://images.ala.org.au/store/0/a/f/2/cee7bb...
 </pre></div>
 </div>
 </dd></dl>
@@ -632,44 +652,44 @@ Default is set to <code class="docutils literal notranslate"><span class="pre">&
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="kn">import</span><span class="w"> </span><span class="nn">galah</span></span>
 <span class="prompt1"><span class="n">galah</span><span class="o">.</span><span class="n">galah_config</span><span class="p">(</span><span class="n">atlas</span><span class="o">=</span><span class="s2">&quot;Australia&quot;</span><span class="p">,</span><span class="n">email</span><span class="o">=</span><span class="s2">&quot;your-email@example.com&quot;</span><span class="p">)</span></span>
 <span class="prompt1"><span class="n">galah</span><span class="o">.</span><span class="n">atlas_occurrences</span><span class="p">(</span><span class="n">taxa</span><span class="o">=</span><span class="s2">&quot;Vulpes vulpes&quot;</span><span class="p">,</span><span class="n">filters</span><span class="o">=</span><span class="s2">&quot;year=2023&quot;</span><span class="p">)</span></span>
-</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>      decimalLatitude  decimalLongitude             eventDate scientificName  \
-0          -39.083564        146.383184  2023-02-02T00:00:00Z  Vulpes vulpes   
-1          -39.055892        146.448243  2023-09-26T12:58:13Z  Vulpes vulpes   
-2          -39.029077        146.323238  2023-01-13T06:16:00Z  Vulpes vulpes   
-3          -39.026141        146.332604  2023-07-16T00:00:00Z  Vulpes vulpes   
-4          -39.021544        146.443742  2023-03-14T15:40:48Z  Vulpes vulpes   
-...               ...               ...                   ...            ...   
-9315        39.300000        -75.400000  2023-11-02T04:54:00Z  Vulpes vulpes   
-9316        40.000000        -81.500000  2023-07-14T11:15:00Z  Vulpes vulpes   
-9317        42.100000        -71.600000  2023-12-18T13:33:00Z  Vulpes vulpes   
-9318        43.600000        145.300000  2023-08-09T10:50:47Z  Vulpes vulpes   
-9319        51.100000         -0.500000  2023-03-17T12:04:54Z  Vulpes vulpes   
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>                                  recordID scientificName  \
+0     0000b436-0613-4991-839a-14b57e573bc9  Vulpes vulpes   
+1     00010f5d-f8fd-4546-be65-3a1c954e85aa  Vulpes vulpes   
+2     000a75de-419e-4ad4-bda5-85ba4b552837  Vulpes vulpes   
+3     001355be-9407-4911-950c-625b7ae3d340  Vulpes vulpes   
+4     0018cc1a-7104-4044-b87d-717e27cba27e  Vulpes vulpes   
+...                                    ...            ...   
+9315  ffdff92d-f0c7-4886-aaf6-729ee42384db  Vulpes vulpes   
+9316  ffe44ebf-dc5b-4509-98ee-3ae22057a81a  Vulpes vulpes   
+9317  ffebb23c-58c3-4bf8-8f5c-b49f890154c9  Vulpes vulpes   
+9318  fff5636e-01b7-4b62-a21b-24af14390e77  Vulpes vulpes   
+9319  fff87988-89de-4533-837c-61f6cf8a82e6  Vulpes vulpes   
 
-                                         taxonConceptID  \
-0     https://biodiversity.org.au/afd/taxa/2869ce8a-...   
-1     https://biodiversity.org.au/afd/taxa/2869ce8a-...   
-2     https://biodiversity.org.au/afd/taxa/2869ce8a-...   
-3     https://biodiversity.org.au/afd/taxa/2869ce8a-...   
-4     https://biodiversity.org.au/afd/taxa/2869ce8a-...   
-...                                                 ...   
-9315  https://biodiversity.org.au/afd/taxa/2869ce8a-...   
-9316  https://biodiversity.org.au/afd/taxa/2869ce8a-...   
-9317  https://biodiversity.org.au/afd/taxa/2869ce8a-...   
-9318  https://biodiversity.org.au/afd/taxa/2869ce8a-...   
-9319  https://biodiversity.org.au/afd/taxa/2869ce8a-...   
+                                         taxonConceptID  decimalLatitude  \
+0     https://biodiversity.org.au/afd/taxa/2869ce8a-...       -34.892754   
+1     https://biodiversity.org.au/afd/taxa/2869ce8a-...       -34.194160   
+2     https://biodiversity.org.au/afd/taxa/2869ce8a-...       -34.531578   
+3     https://biodiversity.org.au/afd/taxa/2869ce8a-...       -33.367572   
+4     https://biodiversity.org.au/afd/taxa/2869ce8a-...       -35.599890   
+...                                                 ...              ...   
+9315  https://biodiversity.org.au/afd/taxa/2869ce8a-...       -30.571747   
+9316  https://biodiversity.org.au/afd/taxa/2869ce8a-...       -37.753096   
+9317  https://biodiversity.org.au/afd/taxa/2869ce8a-...       -33.834716   
+9318  https://biodiversity.org.au/afd/taxa/2869ce8a-...       -33.803655   
+9319  https://biodiversity.org.au/afd/taxa/2869ce8a-...       -37.388981   
 
-                                  recordID             dataResourceName  \
-0     572341b6-94ca-4d96-bf4f-889cbd5e26f0                    FeralScan   
-1     c9e41540-1253-4db8-b13a-25b353dc93b5        iNaturalist Australia   
-2     cab54c0e-c06a-4998-8788-f918cf104154        iNaturalist Australia   
-3     147fbb76-92b6-460c-bb12-4f9fc5f353b0                    FeralScan   
-4     e82ec752-fbcc-40e4-97e4-41adbfdee088        iNaturalist Australia   
-...                                    ...                          ...   
-9315  531ca541-8c12-4bdd-834d-31980cd127ab  Earth Guardians Weekly Feed   
-9316  4065886d-ce29-48d2-b8b3-9bc4195ba8b3  Earth Guardians Weekly Feed   
-9317  d35e6a68-ca70-42d2-beae-e6747d1138cf  Earth Guardians Weekly Feed   
-9318  47b6921d-3891-4e52-b1aa-9fbd57e76823  Earth Guardians Weekly Feed   
-9319  65fc1040-5675-4f6c-8c92-40f8de159bed  Earth Guardians Weekly Feed   
+      decimalLongitude             eventDate       dataResourceName  \
+0           138.557344  2023-12-07T00:00:00Z              FeralScan   
+1           139.634240  2023-03-26T00:00:00Z               SA Fauna   
+2           150.638468  2023-02-22T00:00:00Z       NSW BioNet Atlas   
+3           151.382845  2023-08-29T00:00:00Z              FeralScan   
+4           138.332510  2023-08-07T00:00:00Z               SA Fauna   
+...                ...                   ...                    ...   
+9315        150.164689  2023-03-21T00:00:00Z       NSW BioNet Atlas   
+9316        144.935377  2023-11-22T00:00:00Z              FeralScan   
+9317        151.141071  2023-02-20T00:00:00Z              FeralScan   
+9318        151.153854  2023-11-09T00:00:00Z              FeralScan   
+9319        144.266958  2023-01-05T15:16:00Z  iNaturalist Australia   
 
      occurrenceStatus  
 0             PRESENT  
