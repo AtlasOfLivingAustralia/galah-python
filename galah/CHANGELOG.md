@@ -1,3 +1,9 @@
+## 0.13.6 (2026-08-03)
+
+### Fix
+
+- **atlas_media**: fixed bug which was causing fewer images to download than there should be; added crs option to atlas_media
+
 ## 0.13.5 (2026-07-31)
 
 ### Fix
