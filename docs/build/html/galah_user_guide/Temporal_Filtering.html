@@ -443,19 +443,23 @@ span.prompt1:before {
 <span class="prompt1"><span class="o">...</span>     <span class="n">group_by</span><span class="o">=</span><span class="s2">&quot;month&quot;</span><span class="p">,</span></span>
 <span class="prompt1"><span class="o">...</span>     <span class="n">expand</span><span class="o">=</span><span class="kc">False</span></span>
 <span class="prompt1"><span class="o">...</span> <span class="p">)</span></span>
-</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>    month  count
-0       1  22576
-1       2  16672
-2       3  18258
-3       4   8807
-4       5   6733
-5       6   8051
-6       7   9446
-7       8  19243
-8       9  27648
-9      10  36891
-10     11  84104
-11     12  36854
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>atlas in galah_config: Australia
+atlas in galah_config again: Australia
+[19]
+[17]
+    month  count
+0       1  22568
+1       2  16684
+2       3  18242
+3       4   8834
+4       5   6749
+5       6   8055
+6       7   9452
+7       8  19118
+8       9  27659
+9      10  37069
+10     11  84316
+11     12  37007
 </pre></div>
 </div>
 <p>It is also important to observe that the outputted month column is of type character even though
@@ -481,7 +485,11 @@ it will only return results that fall within all 3 windows at once.</p>
 <span class="prompt1"><span class="o">...</span>     <span class="n">group_by</span><span class="o">=</span><span class="s2">&quot;year&quot;</span><span class="p">,</span></span>
 <span class="prompt1"><span class="o">...</span>     <span class="n">expand</span><span class="o">=</span><span class="kc">False</span></span>
 <span class="prompt1"><span class="o">...</span> <span class="p">)</span></span>
-</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>    year  count
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>atlas in galah_config: Australia
+atlas in galah_config again: Australia
+[19]
+[17]
+    year  count
 0   2013     11
 1   2014     15
 2   2015      9
@@ -520,8 +528,12 @@ was removed from the Australian threatened species list on 26/02/2022.</p>
 <span class="prompt1"><span class="o">...</span>     <span class="n">taxa</span><span class="o">=</span><span class="s2">&quot;Megaptera novaeangliae&quot;</span><span class="p">,</span></span>
 <span class="prompt1"><span class="o">...</span>     <span class="n">filters</span><span class="o">=</span><span class="s2">&quot;eventDate&gt;=2022-02-26T00:00:00Z&quot;</span></span>
 <span class="prompt1"><span class="o">...</span> <span class="p">)</span></span>
-</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>   totalRecords
-0         12313
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>atlas in galah_config: Australia
+atlas in galah_config again: Australia
+[19]
+[17]
+   totalRecords
+0         12844
 </pre></div>
 </div>
 <p>It can be unintuitive to provide dates in this format. Luckily, it is straightforward to convert
@@ -555,8 +567,12 @@ ALA by the following week:</p>
 <span class="prompt1"><span class="o">...</span>         <span class="s2">&quot;eventDate&lt;2023-01-08T00:00:00Z&quot;</span></span>
 <span class="prompt1"><span class="o">...</span>     <span class="p">]</span></span>
 <span class="prompt1"><span class="o">...</span> <span class="p">)</span></span>
-</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>   totalRecords
-0           452
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>atlas in galah_config: Australia
+atlas in galah_config again: Australia
+[19]
+[17]
+   totalRecords
+0           454
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="c1"># Records of Cactua galerita uploaded in Jan 1-14</span></span>
@@ -568,7 +584,11 @@ ALA by the following week:</p>
 <span class="prompt1"><span class="o">...</span>         <span class="s2">&quot;firstLoadedDate&lt;2023-01-15T00:00:00Z&quot;</span></span>
 <span class="prompt1"><span class="o">...</span>     <span class="p">]</span></span>
 <span class="prompt1"><span class="o">...</span> <span class="p">)</span></span>
-</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>   totalRecords
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>atlas in galah_config: Australia
+atlas in galah_config again: Australia
+[19]
+[17]
+   totalRecords
 0             5
 </pre></div>
 </div>

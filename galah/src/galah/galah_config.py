@@ -79,6 +79,7 @@ def galah_config(
     # read the config file
     inifile = get_config_filename(config_file=config_file)
     configs = readConfig(inifile)
+    print(f"atlas in galah_config: {atlas}")
 
     # first, check if config file is empty; if so, create a dataframe with the default values
     if len(configs.sections()) == 0:
@@ -105,6 +106,7 @@ def galah_config(
 
     # check for global atlas and make sure it is named correctly
     atlas = check_atlas_name(atlas=atlas)
+    print(f"atlas in galah_config again: {atlas}")
 
     # set the ranks by default for the Global atlas
     ranks = set_ranks(atlas=atlas, ranks=ranks)
@@ -348,23 +350,24 @@ def get_api_url(column1=None, column1value=None, column2=None, column2value=None
     specific_atlas = atlaslist[atlaslist["atlas"] == atlas]
 
     # get rows with specific value
-    rows = specific_atlas[specific_atlas[column1].astype(str).str.contains(column1value, case=True, na=False)]
+    rows = specific_atlas[specific_atlas[column1] == column1value]
 
     # check to see if there are two columns to filter by
     if column2 is None and column2value is None:
 
         # else, return the singular URL
-        index = rows[rows[column1].astype(str).str.contains(column1value, case=True, na=False)].index[0]
-        baseURL = rows[rows[column1].astype(str).str.contains(column1value, case=True, na=False)]["api_url"][index]
-        method = rows[rows[column1].astype(str).str.contains(column1value, case=True, na=False)]["method"][index]
+        index = list(rows[rows[column1] == column1value].index)[0]
+        baseURL = rows[rows[column1] == column1value]["api_url"][index] #.astype(str).str.contains(column1value, case=True, na=False)]["api_url"][index]
+        method = rows[rows[column1] == column1value]["method"][index]
 
     # if there are two columns to filter by, first check for the name and value
     else:
 
+        print(list(rows[rows[column2] == column2value].index))
         # else, return the singular URL
-        index = rows[rows[column2].astype(str).str.contains(column2value, case=True, na=False)].index[0]
-        baseURL = rows.loc[rows[column1].astype(str).str.contains(column1value, case=True, na=False)]["api_url"][index]
-        method = rows.loc[rows[column1].astype(str).str.contains(column1value, case=True, na=False)]["method"][index]
+        index = list(rows[rows[column2] == column2value].index)[0] #.astype(str).str.contains(column2value, case=True, na=False)].index[0]
+        baseURL = rows.loc[rows[column2] == column2value]["api_url"][index]
+        method = rows.loc[rows[column2] == column2value]["method"][index]
 
     # return the final URL
     return baseURL, method

@@ -75,7 +75,7 @@ $ pip install galah-python
 
 ## Usage
 
-Visit the [galah package website](galah.ala.org.au/Python) for documentation and vignettes to get started.
+Visit the [galah package website](https://galah.ala.org.au/Python) for documentation and vignettes to get started.
 
 ## License
 

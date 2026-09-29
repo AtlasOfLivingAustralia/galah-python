@@ -445,7 +445,11 @@ span.prompt1:before {
 </div>
 <p>To show all fields:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">show_all</span><span class="p">(</span><span class="n">fields</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></span>
-</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>                       id                                       description   type link
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>atlas in galah_config: Australia
+atlas in galah_config again: Australia
+[22]
+[25]
+                       id                                       description   type link
 0       acceptedNameUsage    http://rs.tdwg.org/dwc/terms/acceptedNameUsage  field  NaN
 1     acceptedNameUsageID  http://rs.tdwg.org/dwc/terms/acceptedNameUsageID  field  NaN
 2            accessRights                                               NaN  field  NaN
@@ -463,7 +467,11 @@ span.prompt1:before {
 </div>
 <p>And to search for a specific field:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">search_all</span><span class="p">(</span><span class="n">fields</span><span class="o">=</span><span class="s2">&quot;Australian States&quot;</span><span class="p">,</span><span class="n">column_name</span><span class="o">=</span><span class="s2">&quot;description&quot;</span><span class="p">)</span></span>
-</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>       id                                                                    description    type link
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>atlas in galah_config: Australia
+atlas in galah_config again: Australia
+[22]
+[25]
+       id                                                                    description    type link
 0    cl22            Australian States and Territories Australian States and Territories  layers     
 1  cl2013  ASGS Australian States and Territories ASGS Australian States and Territories  layers
 </pre></div>
@@ -543,7 +551,11 @@ their possible values to filter our results.</p>
 <p>If we want to know what kinds of fields describe the basis of how an occurrence was recorded, you can
 search for the keyword “basis” using <code class="docutils literal notranslate"><span class="pre">galah.search_all()</span></code>:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">search_all</span><span class="p">(</span><span class="n">fields</span><span class="o">=</span><span class="s2">&quot;basis&quot;</span><span class="p">)</span></span>
-</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>                  id                                                                                                   description   type                                                                          link
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>atlas in galah_config: Australia
+atlas in galah_config again: Australia
+[22]
+[25]
+                  id                                                                                                   description   type                                                                          link
 0  raw_basisOfRecord                                                         The basis of record as supplied by the data publisher  field                                                                           NaN
 1      basisOfRecord  What this is a record of e.g. specimen, human observation, fossil http://rs.tdwg.org/dwc/terms/basisOfRecord  field  https://github.com/AtlasOfLivingAustralia/ala-dataquality/wiki/basisOfRecord
 </pre></div>
@@ -551,12 +563,14 @@ search for the keyword “basis” using <code class="docutils literal notransla
 <p>Once a desired field is found, you can use show_values to understand the information
 contained within that field, e.g.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">show_values</span><span class="p">(</span><span class="n">field</span><span class="o">=</span><span class="s2">&quot;basisOfRecord&quot;</span><span class="p">)</span></span>
-</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>           field             category
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>atlas in galah_config: Australia
+atlas in galah_config again: Australia
+           field             category
 0  basisOfRecord    HUMAN_OBSERVATION
 1  basisOfRecord   PRESERVED_SPECIMEN
 2  basisOfRecord           OCCURRENCE
-3  basisOfRecord  MACHINE_OBSERVATION
-4  basisOfRecord          OBSERVATION
+3  basisOfRecord          OBSERVATION
+4  basisOfRecord  MACHINE_OBSERVATION
 5  basisOfRecord      MATERIAL_SAMPLE
 6  basisOfRecord      LIVING_SPECIMEN
 7  basisOfRecord      FOSSIL_SPECIMEN
@@ -565,7 +579,9 @@ contained within that field, e.g.</p>
 </div>
 <p>You can even narrow down your search by searching for matching values:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span>  <span class="n">galah</span><span class="o">.</span><span class="n">search_values</span><span class="p">(</span><span class="n">field</span><span class="o">=</span><span class="s2">&quot;basisOfRecord&quot;</span><span class="p">,</span><span class="n">value</span><span class="o">=</span><span class="s2">&quot;SPECIMEN&quot;</span><span class="p">)</span></span>
-</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>           field            category
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>atlas in galah_config: Australia
+atlas in galah_config again: Australia
+           field            category
 0  basisOfRecord     LIVING_SPECIMEN
 1  basisOfRecord     FOSSIL_SPECIMEN
 2  basisOfRecord  PRESERVED_SPECIMEN
@@ -573,7 +589,10 @@ contained within that field, e.g.</p>
 </div>
 <p>This provides the information you need to pass meaningful queries to galah_filter.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">atlas_counts</span><span class="p">(</span><span class="n">filters</span><span class="o">=</span><span class="s2">&quot;basisOfRecord=LIVING_SPECIMEN&quot;</span><span class="p">)</span></span>
-</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>   totalRecords
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>atlas in galah_config: Australia
+atlas in galah_config again: Australia
+[19]
+   totalRecords
 0        147849
 </pre></div>
 </div>

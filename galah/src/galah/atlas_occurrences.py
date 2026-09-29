@@ -341,6 +341,7 @@ def atlas_occurrences(
                 data_profile_list=list(show_all(profiles=True)["shortName"]),
                 data_profile=data_profile,
                 reason=reason,
+                qgis=qgis
             )
 
             # print information if user has chosen the verbose option
@@ -429,10 +430,11 @@ def atlas_occurrences(
                     data_profile_list=list(show_all(profiles=True)["shortName"]),
                     data_profile=data_profile,
                     reason=reason,
+                    qgis=qgis
                 )
             else:
                 URL += add_extras_to_URL(
-                    atlas=atlas, add_email=True, email=email, email_notify=email_notify, reason=reason
+                    atlas=atlas, add_email=True, email=email, email_notify=email_notify, reason=reason, qgis=qgis
                 )
 
             # check to see if user wants the query URL

@@ -235,9 +235,10 @@ def atlas_species(
             use_data_profile=use_data_profile,
             data_profile_list=list(show_all(profiles=True)["shortName"]),
             reason=reason,
+            qgis=qgis
         )
     else:
-        URL += add_extras_to_URL(atlas=atlas, add_email=email_notify, email=email, reason=reason)
+        URL += add_extras_to_URL(atlas=atlas, add_email=email_notify, email=email, reason=reason, qgis=qgis)
 
     # check to see if user wants the query URL
     print_if_verbose(verbose=verbose, headers=headers, URL=URL, method=method)

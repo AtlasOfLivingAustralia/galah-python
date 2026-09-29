@@ -10,12 +10,12 @@ atlases = [
     "GBIF",
     "Kew",
     "Spain",
-    "Sweden",
+    # "Sweden",
     "United Kingdom",
 ]
 counts_dict = {"Atlas": [], "Total Records": []}
 for atlas in atlases:
-    galah.galah_config(atlas=atlas)
+    galah.galah_config(atlas=atlas, verbose=True)
     counts_dict["Atlas"].append(atlas)
     counts_dict["Total Records"].append(galah.atlas_counts()["totalRecords"][0])
 print(pd.DataFrame(counts_dict))

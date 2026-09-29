@@ -136,7 +136,7 @@ def atlas_counts(
             scientific_name=scientific_name,
             specific_epithet=specific_epithet,
             identifiers=identifiers,
-            simplify_polygon=simplify_polygon,
+            # simplify_polygon=simplify_polygon,
             authenticate=authenticate,
         )
 
@@ -196,11 +196,12 @@ def atlas_counts(
                 data_profile_list=list(show_all(profiles=True)["shortName"]),
                 data_profile=data_profile,
                 reason=reason,
+                qgis=qgis
             )
         elif use_data_profile:
             raise ValueError("Only the Australian atlas has data quality profiles you can use.")
         else:
-            URL += add_extras_to_URL(add_email=False, reason=reason)
+            URL += add_extras_to_URL(add_email=False, reason=reason, qgis=qgis)
 
         # print all information in the counts call if verbose is True
         print_if_verbose(verbose=verbose, URL=URL, method=method)
@@ -280,9 +281,10 @@ def atlas_counts(
                 data_profile_list=list(show_all(profiles=True)["shortName"]),
                 data_profile=data_profile,
                 reason=reason,
+                qgis=qgis
             )
         else:
-            URL += add_extras_to_URL(atlas=atlas, add_email=False, reason=reason)
+            URL += add_extras_to_URL(atlas=atlas, add_email=False, reason=reason, qgis=qgis)
 
         # check to see if the user wants the querying URL
         print_if_verbose(verbose=verbose, headers=headers, URL=URL, method=method)
