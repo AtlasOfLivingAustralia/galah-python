@@ -1,3 +1,9 @@
+## 0.13.7 (2026-09-29)
+
+### Fix
+
+- **galah_config-and-get_api_url**: changed config to get apis in a simpler manner; made sure qgis source type id works
+
 ## 0.13.6 (2026-08-03)
 
 ### Fix
