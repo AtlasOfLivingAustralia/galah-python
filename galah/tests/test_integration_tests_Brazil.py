@@ -638,7 +638,9 @@ def test_atlas_species_Brazil_family_rank_subspecies_brazil():
 
 def test_atlas_species_brazil_filter_notaxa():
     galah.galah_config(atlas="Brazil")
-    filtered_species_table = galah.atlas_species(filters=["year=2022", "basis_of_record=HumanObservation"])
+    filtered_species_table = galah.atlas_species(
+        filters=["year=2022", "basis_of_record=HumanObservation"]
+    )
     assert filtered_species_table.shape[0] > 0
 
 

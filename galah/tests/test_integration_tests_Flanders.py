@@ -297,7 +297,9 @@ def test_astlas_counts_taxa_same_filter_flanders():
 
 def test_atlas_counts_taxa_filters_flanders_total_group_by():
     galah.galah_config(atlas="Flanders")
-    output = galah.atlas_counts(taxa="Reptilia", filters="year=2020", group_by="species", total_group_by=True)
+    output = galah.atlas_counts(
+        taxa="Reptilia", filters="year=2020", group_by="species", total_group_by=True
+    )
     assert output.shape[0] == 1
     assert output["count"][0] > 0
 
@@ -545,7 +547,9 @@ def test_atlas_species_Flanders_family_rank_subspecies_flanders():
 
 def test_atlas_species_flanders_filter_notaxa():
     galah.galah_config(atlas="Flanders", email=email_fl)
-    filtered_species_table = galah.atlas_species(filters=["year=2022", "basis_of_record=HumanObservation"])
+    filtered_species_table = galah.atlas_species(
+        filters=["year=2022", "basis_of_record=HumanObservation"]
+    )
     assert filtered_species_table.shape[0] > 0
 
 
@@ -560,7 +564,9 @@ def test_atlas_occurrences_taxa_flanders():
 
 def test_atlas_occurrences_taxa_fields_flanders():
     galah.galah_config(atlas="Flanders", email=email_fl)
-    occurrences = galah.atlas_occurrences(taxa="Columba palumbus", fields=["latitude", "longitude"])
+    occurrences = galah.atlas_occurrences(
+        taxa="Columba palumbus", fields=["latitude", "longitude"]
+    )
     assert occurrences.shape[1] == 2
 
 
@@ -643,7 +649,9 @@ def test_atlas_media_multimedia_flanders():
 def test_atlas_media_filters_multimedia_flanders():
     galah.galah_config(atlas="Flanders", email=email_fl)
     raw_output = galah.atlas_media(taxa="Columba palumbus")
-    multimedia_output = galah.atlas_media(taxa="Columba palumbus", filters="year>=2020", multimedia="images")
+    multimedia_output = galah.atlas_media(
+        taxa="Columba palumbus", filters="year>=2020", multimedia="images"
+    )
     assert raw_output.shape[0] > multimedia_output.shape[0]
 
 

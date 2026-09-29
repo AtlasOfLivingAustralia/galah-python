@@ -22,7 +22,9 @@ def add_to_payload_ALA(
 ):
     """Function for adding variables to the payload when we cache (post) data to the ALA"""
 
-    if any(x is not None for x in [taxa, scientific_name, specific_epithet, identifiers]):
+    if any(
+        x is not None for x in [taxa, scientific_name, specific_epithet, identifiers]
+    ):
         taxa_list = generate_list_taxonConceptIDs(
             taxa=taxa,
             atlas=atlas,
@@ -45,7 +47,9 @@ def add_to_payload_ALA(
             payload = add_filter_to_payload(filters_check, payload=payload)
 
     if polygon is not None or bbox is not None:
-        wkts = galah_geolocate(atlas=atlas, polygon=polygon, bbox=bbox, simplify_polygon=simplify_polygon)
+        wkts = galah_geolocate(
+            atlas=atlas, polygon=polygon, bbox=bbox, simplify_polygon=simplify_polygon
+        )
         payload = add_individual_to_payload(payload=payload, wkt=wkts)
 
     return payload

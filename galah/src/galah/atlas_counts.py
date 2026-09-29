@@ -2,7 +2,12 @@ import pandas as pd
 import requests
 
 from .add_to_payload_functions import add_to_payload_ALA
-from .common_add_functions import add_extras_to_URL, add_filters, add_spatial_shapes, add_taxa
+from .common_add_functions import (
+    add_extras_to_URL,
+    add_filters,
+    add_spatial_shapes,
+    add_taxa,
+)
 from .common_checks import check_max_queries_ALA, check_string_list
 from .common_dictionaries import COUNTS_NAMES
 from .common_functions import print_if_verbose
@@ -164,7 +169,9 @@ def atlas_counts(
             )
 
         # create the query id
-        qid_URL, method2 = get_api_url(column1="api_name", column1value="occurrences_qid", atlas=atlas)
+        qid_URL, method2 = get_api_url(
+            column1="api_name", column1value="occurrences_qid", atlas=atlas
+        )
 
         # format headers with authentication
         headers = {
@@ -183,10 +190,14 @@ def atlas_counts(
         )
 
         # cache the user's query and get a query ID
-        qid = requests.request(method2, qid_URL, data=payload, headers=headers, timeout=timeout)
+        qid = requests.request(
+            method2, qid_URL, data=payload, headers=headers, timeout=timeout
+        )
 
         # create the URL to grab your queryID and counts
-        URL = countsURL + "?fq=%28qid%3A" + qid.text + "%29&flimit=-1&pageSize=0"  # "/" + qid.text
+        URL = (
+            countsURL + "?fq=%28qid%3A" + qid.text + "%29&flimit=-1&pageSize=0"
+        )  # "/" + qid.text
 
         # add last things to URL
         if atlas in ["Australia", "ALA"]:
@@ -196,10 +207,12 @@ def atlas_counts(
                 data_profile_list=list(show_all(profiles=True)["shortName"]),
                 data_profile=data_profile,
                 reason=reason,
-                qgis=qgis
+                qgis=qgis,
             )
         elif use_data_profile:
-            raise ValueError("Only the Australian atlas has data quality profiles you can use.")
+            raise ValueError(
+                "Only the Australian atlas has data quality profiles you can use."
+            )
         else:
             URL += add_extras_to_URL(add_email=False, reason=reason, qgis=qgis)
 
@@ -222,7 +235,11 @@ def atlas_counts(
 
         # get the baseURL and method
         URL, method = get_api_url(
-            column1="called_by", column1value="atlas_counts", column2="api_name", column2value=column2value, atlas=atlas
+            column1="called_by",
+            column1value="atlas_counts",
+            column2="api_name",
+            column2value=column2value,
+            atlas=atlas,
         )
 
         # check the type of filters
@@ -242,7 +259,9 @@ def atlas_counts(
         )
 
         # return None if there are no valid taxa
-        if all(x not in URL for x in ["q", "fq", "taxonKey"]) and all(x is None for x in [filters, polygon, bbox]):
+        if all(x not in URL for x in ["q", "fq", "taxonKey"]) and all(
+            x is None for x in [filters, polygon, bbox]
+        ):
             if taxa is not None:
                 return None
 
@@ -281,10 +300,12 @@ def atlas_counts(
                 data_profile_list=list(show_all(profiles=True)["shortName"]),
                 data_profile=data_profile,
                 reason=reason,
-                qgis=qgis
+                qgis=qgis,
             )
         else:
-            URL += add_extras_to_URL(atlas=atlas, add_email=False, reason=reason, qgis=qgis)
+            URL += add_extras_to_URL(
+                atlas=atlas, add_email=False, reason=reason, qgis=qgis
+            )
 
         # check to see if the user wants the querying URL
         print_if_verbose(verbose=verbose, headers=headers, URL=URL, method=method)

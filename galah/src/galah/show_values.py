@@ -36,9 +36,13 @@ def show_values(field=None, lists=False, config_file=None):
 
     # check to see if field is input correctly
     if field is None:
-        raise ValueError("Please specify the field you want to see query-able values for, i.e. field='basisOfRecord'")
+        raise ValueError(
+            "Please specify the field you want to see query-able values for, i.e. field='basisOfRecord'"
+        )
     elif not isinstance(field, str):
-        raise TypeError("show_values() only takes a single string as the field argument, i.e. field='basisOfRecord'")
+        raise TypeError(
+            "show_values() only takes a single string as the field argument, i.e. field='basisOfRecord'"
+        )
 
     (
         atlas,
@@ -63,14 +67,20 @@ def show_values(field=None, lists=False, config_file=None):
 
     # get base URL for querying
     if atlas in ["Global", "GBIF"]:
-        baseURL, method = get_api_url(atlas=atlas, column1="api_name", column1value="records_counts")
+        baseURL, method = get_api_url(
+            atlas=atlas, column1="api_name", column1value="records_counts"
+        )
         URL = baseURL + "?facet=" + field + "&flimit=-1"
     else:
         if lists:
-            baseURL, method = get_api_url(atlas=atlas, column1="called_by", column1value="show_values-lists")
+            baseURL, method = get_api_url(
+                atlas=atlas, column1="called_by", column1value="show_values-lists"
+            )
             URL = baseURL.replace("{list_id}", field) + "?max=9999"
         else:
-            baseURL, method = get_api_url(atlas=atlas, column1="api_name", column1value="records_facets")
+            baseURL, method = get_api_url(
+                atlas=atlas, column1="api_name", column1value="records_facets"
+            )
             URL = baseURL + "?facets=" + field + "&flimit=-1"
 
     # check to see if the user wants the URL for querying

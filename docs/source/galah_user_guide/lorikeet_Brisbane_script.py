@@ -51,7 +51,7 @@ lorikeet_brisbane = galah.atlas_occurrences(
     taxa="Trichoglossus chlorolepidotus",
     filters="year==2020",
     bbox=brisbane_parks_bbox,
-    crs="EPSG:4326"
+    crs="EPSG:4326",
 )
 
 # plots

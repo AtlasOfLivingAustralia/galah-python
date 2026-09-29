@@ -217,20 +217,26 @@ def atlas_media(
         # get all occurrences with multimedia files
         if isinstance(dataFrame[media][0], str):
             # remove all "None" entries; may have to update this with different atlases
-            media_array = dataFrame.loc[~dataFrame[media].str.contains("None", case=True, na=False)]
+            media_array = dataFrame.loc[
+                ~dataFrame[media].str.contains("None", case=True, na=False)
+            ]
         else:
             media_array = dataFrame[~dataFrame[media].isnull()]
 
         # get media metadata url
         if authenticate:
-            basemediaURL, method = get_api_url(column1="api_name", column1value="image_bulk_metadata", atlas=atlas)
+            basemediaURL, method = get_api_url(
+                column1="api_name", column1value="image_bulk_metadata", atlas=atlas
+            )
 
             # add authorization token and client id for authentication
             headers["Authorization"] = "Bearer {}".format(access_token)
             headers["client_id"] = client_id
 
         else:
-            basemediaURL, method = get_api_url(column1="called_by", column1value="media_metadata", atlas=atlas)
+            basemediaURL, method = get_api_url(
+                column1="called_by", column1value="media_metadata", atlas=atlas
+            )
 
         # check to see which occurrence entries have
         if not media_array.empty:
@@ -244,14 +250,18 @@ def atlas_media(
             ]
 
             # put the longest strings (so the duplicates) at the end
-            filtered_media_array = filtered_media_array.sort_values(by=media, key=lambda x: x.str.len())
+            filtered_media_array = filtered_media_array.sort_values(
+                by=media, key=lambda x: x.str.len()
+            )
 
             # reset the indices for better looping
             filtered_media_array = filtered_media_array.reset_index(drop=True)
 
             # get duplicate rows and top index
             duplicate_rows = filtered_media_array[
-                filtered_media_array[media].astype(str).str.contains(r"[,|]", regex=True)
+                filtered_media_array[media]
+                .astype(str)
+                .str.contains(r"[,|]", regex=True)
             ]  # try this
 
             if not duplicate_rows.empty:
@@ -304,7 +314,9 @@ def atlas_media(
         print("We could not find any media associated with your query.\n")
 
 
-def write_image_to_file(image=None, headers=None, path=None, thumbnail=False, timeout=600, atlas=None):
+def write_image_to_file(
+    image=None, headers=None, path=None, thumbnail=False, timeout=600, atlas=None
+):
 
     # set extension variable
     ext = ""
@@ -313,7 +325,9 @@ def write_image_to_file(image=None, headers=None, path=None, thumbnail=False, ti
     if image["mimeType"] in MM_EXTENSIONS:
         ext = MM_EXTENSIONS[image["mimeType"]]
     else:
-        raise ValueError("Extension {} is not in our list of extensions.".format(image["mimeType"]))
+        raise ValueError(
+            "Extension {} is not in our list of extensions.".format(image["mimeType"])
+        )
 
     # check if they want the thumbnail vs. original
     if thumbnail:
@@ -324,7 +338,9 @@ def write_image_to_file(image=None, headers=None, path=None, thumbnail=False, ti
             timeout=timeout,
         )
     else:
-        data = requests.get(url=image["imageUrl"], headers=headers, stream=True, timeout=timeout)
+        data = requests.get(
+            url=image["imageUrl"], headers=headers, stream=True, timeout=timeout
+        )
 
     # write image to file
     with open("{}/{}.{}".format(path, image[IMAGE_MERGE_NAMES[atlas]], ext), "wb") as f:
@@ -339,10 +355,14 @@ def check_multimedia(multimedia=None, atlas=None):
             if type(multimedia) is str:
                 multimedia = [multimedia]
         else:
-            raise ValueError('multimedia argument should either be a string or a list, i.e. multimedia="images"')
+            raise ValueError(
+                'multimedia argument should either be a string or a list, i.e. multimedia="images"'
+            )
     else:
         if (
-            atlas in ["Australia", "Flanders", "Spain", "Sweden", "United Kingdom", "UK"] and multimedia is None
+            atlas
+            in ["Australia", "Flanders", "Spain", "Sweden", "United Kingdom", "UK"]
+            and multimedia is None
         ):  # try Spain here
             multimedia = ["images", "videos", "sounds"]
         elif atlas in ["Austria", "Kew"]:
@@ -408,9 +428,13 @@ def get_image_metadata(
                     if key in response_json["results"][id].keys():
                         media_metadata[key].append(response_json["results"][id][key])
                     elif key == "imageIdentifier":
-                        media_metadata["imageIdentifier"].append(response_json["results"][id]["imageId"])
+                        media_metadata["imageIdentifier"].append(
+                            response_json["results"][id]["imageId"]
+                        )
                     elif key == "mimeType":
-                        media_metadata["mimeType"].append(response_json["results"][id]["mimetype"])
+                        media_metadata["mimeType"].append(
+                            response_json["results"][id]["mimetype"]
+                        )
                     else:
                         media_metadata[key].append("")
 
@@ -422,7 +446,9 @@ def get_image_metadata(
             if isinstance(row[IMAGE_COLUMN_NAMES[atlas]], str):
 
                 if "[" in row[IMAGE_COLUMN_NAMES[atlas]]:
-                    image = re.sub(r"[\[\"\([{})\]]", "", row[IMAGE_COLUMN_NAMES[atlas]])
+                    image = re.sub(
+                        r"[\[\"\([{})\]]", "", row[IMAGE_COLUMN_NAMES[atlas]]
+                    )
                     # try this
                     new_filtered_media_array.at[i, IMAGE_COLUMN_NAMES[atlas]] = image
                 else:
@@ -432,10 +458,14 @@ def get_image_metadata(
                 mediaURL = basemediaURL.replace("{" + IMAGE_NAMES[atlas] + "}", image)
 
                 # uncomment for debugging purposes
-                print_if_verbose(verbose=verbose, headers=headers, URL=mediaURL, method=method)
+                print_if_verbose(
+                    verbose=verbose, headers=headers, URL=mediaURL, method=method
+                )
 
                 # send the request for image metadata
-                response = requests.request(method=method, url=mediaURL, headers=headers, timeout=timeout)
+                response = requests.request(
+                    method=method, url=mediaURL, headers=headers, timeout=timeout
+                )
 
                 # get metadata here
                 response_json = response.json()
@@ -500,7 +530,9 @@ def download_media(
     # loop over images - have progress bar if user wants it
     if progress_bar:
 
-        for i, image in tqdm(media_metadata_df.iterrows(), total=media_metadata_df.shape[0]):
+        for i, image in tqdm(
+            media_metadata_df.iterrows(), total=media_metadata_df.shape[0]
+        ):
 
             write_image_to_file(
                 image=image,
@@ -516,15 +548,22 @@ def download_media(
         for i, image in media_metadata_df.iterrows():
 
             write_image_to_file(
-                image=image, headers=headers, path=path, thumbnail=thumbnail, timeout=timeout, atlas=atlas
+                image=image,
+                headers=headers,
+                path=path,
+                thumbnail=thumbnail,
+                timeout=timeout,
+                atlas=atlas,
             )
 
     # Let user know where media has been written to
     print("Media written to {}".format(path))
 
 
-def get_duplicate_images(duplicate_rows=None, media=None, duplicate_dict=None, fields=None):
-    duplicate_rows = duplicate_rows.loc[:,~duplicate_rows.columns.duplicated()]
+def get_duplicate_images(
+    duplicate_rows=None, media=None, duplicate_dict=None, fields=None
+):
+    duplicate_rows = duplicate_rows.loc[:, ~duplicate_rows.columns.duplicated()]
     for i, row in duplicate_rows.iterrows():
         m = row[media].split(" | ")
         for entry in m:

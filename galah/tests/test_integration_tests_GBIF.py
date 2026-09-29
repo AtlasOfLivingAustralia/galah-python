@@ -166,7 +166,9 @@ def test_search_all_providers_global():
 def test_search_all_providers_column_name_global():
     galah.galah_config(atlas="GBIF")
     total_show_all = galah.show_all(providers=True)
-    total_search_all = galah.search_all(providers="Institute", column_name="description")
+    total_search_all = galah.search_all(
+        providers="Institute", column_name="description"
+    )
     assert total_search_all.shape[0] < total_show_all.shape[0]
 
 
@@ -232,7 +234,9 @@ def test_atlas_counts_filters_global():
 # testing filtering works when no taxa are entered
 def test_atlas_counts_filters_groupby_global():
     galah.galah_config(atlas="GBIF")
-    filtered_counts = galah.atlas_counts(filters="year=2022", group_by=["month", "basisOfRecord"])
+    filtered_counts = galah.atlas_counts(
+        filters="year=2022", group_by=["month", "basisOfRecord"]
+    )
     assert filtered_counts.shape[0] > 0
     assert filtered_counts.shape[1] > 0
 
@@ -248,7 +252,9 @@ def test_atlas_counts_taxa_filter_global():
 # test atlas counts for a taxa and empty filter
 def test_atlas_counts_taxa_filter_empty_global():
     galah.galah_config(atlas="GBIF")
-    assert galah.atlas_counts(taxa="Vulpes vulpes", filters="year=")["totalRecords"][0] > 0
+    assert (
+        galah.atlas_counts(taxa="Vulpes vulpes", filters="year=")["totalRecords"][0] > 0
+    )
 
 
 # TODO: Figure these out
@@ -332,9 +338,7 @@ def test_atlas_counts_taxa_filters_global():
         galah.atlas_counts(
             taxa="Vulpes vulpes",
             filters=["year=2020", "basisOfRecord=HUMAN_OBSERVATION"],
-        )[
-            "totalRecords"
-        ][0]
+        )["totalRecords"][0]
         > 0
     )
 
@@ -480,7 +484,9 @@ def test_atlas_counts_multiple_taxa_separate_global():
     output = galah.atlas_counts(taxa_array, group_by="scientificName")
     assert output.shape[0] >= len(taxa_array)
     assert output.shape[1] == 2
-    assert (output["count"] >= 0).all()  # checks that all species counts are greater than or equal to zero
+    assert (
+        output["count"] >= 0
+    ).all()  # checks that all species counts are greater than or equal to zero
 
 
 # test atlas_counts() can call search_taxa() and using one filter, filter and group results with multiple taxa separated
@@ -496,7 +502,9 @@ def test_atlas_counts_multiple_taxa_filters_group_by_separate_global():
     group_by = ["month", "scientificName"]
     output = galah.atlas_counts(taxa_array, filters=f, group_by=group_by)
     assert output.shape[1] >= len(group_by) + 1
-    assert (output["count"] > 0).all()  # checks that all species counts are greater than zero
+    assert (
+        output["count"] > 0
+    ).all()  # checks that all species counts are greater than zero
 
 
 # test atlas_counts() can call search_taxa() and using one filter, filter and group results with multiple taxa separated
@@ -512,7 +520,9 @@ def test_atlas_counts_multiple_taxa_filter_group_by_multiple_separate_global():
     group_by = ["year", "month"]
     output = galah.atlas_counts(taxa_array, filters=f, group_by=group_by)
     assert output.shape[1] >= len(group_by) + 1
-    assert (output["count"] > 0).all()  # checks that all species counts are greater than zero
+    assert (
+        output["count"] > 0
+    ).all()  # checks that all species counts are greater than zero
 
 
 # test atlas_counts() can call search_taxa() and using one filter, filter and group results with multiple taxa separated
@@ -528,7 +538,9 @@ def test_atlas_counts_multiple_taxa_filters_group_by_multiple_separate_expand_gl
     group_by = ["year", "month"]
     output = galah.atlas_counts(taxa_array, filters=f, group_by=group_by)
     assert output.shape[1] == len(group_by) + 1
-    assert output["count"][0] >= 0  # checks that all species counts are greater than or equal zero
+    assert (
+        output["count"][0] >= 0
+    )  # checks that all species counts are greater than or equal zero
 
 
 def test_atlas_counts_polygon_global():
@@ -586,7 +598,9 @@ def test_atlas_species_global_filter_notaxa():
         usernameGBIF=usernameGBIF,
         passwordGBIF=passwordGBIF,
     )
-    filtered_species_table = galah.atlas_species(filters=["year=2022", "basisOfRecord=HUMAN_OBSERVATION"])
+    filtered_species_table = galah.atlas_species(
+        filters=["year=2022", "basisOfRecord=HUMAN_OBSERVATION"]
+    )
     assert filtered_species_table.shape[0] > 0
 
 
@@ -603,7 +617,9 @@ def test_atlas_occurrences_taxa_filters_global():
         usernameGBIF=usernameGBIF,
         passwordGBIF=passwordGBIF,
     )
-    occurrences = galah.atlas_occurrences(taxa="Vulpes vulpes", filters=["year=2022", "month=6"])
+    occurrences = galah.atlas_occurrences(
+        taxa="Vulpes vulpes", filters=["year=2022", "month=6"]
+    )
     assert occurrences.shape[0] > 1
 
 
@@ -625,7 +641,9 @@ def test_atlas_occurrences_polygon_global():
     at_polygon = shapely.wkt.loads(
         "MULTIPOLYGON(((4.659576416015625 50.91039363171484,4.945220947265625 50.87574442047066,4.961700439453125 50.74036610336896,4.791412353515625 50.635961867932195,4.577178955078124 50.70211152632997,4.500274658203125 50.78900858809565,4.659576416015625 50.91039363171484)))"
     )
-    output = galah.atlas_occurrences(polygon=at_polygon, filters=["year=2026", "month=6"])
+    output = galah.atlas_occurrences(
+        polygon=at_polygon, filters=["year=2026", "month=6"]
+    )
     assert output.shape[0] > 0
 
 

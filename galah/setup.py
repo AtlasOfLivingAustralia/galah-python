@@ -41,7 +41,7 @@ setup(
         "tqdm",
         "oauthlib",
         "oauth2",
-        "data-cache"
+        "data-cache",
     ],
     include_package_data=True,
     package_data={

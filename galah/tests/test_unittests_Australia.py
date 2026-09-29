@@ -37,6 +37,8 @@ def test_galah_changeatlas():
 
 
 def test_galah_config_custom_file():
-    galah.galah_config(atlas="Australia", email="ala4r@ala.org.au", config_file="./temp_config.ini")
+    galah.galah_config(
+        atlas="Australia", email="ala4r@ala.org.au", config_file="./temp_config.ini"
+    )
     temp_config = galah.galah_config()
     assert temp_config is not None

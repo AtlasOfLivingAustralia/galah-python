@@ -104,14 +104,19 @@ def check_polygon_validity(polygon=None):
 
     # check the type of variable is correct
     if polygon is not None and not isinstance(
-        polygon, (str, gpd.geodataframe.GeoDataFrame, pd.DataFrame, dict, Polygon, MultiPolygon)
+        polygon,
+        (str, gpd.geodataframe.GeoDataFrame, pd.DataFrame, dict, Polygon, MultiPolygon),
     ):
-        raise ValueError("The polygon must be of type str, GeoDataFrame, DataFrame, dict, Polygon, MultiPolygon")
+        raise ValueError(
+            "The polygon must be of type str, GeoDataFrame, DataFrame, dict, Polygon, MultiPolygon"
+        )
 
     # first, check to make sure string is formatted properly
     if isinstance(polygon, str):
         if all(x not in polygon for x in ["POLYGON", "MULTIPOLYGON"]):
-            raise ValueError("The string you passed needs to be a POLYGON or MULTIPOLYGON")
+            raise ValueError(
+                "The string you passed needs to be a POLYGON or MULTIPOLYGON"
+            )
 
     # next, check to ensure person is only passing one shape at a time
     if isinstance(polygon, gpd.GeoDataFrame):
@@ -123,8 +128,12 @@ def check_polygon_validity(polygon=None):
 def check_bbox_validity(bbox=None):
 
     # check if variable is correct
-    if bbox is not None and not isinstance(bbox, (str, gpd.GeoDataFrame, pd.DataFrame, dict, Polygon, MultiPolygon)):
-        raise ValueError("The polygon must be of type str, GeoDataFrame, DataFrame, dict, Polygon, MultiPolygon")
+    if bbox is not None and not isinstance(
+        bbox, (str, gpd.GeoDataFrame, pd.DataFrame, dict, Polygon, MultiPolygon)
+    ):
+        raise ValueError(
+            "The polygon must be of type str, GeoDataFrame, DataFrame, dict, Polygon, MultiPolygon"
+        )
 
     # set terms to check
     dict_terms = ["xmin", "xmax", "ymin", "ymax"]
@@ -132,13 +141,21 @@ def check_bbox_validity(bbox=None):
 
     # first, check for dict
     if isinstance(bbox, dict):
-        if not all(x in bbox.keys() for x in dict_terms) and not all(x in bbox.keys() for x in second_dict_terms):
-            raise ValueError(f"Please include the following terms in your bbox dict: \n{"\n".join(dict_terms)}\n")
+        if not all(x in bbox.keys() for x in dict_terms) and not all(
+            x in bbox.keys() for x in second_dict_terms
+        ):
+            raise ValueError(
+                f"Please include the following terms in your bbox dict: \n{"\n".join(dict_terms)}\n"
+            )
 
     # then, check for GeoDataFrame
     if isinstance(bbox, (gpd.geodataframe.GeoDataFrame, pd.DataFrame)):
-        if not all(x in bbox.columns for x in dict_terms) and not all(x in bbox.keys() for x in second_dict_terms):
-            raise ValueError(f"Please include the following terms in your bbox dict: \n{"\n".join(dict_terms)}\n")
+        if not all(x in bbox.columns for x in dict_terms) and not all(
+            x in bbox.keys() for x in second_dict_terms
+        ):
+            raise ValueError(
+                f"Please include the following terms in your bbox dict: \n{"\n".join(dict_terms)}\n"
+            )
 
 
 def check_crs_specified(shape=None, crs=None):
@@ -170,7 +187,10 @@ def check_number_vertices(shape=None, authenticate=None):
         # first, get all the possible data formats and ensure you can get the number of vertices
         if isinstance(shape, (gpd.GeoDataFrame, pd.DataFrame)):
             print()
-            if all(x not in shape.columns for x in ["xmin", "xmax", "ymin", "ymax", "geometry"]):
+            if all(
+                x not in shape.columns
+                for x in ["xmin", "xmax", "ymin", "ymax", "geometry"]
+            ):
                 raise ValueError(
                     'There needs to be either a "geometry" column associated with your shape, or for a bounding box, minx, maxx, miny, maxy.'
                 )

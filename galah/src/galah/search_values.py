@@ -1,7 +1,9 @@
 from .show_values import show_values
 
 
-def search_values(field=None, value=None, lists=False, column_name=None, config_file=None):
+def search_values(
+    field=None, value=None, lists=False, column_name=None, config_file=None
+):
     """
     Users may wish to see the specific values within a chosen field, profile or list to narrow queries or understand
     more about the information of interest. ``search_values()`` allows users for search for specific values within
@@ -34,10 +36,14 @@ def search_values(field=None, value=None, lists=False, column_name=None, config_
     """
 
     if value is None:
-        raise ValueError("Please specify the field you want to see query-able values for, i.e. field='basisOfRecord'")
+        raise ValueError(
+            "Please specify the field you want to see query-able values for, i.e. field='basisOfRecord'"
+        )
 
     if not isinstance(value, str):
-        raise TypeError("show_values() only takes a single string as the field argument, i.e. field='basisOfRecord'")
+        raise TypeError(
+            "show_values() only takes a single string as the field argument, i.e. field='basisOfRecord'"
+        )
 
     if column_name is not None and not isinstance(column_name, str):
         raise ValueError("Only strings are a valid query for the column_name variable")
@@ -50,7 +56,9 @@ def search_values(field=None, value=None, lists=False, column_name=None, config_
 
     # check to see if the user input the correct variable type; else, throw value error
     return (
-        dataFrame.loc[dataFrame[column_name].astype(str).str.contains(value, case=False, na=False)]
+        dataFrame.loc[
+            dataFrame[column_name].astype(str).str.contains(value, case=False, na=False)
+        ]
         .sort_values(column_name, key=lambda x: x.str.len())
         .reset_index(drop=True)
     )

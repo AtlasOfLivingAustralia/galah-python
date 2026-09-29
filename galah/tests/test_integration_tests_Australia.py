@@ -615,7 +615,9 @@ def test_search_taxa_australia_two_taxa():
 
 def test_search_taxa_australia_identifiers():
     galah.galah_config(qgis=False, atlas="Australia")
-    output = galah.search_taxa(identifiers="https://id.biodiversity.org.au/node/apni/2914510")
+    output = galah.search_taxa(
+        identifiers="https://id.biodiversity.org.au/node/apni/2914510"
+    )
     assert output["taxonConceptID"][0] != None
 
 
@@ -810,7 +812,9 @@ def test_atlas_counts_multiple_taxa_filters_separate_australia():
     output = galah.atlas_counts(taxa=taxa_array, filters=f, group_by="species")
     assert output.shape[0] == len(taxa_array)
     assert output.shape[1] == 2
-    assert (output["count"] >= 0).all()  # checks that all species counts are greater than or equal zero
+    assert (
+        output["count"] >= 0
+    ).all()  # checks that all species counts are greater than or equal zero
 
 
 def test_atlas_counts_taxa_group_australia():
@@ -850,7 +854,9 @@ def test_atlas_counts_taxa_filters_group_by_no_expand_australia():
 
 def test_atlas_counts_taxa_filters_australia_total_group_by():
     galah.galah_config(qgis=False, atlas="Australia")
-    output = galah.atlas_counts(taxa="reptilia", filters="year=2020", group_by="species", total_group_by=True)
+    output = galah.atlas_counts(
+        taxa="reptilia", filters="year=2020", group_by="species", total_group_by=True
+    )
     assert output.shape[0] == 1
     assert output["count"][0] > 0
 
@@ -1002,7 +1008,9 @@ def test_atlas_counts_multiple_taxa_filters_group_by_separate_australia():
     group_by = ["month", "species"]
     output = galah.atlas_counts(taxa_array, filters=f, group_by=group_by)
     assert output.shape[1] == len(group_by) + 1
-    assert (output["count"] > 0).all()  # checks that all species counts are greater than zero
+    assert (
+        output["count"] > 0
+    ).all()  # checks that all species counts are greater than zero
 
 
 def test_atlas_counts_multiple_taxa_filter_group_by_multiple_separate_australia():
@@ -1017,7 +1025,9 @@ def test_atlas_counts_multiple_taxa_filter_group_by_multiple_separate_australia(
     group_by = ["year", "month"]
     output = galah.atlas_counts(taxa_array, filters=f, group_by=group_by)
     assert output.shape[1] == len(group_by) + 1
-    assert (output["count"] > 0).all()  # checks that all species counts are greater than zero
+    assert (
+        output["count"] > 0
+    ).all()  # checks that all species counts are greater than zero
 
 
 def test_atlas_counts_multiple_taxa_filters_group_by_multiple_separate_expand_australia():
@@ -1032,7 +1042,9 @@ def test_atlas_counts_multiple_taxa_filters_group_by_multiple_separate_expand_au
     group_by = ["year", "month"]
     output = galah.atlas_counts(taxa_array, filters=f, group_by=group_by)
     assert output.shape[1] == len(group_by) + 1
-    assert output["count"][0] >= 0  # checks that all species counts are greater than or equal zero
+    assert (
+        output["count"][0] >= 0
+    )  # checks that all species counts are greater than or equal zero
 
 
 def test_atlas_counts_geolocate_polygon():
@@ -1048,7 +1060,9 @@ def test_atlas_counts_geolocate_bbox():
 
 
 def test_atlas_counts_geolocate_bbox_dict():
-    counts = galah.atlas_counts(bbox={"xmin": 143, "ymin": -29, "xmax": 148, "ymax": -28})
+    counts = galah.atlas_counts(
+        bbox={"xmin": 143, "ymin": -29, "xmax": 148, "ymax": -28}
+    )
     assert counts["totalRecords"][0] > 0
 
 
@@ -1065,14 +1079,18 @@ def test_atlas_counts_geolocate_bbox_taxa():
 
 
 def test_atlas_counts_geolocate_pandas_polygon_taxa():
-    test_shape = pd.DataFrame({"minx": 143, "miny": -29, "maxx": 148, "maxy": -28}, index=[0])
+    test_shape = pd.DataFrame(
+        {"minx": 143, "miny": -29, "maxx": 148, "maxy": -28}, index=[0]
+    )
     with pytest.raises(Exception) as e_info:
         galah.atlas_counts(taxa="reptilia", polygon=test_shape)
     assert "geometry" in str(e_info.value)
 
 
 def test_atlas_counts_geolocate_pandas_bbox_taxa():
-    test_shape = pd.DataFrame({"xmin": 143, "ymin": -29, "xmax": 148, "ymax": -28}, index=[0])
+    test_shape = pd.DataFrame(
+        {"xmin": 143, "ymin": -29, "xmax": 148, "ymax": -28}, index=[0]
+    )
     counts = galah.atlas_counts(taxa="reptilia", bbox=test_shape)
     assert counts["totalRecords"][0] > 0
 
@@ -1110,7 +1128,9 @@ def test_atlas_counts_australia_specific_epithet():
 
 def test_atlas_counts_australia_identifiers():
     galah.galah_config(qgis=False, atlas="Australia")
-    output = galah.atlas_counts(identifiers="https://id.biodiversity.org.au/node/apni/2914510")
+    output = galah.atlas_counts(
+        identifiers="https://id.biodiversity.org.au/node/apni/2914510"
+    )
     assert output.shape[0] > 0
 
 
@@ -1168,13 +1188,17 @@ def test_atlas_species_Australia_family_australia():
 def test_atlas_species_Australia_filter():
     galah.galah_config(qgis=False, atlas="Australia", email=email_au)
     full_species_table = galah.atlas_species(taxa="Rodentia")
-    filtered_species_table = galah.atlas_species(taxa="Rodentia", filters="stateProvince=Victoria")
+    filtered_species_table = galah.atlas_species(
+        taxa="Rodentia", filters="stateProvince=Victoria"
+    )
     assert full_species_table.shape[0] > filtered_species_table.shape[0]
 
 
 def test_atlas_species_Australia_filter_notaxa():
     galah.galah_config(qgis=False, atlas="Australia", email=email_au)
-    filtered_species_table = galah.atlas_species(filters=["year=2022", "stateProvince=Victoria"])
+    filtered_species_table = galah.atlas_species(
+        filters=["year=2022", "stateProvince=Victoria"]
+    )
     assert filtered_species_table.shape[0] > 0
 
 
@@ -1202,13 +1226,17 @@ def test_atlas_species_Australia_filter_polygon():
 def test_atlas_species_Australia_filter_polygon():
     galah.galah_config(qgis=False, atlas="Australia", email=email_au)
     full_species_table = galah.atlas_species(bbox=shapely.box(143, -29, 148, -28))
-    filtered_species_table = galah.atlas_species(bbox=shapely.box(143, -29, 148, -28), filters="stateProvince=Victoria")
+    filtered_species_table = galah.atlas_species(
+        bbox=shapely.box(143, -29, 148, -28), filters="stateProvince=Victoria"
+    )
     assert full_species_table.shape[0] > filtered_species_table.shape[0]
 
 
 def test_atlas_species_Australia_filter_notaxa():
     galah.galah_config(qgis=False, atlas="Australia", email=email_au)
-    filtered_species_table = galah.atlas_species(filters=["year=2022", "stateProvince=Victoria"])
+    filtered_species_table = galah.atlas_species(
+        filters=["year=2022", "stateProvince=Victoria"]
+    )
     assert filtered_species_table.shape[0] > 0
 
 
@@ -1227,7 +1255,9 @@ def test_atlas_species_australia_specific_epithet():
 
 def test_atlas_species_australia_identifiers():
     galah.galah_config(qgis=False, atlas="Australia")
-    output = galah.atlas_species(identifiers="https://id.biodiversity.org.au/node/apni/2914510")
+    output = galah.atlas_species(
+        identifiers="https://id.biodiversity.org.au/node/apni/2914510"
+    )
     assert output.shape[0] > 0
 
 
@@ -1242,7 +1272,9 @@ def test_atlas_occurrences_galah_config_custom_file():
         config_file="./temp_config.ini",
         authenticate=False,
     )
-    occurrences = galah.atlas_occurrences(taxa="Vulpes vulpes", config_file="./temp_config.ini")
+    occurrences = galah.atlas_occurrences(
+        taxa="Vulpes vulpes", config_file="./temp_config.ini"
+    )
     assert occurrences.shape[0] > 0
 
 
@@ -1254,7 +1286,9 @@ def test_atlas_occurrences_taxa_australia():
 
 def test_atlas_occurrences_taxa_fields_australia():
     galah.galah_config(qgis=False, atlas="Australia", email=email_au)
-    occurrences = galah.atlas_occurrences(taxa="Vulpes vulpes", fields=["decimalLatitude", "decimalLongitude"])
+    occurrences = galah.atlas_occurrences(
+        taxa="Vulpes vulpes", fields=["decimalLatitude", "decimalLongitude"]
+    )
     assert occurrences.shape[1] == 2
 
 
@@ -1325,7 +1359,9 @@ def test_atlas_occurrences_geolocate_bbox():
 
 def test_atlas_occurrences_geolocate_bbox_dict():
     galah.galah_config(qgis=False, atlas="Australia", email=email_au)
-    occurrences = galah.atlas_occurrences(bbox={"xmin": 143, "ymin": -29, "xmax": 148, "ymax": -28})
+    occurrences = galah.atlas_occurrences(
+        bbox={"xmin": 143, "ymin": -29, "xmax": 148, "ymax": -28}
+    )
     assert occurrences.shape[0] > 0
 
 
@@ -1344,21 +1380,31 @@ def test_atlas_occurrences_geolocate_bbox_taxa():
 
 
 def test_atlas_occurrences_mint_doi():
-    galah.galah_config(qgis=False, atlas="Australia", email=email_au)  # ala4r@ala.org.au
+    galah.galah_config(
+        qgis=False, atlas="Australia", email=email_au
+    )  # ala4r@ala.org.au
     occurrences = galah.atlas_occurrences(taxa="Vulpes vulpes", mint_doi=True)
     assert occurrences.shape[0] > 0
 
 
 def test_atlas_occurrences_mint_doi_print_false():
-    galah.galah_config(qgis=False, atlas="Australia", email=email_au)  # ala4r@ala.org.au
-    doi, occurrences = galah.atlas_occurrences(taxa="Vulpes vulpes", mint_doi=True, print_doi=False)
+    galah.galah_config(
+        qgis=False, atlas="Australia", email=email_au
+    )  # ala4r@ala.org.au
+    doi, occurrences = galah.atlas_occurrences(
+        taxa="Vulpes vulpes", mint_doi=True, print_doi=False
+    )
     assert isinstance(doi, str)
     assert occurrences.shape[0] > 0
 
 
 def test_atlas_occurrences_doi():
-    galah.galah_config(qgis=False, atlas="Australia", email=email_au)  # ala4r@ala.org.au
-    occurrences = galah.atlas_occurrences(doi="https://doi.org/10.26197/ala.e413b946-8959-41f8-9ae9-897d86029844")
+    galah.galah_config(
+        qgis=False, atlas="Australia", email=email_au
+    )  # ala4r@ala.org.au
+    occurrences = galah.atlas_occurrences(
+        doi="https://doi.org/10.26197/ala.e413b946-8959-41f8-9ae9-897d86029844"
+    )
     assert occurrences.shape[0] > 0
 
 
@@ -1377,7 +1423,9 @@ def test_atlas_occurrences_australia_specific_epithet():
 
 def test_atlas_occurrences_australia_identifiers():
     galah.galah_config(qgis=False, atlas="Australia")
-    output = galah.atlas_occurrences(identifiers="https://id.biodiversity.org.au/node/apni/2914510")
+    output = galah.atlas_occurrences(
+        identifiers="https://id.biodiversity.org.au/node/apni/2914510"
+    )
     assert output.shape[0] > 0
 
 
@@ -1397,13 +1445,17 @@ def test_atlas_media_taxa_australia():
 def test_atlas_media_filters_australia():
     galah.galah_config(qgis=False, atlas="Australia", email=email_au)
     raw_output = galah.atlas_media(taxa="Liopholis margaretae")
-    filtered_output = galah.atlas_media(taxa="Liopholis margaretae", filters="decimalLatitude<-24.0")
+    filtered_output = galah.atlas_media(
+        taxa="Liopholis margaretae", filters="decimalLatitude<-24.0"
+    )
     assert raw_output.shape[0] > filtered_output.shape[0]
 
 
 def test_atlas_media_multimedia_australia():
     galah.galah_config(qgis=False, atlas="Australia", email=email_au)
-    multimedia_output = galah.atlas_media(taxa="Liopholis margaretae", multimedia="images")
+    multimedia_output = galah.atlas_media(
+        taxa="Liopholis margaretae", multimedia="images"
+    )
     assert multimedia_output.shape[0] > 0
 
 
@@ -1444,14 +1496,17 @@ def test_atlas_media_australia_specific_epithet():
             "genus": "pardalotus",
             "specificEpithet": "punctatus",
         },
-        filters=["year=2026","month=1"]
+        filters=["year=2026", "month=1"],
     )
     assert output.shape[0] > 0
 
 
 def test_atlas_media_australia_identifiers():
     galah.galah_config(qgis=False, atlas="Australia", email=email_au)
-    output = galah.atlas_media(identifiers="https://id.biodiversity.org.au/node/apni/2914510",filters="year=2026")
+    output = galah.atlas_media(
+        identifiers="https://id.biodiversity.org.au/node/apni/2914510",
+        filters="year=2026",
+    )
     assert output.shape[0] > 0
 
 
