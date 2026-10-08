@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Taxonomic Filtering &#8212; Galah 0.13.7 documentation</title>
+    <title>Taxonomic Filtering &#8212; Galah 0.14.0 documentation</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../_static/documentation_options.js?v=db906b65"></script>
+    <script src="../_static/documentation_options.js?v=9e420a66"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/design-tabs.js?v=f930bc37"></script>
@@ -53,7 +53,7 @@
     <link rel="prev" title="Narrow Results" href="Narrow_Results.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.13.7" />
+  <meta name="docsearch:version" content="0.14.0" />
   </head>
   
   
@@ -119,8 +119,8 @@
       
     
     
-    <img src="../_static/logo.png" class="logo__image only-light" alt="Galah 0.13.7 documentation - Home"/>
-    <img src="../_static/logo.png" class="logo__image only-dark pst-js-only" alt="Galah 0.13.7 documentation - Home"/>
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Galah 0.14.0 documentation - Home"/>
+    <img src="../_static/logo.png" class="logo__image only-dark pst-js-only" alt="Galah 0.14.0 documentation - Home"/>
   
   
 </a></div>
@@ -424,10 +424,7 @@ disambiguating homonyms and checking that the search term matches the taxon name
 returns the scientific name, authorship, rank, and full classification for the taxon matched to the provided
 search term.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">search_taxa</span><span class="p">(</span><span class="n">taxa</span><span class="o">=</span><span class="s2">&quot;Petroica boodang&quot;</span><span class="p">)</span></span>
-</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>atlas in galah_config: Australia
-atlas in galah_config again: Australia
-[17]
-                scientificName scientificNameAuthorship                                                             taxonConceptID     rank   matchType   kingdom    phylum classs          order       family     genus           species     issues vernacularName
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>                scientificName scientificNameAuthorship                                                             taxonConceptID     rank   matchType   kingdom    phylum classs          order       family     genus           species     issues vernacularName
 0  Petroica (Petroica) boodang           (Lesson, 1838)  https://biodiversity.org.au/afd/taxa/a3e5376b-f9e6-4bdf-adae-1e7add9f5c29  species  exactMatch  Animalia  Chordata   Aves  Passeriformes  Petroicidae  Petroica  Petroica boodang  [noIssue]  Scarlet Robin
 </pre></div>
 </div>
@@ -435,11 +432,7 @@ atlas in galah_config again: Australia
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="c1"># Muscicapa chrysoptera is a synonym for the Flame Robin, Petroica phoenicea</span></span>
 <span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="c1"># Guniibuu is the Yuwaalaraay Indigenous name for the Red-Capped Robin, Petroica goodenovii</span></span>
 <span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">search_taxa</span><span class="p">(</span><span class="n">taxa</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Muscicapa chrysoptera&quot;</span><span class="p">,</span> <span class="s2">&quot;Guniibuu&quot;</span><span class="p">])</span></span>
-</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>atlas in galah_config: Australia
-atlas in galah_config again: Australia
-[17]
-[17]
-                   scientificName    scientificNameAuthorship                                                             taxonConceptID     rank        matchType   kingdom    phylum classs          order       family     genus              species     issues    vernacularName
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>                   scientificName    scientificNameAuthorship                                                             taxonConceptID     rank        matchType   kingdom    phylum classs          order       family     genus              species     issues    vernacularName
 0   Petroica (Littlera) phoenicea                 Gould, 1837  https://biodiversity.org.au/afd/taxa/fe74e658-4848-437a-a23d-f1001a198552  species       exactMatch  Animalia  Chordata   Aves  Passeriformes  Petroicidae  Petroica   Petroica phoenicea  [noIssue]       Flame Robin
 1  Petroica (Petroica) goodenovii  (Vigors &amp; Horsfield, 1827)  https://biodiversity.org.au/afd/taxa/10dbd908-00f3-4ec2-9a9c-a2fd4782eaf1  species  vernacularMatch  Animalia  Chordata   Aves  Passeriformes  Petroicidae  Petroica  Petroica goodenovii  [noIssue]  Red-capped Robin
 </pre></div>
@@ -448,38 +441,24 @@ atlas in galah_config again: Australia
 ranks using the <code class="docutils literal notranslate"><span class="pre">search_taxa()</span></code> argument <code class="docutils literal notranslate"><span class="pre">scientific_name</span></code>. This example differentiates among the genus Morganella
 in three kingdoms:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">search_taxa</span><span class="p">(</span><span class="n">taxa</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Morganella&quot;</span><span class="p">])</span></span>
-</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>atlas in galah_config: Australia
-atlas in galah_config again: Australia
-[17]
-  scientificName scientificNameAuthorship taxonConceptID rank matchType kingdom phylum classs order family genus species     issues vernacularName
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>  scientificName scientificNameAuthorship taxonConceptID rank matchType kingdom phylum classs order family genus species     issues vernacularName
 0     Morganella                                                                                                          [homonym]
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">search_taxa</span><span class="p">(</span><span class="n">scientific_name</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;kingdom&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;Fungi&quot;</span><span class="p">],</span><span class="s2">&quot;scientificName&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;Morganella&quot;</span><span class="p">]})</span></span>
-</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>atlas in galah_config: Australia
-atlas in galah_config again: Australia
-[16]
-  scientificName scientificNameAuthorship                                      taxonConceptID   rank   matchType kingdom         phylum          classs       order       family       genus species   issues vernacularName
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>  scientificName scientificNameAuthorship                                      taxonConceptID   rank   matchType kingdom         phylum          classs       order       family       genus species   issues vernacularName
 0     Morganella                   Zeller  https://id.biodiversity.org.au/name/fungi/60015036  genus  exactMatch   Fungi  Basidiomycota  Agaricomycetes  Agaricales  Agaricaceae  Morganella          noIssue
 </pre></div>
 </div>
 <p>This disambiguation of the Morganella taxa can then be used by <code class="docutils literal notranslate"><span class="pre">atlas_counts</span></code>, <code class="docutils literal notranslate"><span class="pre">atlas_occurrences</span></code>,
 <code class="docutils literal notranslate"><span class="pre">atlas_species</span></code> or <code class="docutils literal notranslate"><span class="pre">atlas_media</span></code> by providing the keyword <code class="docutils literal notranslate"><span class="pre">scientific_name</span></code> to any of these functions.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">atlas_counts</span><span class="p">(</span><span class="n">scientific_name</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;kingdom&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;Fungi&quot;</span><span class="p">],</span><span class="s2">&quot;scientificName&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;Morganella&quot;</span><span class="p">]})</span></span>
-</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>atlas in galah_config: Australia
-atlas in galah_config again: Australia
-[19]
-[16]
-   totalRecords
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>   totalRecords
 0           189
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">atlas_occurrences</span><span class="p">(</span><span class="n">scientific_name</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;kingdom&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;Fungi&quot;</span><span class="p">],</span><span class="s2">&quot;scientificName&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;Morganella&quot;</span><span class="p">]})</span></span>
-</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>atlas in galah_config: Australia
-atlas in galah_config again: Australia
-[23]
-[16]
-                                 recordID           scientificName                                      taxonConceptID  decimalLatitude  decimalLongitude             eventDate                                  dataResourceName occurrenceStatus
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>                                 recordID           scientificName                                      taxonConceptID  decimalLatitude  decimalLongitude             eventDate                                  dataResourceName occurrenceStatus
 0    001ec30d-3376-4f63-ba32-b48bc3dd137d  Morganella purpurascens  https://id.biodiversity.org.au/name/fungi/60022638       -33.662180        150.270831  2021-04-10T00:00:00Z                                  NSW BioNet Atlas          PRESENT
 1    005ef5cf-aae1-411c-8476-8ac01dc80e9b      Morganella compacta                                       NZOR-6-128055       -36.823429        175.073057                   NaN   New Zealand Fungal and Plant Disease Collection          PRESENT
 2    0084789b-e04d-4742-95b5-2e3761d9fd9c      Morganella compacta                                       NZOR-6-128055       -38.031754        176.486964  2019-05-14T00:00:00Z   New Zealand Fungal and Plant Disease Collection          PRESENT
@@ -503,12 +482,8 @@ filtering.  for example, if we want to search for multiple species of robins in 
 single or multiple species.  We can also group the multiple species by their species names so we can compare the
 number of records for each robin.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">atlas_counts</span><span class="p">(</span><span class="n">taxa</span><span class="o">=</span><span class="s2">&quot;Petroica boodang&quot;</span><span class="p">)</span></span>
-</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>atlas in galah_config: Australia
-atlas in galah_config again: Australia
-[19]
-[17]
-   totalRecords
-0        175828
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>   totalRecords
+0        175993
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">aus_petroica</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Petroica boodang&quot;</span><span class="p">,</span> <span class="s2">&quot;Petroica goodenovii&quot;</span><span class="p">,</span></span>
@@ -518,27 +493,18 @@ atlas in galah_config again: Australia
 <span class="prompt1"><span class="o">...</span>     <span class="n">taxa</span><span class="o">=</span><span class="n">aus_petroica</span><span class="p">,</span></span>
 <span class="prompt1"><span class="o">...</span>     <span class="n">group_by</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;species&quot;</span><span class="p">,</span><span class="s2">&quot;vernacularName&quot;</span><span class="p">]</span></span>
 <span class="prompt1"><span class="o">...</span> <span class="p">)</span></span>
-</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>atlas in galah_config: Australia
-atlas in galah_config again: Australia
-[19]
-[17]
-[17]
-[17]
-[17]
-[17]
-[17]
-                  species               vernacularName   count
-0        Petroica boodang        Eastern Scarlet Robin   28558
-1        Petroica boodang                Scarlet Robin  111323
-2        Petroica boodang  South-western Scarlet Robin   14822
-3        Petroica boodang      Tasmanian Scarlet Robin   21125
-4     Petroica goodenovii             Red-capped Robin  152622
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>                  species               vernacularName   count
+0        Petroica boodang        Eastern Scarlet Robin   28560
+1        Petroica boodang                Scarlet Robin  111477
+2        Petroica boodang  South-western Scarlet Robin   14824
+3        Petroica boodang      Tasmanian Scarlet Robin   21132
+4     Petroica goodenovii             Red-capped Robin  152657
 5     Petroica multicolor                Pacific Robin    6873
-6      Petroica phoenicea                  Flame Robin  102367
+6      Petroica phoenicea                  Flame Robin  102406
 7   Petroica rodinogaster          Mainland Pink Robin    1116
-8   Petroica rodinogaster                   Pink Robin   16806
+8   Petroica rodinogaster                   Pink Robin   16807
 9   Petroica rodinogaster         Tasmanian Pink Robin    4219
-10         Petroica rosea                   Rose Robin   78905
+10         Petroica rosea                   Rose Robin   78917
 </pre></div>
 </div>
 <p>This can be useful in searching for paraphyletic or polyphyletic groups.  For example, to get counts of non-chordates:</p>
@@ -548,15 +514,12 @@ atlas in galah_config again: Australia
 <span class="prompt1"><span class="o">...</span>     <span class="n">expand</span><span class="o">=</span><span class="kc">False</span></span>
 <span class="prompt1"><span class="o">...</span> <span class="p">)</span></span>
 <span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">non_chordates</span><span class="o">.</span><span class="n">head</span><span class="p">()</span></span>
-</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>atlas in galah_config: Australia
-atlas in galah_config again: Australia
-[19]
-           phylum     count
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>           phylum     count
 0  Acanthocephala       483
-1        Annelida    365284
-2      Arthropoda  12525788
-3     Brachiopoda      3159
-4         Bryozoa     36661
+1        Annelida    365661
+2      Arthropoda  12573691
+3     Brachiopoda      3160
+4         Bryozoa     36715
 </pre></div>
 </div>
 </section>
@@ -575,19 +538,15 @@ has been identified e.g.</p>
 <span class="prompt1"><span class="o">...</span> <span class="p">)</span></span>
 <span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">pitta_ranks</span> <span class="o">=</span> <span class="n">pitta_ranks</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">pitta_ranks</span><span class="p">[</span><span class="s2">&quot;scientificName&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">notnull</span><span class="p">()]</span></span>
 <span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">pitta_ranks</span></span>
-</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>atlas in galah_config: Australia
-atlas in galah_config again: Australia
-[19]
-[17]
-                                 scientificName   taxonRank  count
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>                                 scientificName   taxonRank  count
 0                                         Pitta       genus    237
 1                          Pitta (Erythropitta)    subgenus      6
 2            Pitta (Erythropitta) erythrogaster     species    139
 3   Pitta (Erythropitta) erythrogaster digglesi  subspecies   1045
-4                            Pitta (Pitta) iris     species   7335
+4                            Pitta (Pitta) iris     species   7336
 5                       Pitta (Pitta) iris iris  subspecies    876
 6              Pitta (Pitta) iris johnstoneiana  subspecies     51
-7                      Pitta (Pitta) versicolor     species  32923
+7                      Pitta (Pitta) versicolor     species  32935
 8           Pitta (Pitta) versicolor intermedia  subspecies   2418
 9            Pitta (Pitta) versicolor simillima  subspecies    509
 10          Pitta (Pitta) versicolor versicolor  subspecies   4418
@@ -608,15 +567,7 @@ and two subspecies. This can then be used in <code class="docutils literal notra
 <span class="prompt1"><span class="o">...</span>                 <span class="s2">&quot;Tyto novaehollandiae castanops&quot;</span> <span class="c1"># Tasmanian Masked Owl</span></span>
 <span class="prompt1"><span class="o">...</span>               <span class="p">]</span></span>
 <span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">search_taxa</span><span class="p">(</span><span class="n">taxa</span><span class="o">=</span><span class="n">tas_endemic</span><span class="p">)</span></span>
-</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>atlas in galah_config: Australia
-atlas in galah_config again: Australia
-[17]
-[17]
-[17]
-[17]
-[17]
-[17]
-                          scientificName scientificNameAuthorship                                                             taxonConceptID        rank   matchType   kingdom    phylum    classs            order        family        genus                  species     issues                vernacularName
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>                          scientificName scientificNameAuthorship                                                             taxonConceptID        rank   matchType   kingdom    phylum    classs            order        family        genus                  species     issues                vernacularName
 0                            Sarcophilus             Cuvier, 1837  https://biodiversity.org.au/afd/taxa/aa40a75d-d499-4339-8a5d-c333a29cea1c       genus  exactMatch  Animalia  Chordata  Mammalia   Dasyuromorphia    Dasyuridae  Sarcophilus                           [noIssue]                              
 1                     Bettongia gaimardi        (Desmarest, 1822)  https://biodiversity.org.au/afd/taxa/8f7da937-6338-4c39-8b11-4f83807afe11     species  exactMatch  Animalia  Chordata  Mammalia    Diprotodontia    Potoroidae    Bettongia       Bettongia gaimardi  [noIssue]             Tasmanian Bettong
 2      Melanodryas (Amaurodryas) vittata   (Quoy &amp; Gaimard, 1830)  https://biodiversity.org.au/afd/taxa/0f04889f-5489-4369-a545-8a041fba9f6d     species  exactMatch  Animalia  Chordata      Aves    Passeriformes   Petroicidae  Melanodryas      Melanodryas vittata  [noIssue]                   Dusky Robin
@@ -630,28 +581,19 @@ atlas in galah_config again: Australia
 <span class="prompt1"><span class="o">...</span>     <span class="n">group_by</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;scientificName&quot;</span><span class="p">],</span></span>
 <span class="prompt1"><span class="o">...</span>     <span class="n">expand</span><span class="o">=</span><span class="kc">False</span></span>
 <span class="prompt1"><span class="o">...</span> <span class="p">)</span></span>
-</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>atlas in galah_config: Australia
-atlas in galah_config again: Australia
-[19]
-[17]
-[17]
-[17]
-[17]
-[17]
-[17]
-                                       scientificName  count
-0                      Aquila (Uroaetus) audax fleayi   9767
-1                                  Bettongia gaimardi   2457
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>                                       scientificName  count
+0                      Aquila (Uroaetus) audax fleayi   9776
+1                                  Bettongia gaimardi   2776
 2                        Bettongia gaimardi cuniculus     54
 3                         Bettongia gaimardi gaimardi      7
-4                   Melanodryas (Amaurodryas) vittata  13773
+4                   Melanodryas (Amaurodryas) vittata  13780
 5             Melanodryas (Amaurodryas) vittata kingi    752
 6           Melanodryas (Amaurodryas) vittata vittata   7799
-7               Platycercus (Platycercus) caledonicus  50600
+7               Platycercus (Platycercus) caledonicus  50615
 8       Platycercus (Platycercus) caledonicus brownii    478
 9   Platycercus (Platycercus) caledonicus caledonicus  32214
 10                                        Sarcophilus    112
-11                               Sarcophilus harrisii  36904
+11                               Sarcophilus harrisii  36911
 12                     Tyto novaehollandiae castanops    335
 </pre></div>
 </div>

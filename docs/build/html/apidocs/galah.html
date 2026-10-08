@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>API Docs &#8212; Galah 0.13.7 documentation</title>
+    <title>API Docs &#8212; Galah 0.14.0 documentation</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../_static/documentation_options.js?v=db906b65"></script>
+    <script src="../_static/documentation_options.js?v=9e420a66"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/design-tabs.js?v=f930bc37"></script>
@@ -53,7 +53,7 @@
     <link rel="prev" title="Authentication (Experimental)" href="../galah_user_guide/authentication.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.13.7" />
+  <meta name="docsearch:version" content="0.14.0" />
   </head>
   
   
@@ -119,8 +119,8 @@
       
     
     
-    <img src="../_static/logo.png" class="logo__image only-light" alt="Galah 0.13.7 documentation - Home"/>
-    <img src="../_static/logo.png" class="logo__image only-dark pst-js-only" alt="Galah 0.13.7 documentation - Home"/>
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Galah 0.14.0 documentation - Home"/>
+    <img src="../_static/logo.png" class="logo__image only-dark pst-js-only" alt="Galah 0.14.0 documentation - Home"/>
   
   
 </a></div>
@@ -431,22 +431,20 @@ span.prompt1:before {
   content: " ";
 }
 </style><span class="prompt1"><span class="n">galah</span><span class="o">.</span><span class="n">atlas_counts</span><span class="p">()</span></span>
-</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>[19]
-   totalRecords
-0     185090015
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>   totalRecords
+0     185464288
 </pre></div>
 </div>
 <p>Return records from 2020 onwards, grouped by year</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="n">galah</span><span class="o">.</span><span class="n">atlas_counts</span><span class="p">(</span><span class="n">filters</span><span class="o">=</span><span class="s2">&quot;year&gt;2019&quot;</span><span class="p">,</span><span class="n">group_by</span><span class="o">=</span><span class="s2">&quot;year&quot;</span><span class="p">)</span></span>
-</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>[19]
-   year     count
-0  2020   8188386
-1  2021   9717209
-2  2022  10636634
-3  2023  12542573
-4  2024  13633019
-5  2025  10815812
-6  2026   3052695
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>   year     count
+0  2020   8209920
+1  2021   9728795
+2  2022  10655381
+3  2023  12562866
+4  2024  13649046
+5  2025  10870463
+6  2026   3196320
 </pre></div>
 </div>
 </dd></dl>
@@ -505,93 +503,89 @@ Default is set to <code class="docutils literal notranslate"><span class="pre">&
 <p class="rubric">Examples</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="n">galah</span><span class="o">.</span><span class="n">galah_config</span><span class="p">(</span><span class="n">atlas</span><span class="o">=</span><span class="s2">&quot;Australia&quot;</span><span class="p">,</span><span class="n">email</span><span class="o">=</span><span class="s2">&quot;youremail@example.com&quot;</span><span class="p">)</span></span>
 <span class="prompt1"><span class="n">galah</span><span class="o">.</span><span class="n">atlas_media</span><span class="p">(</span><span class="n">taxa</span><span class="o">=</span><span class="s2">&quot;Ornithorhynchus anatinus&quot;</span><span class="p">,</span><span class="n">filters</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;year=2020&quot;</span><span class="p">,</span><span class="s2">&quot;decimalLongitude&gt;153.0&quot;</span><span class="p">)</span></span>
-</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>atlas in galah_config: Australia
-atlas in galah_config again: Australia
-[23]
-[17]
-   decimalLongitude            scientificName  decimalLatitude  \
-0        153.005873  Ornithorhynchus anatinus       -30.297841   
-1        153.005912  Ornithorhynchus anatinus       -30.298183   
-2        153.006628  Ornithorhynchus anatinus       -30.300649   
-3        153.007479  Ornithorhynchus anatinus       -30.298361   
-4        153.015910  Ornithorhynchus anatinus       -30.311448   
-5        153.297699  Ornithorhynchus anatinus       -28.678673   
-6        153.300439  Ornithorhynchus anatinus       -28.661653   
-7        153.300439  Ornithorhynchus anatinus       -28.661653   
-8        153.386929  Ornithorhynchus anatinus       -28.213785   
-9        153.386929  Ornithorhynchus anatinus       -28.213785   
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>             scientificName                                images  \
+0  Ornithorhynchus anatinus  40aadbde-3918-4bba-9dc9-13fa1da3809b   
+1  Ornithorhynchus anatinus  393df479-5fbb-464e-82ed-4d6fd19dd863   
+2  Ornithorhynchus anatinus  09efd0a0-aa51-4d00-80f9-4e78e19aa89e   
+3  Ornithorhynchus anatinus  14374712-1c37-4e2d-af28-4572f64e7d3a   
+4  Ornithorhynchus anatinus  1aad7125-c6c0-4557-b9a2-112c03ac6709   
+5  Ornithorhynchus anatinus  792a93d4-6436-4222-9a00-00cda0ec1f14   
+6  Ornithorhynchus anatinus  66904cee-f8ca-4e3a-b7d5-d738f4bd0978   
+7  Ornithorhynchus anatinus  dfdbd258-d90a-484b-af19-2070705f166c   
+8  Ornithorhynchus anatinus  7424399a-f327-4ea1-9ffa-aa7a2b69f82b   
+9  Ornithorhynchus anatinus  cee7bb9f-6b2e-4c47-8ba8-c9a3bdf92fa0   
 
-              eventDate occurrenceStatus multimedia  \
-0  2020-09-26T17:39:00Z          PRESENT      Image   
-1  2020-09-04T18:28:00Z          PRESENT      Image   
-2  2020-08-30T18:37:43Z          PRESENT      Image   
-3  2020-08-30T18:35:00Z          PRESENT      Image   
-4  2020-09-08T17:26:47Z          PRESENT      Image   
-5  2020-08-13T00:00:00Z          PRESENT      Image   
-6  2020-10-12T17:20:00Z          PRESENT      Image   
-7  2020-10-12T17:20:00Z          PRESENT      Image   
-8  2020-01-17T07:09:00Z          PRESENT      Image   
-9  2020-01-17T07:09:00Z          PRESENT      Image   
+              dataResourceName  decimalLatitude multimedia  \
+0        iNaturalist Australia       -30.298183      Image   
+1        iNaturalist Australia       -28.678673      Image   
+2        iNaturalist Australia       -30.298361      Image   
+3        iNaturalist Australia       -30.297841      Image   
+4        iNaturalist Australia       -30.300649      Image   
+5        iNaturalist Australia       -30.311448      Image   
+6  Earth Guardians Weekly Feed       -28.213785      Image   
+7  Earth Guardians Weekly Feed       -28.213785      Image   
+8        iNaturalist Australia       -28.661653      Image   
+9        iNaturalist Australia       -28.661653      Image   
 
-                                 images  sounds  \
-0  14374712-1c37-4e2d-af28-4572f64e7d3a     NaN   
-1  40aadbde-3918-4bba-9dc9-13fa1da3809b     NaN   
-2  1aad7125-c6c0-4557-b9a2-112c03ac6709     NaN   
-3  09efd0a0-aa51-4d00-80f9-4e78e19aa89e     NaN   
-4  792a93d4-6436-4222-9a00-00cda0ec1f14     NaN   
-5  393df479-5fbb-464e-82ed-4d6fd19dd863     NaN   
-6  7424399a-f327-4ea1-9ffa-aa7a2b69f82b     NaN   
-7  cee7bb9f-6b2e-4c47-8ba8-c9a3bdf92fa0     NaN   
-8  66904cee-f8ca-4e3a-b7d5-d738f4bd0978     NaN   
-9  dfdbd258-d90a-484b-af19-2070705f166c     NaN   
+                                      taxonConceptID  sounds videos  \
+0  https://biodiversity.org.au/afd/taxa/ac61fd14-...     NaN    NaN   
+1  https://biodiversity.org.au/afd/taxa/ac61fd14-...     NaN    NaN   
+2  https://biodiversity.org.au/afd/taxa/ac61fd14-...     NaN    NaN   
+3  https://biodiversity.org.au/afd/taxa/ac61fd14-...     NaN    NaN   
+4  https://biodiversity.org.au/afd/taxa/ac61fd14-...     NaN    NaN   
+5  https://biodiversity.org.au/afd/taxa/ac61fd14-...     NaN    NaN   
+6  https://biodiversity.org.au/afd/taxa/ac61fd14-...     NaN    NaN   
+7  https://biodiversity.org.au/afd/taxa/ac61fd14-...     NaN    NaN   
+8  https://biodiversity.org.au/afd/taxa/ac61fd14-...     NaN    NaN   
+9  https://biodiversity.org.au/afd/taxa/ac61fd14-...     NaN    NaN   
 
-                                      taxonConceptID  \
-0  https://biodiversity.org.au/afd/taxa/ac61fd14-...   
-1  https://biodiversity.org.au/afd/taxa/ac61fd14-...   
-2  https://biodiversity.org.au/afd/taxa/ac61fd14-...   
-3  https://biodiversity.org.au/afd/taxa/ac61fd14-...   
-4  https://biodiversity.org.au/afd/taxa/ac61fd14-...   
-5  https://biodiversity.org.au/afd/taxa/ac61fd14-...   
-6  https://biodiversity.org.au/afd/taxa/ac61fd14-...   
-7  https://biodiversity.org.au/afd/taxa/ac61fd14-...   
-8  https://biodiversity.org.au/afd/taxa/ac61fd14-...   
-9  https://biodiversity.org.au/afd/taxa/ac61fd14-...   
+                               recordID             eventDate  \
+0  dd885218-bdb9-404a-8441-e5cd329f6605  2020-09-04T18:28:00Z   
+1  12d8c7f9-9d66-4312-9245-87a0a1021557  2020-08-13T00:00:00Z   
+2  42912016-2409-4125-a61f-13ffd4c32fcb  2020-08-30T18:35:00Z   
+3  072bc4f0-7581-44c6-b0ec-e3fe58d251fc  2020-09-26T17:39:00Z   
+4  72ad295f-112d-442f-83e1-fd385ef9163a  2020-08-30T18:37:43Z   
+5  6882dfe3-5295-493d-a005-66f8392e9d5b  2020-09-08T17:26:47Z   
+6  808b0c19-9616-45f1-994e-e3b33fc32836  2020-01-17T07:09:00Z   
+7  808b0c19-9616-45f1-994e-e3b33fc32836  2020-01-17T07:09:00Z   
+8  2a701513-b21d-4baa-bac4-5e6a3a65252b  2020-10-12T17:20:00Z   
+9  2a701513-b21d-4baa-bac4-5e6a3a65252b  2020-10-12T17:20:00Z   
 
-                               recordID             dataResourceName videos  \
-0  072bc4f0-7581-44c6-b0ec-e3fe58d251fc        iNaturalist Australia    NaN   
-1  dd885218-bdb9-404a-8441-e5cd329f6605        iNaturalist Australia    NaN   
-2  72ad295f-112d-442f-83e1-fd385ef9163a        iNaturalist Australia    NaN   
-3  42912016-2409-4125-a61f-13ffd4c32fcb        iNaturalist Australia    NaN   
-4  6882dfe3-5295-493d-a005-66f8392e9d5b        iNaturalist Australia    NaN   
-5  12d8c7f9-9d66-4312-9245-87a0a1021557        iNaturalist Australia    NaN   
-6  2a701513-b21d-4baa-bac4-5e6a3a65252b        iNaturalist Australia    NaN   
-7  2a701513-b21d-4baa-bac4-5e6a3a65252b        iNaturalist Australia    NaN   
-8  808b0c19-9616-45f1-994e-e3b33fc32836  Earth Guardians Weekly Feed    NaN   
-9  808b0c19-9616-45f1-994e-e3b33fc32836  Earth Guardians Weekly Feed    NaN   
+   decimalLongitude occurrenceStatus       creator  \
+0        153.005912          PRESENT  Brett Vercoe   
+1        153.297699          PRESENT  julespetroff   
+2        153.007479          PRESENT  Brett Vercoe   
+3        153.005873          PRESENT  Brett Vercoe   
+4        153.006628          PRESENT  Brett Vercoe   
+5        153.015910          PRESENT  kerrycameron   
+6        153.386929          PRESENT                 
+7        153.386929          PRESENT                 
+8        153.300439          PRESENT  julespetroff   
+9        153.300439          PRESENT  julespetroff   
 
-        creator                                         license    mimeType  \
-0  Brett Vercoe  http://creativecommons.org/licenses/by-nc/4.0/  image/jpeg   
-1  Brett Vercoe  http://creativecommons.org/licenses/by-nc/4.0/  image/jpeg   
-2  Brett Vercoe  http://creativecommons.org/licenses/by-nc/4.0/  image/jpeg   
-3  Brett Vercoe  http://creativecommons.org/licenses/by-nc/4.0/  image/jpeg   
-4  kerrycameron  http://creativecommons.org/licenses/by-nc/4.0/  image/jpeg   
-5  julespetroff  http://creativecommons.org/licenses/by-nc/4.0/  image/jpeg   
-6  julespetroff  http://creativecommons.org/licenses/by-nc/4.0/  image/jpeg   
-7  julespetroff  http://creativecommons.org/licenses/by-nc/4.0/  image/jpeg   
-8                                                                image/jpeg   
-9                                                                image/jpeg   
+                                          license    mimeType  width  height  \
+0  http://creativecommons.org/licenses/by-nc/4.0/  image/jpeg   2048    1365   
+1  http://creativecommons.org/licenses/by-nc/4.0/  image/jpeg    638     426   
+2  http://creativecommons.org/licenses/by-nc/4.0/  image/jpeg   2048    1238   
+3  http://creativecommons.org/licenses/by-nc/4.0/  image/jpeg   2048    1365   
+4  http://creativecommons.org/licenses/by-nc/4.0/  image/jpeg   1365    2048   
+5  http://creativecommons.org/licenses/by-nc/4.0/  image/jpeg    927     701   
+6                                                  image/jpeg   2988    5312   
+7                                                  image/jpeg   2988    5312   
+8  http://creativecommons.org/licenses/by-nc/4.0/  image/jpeg    713     401   
+9  http://creativecommons.org/licenses/by-nc/4.0/  image/jpeg    661     500   
 
-   width  height                                           imageUrl  
-0   2048    1365  https://images.ala.org.au/store/a/3/d/7/143747...  
-1   2048    1365  https://images.ala.org.au/store/b/9/0/8/40aadb...  
-2   1365    2048  https://images.ala.org.au/store/9/0/7/6/1aad71...  
-3   2048    1238  https://images.ala.org.au/store/e/9/8/a/09efd0...  
-4    927     701  https://images.ala.org.au/store/4/1/f/1/792a93...  
-5    638     426  https://images.ala.org.au/store/3/6/8/d/393df4...  
-6    713     401  https://images.ala.org.au/store/b/2/8/f/742439...  
-7    661     500  https://images.ala.org.au/store/0/a/f/2/cee7bb...  
-8   2988    5312  https://images.ala.org.au/store/8/7/9/0/66904c...  
-9   2988    5312  https://images.ala.org.au/store/c/6/6/1/dfdbd2...
+                                            imageUrl  
+0  https://images.ala.org.au/store/b/9/0/8/40aadb...  
+1  https://images.ala.org.au/store/3/6/8/d/393df4...  
+2  https://images.ala.org.au/store/e/9/8/a/09efd0...  
+3  https://images.ala.org.au/store/a/3/d/7/143747...  
+4  https://images.ala.org.au/store/9/0/7/6/1aad71...  
+5  https://images.ala.org.au/store/4/1/f/1/792a93...  
+6  https://images.ala.org.au/store/8/7/9/0/66904c...  
+7  https://images.ala.org.au/store/c/6/6/1/dfdbd2...  
+8  https://images.ala.org.au/store/b/2/8/f/742439...  
+9  https://images.ala.org.au/store/0/a/f/2/cee7bb...
 </pre></div>
 </div>
 </dd></dl>
@@ -658,22 +652,18 @@ Default is set to <code class="docutils literal notranslate"><span class="pre">&
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="kn">import</span><span class="w"> </span><span class="nn">galah</span></span>
 <span class="prompt1"><span class="n">galah</span><span class="o">.</span><span class="n">galah_config</span><span class="p">(</span><span class="n">atlas</span><span class="o">=</span><span class="s2">&quot;Australia&quot;</span><span class="p">,</span><span class="n">email</span><span class="o">=</span><span class="s2">&quot;your-email@example.com&quot;</span><span class="p">)</span></span>
 <span class="prompt1"><span class="n">galah</span><span class="o">.</span><span class="n">atlas_occurrences</span><span class="p">(</span><span class="n">taxa</span><span class="o">=</span><span class="s2">&quot;Vulpes vulpes&quot;</span><span class="p">,</span><span class="n">filters</span><span class="o">=</span><span class="s2">&quot;year=2023&quot;</span><span class="p">)</span></span>
-</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>atlas in galah_config: Australia
-atlas in galah_config again: Australia
-[23]
-[17]
-                                   recordID scientificName  \
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>                                   recordID scientificName  \
 0      0000b436-0613-4991-839a-14b57e573bc9  Vulpes vulpes   
 1      00010f5d-f8fd-4546-be65-3a1c954e85aa  Vulpes vulpes   
 2      000a75de-419e-4ad4-bda5-85ba4b552837  Vulpes vulpes   
 3      001355be-9407-4911-950c-625b7ae3d340  Vulpes vulpes   
 4      0018cc1a-7104-4044-b87d-717e27cba27e  Vulpes vulpes   
 ...                                     ...            ...   
-10530  ffe44ebf-dc5b-4509-98ee-3ae22057a81a  Vulpes vulpes   
-10531  ffe5d7b2-5061-450d-af02-0012b0fc4d32  Vulpes vulpes   
-10532  ffebb23c-58c3-4bf8-8f5c-b49f890154c9  Vulpes vulpes   
-10533  fff5636e-01b7-4b62-a21b-24af14390e77  Vulpes vulpes   
-10534  fff87988-89de-4533-837c-61f6cf8a82e6  Vulpes vulpes   
+10729  ffe44ebf-dc5b-4509-98ee-3ae22057a81a  Vulpes vulpes   
+10730  ffe5d7b2-5061-450d-af02-0012b0fc4d32  Vulpes vulpes   
+10731  ffebb23c-58c3-4bf8-8f5c-b49f890154c9  Vulpes vulpes   
+10732  fff5636e-01b7-4b62-a21b-24af14390e77  Vulpes vulpes   
+10733  fff87988-89de-4533-837c-61f6cf8a82e6  Vulpes vulpes   
 
                                           taxonConceptID  decimalLatitude  \
 0      https://biodiversity.org.au/afd/taxa/2869ce8a-...       -34.892754   
@@ -682,11 +672,11 @@ atlas in galah_config again: Australia
 3      https://biodiversity.org.au/afd/taxa/2869ce8a-...       -33.367572   
 4      https://biodiversity.org.au/afd/taxa/2869ce8a-...       -35.599890   
 ...                                                  ...              ...   
-10530  https://biodiversity.org.au/afd/taxa/2869ce8a-...       -37.753096   
-10531  https://biodiversity.org.au/afd/taxa/2869ce8a-...       -38.846330   
-10532  https://biodiversity.org.au/afd/taxa/2869ce8a-...       -33.834716   
-10533  https://biodiversity.org.au/afd/taxa/2869ce8a-...       -33.803655   
-10534  https://biodiversity.org.au/afd/taxa/2869ce8a-...       -37.388981   
+10729  https://biodiversity.org.au/afd/taxa/2869ce8a-...       -37.753096   
+10730  https://biodiversity.org.au/afd/taxa/2869ce8a-...       -38.846330   
+10731  https://biodiversity.org.au/afd/taxa/2869ce8a-...       -33.834716   
+10732  https://biodiversity.org.au/afd/taxa/2869ce8a-...       -33.803655   
+10733  https://biodiversity.org.au/afd/taxa/2869ce8a-...       -37.388981   
 
        decimalLongitude             eventDate              dataResourceName  \
 0            138.557344  2023-12-07T00:00:00Z                     FeralScan   
@@ -695,11 +685,11 @@ atlas in galah_config again: Australia
 3            151.382845  2023-08-29T00:00:00Z                     FeralScan   
 4            138.332510  2023-08-07T00:00:00Z                      SA Fauna   
 ...                 ...                   ...                           ...   
-10530        144.935377  2023-11-22T00:00:00Z                     FeralScan   
-10531        146.187360  2023-03-21T00:00:00Z  Victorian Biodiversity Atlas   
-10532        151.141071  2023-02-20T00:00:00Z                     FeralScan   
-10533        151.153854  2023-11-09T00:00:00Z                     FeralScan   
-10534        144.266958  2023-01-05T15:16:00Z         iNaturalist Australia   
+10729        144.935377  2023-11-22T00:00:00Z                     FeralScan   
+10730        146.187360  2023-03-21T00:00:00Z  Victorian Biodiversity Atlas   
+10731        151.141071  2023-02-20T00:00:00Z                     FeralScan   
+10732        151.153854  2023-11-09T00:00:00Z                     FeralScan   
+10733        144.266958  2023-01-05T15:16:00Z         iNaturalist Australia   
 
       occurrenceStatus  
 0              PRESENT  
@@ -708,37 +698,33 @@ atlas in galah_config again: Australia
 3              PRESENT  
 4              PRESENT  
 ...                ...  
-10530          PRESENT  
-10531          PRESENT  
-10532          PRESENT  
-10533          PRESENT  
-10534          PRESENT  
+10729          PRESENT  
+10730          PRESENT  
+10731          PRESENT  
+10732          PRESENT  
+10733          PRESENT  
 
-[10535 rows x 8 columns]
+[10734 rows x 8 columns]
 </pre></div>
 </div>
 <p>Download records of Vulpes vulpes in 2023, returning only <code class="docutils literal notranslate"><span class="pre">eventDate</span></code> field</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="kn">import</span><span class="w"> </span><span class="nn">galah</span></span>
 <span class="prompt1"><span class="n">galah</span><span class="o">.</span><span class="n">galah_config</span><span class="p">(</span><span class="n">atlas</span><span class="o">=</span><span class="s2">&quot;Australia&quot;</span><span class="p">,</span><span class="n">email</span><span class="o">=</span><span class="s2">&quot;your-email@example.com&quot;</span><span class="p">)</span></span>
 <span class="prompt1"><span class="n">galah</span><span class="o">.</span><span class="n">atlas_occurrences</span><span class="p">(</span><span class="n">taxa</span><span class="o">=</span><span class="s2">&quot;Vulpes vulpes&quot;</span><span class="p">,</span><span class="n">filters</span><span class="o">=</span><span class="s2">&quot;year=2023&quot;</span><span class="p">,</span><span class="n">fields</span><span class="o">=</span><span class="s2">&quot;eventDate&quot;</span><span class="p">)</span></span>
-</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>atlas in galah_config: Australia
-atlas in galah_config again: Australia
-[23]
-[17]
-                  eventDate
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>                  eventDate
 0                       NaN
 1                       NaN
 2                       NaN
 3                       NaN
 4                       NaN
 ...                     ...
-10530  2023-12-31T00:00:00Z
-10531  2023-12-31T00:00:00Z
-10532  2023-12-31T00:00:00Z
-10533  2023-12-31T14:01:00Z
-10534  2023-12-31T16:56:00Z
+10729  2023-12-31T00:00:00Z
+10730  2023-12-31T00:00:00Z
+10731  2023-12-31T00:00:00Z
+10732  2023-12-31T14:01:00Z
+10733  2023-12-31T16:56:00Z
 
-[10535 rows x 1 columns]
+[10734 rows x 1 columns]
 </pre></div>
 </div>
 </dd></dl>
@@ -771,8 +757,7 @@ This function returns a <code class="docutils literal notranslate"><span class="
 </dl>
 <p class="rubric">Examples</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="n">galah</span><span class="o">.</span><span class="n">atlas_species</span><span class="p">(</span><span class="n">taxa</span><span class="o">=</span><span class="s2">&quot;Heleioporus&quot;</span><span class="p">)</span></span>
-</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>[17]
-                                             Species  \
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>                                             Species  \
 0  https://biodiversity.org.au/afd/taxa/4437371b-...   
 1  https://biodiversity.org.au/afd/taxa/d497c571-...   
 2  https://biodiversity.org.au/afd/taxa/f0d1bb06-...   
@@ -998,8 +983,7 @@ clades) prior to downloading data.</p>
 <p>Get taxonomic identifiers for “Vulpes vulpes”</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="kn">import</span><span class="w"> </span><span class="nn">galah</span></span>
 <span class="prompt1"><span class="n">galah</span><span class="o">.</span><span class="n">search_taxa</span><span class="p">(</span><span class="n">taxa</span><span class="o">=</span><span class="s2">&quot;Vulpes vulpes&quot;</span><span class="p">)</span></span>
-</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>[17]
-  scientificName scientificNameAuthorship  ...     issues vernacularName
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>  scientificName scientificNameAuthorship  ...     issues vernacularName
 0  Vulpes vulpes           Linnaeus, 1758  ...  [noIssue]            Fox
 
 [1 rows x 14 columns]
@@ -1008,8 +992,7 @@ clades) prior to downloading data.</p>
 <p>Get the species name from a taxonomic identifier</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="kn">import</span><span class="w"> </span><span class="nn">galah</span></span>
 <span class="prompt1"><span class="n">galah</span><span class="o">.</span><span class="n">search_taxa</span><span class="p">(</span><span class="n">identifiers</span><span class="o">=</span><span class="s2">&quot;https://id.biodiversity.org.au/node/apni/2914510&quot;</span><span class="p">)</span></span>
-</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>[13]
-        scientificName scientificNameAuthorship  \
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>        scientificName scientificNameAuthorship  \
 0  Eucalyptus blakelyi                   Maiden   
 
                                      taxonConceptID     rank     matchType  \
@@ -1025,8 +1008,7 @@ clades) prior to downloading data.</p>
 <p>Search taxonomic levels by using the key word “specificEpithet”</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="kn">import</span><span class="w"> </span><span class="nn">galah</span></span>
 <span class="prompt1"><span class="n">galah</span><span class="o">.</span><span class="n">search_taxa</span><span class="p">(</span><span class="n">specific_epithet</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;class=aves&quot;</span><span class="p">,</span><span class="s2">&quot;family=pardalotidae&quot;</span><span class="p">,</span><span class="s2">&quot;genus=pardalotus&quot;</span><span class="p">,</span><span class="s2">&quot;specificEpithet=punctatus&quot;</span><span class="p">])</span></span>
-</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>[16]
-                      scientificName scientificNameAuthorship  \
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>                      scientificName scientificNameAuthorship  \
 0  Pardalotus (Pardalotus) punctatus             (Shaw, 1792)   
 
                                       taxonConceptID     rank   matchType  \
@@ -1042,8 +1024,7 @@ clades) prior to downloading data.</p>
 <p>Search taxonomic levels by using the key word “scientificName”</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="kn">import</span><span class="w"> </span><span class="nn">galah</span></span>
 <span class="prompt1"><span class="n">galah</span><span class="o">.</span><span class="n">search_taxa</span><span class="p">(</span><span class="n">scientific_name</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;family&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;pardalotidae&quot;</span><span class="p">,</span><span class="s2">&quot;maluridae&quot;</span><span class="p">],</span><span class="s2">&quot;scientificName&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;pardolatus striatus&quot;</span><span class="p">,</span><span class="s2">&quot;malurus cyaneus&quot;</span><span class="p">]})</span></span>
-</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>[16]
-                       scientificName scientificNameAuthorship  \
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>                       scientificName scientificNameAuthorship  \
 0  Pardalotus (Pardalotinus) striatus           (Gmelin, 1789)   
 1           Malurus (Malurus) cyaneus            (Ellis, 1782)   
 

@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Spatial filtering &#8212; Galah 0.13.7 documentation</title>
+    <title>Spatial filtering &#8212; Galah 0.14.0 documentation</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../_static/documentation_options.js?v=db906b65"></script>
+    <script src="../_static/documentation_options.js?v=9e420a66"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/design-tabs.js?v=f930bc37"></script>
@@ -53,7 +53,7 @@
     <link rel="prev" title="Taxonomic Filtering" href="Taxonomic_Filtering.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.13.7" />
+  <meta name="docsearch:version" content="0.14.0" />
   </head>
   
   
@@ -119,8 +119,8 @@
       
     
     
-    <img src="../_static/logo.png" class="logo__image only-light" alt="Galah 0.13.7 documentation - Home"/>
-    <img src="../_static/logo.png" class="logo__image only-dark pst-js-only" alt="Galah 0.13.7 documentation - Home"/>
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Galah 0.14.0 documentation - Home"/>
+    <img src="../_static/logo.png" class="logo__image only-dark pst-js-only" alt="Galah 0.14.0 documentation - Home"/>
   
   
 </a></div>
@@ -441,11 +441,7 @@ span.prompt1:before {
 </style><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span><span class="w"> </span><span class="nn">galah</span></span>
 <span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">galah_config</span><span class="p">(</span><span class="n">email</span><span class="o">=</span><span class="s2">&quot;your-email-here&quot;</span><span class="p">)</span></span>
 <span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">search_all</span><span class="p">(</span><span class="n">fields</span><span class="o">=</span><span class="s2">&quot;wetlands&quot;</span><span class="p">)</span></span>
-</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>atlas in galah_config: Australia
-atlas in galah_config again: Australia
-[22]
-[25]
-        id                                                                                              description    type link
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>        id                                                                                              description    type link
 0  cl10829                                                     Murray-Darling Basin Wetlands wetlands_mdb_name_only  layers     
 1  cl10831                                              Murray-Darling Basin Wetland Groups wetlands_mdb_group_only  layers     
 2    cl901                                          Directory of Important Wetlands Directory of Important Wetlands  layers     
@@ -458,9 +454,7 @@ atlas in galah_config again: Australia
 <p>Our search identifies that layer <code class="docutils literal notranslate"><span class="pre">cl901</span></code> seems to match what we are looking for. We can then either view all
 possible values in the field with <code class="docutils literal notranslate"><span class="pre">galah.show_values()</span></code>, or use <code class="docutils literal notranslate"><span class="pre">galah.search_values()</span></code> again for our particular field.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">search_values</span><span class="p">(</span><span class="n">field</span><span class="o">=</span><span class="s2">&quot;cl901&quot;</span><span class="p">,</span><span class="n">value</span><span class="o">=</span><span class="s2">&quot;coorong&quot;</span><span class="p">)</span></span>
-</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>atlas in galah_config: Australia
-atlas in galah_config again: Australia
-   field                                     category
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>   field                                     category
 0  cl901  The Coorong, Lake Alexandrina &amp; Lake Albert
 </pre></div>
 </div>
@@ -471,11 +465,7 @@ as follows:</p>
 <span class="prompt1"><span class="o">...</span>   <span class="n">filters</span> <span class="o">=</span> <span class="s2">&quot;cl901=The Coorong, Lake Alexandrina &amp; Lake Albert&quot;</span></span>
 <span class="prompt1"><span class="o">...</span> <span class="p">)</span></span>
 <span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">avocets</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span></span>
-</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>atlas in galah_config: Australia
-atlas in galah_config again: Australia
-[23]
-[17]
-                               recordID                 scientificName                                                             taxonConceptID  decimalLatitude  decimalLongitude             eventDate             dataResourceName occurrenceStatus
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>                               recordID                 scientificName                                                             taxonConceptID  decimalLatitude  decimalLongitude             eventDate             dataResourceName occurrenceStatus
 0  00630f58-ee78-4f69-ba39-718b0a1c3356  Recurvirostra novaehollandiae  https://biodiversity.org.au/afd/taxa/c69e7308-527a-429d-a80d-143bd20b5100        -35.59293         139.02180  2008-11-18T00:00:00Z                     SA Fauna          PRESENT
 1  0071444e-ddf2-45dc-9a10-c6399686e306  Recurvirostra novaehollandiae  https://biodiversity.org.au/afd/taxa/c69e7308-527a-429d-a80d-143bd20b5100        -35.57719         138.99233  2008-01-01T00:00:00Z                     SA Fauna          PRESENT
 2  008a2e6c-26b4-4f4e-a428-b0330db53466  Recurvirostra novaehollandiae  https://biodiversity.org.au/afd/taxa/c69e7308-527a-429d-a80d-143bd20b5100        -35.52831         138.82804  2017-11-19T17:15:00Z              eBird Australia          PRESENT
@@ -503,8 +493,7 @@ have been recorded in King George Square.</p>
 <span class="prompt1"><span class="o">...</span>   <span class="n">fields</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;decimalLatitude&quot;</span><span class="p">,</span> <span class="s2">&quot;decimalLongitude&quot;</span><span class="p">,</span> <span class="s2">&quot;eventDate&quot;</span><span class="p">,</span> <span class="s2">&quot;scientificName&quot;</span><span class="p">,</span> <span class="s2">&quot;vernacularName&quot;</span><span class="p">]</span></span>
 <span class="prompt1"><span class="o">...</span> <span class="p">)</span></span>
 <span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">species_king_george_square</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span></span>
-</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>[23]
-Warning: A Coordinate Reference System (CRS) is not detected.  Ensure a CRS is specified as an argument, or is part of the variable (i.e. GeoDataFrame.crs)
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Warning: A Coordinate Reference System (CRS) is not detected.  Ensure a CRS is specified as an argument, or is part of the variable (i.e. GeoDataFrame.crs)
 Warning: The Coordinate Reference System of all atlases is EPSG:4326 (WGS84).  The results from this shape may be incorrect, as its CRS is None
     decimalLatitude  decimalLongitude             eventDate                     scientificName         vernacularName
 0        -27.468724        153.024136  2026-04-15T14:28:00Z              Threskiornis moluccus  Australian White Ibis
@@ -520,30 +509,29 @@ Warning: The Coordinate Reference System of all atlases is EPSG:4326 (WGS84).  T
 10       -27.468529        153.023898  2025-03-19T07:01:00Z  Manorina (Myzantha) melanocephala            Noisy Miner
 11       -27.468525        153.024083  2026-06-14T17:10:40Z                       BLATTELLIDAE                    NaN
 12       -27.468519        153.024272  2026-04-17T14:18:27Z              Threskiornis moluccus  Australian White Ibis
-13       -27.468511        153.023905  2026-08-05T16:31:00Z                           Dianella           Flax Lillies
-14       -27.468510        153.023821  2023-04-08T17:49:00Z                 Entomyzon cyanotis  Blue-faced Honeyeater
-15       -27.468506        153.023926  2026-01-02T16:50:39Z              Threskiornis moluccus  Australian White Ibis
-16       -27.468464        153.023703  2025-05-30T07:49:00Z                          CRAMBIDAE                    NaN
-17       -27.468419        153.023700  2025-05-31T08:08:00Z                 Achyra affinitalis             Grass Moth
-18       -27.468418        153.024140  2022-08-30T11:29:00Z              Threskiornis moluccus  Australian White Ibis
-19       -27.468392        153.023888  2026-08-21T23:39:11Z     Burhinus (Burhinus) grallarius      Bush Stone-curlew
-20       -27.468364        153.024121  2024-08-28T10:31:54Z                           Vitellus                    NaN
-21       -27.468326        153.024077  2024-10-29T15:38:00Z          Hirundo (Hirundo) neoxena        Welcome Swallow
-22       -27.468326        153.024077  2024-10-29T15:38:00Z              Threskiornis moluccus  Australian White Ibis
-23       -27.468326        153.024077  2025-04-09T16:43:00Z              Threskiornis moluccus  Australian White Ibis
-24       -27.468326        153.024077  2022-07-24T14:43:00Z              Threskiornis moluccus  Australian White Ibis
-25       -27.468326        153.024077  2024-10-29T15:38:00Z            Columba (Columba) livia              Rock Dove
-26       -27.468320        153.024292  2025-06-21T10:04:29Z              Threskiornis moluccus  Australian White Ibis
-27       -27.468308        153.024097  2024-10-13T14:34:00Z              Threskiornis moluccus  Australian White Ibis
-28       -27.468295        153.023967  2024-10-13T14:35:00Z                 Gymnorhina tibicen      Australian Magpie
-29       -27.468294        153.023907  2024-11-11T13:56:00Z              Threskiornis moluccus  Australian White Ibis
-30       -27.468262        153.023941  2025-03-19T06:55:00Z              Intellagama lesueurii           Water Dragon
-31       -27.468195        153.024169  2025-06-26T14:57:21Z                 Gymnorhina tibicen      Australian Magpie
-32       -27.468175        153.024047  2026-08-11T09:01:48Z              Threskiornis moluccus  Australian White Ibis
-33       -27.468167        153.024047  2024-07-23T10:00:53Z              Threskiornis moluccus  Australian White Ibis
-34       -27.468155        153.024011  2024-04-26T12:07:00Z              Threskiornis moluccus  Australian White Ibis
-35       -27.468092        153.024049  2025-07-09T13:34:00Z              Threskiornis moluccus  Australian White Ibis
-36       -27.467989        153.024131  2025-08-15T09:23:58Z              Threskiornis moluccus  Australian White Ibis
+13       -27.468510        153.023821  2023-04-08T17:49:00Z                 Entomyzon cyanotis  Blue-faced Honeyeater
+14       -27.468506        153.023926  2026-01-02T16:50:39Z              Threskiornis moluccus  Australian White Ibis
+15       -27.468464        153.023703  2025-05-30T07:49:00Z                          CRAMBIDAE                    NaN
+16       -27.468419        153.023700  2025-05-31T08:08:00Z                 Achyra affinitalis             Grass Moth
+17       -27.468418        153.024140  2022-08-30T11:29:00Z              Threskiornis moluccus  Australian White Ibis
+18       -27.468392        153.023888  2026-08-21T23:39:11Z     Burhinus (Burhinus) grallarius      Bush Stone-curlew
+19       -27.468364        153.024121  2024-08-28T10:31:54Z                           Vitellus                    NaN
+20       -27.468326        153.024077  2024-10-29T15:38:00Z          Hirundo (Hirundo) neoxena        Welcome Swallow
+21       -27.468326        153.024077  2022-07-24T14:43:00Z              Threskiornis moluccus  Australian White Ibis
+22       -27.468326        153.024077  2024-10-29T15:38:00Z            Columba (Columba) livia              Rock Dove
+23       -27.468326        153.024077  2024-10-29T15:38:00Z              Threskiornis moluccus  Australian White Ibis
+24       -27.468326        153.024077  2025-04-09T16:43:00Z              Threskiornis moluccus  Australian White Ibis
+25       -27.468320        153.024292  2025-06-21T10:04:29Z              Threskiornis moluccus  Australian White Ibis
+26       -27.468308        153.024097  2024-10-13T14:34:00Z              Threskiornis moluccus  Australian White Ibis
+27       -27.468295        153.023967  2024-10-13T14:35:00Z                 Gymnorhina tibicen      Australian Magpie
+28       -27.468294        153.023907  2024-11-11T13:56:00Z              Threskiornis moluccus  Australian White Ibis
+29       -27.468262        153.023941  2025-03-19T06:55:00Z              Intellagama lesueurii           Water Dragon
+30       -27.468195        153.024169  2025-06-26T14:57:21Z                 Gymnorhina tibicen      Australian Magpie
+31       -27.468175        153.024047  2026-08-11T09:01:48Z              Threskiornis moluccus  Australian White Ibis
+32       -27.468167        153.024047  2024-07-23T10:00:53Z              Threskiornis moluccus  Australian White Ibis
+33       -27.468155        153.024011  2024-04-26T12:07:00Z              Threskiornis moluccus  Australian White Ibis
+34       -27.468092        153.024049  2025-07-09T13:34:00Z              Threskiornis moluccus  Australian White Ibis
+35       -27.467989        153.024131  2025-08-15T09:23:58Z              Threskiornis moluccus  Australian White Ibis
 </pre></div>
 </div>
 <p>This argument can be provided as its string; however, we show you the above to give you an idea of what
@@ -567,9 +555,7 @@ shapefile from the above link, and perform our filtering and summarising as foll
 <span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">parks</span><span class="o">.</span><span class="n">columns</span></span>
 <span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">brisbane_parks</span> <span class="o">=</span> <span class="n">parks</span><span class="p">[</span><span class="n">parks</span><span class="p">[</span><span class="s2">&quot;POST_CODE&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;4075&#39;</span><span class="p">]</span></span>
 <span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">brisbane_parks</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span></span>
-</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>atlas in galah_config: Australia
-atlas in galah_config again: Australia
-   OBJECTID  ...                                           geometry
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>   OBJECTID  ...                                           geometry
 0        64  ...  POLYGON ((152.99236 -27.53098, 152.99118 -27.5...
 1        65  ...  POLYGON ((152.99137 -27.5309, 152.9913 -27.530...
 2       102  ...  POLYGON ((152.98534 -27.57025, 152.98534 -27.5...
@@ -589,9 +575,7 @@ atlas in galah_config again: Australia
 <span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span><span class="w"> </span><span class="nn">shapely.ops</span><span class="w"> </span><span class="kn">import</span> <span class="n">unary_union</span></span>
 <span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">brisbane_parks_all</span> <span class="o">=</span> <span class="n">gpd</span><span class="o">.</span><span class="n">GeoSeries</span><span class="p">(</span><span class="n">unary_union</span><span class="p">(</span><span class="n">brisbane_parks</span><span class="p">[</span><span class="s2">&quot;geometry&quot;</span><span class="p">]))</span></span>
 <span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">brisbane_parks_bbox</span> <span class="o">=</span> <span class="n">brisbane_parks_all</span><span class="o">.</span><span class="n">bounds</span></span>
-</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>atlas in galah_config: Australia
-atlas in galah_config again: Australia
-         minx       miny        maxx       maxy
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>         minx       miny        maxx       maxy
 0  152.963302 -27.577386  152.996692 -27.516073
 </pre></div>
 </div>
@@ -616,13 +600,7 @@ atlas in galah_config again: Australia
 <span class="prompt1"><span class="o">...</span>     <span class="n">bbox</span><span class="o">=</span><span class="n">brisbane_parks_bbox</span></span>
 <span class="prompt1"><span class="o">...</span> <span class="p">)</span></span>
 <span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">lorikeet_brisbane</span></span>
-</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>atlas in galah_config: Australia
-atlas in galah_config again: Australia
-atlas in galah_config: Australia
-atlas in galah_config again: Australia
-[23]
-[17]
-Warning: A Coordinate Reference System (CRS) is not detected.  Ensure a CRS is specified as an argument, or is part of the variable (i.e. GeoDataFrame.crs)
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Warning: A Coordinate Reference System (CRS) is not detected.  Ensure a CRS is specified as an argument, or is part of the variable (i.e. GeoDataFrame.crs)
 Warning: The Coordinate Reference System of all atlases is EPSG:4326 (WGS84).  The results from this shape may be incorrect, as its CRS is None
                                  recordID  ... occurrenceStatus
 0    002d3038-fa16-4eab-aedb-d9db059c8d76  ...          PRESENT
@@ -655,13 +633,7 @@ Warning: The Coordinate Reference System of all atlases is EPSG:4326 (WGS84).  T
 <span class="prompt1"><span class="o">...</span>     <span class="n">brisbane_parks</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="s2">&quot;count&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">points</span><span class="p">)</span></span>
 <span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">brisbane_parks_counts</span> <span class="o">=</span> <span class="n">brisbane_parks</span><span class="p">[[</span><span class="s2">&quot;PARK_NAME&quot;</span><span class="p">,</span><span class="s2">&quot;count&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s2">&quot;count&quot;</span><span class="p">,</span><span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></span>
 <span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">brisbane_parks_counts</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span></span>
-</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>atlas in galah_config: Australia
-atlas in galah_config again: Australia
-atlas in galah_config: Australia
-atlas in galah_config again: Australia
-[23]
-[17]
-Warning: A Coordinate Reference System (CRS) is not detected.  Ensure a CRS is specified as an argument, or is part of the variable (i.e. GeoDataFrame.crs)
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Warning: A Coordinate Reference System (CRS) is not detected.  Ensure a CRS is specified as an argument, or is part of the variable (i.e. GeoDataFrame.crs)
 Warning: The Coordinate Reference System of all atlases is EPSG:4326 (WGS84).  The results from this shape may be incorrect, as its CRS is None
                         PARK_NAME  count
 0              SHERWOOD ARBORETUM     99
