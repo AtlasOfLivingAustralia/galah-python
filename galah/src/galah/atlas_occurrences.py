@@ -4,24 +4,17 @@ import time
 import zipfile
 
 import pandas as pd
-import requests
 from requests.auth import HTTPBasicAuth
 
 from .add_to_payload_functions import add_to_payload_ALA
-from .common_add_functions import (
-    add_extras_to_URL,
-    add_filters,
-    add_predicates,
-    add_spatial_shapes,
-    add_taxa,
-)
+from .common_add_functions import add_extras_to_URL, add_filters, add_predicates, add_spatial_shapes, add_taxa
 from .common_checks import check_string_list
 from .common_dictionaries import (
     ATLAS_OCCURRENCES_DOWNLOAD_ARGUMENTS,
     ATLAS_OCCURRENCES_ERROR_MESSAGES,
     ATLAS_SELECTIONS,
 )
-from .common_functions import print_if_verbose
+from .common_functions import check_for_http_error_code, print_if_verbose
 from .galah_config import get_api_url, get_config_values
 from .galah_select import galah_select
 from .show_all import show_all
@@ -176,9 +169,7 @@ def atlas_occurrences(
             raise ValueError("DOIs are only implemented for Australia and Spain.")
 
         # get URL
-        baseURL, method = get_api_url(
-            column1="called_by", column1value="doi_download", atlas=atlas
-        )
+        baseURL, method = get_api_url(column1="called_by", column1value="doi_download", atlas=atlas)
         doi_string = doi.split("/")[-1]
         doi_string = doi_string.split(".")[-1]
         URL = baseURL.replace("{doi_string}", doi_string)
@@ -187,7 +178,7 @@ def atlas_occurrences(
         print_if_verbose(verbose=verbose, headers=headers, URL=URL, method=method)
 
         # get data and return
-        response = requests.request(method=method, url=URL, timeout=timeout)
+        response = check_for_http_error_code(method=method, URL=URL, timeout=timeout, headers=headers)
         return pd.read_csv(
             zipfile.ZipFile(io.BytesIO(response.content)).open("data.csv"),
             sep=ATLAS_OCCURRENCES_DOWNLOAD_ARGUMENTS[atlas]["separator"],
@@ -227,9 +218,7 @@ def atlas_occurrences(
         URL = add_question_mark(baseURL)
 
         # GBIF takes predicates - initialise variable in case GBIF is their desired atlas
-        predicates = add_predicates(
-            predicates=[], filters=filters, occurrencesGBIF=True, taxa=taxa, atlas=atlas
-        )
+        predicates = add_predicates(predicates=[], filters=filters, occurrencesGBIF=True, taxa=taxa, atlas=atlas)
 
         # You cannot specify which data fields you want from GBIF, as far as I'm aware
         if fields is not None:
@@ -263,18 +252,11 @@ def atlas_occurrences(
         )
 
         # check to see if user wants the query URL
-        print_if_verbose(
-            verbose=verbose, headers=headers, URL=URL, method=method, payload=payload
-        )
+        print_if_verbose(verbose=verbose, headers=headers, URL=URL, method=method, payload=payload)
 
         # get response
-        response = requests.request(
-            method=method,
-            url=URL,
-            headers=headers,
-            auth=authentication,
-            data=payload,
-            timeout=timeout,
+        response = check_for_http_error_code(
+            method=method, URL=URL, timeout=timeout, headers=headers, auth=authentication, data=payload
         )
         job_number = response.text
 
@@ -321,17 +303,11 @@ def atlas_occurrences(
 
             # If no payload (i.e. no filters), then raise an error
             if payload is None:
-                raise ValueError(
-                    "You need to narrow down your query, as you cannot download all records from the ALA."
-                )
+                raise ValueError("You need to narrow down your query, as you cannot download all records from the ALA.")
 
             # create the query id
-            qid_URL, method2 = get_api_url(
-                column1="api_name", column1value="occurrences_qid", atlas=atlas
-            )
-            qid = requests.request(
-                method2, qid_URL, data=payload, headers=headers, timeout=timeout
-            )
+            qid_URL, method2 = get_api_url(column1="api_name", column1value="occurrences_qid", atlas=atlas)
+            qid = check_for_http_error_code(method=method2, URL=qid_URL, timeout=timeout, headers=headers, data=payload)
 
             # get URL for downloading occurrences
             baseURL, method = get_api_url(
@@ -343,7 +319,7 @@ def atlas_occurrences(
             # construct the URL
             URL = baseURL + "?fq=%28qid%3A" + qid.text + "%29"  # try adding quotes
             URL = add_fields(fields=fields, atlas=atlas, URL=URL)
-            URL += "&flimit=-1&dwcHeaders=true"  # True
+            URL += "&dwcHeaders=true"  # &flimit=-1
 
             # add the option to mint a DOI
             if mint_doi:
@@ -372,9 +348,7 @@ def atlas_occurrences(
             )
 
             # get data
-            response = requests.request(
-                method=method, url=URL, headers=headers, timeout=timeout
-            )
+            response = check_for_http_error_code(method=method, URL=URL, timeout=timeout, headers=headers)
 
         else:
 
@@ -437,7 +411,7 @@ def atlas_occurrences(
             # add other things to URL
             if URL[-1] != "&":
                 URL += "&"
-            URL += "flimit=-1&dwcHeaders=true"
+            URL += "dwcHeaders=true"  # flimit=-1&
 
             # add last things to URL
             if atlas in ["Australia", "ALA"]:
@@ -466,9 +440,7 @@ def atlas_occurrences(
             print_if_verbose(verbose=verbose, headers=headers, URL=URL, method=method)
 
             # get the request
-            response = requests.request(
-                method=method, url=URL, headers=headers, timeout=timeout
-            )
+            response = check_for_http_error_code(method=method, URL=URL, timeout=timeout, headers=headers)
 
         # Austria returns zipfile from URL; have to return it straight away
         if atlas in ["Austria"]:
@@ -508,9 +480,7 @@ def check_gbif_filters(atlas=None, filters=None):
     # check for Global atlas
     if atlas in ["Global", "GBIF"] and filters is not None:
         if "!=" in filters or "=!" in filters:
-            raise ValueError(
-                "The current iteration of GBIF and galah does not support != as an option."
-            )
+            raise ValueError("The current iteration of GBIF and galah does not support != as an option.")
 
 
 def add_question_mark(URL=None):
@@ -535,24 +505,16 @@ def get_data(
 ):
     """Returns the data from the download"""
 
-    # check to see if the user has gotten a 403 error
-    check_for_403_error(response=response, atlas=atlas)
-
     # check status of download
-    response_download = requests.get(
-        url=statusURL, headers=headers, auth=authentication, timeout=timeout
+    response_download = check_for_http_error_code(
+        method="GET", URL=statusURL, timeout=timeout, headers=headers, auth=authentication
     )
-    while (
-        response_download.json()["status"]
-        != ATLAS_OCCURRENCES_DOWNLOAD_ARGUMENTS[atlas]["finished_status"]
-    ):
+    while response_download.json()["status"] != ATLAS_OCCURRENCES_DOWNLOAD_ARGUMENTS[atlas]["finished_status"]:
         time.sleep(5)
-        response_download = requests.get(
-            url=statusURL, headers=headers, auth=authentication, timeout=timeout
+        response_download = check_for_http_error_code(
+            method="GET", URL=statusURL, timeout=timeout, headers=headers, auth=authentication
         )
-    zipURL = response_download.json()[
-        ATLAS_OCCURRENCES_DOWNLOAD_ARGUMENTS[atlas]["zipURL_arg"]
-    ]
+    zipURL = response_download.json()[ATLAS_OCCURRENCES_DOWNLOAD_ARGUMENTS[atlas]["zipURL_arg"]]
 
     # check to see if the user wants the zip URL
     print_if_verbose(verbose=verbose, headers=headers, URL=zipURL, method="GET")
@@ -561,7 +523,7 @@ def get_data(
     # if atlas in ["Kew"]:
     #     data = requests.get(zipURL, headers=headers, timeout=timeout) #, auth=basic_auth)
     # else:
-    data = requests.get(zipURL, headers=headers, timeout=timeout)  # try stream
+    data = check_for_http_error_code(method="GET", URL=zipURL, timeout=timeout, headers=headers)
 
     # print the doi if user has asked for a doi
     if mint_doi:
@@ -609,9 +571,7 @@ def add_fields(fields=None, atlas=None, URL=None):
 def check_for_Portugal(atlas=None):
     """Portugal atlas is not working; raise error to let user know"""
     if atlas in ["Portugal"]:
-        raise ValueError(
-            "We currently cannot get occurrences from the {} atlas.".format(atlas)
-        )
+        raise ValueError("We currently cannot get occurrences from the {} atlas.".format(atlas))
 
 
 def check_for_no_filters(var_list=None, atlas=None):

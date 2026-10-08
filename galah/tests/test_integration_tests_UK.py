@@ -1,9 +1,10 @@
 import os
 import shutil
 
-import galah
 import pytest
 import shapely
+
+import galah
 
 email_uk = "ala4r@ala.org.au"
 
@@ -103,9 +104,7 @@ def test_search_all_atlases_uk():
 def test_search_all_atlases_column_name_uk():
     galah.galah_config(atlas="United Kingdom", reason=10)
     total_show_all = galah.show_all(atlases=True)
-    total_search_all = galah.search_all(
-        atlases="United Kingdom", column_name="institution"
-    )
+    total_search_all = galah.search_all(atlases="United Kingdom", column_name="institution")
     assert total_search_all.shape[0] < total_show_all.shape[0]
 
 
@@ -293,9 +292,7 @@ def test_atlas_counts_taxa_same_filter_uk():
 
 def test_atlas_counts_taxa_filters_uk_total_group_by():
     galah.galah_config(atlas="United Kingdom", authenticate=False)
-    output = galah.atlas_counts(
-        taxa="reptilia", filters="year=2020", group_by="species", total_group_by=True
-    )
+    output = galah.atlas_counts(taxa="reptilia", filters="year=2020", group_by="species", total_group_by=True)
     assert output.shape[0] == 1
     assert output["count"][0] > 0
 
@@ -530,9 +527,7 @@ def test_atlas_species_United_Kingdom_family_rank_genus_uk():
 
 def test_atlas_species_uk_filter_notaxa():
     galah.galah_config(atlas="United Kingdom", reason=10)
-    filtered_species_table = galah.atlas_species(
-        filters=["year=2022", "basis_of_record=HumanObservation"]
-    )
+    filtered_species_table = galah.atlas_species(filters=["year=2022", "basis_of_record=HumanObservation"])
     assert filtered_species_table.shape[0] > 0
 
 
@@ -547,9 +542,7 @@ def test_atlas_occurrences_taxa_uk():
 
 def test_atlas_occurrences_taxa_fields_uk():
     galah.galah_config(atlas="United Kingdom", email=email_uk, reason="10")
-    occurrences = galah.atlas_occurrences(
-        taxa="Vulpes vulpes", fields=["decimalLatitude", "decimalLongitude"]
-    )
+    occurrences = galah.atlas_occurrences(taxa="Vulpes vulpes", fields=["decimalLatitude", "decimalLongitude"])
     assert occurrences.shape[1] == 2
 
 
@@ -634,9 +627,7 @@ def test_atlas_media_multimedia_uk():
 def test_atlas_media_filters_multimedia_uk():
     galah.galah_config(atlas="United Kingdom", email=email_uk)
     raw_output = galah.atlas_media(taxa="Vulpes vulpes")
-    multimedia_output = galah.atlas_media(
-        taxa="Vulpes vulpes", filters="year>=1990", multimedia="images"
-    )
+    multimedia_output = galah.atlas_media(taxa="Vulpes vulpes", filters="year>=1990", multimedia="images")
     assert raw_output.shape[0] > multimedia_output.shape[0]
 
 

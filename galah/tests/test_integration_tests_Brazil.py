@@ -1,6 +1,7 @@
-import galah
 import pytest
 import shapely
+
+import galah
 
 email_br = "ala4r@ala.org.au"
 
@@ -268,6 +269,14 @@ def test_search_values_brazil():
 def test_search_taxa_brazil():
     galah.galah_config(atlas="Brazil")
     output = galah.search_taxa("Ramphastos toco Statius Muller, 1776")
+    assert output["guid"][0] != None
+
+
+def test_search_taxa_brazil_scientific_name():
+    galah.galah_config(atlas="Brazil")
+    output = galah.search_taxa(
+        scientific_name={"scientificName": "Ramphastos toco Statius Muller, 1776", "kingdom": "Animalia"}
+    )
     assert output["guid"][0] != None
 
 
@@ -638,9 +647,7 @@ def test_atlas_species_Brazil_family_rank_subspecies_brazil():
 
 def test_atlas_species_brazil_filter_notaxa():
     galah.galah_config(atlas="Brazil")
-    filtered_species_table = galah.atlas_species(
-        filters=["year=2022", "basis_of_record=HumanObservation"]
-    )
+    filtered_species_table = galah.atlas_species(filters=["year=2022", "basis_of_record=HumanObservation"])
     assert filtered_species_table.shape[0] > 0
 
 

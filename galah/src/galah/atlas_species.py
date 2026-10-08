@@ -1,16 +1,10 @@
 import io
 
 import pandas as pd
-import requests
 
 from .add_to_payload_functions import add_to_payload_ALA
-from .atlas_occurrences import atlas_occurrences, check_for_403_error
-from .common_add_functions import (
-    add_extras_to_URL,
-    add_filters,
-    add_spatial_shapes,
-    add_taxa,
-)
+from .atlas_occurrences import atlas_occurrences, check_for_http_error_code
+from .common_add_functions import add_extras_to_URL, add_filters, add_spatial_shapes, add_taxa
 from .common_checks import check_string_list
 from .common_dictionaries import ATLAS_SPECIES_FIELDS
 from .common_functions import group_by_atlas_species, print_if_verbose
@@ -182,9 +176,7 @@ def atlas_species(
         headers["client_id"] = client_id
 
         # get the query id url
-        qid_URL, method2 = get_api_url(
-            column1="api_name", column1value="occurrences_qid", atlas=atlas
-        )
+        qid_URL, method2 = get_api_url(column1="api_name", column1value="occurrences_qid", atlas=atlas)
 
         # print this information if verbose option is selected
         print_if_verbose(
@@ -196,23 +188,17 @@ def atlas_species(
         )
 
         # get qid
-        qid = requests.request(
-            method2, qid_URL, data=payload, headers=headers, timeout=timeout
-        )
+        qid = check_for_http_error_code(method=method2, URL=qid_URL, timeout=timeout, data=payload, headers=headers)
 
         # create the URL to grab the species ID and lists
-        baseURL, method = get_api_url(
-            column1="api_name", column1value="records_species", atlas=atlas
-        )
+        baseURL, method = get_api_url(column1="api_name", column1value="records_species", atlas=atlas)
         URL = baseURL + "?fq=%28qid%3A" + qid.text + "%29"
         URL = group_by_atlas_species(group_by=group_by, rankID=rankID, URL=URL)
 
     else:
 
         # get initial url
-        baseURL, method = get_api_url(
-            column1="api_name", column1value="records_species", atlas=atlas
-        )
+        baseURL, method = get_api_url(column1="api_name", column1value="records_species", atlas=atlas)
 
         # add information to URL
         URL = add_taxa(
@@ -225,9 +211,7 @@ def atlas_species(
         )
         URL = add_filters(filters=filters, atlas=atlas, URL=URL)
         URL = group_by_atlas_species(group_by=group_by, rankID=rankID, URL=URL)
-        URL = add_spatial_shapes(
-            atlas=atlas, polygon=polygon, bbox=bbox, URL=URL, crs=crs
-        )
+        URL = add_spatial_shapes(atlas=atlas, polygon=polygon, bbox=bbox, URL=URL, crs=crs)
 
     # ---------------------------------------------------------------------------------------------
     # Add common extras to URL
@@ -253,20 +237,13 @@ def atlas_species(
             qgis=qgis,
         )
     else:
-        URL += add_extras_to_URL(
-            atlas=atlas, add_email=email_notify, email=email, reason=reason, qgis=qgis
-        )
+        URL += add_extras_to_URL(atlas=atlas, add_email=email_notify, email=email, reason=reason, qgis=qgis)
 
     # check to see if user wants the query URL
     print_if_verbose(verbose=verbose, headers=headers, URL=URL, method=method)
 
     # get response from url
-    response = requests.request(
-        method=method, url=URL, headers=headers, timeout=timeout
-    )
-
-    # check to see if the user has gotten a 403 error
-    check_for_403_error(response=response, atlas=atlas)
+    response = check_for_http_error_code(method=method, URL=URL, timeout=timeout, headers=headers)
 
     if atlas in ["United Kingdom"]:
         return pd.DataFrame(response.json()[0]["fieldResult"])

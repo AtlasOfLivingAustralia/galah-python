@@ -1,11 +1,12 @@
 import configparser
 import os
 
-import galah
 import geopandas as gpd
 import pandas as pd
 import pytest
 import shapely
+
+import galah
 
 email_au = "ala4r@ala.org.au"
 

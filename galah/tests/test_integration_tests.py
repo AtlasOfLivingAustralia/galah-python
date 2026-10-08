@@ -4,8 +4,9 @@ run pytest integration_tests_galah.py
 
 import os
 
-import galah
 import pytest
+
+import galah
 
 """
 # Austria 

@@ -464,6 +464,7 @@ SEARCH_TAXA_FIELDS = {
         "species",
         "commonName",
         "name_match_metric",  # name_parse_type
+        "issues",
     ],
     "Brazil": [
         "scientificName",
@@ -479,6 +480,7 @@ SEARCH_TAXA_FIELDS = {
         "species",
         "commonName",
         "name_match_matric",
+        "issues",
     ],
     "Flanders": [
         "scientificName",
@@ -494,6 +496,7 @@ SEARCH_TAXA_FIELDS = {
         "species",
         "canonicalName",
         "matchType",
+        "issues",
     ],
     "France": [
         "scientificName",
@@ -508,12 +511,13 @@ SEARCH_TAXA_FIELDS = {
         "genusName",
         "species",
         "englishVernacularName",
+        "issues",
     ],
     "GBIF": [
         "scientificName",
-        "usageKey",
-        "rank",
-        "matchType",
+        "scientificNameAuthorship",
+        "taxonConceptID",
+        "taxonRank",
         "kingdom",
         "phylum",
         "class",
@@ -521,12 +525,15 @@ SEARCH_TAXA_FIELDS = {
         "family",
         "genus",
         "species",
+        "canonicalName",
+        "matchType",
+        "issues",
     ],
     "Global": [
         "scientificName",
-        "usageKey",
-        "rank",
-        "matchType",
+        "scientificNameAuthorship",
+        "taxonConceptID",
+        "taxonRank",
         "kingdom",
         "phylum",
         "class",
@@ -534,6 +541,9 @@ SEARCH_TAXA_FIELDS = {
         "family",
         "genus",
         "species",
+        "canonicalName",
+        "matchType",
+        "issues",
     ],
     # was guid
     "Guatemala": [
@@ -551,6 +561,7 @@ SEARCH_TAXA_FIELDS = {
         "species",
         "issues",
         "commonName",
+        "issues",
     ],
     "Kew": [
         "scientificName",
@@ -580,6 +591,7 @@ SEARCH_TAXA_FIELDS = {
         "family",
         "genus",
         "species",
+        "issues",
     ],
     "Spain": [
         "scientificName",
@@ -594,6 +606,7 @@ SEARCH_TAXA_FIELDS = {
         "family",
         "genus",
         "species",
+        "vernacularName",
         "issues",
     ],
     "Sweden": [
@@ -625,6 +638,7 @@ SEARCH_TAXA_FIELDS = {
         "genus",
         "species",
         "commonName",
+        "issues",
     ],
     "UK": [
         "scientificName",
@@ -639,7 +653,26 @@ SEARCH_TAXA_FIELDS = {
         "genus",
         "species",
         "commonName",
+        "issues",
     ],
+}
+
+# names for specific epithet and scientific name
+KEY_TRANSLATIONS = {
+    "Flanders": {
+        "key": "taxonConceptID",
+        "name": "scientificName",
+        "authorship": "scientificNameAuthorship",
+        "rank": "taxonRank",
+        "canonicalName": "canonicalName",
+    },
+    "Global": {
+        "key": "taxonConceptID",
+        "name": "scientificName",
+        "authorship": "scientificNameAuthorship",
+        "rank": "taxonRank",
+        "canonicalName": "canonicalName",
+    },
 }
 
 # vernacular names in each atlas

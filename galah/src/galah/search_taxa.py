@@ -2,22 +2,16 @@ import json
 import urllib
 
 import pandas as pd
-import requests
 
-from .common_checks import (
-    check_args_none,
-    check_args_specific_atlas,
-    check_for_dict,
-    check_taxa_type,
-)
+from .common_checks import check_args_none, check_args_specific_atlas, check_for_dict, check_taxa_type
 from .common_dictionaries import (
     ATLAS_KEYWORDS,
+    KEY_TRANSLATIONS,
     SEARCH_TAXA_ENTRIES,
     SEARCH_TAXA_FIELDS,
-    TAXONCONCEPT_NAMES,
     VERNACULAR_NAMES,
 )
-from .common_functions import print_if_verbose
+from .common_functions import check_for_http_error_code, print_if_verbose
 from .galah_config import get_api_url, get_config_values
 
 
@@ -186,9 +180,7 @@ def search_taxa(
 
             # check if identifier is str, if it is, convert to list
             if isinstance(all_args_specifics[index]["identifiers"], str):
-                all_args_specifics[index]["identifiers"] = [
-                    all_args_specifics[index]["identifiers"]
-                ]
+                all_args_specifics[index]["identifiers"] = [all_args_specifics[index]["identifiers"]]
 
             # loop over all identifiers
             for i, id in enumerate(all_args_specifics[index]["identifiers"]):
@@ -235,14 +227,27 @@ def search_taxa(
             # loop over all names
             for i in range(len(all_args_specifics[index][sn_sp_key][names_keys[0]])):
 
+                if atlas in ["Brazil"]:
+                    if "scientificName" in names_keys:
+                        baseURL = baseURL.replace(
+                            "{name}", urllib.parse.quote(all_args_specifics[index][sn_sp_key]["scientificName"][i])
+                        )
+                    if "specificEpithet" in names_keys:
+                        baseURL = baseURL.replace(
+                            "{name}", urllib.parse.quote(all_args_specifics[index][sn_sp_key]["specificEpithet"][i])
+                        )
+
+                if atlas in ["Brazil"]:
+                    if "scientificName" in names_keys:
+                        names_keys.remove("scientificName")
+                    if "specificEpithet" in names_keys:
+                        names_keys.remove("specificEpithet")
+
                 # create a temporary dictionary with only one entry in it
-                temp_dict = {
-                    key: all_args_specifics[index][sn_sp_key][key][i]
-                    for key in names_keys
-                }
+                temp_dict = {key: all_args_specifics[index][sn_sp_key][key][i] for key in names_keys}
 
                 # get URL and method
-                URL = process_dicts_to_URLs(names_dict=temp_dict, baseURL=baseURL)
+                URL = process_dicts_to_URLs(names_dict=temp_dict, baseURL=baseURL, atlas=atlas)
 
                 # add to return dictionary for querying
                 return_dict = add_to_return_dict(
@@ -299,9 +304,7 @@ def search_taxa(
             print_if_verbose(verbose=verbose, headers=headers, URL=URL, method=method)
 
             # get the response
-            response = requests.request(
-                method=method, url=URL, headers=headers, timeout=timeout
-            )
+            response = check_for_http_error_code(method=method, URL=URL, timeout=timeout, headers=headers)
             response_json = response.json()
 
             # check to see if the taxa was successfully returned
@@ -325,45 +328,10 @@ def search_taxa(
                 "UK": None,
             }
 
-            if atlas in ["Flanders"]:
+            if atlas in ["Flanders", "Global"]:
 
-                # initialise the data dictionary
-                data = {x: [] for x in SEARCH_TAXA_FIELDS[atlas]}
+                data = get_taxa_info_usage_dict(atlas=atlas, response_json=response_json)
 
-                # account for different naming in Flanders
-                key_translation = {
-                    "key": "taxonConceptID",
-                    "name": "scientificName",
-                    "authorship": "scientificNameAuthorship",
-                    "rank": "taxonRank",
-                    "canonicalName": "canonicalName",
-                }
-
-                # loop over translated keys
-                for key in key_translation.keys():
-                    if key in response_json["usage"]:
-                        data[key_translation[key]].append(response_json["usage"][key])
-                    else:
-                        data[key_translation[key]].append("")
-
-                # loop over the higher order classification
-                taxon_info = [
-                    x
-                    for x in SEARCH_TAXA_FIELDS[atlas]
-                    if x not in key_translation.values()
-                ]
-                for ti in taxon_info:
-                    if any(
-                        ti.upper() in x.values()
-                        for x in response_json["classification"]
-                    ):
-                        index = [
-                            ti.upper() in x.values()
-                            for x in response_json["classification"]
-                        ].index(True)
-                        data[ti].append(response_json["classification"][index]["name"])
-                    else:
-                        data[ti].append("")
             else:
 
                 # get the raw data
@@ -378,23 +346,11 @@ def search_taxa(
                 data = {x: [] for x in SEARCH_TAXA_FIELDS[atlas]}
                 if raw_data is not None:
                     if isinstance(raw_data, list):
-                        print(
-                            "We couldn't find an exact match - here are the closest:\n"
-                        )
+                        print("We couldn't find an exact match - here are the closest:\n")
                         for rd in raw_data:
-                            populate_taxa_dict(
-                                raw_data=rd, atlas=atlas, data=data, name=name
-                            )
+                            populate_taxa_dict(raw_data=rd, atlas=atlas, data=data, name=name)
                     else:
-                        populate_taxa_dict(
-                            raw_data=raw_data, atlas=atlas, data=data, name=name
-                        )
-
-                # check if the atlas is GBIF and get vernacular names accordingly
-                if atlas in ["Global", "GBIF", "Portugal", "Spain"]:
-                    data[VERNACULAR_NAMES[atlas][1]] = get_vernacularName(
-                        raw_data=raw_data, atlas=atlas, timeout=timeout
-                    )
+                        populate_taxa_dict(raw_data=raw_data, atlas=atlas, data=data, name=name)
 
             # add every taxon to dataframe
             if len(data["scientificName"]) == 1:
@@ -453,12 +409,7 @@ def generate_list_taxonConceptIDs(
     if atlas in ["Global", "GBIF"]:
 
         # add using taxonKey
-        return "".join(
-            [
-                "taxonKey={}&".format(urllib.parse.quote(str(tid)))
-                for tid in taxonConceptID
-            ]
-        )
+        return "".join(["taxonKey={}&".format(urllib.parse.quote(str(tid))) for tid in taxonConceptID])
 
     # for Australia
     elif atlas in ["Australia", "ALA"]:
@@ -469,20 +420,14 @@ def generate_list_taxonConceptIDs(
         # add %22
         return (
             "q=%28lsid%3A%22"
-            + "%22%20OR%20lsid%3A%22".join(
-                urllib.parse.quote(str(tid)) for tid in taxonConceptID
-            )
+            + "%22%20OR%20lsid%3A%22".join(urllib.parse.quote(str(tid)) for tid in taxonConceptID)
             + "%22%29"
         )
 
     else:
 
         return (
-            "fq=%28lsid%3A"
-            + "%20OR%20lsid%3A%22".join(
-                urllib.parse.quote(str(tid)) for tid in taxonConceptID
-            )
-            + "%29"
+            "fq=%28lsid%3A" + "%20OR%20lsid%3A%22".join(urllib.parse.quote(str(tid)) for tid in taxonConceptID) + "%29"
         )
 
 
@@ -505,22 +450,61 @@ def add_to_return_dict(
     print_if_verbose(verbose=verbose, headers=headers, URL=URL, method=method)
 
     # get the data from API
-    response = requests.request(
-        method=method, url=URL, headers=headers, timeout=timeout
-    )
+    response = check_for_http_error_code(method=method, URL=URL, timeout=timeout, headers=headers)
     response_json = response.json()
 
     # check for lists
     response_json = check_for_lists(response_json=response_json, atlas=atlas)
 
+    if atlas in ["Brazil"]:
+        results = response_json["searchResults"]["results"][0]
+    else:
+        results = response_json
+
     # compile data into
-    for k in SEARCH_TAXA_FIELDS[atlas]:
-        if k in response_json:
-            return_dict[k].append(response_json[k])
-        else:
-            return_dict[k].append("")
+    if atlas in ["Flanders", "Global"]:
+        return_dict = get_taxa_info_usage_dict(atlas=atlas, response_json=response_json)
+    else:
+        for k in SEARCH_TAXA_FIELDS[atlas]:
+            if k in results:  # response_json
+                return_dict[k].append(results[k])  # response_json
+            else:
+                return_dict[k].append("")
 
     return return_dict
+
+
+def get_taxa_info_usage_dict(atlas=None, response_json=None):
+
+    # initialise the data dictionary
+    data = {x: [] for x in SEARCH_TAXA_FIELDS[atlas]}
+
+    # loop over translated keys
+    for key in KEY_TRANSLATIONS[atlas].keys():
+        if key in response_json["usage"]:
+            data[KEY_TRANSLATIONS[atlas][key]].append(response_json["usage"][key])
+        else:
+            data[KEY_TRANSLATIONS[atlas][key]].append("")
+
+    # add matchType
+    data["matchType"].append(response_json["diagnostics"]["matchType"])
+
+    # loop over the higher order classification
+    taxon_info = [
+        x for x in SEARCH_TAXA_FIELDS[atlas] if (x not in KEY_TRANSLATIONS[atlas].values() and x != "matchType")
+    ]
+    for ti in taxon_info:
+        if any(ti.upper() in x.values() for x in response_json["classification"]):
+            index = [ti.upper() in x.values() for x in response_json["classification"]].index(True)
+            data[ti].append(response_json["classification"][index]["name"])
+        else:
+            data[ti].append("")
+
+    # try this
+    # if atlas in ["Global"]:
+    #     data["canonicalName"] = [response_json["usage"]["canonicalName"]]
+
+    return data
 
 
 def create_url_identifiers(identifier=None, dict_of_specifics=None, atlas=None):
@@ -541,7 +525,7 @@ def create_url_identifiers(identifier=None, dict_of_specifics=None, atlas=None):
     return URL, method
 
 
-def process_dicts_to_URLs(baseURL=None, names_dict=None):
+def process_dicts_to_URLs(baseURL=None, names_dict=None, atlas=None):
     """
     Function for adding information in dicts to the URLs themselves
     """
@@ -558,26 +542,17 @@ def process_dicts_to_URLs(baseURL=None, names_dict=None):
 
         # add dict information to the end variable
         for i in range(len_dict):
-            end += (
-                "&".join(
-                    "=".join([key, urllib.parse.quote(names_dict[key])])
-                    for key in names_dict.keys()
-                )
-                + "&"
-            )
+            end += "&".join("=".join([key, urllib.parse.quote(names_dict[key])]) for key in names_dict.keys()) + "&"
 
     else:
 
-        end += (
-            "&".join(
-                "=".join([key, urllib.parse.quote(names_dict[key])])
-                for key in names_dict.keys()
-            )
-            + "&"
-        )
+        end += "&".join("=".join([key, urllib.parse.quote(names_dict[key])]) for key in names_dict.keys()) + "&"
 
     # add the information to the URL
-    URL = baseURL + "?" + end
+    if atlas in ["Brazil"]:
+        URL = baseURL + "&" + end
+    else:
+        URL = baseURL + "?" + end
 
     # return the URL for querying
     return URL
@@ -597,18 +572,12 @@ def check_taxa_specifics(dict_of_specifics=None):
         )
 
         # if keyword is not correct, raise error
-        if not any(
-            "specificEpithet" in se for se in dict_of_specifics["specific_epithet"]
-        ):
-            raise ValueError(
-                'you need to include a search term titled "specificEpithet"'
-            )
+        if not any("specificEpithet" in se for se in dict_of_specifics["specific_epithet"]):
+            raise ValueError('you need to include a search term titled "specificEpithet"')
 
         for key in dict_of_specifics["specific_epithet"].keys():
             if not isinstance(dict_of_specifics["specific_epithet"][key], list):
-                dict_of_specifics["specific_epithet"][key] = [
-                    dict_of_specifics["specific_epithet"][key]
-                ]
+                dict_of_specifics["specific_epithet"][key] = [dict_of_specifics["specific_epithet"][key]]
 
         check_dict_key_lengths(dict_to_check=dict_of_specifics["specific_epithet"])
 
@@ -621,19 +590,12 @@ def check_taxa_specifics(dict_of_specifics=None):
         )
 
         # check to see if the correct information and type of variables is available
-        if not any(
-            "scientificName" in sn
-            for sn in list(dict_of_specifics["scientific_name"].keys())
-        ):
-            raise ValueError(
-                'you need to include a search term titled "scientificName"'
-            )
+        if not any("scientificName" in sn for sn in list(dict_of_specifics["scientific_name"].keys())):
+            raise ValueError('you need to include a search term titled "scientificName"')
 
         for key in dict_of_specifics["scientific_name"].keys():
             if not isinstance(dict_of_specifics["scientific_name"][key], list):
-                dict_of_specifics["scientific_name"][key] = [
-                    dict_of_specifics["scientific_name"][key]
-                ]
+                dict_of_specifics["scientific_name"][key] = [dict_of_specifics["scientific_name"][key]]
 
         check_dict_key_lengths(dict_to_check=dict_of_specifics["scientific_name"])
 
@@ -650,38 +612,6 @@ def check_dict_key_lengths(dict_to_check=None):
     # throw error if dictionary values are not the same length
     if len(len_dict) != 1:
         raise ValueError("All of your dictionary values need to be the same length")
-
-
-def get_vernacularName(raw_data=None, atlas=None, timeout=600):
-    """
-    Get all of the vernacular names from GBIF
-    """
-
-    # get the response from the GBIF vernacular names endpoint
-    response_vernacular = requests.get(
-        "https://api.gbif.org/v1/species/{}/vernacularNames".format(
-            raw_data[TAXONCONCEPT_NAMES[atlas]["guid"]]
-        ),
-        timeout=timeout,
-    )
-
-    # get the array of vernacular names
-    array_vernacular = response_vernacular.json()["results"]
-
-    # initialise the vernacular names string
-    vernacular_name = ""
-
-    # loop over the array and only add the information that's in the accepted names for this atlas
-    for item in array_vernacular:
-        for key in item.keys():
-            if key in VERNACULAR_NAMES[atlas][1]:
-                vernacular_name += item[key] + ", "
-
-    # remove the trailing comma and space
-    vernacular_name = vernacular_name[:-2]
-
-    # return this string
-    return vernacular_name
 
 
 def check_for_lists(response_json=None, atlas=None):
@@ -711,17 +641,13 @@ def check_raw_data(raw_data=None, response_json=None, atlas=None, name=None):
     # check to see if raw_data is None and needs to be filtered through
     if raw_data is None:
         if SEARCH_TAXA_ENTRIES[atlas][0] in response_json:
-            for item in response_json[SEARCH_TAXA_ENTRIES[atlas][0]][
-                SEARCH_TAXA_ENTRIES[atlas][1]
-            ]:
+            for item in response_json[SEARCH_TAXA_ENTRIES[atlas][0]][SEARCH_TAXA_ENTRIES[atlas][1]]:
                 if name.lower() == item["scientificName"].lower():
                     return item
 
         # try this
         elif atlas in ["Brazil"]:
-            for item in response_json[SEARCH_TAXA_ENTRIES[atlas][0]][
-                SEARCH_TAXA_ENTRIES[atlas][1]
-            ]:
+            for item in response_json[SEARCH_TAXA_ENTRIES[atlas][0]][SEARCH_TAXA_ENTRIES[atlas][1]]:
                 if name.lower() in item["scientificName"].lower():
                     for x in SEARCH_TAXA_FIELDS:
                         brazil_entries[x].append(item[x])
@@ -739,11 +665,7 @@ def check_for_success_AU_ES(atlas=None, response_json=None, taxa=None):
     """
 
     # Check to see if a name wasn't found either in the Australian or Spanish backbone
-    if (
-        atlas in ["Australia", "Spain"]
-        and not response_json["success"]
-        and response_json["issues"][0] != "homonym"
-    ):
+    if atlas in ["Australia", "Spain"] and not response_json["success"] and response_json["issues"][0] != "homonym":
         print("We were not able to find {} in the {} backbone.".format(taxa, atlas))
 
 
@@ -781,38 +703,24 @@ def authenticate_bulk_query(
     payload["names"] = taxa
 
     # print everything if the user has chosen to be verbose with their commands
-    print_if_verbose(
-        verbose=verbose, headers=headers, URL=baseURL, method=method, payload=payload
-    )
+    print_if_verbose(verbose=verbose, headers=headers, URL=baseURL, method=method, payload=payload)
 
     # get the list of species data and add it to a dataframe
-    species_list = requests.request(
-        method=method,
-        url=baseURL,
-        data=json.dumps(payload),
-        headers=headers,
-        timeout=timeout,
+    species_list = check_for_http_error_code(
+        method=method, URL=baseURL, timeout=timeout, headers=headers, data=json.dumps(payload)
     )
     species_list_json = species_list.json()
     species_list_dataframe = pd.DataFrame()
     for i in range(len(species_list_json)):
-        if all(
-            not isinstance(species_list_json[i][x], list) for x in species_list_json[i]
-        ):
+        if all(not isinstance(species_list_json[i][x], list) for x in species_list_json[i]):
             for x in species_list_json[i]:
                 species_list_json[i][x] = [species_list_json[i][x]]
-        species_list_dataframe = pd.concat(
-            [species_list_dataframe, pd.DataFrame(species_list_json[i])]
-        )
+        species_list_dataframe = pd.concat([species_list_dataframe, pd.DataFrame(species_list_json[i])])
 
     # reset the index so everything is sequential
     species_list_dataframe = species_list_dataframe.reset_index(drop=True)
     if species_list_dataframe.empty:
-        raise ValueError(
-            "There are no taxa with the name(s) {} in the Australian atlas.".format(
-                taxa
-            )
-        )
+        raise ValueError("There are no taxa with the name(s) {} in the Australian atlas.".format(taxa))
 
     # rename some of the columns to ensure clarity
     species_list_rename = species_list_dataframe.rename(

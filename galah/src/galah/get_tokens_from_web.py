@@ -63,13 +63,9 @@ class CallbackHandler(BaseHTTPRequestHandler):
         self.end_headers()
 
         if CallbackHandler.auth_code:
-            self.wfile.write(
-                b"<html><body><h3>Login complete.</h3><p>You can close this tab now.</p></body></html>"
-            )
+            self.wfile.write(b"<html><body><h3>Login complete.</h3><p>You can close this tab now.</p></body></html>")
         else:
-            self.wfile.write(
-                b"<html><body><h3>Login failed.</h3><p>You can close this tab now.</p></body></html>"
-            )
+            self.wfile.write(b"<html><body><h3>Login failed.</h3><p>You can close this tab now.</p></body></html>")
 
 
 def get_auth_config() -> dict:
@@ -85,17 +81,13 @@ def get_auth_config() -> dict:
     for key in ("authorize_url", "token_url"):
         parsed = urlparse(cfg[key])
         if parsed.hostname not in ALLOWED_AUTH_DOMAINS:
-            raise RuntimeError(
-                f"Auth config returned untrusted {key} domain: {parsed.hostname}"
-            )
+            raise RuntimeError(f"Auth config returned untrusted {key} domain: {parsed.hostname}")
         if parsed.scheme != "https":
             raise RuntimeError(f"Auth config {key} must use HTTPS")
     return cfg
 
 
-def build_authorize_url(
-    authorize_url: str, client_id: str, scopes: str, state: str, code_challenge: str
-) -> str:
+def build_authorize_url(authorize_url: str, client_id: str, scopes: str, state: str, code_challenge: str) -> str:
     params = {
         "response_type": "code",
         "client_id": client_id,
@@ -106,16 +98,10 @@ def build_authorize_url(
         "code_challenge": code_challenge,
         "code_challenge_method": "S256",
     }
-    return (
-        authorize_url
-        + "?"
-        + urllib.parse.urlencode(params, quote_via=urllib.parse.quote)
-    )
+    return authorize_url + "?" + urllib.parse.urlencode(params, quote_via=urllib.parse.quote)
 
 
-def exchange_code_for_token(
-    token_url: str, client_id: str, code: str, code_verifier: str
-) -> dict:
+def exchange_code_for_token(token_url: str, client_id: str, code: str, code_verifier: str) -> dict:
     data = {
         "grant_type": "authorization_code",
         "client_id": client_id,
@@ -151,14 +137,10 @@ def get_tokens_from_web():
 
     # Start callback server
     httpd = HTTPServer((REDIRECT_HOST, REDIRECT_PORT), CallbackHandler)
-    server_thread = threading.Thread(
-        target=run_local_server, args=(httpd,), daemon=True
-    )
+    server_thread = threading.Thread(target=run_local_server, args=(httpd,), daemon=True)
     server_thread.start()
 
-    auth_url = build_authorize_url(
-        authorize_url, client_id, scopes, state, code_challenge
-    )
+    auth_url = build_authorize_url(authorize_url, client_id, scopes, state, code_challenge)
 
     print("1) Opening browser for login...\n")
     print("If your browser doesn't open, copy/paste this URL:\n")
@@ -171,15 +153,11 @@ def get_tokens_from_web():
     start = time.time()
     while CallbackHandler.auth_code is None and CallbackHandler.auth_error is None:
         if time.time() - start > TIMEOUT_SECONDS:
-            raise TimeoutError(
-                f"Timed out after {TIMEOUT_SECONDS}s waiting for login redirect."
-            )
+            raise TimeoutError(f"Timed out after {TIMEOUT_SECONDS}s waiting for login redirect.")
         time.sleep(0.2)
 
     if CallbackHandler.auth_error:
-        raise SystemExit(
-            f"Authorization error: {CallbackHandler.auth_error} (details: {CallbackHandler.query_params})"
-        )
+        raise SystemExit(f"Authorization error: {CallbackHandler.auth_error} (details: {CallbackHandler.query_params})")
 
     # Validate state if present
     returned_state = None

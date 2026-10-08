@@ -1,8 +1,9 @@
 import os
 import shutil
 
-import galah
 import shapely
+
+import galah
 
 email_at = "ala4r@ala.org.au"
 
@@ -385,9 +386,7 @@ def test_atlas_counts_multiple_taxa_filter_group_by_austria():
 
 def test_atlas_counts_taxa_filters_austria_total_group_by():
     galah.galah_config(atlas="Austria")
-    output = galah.atlas_counts(
-        filters="year>=2020", group_by="species", total_group_by=True
-    )
+    output = galah.atlas_counts(filters="year>=2020", group_by="species", total_group_by=True)
     assert output.shape[0] == 1
     assert output["count"][0] > 0
 
@@ -463,9 +462,7 @@ def test_atlas_counts_multiple_taxa_filters_group_by_multiple_separate_expand_au
     group_by = ["year", "month"]
     output = galah.atlas_counts(taxa_array, filters=f, group_by=group_by)
     assert output.shape[1] == len(group_by) + 1
-    assert (
-        output["count"][0] >= 0
-    )  # checks that all species counts are greater than or equal zero
+    assert output["count"][0] >= 0  # checks that all species counts are greater than or equal zero
 
 
 def test_atlas_counts_polygon_austria():
@@ -473,6 +470,7 @@ def test_atlas_counts_polygon_austria():
     at_polygon = shapely.wkt.loads(
         "MULTIPOLYGON(((14.140777587890625 47.61032944737081,14.371490478515623 47.54733507355602,14.365997314453125 47.44341438795746,14.080352783203125 47.432267829811025,13.910064697265623 47.48797700820852,14.140777587890625 47.61032944737081)))"
     )
+    at_polygon = at_polygon.to_crs(4326)
     output = galah.atlas_counts(polygon=at_polygon)
     assert output["totalRecords"][0] > 0
 
@@ -504,9 +502,7 @@ def test_atlas_species_Austria_family_austria():
 
 def test_atlas_species_Austria_filter_notaxa():
     galah.galah_config(atlas="Austria", email=email_at)
-    filtered_species_table = galah.atlas_species(
-        filters=["year=2022", "basis_of_record=HumanObservation"]
-    )
+    filtered_species_table = galah.atlas_species(filters=["year=2022", "basis_of_record=HumanObservation"])
     assert filtered_species_table.shape[0] > 0
 
 
@@ -521,18 +517,14 @@ def test_atlas_occurrences_taxa_austria():
 
 def test_atlas_occurrences_taxa_fields_austria():
     galah.galah_config(atlas="Austria", email=email_at, reason=10)
-    occurrences = galah.atlas_occurrences(
-        taxa="Sehirus luctuosus", fields=["latitude", "longitude"]
-    )
+    occurrences = galah.atlas_occurrences(taxa="Sehirus luctuosus", fields=["latitude", "longitude"])
     assert occurrences.shape[1] == 2
 
 
 def test_atlas_occurrences_taxa_filters_austria():
     galah.galah_config(atlas="Austria", email=email_at, reason=10)
     occurrences1 = galah.atlas_occurrences(taxa="Sehirus luctuosus")
-    occurrences2 = galah.atlas_occurrences(
-        taxa="Sehirus luctuosus", filters="year=2020"
-    )
+    occurrences2 = galah.atlas_occurrences(taxa="Sehirus luctuosus", filters="year=2020")
     assert occurrences2.shape[0] < occurrences1.shape[0]
 
 
@@ -601,18 +593,14 @@ def test_atlas_media_filters_austria():
 
 def test_atlas_media_multimedia_austria():
     galah.galah_config(atlas="Austria", email=email_at)
-    multimedia_output = galah.atlas_media(
-        taxa="Sehirus luctuosus", multimedia="image_url"
-    )
+    multimedia_output = galah.atlas_media(taxa="Sehirus luctuosus", multimedia="image_url")
     assert multimedia_output.shape[0] > 0
 
 
 def test_atlas_media_filters_multimedia_austria():
     galah.galah_config(atlas="Austria", email=email_at)
     raw_output = galah.atlas_media(taxa="Vulpes vulpes")
-    multimedia_output = galah.atlas_media(
-        taxa="Vulpes vulpes", filters="year>=2025", multimedia="image_url"
-    )
+    multimedia_output = galah.atlas_media(taxa="Vulpes vulpes", filters="year>=2025", multimedia="image_url")
     assert raw_output.shape[0] > multimedia_output.shape[0]
 
 

@@ -1,7 +1,6 @@
 import pandas as pd
-import requests
 
-from .common_functions import kvp_to_columns, print_if_verbose
+from .common_functions import check_for_http_error_code, kvp_to_columns, print_if_verbose
 from .galah_config import get_api_url, get_config_values
 
 
@@ -36,13 +35,9 @@ def show_values(field=None, lists=False, config_file=None):
 
     # check to see if field is input correctly
     if field is None:
-        raise ValueError(
-            "Please specify the field you want to see query-able values for, i.e. field='basisOfRecord'"
-        )
+        raise ValueError("Please specify the field you want to see query-able values for, i.e. field='basisOfRecord'")
     elif not isinstance(field, str):
-        raise TypeError(
-            "show_values() only takes a single string as the field argument, i.e. field='basisOfRecord'"
-        )
+        raise TypeError("show_values() only takes a single string as the field argument, i.e. field='basisOfRecord'")
 
     (
         atlas,
@@ -67,27 +62,21 @@ def show_values(field=None, lists=False, config_file=None):
 
     # get base URL for querying
     if atlas in ["Global", "GBIF"]:
-        baseURL, method = get_api_url(
-            atlas=atlas, column1="api_name", column1value="records_counts"
-        )
+        baseURL, method = get_api_url(atlas=atlas, column1="api_name", column1value="records_counts")
         URL = baseURL + "?facet=" + field + "&flimit=-1"
     else:
         if lists:
-            baseURL, method = get_api_url(
-                atlas=atlas, column1="called_by", column1value="show_values-lists"
-            )
+            baseURL, method = get_api_url(atlas=atlas, column1="called_by", column1value="show_values-lists")
             URL = baseURL.replace("{list_id}", field) + "?max=9999"
         else:
-            baseURL, method = get_api_url(
-                atlas=atlas, column1="api_name", column1value="records_facets"
-            )
+            baseURL, method = get_api_url(atlas=atlas, column1="api_name", column1value="records_facets")
             URL = baseURL + "?facets=" + field + "&flimit=-1"
 
     # check to see if the user wants the URL for querying
     print_if_verbose(verbose=verbose, headers=headers, URL=URL, method=method)
 
     # query the API
-    response = requests.request(method, URL, headers=headers, timeout=timeout)
+    response = check_for_http_error_code(method=method, URL=URL, timeout=timeout, headers=headers)
     response_json = response.json()
 
     # return dataFrame

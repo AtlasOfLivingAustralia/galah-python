@@ -1,3 +1,6 @@
+import requests
+
+
 def print_if_verbose(verbose=False, headers=None, URL=None, method=None, payload=None):
     """Print the headers, URL, method and payload for debugging"""
     if verbose:
@@ -47,11 +50,24 @@ def set_bool_argument(arg=None, name_arg=None):
     elif isinstance(arg, bool):
         return arg
     else:
-        raise ValueError(
-            "Only True/False or boolean values are accepted for {}".format(name_arg)
-        )
+        raise ValueError("Only True/False or boolean values are accepted for {}".format(name_arg))
 
 
 def is_bool_argument(arg=None, arg_name=None):
     if arg is not None and not isinstance(arg, bool):
         raise ValueError("The {} option only accepts True or False.".format(arg_name))
+
+
+def check_for_http_error_code(method=None, URL=None, timeout=None, headers=None, data=None, stream=False, auth=None):
+
+    # check for error
+    try:
+        response = requests.request(
+            method=method, url=URL, timeout=timeout, headers=headers, data=data, stream=stream, auth=auth
+        )
+        response.raise_for_status()
+    except requests.exceptions.HTTPError as e:
+        raise
+
+    # return response
+    return response

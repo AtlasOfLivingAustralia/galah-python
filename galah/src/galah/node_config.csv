@@ -67,6 +67,7 @@ Brazil,records,records_query,https://biocache-service.sibbr.gov.br/biocache-serv
 Brazil,records,records_species,https://biocache-service.sibbr.gov.br/biocache-service/occurrences/facets/download,atlas_species,TRUE,GET
 Brazil,spatial,spatial_layers,https://portal-espacial.sibbr.gov.br/spatial-hub/layers,show_all-fields,TRUE,GET
 Brazil,species,names_search_single,https://bie-webservice.sibbr.gov.br/bie-index/search?q={name},search_taxa,TRUE,GET
+Brazil,species,names_search_epithet,https://bie-webservice.sibbr.gov.br/bie-index/search?q={name},search_taxa,TRUE,GET
 Brazil,species,species_children,https://bie-webservice.sibbr.gov.br/bie-index/childConcepts/,atlas_taxonomy,TRUE,GET
 Brazil,species,species_lookup,https://bie-webservice.sibbr.gov.br/bie-index/species,atlas_taxonomy,TRUE,GET
 Estonia,records,records_counts,https://elurikkus.ee/biocache-service/occurrences/search,atlas_counts,TRUE,GET
@@ -80,6 +81,7 @@ Estonia,collections,collections_providers,https://elurikkus.ee/collectory/ws/dat
 Estonia,name-matching,names_search_single,https://elurikkus.ee/bie-index/search?q={name}&pageSize=5,search_taxa,TRUE,GET
 Estonia,species,species_children,https://elurikkus.ee/bie-index/childConcepts/{id},atlas_taxonomy,TRUE,GET
 Flanders,name-matching,names_search_single,https://api.gbif.org/v2/species/match?verbose=FALSE&scientificName={name},search_taxa,TRUE,GET
+Flanders,name-matching,names_search_epithet,https://api.gbif.org/v2/species/match,search_taxa,TRUE,GET
 Flanders,species,species_lookup,https://natuurdata.inbo.be/bie-index/childConcepts/{id},atlas_taxonomy,TRUE,GET
 Flanders,records,records_assertions,https://natuurdata.inbo.be/biocache-service/assertions/codes,show_all-assertions,TRUE,GET
 Flanders,records,records_fields,https://natuurdata.inbo.be/biocache-service/index/fields,show_all-fields,TRUE,GET
@@ -112,7 +114,8 @@ France,records,records_species,https://openobs.mnhn.fr/biocache-service/occurren
 France,name-matching,names_lookup,https://taxref.mnhn.fr/api/taxa/,search_identifiers,TRUE,GET
 France,name-matching,names_search_single,https://taxref.mnhn.fr/api/taxa/search?scientificNames={name}&page=1&size=5,search_taxa,TRUE,GET
 France,species,species_children,https://taxref.mnhn.fr/api/taxa/{id}/children,atlas_taxonomy,TRUE,GET
-Global,species,names_search_single,https://api.gbif.org/v1/species/match?verbose=FALSE&name={name},search_taxa,TRUE,GET
+Global,species,names_search_single,https://api.gbif.org/v2/species/match?verbose=FALSE&scientificName={name},search_taxa,TRUE,GET
+Global,name-matching,names_search_epithet,https://api.gbif.org/v2/species/match,search_taxa,TRUE,GET
 Global,collections,collections_providers,https://api.gbif.org/v1/organization,show_all-providers,TRUE,GET
 Global,collections,collections_collections,https://api.gbif.org/v1/grscicoll/collection,show_all-collections,TRUE,GET
 Global,collections,collections_collections_search,https://api.gbif.org/v1/grscicoll/search,search_all-collections,TRUE,GET

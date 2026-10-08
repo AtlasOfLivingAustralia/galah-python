@@ -111,12 +111,7 @@ def add_filters(URL=None, atlas=None, filters=None, authenticate=False):
     # add and filters
     if len(and_filters) > 0:
         URL += (
-            "%20AND%20".join(
-                [
-                    galah_filter(x, atlas=atlas, authenticate=authenticate)
-                    for x in and_filters
-                ]
-            )
+            "%20AND%20".join([galah_filter(x, atlas=atlas, authenticate=authenticate) for x in and_filters])
             + "%20AND%20"
         )
 
@@ -151,9 +146,7 @@ def check_for_added_taxa(URL=None):
 
 
 # adds predicates to GBIF
-def add_predicates(
-    predicates=None, filters=None, occurrencesGBIF=True, taxa=None, atlas="Global"
-):
+def add_predicates(predicates=None, filters=None, occurrencesGBIF=True, taxa=None, atlas="Global"):
     """for adding filters specifically to atlas_occurrences"""
 
     if all(x is None for x in [filters, taxa]):
@@ -167,15 +160,11 @@ def add_predicates(
 
     if filters is not None:
         if any("!=" in f for f in filters):
-            raise ValueError(
-                "!= cannot be used with GBIF atlas.  Run separate queries."
-            )
+            raise ValueError("!= cannot be used with GBIF atlas.  Run separate queries.")
 
         for f in filters:
 
-            predicates.append(
-                galah_filter(f, occurrencesGBIF=occurrencesGBIF, atlas=atlas)
-            )
+            predicates.append(galah_filter(f, occurrencesGBIF=occurrencesGBIF, atlas=atlas))
 
     if taxa is not None:
 
