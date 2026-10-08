@@ -1,6 +1,7 @@
 galah/tests/test/
 galah/tests/__pycache__/
 galah/src/galah/__pycache__/
+galah/src/src/galah_python.egg-info/PKG-INFO
 .DS_Store
 .coverage
 galah/build/
