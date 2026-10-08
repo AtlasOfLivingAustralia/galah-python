@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Download Data &#8212; Galah 0.14.0 documentation</title>
+    <title>Download Data &#8212; Galah 0.14.1 documentation</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../_static/documentation_options.js?v=9e420a66"></script>
+    <script src="../_static/documentation_options.js?v=3a3a8e7f"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/design-tabs.js?v=f930bc37"></script>
@@ -53,7 +53,7 @@
     <link rel="prev" title="Choosing an Atlas" href="Choosing_Atlas.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.14.0" />
+  <meta name="docsearch:version" content="0.14.1" />
   </head>
   
   
@@ -119,8 +119,8 @@
       
     
     
-    <img src="../_static/logo.png" class="logo__image only-light" alt="Galah 0.14.0 documentation - Home"/>
-    <img src="../_static/logo.png" class="logo__image only-dark pst-js-only" alt="Galah 0.14.0 documentation - Home"/>
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Galah 0.14.1 documentation - Home"/>
+    <img src="../_static/logo.png" class="logo__image only-dark pst-js-only" alt="Galah 0.14.1 documentation - Home"/>
   
   
 </a></div>
@@ -427,19 +427,19 @@ span.prompt1:before {
 </style><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">galah_config</span><span class="p">(</span><span class="n">atlas</span><span class="o">=</span><span class="s2">&quot;Australia&quot;</span><span class="p">)</span></span>
 <span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">atlas_counts</span><span class="p">()</span></span>
 </pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>   totalRecords
-0     185464288
+0     185480468
 </pre></div>
 </div>
 <p>In addition to <code class="docutils literal notranslate"><span class="pre">filters</span></code> arguments, <code class="docutils literal notranslate"><span class="pre">galah.atlas_counts()</span></code> has an optional <code class="docutils literal notranslate"><span class="pre">group_by</span></code> argument, which provides counts grouped
 by the requested field.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">atlas_counts</span><span class="p">(</span><span class="n">group_by</span><span class="o">=</span><span class="s2">&quot;kingdom&quot;</span><span class="p">)</span></span>
 </pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>     kingdom      count
-0   Animalia  146712999
+0   Animalia  146719413
 1    Archaea      15112
 2   Bacteria     459072
 3  Chromista    1076280
 4      Fungi    2148755
-5    Plantae   33449960
+5    Plantae   33459726
 6   Protista     493100
 7    Viruses      13821
 </pre></div>
@@ -512,16 +512,16 @@ associated with an active account on your chosen atlas. See more information in 
 </pre></div></div><p>After specifying your email, you can download occurrence records of, for example, Eolophus roseicapilla:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">atlas_occurrences</span><span class="p">(</span><span class="n">taxa</span><span class="o">=</span><span class="s2">&quot;Eolophus roseicapilla&quot;</span><span class="p">,</span><span class="n">filters</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;stateProvince=Australian Capital Territory&quot;</span><span class="p">,</span><span class="s2">&quot;year&gt;=2010&quot;</span><span class="p">],</span><span class="n">fields</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;institutionID&quot;</span><span class="p">,</span><span class="s2">&quot;basic&quot;</span><span class="p">])</span></span>
 </pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>       institutionID                              recordID         scientificName                                                             taxonConceptID  decimalLatitude  decimalLongitude             eventDate                   dataResourceName occurrenceStatus
-0                NaN  83dfa3fc-9882-4ed5-ac63-5b201192b144  Eolophus roseicapilla  https://biodiversity.org.au/afd/taxa/9b4ad548-8bb3-486a-ab0a-905506c463ea       -35.397500        149.010000  2020-12-04T19:45:00Z                    eBird Australia          PRESENT
-1                NaN  65c3e2a9-a403-438c-8aa7-5bf39b72733f  Eolophus roseicapilla  https://biodiversity.org.au/afd/taxa/9b4ad548-8bb3-486a-ab0a-905506c463ea       -35.238815        149.126459  2013-04-30T00:00:00Z                Garden Bird Surveys          PRESENT
-2                NaN  60212ae2-b90c-4cfe-86d0-6ed6b2068650  Eolophus roseicapilla  https://biodiversity.org.au/afd/taxa/9b4ad548-8bb3-486a-ab0a-905506c463ea       -35.311300        149.141523  2016-09-10T13:50:00Z        Earth Guardians Weekly Feed          PRESENT
-3                NaN  fd0a26f7-176e-40b4-b9f2-051136ac0ae1  Eolophus roseicapilla  https://biodiversity.org.au/afd/taxa/9b4ad548-8bb3-486a-ab0a-905506c463ea       -35.250245        149.175249  2023-03-23T15:58:00Z                    eBird Australia          PRESENT
-4                NaN  ebbdead2-32f9-465a-b200-7fb8cb77f4b8  Eolophus roseicapilla  https://biodiversity.org.au/afd/taxa/9b4ad548-8bb3-486a-ab0a-905506c463ea       -35.397500        149.010000  2018-11-07T06:40:00Z                    eBird Australia          PRESENT
+0                NaN  1a19cb53-563c-47a9-b47a-fdc248f507c6  Eolophus roseicapilla  https://biodiversity.org.au/afd/taxa/9b4ad548-8bb3-486a-ab0a-905506c463ea       -35.288450        149.132780  2021-06-29T00:00:00Z                    eBird Australia          PRESENT
+1                NaN  1cf04752-5654-4bbe-a8d2-ca89361b225c  Eolophus roseicapilla  https://biodiversity.org.au/afd/taxa/9b4ad548-8bb3-486a-ab0a-905506c463ea       -35.529170        149.078260  2019-01-05T06:32:00Z                    eBird Australia          PRESENT
+2                NaN  d42e5b8f-7a49-4cc4-8edc-36b9a8a649d0  Eolophus roseicapilla  https://biodiversity.org.au/afd/taxa/9b4ad548-8bb3-486a-ab0a-905506c463ea       -35.197370        149.053920  2016-06-15T10:10:00Z                    eBird Australia          PRESENT
+3                NaN  2bc898c8-6a18-4992-85ff-218c11ff9d24  Eolophus roseicapilla  https://biodiversity.org.au/afd/taxa/9b4ad548-8bb3-486a-ab0a-905506c463ea       -35.262050        149.068500  2012-03-29T08:15:00Z                    eBird Australia          PRESENT
+4                NaN  7d126d62-fadd-48f0-9700-b10ad522089a  Eolophus roseicapilla  https://biodiversity.org.au/afd/taxa/9b4ad548-8bb3-486a-ab0a-905506c463ea       -35.277220        149.175440  2024-03-01T07:09:00Z                    eBird Australia          PRESENT
 ...              ...                                   ...                    ...                                                                        ...              ...               ...                   ...                                ...              ...
 114161        in1033  1039e81d-c4a1-448e-abc9-59388f40dbe7  Eolophus roseicapilla  https://biodiversity.org.au/afd/taxa/9b4ad548-8bb3-486a-ab0a-905506c463ea       -35.341263        149.091202  2013-06-23T02:00:00Z  ALA species sightings and OzAtlas          PRESENT
 114162        in1033  d1f6a033-25ca-4d7a-8b4a-a64f83df902e  Eolophus roseicapilla  https://biodiversity.org.au/afd/taxa/9b4ad548-8bb3-486a-ab0a-905506c463ea       -35.345684        149.039413  2013-08-10T06:00:00Z  ALA species sightings and OzAtlas          PRESENT
 114163        in1033  32735c4a-bb78-4ffe-b7c1-7a7b7cc599ce  Eolophus roseicapilla  https://biodiversity.org.au/afd/taxa/9b4ad548-8bb3-486a-ab0a-905506c463ea       -35.226993        149.020481  2017-06-25T14:00:00Z  ALA species sightings and OzAtlas          PRESENT
-114164        in1033  0a6d58bc-ecbe-4133-9319-33a645c1b5d6  Eolophus roseicapilla  https://biodiversity.org.au/afd/taxa/9b4ad548-8bb3-486a-ab0a-905506c463ea       -35.347511        149.044907  2013-08-07T23:57:00Z  ALA species sightings and OzAtlas          PRESENT
+114164        in1033  150d3252-111e-41ec-ab32-7f0567ac0330  Eolophus roseicapilla  https://biodiversity.org.au/afd/taxa/9b4ad548-8bb3-486a-ab0a-905506c463ea       -35.276619        149.112914  2017-07-25T21:34:37Z  ALA species sightings and OzAtlas          PRESENT
 114165         in550  738123d4-dd65-4fe8-b449-796598a2233a  Eolophus roseicapilla  https://biodiversity.org.au/afd/taxa/9b4ad548-8bb3-486a-ab0a-905506c463ea       -35.322672        149.092483  2021-02-16T00:00:00Z       Entangled Wildlife Australia          PRESENT
 
 [114166 rows x 9 columns]
@@ -534,18 +534,18 @@ associated with an active account on your chosen atlas. See more information in 
 associated with a given record. Metadata on these records can be downloaded using <code class="docutils literal notranslate"><span class="pre">galah.atlas_media()</span></code> and the same set of
 filters as the other data download functions.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="o">&gt;&gt;&gt;</span> <span class="n">galah</span><span class="o">.</span><span class="n">atlas_media</span><span class="p">(</span><span class="n">taxa</span><span class="o">=</span><span class="s2">&quot;Eolophus roseicapilla&quot;</span><span class="p">,</span><span class="n">filters</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;year=2020&quot;</span><span class="p">,</span><span class="s2">&quot;stateProvince=Australian Capital Territory&quot;</span><span class="p">])</span></span>
-</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>     videos  sounds  decimalLatitude                              recordID             eventDate occurrenceStatus             dataResourceName                                                             taxonConceptID         scientificName  decimalLongitude multimedia                                images  creator                                         license    mimeType  width  height                                                                               imageUrl
-0       NaN     NaN       -35.327922  89b44608-edbc-450e-aea5-c68b2b84a804  2020-08-30T07:08:00Z          PRESENT                   NatureMapr  https://biodiversity.org.au/afd/taxa/9b4ad548-8bb3-486a-ab0a-905506c463ea  Eolophus roseicapilla        149.102528      Image  9e68c004-118c-4b37-b945-e19b81662051                                                           image/jpeg   1920    2877  https://images.ala.org.au/store/1/5/0/2/9e68c004-118c-4b37-b945-e19b81662051/original
-1       NaN     NaN       -35.317800  b03e670c-29d4-44e4-b0b4-d698b7a00581  2020-01-06T12:00:00Z          PRESENT  Earth Guardians Weekly Feed  https://biodiversity.org.au/afd/taxa/9b4ad548-8bb3-486a-ab0a-905506c463ea  Eolophus roseicapilla        149.146261      Image  3e220765-bdec-4804-8015-4763e3b36bb3                                                           image/jpeg   1001     750  https://images.ala.org.au/store/3/b/b/6/3e220765-bdec-4804-8015-4763e3b36bb3/original
-2       NaN     NaN       -35.317737  ca1f9727-9d8e-4e79-b92c-d10e285b2c15  2020-05-01T13:40:00Z          PRESENT        iNaturalist Australia  https://biodiversity.org.au/afd/taxa/9b4ad548-8bb3-486a-ab0a-905506c463ea  Eolophus roseicapilla        149.161550      Image  7b95197f-2520-4167-980a-7b8dfc395952  deborod  http://creativecommons.org/licenses/by-nc/4.0/  image/jpeg   1800    1200  https://images.ala.org.au/store/2/5/9/5/7b95197f-2520-4167-980a-7b8dfc395952/original
-3       NaN     NaN       -35.316870  4426ea86-f5f3-4c92-97fb-9f6afc25e1c5  2020-07-20T14:28:00Z          PRESENT        iNaturalist Australia  https://biodiversity.org.au/afd/taxa/9b4ad548-8bb3-486a-ab0a-905506c463ea  Eolophus roseicapilla        149.160586      Image  f84a964a-0eb8-4eb5-9c67-e5bcd50e0d64  deborod  http://creativecommons.org/licenses/by-nc/4.0/  image/jpeg   1800    1200  https://images.ala.org.au/store/4/6/d/0/f84a964a-0eb8-4eb5-9c67-e5bcd50e0d64/original
-4       NaN     NaN       -35.316857  e0c904f7-ad62-46da-973e-f948bd36d8f5  2020-10-23T10:51:00Z          PRESENT        iNaturalist Australia  https://biodiversity.org.au/afd/taxa/9b4ad548-8bb3-486a-ab0a-905506c463ea  Eolophus roseicapilla        149.162818      Image  cb82294a-cd01-4ca5-b841-5d6f6f853d2f  deborod  http://creativecommons.org/licenses/by-nc/4.0/  image/jpeg   1800    1200  https://images.ala.org.au/store/f/2/d/3/cb82294a-cd01-4ca5-b841-5d6f6f853d2f/original
-..      ...     ...              ...                                   ...                   ...              ...                          ...                                                                        ...                    ...               ...        ...                                   ...      ...                                             ...         ...    ...     ...                                                                                    ...
-335     NaN     NaN       -35.408214  eb9c30d4-de8f-45bc-86ad-d9051664de97  2020-07-27T14:59:00Z          PRESENT        iNaturalist Australia  https://biodiversity.org.au/afd/taxa/9b4ad548-8bb3-486a-ab0a-905506c463ea  Eolophus roseicapilla        149.131007      Image  3e005c2e-7bba-4c14-998c-6fd000e841a8  deborod  http://creativecommons.org/licenses/by-nc/4.0/  image/jpeg   1800    1200  https://images.ala.org.au/store/8/a/1/4/3e005c2e-7bba-4c14-998c-6fd000e841a8/original
-336     NaN     NaN       -35.408214  eb9c30d4-de8f-45bc-86ad-d9051664de97  2020-07-27T14:59:00Z          PRESENT        iNaturalist Australia  https://biodiversity.org.au/afd/taxa/9b4ad548-8bb3-486a-ab0a-905506c463ea  Eolophus roseicapilla        149.131007      Image  4828b578-f6e7-46b7-bfc1-55cedc0b87df  deborod  http://creativecommons.org/licenses/by-nc/4.0/  image/jpeg   1800    1200  https://images.ala.org.au/store/f/d/7/8/4828b578-f6e7-46b7-bfc1-55cedc0b87df/original
-337     NaN     NaN       -35.408214  eb9c30d4-de8f-45bc-86ad-d9051664de97  2020-07-27T14:59:00Z          PRESENT        iNaturalist Australia  https://biodiversity.org.au/afd/taxa/9b4ad548-8bb3-486a-ab0a-905506c463ea  Eolophus roseicapilla        149.131007      Image  8929db7f-4f08-4f1f-9f25-9220706b5bff  deborod  http://creativecommons.org/licenses/by-nc/4.0/  image/jpeg   1800    1200  https://images.ala.org.au/store/f/f/b/5/8929db7f-4f08-4f1f-9f25-9220706b5bff/original
-338     NaN     NaN       -35.408214  eb9c30d4-de8f-45bc-86ad-d9051664de97  2020-07-27T14:59:00Z          PRESENT        iNaturalist Australia  https://biodiversity.org.au/afd/taxa/9b4ad548-8bb3-486a-ab0a-905506c463ea  Eolophus roseicapilla        149.131007      Image  992e0aad-acdd-475d-8db5-235468992830  deborod  http://creativecommons.org/licenses/by-nc/4.0/  image/jpeg   1800    1200  https://images.ala.org.au/store/0/3/8/2/992e0aad-acdd-475d-8db5-235468992830/original
-339     NaN     NaN       -35.408214  eb9c30d4-de8f-45bc-86ad-d9051664de97  2020-07-27T14:59:00Z          PRESENT        iNaturalist Australia  https://biodiversity.org.au/afd/taxa/9b4ad548-8bb3-486a-ab0a-905506c463ea  Eolophus roseicapilla        149.131007      Image  b6e6078c-b8f5-448d-aca4-1806ca7791c3  deborod  http://creativecommons.org/licenses/by-nc/4.0/  image/jpeg   1800    1200  https://images.ala.org.au/store/3/c/1/9/b6e6078c-b8f5-448d-aca4-1806ca7791c3/original
+</pre></div></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>     videos  decimalLatitude                                                             taxonConceptID             dataResourceName  sounds         scientificName             eventDate multimedia  decimalLongitude                              recordID occurrenceStatus                                images  creator                                         license    mimeType  width  height                                                                               imageUrl
+0       NaN       -35.327922  https://biodiversity.org.au/afd/taxa/9b4ad548-8bb3-486a-ab0a-905506c463ea                   NatureMapr     NaN  Eolophus roseicapilla  2020-08-30T07:08:00Z      Image        149.102528  89b44608-edbc-450e-aea5-c68b2b84a804          PRESENT  9e68c004-118c-4b37-b945-e19b81662051                                                           image/jpeg   1920    2877  https://images.ala.org.au/store/1/5/0/2/9e68c004-118c-4b37-b945-e19b81662051/original
+1       NaN       -35.317800  https://biodiversity.org.au/afd/taxa/9b4ad548-8bb3-486a-ab0a-905506c463ea  Earth Guardians Weekly Feed     NaN  Eolophus roseicapilla  2020-01-06T12:00:00Z      Image        149.146261  b03e670c-29d4-44e4-b0b4-d698b7a00581          PRESENT  3e220765-bdec-4804-8015-4763e3b36bb3                                                           image/jpeg   1001     750  https://images.ala.org.au/store/3/b/b/6/3e220765-bdec-4804-8015-4763e3b36bb3/original
+2       NaN       -35.317737  https://biodiversity.org.au/afd/taxa/9b4ad548-8bb3-486a-ab0a-905506c463ea        iNaturalist Australia     NaN  Eolophus roseicapilla  2020-05-01T13:40:00Z      Image        149.161550  ca1f9727-9d8e-4e79-b92c-d10e285b2c15          PRESENT  7b95197f-2520-4167-980a-7b8dfc395952  deborod  http://creativecommons.org/licenses/by-nc/4.0/  image/jpeg   1800    1200  https://images.ala.org.au/store/2/5/9/5/7b95197f-2520-4167-980a-7b8dfc395952/original
+3       NaN       -35.316870  https://biodiversity.org.au/afd/taxa/9b4ad548-8bb3-486a-ab0a-905506c463ea        iNaturalist Australia     NaN  Eolophus roseicapilla  2020-07-20T14:28:00Z      Image        149.160586  4426ea86-f5f3-4c92-97fb-9f6afc25e1c5          PRESENT  f84a964a-0eb8-4eb5-9c67-e5bcd50e0d64  deborod  http://creativecommons.org/licenses/by-nc/4.0/  image/jpeg   1800    1200  https://images.ala.org.au/store/4/6/d/0/f84a964a-0eb8-4eb5-9c67-e5bcd50e0d64/original
+4       NaN       -35.316857  https://biodiversity.org.au/afd/taxa/9b4ad548-8bb3-486a-ab0a-905506c463ea        iNaturalist Australia     NaN  Eolophus roseicapilla  2020-10-23T10:51:00Z      Image        149.162818  e0c904f7-ad62-46da-973e-f948bd36d8f5          PRESENT  cb82294a-cd01-4ca5-b841-5d6f6f853d2f  deborod  http://creativecommons.org/licenses/by-nc/4.0/  image/jpeg   1800    1200  https://images.ala.org.au/store/f/2/d/3/cb82294a-cd01-4ca5-b841-5d6f6f853d2f/original
+..      ...              ...                                                                        ...                          ...     ...                    ...                   ...        ...               ...                                   ...              ...                                   ...      ...                                             ...         ...    ...     ...                                                                                    ...
+335     NaN       -35.408214  https://biodiversity.org.au/afd/taxa/9b4ad548-8bb3-486a-ab0a-905506c463ea        iNaturalist Australia     NaN  Eolophus roseicapilla  2020-07-27T14:59:00Z      Image        149.131007  eb9c30d4-de8f-45bc-86ad-d9051664de97          PRESENT  3e005c2e-7bba-4c14-998c-6fd000e841a8  deborod  http://creativecommons.org/licenses/by-nc/4.0/  image/jpeg   1800    1200  https://images.ala.org.au/store/8/a/1/4/3e005c2e-7bba-4c14-998c-6fd000e841a8/original
+336     NaN       -35.408214  https://biodiversity.org.au/afd/taxa/9b4ad548-8bb3-486a-ab0a-905506c463ea        iNaturalist Australia     NaN  Eolophus roseicapilla  2020-07-27T14:59:00Z      Image        149.131007  eb9c30d4-de8f-45bc-86ad-d9051664de97          PRESENT  4828b578-f6e7-46b7-bfc1-55cedc0b87df  deborod  http://creativecommons.org/licenses/by-nc/4.0/  image/jpeg   1800    1200  https://images.ala.org.au/store/f/d/7/8/4828b578-f6e7-46b7-bfc1-55cedc0b87df/original
+337     NaN       -35.408214  https://biodiversity.org.au/afd/taxa/9b4ad548-8bb3-486a-ab0a-905506c463ea        iNaturalist Australia     NaN  Eolophus roseicapilla  2020-07-27T14:59:00Z      Image        149.131007  eb9c30d4-de8f-45bc-86ad-d9051664de97          PRESENT  8929db7f-4f08-4f1f-9f25-9220706b5bff  deborod  http://creativecommons.org/licenses/by-nc/4.0/  image/jpeg   1800    1200  https://images.ala.org.au/store/f/f/b/5/8929db7f-4f08-4f1f-9f25-9220706b5bff/original
+338     NaN       -35.408214  https://biodiversity.org.au/afd/taxa/9b4ad548-8bb3-486a-ab0a-905506c463ea        iNaturalist Australia     NaN  Eolophus roseicapilla  2020-07-27T14:59:00Z      Image        149.131007  eb9c30d4-de8f-45bc-86ad-d9051664de97          PRESENT  992e0aad-acdd-475d-8db5-235468992830  deborod  http://creativecommons.org/licenses/by-nc/4.0/  image/jpeg   1800    1200  https://images.ala.org.au/store/0/3/8/2/992e0aad-acdd-475d-8db5-235468992830/original
+339     NaN       -35.408214  https://biodiversity.org.au/afd/taxa/9b4ad548-8bb3-486a-ab0a-905506c463ea        iNaturalist Australia     NaN  Eolophus roseicapilla  2020-07-27T14:59:00Z      Image        149.131007  eb9c30d4-de8f-45bc-86ad-d9051664de97          PRESENT  b6e6078c-b8f5-448d-aca4-1806ca7791c3  deborod  http://creativecommons.org/licenses/by-nc/4.0/  image/jpeg   1800    1200  https://images.ala.org.au/store/3/c/1/9/b6e6078c-b8f5-448d-aca4-1806ca7791c3/original
 
 [340 rows x 18 columns]
 </pre></div>
