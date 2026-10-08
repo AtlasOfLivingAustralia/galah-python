@@ -1,3 +1,9 @@
+## 0.14.0 (2026-10-08)
+
+### Feat
+
+- **whole-package**: updated error handling of requests calls; fixed some issues with authentication; updated gbif and flanders to include higher taxonomy
+
 ## 0.13.7 (2026-09-29)
 
 ### Fix
