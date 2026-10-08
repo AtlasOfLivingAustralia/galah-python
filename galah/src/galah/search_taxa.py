@@ -316,6 +316,7 @@ def search_taxa(
                 "ALA": response_json,
                 "Austria": None,
                 "Brazil": None,
+                "Flanders": response_json,
                 "France": None,
                 "Guatemala": None,
                 "Global": response_json,
@@ -357,6 +358,8 @@ def search_taxa(
                 tempdf = pd.DataFrame(data, index=[1])
             else:
                 tempdf = pd.DataFrame(data)
+
+            # add to dataframe
             dataFrame = pd.concat([dataFrame, tempdf], ignore_index=True)
 
         # return dataFrame with all data
@@ -456,6 +459,7 @@ def add_to_return_dict(
     # check for lists
     response_json = check_for_lists(response_json=response_json, atlas=atlas)
 
+    # add exception for Brazil, since they have a different format
     if atlas in ["Brazil"]:
         results = response_json["searchResults"]["results"][0]
     else:
@@ -463,7 +467,7 @@ def add_to_return_dict(
 
     # compile data into
     if atlas in ["Flanders", "Global"]:
-        return_dict = get_taxa_info_usage_dict(atlas=atlas, response_json=response_json)
+        return_dict = get_taxa_info_usage_dict(atlas=atlas, response_json=response_json, return_dict=return_dict)
     else:
         for k in SEARCH_TAXA_FIELDS[atlas]:
             if k in results:  # response_json
@@ -471,40 +475,37 @@ def add_to_return_dict(
             else:
                 return_dict[k].append("")
 
+    # return taxonomic information
     return return_dict
 
 
-def get_taxa_info_usage_dict(atlas=None, response_json=None):
-
-    # initialise the data dictionary
-    data = {x: [] for x in SEARCH_TAXA_FIELDS[atlas]}
+def get_taxa_info_usage_dict(atlas=None, response_json=None, return_dict=None):
 
     # loop over translated keys
     for key in KEY_TRANSLATIONS[atlas].keys():
         if key in response_json["usage"]:
-            data[KEY_TRANSLATIONS[atlas][key]].append(response_json["usage"][key])
+            return_dict[KEY_TRANSLATIONS[atlas][key]].append(response_json["usage"][key])
         else:
-            data[KEY_TRANSLATIONS[atlas][key]].append("")
+            return_dict[KEY_TRANSLATIONS[atlas][key]].append("")
 
     # add matchType
-    data["matchType"].append(response_json["diagnostics"]["matchType"])
+    return_dict["matchType"].append(response_json["diagnostics"]["matchType"])
 
     # loop over the higher order classification
     taxon_info = [
         x for x in SEARCH_TAXA_FIELDS[atlas] if (x not in KEY_TRANSLATIONS[atlas].values() and x != "matchType")
     ]
+
+    # loop over taxon info to fill in the taxonomic tree
     for ti in taxon_info:
         if any(ti.upper() in x.values() for x in response_json["classification"]):
             index = [ti.upper() in x.values() for x in response_json["classification"]].index(True)
-            data[ti].append(response_json["classification"][index]["name"])
+            return_dict[ti].append(response_json["classification"][index]["name"])
         else:
-            data[ti].append("")
+            return_dict[ti].append("")
 
-    # try this
-    # if atlas in ["Global"]:
-    #     data["canonicalName"] = [response_json["usage"]["canonicalName"]]
-
-    return data
+    # return the information
+    return return_dict
 
 
 def create_url_identifiers(identifier=None, dict_of_specifics=None, atlas=None):
