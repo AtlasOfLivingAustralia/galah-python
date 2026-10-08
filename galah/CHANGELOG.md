@@ -1,3 +1,9 @@
+## 0.14.1 (2026-10-09)
+
+### Fix
+
+- **search_taxa.py,-Flanders-and-GBIF**: fixed scientific_name issue with flanders and gbif atlases
+
 ## 0.14.0 (2026-10-08)
 
 ### Feat
